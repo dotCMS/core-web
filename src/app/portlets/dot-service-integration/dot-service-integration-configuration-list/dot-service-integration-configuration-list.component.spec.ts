@@ -19,24 +19,40 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-co
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 
+const messages = {
+    'service.integration.configurations': 'Configurations',
+    'service.integration.no.configurations': 'No Configurations',
+    'service.integration.key': 'Key:',
+    'service.integration.add.configurations': 'No configurations',
+    'service.integration.no.configurations.message': 'You do not have configurations',
+    'service.integration.add.configurations.button': 'Add Configuration',
+    'service.integration.confirmation.delete.all.button': 'Delete All',
+    'service.integration.confirmation.title': 'Are you sure?',
+    'service.integration.confirmation.delete.message': 'Delete this?',
+    'service.integration.confirmation.delete.all.message': 'Delete all?',
+    'service.integration.confirmation.accept': 'Ok'
+};
+
+const serviceData = {
+    integrationsCount: 2,
+    serviceKey: 'google-calendar',
+    name: 'Google Calendar',
+    description: "It's a tool to keep track of your life's events",
+    iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg',
+    hosts: [
+        {
+            hostId: '123',
+            hostName: 'demo.dotcms.com'
+        },
+        {
+            hostId: '456',
+            hostName: 'host.example.com'
+        }
+    ]
+};
+
 const routeDatamock = {
-    integrationService: {
-        integrationsCount: 2,
-        serviceKey: 'google-calendar',
-        name: 'Google Calendar',
-        description: "It's a tool to keep track of your life's events",
-        iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg',
-        hosts: [
-            {
-                hostId: '123',
-                hostName: 'demo.dotcms.com'
-            },
-            {
-                hostId: '456',
-                hostName: 'host.example.com'
-            }
-        ]
-    }
+    data: [serviceData, messages]
 };
 class ActivatedRouteMock {
     get data() {
@@ -61,19 +77,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
     let integrationService: DotServiceIntegrationService;
     let routerService: DotRouterService;
 
-    const messageServiceMock = new MockDotMessageService({
-        'service.integration.configurations': 'Configurations',
-        'service.integration.no.configurations': 'No Configurations',
-        'service.integration.key': 'Key:',
-        'service.integration.add.configurations': 'No configurations',
-        'service.integration.no.configurations.message': 'You do not have configurations',
-        'service.integration.add.configurations.button': 'Add Configuration',
-        'service.integration.confirmation.delete.all.button': 'Delete All',
-        'service.integration.confirmation.title': 'Are you sure?',
-        'service.integration.confirmation.delete.message': 'Delete this?',
-        'service.integration.confirmation.delete.all.message': 'Delete all?',
-        'service.integration.confirmation.accept': 'Ok'
-    });
+    const messageServiceMock = new MockDotMessageService(messages);
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
@@ -124,7 +128,8 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
         });
 
         it('should set Service Integration from resolver', () => {
-            expect(component.serviceIntegration).toBe(routeDatamock.integrationService);
+            expect(component.serviceIntegration).toBe(serviceData);
+            expect(component.messagesKey).toBe(messages);
         });
 
         it('should set messages/values in DOM correctly', () => {
@@ -209,7 +214,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             });
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/integration-services/${component.serviceIntegration.serviceKey}/edit/${routeDatamock.integrationService.hosts[0].hostId}`
+                `/integration-services/${component.serviceIntegration.serviceKey}/edit/${serviceData.hosts[0].hostId}`
             );
         });
 
@@ -223,7 +228,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             });
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/integration-services/${component.serviceIntegration.serviceKey}/edit/${routeDatamock.integrationService.hosts[0].hostId}`
+                `/integration-services/${component.serviceIntegration.serviceKey}/edit/${serviceData.hosts[0].hostId}`
             );
         });
 
@@ -264,15 +269,15 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
             expect(integrationService.deleteConfiguration).toHaveBeenCalledWith(
                 component.serviceIntegration.serviceKey,
-                routeDatamock.integrationService.hosts[0].hostId
+                serviceData.hosts[0].hostId
             );
         });
     });
 
     describe('With NO integrations count', () => {
         beforeEach(() => {
-            routeDatamock.integrationService = {
-                ...routeDatamock.integrationService,
+            routeDatamock.data[0] = {
+                ...serviceData,
                 integrationsCount: 0,
                 hosts: []
             };

@@ -4,6 +4,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotServiceIntegrationService } from '@services/dot-service-integration/dot-service-integration.service';
 import { DotServiceIntegrationConfigurationListResolver } from './dot-service-integration-configuration-list-resolver.service';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { DotMessageService } from '@services/dot-messages-service';
 
 class IntegrationServiceMock {
     getConfiguration(_serviceKey: string) {}
@@ -18,11 +20,26 @@ activatedRouteSnapshotMock.paramMap = {};
 describe('DotServiceIntegrationConfigurationListResolver', () => {
     let dotIntegrationService: DotServiceIntegrationService;
     let dotServiceIntegrationConfigurationListResolver: DotServiceIntegrationConfigurationListResolver;
+    const messages = {
+        'service.integration.configurations': 'Configurations',
+        'service.integration.no.configurations': 'No Configurations',
+        'service.integration.key': 'Key:',
+        'service.integration.add.configurations': 'No configurations',
+        'service.integration.no.configurations.message': 'You do not have configurations',
+        'service.integration.add.configurations.button': 'Add Configuration',
+        'service.integration.confirmation.delete.all.button': 'Delete All',
+        'service.integration.confirmation.title': 'Are you sure?',
+        'service.integration.confirmation.delete.message': 'Delete this?',
+        'service.integration.confirmation.delete.all.message': 'Delete all?',
+        'service.integration.confirmation.accept': 'Ok'
+    };
+    const messageServiceMock = new MockDotMessageService(messages);
 
     beforeEach(async(() => {
         const testbed = DOTTestBed.configureTestingModule({
             providers: [
                 DotServiceIntegrationConfigurationListResolver,
+                { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: DotServiceIntegrationService, useClass: IntegrationServiceMock },
                 {
                     provide: ActivatedRouteSnapshot,
@@ -61,7 +78,7 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
         dotServiceIntegrationConfigurationListResolver
             .resolve(activatedRouteSnapshotMock)
             .subscribe((fakeContentType: any) => {
-                expect(fakeContentType).toEqual(response);
+                expect(fakeContentType).toEqual([response, messages]);
             });
         expect(dotIntegrationService.getConfiguration).toHaveBeenCalledWith('123');
     });

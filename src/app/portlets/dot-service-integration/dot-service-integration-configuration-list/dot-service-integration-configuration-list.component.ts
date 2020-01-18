@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { DotServiceIntegration } from '@shared/models/dot-service-integration/dot-service-integration.model';
 import { ActivatedRoute } from '@angular/router';
-import { pluck, take, takeUntil } from 'rxjs/operators';
-import { DotMessageService } from '@services/dot-messages-service';
+import { pluck, takeUntil } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotServiceIntegrationService } from '@services/dot-service-integration/dot-service-integration.service';
 import { Subject } from 'rxjs';
@@ -22,7 +21,6 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-        public dotMessageService: DotMessageService,
         private dotAlertConfirmService: DotAlertConfirmService,
         private dotServiceIntegrationService: DotServiceIntegrationService,
         private dotRouterService: DotRouterService,
@@ -31,27 +29,9 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
 
     ngOnInit() {
         this.route.data
-            .pipe(pluck('integrationService'), takeUntil(this.destroy$))
-            .subscribe((integration: DotServiceIntegration) => {
+            .pipe(pluck('data'), takeUntil(this.destroy$))
+            .subscribe(([integration, messages]) => {
                 this.serviceIntegration = integration;
-            });
-
-        this.dotMessageService
-            .getMessages([
-                'service.integration.configurations',
-                'service.integration.no.configurations',
-                'service.integration.key',
-                'service.integration.add.configurations',
-                'service.integration.no.configurations.message',
-                'service.integration.add.configurations.button',
-                'service.integration.confirmation.delete.all.button',
-                'service.integration.confirmation.title',
-                'service.integration.confirmation.delete.message',
-                'service.integration.confirmation.delete.all.message',
-                'service.integration.confirmation.accept'
-            ])
-            .pipe(take(1))
-            .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
             });
     }
@@ -62,7 +42,6 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
     }
 
     createConfiguration(): void {
-        console.log('--createConfiguration');
         this.dotRouterService.gotoPortlet(
             `/integration-services/${this.serviceIntegration.serviceKey}/new`
         );
@@ -70,21 +49,19 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
 
     editConfiguration($event: MouseEvent, configurationId: string): void {
         $event.stopPropagation();
-        console.log('--editConfiguration', configurationId);
         this.dotRouterService.gotoPortlet(
             `/integration-services/${this.serviceIntegration.serviceKey}/edit/${configurationId}`
         );
     }
 
-    deleteConfiguration($event: MouseEvent, configurationId: string, configurationName: string): void {
+    deleteConfiguration(
+        $event: MouseEvent,
+        configurationId: string,
+        configurationName: string
+    ): void {
         $event.stopPropagation();
         this.dotAlertConfirmService.confirm({
             accept: () => {
-                console.log(
-                    '--deleteConfiguration',
-                    this.serviceIntegration.serviceKey,
-                    configurationId
-                );
                 this.dotServiceIntegrationService.deleteConfiguration(
                     this.serviceIntegration.serviceKey,
                     configurationId
@@ -102,7 +79,6 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
     deleteAllConfigurations(): void {
         this.dotAlertConfirmService.confirm({
             accept: () => {
-                console.log('--deleteAllConfiguration', this.serviceIntegration.serviceKey);
                 this.dotServiceIntegrationService.deleteAllConfigurations(
                     this.serviceIntegration.serviceKey
                 );

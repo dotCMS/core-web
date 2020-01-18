@@ -11,7 +11,7 @@ const routes: Routes = [
         component: DotServiceIntegrationConfigurationListComponent,
         path: ':serviceKey',
         resolve: {
-            integrationService: DotServiceIntegrationConfigurationListResolver
+            data: DotServiceIntegrationConfigurationListResolver
         }
     },
     {
