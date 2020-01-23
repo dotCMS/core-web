@@ -54,6 +54,12 @@ export class DotServiceIntegrationListComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
+    /**
+     * Redirects to service configuration listing page
+     *
+     * @param string key
+     * @memberof DotServiceIntegrationListComponent
+     */
     goToIntegration(key: string): void {
         this.dotRouterService.gotoPortlet(`/integration-services/${key}`);
     }

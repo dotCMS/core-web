@@ -41,12 +41,24 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
         this.destroy$.complete();
     }
 
+    /**
+     * Redirects to create configuration page
+     *
+     * @memberof DotServiceIntegrationConfigurationListComponent
+     */
     createConfiguration(): void {
         this.dotRouterService.gotoPortlet(
             `/integration-services/${this.serviceIntegration.key}/new`
         );
     }
 
+    /**
+     * Redirects to edit configuration page
+     *
+     * @param MouseEvent $event
+     * @param string configurationId
+     * @memberof DotServiceIntegrationConfigurationListComponent
+     */
     editConfiguration($event: MouseEvent, configurationId: string): void {
         $event.stopPropagation();
         this.dotRouterService.gotoPortlet(
@@ -54,6 +66,14 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
         );
     }
 
+    /**
+     * Display confirmation dialog to delete a specific configuration
+     *
+     * @param MouseEvent $event
+     * @param string configurationId
+     * @param string configurationName
+     * @memberof DotServiceIntegrationConfigurationListComponent
+     */
     deleteConfiguration(
         $event: MouseEvent,
         configurationId: string,
@@ -63,10 +83,7 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
         this.dotAlertConfirmService.confirm({
             accept: () => {
                 this.dotServiceIntegrationService
-                    .deleteConfiguration(
-                        this.serviceIntegration.key,
-                        configurationId
-                    )
+                    .deleteConfiguration(this.serviceIntegration.key, configurationId)
                     .pipe(take(1))
                     .subscribe(() => this.getConfiguration());
             },
@@ -79,6 +96,11 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
         });
     }
 
+    /**
+     * Display confirmation dialog to delete all configurations
+     *
+     * @memberof DotServiceIntegrationConfigurationListComponent
+     */
     deleteAllConfigurations(): void {
         this.dotAlertConfirmService.confirm({
             accept: () => {
