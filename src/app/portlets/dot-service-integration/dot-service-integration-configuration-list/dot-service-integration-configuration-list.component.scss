@@ -71,6 +71,7 @@ dot-action-button {
     border: 1px solid $gray-light;
     cursor: pointer;
     display: flex;
+    height: 66px;
     margin-right: $basic-padding * 2;
     margin-top: $basic-padding * 2;
     padding: $basic-padding 0;
@@ -81,6 +82,7 @@ dot-action-button {
     }
 
     dot-icon-button {
+        align-self: center;
         margin-right: $basic-padding * 2;
     }
 }

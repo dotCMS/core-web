@@ -1,6 +1,10 @@
 <div class="dot-service-integration-configuration__container">
     <div class="dot-service-integration-configuration__header">
-        <dot-avatar [size]="112" [url]="serviceIntegration.iconUrl"></dot-avatar>
+        <dot-avatar
+            [size]="112"
+            [url]="serviceIntegration.iconUrl"
+            [label]="serviceIntegration.name"
+        ></dot-avatar>
         <div class="dot-service-integration-configuration__data">
             <span class="dot-service-integration-configuration__service-name">
                 {{ serviceIntegration.name }}
@@ -8,14 +12,14 @@
             <div class="dot-service-integration-configuration__service-key">
                 {{ messagesKey['service.integration.key'] }}
                 <dot-copy-button
-                    [copy]="serviceIntegration.serviceKey"
-                    [label]="serviceIntegration.serviceKey"
+                    [copy]="serviceIntegration.key"
+                    [label]="serviceIntegration.key"
                 ></dot-copy-button>
             </div>
             <span class="dot-service-integration-configuration__configurations"
                 >{{
-                    serviceIntegration.integrationsCount
-                        ? serviceIntegration.integrationsCount +
+                    serviceIntegration.configurationsCount
+                        ? serviceIntegration.configurationsCount +
                           ' ' +
                           messagesKey['service.integration.configurations']
                         : messagesKey['service.integration.no.configurations']
@@ -31,7 +35,7 @@
         ></dot-action-button>
     </div>
     <div class="dot-service-integration-configuration__body">
-        <div *ngIf="serviceIntegration.hosts.length">
+        <div *ngIf="serviceIntegration.sites.length">
             <div class="dot-service-integration-configuration__delete_all">
                 <button
                     pButton
@@ -43,27 +47,33 @@
             </div>
             <div
                 class="dot-service-integration-configuration__item"
-                *ngFor="let configurationHost of serviceIntegration.hosts"
-                (click)="editConfiguration($event, configurationHost.hostId)"
+                *ngFor="let site of serviceIntegration.sites"
+                (click)="editConfiguration($event, site.id)"
             >
                 <div class="dot-service-integration-configuration__name">
-                    {{ configurationHost.hostName }}
+                    {{ site.name }}
                 </div>
                 <div class="dot-service-integration-configuration__host-key">
-                    {{ messagesKey['service.integration.key'] }} {{ configurationHost.hostId }}
+                    {{ messagesKey['service.integration.key'] }} {{ site.id }}
                 </div>
                 <dot-icon-button
                     icon="delete_outline"
-                    (click)="deleteConfiguration($event, configurationHost.hostId, configurationHost.hostName)"
+                    (click)="
+                        deleteConfiguration(
+                            $event,
+                            site.id,
+                            site.name
+                        )
+                    "
                 ></dot-icon-button>
                 <dot-icon-button
                     icon="edit"
-                    (click)="editConfiguration($event, configurationHost.hostId)"
+                    (click)="editConfiguration($event, site.id)"
                 ></dot-icon-button>
             </div>
         </div>
         <div
-            *ngIf="!serviceIntegration.hosts.length"
+            *ngIf="!serviceIntegration.sites.length"
             class="dot-service-integration-configuration__add-configurations"
         >
             <div class="dot-service-integration-configuration__add-configurations-title">

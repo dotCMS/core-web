@@ -17,15 +17,15 @@ import { DotServiceIntegrationCardComponent } from './dot-service-integration-ca
 const routeDatamock = {
     integrationServices: [
         {
-            integrationsCount: 0,
-            serviceKey: 'google-calendar',
+            configurationsCount: 0,
+            key: 'google-calendar',
             name: 'Google Calendar',
             description: "It's a tool to keep track of your life's events",
             iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg'
         },
         {
-            integrationsCount: 1,
-            serviceKey: 'asana',
+            configurationsCount: 1,
+            key: 'asana',
             name: 'Asana',
             description: "It's asana to keep track of your asana events",
             iconUrl: '/dA/792c7c9f-6b6f-427b-80ff-1643376c9999/photo/mountain-persona.jpg'
@@ -110,9 +110,9 @@ describe('DotServiceIntegrationListComponent', () => {
         const card: DotServiceIntegrationCardComponent = fixture.debugElement.queryAll(
             By.css('dot-service-integration-card')
         )[0].componentInstance;
-        card.actionFired.emit(component.serviceIntegrations[0].serviceKey);
+        card.actionFired.emit(component.serviceIntegrations[0].key);
         expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-            `/integration-services/${component.serviceIntegrations[0].serviceKey}`
+            `/integration-services/${component.serviceIntegrations[0].key}`
         );
     });
 });

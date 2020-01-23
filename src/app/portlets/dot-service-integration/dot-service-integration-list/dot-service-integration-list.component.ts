@@ -54,8 +54,8 @@ export class DotServiceIntegrationListComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    goToIntegration(serviceKey: string): void {
-        this.dotRouterService.gotoPortlet(`/integration-services/${serviceKey}`);
+    goToIntegration(key: string): void {
+        this.dotRouterService.gotoPortlet(`/integration-services/${key}`);
     }
 
     private filterIntegrations(searchCriteria?: string): void {

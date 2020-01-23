@@ -1,13 +1,13 @@
 export interface DotServiceIntegration {
     description: string;
-    hosts?: DotServiceIntegrationHost[];
     iconUrl: string;
-    integrationsCount: number;
+    configurationsCount: number;
     name: string;
-    serviceKey: string;
+    key: string;
+    sites?: DotServiceIntegrationSites[];
 }
 
-export interface DotServiceIntegrationHost {
-    hostId: string;
-    hostName: string;
+export interface DotServiceIntegrationSites {
+    id: string;
+    name: string;
 }

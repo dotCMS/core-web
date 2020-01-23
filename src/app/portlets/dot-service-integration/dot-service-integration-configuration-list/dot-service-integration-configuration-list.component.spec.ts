@@ -34,19 +34,19 @@ const messages = {
 };
 
 const serviceData = {
-    integrationsCount: 2,
-    serviceKey: 'google-calendar',
+    configurationsCount: 2,
+    key: 'google-calendar',
     name: 'Google Calendar',
     description: "It's a tool to keep track of your life's events",
     iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg',
-    hosts: [
+    sites: [
         {
-            hostId: '123',
-            hostName: 'demo.dotcms.com'
+            id: '123',
+            name: 'demo.dotcms.com'
         },
         {
-            hostId: '456',
-            hostName: 'host.example.com'
+            id: '456',
+            name: 'host.example.com'
         }
     ]
 };
@@ -144,7 +144,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
                     By.css('.dot-service-integration-configuration__service-key')
                 ).nativeElement.textContent
             ).toContain(
-                `${component.messagesKey['service.integration.key']} ${component.serviceIntegration.serviceKey}`
+                `${component.messagesKey['service.integration.key']} ${component.serviceIntegration.key}`
             );
 
             expect(
@@ -152,7 +152,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
                     By.css('.dot-service-integration-configuration__configurations')
                 ).nativeElement.textContent
             ).toContain(
-                `${component.serviceIntegration.integrationsCount} ${component.messagesKey['service.integration.configurations']}`
+                `${component.serviceIntegration.configurationsCount} ${component.messagesKey['service.integration.configurations']}`
             );
 
             expect(
@@ -165,14 +165,14 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
                 fixture.debugElement.queryAll(
                     By.css('.dot-service-integration-configuration__name')
                 )[0].nativeElement.innerText
-            ).toBe(component.serviceIntegration.hosts[0].hostName);
+            ).toBe(component.serviceIntegration.sites[0].name);
 
             expect(
                 fixture.debugElement.queryAll(
                     By.css('.dot-service-integration-configuration__host-key')
                 )[0].nativeElement.innerText
             ).toBe(
-                `${component.messagesKey['service.integration.key']} ${component.serviceIntegration.hosts[0].hostId}`
+                `${component.messagesKey['service.integration.key']} ${component.serviceIntegration.sites[0].id}`
             );
         });
 
@@ -186,8 +186,8 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
 
         it('should have Dot-Copy-Button with serviceKey value', () => {
             const copyBtn = fixture.debugElement.query(By.css('dot-copy-button')).componentInstance;
-            expect(copyBtn.copy).toBe(component.serviceIntegration.serviceKey);
-            expect(copyBtn.label).toBe(component.serviceIntegration.serviceKey);
+            expect(copyBtn.copy).toBe(component.serviceIntegration.key);
+            expect(copyBtn.label).toBe(component.serviceIntegration.key);
         });
 
         it('should have Dot-Avatar with correct values', () => {
@@ -200,7 +200,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             const addBtn = fixture.debugElement.query(By.css('dot-action-button')).nativeElement;
             addBtn.click();
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/integration-services/${component.serviceIntegration.serviceKey}/new`
+                `/integration-services/${component.serviceIntegration.key}/new`
             );
         });
 
@@ -214,7 +214,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             });
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/integration-services/${component.serviceIntegration.serviceKey}/edit/${serviceData.hosts[0].hostId}`
+                `/integration-services/${component.serviceIntegration.key}/edit/${serviceData.sites[0].id}`
             );
         });
 
@@ -228,7 +228,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             });
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/integration-services/${component.serviceIntegration.serviceKey}/edit/${serviceData.hosts[0].hostId}`
+                `/integration-services/${component.serviceIntegration.key}/edit/${serviceData.sites[0].id}`
             );
         });
 
@@ -246,7 +246,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             deleteAllBtn.triggerEventHandler('click', null);
             expect(dialogService.confirm).toHaveBeenCalledTimes(1);
             expect(integrationService.deleteAllConfigurations).toHaveBeenCalledWith(
-                component.serviceIntegration.serviceKey
+                component.serviceIntegration.key
             );
         });
 
@@ -268,8 +268,8 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             expect(dialogService.confirm).toHaveBeenCalledTimes(1);
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
             expect(integrationService.deleteConfiguration).toHaveBeenCalledWith(
-                component.serviceIntegration.serviceKey,
-                serviceData.hosts[0].hostId
+                component.serviceIntegration.key,
+                serviceData.sites[0].id
             );
         });
     });
@@ -278,8 +278,8 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
         beforeEach(() => {
             routeDatamock.data[0] = {
                 ...serviceData,
-                integrationsCount: 0,
-                hosts: []
+                configurationsCount: 0,
+                sites: []
             };
             fixture.detectChanges();
         });
@@ -326,7 +326,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             ).nativeElement;
             addBtn.click();
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/integration-services/${component.serviceIntegration.serviceKey}/new`
+                `/integration-services/${component.serviceIntegration.key}/new`
             );
         });
     });

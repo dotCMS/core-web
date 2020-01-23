@@ -1,14 +1,15 @@
 <p-card
     [ngClass]="{
-        'dot-service-integration-card__disabled': !serviceIntegration.integrationsCount
+        'dot-service-integration-card__disabled': !serviceIntegration.configurationsCount
     }"
-    (click)="actionFired.emit(serviceIntegration.serviceKey)"
+    (click)="actionFired.emit(serviceIntegration.key)"
 >
     <p-header>
         <dot-avatar
-            [showDot]="serviceIntegration.integrationsCount ? true : false"
+            [showDot]="serviceIntegration.configurationsCount ? true : false"
             [size]="40"
             [url]="serviceIntegration.iconUrl"
+            [label]="serviceIntegration.name"
         ></dot-avatar>
         <div class="dot-service-integration-card__label-container">
             <span class="dot-service-integration-card__name">
@@ -16,8 +17,8 @@
             </span>
             <span class="dot-service-integration-card__configurations"
                 >{{
-                    serviceIntegration.integrationsCount
-                        ? serviceIntegration.integrationsCount +
+                    serviceIntegration.configurationsCount
+                        ? serviceIntegration.configurationsCount +
                           ' ' +
                           messagesKey['service.integration.configurations']
                         : messagesKey['service.integration.no.configurations']
