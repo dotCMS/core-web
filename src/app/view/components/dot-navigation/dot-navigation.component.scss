@@ -10,36 +10,26 @@
 nav {
     transition: width $basic-speed ease;
     width: $navigation-width;
+
+    &:not(.collapsed) {
+        .dot-nav__list-item {
+            transition: background-color $basic-speed ease;
+
+            &--active {
+                background-color: rgba(var(--color-white_rgb), 0.1);
+                padding-bottom: $basic-padding * 2;
+            }
+        }
+    }
 }
 
 ul {
     @include naked-list;
 }
 
-.dot-nav__list-item {
-    transition: background-color $basic-speed ease;
 
-    &--active {
-        background-color: rgba(var(--color-white_rgb), 0.1);
-        padding-bottom: $basic-padding * 2;
-    }
-}
 
 .collapsed {
     width: $navigation-width-collased;
-}
-
-::ng-deep {
-    .ui-tooltip {
-        &.dot-nav__tooltip {
-            margin-left: $basic-padding;
-
-            .ui-tooltip-text {
-                overflow-wrap: break-word;
-                min-width: 100px;
-                max-width: 150px;
-                text-align: center;
-            }
-        }
-    }
+    overflow: hidden;
 }

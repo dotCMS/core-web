@@ -2,7 +2,7 @@ import { DotRouterService } from './dot-router.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoginService } from 'dotcms-js';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { async } from '@angular/core/testing';
 
 class RouterMock {
@@ -19,6 +19,20 @@ class RouterMock {
             resolve(true);
         });
     });
+
+    getCurrentNavigation() {
+        return {
+            finalUrl: {}
+        };
+    }
+}
+
+class ActivatedRouteMock {
+    snapshot = {
+        queryParams: {
+            hello: 'world'
+        }
+    }
 }
 
 describe('DotRouterService', () => {
@@ -36,6 +50,10 @@ describe('DotRouterService', () => {
                 {
                     provide: Router,
                     useClass: RouterMock
+                },
+                {
+                    provide: ActivatedRoute,
+                    useClass: ActivatedRouteMock
                 }
             ],
             imports: [RouterTestingModule]
@@ -44,6 +62,27 @@ describe('DotRouterService', () => {
         service = testbed.get(DotRouterService);
         router = testbed.get(Router);
     }));
+
+    it('should get queryParams from Router', () => {
+        spyOn(router, 'getCurrentNavigation').and.returnValue({
+                finalUrl: {
+                    queryParams: {
+                        hola: 'mundo'
+                    }
+                }
+        })
+        expect(service.queryParams).toEqual({
+            hola: 'mundo'
+        });
+    });
+
+    it('should get queryParams from ActivatedRoute', () => {
+        spyOn(router, 'getCurrentNavigation').and.returnValue(null)
+        expect(service.queryParams).toEqual({
+            hello: 'world'
+        });
+    });
+
 
     it('should go to main', () => {
         service.goToMain();
@@ -54,7 +93,7 @@ describe('DotRouterService', () => {
         spyOn(service, 'goToEditPage');
         service.goToMain('/about/us');
 
-        expect(service.goToEditPage).toHaveBeenCalledWith('/about/us');
+        expect(service.goToEditPage).toHaveBeenCalledWith({ url: '/about/us' });
     });
 
     it('should go to edit content type page', () => {
@@ -71,14 +110,14 @@ describe('DotRouterService', () => {
     });
 
     it('should go to edit page', () => {
-        service.goToEditPage('abc/def');
+        service.goToEditPage({ url: 'abc/def' });
         expect(router.navigate).toHaveBeenCalledWith(['/edit-page/content'], {
             queryParams: { url: 'abc/def' }
         });
     });
 
     it('should go to edit page with language_id', () => {
-        service.goToEditPage('abc/def', '1');
+        service.goToEditPage({ url: 'abc/def', language_id: '1' });
         expect(router.navigate).toHaveBeenCalledWith(['/edit-page/content'], {
             queryParams: { url: 'abc/def', language_id: '1' }
         });
@@ -123,7 +162,10 @@ describe('DotRouterService', () => {
     it('should return the correct  Portlet Id', () => {
         expect(service.getPortletId('#/c/content?test=value')).toBe('content');
         expect(service.getPortletId('/c/add/content?fds=ds')).toBe('content');
-        expect(service.getPortletId('c/content%3Ffilter%3DProducts/19d3aecc-5b68-4d98-ba1b-297d5859403c')).toBe('content');
+        expect(
+            service.getPortletId(
+                'c/content%3Ffilter%3DProducts/19d3aecc-5b68-4d98-ba1b-297d5859403c'
+            )
+        ).toBe('content');
     });
-
 });
