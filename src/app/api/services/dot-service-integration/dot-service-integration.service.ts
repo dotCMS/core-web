@@ -14,8 +14,6 @@ import { CoreWebService } from 'dotcms-js';
 export class DotServiceIntegrationService {
     constructor(private coreWebService: CoreWebService) {}
 
-    // constructor() {}
-
     /**
      * Return a list of Service Integrations.
      * @returns Observable<DotServiceIntegration[]>
