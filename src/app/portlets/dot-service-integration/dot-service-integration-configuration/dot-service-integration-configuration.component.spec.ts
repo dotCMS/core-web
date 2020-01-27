@@ -5,14 +5,14 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ActivatedRoute } from '@angular/router';
 import { DOTTestBed } from '@tests/dot-test-bed';
-import { DotServiceIntegrationConfigurationListComponent } from './dot-service-integration-configuration-list.component';
+import { DotServiceIntegrationConfigurationComponent } from './dot-service-integration-configuration.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { InputTextModule } from 'primeng/primeng';
 import { DotServiceIntegrationService } from '@services/dot-service-integration/dot-service-integration.service';
-import { DotServiceIntegrationConfigurationListResolver } from './dot-service-integration-configuration-list-resolver.service';
+import { DotServiceIntegrationConfigurationResolver } from './dot-service-integration-configuration-resolver.service';
 import { By } from '@angular/platform-browser';
 import { Injectable } from '@angular/core';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
@@ -71,8 +71,8 @@ class MockDotServiceIntegrationService {
 }
 
 describe('DotServiceIntegrationConfigurationListComponent', () => {
-    let component: DotServiceIntegrationConfigurationListComponent;
-    let fixture: ComponentFixture<DotServiceIntegrationConfigurationListComponent>;
+    let component: DotServiceIntegrationConfigurationComponent;
+    let fixture: ComponentFixture<DotServiceIntegrationConfigurationComponent>;
     let dialogService: DotAlertConfirmService;
     let integrationService: DotServiceIntegrationService;
     let routerService: DotRouterService;
@@ -84,7 +84,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             imports: [
                 RouterTestingModule.withRoutes([
                     {
-                        component: DotServiceIntegrationConfigurationListComponent,
+                        component: DotServiceIntegrationConfigurationComponent,
                         path: ''
                     }
                 ]),
@@ -94,7 +94,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
                 DotActionButtonModule,
                 InputTextModule
             ],
-            declarations: [DotServiceIntegrationConfigurationListComponent],
+            declarations: [DotServiceIntegrationConfigurationComponent],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
                 {
@@ -109,13 +109,13 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
                     provide: DotRouterService,
                     useClass: MockDotRouterService
                 },
-                DotServiceIntegrationConfigurationListResolver
+                DotServiceIntegrationConfigurationResolver
             ]
         });
     }));
 
     beforeEach(() => {
-        fixture = DOTTestBed.createComponent(DotServiceIntegrationConfigurationListComponent);
+        fixture = DOTTestBed.createComponent(DotServiceIntegrationConfigurationComponent);
         component = fixture.debugElement.componentInstance;
         dialogService = fixture.debugElement.injector.get(DotAlertConfirmService);
         integrationService = fixture.debugElement.injector.get(DotServiceIntegrationService);

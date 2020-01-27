@@ -7,16 +7,28 @@ import { DotServiceIntegrationService } from '@services/dot-service-integration/
 import { Subject } from 'rxjs';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
+import { LazyLoadEvent } from 'primeng/primeng';
+
 @Component({
-    selector: 'dot-service-integration-configuration-list',
-    templateUrl: './dot-service-integration-configuration-list.component.html',
-    styleUrls: ['./dot-service-integration-configuration-list.component.scss']
+    selector: 'dot-service-integration-configuration',
+    templateUrl: './dot-service-integration-configuration.component.html',
+    styleUrls: ['./dot-service-integration-configuration.component.scss']
 })
-export class DotServiceIntegrationConfigurationListComponent implements OnInit, OnDestroy {
+export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDestroy {
     @ViewChild('searchInput')
     searchInput: ElementRef;
     messagesKey: { [key: string]: string } = {};
     serviceIntegration: DotServiceIntegration;
+
+    // demo *-*-*-*-*-*-*-*-* START
+    cars: any[] = [];
+    brands: string[];
+    colors: string[];
+    lazyCars: any[];
+    totalLazyCarsLength: number;
+    sortOptions: any[];
+    timeout: any;
+    // demo *-*-*-*-*-*-*-*-* END
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -34,12 +46,93 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
                 this.serviceIntegration = integration;
                 this.messagesKey = messages;
             });
+
+        // demo *-*-*-*-*-*-*-*-* START
+        this.brands = [
+            'Audi',
+            'BMW',
+            'Fiat',
+            'Ford',
+            'Honda',
+            'Jaguar',
+            'Mercedes',
+            'Renault',
+            'Volvo',
+            'VW'
+        ];
+
+        this.colors = ['Black', 'White', 'Red', 'Blue', 'Silver', 'Green', 'Yellow'];
+
+        for (let i = 0; i < 10000; i++) {
+            this.cars.push(this.generateCar());
+        }
+
+        this.totalLazyCarsLength = 10000;
+        this.sortOptions = [
+            { label: 'Newest First', value: '!year' },
+            { label: 'Oldest First', value: 'year' }
+        ];
+        // demo *-*-*-*-*-*-*-*-* END
     }
 
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
     }
+
+    // demo *-*-*-*-*-*-*-*-* START
+    generateCar(): any {
+        return {
+            vin: this.generateVin(),
+            brand: this.generateBrand(),
+            color: this.generateColor(),
+            year: this.generateYear()
+        };
+    }
+
+    generateVin() {
+        let text = '';
+        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        for (let i = 0; i < 5; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+
+        return text;
+    }
+
+    generateBrand() {
+        return this.brands[Math.floor(Math.random() * Math.floor(10))];
+    }
+
+    generateColor() {
+        return this.colors[Math.floor(Math.random() * Math.floor(7))];
+    }
+
+    generateYear() {
+        return 2000 + Math.floor(Math.random() * Math.floor(19));
+    }
+
+    loadCarsLazy(event: LazyLoadEvent) {
+        console.log('---evnet', event);
+
+        // in a real application, make a remote request to load data using state metadata from event
+        // event.first = First row offset
+        // event.rows = Number of rows per page
+
+        // imitate db connection over a network
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+
+        this.timeout = setTimeout(() => {
+            this.lazyCars = [];
+            if (this.cars) {
+                this.lazyCars = this.cars.slice(event.first, event.first + event.rows);
+            }
+        }, 1000);
+    }
+    // demo *-*-*-*-*-*-*-*-* END
 
     /**
      * Redirects to create configuration page

@@ -14,7 +14,7 @@ import { DotMessageService } from '@services/dot-messages-service';
  * @implements {Resolve<any>}
  */
 @Injectable()
-export class DotServiceIntegrationConfigurationListResolver
+export class DotServiceIntegrationConfigurationResolver
     implements Resolve<DotServiceIntegration> {
     constructor(
         private dotServiceIntegrationService: DotServiceIntegrationService,

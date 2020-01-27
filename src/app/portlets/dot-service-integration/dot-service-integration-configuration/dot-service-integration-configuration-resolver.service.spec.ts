@@ -3,7 +3,7 @@ import { async } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotServiceIntegrationService } from '@services/dot-service-integration/dot-service-integration.service';
-import { DotServiceIntegrationConfigurationListResolver } from './dot-service-integration-configuration-list-resolver.service';
+import { DotServiceIntegrationConfigurationResolver } from './dot-service-integration-configuration-resolver.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 
@@ -19,7 +19,7 @@ activatedRouteSnapshotMock.paramMap = {};
 
 describe('DotServiceIntegrationConfigurationListResolver', () => {
     let dotIntegrationService: DotServiceIntegrationService;
-    let dotServiceIntegrationConfigurationListResolver: DotServiceIntegrationConfigurationListResolver;
+    let dotServiceIntegrationConfigurationListResolver: DotServiceIntegrationConfigurationResolver;
     const messages = {
         'service.integration.configurations': 'Configurations',
         'service.integration.no.configurations': 'No Configurations',
@@ -38,7 +38,7 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
     beforeEach(async(() => {
         const testbed = DOTTestBed.configureTestingModule({
             providers: [
-                DotServiceIntegrationConfigurationListResolver,
+                DotServiceIntegrationConfigurationResolver,
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: DotServiceIntegrationService, useClass: IntegrationServiceMock },
                 {
@@ -49,7 +49,7 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
         });
         dotIntegrationService = testbed.get(DotServiceIntegrationService);
         dotServiceIntegrationConfigurationListResolver = testbed.get(
-            DotServiceIntegrationConfigurationListResolver
+            DotServiceIntegrationConfigurationResolver
         );
     }));
 
