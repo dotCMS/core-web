@@ -32,7 +32,7 @@ describe('DotServiceIntegrationService', () => {
     });
 
     it('should get service integrations', () => {
-        const url = 'v1/service/integration';
+        const url = 'v1/service-integrations';
 
         this.dotServiceIntegrationService.get().subscribe((services: DotServiceIntegration[]) => {
             expect(services).toEqual(mockDotServiceIntegration);
@@ -54,7 +54,7 @@ describe('DotServiceIntegrationService', () => {
 
     it('should get a specific service integrations', () => {
         const serviceKey = '1';
-        const url = `v1/service/integration/${serviceKey}`;
+        const url = `v1/service-integrations/${serviceKey}`;
 
         this.dotServiceIntegrationService
             .getConfiguration(serviceKey)
@@ -79,7 +79,7 @@ describe('DotServiceIntegrationService', () => {
     it('should delete a specific configuration from a service', () => {
         const serviceKey = '1';
         const hostId = 'abc';
-        const url = `v1/service/integration/${serviceKey}/${hostId}`;
+        const url = `v1/service-integrations/${serviceKey}/${hostId}`;
 
         this.dotServiceIntegrationService
             .deleteConfiguration(serviceKey, hostId)
@@ -103,7 +103,7 @@ describe('DotServiceIntegrationService', () => {
 
     it('should delete all configurations from a service', () => {
         const serviceKey = '1';
-        const url = `v1/service/integration/${serviceKey}`;
+        const url = `v1/service-integrations/${serviceKey}`;
 
         this.dotServiceIntegrationService
             .deleteAllConfigurations(serviceKey)

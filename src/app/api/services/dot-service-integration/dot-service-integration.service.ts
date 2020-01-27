@@ -23,7 +23,7 @@ export class DotServiceIntegrationService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/service/integration`
+                url: `v1/service-integrations`
             })
             .pipe(
                 pluck('entity'),
@@ -41,7 +41,7 @@ export class DotServiceIntegrationService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/service/integration/${serviceKey}`
+                url: `v1/service-integrations/${serviceKey}`
             })
             .pipe(
                 pluck('entity'),
@@ -60,7 +60,7 @@ export class DotServiceIntegrationService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `v1/service/integration/${serviceKey}/${hostId}`
+                url: `v1/service-integrations/${serviceKey}/${hostId}`
             })
             .pipe(
                 pluck('entity'),
@@ -78,7 +78,7 @@ export class DotServiceIntegrationService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `v1/service/integration/${serviceKey}`
+                url: `v1/service-integrations/${serviceKey}`
             })
             .pipe(
                 pluck('entity'),
