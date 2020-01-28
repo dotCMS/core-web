@@ -1,9 +1,12 @@
-import { pluck, catchError } from 'rxjs/operators';
+import { pluck, catchError, take, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DotServiceIntegration } from '@models/dot-service-integration/dot-service-integration.model';
 import { RequestMethod } from '@angular/http';
-import { CoreWebService } from 'dotcms-js';
+import { CoreWebService, ResponseView } from 'dotcms-js';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+
+const serviceIntegrationUrl = `v1/service-integrations`;
 
 /**
  * Provide util methods to get service integrations in the system.
@@ -12,7 +15,10 @@ import { CoreWebService } from 'dotcms-js';
  */
 @Injectable()
 export class DotServiceIntegrationService {
-    constructor(private coreWebService: CoreWebService) {}
+    constructor(
+        private coreWebService: CoreWebService,
+        private httpErrorManagerService: DotHttpErrorManagerService
+    ) {}
 
     /**
      * Return a list of Service Integrations.
@@ -23,11 +29,16 @@ export class DotServiceIntegrationService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/service-integrations`
+                url: serviceIntegrationUrl
             })
             .pipe(
                 pluck('entity'),
-                catchError(() => of(null))
+                catchError((error: ResponseView) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
             );
     }
 
@@ -41,11 +52,16 @@ export class DotServiceIntegrationService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/service-integrations/${serviceKey}`
+                url: `${serviceIntegrationUrl}/${serviceKey}`
             })
             .pipe(
                 pluck('entity'),
-                catchError(() => of(null))
+                catchError((error: ResponseView) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
             );
     }
 
@@ -60,11 +76,16 @@ export class DotServiceIntegrationService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `v1/service-integrations/${serviceKey}/${hostId}`
+                url: `${serviceIntegrationUrl}/${serviceKey}/${hostId}`
             })
             .pipe(
                 pluck('entity'),
-                catchError(() => of(null))
+                catchError((error: ResponseView) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
             );
     }
 
@@ -78,11 +99,16 @@ export class DotServiceIntegrationService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `v1/service-integrations/${serviceKey}`
+                url: `${serviceIntegrationUrl}/${serviceKey}`
             })
             .pipe(
                 pluck('entity'),
-                catchError(() => of(null))
+                catchError((error: ResponseView) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
             );
     }
 }

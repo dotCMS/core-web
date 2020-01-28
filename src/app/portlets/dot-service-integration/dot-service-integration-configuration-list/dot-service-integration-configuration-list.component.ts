@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { DotServiceIntegration } from '@shared/models/dot-service-integration/dot-service-integration.model';
+import {
+    DotServiceIntegration,
+    DotServiceIntegrationSites
+} from '@shared/models/dot-service-integration/dot-service-integration.model';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, takeUntil, take } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
@@ -70,26 +73,21 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
      * Display confirmation dialog to delete a specific configuration
      *
      * @param MouseEvent $event
-     * @param string configurationId
-     * @param string configurationName
+     * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationListComponent
      */
-    deleteConfiguration(
-        $event: MouseEvent,
-        configurationId: string,
-        configurationName: string
-    ): void {
+    deleteConfiguration($event: MouseEvent, site: DotServiceIntegrationSites): void {
         $event.stopPropagation();
         this.dotAlertConfirmService.confirm({
             accept: () => {
                 this.dotServiceIntegrationService
-                    .deleteConfiguration(this.serviceIntegration.key, configurationId)
+                    .deleteConfiguration(this.serviceIntegration.key, site.id)
                     .pipe(take(1))
                     .subscribe(() => this.getConfiguration());
             },
             reject: () => {},
             header: this.messagesKey['service.integration.confirmation.title'],
-            message: `${this.messagesKey['service.integration.confirmation.delete.message']} <b>${configurationName}</b> ?`,
+            message: `${this.messagesKey['service.integration.confirmation.delete.message']} <b>${site.name}</b> ?`,
             footerLabel: {
                 accept: this.messagesKey['service.integration.confirmation.accept']
             }

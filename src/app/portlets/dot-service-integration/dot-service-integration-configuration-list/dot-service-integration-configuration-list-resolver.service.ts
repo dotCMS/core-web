@@ -1,4 +1,4 @@
-import { Observable, forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -15,13 +15,13 @@ import { DotMessageService } from '@services/dot-messages-service';
  */
 @Injectable()
 export class DotServiceIntegrationConfigurationListResolver
-    implements Resolve<DotServiceIntegration> {
+    implements Resolve<Observable<[DotServiceIntegration, any]>> {
     constructor(
         private dotServiceIntegrationService: DotServiceIntegrationService,
         public dotMessageService: DotMessageService
     ) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
+    resolve(route: ActivatedRouteSnapshot): Observable<[DotServiceIntegration, any]> {
         const serviceKey = route.paramMap.get('serviceKey');
         const servicesConfigurations$ = this.dotServiceIntegrationService
             .getConfiguration(serviceKey)
