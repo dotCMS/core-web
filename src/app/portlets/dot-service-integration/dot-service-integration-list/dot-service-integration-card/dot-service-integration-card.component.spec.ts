@@ -50,21 +50,11 @@ describe('DotServiceIntegrationCardComponent', () => {
         });
 
         it('should have avatar with right values', () => {
-            expect(fixture.debugElement.query(By.css('dot-avatar')).componentInstance.size).toBe(
-                40
-            );
-
-            expect(fixture.debugElement.query(By.css('dot-avatar')).componentInstance.showDot).toBe(
-                true
-            );
-
-            expect(fixture.debugElement.query(By.css('dot-avatar')).componentInstance.url).toBe(
-                component.serviceIntegration.iconUrl
-            );
-
-            expect(fixture.debugElement.query(By.css('dot-avatar')).componentInstance.label).toBe(
-                component.serviceIntegration.name
-            );
+            const avatar = fixture.debugElement.query(By.css('dot-avatar')).componentInstance;
+            expect(avatar.size).toBe(40);
+            expect(avatar.showDot).toBe(true);
+            expect(avatar.url).toBe(component.serviceIntegration.iconUrl);
+            expect(avatar.label).toBe(component.serviceIntegration.name);
         });
 
         it('should set messages/values in DOM correctly', () => {

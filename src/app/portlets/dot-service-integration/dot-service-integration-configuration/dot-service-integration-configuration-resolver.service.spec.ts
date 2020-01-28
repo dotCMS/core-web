@@ -53,7 +53,7 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
         );
     }));
 
-    it('should get and return a content type', () => {
+    it('should get and return service integration with configurations', () => {
         const response = {
             integrationsCount: 2,
             serviceKey: 'google-calendar',

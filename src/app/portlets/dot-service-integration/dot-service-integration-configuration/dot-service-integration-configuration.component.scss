@@ -9,7 +9,7 @@
 }
 
 .dot-service-integration-configuration__header {
-    border-bottom: 1px solid $gray-light;
+    border-bottom: 1px solid $gray-lighter;
     display: flex;
 
     dot-avatar {
@@ -87,15 +87,14 @@ dot-action-button {
     }
 }
 
-.dot-service-integration-configuration__name {
+.dot-service-integration-configuration__name,
+.dot-service-integration-configuration__host-key {
     align-self: center;
     margin-left: $basic-padding * 2;
 }
 
 .dot-service-integration-configuration__host-key {
-    align-self: center;
     color: $gray;
-    margin-left: $basic-padding * 2;
     width: 100%;
 }
 .dot-service-integration-configuration__add-configurations {

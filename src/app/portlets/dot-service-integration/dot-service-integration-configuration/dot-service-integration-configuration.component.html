@@ -100,7 +100,7 @@
 
 
 
-        <div *ngIf="serviceIntegration.sites.length">
+        <div *ngIf="serviceIntegration.sites && serviceIntegration.sites.length; else noConfigurations">
             <div class="dot-service-integration-configuration__delete_all">
                 <button
                     pButton
@@ -123,7 +123,7 @@
                 </div>
                 <dot-icon-button
                     icon="delete_outline"
-                    (click)="deleteConfiguration($event, site.id, site.name)"
+                    (click)="deleteConfiguration($event, site)"
                 ></dot-icon-button>
                 <dot-icon-button
                     icon="edit"
@@ -131,22 +131,22 @@
                 ></dot-icon-button>
             </div>
         </div>
-        <div
-            *ngIf="!serviceIntegration.sites.length"
-            class="dot-service-integration-configuration__add-configurations"
-        >
-            <div class="dot-service-integration-configuration__add-configurations-title">
-                {{ messagesKey['service.integration.add.configurations'] }}
+
+        <ng-template #noConfigurations>
+            <div class="dot-service-integration-configuration__add-configurations">
+                <div class="dot-service-integration-configuration__add-configurations-title">
+                    {{ messagesKey['service.integration.add.configurations'] }}
+                </div>
+                <p class="dot-service-integration-configuration__add-configurations-description">
+                    {{ messagesKey['service.integration.no.configurations.message'] }}
+                </p>
+                <button
+                    pButton
+                    secondary
+                    [label]="messagesKey['service.integration.add.configurations.button']"
+                    (click)="createConfiguration()"
+                ></button>
             </div>
-            <p class="dot-service-integration-configuration__add-configurations-description">
-                {{ messagesKey['service.integration.no.configurations.message'] }}
-            </p>
-            <button
-                pButton
-                secondary
-                [label]="messagesKey['service.integration.add.configurations.button']"
-                (click)="createConfiguration()"
-            ></button>
-        </div>
+        </ng-template>
     </div>
 </div>

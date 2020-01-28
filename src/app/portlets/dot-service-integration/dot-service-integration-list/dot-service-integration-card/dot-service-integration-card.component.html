@@ -6,7 +6,7 @@
 >
     <p-header>
         <dot-avatar
-            [showDot]="serviceIntegration.configurationsCount ? true : false"
+            [showDot]="!!serviceIntegration.configurationsCount"
             [size]="40"
             [url]="serviceIntegration.iconUrl"
             [label]="serviceIntegration.name"
