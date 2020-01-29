@@ -80,7 +80,7 @@ describe('DotPageStateService', () => {
         service = injector.get(DotPageStateService);
 
         spyOnProperty(dotRouterService, 'queryParams', 'get').and.returnValue({
-            url: ''
+            url: '/an/url/test'
         });
     });
 
