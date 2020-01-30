@@ -10,6 +10,7 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
+import { DotServiceIntegrationConfigurationListModule } from './dot-service-integration-configuration-list/dot-service-integration-configuration-list.module';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button
         DotActionButtonModule,
         DotCopyButtonModule,
         DotIconButtonModule,
+        DotServiceIntegrationConfigurationListModule,
         VirtualScrollerModule
     ],
     declarations: [DotServiceIntegrationConfigurationComponent],

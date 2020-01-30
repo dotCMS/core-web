@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 import { LazyLoadEvent } from 'primeng/primeng';
+import { PaginatorService } from '@services/paginator';
 
 @Component({
     selector: 'dot-service-integration-configuration',
@@ -23,12 +24,14 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
     messagesKey: { [key: string]: string } = {};
     serviceIntegration: DotServiceIntegration;
 
+    paginationPerPage = 10;
+    totalRecords: number;
+
     // demo *-*-*-*-*-*-*-*-* START
     cars: any[] = [];
     brands: string[];
     colors: string[];
     lazyCars: any[];
-    totalLazyCarsLength: number;
     sortOptions: any[];
     timeout: any;
     // demo *-*-*-*-*-*-*-*-* END
@@ -39,7 +42,8 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
         private dotAlertConfirmService: DotAlertConfirmService,
         private dotServiceIntegrationService: DotServiceIntegrationService,
         private dotRouterService: DotRouterService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public paginationService: PaginatorService
     ) {}
 
     ngOnInit() {
@@ -48,6 +52,7 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
             .subscribe(([integration, messages]) => {
                 this.serviceIntegration = integration;
                 this.messagesKey = messages;
+                console.log('*-*-seIN', this.serviceIntegration);
             });
 
         // demo *-*-*-*-*-*-*-*-* START
@@ -70,12 +75,15 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
             this.cars.push(this.generateCar());
         }
 
-        this.totalLazyCarsLength = 10000;
+        // this.totalRecords = 10000;
         this.sortOptions = [
             { label: 'Newest First', value: '!year' },
             { label: 'Oldest First', value: 'year' }
         ];
         // demo *-*-*-*-*-*-*-*-* END
+
+        this.paginationService.url = `v1/service-integrations/${this.serviceIntegration.key}`;
+        this.paginationService.paginationPerPage = this.paginationPerPage;
     }
 
     ngOnDestroy(): void {
@@ -117,7 +125,7 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
     }
 
     loadCarsLazy(event: LazyLoadEvent) {
-        console.log('---evnet', event);
+        console.log('---local EVT', event);
 
         // in a real application, make a remote request to load data using state metadata from event
         // event.first = First row offset
@@ -134,13 +142,25 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
                 this.lazyCars = this.cars.slice(event.first, event.first + event.rows);
             }
         }, 1000);
+
+        this.paginationService.filter = '';
+        // this.paginationService.filter = filter;
+        debugger
+        this.paginationService
+            .getWithOffset(event.first)
+            .pipe(take(1), pluck('sites'))
+            .subscribe((sites: DotServiceIntegrationSites[]) => {
+                this.serviceIntegration.sites = sites;
+                this.totalRecords = this.paginationService.totalRecords;
+                this.totalRecords = 12;
+            });
     }
     // demo *-*-*-*-*-*-*-*-* END
 
     /**
      * Redirects to create configuration page
      *
-     * @memberof DotServiceIntegrationConfigurationListComponent
+     * @memberof DotServiceIntegrationConfigurationComponent
      */
     createConfiguration(): void {
         this.dotRouterService.gotoPortlet(
@@ -153,7 +173,7 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
      *
      * @param MouseEvent $event
      * @param string configurationId
-     * @memberof DotServiceIntegrationConfigurationListComponent
+     * @memberof DotServiceIntegrationConfigurationComponent
      */
     editConfiguration($event: MouseEvent, configurationId: string): void {
         $event.stopPropagation();
@@ -167,7 +187,7 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
      *
      * @param MouseEvent $event
      * @param DotServiceIntegrationSites site
-     * @memberof DotServiceIntegrationConfigurationListComponent
+     * @memberof DotServiceIntegrationConfigurationComponent
      */
     deleteConfiguration($event: MouseEvent, site: DotServiceIntegrationSites): void {
         $event.stopPropagation();
@@ -190,7 +210,7 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
     /**
      * Display confirmation dialog to delete all configurations
      *
-     * @memberof DotServiceIntegrationConfigurationListComponent
+     * @memberof DotServiceIntegrationConfigurationComponent
      */
     deleteAllConfigurations(): void {
         this.dotAlertConfirmService.confirm({
