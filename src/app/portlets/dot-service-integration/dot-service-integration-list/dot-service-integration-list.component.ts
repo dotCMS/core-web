@@ -9,8 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'dot-service-integration-list',
-    templateUrl: './dot-service-integration-List.component.html',
-    styleUrls: ['./dot-service-integration-List.component.scss']
+    templateUrl: './dot-service-integration-list.component.html',
+    styleUrls: ['./dot-service-integration-list.component.scss']
 })
 export class DotServiceIntegrationListComponent implements OnInit, OnDestroy {
     @ViewChild('searchInput')
