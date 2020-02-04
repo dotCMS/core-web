@@ -7,13 +7,12 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';
-import {
-    DotServiceIntegration,
-    DotServiceIntegrationSites
-} from '@shared/models/dot-service-integration/dot-service-integration.model';
+import { DotServiceIntegrationSites } from '@shared/models/dot-service-integration/dot-service-integration.model';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 import { LazyLoadEvent } from 'primeng/primeng';
+import { DotMessageService } from '@services/dot-messages-service';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-service-integration-configuration-list',
@@ -24,37 +23,69 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
     @ViewChild('searchInput')
     searchInput: ElementRef;
 
+    @Input() disabledLoadDataButton: boolean;
+    @Input() itemsPerPage: number;
     @Input() siteConfigurations: DotServiceIntegrationSites[];
-    @Input() lazyCars: any[];
-    @Input() totalRecords: number;
 
-    @Output() lazyLoad = new EventEmitter<LazyLoadEvent>();
+    @Output() loadData = new EventEmitter<LazyLoadEvent>();
+    @Output() addConfiguration = new EventEmitter<boolean>();
+    @Output() editConfiguration = new EventEmitter<DotServiceIntegrationSites>();
+    @Output() deleteConfiguration = new EventEmitter<DotServiceIntegrationSites>();
 
     messagesKey: { [key: string]: string } = {};
-    serviceIntegration: DotServiceIntegration;
 
-    constructor(private dotAlertConfirmService: DotAlertConfirmService) {}
+    constructor(
+        public dotMessageService: DotMessageService,
+        private dotAlertConfirmService: DotAlertConfirmService
+    ) {}
 
     ngOnInit() {
-        console.log('****siteConfigurations', this.siteConfigurations, this.totalRecords);
-    }
-
-    loadCarsLazy(event: LazyLoadEvent) {
-        this.lazyLoad.emit(event);
+        this.dotMessageService
+            .getMessages([
+                'service.integration.key',
+                'service.integration.confirmation.title',
+                'service.integration.confirmation.delete.message',
+                'service.integration.confirmation.accept',
+                'service.integration.configurations.show.more'
+            ])
+            .pipe(take(1))
+            .subscribe((messages: { [key: string]: string }) => {
+                this.messagesKey = messages;
+            });
     }
 
     /**
-     * Redirects to edit configuration page
+     * Emits action to load next configuration page
      *
      * @param MouseEvent $event
-     * @param string configurationId
+     * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationListComponent
      */
-    editConfiguration($event: MouseEvent, _configurationId: string): void {
+    loadNext() {
+        this.loadData.emit({ first: this.siteConfigurations.length, rows: this.itemsPerPage });
+    }
+
+    /**
+     * Emits action to edit configuration page
+     *
+     * @param MouseEvent $event
+     * @param DotServiceIntegrationSites site
+     * @memberof DotServiceIntegrationConfigurationListComponent
+     */
+    editConfigurationSite($event: MouseEvent, site: DotServiceIntegrationSites): void {
         $event.stopPropagation();
-        // this.dotRouterService.gotoPortlet(
-        //     `/integration-services/${this.serviceIntegration.key}/edit/${configurationId}`
-        // );
+        this.editConfiguration.emit(site);
+    }
+
+    /**
+     * Emits action to add configuration page
+     *
+     * @param MouseEvent $event
+     * @memberof DotServiceIntegrationConfigurationListComponent
+     */
+    addConfigurationSite($event: MouseEvent): void {
+        $event.stopPropagation();
+        this.addConfiguration.emit(true);
     }
 
     /**
@@ -64,14 +95,11 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
      * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationListComponent
      */
-    deleteConfiguration($event: MouseEvent, site: DotServiceIntegrationSites): void {
+    confirmDelete($event: MouseEvent, site: DotServiceIntegrationSites): void {
         $event.stopPropagation();
         this.dotAlertConfirmService.confirm({
             accept: () => {
-                // this.dotServiceIntegrationService
-                //     .deleteConfiguration(this.serviceIntegration.key, site.id)
-                //     .pipe(take(1))
-                //     .subscribe(() => this.getConfiguration());
+                this.deleteConfiguration.emit(site);
             },
             reject: () => {},
             header: this.messagesKey['service.integration.confirmation.title'],

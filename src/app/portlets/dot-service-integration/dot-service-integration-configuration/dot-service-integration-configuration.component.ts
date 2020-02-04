@@ -4,10 +4,10 @@ import {
     DotServiceIntegrationSites
 } from '@shared/models/dot-service-integration/dot-service-integration.model';
 import { ActivatedRoute } from '@angular/router';
-import { pluck, takeUntil, take } from 'rxjs/operators';
+import { pluck, takeUntil, take, debounceTime } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotServiceIntegrationService } from '@services/dot-service-integration/dot-service-integration.service';
-import { Subject } from 'rxjs';
+import { fromEvent as observableFromEvent, Subject } from 'rxjs';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -24,17 +24,9 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
     messagesKey: { [key: string]: string } = {};
     serviceIntegration: DotServiceIntegration;
 
+    disabledLoadDataButton: boolean;
     paginationPerPage = 10;
     totalRecords: number;
-
-    // demo *-*-*-*-*-*-*-*-* START
-    cars: any[] = [];
-    brands: string[];
-    colors: string[];
-    lazyCars: any[];
-    sortOptions: any[];
-    timeout: any;
-    // demo *-*-*-*-*-*-*-*-* END
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -51,39 +43,22 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
             .pipe(pluck('data'), takeUntil(this.destroy$))
             .subscribe(([integration, messages]) => {
                 this.serviceIntegration = integration;
+                this.serviceIntegration.sites = [];
                 this.messagesKey = messages;
-                console.log('*-*-seIN', this.serviceIntegration);
             });
 
-        // demo *-*-*-*-*-*-*-*-* START
-        this.brands = [
-            'Audi',
-            'BMW',
-            'Fiat',
-            'Ford',
-            'Honda',
-            'Jaguar',
-            'Mercedes',
-            'Renault',
-            'Volvo',
-            'VW'
-        ];
-
-        this.colors = ['Black', 'White', 'Red', 'Blue', 'Silver', 'Green', 'Yellow'];
-
-        for (let i = 0; i < 10000; i++) {
-            this.cars.push(this.generateCar());
-        }
-
-        // this.totalRecords = 10000;
-        this.sortOptions = [
-            { label: 'Newest First', value: '!year' },
-            { label: 'Oldest First', value: 'year' }
-        ];
-        // demo *-*-*-*-*-*-*-*-* END
+        observableFromEvent(this.searchInput.nativeElement, 'keyup')
+            .pipe(debounceTime(500))
+            .subscribe((keyboardEvent: Event) => {
+                this.filterConfigurations(keyboardEvent.target['value']);
+            });
 
         this.paginationService.url = `v1/service-integrations/${this.serviceIntegration.key}`;
         this.paginationService.paginationPerPage = this.paginationPerPage;
+        this.paginationService.sortField = 'name';
+        this.paginationService.setExtraParams('filter', '');
+        this.paginationService.sortOrder = 1;
+        this.loadData();
     }
 
     ngOnDestroy(): void {
@@ -91,71 +66,21 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
         this.destroy$.complete();
     }
 
-    // demo *-*-*-*-*-*-*-*-* START
-    generateCar(): any {
-        return {
-            vin: this.generateVin(),
-            brand: this.generateBrand(),
-            color: this.generateColor(),
-            year: this.generateYear()
-        };
-    }
-
-    generateVin() {
-        let text = '';
-        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-        for (let i = 0; i < 5; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-
-        return text;
-    }
-
-    generateBrand() {
-        return this.brands[Math.floor(Math.random() * Math.floor(10))];
-    }
-
-    generateColor() {
-        return this.colors[Math.floor(Math.random() * Math.floor(7))];
-    }
-
-    generateYear() {
-        return 2000 + Math.floor(Math.random() * Math.floor(19));
-    }
-
-    loadCarsLazy(event: LazyLoadEvent) {
-        console.log('---local EVT', event);
-
-        // in a real application, make a remote request to load data using state metadata from event
-        // event.first = First row offset
-        // event.rows = Number of rows per page
-
-        // imitate db connection over a network
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-
-        this.timeout = setTimeout(() => {
-            this.lazyCars = [];
-            if (this.cars) {
-                this.lazyCars = this.cars.slice(event.first, event.first + event.rows);
-            }
-        }, 1000);
-
-        this.paginationService.filter = '';
-        // this.paginationService.filter = filter;
-        debugger
+    loadData(event?: LazyLoadEvent) {
         this.paginationService
-            .getWithOffset(event.first)
+            .getWithOffset((event && event.first) || 0)
             .pipe(take(1), pluck('sites'))
             .subscribe((sites: DotServiceIntegrationSites[]) => {
-                this.serviceIntegration.sites = sites;
-                this.totalRecords = this.paginationService.totalRecords;
+                this.serviceIntegration.sites = event
+                    ? this.serviceIntegration.sites.concat(sites)
+                    : sites;
+                // this.totalRecords = this.paginationService.totalRecords;
                 this.totalRecords = 12;
+                this.disabledLoadDataButton = !this.isThereMoreData(
+                    this.serviceIntegration.sites.length
+                );
             });
     }
-    // demo *-*-*-*-*-*-*-*-* END
 
     /**
      * Redirects to create configuration page
@@ -175,36 +100,37 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
      * @param string configurationId
      * @memberof DotServiceIntegrationConfigurationComponent
      */
-    editConfiguration($event: MouseEvent, configurationId: string): void {
-        $event.stopPropagation();
+    editConfiguration(site: DotServiceIntegrationSites): void {
         this.dotRouterService.gotoPortlet(
-            `/integration-services/${this.serviceIntegration.key}/edit/${configurationId}`
+            `/integration-services/${this.serviceIntegration.key}/edit/${site.id}`
+        );
+    }
+
+    /**
+     * Redirects to add configuration page
+     *
+     * @memberof DotServiceIntegrationConfigurationComponent
+     */
+    addConfiguration(): void {
+        this.dotRouterService.gotoPortlet(
+            `/integration-services/${this.serviceIntegration.key}/create`
         );
     }
 
     /**
      * Display confirmation dialog to delete a specific configuration
      *
-     * @param MouseEvent $event
      * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationComponent
      */
-    deleteConfiguration($event: MouseEvent, site: DotServiceIntegrationSites): void {
-        $event.stopPropagation();
-        this.dotAlertConfirmService.confirm({
-            accept: () => {
-                this.dotServiceIntegrationService
-                    .deleteConfiguration(this.serviceIntegration.key, site.id)
-                    .pipe(take(1))
-                    .subscribe(() => this.getConfiguration());
-            },
-            reject: () => {},
-            header: this.messagesKey['service.integration.confirmation.title'],
-            message: `${this.messagesKey['service.integration.confirmation.delete.message']} <b>${site.name}</b> ?`,
-            footerLabel: {
-                accept: this.messagesKey['service.integration.confirmation.accept']
-            }
-        });
+    deleteConfiguration(site: DotServiceIntegrationSites): void {
+        this.dotServiceIntegrationService
+            .deleteConfiguration(this.serviceIntegration.key, site.id)
+            .pipe(take(1))
+            .subscribe(() => {
+                this.serviceIntegration.sites = [];
+                this.loadData();
+            });
     }
 
     /**
@@ -218,7 +144,10 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
                 this.dotServiceIntegrationService
                     .deleteAllConfigurations(this.serviceIntegration.key)
                     .pipe(take(1))
-                    .subscribe(() => this.getConfiguration());
+                    .subscribe(() => {
+                        this.serviceIntegration.sites = [];
+                        this.loadData();
+                    });
             },
             reject: () => {},
             header: this.messagesKey['service.integration.confirmation.title'],
@@ -229,12 +158,12 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
         });
     }
 
-    private getConfiguration() {
-        this.dotServiceIntegrationService
-            .getConfiguration(this.serviceIntegration.key)
-            .pipe(take(1))
-            .subscribe(
-                (configuration: DotServiceIntegration) => (this.serviceIntegration = configuration)
-            );
+    private isThereMoreData(index: number): boolean {
+        return this.totalRecords / index > 1;
+    }
+
+    private filterConfigurations(searchCriteria?: string): void {
+        this.paginationService.setExtraParams('filter', searchCriteria);
+        this.loadData();
     }
 }

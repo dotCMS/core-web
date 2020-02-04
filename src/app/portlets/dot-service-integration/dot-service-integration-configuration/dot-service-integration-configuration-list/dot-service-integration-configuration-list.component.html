@@ -1,77 +1,37 @@
-<p-virtualScroller
-    [value]="lazyCars"
-    scrollHeight="100px"
-    [itemSize]="66"
-    [rows]="10"
-    [cache]="true"
-    [lazy]="true"
-    (onLazyLoad)="loadCarsLazy($event)"
-    [totalRecords]="totalRecords"
->
-    <p-header>
-        List of Cars
-    </p-header>
-    <ng-template let-car pTemplate="item" let-i="index">
-        <div class="ui-g car-item">
-            <div class="ui-g-12 ui-md-2">
-                <div style="font-size: 24px; text-align: center; padding-top: 48px">
-                    {{ i }}
-                </div>
-            </div>
-            <div class="ui-g-12 ui-md-2">
-            </div>
-            <div class="ui-g-12 ui-md-8">
-                <div class="ui-g">
-                    <div class="ui-g-2 ui-sm-6">Vin:</div>
-                    <div class="ui-g-10 ui-sm-6">{{ car?.vin }}</div>
-
-                    <div class="ui-g-2 ui-sm-6">Year:</div>
-                    <div class="ui-g-10 ui-sm-6">{{ car?.year }}</div>
-
-                    <div class="ui-g-2 ui-sm-6">Brand:</div>
-                    <div class="ui-g-10 ui-sm-6">{{ car?.brand }}</div>
-
-                    <div class="ui-g-2 ui-sm-6">Color:</div>
-                    <div class="ui-g-10 ui-sm-6">{{ car?.color }}</div>
-                </div>
-            </div>
+<div class="dot-service-integration-configuration-list__results">
+    <div
+        class="dot-service-integration-configuration-list__item"
+        *ngFor="let site of siteConfigurations; let i = index"
+    >
+        <div class="dot-service-integration-configuration-list__name">
+            {{ site.name }}
         </div>
-    </ng-template>
-    <ng-template let-car pTemplate="loadingItem">
-        <div class="ui-g car-item empty-car-item">
-            <div class="ui-g-12 ui-md-2">
-                <div class="empty-car-item-index"></div>
-            </div>
-            <div class="ui-g-12 ui-md-2">
-                <div class="empty-car-item-image"></div>
-            </div>
-            <div class="ui-g-12 ui-md-8">
-                <div class="ui-g">
-                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
-                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
-                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
-                    <div class="ui-g-12"><div class="empty-car-item-text"></div></div>
-                </div>
-            </div>
+        <div class="dot-service-integration-configuration-list__host-key">
+            {{ messagesKey['service.integration.key'] }} {{ site.id }}
         </div>
-    </ng-template>
-</p-virtualScroller>
-
-
-<div
-    class="dot-service-integration-configuration__item"
-    *ngFor="let site of siteConfigurations"
-    (click)="editConfiguration($event, site.id)"
->
-    <div class="dot-service-integration-configuration__name">
-        {{ site.name }}
+        <dot-icon-button
+            *ngIf="site.integrations"
+            icon="delete_outline"
+            (click)="confirmDelete($event, site)"
+        ></dot-icon-button>
+        <dot-icon-button
+            *ngIf="site.integrations"
+            icon="edit"
+            (click)="editConfigurationSite($event, site)"
+        ></dot-icon-button>
+        <dot-icon-button
+            *ngIf="!site.integrations"
+            icon="add_circle"
+            (click)="addConfigurationSite($event)"
+        ></dot-icon-button>
     </div>
-    <div class="dot-service-integration-configuration__host-key">
-        {{ messagesKey['service.integration.key'] }} {{ site.id }}
-    </div>
-    <dot-icon-button
-        icon="delete_outline"
-        (click)="deleteConfiguration($event, site)"
-    ></dot-icon-button>
-    <dot-icon-button icon="edit" (click)="editConfiguration($event, site.id)"></dot-icon-button>
 </div>
+
+<button
+    pButton
+    secondary
+    class="dot-service-integration-configuration-list__show-more"
+    [label]="messagesKey['service.integration.configurations.show.more']"
+    (click)="loadNext()"
+    [disabled]="disabledLoadDataButton"
+></button>

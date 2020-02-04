@@ -1,0 +1,45 @@
+@import "variables";
+
+:host {
+    display: flex;
+    flex-flow: column;
+}
+
+.dot-service-integration-configuration-list__results {
+    height: calc(100vh - 413px);
+    margin: $basic-padding * 2 0 $basic-padding * 3;
+    overflow: auto;
+}
+
+.dot-service-integration-configuration-list__item {
+    border: 1px solid $gray-light;
+    cursor: pointer;
+    display: flex;
+    height: 66px;
+    margin-right: $basic-padding * 2;
+    margin-top: $basic-padding * 2;
+    padding: $basic-padding 0;
+    transition: box-shadow $basic-speed ease-in;
+    width: 100%;
+
+    &:hover {
+        box-shadow: $md-shadow-5;
+    }
+
+    dot-icon-button {
+        align-self: center;
+        margin-right: $basic-padding * 2;
+    }
+}
+
+.dot-service-integration-configuration-list__name,
+.dot-service-integration-configuration-list__host-key {
+    align-self: center;
+    margin-left: $basic-padding * 2;
+    white-space: nowrap;
+}
+
+.dot-service-integration-configuration-list__host-key {
+    color: $gray;
+    width: 100%;
+}
