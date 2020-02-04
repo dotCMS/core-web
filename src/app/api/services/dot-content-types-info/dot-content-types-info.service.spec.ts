@@ -1,7 +1,7 @@
 import { DotContentTypesInfoService } from './dot-content-types-info.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
 
-describe('DotContentTypesInfoService', () => {
+fdescribe('DotContentTypesInfoService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotContentTypesInfoService]);
 
@@ -25,6 +25,12 @@ describe('DotContentTypesInfoService', () => {
     it('should return a ImmutablePersonaContentType for page', () => {
         expect(this.iconsService.getClazz('persona')).toBe(
             'com.dotcms.contenttype.model.type.ImmutablePersonaContentType'
+        );
+    });
+
+    it('should return a ImmutableDotAssetContentType for DotAsset', () => {
+        expect(this.iconsService.getClazz('DotAsset')).toBe(
+            'com.dotcms.contenttype.model.type.ImmutableDotAssetContentType'
         );
     });
 });
