@@ -11,8 +11,10 @@
 .dot-service-integration-configuration__header {
     border-bottom: 1px solid $gray-lighter;
     display: flex;
+    padding-bottom: $basic-padding * 2;
 
     dot-avatar {
+        align-self: center;
         border-radius: 50%;
         box-shadow: $md-shadow-2;
         margin: 0 $basic-padding * 3 $basic-padding * 3 $basic-padding * 3;
@@ -55,7 +57,7 @@
 .dot-service-integration-configuration__body {
     align-content: flex-start;
     flex-wrap: wrap;
-    padding: $basic-padding * 2 $basic-padding * 2 0;
+    padding: $basic-padding * 2;
 }
 
 .dot-service-integration-configuration__action_header {
