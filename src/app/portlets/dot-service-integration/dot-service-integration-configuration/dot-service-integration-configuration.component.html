@@ -25,8 +25,23 @@
                         : messagesKey['service.integration.no.configurations']
                 }}
             </span>
-            <div class="dot-service-integration-configuration__description">
+            <div
+                class="dot-service-integration-configuration__description"
+                [ngClass]="{
+                    'dot-service-integration-configuration__description__show-more': showMore
+                }"
+            >
                 {{ serviceIntegration.description }}
+                <a
+                    class="dot-service-integration-configuration__description__link_show-more"
+                    *ngIf="serviceIntegration.description.length > 453"
+                    (click)="showMore = !showMore"
+                    >{{
+                        showMore
+                            ? messagesKey['service.integration.confirmation.description.show.less']
+                            : messagesKey['service.integration.confirmation.description.show.more']
+                    }}</a
+                >
             </div>
         </div>
     </div>
