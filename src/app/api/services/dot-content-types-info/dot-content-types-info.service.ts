@@ -25,7 +25,7 @@ export class DotContentTypesInfoService {
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableDotAssetContentType',
-            icon: 'insert_drive_file',
+            icon: 'file_copy',
             label: 'dotasset'
         },
         {
@@ -75,7 +75,7 @@ export class DotContentTypesInfoService {
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableDotAssetContentType',
-            icon: 'insert_drive_file',
+            icon: 'fa fa-files-o',
             label: 'dotasset_old'
         },
         {
