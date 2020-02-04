@@ -74,8 +74,7 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
                 this.serviceIntegration.sites = event
                     ? this.serviceIntegration.sites.concat(sites)
                     : sites;
-                // this.totalRecords = this.paginationService.totalRecords;
-                this.totalRecords = 12;
+                this.totalRecords = this.paginationService.totalRecords;
                 this.disabledLoadDataButton = !this.isThereMoreData(
                     this.serviceIntegration.sites.length
                 );
