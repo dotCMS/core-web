@@ -1,7 +1,7 @@
 import { DotContentTypesInfoService } from './dot-content-types-info.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
 
-fdescribe('DotContentTypesInfoService', () => {
+describe('DotContentTypesInfoService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotContentTypesInfoService]);
 

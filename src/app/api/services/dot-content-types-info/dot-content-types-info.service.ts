@@ -75,11 +75,6 @@ export class DotContentTypesInfoService {
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableDotAssetContentType',
-            icon: 'fa fa-file-o',
-            label: 'dotasset_old'
-        },
-        {
-            clazz: 'com.dotcms.contenttype.model.type.ImmutableDotAssetContentType',
             icon: 'insert_drive_file',
             label: 'dotasset_old'
         },
@@ -148,7 +143,6 @@ export class DotContentTypesInfoService {
     // tslint:disable-next-line:cyclomatic-complexity
     private getItem(type: string, prop: string): string {
         let result: any;
-        debugger;
         // TODO: Remove this when set Material Design icons on NgPrime native components - BEGIN
         let oldValue = false;
         if (type.indexOf('_old') > 0) {
