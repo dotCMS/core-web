@@ -10,17 +10,17 @@
             {{ messagesKey['service.integration.key'] }} {{ site.id }}
         </div>
         <dot-icon-button
-            *ngIf="site.integrations"
+            *ngIf="site.configured"
             icon="delete_outline"
             (click)="confirmDelete($event, site)"
         ></dot-icon-button>
         <dot-icon-button
-            *ngIf="site.integrations"
+            *ngIf="site.configured"
             icon="edit"
             (click)="editConfigurationSite($event, site)"
         ></dot-icon-button>
         <dot-icon-button
-            *ngIf="!site.integrations"
+            *ngIf="!site.configured"
             icon="add_circle"
             (click)="addConfigurationSite($event)"
         ></dot-icon-button>
