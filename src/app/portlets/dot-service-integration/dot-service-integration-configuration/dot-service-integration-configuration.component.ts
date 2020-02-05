@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {
     DotServiceIntegration,
     DotServiceIntegrationSites
 } from '@shared/models/dot-service-integration/dot-service-integration.model';
 import { ActivatedRoute } from '@angular/router';
-import { pluck, takeUntil, take, debounceTime } from 'rxjs/operators';
+import { pluck, take, debounceTime } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotServiceIntegrationService } from '@services/dot-service-integration/dot-service-integration.service';
-import { fromEvent as observableFromEvent, Subject } from 'rxjs';
+import { fromEvent as observableFromEvent } from 'rxjs';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -18,7 +18,7 @@ import { PaginatorService } from '@services/paginator';
     templateUrl: './dot-service-integration-configuration.component.html',
     styleUrls: ['./dot-service-integration-configuration.component.scss']
 })
-export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDestroy {
+export class DotServiceIntegrationConfigurationComponent implements OnInit {
     @ViewChild('searchInput')
     searchInput: ElementRef;
     messagesKey: { [key: string]: string } = {};
@@ -27,8 +27,6 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
     disabledLoadDataButton: boolean;
     paginationPerPage = 10;
     totalRecords: number;
-
-    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private dotAlertConfirmService: DotAlertConfirmService,
@@ -40,7 +38,7 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
 
     ngOnInit() {
         this.route.data
-            .pipe(pluck('data'), takeUntil(this.destroy$))
+            .pipe(pluck('data'), take(1))
             .subscribe(([integration, messages]) => {
                 this.serviceIntegration = integration;
                 this.serviceIntegration.sites = [];
@@ -61,11 +59,6 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
         this.loadData();
 
         this.searchInput.nativeElement.focus();
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next(true);
-        this.destroy$.complete();
     }
 
     loadData(event?: LazyLoadEvent) {
