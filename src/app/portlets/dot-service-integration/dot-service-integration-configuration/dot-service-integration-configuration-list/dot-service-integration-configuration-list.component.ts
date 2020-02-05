@@ -28,8 +28,7 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
     @Input() siteConfigurations: DotServiceIntegrationSites[];
 
     @Output() loadData = new EventEmitter<LazyLoadEvent>();
-    @Output() addConfiguration = new EventEmitter<boolean>();
-    @Output() editConfiguration = new EventEmitter<DotServiceIntegrationSites>();
+    @Output() gotoConfiguration = new EventEmitter<DotServiceIntegrationSites>();
     @Output() deleteConfiguration = new EventEmitter<DotServiceIntegrationSites>();
 
     messagesKey: { [key: string]: string } = {};
@@ -66,26 +65,15 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
     }
 
     /**
-     * Emits action to edit configuration page
+     * Emits action to go to configuration page
      *
      * @param MouseEvent $event
      * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationListComponent
      */
-    editConfigurationSite($event: MouseEvent, site: DotServiceIntegrationSites): void {
+    gotoConfigurationSite($event: MouseEvent, site?: DotServiceIntegrationSites): void {
         $event.stopPropagation();
-        this.editConfiguration.emit(site);
-    }
-
-    /**
-     * Emits action to add configuration page
-     *
-     * @param MouseEvent $event
-     * @memberof DotServiceIntegrationConfigurationListComponent
-     */
-    addConfigurationSite($event: MouseEvent): void {
-        $event.stopPropagation();
-        this.addConfiguration.emit(true);
+        this.gotoConfiguration.emit(site);
     }
 
     /**

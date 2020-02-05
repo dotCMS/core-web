@@ -2,6 +2,7 @@
     <div
         class="dot-service-integration-configuration-list__item"
         *ngFor="let site of siteConfigurations; let i = index"
+        (click)="gotoConfigurationSite($event, site)"
     >
         <div class="dot-service-integration-configuration-list__name">
             {{ site.name }}
@@ -17,12 +18,12 @@
         <dot-icon-button
             *ngIf="site.configured"
             icon="edit"
-            (click)="editConfigurationSite($event, site)"
+            (click)="gotoConfigurationSite($event, site)"
         ></dot-icon-button>
         <dot-icon-button
             *ngIf="!site.configured"
             icon="add_circle"
-            (click)="addConfigurationSite($event)"
+            (click)="gotoConfigurationSite($event, site)"
         ></dot-icon-button>
     </div>
 </div>

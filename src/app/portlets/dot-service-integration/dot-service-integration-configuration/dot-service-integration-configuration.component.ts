@@ -84,38 +84,16 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
     }
 
     /**
-     * Redirects to create configuration page
+     * Redirects to create/edit configuration site page
      *
+     * @param site DotServiceIntegrationSites
      * @memberof DotServiceIntegrationConfigurationComponent
      */
-    createConfiguration(): void {
-        this.dotRouterService.gotoPortlet(
-            `/integration-services/${this.serviceIntegration.key}/new`
-        );
-    }
-
-    /**
-     * Redirects to edit configuration page
-     *
-     * @param MouseEvent $event
-     * @param string configurationId
-     * @memberof DotServiceIntegrationConfigurationComponent
-     */
-    editConfiguration(site: DotServiceIntegrationSites): void {
-        this.dotRouterService.gotoPortlet(
-            `/integration-services/${this.serviceIntegration.key}/edit/${site.id}`
-        );
-    }
-
-    /**
-     * Redirects to add configuration page
-     *
-     * @memberof DotServiceIntegrationConfigurationComponent
-     */
-    addConfiguration(): void {
-        this.dotRouterService.gotoPortlet(
-            `/integration-services/${this.serviceIntegration.key}/create`
-        );
+    gotoConfiguration(site?: DotServiceIntegrationSites): void {
+        const route = site && site.configured
+            ? `/integration-services/${this.serviceIntegration.key}/edit/${site.id}`
+            : `/integration-services/${this.serviceIntegration.key}/create`;
+        this.dotRouterService.gotoPortlet(route);
     }
 
     /**

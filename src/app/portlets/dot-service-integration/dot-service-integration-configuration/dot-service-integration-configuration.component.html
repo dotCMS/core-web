@@ -67,8 +67,7 @@
                 [disabledLoadDataButton]="disabledLoadDataButton"
                 [itemsPerPage]="paginationPerPage"
                 (loadData)="loadData($event)"
-                (addConfiguration)="addConfiguration($event)"
-                (editConfiguration)="editConfiguration($event)"
+                (gotoConfiguration)="gotoConfiguration($event)"
                 (deleteConfiguration)="deleteConfiguration($event)"
             ></dot-service-integration-configuration-list>
         </div>
