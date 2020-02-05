@@ -47,6 +47,8 @@ export class DotServiceIntegrationListComponent implements OnInit, OnDestroy {
             .subscribe((keyboardEvent: Event) => {
                 this.filterIntegrations(keyboardEvent.target['value']);
             });
+
+        this.searchInput.nativeElement.focus();
     }
 
     ngOnDestroy(): void {

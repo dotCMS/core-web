@@ -59,6 +59,8 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit, OnDe
         this.paginationService.setExtraParams('filter', '');
         this.paginationService.sortOrder = 1;
         this.loadData();
+
+        this.searchInput.nativeElement.focus();
     }
 
     ngOnDestroy(): void {
