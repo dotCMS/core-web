@@ -8,7 +8,6 @@ import {
     EventEmitter
 } from '@angular/core';
 import { DotServiceIntegrationSites } from '@shared/models/dot-service-integration/dot-service-integration.model';
-import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 import { LazyLoadEvent } from 'primeng/primeng';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -28,25 +27,16 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
     @Input() siteConfigurations: DotServiceIntegrationSites[];
 
     @Output() loadData = new EventEmitter<LazyLoadEvent>();
-    @Output() gotoConfiguration = new EventEmitter<DotServiceIntegrationSites>();
-    @Output() deleteConfiguration = new EventEmitter<DotServiceIntegrationSites>();
+    @Output() goto = new EventEmitter<DotServiceIntegrationSites>();
+    @Output() delete = new EventEmitter<DotServiceIntegrationSites>();
 
     messagesKey: { [key: string]: string } = {};
 
-    constructor(
-        public dotMessageService: DotMessageService,
-        private dotAlertConfirmService: DotAlertConfirmService
-    ) {}
+    constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
         this.dotMessageService
-            .getMessages([
-                'service.integration.key',
-                'service.integration.confirmation.title',
-                'service.integration.confirmation.delete.message',
-                'service.integration.confirmation.accept',
-                'service.integration.configurations.show.more'
-            ])
+            .getMessages(['service.integration.configurations.show.more'])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
@@ -56,45 +46,9 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
     /**
      * Emits action to load next configuration page
      *
-     * @param MouseEvent $event
-     * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationListComponent
      */
     loadNext() {
         this.loadData.emit({ first: this.siteConfigurations.length, rows: this.itemsPerPage });
-    }
-
-    /**
-     * Emits action to go to configuration page
-     *
-     * @param MouseEvent $event
-     * @param DotServiceIntegrationSites site
-     * @memberof DotServiceIntegrationConfigurationListComponent
-     */
-    gotoConfigurationSite($event: MouseEvent, site?: DotServiceIntegrationSites): void {
-        $event.stopPropagation();
-        this.gotoConfiguration.emit(site);
-    }
-
-    /**
-     * Display confirmation dialog to delete a specific configuration
-     *
-     * @param MouseEvent $event
-     * @param DotServiceIntegrationSites site
-     * @memberof DotServiceIntegrationConfigurationListComponent
-     */
-    confirmDelete($event: MouseEvent, site: DotServiceIntegrationSites): void {
-        $event.stopPropagation();
-        this.dotAlertConfirmService.confirm({
-            accept: () => {
-                this.deleteConfiguration.emit(site);
-            },
-            reject: () => {},
-            header: this.messagesKey['service.integration.confirmation.title'],
-            message: `${this.messagesKey['service.integration.confirmation.delete.message']} <b>${site.name}</b> ?`,
-            footerLabel: {
-                accept: this.messagesKey['service.integration.confirmation.accept']
-            }
-        });
     }
 }

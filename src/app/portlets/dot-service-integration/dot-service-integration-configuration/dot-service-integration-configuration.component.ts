@@ -12,6 +12,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 import { LazyLoadEvent } from 'primeng/primeng';
 import { PaginatorService } from '@services/paginator';
+import { IntegrationResolverData } from './dot-service-integration-configuration-resolver.service';
 
 @Component({
     selector: 'dot-service-integration-configuration',
@@ -39,8 +40,8 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit {
     ngOnInit() {
         this.route.data
             .pipe(pluck('data'), take(1))
-            .subscribe(([integration, messages]) => {
-                this.serviceIntegration = integration;
+            .subscribe(({ messages, service }: IntegrationResolverData) => {
+                this.serviceIntegration = service;
                 this.serviceIntegration.sites = [];
                 this.messagesKey = messages;
             });
@@ -83,9 +84,10 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit {
      * @memberof DotServiceIntegrationConfigurationComponent
      */
     gotoConfiguration(site?: DotServiceIntegrationSites): void {
-        const route = site && site.configured
-            ? `/integration-services/${this.serviceIntegration.key}/edit/${site.id}`
-            : `/integration-services/${this.serviceIntegration.key}/create`;
+        const route =
+            site && site.configured
+                ? `/integration-services/${this.serviceIntegration.key}/edit/${site.id}`
+                : `/integration-services/${this.serviceIntegration.key}/create`;
         this.dotRouterService.gotoPortlet(route);
     }
 

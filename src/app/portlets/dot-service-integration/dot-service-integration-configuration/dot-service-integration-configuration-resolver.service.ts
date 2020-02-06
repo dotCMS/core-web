@@ -1,10 +1,15 @@
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 import { DotServiceIntegration } from '@shared/models/dot-service-integration/dot-service-integration.model';
 import { DotServiceIntegrationService } from '@services/dot-service-integration/dot-service-integration.service';
 import { DotMessageService } from '@services/dot-messages-service';
+
+export interface IntegrationResolverData {
+    messages?: { [key: string]: string };
+    service: DotServiceIntegration;
+}
 
 /**
  * Returns service integrations list from the system
@@ -15,18 +20,20 @@ import { DotMessageService } from '@services/dot-messages-service';
  */
 @Injectable()
 export class DotServiceIntegrationConfigurationResolver
-    implements Resolve<Observable<[DotServiceIntegration, {[key: string]: string}]>> {
+    implements Resolve<Observable<IntegrationResolverData>> {
     constructor(
         private dotServiceIntegrationService: DotServiceIntegrationService,
         public dotMessageService: DotMessageService
     ) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<[DotServiceIntegration, {[key: string]: string}]> {
+    resolve(route: ActivatedRouteSnapshot): Observable<IntegrationResolverData> {
         const serviceKey = route.paramMap.get('serviceKey');
         const servicesConfigurations$ = this.dotServiceIntegrationService
             .getConfiguration(serviceKey)
             .pipe(take(1));
-        const messages$ = this.dotMessageService
+        const messages$: Observable<{
+            [key: string]: string;
+        }> = this.dotMessageService
             .getMessages([
                 'service.integration.configurations',
                 'service.integration.no.configurations',
@@ -44,6 +51,10 @@ export class DotServiceIntegrationConfigurationResolver
             ])
             .pipe(take(1));
 
-        return forkJoin([servicesConfigurations$, messages$]);
+        return forkJoin([servicesConfigurations$, messages$]).pipe(
+            switchMap(([integration, messages]) => {
+                return of({ messages, service: integration });
+            })
+        );
     }
 }

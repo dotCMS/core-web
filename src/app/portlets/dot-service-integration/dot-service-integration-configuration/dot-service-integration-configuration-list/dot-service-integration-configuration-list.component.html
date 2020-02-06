@@ -1,31 +1,11 @@
 <div class="dot-service-integration-configuration-list__results">
-    <div
-        class="dot-service-integration-configuration-list__item"
+    <dot-service-integration-configuration-item
         *ngFor="let site of siteConfigurations; let i = index"
+        [site]="site"
         (click)="gotoConfigurationSite($event, site)"
-    >
-        <div class="dot-service-integration-configuration-list__name">
-            {{ site.name }}
-        </div>
-        <div class="dot-service-integration-configuration-list__host-key">
-            {{ messagesKey['service.integration.key'] }} {{ site.id }}
-        </div>
-        <dot-icon-button
-            *ngIf="site.configured"
-            icon="delete_outline"
-            (click)="confirmDelete($event, site)"
-        ></dot-icon-button>
-        <dot-icon-button
-            *ngIf="site.configured"
-            icon="edit"
-            (click)="gotoConfigurationSite($event, site)"
-        ></dot-icon-button>
-        <dot-icon-button
-            *ngIf="!site.configured"
-            icon="add_circle"
-            (click)="gotoConfigurationSite($event, site)"
-        ></dot-icon-button>
-    </div>
+        (goto)="goto($event)"
+        (delete)="delete($event)"
+    ></dot-service-integration-configuration-item>
 </div>
 
 <button

@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/primeng';
 
 import { DotServiceIntegrationConfigurationListComponent } from './dot-service-integration-configuration-list.component';
-import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { DotServiceIntegrationConfigurationItemModule } from './dot-service-integration-configuration-item/dot-service-integration-configuration-item.module';
 
 @NgModule({
     imports: [
         ButtonModule,
         CommonModule,
-        DotIconButtonModule,
+        DotServiceIntegrationConfigurationItemModule
     ],
     declarations: [DotServiceIntegrationConfigurationListComponent],
     exports: [DotServiceIntegrationConfigurationListComponent]

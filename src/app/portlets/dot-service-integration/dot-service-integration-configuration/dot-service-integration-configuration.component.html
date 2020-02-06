@@ -71,22 +71,5 @@
                 (deleteConfiguration)="deleteConfiguration($event)"
             ></dot-service-integration-configuration-list>
         </div>
-
-        <ng-template #noConfigurations>
-            <div class="dot-service-integration-configuration__add-configurations">
-                <div class="dot-service-integration-configuration__add-configurations-title">
-                    {{ messagesKey['service.integration.add.configurations'] }}
-                </div>
-                <p class="dot-service-integration-configuration__add-configurations-description">
-                    {{ messagesKey['service.integration.no.configurations.message'] }}
-                </p>
-                <button
-                    pButton
-                    secondary
-                    [label]="messagesKey['service.integration.add.configurations.button']"
-                    (click)="createConfiguration()"
-                ></button>
-            </div>
-        </ng-template>
     </div>
 </div>
