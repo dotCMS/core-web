@@ -62,6 +62,12 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit {
         this.searchInput.nativeElement.focus();
     }
 
+    /**
+     * Loads data through pagination service
+     *
+     * @param LazyLoadEvent event
+     * @memberof DotServiceIntegrationConfigurationComponent
+     */
     loadData(event?: LazyLoadEvent) {
         this.paginationService
             .getWithOffset((event && event.first) || 0)
@@ -80,14 +86,14 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit {
     /**
      * Redirects to create/edit configuration site page
      *
-     * @param site DotServiceIntegrationSites
+     * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationComponent
      */
     gotoConfiguration(site?: DotServiceIntegrationSites): void {
         const route =
             site && site.configured
                 ? `/integration-services/${this.serviceIntegration.key}/edit/${site.id}`
-                : `/integration-services/${this.serviceIntegration.key}/create`;
+                : `/integration-services/${this.serviceIntegration.key}/create/${site.id}`;
         this.dotRouterService.gotoPortlet(route);
     }
 

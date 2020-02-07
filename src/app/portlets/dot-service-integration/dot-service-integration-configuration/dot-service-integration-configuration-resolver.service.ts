@@ -37,14 +37,11 @@ export class DotServiceIntegrationConfigurationResolver
             .getMessages([
                 'service.integration.configurations',
                 'service.integration.no.configurations',
-                'service.integration.add.configurations',
-                'service.integration.no.configurations.message',
-                'service.integration.add.configurations.button',
                 'service.integration.confirmation.delete.all.button',
                 'service.integration.confirmation.title',
+                'service.integration.key',
                 'service.integration.confirmation.description.show.more',
                 'service.integration.confirmation.description.show.less',
-                'service.integration.confirmation.title',
                 'service.integration.confirmation.delete.all.message',
                 'service.integration.confirmation.accept',
                 'service.integration.search.placeholder'

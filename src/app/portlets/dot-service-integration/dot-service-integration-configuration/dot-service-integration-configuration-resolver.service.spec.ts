@@ -23,15 +23,14 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
     const messages = {
         'service.integration.configurations': 'Configurations',
         'service.integration.no.configurations': 'No Configurations',
-        'service.integration.key': 'Key:',
-        'service.integration.add.configurations': 'No configurations',
-        'service.integration.no.configurations.message': 'You do not have configurations',
-        'service.integration.add.configurations.button': 'Add Configuration',
         'service.integration.confirmation.delete.all.button': 'Delete All',
         'service.integration.confirmation.title': 'Are you sure?',
-        'service.integration.confirmation.delete.message': 'Delete this?',
+        'service.integration.key': 'Key:',
+        'service.integration.confirmation.description.show.more': 'Show More',
+        'service.integration.confirmation.description.show.less': 'Show Less',
         'service.integration.confirmation.delete.all.message': 'Delete all?',
-        'service.integration.confirmation.accept': 'Ok'
+        'service.integration.confirmation.accept': 'Ok',
+        'service.integration.search.placeholder': 'Search'
     };
     const messageServiceMock = new MockDotMessageService(messages);
 
@@ -62,10 +61,12 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
             iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg',
             hosts: [
                 {
+                    configured: true,
                     hostId: '123',
                     hostName: 'demo.dotcms.com'
                 },
                 {
+                    configured: false,
                     hostId: '456',
                     hostName: 'host.example.com'
                 }
@@ -78,7 +79,7 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
         dotServiceIntegrationConfigurationListResolver
             .resolve(activatedRouteSnapshotMock)
             .subscribe((fakeContentType: any) => {
-                expect(fakeContentType).toEqual([response, messages]);
+                expect(fakeContentType).toEqual({service: response, messages});
             });
         expect(dotIntegrationService.getConfiguration).toHaveBeenCalledWith('123');
     });

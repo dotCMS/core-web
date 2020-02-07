@@ -2,9 +2,9 @@
     <dot-service-integration-configuration-item
         *ngFor="let site of siteConfigurations; let i = index"
         [site]="site"
-        (click)="gotoConfigurationSite($event, site)"
-        (goto)="goto($event)"
-        (delete)="delete($event)"
+        (click)="goto.emit(site)"
+        (goto)="goto.emit($event)"
+        (delete)="delete.emit($event)"
     ></dot-service-integration-configuration-item>
 </div>
 
