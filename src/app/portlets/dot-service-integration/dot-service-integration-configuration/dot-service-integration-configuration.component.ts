@@ -89,12 +89,8 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit {
      * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationComponent
      */
-    gotoConfiguration(site?: DotServiceIntegrationSites): void {
-        const route =
-            site && site.configured
-                ? `/integration-services/${this.serviceIntegration.key}/edit/${site.id}`
-                : `/integration-services/${this.serviceIntegration.key}/create/${site.id}`;
-        this.dotRouterService.gotoPortlet(route);
+    gotoConfiguration(site: DotServiceIntegrationSites): void {
+        this.dotRouterService.goToIntegrationService(this.serviceIntegration.key, site);
     }
 
     /**

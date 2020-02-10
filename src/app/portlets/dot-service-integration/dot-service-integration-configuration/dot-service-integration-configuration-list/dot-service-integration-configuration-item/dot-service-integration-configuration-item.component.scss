@@ -28,7 +28,12 @@
     white-space: nowrap;
 }
 
+.dot-service-integration-configuration-list__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .dot-service-integration-configuration-list__host-key {
     color: $gray;
-    width: 100%;
+    flex-grow: 1;
 }

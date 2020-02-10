@@ -27,7 +27,7 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
     @Input() siteConfigurations: DotServiceIntegrationSites[];
 
     @Output() loadData = new EventEmitter<LazyLoadEvent>();
-    @Output() goto = new EventEmitter<DotServiceIntegrationSites>();
+    @Output() edit = new EventEmitter<DotServiceIntegrationSites>();
     @Output() delete = new EventEmitter<DotServiceIntegrationSites>();
 
     messagesKey: { [key: string]: string } = {};

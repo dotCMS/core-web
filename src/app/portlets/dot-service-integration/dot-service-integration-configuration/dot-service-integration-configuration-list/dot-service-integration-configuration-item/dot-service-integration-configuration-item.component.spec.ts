@@ -105,18 +105,26 @@ describe('DotServiceIntegrationConfigurationItemComponent', () => {
             expect(component.delete.emit).toHaveBeenCalledWith(sites[0]);
         });
 
-        it('should emit Goto action with a site', () => {
+        it('should emit edit action with a site', () => {
             const stopPropagationSpy = jasmine.createSpy('spy');
             const editBtn = fixture.debugElement.queryAll(By.css('dot-icon-button'))[1];
 
-            spyOn(component.goto, 'emit');
+            spyOn(component.edit, 'emit');
 
             editBtn.triggerEventHandler('click', {
                 stopPropagation: stopPropagationSpy,
                 site: sites[0]
             });
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
-            expect(component.goto.emit).toHaveBeenCalledWith(sites[0]);
+            expect(component.edit.emit).toHaveBeenCalledWith(sites[0]);
+        });
+
+        it('should emit edit action when host component clicked', () => {
+            spyOn(component.edit, 'emit');
+            fixture.debugElement.triggerEventHandler('click', {
+                stopPropagation: () => {}
+            });
+            expect(component.edit.emit).toHaveBeenCalledWith(sites[0]);
         });
     });
 
@@ -132,18 +140,18 @@ describe('DotServiceIntegrationConfigurationItemComponent', () => {
             expect(buttons[0].componentInstance.icon).toBe('add_circle');
         });
 
-        it('should emit Goto action with No site', () => {
+        it('should emit edit action with No site', () => {
             const stopPropagationSpy = jasmine.createSpy('spy');
             const createBtn = fixture.debugElement.queryAll(By.css('dot-icon-button'))[0];
 
-            spyOn(component.goto, 'emit');
+            spyOn(component.edit, 'emit');
 
             createBtn.triggerEventHandler('click', {
                 stopPropagation: stopPropagationSpy,
                 site: sites[1]
             });
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
-            expect(component.goto.emit).toHaveBeenCalledWith(sites[1]);
+            expect(component.edit.emit).toHaveBeenCalledWith(sites[1]);
         });
     });
 });

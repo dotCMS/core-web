@@ -47,10 +47,6 @@
     }
 }
 
-.dot-service-integration-card__name {
-    color: $gray;
-}
-
 p-header {
     display: flex;
     padding-top: $basic-padding * 3;
@@ -61,14 +57,21 @@ dot-avatar {
     box-shadow: $md-shadow-2;
     margin: 0 $basic-padding * 2 0;
 }
+
 .dot-service-integration-card__name {
     color: $black;
     display: block;
     flex: 1;
     font-size: $font-size-large;
     font-weight: bold;
+    height: $basic-padding * 2;
     line-height: $basic-padding * 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 244px;
+    white-space: nowrap;
 }
+
 .dot-service-integration-card__configurations {
     color: $gray;
     display: block;

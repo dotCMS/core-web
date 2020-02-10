@@ -8,12 +8,12 @@
 
 <ng-container *ngIf="site.configured; else noConfigurations">
     <dot-icon-button icon="delete_outline" (click)="confirmDelete($event, site)"></dot-icon-button>
-    <dot-icon-button icon="edit" (click)="gotoConfigurationSite($event, site)"></dot-icon-button>
+    <dot-icon-button icon="edit" (click)="editConfigurationSite($event, site)"></dot-icon-button>
 </ng-container>
 
 <ng-template #noConfigurations>
     <dot-icon-button
         icon="add_circle"
-        (click)="gotoConfigurationSite($event, site)"
+        (click)="editConfigurationSite($event, site)"
     ></dot-icon-button>
 </ng-template>

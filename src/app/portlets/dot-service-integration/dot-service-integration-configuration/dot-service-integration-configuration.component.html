@@ -34,7 +34,7 @@
                 {{ serviceIntegration.description }}
                 <a
                     class="dot-service-integration-configuration__description__link_show-more"
-                    *ngIf="serviceIntegration.description.length > 453"
+                    *ngIf="serviceIntegration.description.length > 326"
                     (click)="showMore = !showMore"
                     >{{
                         showMore
@@ -67,7 +67,7 @@
                 [disabledLoadDataButton]="disabledLoadDataButton"
                 [itemsPerPage]="paginationPerPage"
                 (loadData)="loadData($event)"
-                (goto)="gotoConfiguration($event)"
+                (edit)="gotoConfiguration($event)"
                 (delete)="deleteConfiguration($event)"
             ></dot-service-integration-configuration-list>
         </div>

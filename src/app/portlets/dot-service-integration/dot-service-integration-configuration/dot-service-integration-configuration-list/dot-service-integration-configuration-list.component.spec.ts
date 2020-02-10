@@ -72,24 +72,14 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             );
         });
 
-        it('should emit action for goto when site item clicked', () => {
-            spyOn(component.goto, 'emit');
-            const siteItem = fixture.debugElement.queryAll(
-                By.css('dot-service-integration-configuration-item')
-            )[0];
-
-            siteItem.triggerEventHandler('click', sites[0]);
-            expect(component.goto.emit).toHaveBeenCalledWith(sites[0]);
-        });
-
-        it('should emit action for goto --> Site Item', () => {
-            spyOn(component.goto, 'emit');
+        it('should emit action for edit --> Site Item', () => {
+            spyOn(component.edit, 'emit');
             const siteItem = fixture.debugElement.queryAll(
                 By.css('dot-service-integration-configuration-item')
             )[0].componentInstance;
 
-            siteItem.goto.emit(sites[0]);
-            expect(component.goto.emit).toHaveBeenCalledWith(sites[0]);
+            siteItem.edit.emit(sites[0]);
+            expect(component.edit.emit).toHaveBeenCalledWith(sites[0]);
         });
 
         it('should emit action for delete --> Site Item', () => {

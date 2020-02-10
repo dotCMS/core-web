@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { DotServiceIntegrationSites } from '@shared/models/dot-service-integration/dot-service-integration.model';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
@@ -13,7 +13,7 @@ import { take } from 'rxjs/operators';
 export class DotServiceIntegrationConfigurationItemComponent implements OnInit {
     @Input() site: DotServiceIntegrationSites;
 
-    @Output() goto = new EventEmitter<DotServiceIntegrationSites>();
+    @Output() edit = new EventEmitter<DotServiceIntegrationSites>();
     @Output() delete = new EventEmitter<DotServiceIntegrationSites>();
 
     messagesKey: { [key: string]: string } = {};
@@ -22,6 +22,12 @@ export class DotServiceIntegrationConfigurationItemComponent implements OnInit {
         public dotMessageService: DotMessageService,
         private dotAlertConfirmService: DotAlertConfirmService
     ) {}
+
+    @HostListener('click', ['$event'])
+    public onClick(event: MouseEvent): void {
+        event.stopPropagation();
+        this.edit.emit(this.site);
+    }
 
     ngOnInit() {
         this.dotMessageService
@@ -38,15 +44,15 @@ export class DotServiceIntegrationConfigurationItemComponent implements OnInit {
     }
 
     /**
-     * Emits action to go to configuration page
+     * Emits action to edit configuration page
      *
      * @param MouseEvent $event
      * @param DotServiceIntegrationSites site
      * @memberof DotServiceIntegrationConfigurationItemComponent
      */
-    gotoConfigurationSite($event: MouseEvent, site?: DotServiceIntegrationSites): void {
+    editConfigurationSite($event: MouseEvent, site?: DotServiceIntegrationSites): void {
         $event.stopPropagation();
-        this.goto.emit(site);
+        this.edit.emit(site);
     }
 
     /**

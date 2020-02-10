@@ -238,23 +238,14 @@ describe('DotServiceIntegrationConfigurationComponent', () => {
             expect(paginationService.getWithOffset).toHaveBeenCalledWith(10);
         });
 
-        it('should redirect to edit configuration page on Edit action', () => {
+        it('should redirect to goto configuration page action', () => {
             const listComp = fixture.debugElement.query(
                 By.css('dot-service-integration-configuration-list')
             ).componentInstance;
-            listComp.goto.emit(sites[0]);
-            expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/integration-services/${component.serviceIntegration.key}/edit/${sites[0].id}`
-            );
-        });
-
-        it('should redirect to create configuration page on create action', () => {
-            const listComp = fixture.debugElement.query(
-                By.css('dot-service-integration-configuration-list')
-            ).componentInstance;
-            listComp.goto.emit(sites[1]);
-            expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/integration-services/${component.serviceIntegration.key}/create/${sites[1].id}`
+            listComp.edit.emit(sites[0]);
+            expect(routerService.goToIntegrationService).toHaveBeenCalledWith(
+                component.serviceIntegration.key,
+                sites[0]
             );
         });
 
