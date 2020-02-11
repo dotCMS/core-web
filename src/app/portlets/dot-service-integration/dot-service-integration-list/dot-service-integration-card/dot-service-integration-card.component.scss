@@ -5,10 +5,7 @@
     box-shadow: $md-shadow-2;
     display: block;
     height: 192px;
-    margin-bottom: $basic-padding * 3;
-    margin-right: $basic-padding * 3;
     transition: box-shadow $basic-speed ease-in;
-    width: 328px;
 
     &:hover {
         box-shadow: $md-shadow-3;
@@ -68,8 +65,6 @@ dot-avatar {
     line-height: $basic-padding * 2;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 244px;
-    white-space: nowrap;
 }
 
 .dot-service-integration-card__configurations {
