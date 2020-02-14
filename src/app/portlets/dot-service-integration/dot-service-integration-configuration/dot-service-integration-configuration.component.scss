@@ -11,9 +11,9 @@
 
 .dot-service-integration-configuration__header {
     background-color: $white;
-    border-bottom: 1px solid $gray-lighter;
+    border-bottom: 1px solid $gray-light;
     display: flex;
-    padding: $basic-padding * 3 $basic-padding * 3 $basic-padding * 2 0;
+    padding: $basic-padding * 3 $basic-padding * 3 $basic-padding * 3 0;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -22,7 +22,7 @@
         align-self: center;
         border-radius: 50%;
         box-shadow: $md-shadow-2;
-        margin: 0 $basic-padding * 3 $basic-padding * 3 $basic-padding * 3;
+        margin: 0 $basic-padding * 3 0 $basic-padding * 3;
     }
 }
 
@@ -57,7 +57,7 @@
 
 .dot-service-integration-configuration__description {
     font-size: $font-size-large;
-    height: 4.5rem;
+    height: 3rem;
     overflow: hidden;
     position: relative;
 }
@@ -67,7 +67,7 @@
     cursor: pointer;
     padding-left: $basic-padding;
     position: absolute;
-    top: 3rem;
+    bottom: 0;
     right: 0;
     z-index: 100;
 }
