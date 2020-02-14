@@ -49,7 +49,7 @@
         "ng2-ace-editor": "^0.3.8",
         "ng2-dragula": "^2.1.0",
         "node-fetch": "^2.6.0",
-        "npm": "^6.9.0",
+        "npm": "^6.13.4",
         "primeicons": "^1.0.0",
         "primeng": "^7.0.3",
         "rxjs": "~6.3.3",
