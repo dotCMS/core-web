@@ -1,10 +1,4 @@
-import {
-    Component,
-    Input,
-    Output,
-    EventEmitter,
-    ViewChild
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit, OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
@@ -13,7 +7,12 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService } from 'dotcms-js';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { takeUntil } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import { Subject } from 'rxjs';
+import {
+    DotPushPublishFiltersService,
+    DotPushPublishFilter
+} from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
 
 @Component({
     selector: 'dot-push-publish-dialog',
@@ -26,6 +25,7 @@ export class DotPushPublishContentTypesDialogComponent implements OnInit, OnDest
     dialogShow = false;
     form: FormGroup;
     pushActions: SelectItem[];
+    filterOptions: SelectItem[];
 
     @Input()
     assetIdentifier: string;
@@ -42,34 +42,61 @@ export class DotPushPublishContentTypesDialogComponent implements OnInit, OnDest
         private pushPublishService: PushPublishService,
         public fb: FormBuilder,
         public dotMessageService: DotMessageService,
-        public loggerService: LoggerService
+        public loggerService: LoggerService,
+        private dotPushPublishFiltersService: DotPushPublishFiltersService
     ) {}
 
     ngOnInit() {
-        this.dotMessageService
-            .getMessages([
-                'contenttypes.content.push_publish',
-                'contenttypes.content.push_publish.action.push',
-                'contenttypes.content.push_publish.action.remove',
-                'contenttypes.content.push_publish.action.pushremove',
-                'contenttypes.content.push_publish.I_want_To',
-                'contenttypes.content.push_publish.force_push',
-                'contenttypes.content.push_publish.publish_date',
-                'contenttypes.content.push_publish.expire_date',
-                'contenttypes.content.push_publish.push_to',
-                'contenttypes.content.push_publish.push_to_errormsg',
-                'contenttypes.content.push_publish.form.cancel',
-                'contenttypes.content.push_publish.form.push',
-                'contenttypes.content.push_publish.publish_date_errormsg',
-                'contenttypes.content.push_publish.expire_date_errormsg'
-            ])
+        const messages$ = this.dotMessageService.getMessages([
+            'contenttypes.content.push_publish',
+            'contenttypes.content.push_publish.filters',
+            'contenttypes.content.push_publish.action.push',
+            'contenttypes.content.push_publish.action.remove',
+            'contenttypes.content.push_publish.action.pushremove',
+            'contenttypes.content.push_publish.I_want_To',
+            'contenttypes.content.push_publish.force_push',
+            'contenttypes.content.push_publish.publish_date',
+            'contenttypes.content.push_publish.expire_date',
+            'contenttypes.content.push_publish.push_to',
+            'contenttypes.content.push_publish.push_to_errormsg',
+            'contenttypes.content.push_publish.form.cancel',
+            'contenttypes.content.push_publish.form.push',
+            'contenttypes.content.push_publish.publish_date_errormsg',
+            'contenttypes.content.push_publish.expire_date_errormsg'
+        ]);
+        const filterOptions$ = this.dotPushPublishFiltersService.get();
+
+        combineLatest(messages$, filterOptions$)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((messages: { [key: string]: string }) => {
-                this.pushActions = this.getPushPublishActions(messages);
-                this.initForm();
-                this.setDialogConfig(messages, this.form);
-                this.dialogShow = true;
-            });
+            .subscribe(
+                ([messages, filterOptions]: [
+                    { [key: string]: string },
+                    DotPushPublishFilter[]
+                ]) => {
+                    this.filterOptions = filterOptions.map((filter: DotPushPublishFilter) => {
+                        return {
+                            label: filter.title,
+                            value: filter.key
+                        };
+                    });
+
+                    const defaultFilterKey = filterOptions
+                        .filter((filter: DotPushPublishFilter) => {
+                            if (filter.default) {
+                                return filter;
+                            }
+                        })
+                        .map(({ key }: DotPushPublishFilter) => key)
+                        .join();
+
+                    this.pushActions = this.getPushPublishActions(messages);
+                    this.initForm({
+                        filterKey: defaultFilterKey
+                    });
+                    this.setDialogConfig(messages, this.form);
+                    this.dialogShow = true;
+                }
+            );
     }
 
     ngOnDestroy(): void {
@@ -115,8 +142,9 @@ export class DotPushPublishContentTypesDialogComponent implements OnInit, OnDest
         this.formEl.ngSubmit.emit();
     }
 
-    private initForm(): void {
+    private initForm(params?: { [key: string]: any }): void {
         this.form = this.fb.group({
+            ...params,
             pushActionSelected: [this.pushActions[0].value || '', [Validators.required]],
             publishdate: [new Date(), [Validators.required]],
             expiredate: [new Date(), [Validators.required]],
@@ -158,7 +186,6 @@ export class DotPushPublishContentTypesDialogComponent implements OnInit, OnDest
                 label: messages['contenttypes.content.push_publish.form.cancel']
             }
         };
-
 
         form.valueChanges.subscribe(() => {
             this.dialogActions = {
