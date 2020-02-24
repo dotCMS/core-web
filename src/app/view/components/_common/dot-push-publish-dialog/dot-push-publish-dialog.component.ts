@@ -84,11 +84,7 @@ export class DotPushPublishContentTypesDialogComponent implements OnInit, OnDest
                     });
 
                     const defaultFilterKey = filterOptions
-                        .filter((filter: DotPushPublishFilter) => {
-                            if (filter.default) {
-                                return filter;
-                            }
-                        })
+                        .filter((filter: DotPushPublishFilter) => filter.default)
                         .map(({ key }: DotPushPublishFilter) => key)
                         .join();
 
