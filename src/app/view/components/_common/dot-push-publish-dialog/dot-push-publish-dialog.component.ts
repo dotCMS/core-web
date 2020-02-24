@@ -6,8 +6,8 @@ import { SelectItem } from 'primeng/primeng';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService } from 'dotcms-js';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { takeUntil } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import {
     DotPushPublishFiltersService,
@@ -26,6 +26,9 @@ export class DotPushPublishContentTypesDialogComponent implements OnInit, OnDest
     form: FormGroup;
     pushActions: SelectItem[];
     filterOptions: SelectItem[];
+
+    isPushActionPublish$: Observable<boolean>;
+    isPushActionExpire$: Observable<boolean>;
 
     @Input()
     assetIdentifier: string;
@@ -151,6 +154,20 @@ export class DotPushPublishContentTypesDialogComponent implements OnInit, OnDest
             environment: ['', [Validators.required]],
             forcePush: false
         });
+
+        this.isPushActionPublish$ = this.form.valueChanges.pipe(
+            map(
+                ({ pushActionSelected }) =>
+                    pushActionSelected === 'publish' || pushActionSelected === 'publishexpire'
+            )
+        );
+
+        this.isPushActionExpire$ = this.form.valueChanges.pipe(
+            map(
+                ({ pushActionSelected }) =>
+                    pushActionSelected === 'expire' || pushActionSelected === 'publishexpire'
+            )
+        );
     }
 
     private getPushPublishActions(messages: { [key: string]: string }): SelectItem[] {

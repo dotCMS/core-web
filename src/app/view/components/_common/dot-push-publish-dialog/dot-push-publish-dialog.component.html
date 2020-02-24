@@ -38,25 +38,8 @@
         </div>
 
         <div
-            class="form__group"
-            *ngIf="
-                form.get('pushActionSelected').value === 'publish' ||
-                form.get('pushActionSelected').value === 'publishexpire'
-            "
-        >
-            <p-checkbox
-                formControlName="forcePush"
-                label="{{ dotMessageService.get('contenttypes.content.push_publish.force_push') }}"
-                binary="true"
-            ></p-checkbox>
-        </div>
-
-        <div
             class="form__group push-publish-dialog__publish-date"
-            *ngIf="
-                form.get('pushActionSelected').value === 'publish' ||
-                form.get('pushActionSelected').value === 'publishexpire'
-            "
+            *ngIf="isPushActionPublish$ | async"
         >
             <label class="form__label"
                 >{{ dotMessageService.get('contenttypes.content.push_publish.publish_date') }}:
@@ -83,10 +66,7 @@
 
         <div
             class="form__group push-publish-dialog__expire-date"
-            *ngIf="
-                form.get('pushActionSelected').value === 'expire' ||
-                form.get('pushActionSelected').value === 'publishexpire'
-            "
+            *ngIf="isPushActionExpire$ | async"
         >
             <label class="form__label"
                 >{{ dotMessageService.get('contenttypes.content.push_publish.expire_date') }}:
