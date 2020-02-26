@@ -5,6 +5,7 @@ import { DotContentletEditorService } from '../../../../dot-contentlet-editor/se
 import { DotUiColors, DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { DotIframeService } from '../../service/dot-iframe/dot-iframe.service';
 import { DotCMSEditPageEvent } from '@components/dot-contentlet-editor/components/dot-contentlet-wrapper/dot-contentlet-wrapper.component';
+import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
 
 /**
  * Handle events triggered by the iframe in the IframePortletLegacyComponent
@@ -21,7 +22,8 @@ export class DotIframeEventsHandler {
         private dotRouterService: DotRouterService,
         private dotContentletEditorService: DotContentletEditorService,
         private dotUiColorsService: DotUiColorsService,
-        private dotIframeService: DotIframeService
+        private dotIframeService: DotIframeService,
+        private dotPushPublishDialogService: DotPushPublishDialogService
     ) {
         if (!this.handlers) {
             this.handlers = {
@@ -29,7 +31,8 @@ export class DotIframeEventsHandler {
                 'edit-contentlet': this.editContentlet.bind(this),
                 'edit-task': this.editTask.bind(this),
                 'create-contentlet': this.createContentlet.bind(this),
-                'company-info-updated': this.setDotcmsUiColors.bind(this)
+                'company-info-updated': this.setDotcmsUiColors.bind(this),
+                'push-publish-dialog': this.pushPublishDialog.bind(this)
             };
         }
     }
@@ -47,6 +50,7 @@ export class DotIframeEventsHandler {
     }
 
     private createContentlet($event: CustomEvent): void {
+        debugger;
         this.dotContentletEditorService.create({
             data: $event.detail.data
         });
@@ -62,6 +66,7 @@ export class DotIframeEventsHandler {
     }
 
     private editContentlet($event: CustomEvent): void {
+        debugger;
         this.dotRouterService.goToEditContentlet($event.detail.data.inode);
     }
 
@@ -70,10 +75,13 @@ export class DotIframeEventsHandler {
     }
 
     private setDotcmsUiColors($event: CustomEvent): void {
-        this.dotUiColorsService.setColors(
-            document.querySelector('html'),
-            <DotUiColors>$event.detail.payload.colors
-        );
+        this.dotUiColorsService.setColors(document.querySelector('html'), <DotUiColors>$event.detail
+            .payload.colors);
         this.dotIframeService.reloadColors();
+    }
+
+    private pushPublishDialog($event: CustomEvent): void {
+        debugger;
+        this.dotPushPublishDialogService.openDialog($event.detail.data.assetIdentifier);
     }
 }
