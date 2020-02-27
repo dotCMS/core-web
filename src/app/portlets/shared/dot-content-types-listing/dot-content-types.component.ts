@@ -35,14 +35,12 @@ import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/d
     templateUrl: 'dot-content-types.component.html'
 })
 export class DotContentTypesPortletComponent implements OnInit {
-    @ViewChild('listing')
-    listing: DotListingDataTableComponent;
+    @ViewChild('listing') listing: DotListingDataTableComponent;
     filterBy: string;
     public contentTypeColumns: DataTableColumn[];
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
     public rowActions: DotDataTableAction[];
-    public pushPublishIdentifier: string;
     public addToBundleIdentifier: string;
 
     private i18nKeys = [
@@ -90,14 +88,10 @@ export class DotContentTypesPortletComponent implements OnInit {
             this.dotMessageService.getMessages(this.i18nKeys),
             this.dotContentTypeService.getAllContentTypes(),
             this.dotLicenseService.isEnterprise(),
-            this.pushPublishService.getEnvironments().pipe(
-                map((environments: DotEnvironment[]) => !!environments.length),
-                take(1)
-            ),
-            this.route.data.pipe(
-                pluck('filterBy'),
-                take(1)
-            )
+            this.pushPublishService
+                .getEnvironments()
+                .pipe(map((environments: DotEnvironment[]) => !!environments.length), take(1)),
+            this.route.data.pipe(pluck('filterBy'), take(1))
         ).subscribe(([_messages, contentTypes, isEnterprise, environments, filterBy]) => {
             const baseTypes: StructureTypeView[] = contentTypes;
             const rowActionsMap = {
@@ -136,9 +130,9 @@ export class DotContentTypesPortletComponent implements OnInit {
         this.filterBy = _.startCase(_.toLower(contentType));
         this.listing.paginatorService.setExtraParams('type', this.filterBy);
 
-        this.actionHeaderOptions.primary.command = ($event) => {
-                this.createContentType(null, $event);
-            };
+        this.actionHeaderOptions.primary.command = $event => {
+            this.createContentType(null, $event);
+        };
         this.actionHeaderOptions.primary.model = null;
     }
 
@@ -152,7 +146,7 @@ export class DotContentTypesPortletComponent implements OnInit {
             actions.push({
                 menuItem: {
                     label: this.dotMessageService.get('contenttypes.content.push_publish'),
-                    command: (item) => this.pushPublishContentType(item)
+                    command: item => this.pushPublishContentType(item)
                 }
             });
         }
@@ -161,7 +155,7 @@ export class DotContentTypesPortletComponent implements OnInit {
             actions.push({
                 menuItem: {
                     label: this.dotMessageService.get('contenttypes.content.add_to_bundle'),
-                    command: (item) => this.addToBundleContentType(item)
+                    command: item => this.addToBundleContentType(item)
                 }
             });
         }
@@ -177,10 +171,10 @@ export class DotContentTypesPortletComponent implements OnInit {
         listingActions.push({
             menuItem: {
                 label: this.dotMessageService.get('contenttypes.action.delete'),
-                command: (item) => this.removeConfirmation(item),
+                command: item => this.removeConfirmation(item),
                 icon: 'delete'
             },
-            shouldShow: (item) => !item.fixed && !item.defaultType
+            shouldShow: item => !item.fixed && !item.defaultType
         });
 
         /*
@@ -202,7 +196,7 @@ export class DotContentTypesPortletComponent implements OnInit {
     private setContentTypes(s: StructureTypeView[]): ButtonModel[] {
         return s.map((structureTypeView: StructureTypeView) => {
             return {
-                command: ($event) => {
+                command: $event => {
                     this.createContentType(structureTypeView.name.toLocaleLowerCase(), $event);
                 },
                 icon: this.contentTypesInfoService.getIcon(`${structureTypeView.name}_old`),
@@ -281,7 +275,7 @@ export class DotContentTypesPortletComponent implements OnInit {
                 () => {
                     this.listing.loadCurrentPage();
                 },
-                (error) =>
+                error =>
                     this.httpErrorManagerService
                         .handle(error)
                         .pipe(take(1))
@@ -290,7 +284,7 @@ export class DotContentTypesPortletComponent implements OnInit {
     }
 
     private pushPublishContentType(item: any) {
-        this.dotPushPublishDialogService.openDialog(item.id);
+        this.dotPushPublishDialogService.openDialog({ assetIdentifier: item.id });
     }
 
     private addToBundleContentType(item: any) {
