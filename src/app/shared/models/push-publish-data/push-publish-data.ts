@@ -12,3 +12,10 @@ export interface PushPublishData {
     environment: string[];
     forcePush: boolean;
 }
+
+export interface PushPublishEvent {
+    assetIdentifier: string;
+    dateFilter?: boolean;
+    removeOnly?: boolean;
+    isBundle?: boolean;
+}

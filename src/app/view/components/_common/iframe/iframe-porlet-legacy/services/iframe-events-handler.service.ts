@@ -50,7 +50,6 @@ export class DotIframeEventsHandler {
     }
 
     private createContentlet($event: CustomEvent): void {
-        debugger;
         this.dotContentletEditorService.create({
             data: $event.detail.data
         });
@@ -66,7 +65,6 @@ export class DotIframeEventsHandler {
     }
 
     private editContentlet($event: CustomEvent): void {
-        debugger;
         this.dotRouterService.goToEditContentlet($event.detail.data.inode);
     }
 
@@ -81,7 +79,6 @@ export class DotIframeEventsHandler {
     }
 
     private pushPublishDialog($event: CustomEvent): void {
-        debugger;
-        this.dotPushPublishDialogService.openDialog($event.detail.data.assetIdentifier);
+        this.dotPushPublishDialogService.openDialog($event.detail.data);
     }
 }

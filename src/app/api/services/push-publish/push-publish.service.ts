@@ -26,6 +26,9 @@ export class PushPublishService {
     private publishUrl = `${this._apiRoot
         .baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
 
+    private publishBundleURL = `${this._apiRoot
+        .baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/pushBundle`;
+
     constructor(
         public _apiRoot: ApiRoot,
         private coreWebService: CoreWebService,
@@ -61,7 +64,8 @@ export class PushPublishService {
      */
     pushPublishContent(
         assetIdentifier: string,
-        pushPublishData: PushPublishData
+        pushPublishData: PushPublishData,
+        isBundle: boolean
     ): Observable<AjaxActionResponseView> {
         this._lastEnvironmentPushed = pushPublishData.environment;
         return this.coreWebService.request({
@@ -70,7 +74,7 @@ export class PushPublishService {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: RequestMethod.Post,
-            url: this.publishUrl
+            url: isBundle ? this.publishBundleURL : this.publishUrl
         });
     }
     get showDialog$(): Observable<string> {

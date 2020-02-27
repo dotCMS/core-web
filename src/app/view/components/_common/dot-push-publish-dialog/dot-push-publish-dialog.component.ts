@@ -13,7 +13,8 @@ import {
     DotPushPublishFiltersService,
     DotPushPublishFilter
 } from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
-import {DotPushPublishDialogService} from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
+import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
+import { PushPublishEvent } from '@models/push-publish-data/push-publish-data';
 
 @Component({
     selector: 'dot-push-publish-dialog',
@@ -38,6 +39,9 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     @ViewChild('formEl') formEl: HTMLFormElement;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
+    private eventData: PushPublishEvent = { assetIdentifier: '' };
+    private defaultFilterKey: string;
+    private i18nMessages: { [key: string]: string } = {};
 
     constructor(
         private pushPublishService: PushPublishService,
@@ -49,11 +53,18 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        this.loadMessagesAndFilters();
         this.dotPushPublishDialogService.showDialog$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((assetIdentifier: string) => {
-                this.assetIdentifier = assetIdentifier;
-                this.loadMessagesAndFilters();
+            .subscribe((data: PushPublishEvent) => {
+                this.eventData = data;
+                this.assetIdentifier = this.eventData.assetIdentifier;
+                this.pushActions = this.getPushPublishActions(this.i18nMessages);
+                this.initForm({
+                    filterKey: this.defaultFilterKey
+                });
+                this.setDialogConfig(this.i18nMessages, this.form);
+                this.dialogShow = true;
             });
     }
 
@@ -68,6 +79,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
      */
     close(): void {
         this.cancel.emit(true);
+        this.dialogShow = false;
         this.initForm();
     }
 
@@ -80,7 +92,11 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     submitPushAction(_event): void {
         if (this.form.valid) {
             this.pushPublishService
-                .pushPublishContent(this.assetIdentifier, this.form.value)
+                .pushPublishContent(
+                    this.assetIdentifier,
+                    this.form.value,
+                    !!this.eventData.isBundle
+                )
                 .subscribe((result: any) => {
                     if (!result.errors) {
                         this.close();
@@ -128,6 +144,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
                 (
                     [messages, filterOptions]: [{ [key: string]: string }, DotPushPublishFilter[]]
                 ) => {
+                    this.i18nMessages = messages;
                     this.filterOptions = filterOptions.map((filter: DotPushPublishFilter) => {
                         return {
                             label: filter.title,
@@ -135,17 +152,10 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
                         };
                     });
 
-                    const defaultFilterKey = filterOptions
+                    this.defaultFilterKey = filterOptions
                         .filter((filter: DotPushPublishFilter) => filter.default)
                         .map(({ key }: DotPushPublishFilter) => key)
                         .join();
-
-                    this.pushActions = this.getPushPublishActions(messages);
-                    this.initForm({
-                        filterKey: defaultFilterKey
-                    });
-                    this.setDialogConfig(messages, this.form);
-                    this.dialogShow = true;
                 }
             );
     }
@@ -153,7 +163,12 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     private initForm(params?: { [key: string]: any }): void {
         this.form = this.fb.group({
             ...params,
-            pushActionSelected: [this.pushActions[0].value || '', [Validators.required]],
+            pushActionSelected: [
+                this.eventData.removeOnly
+                    ? this.pushActions[1].value
+                    : this.pushActions[0].value || '',
+                [Validators.required]
+            ],
             publishdate: [new Date(), [Validators.required]],
             expiredate: [new Date(), [Validators.required]],
             environment: ['', [Validators.required]],
@@ -179,7 +194,8 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         return [
             {
                 label: messages['contenttypes.content.push_publish.action.push'],
-                value: 'publish'
+                value: 'publish',
+                disabled: this.eventData.removeOnly
             },
             {
                 label: messages['contenttypes.content.push_publish.action.remove'],
@@ -187,7 +203,8 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
             },
             {
                 label: messages['contenttypes.content.push_publish.action.pushremove'],
-                value: 'publishexpire'
+                value: 'publishexpire',
+                disabled: this.eventData.removeOnly
             }
         ];
     }
