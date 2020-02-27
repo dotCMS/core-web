@@ -1,7 +1,7 @@
 import { toArray, filter, pluck, mergeMap } from 'rxjs/operators';
 import { CoreWebService, ApiRoot } from 'dotcms-js';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
 import { AjaxActionResponseView } from '@models/ajax-action-response/ajax-action-response';
@@ -16,7 +16,6 @@ import { DotCurrentUserService } from '../dot-current-user/dot-current-user.serv
  */
 @Injectable()
 export class PushPublishService {
-    private _showDialog: Subject<string> = new Subject<string>();
     private pushEnvironementsUrl = 'environment/loadenvironments/roleId';
     private _lastEnvironmentPushed: string[];
     /*
@@ -77,13 +76,7 @@ export class PushPublishService {
             url: isBundle ? this.publishBundleURL : this.publishUrl
         });
     }
-    get showDialog$(): Observable<string> {
-        return this._showDialog.asObservable();
-    }
 
-    openDialog(assetIdentifier: string): void {
-        this._showDialog.next(assetIdentifier);
-    }
     private getPublishEnvironmentData(
         assetIdentifier: string,
         pushPublishData: PushPublishData

@@ -290,7 +290,6 @@ export class DotContentTypesPortletComponent implements OnInit {
     }
 
     private pushPublishContentType(item: any) {
-        debugger;
         this.dotPushPublishDialogService.openDialog(item.id);
     }
 
