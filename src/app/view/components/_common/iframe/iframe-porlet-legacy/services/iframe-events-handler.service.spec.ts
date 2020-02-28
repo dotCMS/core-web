@@ -146,7 +146,7 @@ describe('DotIframeEventsHandler', () => {
         service.handle(
             new CustomEvent('ng-event', {
                 detail: {
-                    name: 'push-publish-dialog',
+                    name: 'push-publish',
                     data: dataMock
                 }
             })

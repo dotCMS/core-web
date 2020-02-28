@@ -113,6 +113,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
      * @memberof PushPublishContentTypesDialogComponent
      */
     submitForm(): void {
+        debugger;
         this.formEl.ngSubmit.emit();
     }
 
