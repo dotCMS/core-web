@@ -142,7 +142,7 @@ describe('DotIframeEventsHandler', () => {
             isBundle: false
         };
 
-        spyOn(dotPushPublishDialogService, 'openDialog');
+        spyOn(dotPushPublishDialogService, 'open');
         service.handle(
             new CustomEvent('ng-event', {
                 detail: {
@@ -152,6 +152,6 @@ describe('DotIframeEventsHandler', () => {
             })
         );
 
-        expect(dotPushPublishDialogService.openDialog).toHaveBeenCalledWith(dataMock);
+        expect(dotPushPublishDialogService.open).toHaveBeenCalledWith(dataMock);
     });
 });

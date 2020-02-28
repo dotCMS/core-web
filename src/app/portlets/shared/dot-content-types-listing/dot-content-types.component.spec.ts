@@ -262,7 +262,7 @@ describe('DotContentTypesPortletComponent', () => {
 
     it('should open push publish dialog', () => {
         fixture.detectChanges();
-        spyOn(dotPushPublishDialogService, 'openDialog').and.callThrough();
+        spyOn(dotPushPublishDialogService, 'open').and.callThrough();
         const mockContentType: DotCMSContentType = {
             ...dotcmsContentTypeBasicMock,
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
@@ -282,7 +282,7 @@ describe('DotContentTypesPortletComponent', () => {
         comp.rowActions[0].menuItem.command(mockContentType);
         fixture.detectChanges();
         expect(de.query(By.css('p-dialog'))).toBeDefined();
-        expect(dotPushPublishDialogService.openDialog).toHaveBeenCalledWith({
+        expect(dotPushPublishDialogService.open).toHaveBeenCalledWith({
             assetIdentifier: mockContentType.id
         });
     });

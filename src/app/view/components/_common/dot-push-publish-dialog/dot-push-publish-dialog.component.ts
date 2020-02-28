@@ -14,7 +14,7 @@ import {
     DotPushPublishFilter
 } from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
 import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
-import { PushPublishEvent } from '@models/push-publish-data/push-publish-data';
+import { DotPushPublishEvent } from '@models/push-publish-data/push-publish-data';
 
 @Component({
     selector: 'dot-push-publish-dialog',
@@ -39,7 +39,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     @ViewChild('formEl') formEl: HTMLFormElement;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
-    private eventData: PushPublishEvent = { assetIdentifier: '' };
+    private eventData: DotPushPublishEvent = { assetIdentifier: '' };
     private defaultFilterKey: string;
     private i18nMessages: { [key: string]: string } = {};
 
@@ -56,7 +56,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         this.loadMessagesAndFilters();
         this.dotPushPublishDialogService.showDialog$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((data: PushPublishEvent) => {
+            .subscribe((data: DotPushPublishEvent) => {
                 this.eventData = data;
                 this.assetIdentifier = this.eventData.assetIdentifier;
                 this.pushActions = this.getPushPublishActions(this.i18nMessages);

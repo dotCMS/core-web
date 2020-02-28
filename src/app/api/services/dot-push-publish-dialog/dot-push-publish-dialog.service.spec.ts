@@ -13,7 +13,7 @@ describe('DotPushPublishDialogService', () => {
     });
 
     it('should receive data', () => {
-        dotPushPublishDialogService.openDialog(mockEventData);
+        dotPushPublishDialogService.open(mockEventData);
         expect(data).toEqual(mockEventData);
     });
 });

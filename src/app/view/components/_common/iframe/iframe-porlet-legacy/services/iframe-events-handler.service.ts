@@ -32,7 +32,7 @@ export class DotIframeEventsHandler {
                 'edit-task': this.editTask.bind(this),
                 'create-contentlet': this.createContentlet.bind(this),
                 'company-info-updated': this.setDotcmsUiColors.bind(this),
-                'push-publish-dialog': this.pushPublishDialog.bind(this)
+                'push-publish': this.pushPublishDialog.bind(this)
             };
         }
     }
@@ -79,6 +79,6 @@ export class DotIframeEventsHandler {
     }
 
     private pushPublishDialog($event: CustomEvent): void {
-        this.dotPushPublishDialogService.openDialog($event.detail.data);
+        this.dotPushPublishDialogService.open($event.detail.data);
     }
 }

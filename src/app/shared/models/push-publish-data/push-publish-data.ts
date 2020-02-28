@@ -14,7 +14,7 @@ export interface PushPublishData {
     filterKey: string;
 }
 
-export interface PushPublishEvent {
+export interface DotPushPublishEvent {
     assetIdentifier: string;
     dateFilter?: boolean;
     removeOnly?: boolean;
