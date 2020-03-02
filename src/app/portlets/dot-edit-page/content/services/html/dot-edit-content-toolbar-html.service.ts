@@ -28,6 +28,8 @@ interface DotEditPopupMenu {
  */
 @Injectable()
 export class DotEditContentToolbarHtmlService {
+    isEnterpriseLicense: boolean;
+
     constructor(
         private dotMessageService: DotMessageService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
@@ -47,31 +49,37 @@ export class DotEditContentToolbarHtmlService {
                 'editpage.content.container.menu.content',
                 'editpage.content.container.menu.widget',
                 'editpage.content.container.menu.form',
-                'dot.common.license.enterprise.only.error'
+                'dot.common.license.enterprise.only.error',
+                'dot.common.contentlet.max.limit.error'
             ])
             .pipe(
                 switchMap(this.dotLicenseService.isEnterprise.bind(this.dotLicenseService)),
                 take(1)
             )
             .subscribe((isEnterpriseLicense: boolean) => {
+                this.isEnterpriseLicense = isEnterpriseLicense;
+
                 const containers = Array.from(
                     doc.querySelectorAll('[data-dot-object="container"]')
                 );
                 containers.forEach((container: HTMLElement) => {
-                    const containerToolbar = document.createElement('div');
-                    containerToolbar.classList.add('dotedit-container__toolbar');
-
-                    if (!container.dataset.dotCanAdd.length) {
-                        container.classList.add('disabled');
-                    }
-
-                    containerToolbar.innerHTML = this.getContainerToolbarHtml(
-                        container,
-                        isEnterpriseLicense
-                    );
-                    container.parentNode.insertBefore(containerToolbar, container);
+                    this.createContainerToolbar(container);
                 });
             });
+    }
+
+    /**
+     * Updates DOM with updated version of a specific Container toolbar
+     *
+     * @param HTMLElement container
+     * @memberof DotEditContentToolbarHtmlService
+     */
+    updateContainerToolbar(container: HTMLElement): void {
+        if (container.parentNode) {
+            const toolbar = container.parentNode.querySelector('.dotedit-container__toolbar');
+            container.parentNode.removeChild(toolbar);
+            this.createContainerToolbar(container);
+        }
     }
 
     /**
@@ -178,7 +186,20 @@ export class DotEditContentToolbarHtmlService {
         });
     }
 
-    private getContainerToolbarHtml(container: HTMLElement, isEnterpriseLicense: boolean): string {
+    private createContainerToolbar(container: HTMLElement) {
+        const containerToolbar = document.createElement('div');
+        containerToolbar.classList.add('dotedit-container__toolbar');
+
+        if (!container.dataset.dotCanAdd.length) {
+            container.classList.add('disabled');
+        }
+
+        containerToolbar.innerHTML = this.getContainerToolbarHtml(container);
+        container.parentNode.insertBefore(containerToolbar, container);
+    }
+
+    private getContainerToolbarHtml(container: HTMLElement): string {
+        const maxContentletsLimitReached = this.isMaxContentletsLimitReached(container);
         return this.getDotEditPopupMenuHtml({
             button: {
                 label: `${this.dotMessageService.get('editpage.content.container.action.add')}`,
@@ -189,7 +210,9 @@ export class DotEditContentToolbarHtmlService {
                 .filter((item: string) => item.length)
                 .map((item: string) => {
                     item = item.toLowerCase();
-                    const isDisabledFormAdd = item === 'form' && !isEnterpriseLicense;
+                    const isDisabledFormAdd =
+                        (item === 'form' && !this.isEnterpriseLicense) ||
+                        maxContentletsLimitReached;
 
                     return {
                         label: this.dotMessageService.get(
@@ -202,12 +225,37 @@ export class DotEditContentToolbarHtmlService {
                             uuid: container.dataset.dotUuid
                         },
                         disabled: isDisabledFormAdd,
-                        tooltip: isDisabledFormAdd
-                            ? this.dotMessageService.get('dot.common.license.enterprise.only.error')
-                            : ''
+                        tooltip: this.getTooltipErrorMessage(
+                            isDisabledFormAdd,
+                            maxContentletsLimitReached
+                        )
                     };
                 })
         });
+    }
+
+    private isMaxContentletsLimitReached(container: HTMLElement): boolean {
+        const contentletsSize = Array.from(
+            container.querySelectorAll('[data-dot-object="contentlet"]')
+        ).length;
+        return parseInt(container.dataset.maxContentlets, 10) <= contentletsSize;
+    }
+
+    private getTooltipErrorMessage(
+        disabledFormAdd: boolean,
+        maxContentletsLimitReached: boolean
+    ): string {
+        let errorMsg = '';
+        if (disabledFormAdd) {
+            if (!this.isEnterpriseLicense) {
+                errorMsg = this.dotMessageService.get('dot.common.license.enterprise.only.error');
+            } else if (maxContentletsLimitReached) {
+                errorMsg = this.dotMessageService.get('dot.common.contentlet.max.limit.error');
+            }
+        } else {
+            errorMsg = '';
+        }
+        return errorMsg;
     }
 
     private getDotEditPopupMenuHtml(menu: DotEditPopupMenu): string {
