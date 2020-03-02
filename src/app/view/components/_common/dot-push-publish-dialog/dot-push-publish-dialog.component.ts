@@ -163,12 +163,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     private initForm(params?: { [key: string]: any }): void {
         this.form = this.fb.group({
             ...params,
-            pushActionSelected: [
-                this.eventData.removeOnly
-                    ? this.pushActions[1].value
-                    : this.pushActions[0].value || '',
-                [Validators.required]
-            ],
+            pushActionSelected: [this.pushActions[0].value, [Validators.required]],
             publishdate: [new Date(), [Validators.required]],
             expiredate: [new Date(), [Validators.required]],
             environment: ['', [Validators.required]],
@@ -194,8 +189,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         return [
             {
                 label: messages['contenttypes.content.push_publish.action.push'],
-                value: 'publish',
-                disabled: this.eventData.removeOnly
+                value: 'publish'
             },
             {
                 label: messages['contenttypes.content.push_publish.action.remove'],
