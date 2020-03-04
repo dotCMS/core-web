@@ -16,7 +16,11 @@ export interface PushPublishData {
 
 export interface DotPushPublishEvent {
     assetIdentifier: string;
+    title: string;
     dateFilter?: boolean;
     removeOnly?: boolean;
     isBundle?: boolean;
+    restricted?: boolean;
+    cats?: boolean;
+    workflow?: any;
 }

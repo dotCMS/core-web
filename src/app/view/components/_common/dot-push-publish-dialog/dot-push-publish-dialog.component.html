@@ -1,7 +1,7 @@
 <dot-dialog
     [(visible)]="dialogShow"
     [actions]="dialogActions"
-    [header]="dotMessageService.get('contenttypes.content.push_publish')"
+    [header]="eventData.title"
     (hide)="close()"
 >
     <form

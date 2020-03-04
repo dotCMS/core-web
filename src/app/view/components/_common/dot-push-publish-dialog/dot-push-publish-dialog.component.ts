@@ -36,7 +36,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     @ViewChild('formEl') formEl: HTMLFormElement;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
-    private eventData: DotPushPublishEvent = { assetIdentifier: '' };
+    private eventData: DotPushPublishEvent = { assetIdentifier: '', title: '' };
     private defaultFilterKey: string;
     private i18nMessages: { [key: string]: string } = {};
 
@@ -198,14 +198,19 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
             },
             {
                 label: messages['contenttypes.content.push_publish.action.remove'],
-                value: 'expire'
+                value: 'expire',
+                disabled: this.isRestrictedOrCategory()
             },
             {
                 label: messages['contenttypes.content.push_publish.action.pushremove'],
                 value: 'publishexpire',
-                disabled: this.eventData.removeOnly
+                disabled: this.eventData.removeOnly || this.isRestrictedOrCategory()
             }
         ];
+    }
+
+    private isRestrictedOrCategory(): boolean {
+        return this.eventData.restricted || this.eventData.cats;
     }
 
     private setDialogConfig(messages: { [key: string]: string }, form: FormGroup): void {
