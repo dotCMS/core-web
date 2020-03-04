@@ -6,8 +6,8 @@ import { SelectItem } from 'primeng/primeng';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService } from 'dotcms-js';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { takeUntil, map, catchError } from 'rxjs/operators';
-import { combineLatest, Observable, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
 import { Subject } from 'rxjs';
 import {
     DotPushPublishFiltersService,
@@ -28,9 +28,6 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     form: FormGroup;
     pushActions: SelectItem[];
     filterOptions: SelectItem[];
-
-    isPushActionPublish$: Observable<boolean>;
-    isPushActionExpire$: Observable<boolean>;
 
     @Input() assetIdentifier: string;
 
@@ -165,24 +162,32 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
             ...params,
             pushActionSelected: [this.pushActions[0].value, [Validators.required]],
             publishdate: [new Date(), [Validators.required]],
-            expiredate: [new Date(), [Validators.required]],
+            expiredate: [{ value: new Date(), disabled: true }, [Validators.required]],
             environment: ['', [Validators.required]],
             forcePush: false
         });
 
-        this.isPushActionPublish$ = this.form.valueChanges.pipe(
-            map(
-                ({ pushActionSelected }) =>
-                    pushActionSelected === 'publish' || pushActionSelected === 'publishexpire'
-            )
-        );
-
-        this.isPushActionExpire$ = this.form.valueChanges.pipe(
-            map(
-                ({ pushActionSelected }) =>
-                    pushActionSelected === 'expire' || pushActionSelected === 'publishexpire'
-            )
-        );
+        this.form
+            .get('pushActionSelected')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((pushActionSelected: string) => {
+                switch (pushActionSelected) {
+                    case 'publish': {
+                        this.form.get('publishdate').enable();
+                        this.form.get('expiredate').disable();
+                        break;
+                    }
+                    case 'expire': {
+                        this.form.get('publishdate').disable();
+                        this.form.get('expiredate').enable();
+                        break;
+                    }
+                    default: {
+                        this.form.get('publishdate').enable();
+                        this.form.get('expiredate').enable();
+                    }
+                }
+            });
     }
 
     private getPushPublishActions(messages: { [key: string]: string }): SelectItem[] {

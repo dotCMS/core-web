@@ -38,7 +38,7 @@ class PushPublishServiceMock {
 @Component({
     selector: 'dot-test-host-component',
     template: `<form [formGroup]="group">
-                    <dot-push-publish-env-selector formControlName="environment" ></dot-push-publish-env-selector>
+                    <dot-push-publish-env-selector showList="true" formControlName="environment" ></dot-push-publish-env-selector>
                 </form>`
 })
 class TestHostComponent {
@@ -50,7 +50,7 @@ class TestHostComponent {
     }
 }
 
-describe('PushPublishEnvSelectorComponent', () => {
+fdescribe('PushPublishEnvSelectorComponent', () => {
     let comp: PushPublishEnvSelectorComponent;
     let fixture: ComponentFixture<PushPublishEnvSelectorComponent>;
     let de: DebugElement;
