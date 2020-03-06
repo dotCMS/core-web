@@ -106,14 +106,18 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
                     }
                 };
 
-                this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+                this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((valueChange) => {
                     this.dialogActions = {
                         ...this.dialogActions,
                         accept: {
                             ...this.dialogActions.accept,
-                            disabled: (this.changePasswordOption && !this.passwordMatch) || !this.form.valid
+                            disabled:
+                                (this.changePasswordOption &&
+                                    valueChange.newPassword !== valueChange.confirmPassword) ||
+                                !this.form.valid
                         }
                     };
+
                 });
             });
     }
