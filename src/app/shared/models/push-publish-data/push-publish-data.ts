@@ -22,5 +22,5 @@ export interface DotPushPublishEvent {
     isBundle?: boolean;
     restricted?: boolean;
     cats?: boolean;
-    workflow?: any;
+    customCode?: string;
 }

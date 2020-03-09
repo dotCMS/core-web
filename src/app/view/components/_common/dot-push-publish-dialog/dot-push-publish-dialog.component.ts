@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ViewChild,
+    Renderer2,
+    ElementRef
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit, OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
@@ -34,6 +42,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     @Output() cancel = new EventEmitter<boolean>();
 
     @ViewChild('formEl') formEl: HTMLFormElement;
+    @ViewChild('customCode') customCodeContainer: ElementRef;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
     private eventData: DotPushPublishEvent = { assetIdentifier: '', title: '' };
@@ -46,7 +55,8 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         public dotMessageService: DotMessageService,
         public loggerService: LoggerService,
         private dotPushPublishFiltersService: DotPushPublishFiltersService,
-        private dotPushPublishDialogService: DotPushPublishDialogService
+        private dotPushPublishDialogService: DotPushPublishDialogService,
+        private renderer: Renderer2
     ) {}
 
     ngOnInit() {
@@ -54,13 +64,26 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         this.dotPushPublishDialogService.showDialog$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: DotPushPublishEvent) => {
+                debugger;
                 this.eventData = data;
-                this.assetIdentifier = this.eventData.assetIdentifier;
-                this.pushActions = this.getPushPublishActions(this.i18nMessages);
-                this.initForm({
-                    filterKey: this.defaultFilterKey
-                });
-                this.setDialogConfig(this.i18nMessages, this.form);
+                this.clearCustomCode();
+                if (this.eventData.customCode) {
+                    const placeholder = document.createElement('div');
+                    placeholder.innerHTML = this.eventData.customCode;
+                    Array.from(placeholder.childNodes).forEach((el: HTMLElement) => {
+                        const parsedEl = this.isScriptElement(el.tagName)
+                            ? this.createScriptEl(el.innerHTML)
+                            : el;
+                        this.renderer.appendChild(this.customCodeContainer.nativeElement, parsedEl);
+                    });
+                } else {
+                    this.assetIdentifier = this.eventData.assetIdentifier;
+                    this.pushActions = this.getPushPublishActions(this.i18nMessages);
+                    this.initForm({
+                        filterKey: this.defaultFilterKey
+                    });
+                    this.setDialogConfig(this.i18nMessages, this.form);
+                }
                 this.dialogShow = true;
             });
     }
@@ -77,7 +100,6 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     close(): void {
         this.cancel.emit(true);
         this.dialogShow = false;
-        this.initForm();
     }
 
     /**
@@ -111,6 +133,26 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
      */
     submitForm(): void {
         this.formEl.ngSubmit.emit();
+    }
+
+    private isScriptElement(tag: string): boolean {
+        return tag === 'SCRIPT';
+    }
+
+    private createScriptEl(content: string): HTMLScriptElement {
+        const script = this.renderer.createElement('script');
+        this.renderer.setAttribute(script, 'type', 'text/javascript');
+        const text = this.renderer.createText(content);
+        this.renderer.appendChild(script, text);
+
+        return script;
+    }
+
+    private clearCustomCode(): void {
+        const childElements = this.customCodeContainer.nativeElement.children;
+        for (const child of childElements) {
+            this.renderer.removeChild(this.customCodeContainer.nativeElement, child);
+        }
     }
 
     private loadMessagesAndFilters(): void {

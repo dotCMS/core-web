@@ -1,7 +1,11 @@
 @import "variables";
 
-form {
+form, .custom-code {
     width: 400px;
+}
+
+.custom-code {
+    margin-bottom: $basic-padding * 4;
 }
 
 .ui-inputtext {

@@ -2,10 +2,12 @@
     [(visible)]="dialogShow"
     [actions]="dialogActions"
     [header]="eventData.title"
+    [hideButtons]="eventData.customCode"
     (hide)="close()"
 >
+    <div #customCode class="custom-code" ></div>
     <form
-        *ngIf="pushActions && dialogShow"
+        *ngIf="pushActions && dialogShow && !eventData.customCode"
         [formGroup]="form"
         (ngSubmit)="submitPushAction($event)"
         (keyup.enter)="submitPushAction($event)"
