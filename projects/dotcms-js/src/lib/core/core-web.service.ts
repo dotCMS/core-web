@@ -11,6 +11,7 @@ import { Subject, Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import {
+    hasContent,
     CwError,
     NETWORK_CONNECTION_ERROR,
     UNKNOWN_RESPONSE_ERROR,
