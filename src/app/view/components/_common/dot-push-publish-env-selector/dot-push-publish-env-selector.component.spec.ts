@@ -50,7 +50,7 @@ class TestHostComponent {
     }
 }
 
-fdescribe('PushPublishEnvSelectorComponent', () => {
+describe('PushPublishEnvSelectorComponent', () => {
     let comp: PushPublishEnvSelectorComponent;
     let fixture: ComponentFixture<PushPublishEnvSelectorComponent>;
     let de: DebugElement;
@@ -131,7 +131,7 @@ fdescribe('PushPublishEnvSelectorComponent', () => {
 
     it('should get environments from PushPublishService', () => {
         fixture.detectChanges();
-        comp.pushEnvironments$.subscribe((environments) => {
+        comp.pushEnvironments$.subscribe(environments => {
             expect(environments).toEqual([
                 {
                     id: '22e332',
@@ -177,5 +177,11 @@ fdescribe('PushPublishEnvSelectorComponent', () => {
             }
         ]);
         expect(comp.propagateChange).toHaveBeenCalled();
+    });
+
+    it('should hide enviroment selector list', () => {
+        comp.showList = false;
+        fixture.detectChanges();
+        expect(document.querySelector('.environment-selector__list')).toBeNull();
     });
 });

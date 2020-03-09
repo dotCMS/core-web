@@ -64,18 +64,10 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         this.dotPushPublishDialogService.showDialog$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: DotPushPublishEvent) => {
-                debugger;
                 this.eventData = data;
                 this.clearCustomCode();
                 if (this.eventData.customCode) {
-                    const placeholder = document.createElement('div');
-                    placeholder.innerHTML = this.eventData.customCode;
-                    Array.from(placeholder.childNodes).forEach((el: HTMLElement) => {
-                        const parsedEl = this.isScriptElement(el.tagName)
-                            ? this.createScriptEl(el.innerHTML)
-                            : el;
-                        this.renderer.appendChild(this.customCodeContainer.nativeElement, parsedEl);
-                    });
+                    this.loadCustomCode();
                 } else {
                     this.assetIdentifier = this.eventData.assetIdentifier;
                     this.pushActions = this.getPushPublishActions(this.i18nMessages);
@@ -133,6 +125,17 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
      */
     submitForm(): void {
         this.formEl.ngSubmit.emit();
+    }
+
+    private loadCustomCode(): void {
+        const placeholder = document.createElement('div');
+        placeholder.innerHTML = this.eventData.customCode;
+        Array.from(placeholder.childNodes).forEach((el: HTMLElement) => {
+            const parsedEl = this.isScriptElement(el.tagName)
+                ? this.createScriptEl(el.innerHTML)
+                : el;
+            this.renderer.appendChild(this.customCodeContainer.nativeElement, parsedEl);
+        });
     }
 
     private isScriptElement(tag: string): boolean {

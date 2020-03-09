@@ -1,6 +1,6 @@
 import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
 
-const mockEventData = { assetIdentifier: 'test' };
+const mockEventData = { assetIdentifier: 'test', title: 'Title' };
 
 describe('DotPushPublishDialogService', () => {
     const dotPushPublishDialogService = new DotPushPublishDialogService();
