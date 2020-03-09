@@ -23,6 +23,11 @@ interface DotEditPopupMenu {
     items?: DotEditPopupMenuItem[];
 }
 
+enum ValidationError {
+    EnterpriseLicenseError,
+    MaxContentletsLimitReachedError
+}
+
 /**
  * Service to generate the markup related with the Toolbars and sub-menu for containers.
  */
@@ -199,7 +204,6 @@ export class DotEditContentToolbarHtmlService {
     }
 
     private getContainerToolbarHtml(container: HTMLElement): string {
-        const maxContentletsLimitReached = this.isMaxContentletsLimitReached(container);
         return this.getDotEditPopupMenuHtml({
             button: {
                 label: `${this.dotMessageService.get('editpage.content.container.action.add')}`,
@@ -210,9 +214,10 @@ export class DotEditContentToolbarHtmlService {
                 .filter((item: string) => item.length)
                 .map((item: string) => {
                     item = item.toLowerCase();
-                    const isDisabledFormAdd =
-                        (item === 'form' && !this.isEnterpriseLicense) ||
-                        maxContentletsLimitReached;
+                    const validationError: ValidationError = this.getContentletValidationError(
+                        item,
+                        container
+                    );
 
                     return {
                         label: this.dotMessageService.get(
@@ -224,14 +229,21 @@ export class DotEditContentToolbarHtmlService {
                             identifier: container.dataset.dotIdentifier,
                             uuid: container.dataset.dotUuid
                         },
-                        disabled: isDisabledFormAdd,
-                        tooltip: this.getTooltipErrorMessage(
-                            isDisabledFormAdd,
-                            maxContentletsLimitReached
-                        )
+                        disabled:
+                            validationError === ValidationError.EnterpriseLicenseError ||
+                            validationError === ValidationError.MaxContentletsLimitReachedError,
+                        tooltip: this.getTooltipErrorMessage(validationError)
                     };
                 })
         });
+    }
+
+    private getContentletValidationError(item: string, container: HTMLElement): ValidationError {
+        if (item === 'form' && !this.isEnterpriseLicense) {
+            return ValidationError.EnterpriseLicenseError;
+        } else if (this.isMaxContentletsLimitReached(container)) {
+            return ValidationError.MaxContentletsLimitReachedError;
+        }
     }
 
     private isMaxContentletsLimitReached(container: HTMLElement): boolean {
@@ -241,20 +253,14 @@ export class DotEditContentToolbarHtmlService {
         return parseInt(container.dataset.maxContentlets, 10) <= contentletsSize;
     }
 
-    private getTooltipErrorMessage(
-        disabledFormAdd: boolean,
-        maxContentletsLimitReached: boolean
-    ): string {
+    private getTooltipErrorMessage(validationError: ValidationError): string {
         let errorMsg = '';
-        if (disabledFormAdd) {
-            if (!this.isEnterpriseLicense) {
-                errorMsg = this.dotMessageService.get('dot.common.license.enterprise.only.error');
-            } else if (maxContentletsLimitReached) {
-                errorMsg = this.dotMessageService.get('dot.common.contentlet.max.limit.error');
-            }
-        } else {
-            errorMsg = '';
+        if (validationError === ValidationError.EnterpriseLicenseError) {
+            errorMsg = this.dotMessageService.get('dot.common.license.enterprise.only.error');
+        } else if (validationError === ValidationError.MaxContentletsLimitReachedError) {
+            errorMsg = this.dotMessageService.get('dot.common.contentlet.max.limit.error');
         }
+
         return errorMsg;
     }
 
