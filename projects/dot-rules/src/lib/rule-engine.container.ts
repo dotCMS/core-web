@@ -134,6 +134,8 @@ export class RuleEngineContainer {
   pageId: string;
   isContentletHost: boolean;
 
+  static readonly DELAY_TO_SHOW_MESSAGE_ERROR = 3000;
+
   constructor(
     public _ruleService: RuleService,
     private _ruleActionService: ActionService,
@@ -155,6 +157,14 @@ export class RuleEngineContainer {
       this.state.globalError = res.message;
       this.state.loading = false;
       this.state.showRules = false;
+    });
+
+
+    merge(this._conditionGroupService.error, this._conditionService.error).subscribe((message: string) => {
+      this.state.globalError = message;
+
+      this.initRules();
+      this.cleanErrorMessage();
     });
   }
 
@@ -198,10 +208,14 @@ export class RuleEngineContainer {
     if (rule.isPersisted()) {
       this._ruleService.deleteRule(rule.key).subscribe(result => {
         this.state.deleting = false;
+        const rules = this.rules.filter(arrayRule => arrayRule.key !== rule.key);
+        this.rules$.emit(rules);
+      },
+      (e: CwError) => {
+        this._handle403Error(e) ? null : { invalid: e.message };
       });
     }
-    const rules = this.rules.filter(arrayRule => arrayRule.key !== rule.key);
-    this.rules$.emit(rules);
+
   }
 
   onUpdateEnabledState(event: RuleActionEvent): void {
@@ -513,6 +527,8 @@ export class RuleEngineContainer {
           (e: CwError) => {
             const ruleError = this._handle403Error(e) ? null : { invalid: e.message };
             this.ruleUpdated(rule, ruleError);
+            this.initRules();
+            this.cleanErrorMessage();
           }
         );
       } else {
@@ -523,6 +539,8 @@ export class RuleEngineContainer {
           (e: CwError) => {
             const ruleError = this._handle403Error(e) ? null : { invalid: e.message };
             this.ruleUpdated(rule, ruleError);
+            this.initRules();
+            this.cleanErrorMessage();
           }
         );
       }
@@ -644,6 +662,12 @@ export class RuleEngineContainer {
       this.loadRules(rules);
     });
     this.route.queryParams.pipe(take(1)).subscribe((params: Params) => this.isContentletHost =  (params.isContentletHost === 'true'));
+ }
+
+  private cleanErrorMessage(): void {
+    setTimeout(() => {
+      this.state.globalError = '';
+    }, RuleEngineContainer.DELAY_TO_SHOW_MESSAGE_ERROR);
   }
 
   private loadRules(rules: RuleModel[]): void {

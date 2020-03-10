@@ -1,12 +1,12 @@
 
-import {from as observableFrom, empty as observableEmpty} from 'rxjs';
+import {from as observableFrom, empty as observableEmpty, BehaviorSubject, Subject} from 'rxjs';
 
 import {reduce, mergeMap, catchError, map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Http, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { ApiRoot } from 'dotcms-js';
-import { ConditionGroupModel, IConditionGroup } from './Rule';
+import { ConditionGroupModel, IConditionGroup, RuleEngineState } from './Rule';
 import { HttpCode } from 'dotcms-js';
 import { LoggerService } from 'dotcms-js';
 
@@ -17,6 +17,12 @@ export class ConditionGroupService {
     private _apiRoot: ApiRoot;
     private _http: Http;
     private _baseUrl: string;
+
+    private _error: Subject<string> = new Subject<string>();
+
+    public get error(): Observable<string> {
+        return this._error.asObservable();
+    }
 
     static toJson(conditionGroup: ConditionGroupModel): any {
         const json: any = {};
@@ -97,6 +103,7 @@ export class ConditionGroupService {
     }
 
     createConditionGroup(ruleId: string, model: ConditionGroupModel): Observable<any> {
+        this.loggerService.info('TESTING--------------');
         this.loggerService.info('ConditionGroupService', 'add', model);
         if (!model.isValid()) {
             throw new Error(`This should be thrown from a checkValid function on the model,
@@ -157,17 +164,24 @@ export class ConditionGroupService {
 
     private _catchRequestError(operation): Func {
         return (err: any) => {
+            let message = null;
+
             if (err && err.status === HttpCode.NOT_FOUND) {
-                this.loggerService.info('Could not ' + operation + ' Condition: URL not valid.');
+                message = 'Could not ' + operation + ' Condition: URL not valid.';
+                this.loggerService.info(message);
             } else if (err) {
+                message =  'Could not ' + operation + ' Condition.',
+                'response status code: ';
+
                 this.loggerService.info(
-                    'Could not ' + operation + ' Condition.',
-                    'response status code: ',
+                    message,
                     err.status,
                     'error:',
                     err
                 );
             }
+
+            this._error.next(err.json().error.replace('dotcms.api.error.forbidden: ', ''));
             return observableEmpty();
         };
     }
