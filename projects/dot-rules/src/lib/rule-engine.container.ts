@@ -160,7 +160,11 @@ export class RuleEngineContainer {
     });
 
 
-    merge(this._conditionGroupService.error, this._conditionService.error).subscribe((message: string) => {
+    merge(
+      this._ruleActionService.error,
+      this._conditionGroupService.error,
+      this._conditionService.error).subscribe((message: string) => {
+        
       this.state.globalError = message;
 
       this.initRules();
