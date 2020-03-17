@@ -187,7 +187,6 @@ and should provide the info needed to make the user aware of the fix.`);
         operation
     ): (response: Response, original: Observable<any>) => Observable<any> {
         return (response: Response): Observable<any> => {
-            console.log('response', response);
             if (response) {
                 if (response.status === HttpCode.SERVER_ERROR) {
                     if (response.text() && response.text().indexOf('ECONNREFUSED') >= 0) {

@@ -2,7 +2,7 @@
 import {from as observableFrom, Observable, merge, Subject } from 'rxjs';
 import { reduce, mergeMap, take, map, filter, takeUntil } from 'rxjs/operators';
 // tslint:disable-next-line:max-file-line-count
-import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import {
   RuleModel,
   RuleService,
