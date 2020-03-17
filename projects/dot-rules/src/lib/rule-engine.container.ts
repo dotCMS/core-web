@@ -1,6 +1,6 @@
 
-import {from as observableFrom, Observable, merge } from 'rxjs';
-import { reduce, mergeMap, take, map, filter } from 'rxjs/operators';
+import {from as observableFrom, Observable, merge, Subject } from 'rxjs';
+import { reduce, mergeMap, take, map, filter, takeUntil } from 'rxjs/operators';
 // tslint:disable-next-line:max-file-line-count
 import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
 import {
@@ -121,7 +121,7 @@ export interface ConditionActionEvent extends RuleActionEvent {
     ></cw-rule-engine>
 `
 })
-export class RuleEngineContainer {
+export class RuleEngineContainer implements OnDestroy {
   rules: RuleModel[];
   state: RuleEngineState = new RuleEngineState();
 
@@ -135,6 +135,7 @@ export class RuleEngineContainer {
   isContentletHost: boolean;
 
   static readonly DELAY_TO_SHOW_MESSAGE_ERROR = 3000;
+  private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     public _ruleService: RuleService,
@@ -163,13 +164,14 @@ export class RuleEngineContainer {
     merge(
       this._ruleActionService.error,
       this._conditionGroupService.error,
-      this._conditionService.error).subscribe((message: string) => {
-        
-      this.state.globalError = message;
+      this._conditionService.error)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((message: string) => {
+          this.state.globalError = message;
 
-      this.initRules();
-      this.cleanErrorMessage();
-    });
+          this.initRules();
+          this.cleanErrorMessage();
+        });
   }
 
   alphaSort(key): (a, b) => number {
@@ -184,6 +186,11 @@ export class RuleEngineContainer {
       }
       return x;
     };
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
   /**

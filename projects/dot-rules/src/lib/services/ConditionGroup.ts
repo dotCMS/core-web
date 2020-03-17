@@ -103,7 +103,6 @@ export class ConditionGroupService {
     }
 
     createConditionGroup(ruleId: string, model: ConditionGroupModel): Observable<any> {
-        this.loggerService.info('TESTING--------------');
         this.loggerService.info('ConditionGroupService', 'add', model);
         if (!model.isValid()) {
             throw new Error(`This should be thrown from a checkValid function on the model,
@@ -164,17 +163,13 @@ export class ConditionGroupService {
 
     private _catchRequestError(operation): Func {
         return (err: any) => {
-            let message = null;
-
+       
             if (err && err.status === HttpCode.NOT_FOUND) {
-                message = 'Could not ' + operation + ' Condition: URL not valid.';
-                this.loggerService.info(message);
+                this.loggerService.info('Could not ' + operation + ' Condition: URL not valid.');
             } else if (err) {
-                message =  'Could not ' + operation + ' Condition.',
-                'response status code: ';
-
                 this.loggerService.info(
-                    message,
+                    'Could not ' + operation + ' Condition.',
+                    'response status code: ',
                     err.status,
                     'error:',
                     err
