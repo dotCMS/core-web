@@ -1,12 +1,4 @@
-import {
-    Component,
-    Input,
-    Output,
-    EventEmitter,
-    ViewChild,
-    Renderer2,
-    ElementRef
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit, OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
@@ -22,7 +14,8 @@ import {
     DotPushPublishFilter
 } from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
 import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
-import { DotPushPublishEvent } from '@models/push-publish-data/push-publish-data';
+import { DotPushPublishDialogData } from '@models/dot-push-publish-dialog-data/dot-push-publish-dialog-data.model';
+import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
 
 @Component({
     selector: 'dot-push-publish-dialog',
@@ -45,7 +38,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     @ViewChild('customCode') customCodeContainer: ElementRef;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
-    private eventData: DotPushPublishEvent = { assetIdentifier: '', title: '' };
+    private eventData: DotPushPublishDialogData = { assetIdentifier: '', title: '' };
     private defaultFilterKey: string;
     private i18nMessages: { [key: string]: string } = {};
 
@@ -56,16 +49,15 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         public loggerService: LoggerService,
         private dotPushPublishFiltersService: DotPushPublishFiltersService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
-        private renderer: Renderer2
+        private dotParseHtmlService: DotParseHtmlService
     ) {}
 
     ngOnInit() {
         this.loadMessagesAndFilters();
         this.dotPushPublishDialogService.showDialog$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((data: DotPushPublishEvent) => {
+            .subscribe((data: DotPushPublishDialogData) => {
                 this.eventData = data;
-                this.clearCustomCode();
                 if (this.eventData.customCode) {
                     this.loadCustomCode();
                 } else {
@@ -128,34 +120,10 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     }
 
     private loadCustomCode(): void {
-        const placeholder = document.createElement('div');
-        placeholder.innerHTML = this.eventData.customCode;
-        Array.from(placeholder.childNodes).forEach((el: HTMLElement) => {
-            const parsedEl = this.isScriptElement(el.tagName)
-                ? this.createScriptEl(el.innerHTML)
-                : el;
-            this.renderer.appendChild(this.customCodeContainer.nativeElement, parsedEl);
-        });
-    }
-
-    private isScriptElement(tag: string): boolean {
-        return tag === 'SCRIPT';
-    }
-
-    private createScriptEl(content: string): HTMLScriptElement {
-        const script = this.renderer.createElement('script');
-        this.renderer.setAttribute(script, 'type', 'text/javascript');
-        const text = this.renderer.createText(content);
-        this.renderer.appendChild(script, text);
-
-        return script;
-    }
-
-    private clearCustomCode(): void {
-        const childElements = this.customCodeContainer.nativeElement.children;
-        for (const child of childElements) {
-            this.renderer.removeChild(this.customCodeContainer.nativeElement, child);
-        }
+        this.dotParseHtmlService.parse(
+            this.eventData.customCode,
+            this.customCodeContainer.nativeElement, true
+        );
     }
 
     private loadMessagesAndFilters(): void {

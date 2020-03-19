@@ -7,11 +7,12 @@ import { DotFieldValidationMessageModule } from '../dot-field-validation-message
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotPushPublishFiltersService } from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
 import { DotPushPublishDialogComponent } from '@components/_common/dot-push-publish-dialog/dot-push-publish-dialog.component';
+import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
 
 @NgModule({
     declarations: [DotPushPublishDialogComponent],
     exports: [DotPushPublishDialogComponent],
-    providers: [DotPushPublishFiltersService],
+    providers: [DotPushPublishFiltersService, DotParseHtmlService],
     imports: [
         CommonModule,
         FormsModule,

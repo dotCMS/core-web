@@ -6,6 +6,10 @@ form, .custom-code {
 
 .custom-code {
     margin-bottom: $basic-padding * 4;
+
+    &.hidden {
+        display: none;
+    }
 }
 
 .ui-inputtext {

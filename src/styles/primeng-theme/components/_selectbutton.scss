@@ -5,10 +5,10 @@
 [border] {
     .ui-selectbutton {
         height: auto;
-        border: 1px solid $gray;
+        border: 1px solid $gray-light;
 
         &:hover {
-            border: 1px solid $gray;
+            border: 1px solid $gray-light;
         }
     }
 }
