@@ -24,9 +24,6 @@ import { HttpCode } from 'dotcms-js';
 import { LoggerService } from 'dotcms-js';
 import { RuleViewService } from './services/dot-view-rule-service';
 
-// tslint:disable-next-line:no-unused-variable
-const I8N_BASE = 'api.sites.ruleengine';
-
 export interface ParameterChangeEvent extends CwChangeEvent {
   rule?: RuleModel;
   source?: ServerSideFieldModel;
@@ -133,8 +130,6 @@ export class RuleEngineContainer implements OnDestroy {
   globalError: string;
   pageId: string;
   isContentletHost: boolean;
-
-  private cleanMessageTimeOut: number;
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -697,7 +692,7 @@ export class RuleEngineContainer implements OnDestroy {
     }
 
     this.initRules();
-    
+
     return handled;
   }
 }

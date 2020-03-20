@@ -139,7 +139,7 @@ export class RuleEngineComponent {
         this._rsrcCache = {};
         this.status = null;
 
-        this.ruleViewService.message.subscribe(message => {
+        this.ruleViewService.message.subscribe((message: string) => {
             this.globalError = message;
         });
     }

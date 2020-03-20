@@ -25,6 +25,7 @@ $basic-padding: 8px;
 
 $font-size-xx-large: 24px;
 $font-size-x-large: 18px;
+$font-size-medium: 14px;
 
 $action-button-height: 48px;
 
@@ -95,7 +96,7 @@ $finder-s-input: '.ui.input input';
     }
 
     .close-button {
-        font-size: 14px;
+        font-size: $font-size-medium;
         position: absolute;
         right: 5px;
         top: 5px;
