@@ -94,6 +94,15 @@ $finder-s-input: '.ui.input input';
         height: 100%;
     }
 
+    .close-button {
+        font-size: 14px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        cursor: pointer;
+        font-style: normal;
+    }
+
     .ui.fluid.input input:hover {
         border-color: rgba(34, 36, 38, 0.35);
         box-shadow: none;
