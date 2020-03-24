@@ -1,8 +1,8 @@
 
-import {from as observableFrom, Observable, merge } from 'rxjs';
-import { reduce, mergeMap, take, map, filter } from 'rxjs/operators';
+import {from as observableFrom, Observable, merge, Subject } from 'rxjs';
+import { reduce, mergeMap, take, map, filter, takeUntil } from 'rxjs/operators';
 // tslint:disable-next-line:max-file-line-count
-import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import {
   RuleModel,
   RuleService,
@@ -22,9 +22,7 @@ import { BundleService, IPublishEnvironment } from './services/bundle-service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { HttpCode } from 'dotcms-js';
 import { LoggerService } from 'dotcms-js';
-
-// tslint:disable-next-line:no-unused-variable
-const I8N_BASE = 'api.sites.ruleengine';
+import { RuleViewService } from './services/dot-view-rule-service';
 
 export interface ParameterChangeEvent extends CwChangeEvent {
   rule?: RuleModel;
@@ -98,7 +96,6 @@ export interface ConditionActionEvent extends RuleActionEvent {
       [showRules]="state.showRules"
       [pageId]="pageId"
       [isContentletHost]="isContentletHost"
-      [globalError]="state.globalError"
       (createRule)="onCreateRule($event)"
       (deleteRule)="onDeleteRule($event)"
       (updateName)="onUpdateRuleName($event)"
@@ -121,7 +118,7 @@ export interface ConditionActionEvent extends RuleActionEvent {
     ></cw-rule-engine>
 `
 })
-export class RuleEngineContainer {
+export class RuleEngineContainer implements OnDestroy {
   rules: RuleModel[];
   state: RuleEngineState = new RuleEngineState();
 
@@ -134,6 +131,8 @@ export class RuleEngineContainer {
   pageId: string;
   isContentletHost: boolean;
 
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+
   constructor(
     public _ruleService: RuleService,
     private _ruleActionService: ActionService,
@@ -142,7 +141,8 @@ export class RuleEngineContainer {
     private _resources: I18nService,
     public bundleService: BundleService,
     private route: ActivatedRoute,
-    private loggerService: LoggerService
+    private loggerService: LoggerService,
+    private ruleViewService: RuleViewService
   ) {
     this.rules$.subscribe(rules => {
       this.rules = rules;
@@ -156,6 +156,18 @@ export class RuleEngineContainer {
       this.state.loading = false;
       this.state.showRules = false;
     });
+
+
+    merge(
+      this._ruleActionService.error,
+      this._conditionGroupService.error,
+      this._conditionService.error)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((message: string) => {
+          this.ruleViewService.showErrorMessage(message);
+
+          this.initRules();
+        });
   }
 
   alphaSort(key): (a, b) => number {
@@ -170,6 +182,11 @@ export class RuleEngineContainer {
       }
       return x;
     };
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 
   /**
@@ -198,10 +215,14 @@ export class RuleEngineContainer {
     if (rule.isPersisted()) {
       this._ruleService.deleteRule(rule.key).subscribe(result => {
         this.state.deleting = false;
+        const rules = this.rules.filter(arrayRule => arrayRule.key !== rule.key);
+        this.rules$.emit(rules);
+      },
+      (e: CwError) => {
+        this._handle403Error(e) ? null : { invalid: e.message };
       });
     }
-    const rules = this.rules.filter(arrayRule => arrayRule.key !== rule.key);
-    this.rules$.emit(rules);
+
   }
 
   onUpdateEnabledState(event: RuleActionEvent): void {
@@ -513,6 +534,7 @@ export class RuleEngineContainer {
           (e: CwError) => {
             const ruleError = this._handle403Error(e) ? null : { invalid: e.message };
             this.ruleUpdated(rule, ruleError);
+            this.initRules();
           }
         );
       } else {
@@ -523,6 +545,7 @@ export class RuleEngineContainer {
           (e: CwError) => {
             const ruleError = this._handle403Error(e) ? null : { invalid: e.message };
             this.ruleUpdated(rule, ruleError);
+            this.initRules();
           }
         );
       }
@@ -644,7 +667,7 @@ export class RuleEngineContainer {
       this.loadRules(rules);
     });
     this.route.queryParams.pipe(take(1)).subscribe((params: Params) => this.isContentletHost =  (params.isContentletHost === 'true'));
-  }
+ }
 
   private loadRules(rules: RuleModel[]): void {
     rules.sort((a, b) => {
@@ -660,13 +683,16 @@ export class RuleEngineContainer {
       if (e && e.response.status === HttpCode.FORBIDDEN) {
         const errorJson = e.response.json();
         if (errorJson && errorJson.error) {
-          this.state.globalError = errorJson.error.replace('dotcms.api.error.forbidden: ', '');
+          this.ruleViewService.showErrorMessage(errorJson.error.replace('dotcms.api.error.forbidden: ', ''));
           handled = true;
         }
       }
     } catch (e) {
       this.loggerService.error('Error while processing invalid response: ', e);
     }
+
+    this.initRules();
+
     return handled;
   }
 }
