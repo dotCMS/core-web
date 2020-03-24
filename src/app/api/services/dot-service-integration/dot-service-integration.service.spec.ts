@@ -88,7 +88,7 @@ describe('DotServiceIntegrationService', () => {
         );
 
         this.dotServiceIntegrationService
-            .getConfiguration(serviceKey)
+            .getConfigurationList(serviceKey)
             .subscribe((service: DotServiceIntegration) => {
                 expect(service).toEqual(mockDotServiceIntegration[0]);
             });
@@ -104,7 +104,7 @@ describe('DotServiceIntegrationService', () => {
         spyOn(this.dotHttpErrorManagerService, 'handle').and.callThrough();
         spyOn(this.coreWebService, 'requestView').and.returnValue(throwError(error404));
 
-        this.dotServiceIntegrationService.getConfiguration('test').subscribe();
+        this.dotServiceIntegrationService.getConfigurationList('test').subscribe();
         expect(this.dotHttpErrorManagerService.handle).toHaveBeenCalledWith(mockResponseView(400));
     });
 

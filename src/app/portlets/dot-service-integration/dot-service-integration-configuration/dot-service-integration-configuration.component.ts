@@ -53,7 +53,7 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit {
                 this.filterConfigurations(keyboardEvent.target['value']);
             });
 
-        this.paginationService.url = `v1/service-integrations/${this.serviceIntegration.key}`;
+        this.paginationService.url = `v1/apps/${this.serviceIntegration.key}`;
         this.paginationService.paginationPerPage = this.paginationPerPage;
         this.paginationService.sortField = 'name';
         this.paginationService.setExtraParams('filter', '');
@@ -127,10 +127,10 @@ export class DotServiceIntegrationConfigurationComponent implements OnInit {
                     });
             },
             reject: () => {},
-            header: this.messagesKey['service.integration.confirmation.title'],
-            message: this.messagesKey['service.integration.confirmation.delete.all.message'],
+            header: this.messagesKey['apps.confirmation.title'],
+            message: this.messagesKey['apps.confirmation.delete.all.message'],
             footerLabel: {
-                accept: this.messagesKey['service.integration.confirmation.accept']
+                accept: this.messagesKey['apps.confirmation.accept']
             }
         });
     }

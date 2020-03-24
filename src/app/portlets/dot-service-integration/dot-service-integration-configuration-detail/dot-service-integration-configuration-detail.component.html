@@ -1,0 +1,96 @@
+<form [formGroup]="myFormGroup" class="form__group" (ngSubmit)="onSubmit()">
+    <div class="dot-service-integration-configuration-detail__container">
+        <div class="dot-service-integration-configuration-detail__header">
+            <span class="dot-service-integration-configuration-detail__service-name">
+                {{ serviceIntegration.name }}
+            </span>
+            <div class="dot-service-integration-configuration-detail__service-key">
+                {{ messagesKey['apps.key'] }}
+                <dot-copy-button
+                    [copy]="serviceIntegration.key"
+                    [label]="serviceIntegration.key"
+                ></dot-copy-button>
+            </div>
+            <div class="dot-service-integration-configuration-detail-actions">
+                <button
+                    pButton
+                    secondary
+                    [label]="messagesKey['Cancel']"
+                    (click)="goToIntegration(serviceIntegration.key)"
+                ></button>
+                <button
+                    pButton
+                    type="submit"
+                    [label]="messagesKey['Save']"
+                    [disabled]="myFormGroup.invalid"
+                ></button>
+            </div>
+        </div>
+        <div class="dot-service-integration-configuration-detail__body">
+            <div class="dot-service-integration-configuration-detail__host-name">
+                {{ serviceIntegration.sites[0].name }}
+            </div>
+            <div class="dot-service-integration-configuration-detail__form">
+                <div
+                    class="dot-service-integration-configuration-detail__form-row"
+                    *ngFor="let field of formFields"
+                    [ngSwitch]="field.type"
+                >
+                    <ng-container *ngSwitchCase="'STRING'">
+                        <div *ngIf="field.hidden; then passwords; else textareas"></div>
+                        <ng-template #passwords>
+                            <label
+                                [for]="field.name"
+                                class="form__label"
+                                [ngClass]="{
+                                    required: field.required
+                                }"
+                                >{{ field.label }}</label
+                            >
+                            <input
+                                pInputText
+                                type="password"
+                                (click)="$event.target.select()"
+                                [id]="field.name"
+                                [formControlName]="field.name"
+                            />
+                            <span class="form__group-hint">{{ field.hint }}</span>
+                        </ng-template>
+                        <ng-template #textareas>
+                            <label
+                                [for]="field.name"
+                                class="form__label"
+                                [ngClass]="{
+                                    required: field.required
+                                }"
+                                >{{ field.label }}</label
+                            >
+                            <textarea
+                                pInputTextarea
+                                [id]="field.name"
+                                [formControlName]="field.name"
+                            ></textarea>
+                            <span class="form__group-hint">{{ field.hint }}</span>
+                        </ng-template>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'BOOL'">
+                        <p-checkbox
+                            binary="true"
+                            [id]="field.name"
+                            [label]="field.label"
+                            [formControlName]="field.name"
+                            [value]="field.value"
+                        ></p-checkbox>
+                        <span class="form__group-hint">{{ field.hint }}</span>
+                    </ng-container>
+                </div>
+                <button
+                    pButton
+                    secondary
+                    [label]="messagesKey['apps.add.property']"
+                    icon="fa fa-plus"
+                ></button>
+            </div>
+        </div>
+    </div>
+</form>

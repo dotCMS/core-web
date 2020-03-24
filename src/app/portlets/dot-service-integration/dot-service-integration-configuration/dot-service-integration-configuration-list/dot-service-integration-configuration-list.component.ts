@@ -36,7 +36,7 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
 
     ngOnInit() {
         this.dotMessageService
-            .getMessages(['service.integration.configurations.show.more'])
+            .getMessages(['apps.configurations.show.more'])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;

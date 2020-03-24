@@ -8,7 +8,7 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 
 class IntegrationServiceMock {
-    getConfiguration(_serviceKey: string) {}
+    getConfigurationList(_serviceKey: string) {}
 }
 
 const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>(
@@ -74,13 +74,13 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
         };
 
         activatedRouteSnapshotMock.paramMap.get = () => '123';
-        spyOn(dotIntegrationService, 'getConfiguration').and.returnValue(observableOf(response));
+        spyOn(dotIntegrationService, 'getConfigurationList').and.returnValue(observableOf(response));
 
         dotServiceIntegrationConfigurationListResolver
             .resolve(activatedRouteSnapshotMock)
             .subscribe((fakeContentType: any) => {
                 expect(fakeContentType).toEqual({service: response, messages});
             });
-        expect(dotIntegrationService.getConfiguration).toHaveBeenCalledWith('123');
+        expect(dotIntegrationService.getConfigurationList).toHaveBeenCalledWith('123');
     });
 });
