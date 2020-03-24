@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { RuleModel, RULE_CREATE } from './services/Rule';
 import { I18nService } from './services/system/locale/I18n';
 import { CwFilter } from './services/util/CwFilter';
@@ -12,6 +12,7 @@ import {
 } from './rule-engine.container';
 import { IPublishEnvironment } from './services/bundle-service';
 import { RuleViewService, DotRuleMessage } from './services/dot-view-rule-service';
+import { takeUntil } from 'rxjs/operators';
 
 const I8N_BASE = 'api.sites.ruleengine';
 
@@ -87,7 +88,7 @@ const I8N_BASE = 'api.sites.ruleengine';
 
 `
 })
-export class RuleEngineComponent {
+export class RuleEngineComponent implements OnDestroy {
     @Input() rules: RuleModel[];
     @Input() ruleActionTypes: { [key: string]: ServerSideTypeModel } = {};
     @Input() loading: boolean;
@@ -124,13 +125,14 @@ export class RuleEngineComponent {
 
     globalError: string;
     showCloseButton: boolean;
-
+    
     filterText: string;
     status: string;
     activeRules: number;
 
     private resources: I18nService;
     private _rsrcCache: { [key: string]: Observable<string> };
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(resources: I18nService, private ruleViewService: RuleViewService) {
         this.resources = resources;
@@ -140,11 +142,18 @@ export class RuleEngineComponent {
         this._rsrcCache = {};
         this.status = null;
 
-        this.ruleViewService.message.subscribe((dotRuleMessage: DotRuleMessage) => {
-            this.globalError = dotRuleMessage.message;
-            this.showCloseButton = dotRuleMessage.allowClose;
-        });
+        this.ruleViewService.message
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((dotRuleMessage: DotRuleMessage) => {
+                this.globalError = dotRuleMessage.message;
+                this.showCloseButton = dotRuleMessage.allowClose;
+            });
     }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
+      }
 
     rsrc(subkey: string): Observable<any> {
         let x = this._rsrcCache[subkey];
