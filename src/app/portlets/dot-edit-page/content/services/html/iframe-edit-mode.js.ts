@@ -39,9 +39,7 @@ export const EDIT_PAGE_JS = `
     }
 
     function checkIfMaxLimitNotReached(target) {
-        return Array.from(
-                target.querySelectorAll("[data-dot-object='contentlet']:not(.gu-transit)")
-            ).length < parseInt(target.dataset.maxContentlets, 10);
+        return target.children.length < parseInt(target.dataset.maxContentlets, 10)
     }
 
     function checkIfContentletIsUnique(el, target) {
