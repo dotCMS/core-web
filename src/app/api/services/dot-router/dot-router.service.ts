@@ -112,8 +112,8 @@ export class DotRouterService {
     goToIntegrationService(integrationKey: string, site: DotServiceIntegrationSites) {
         const route =
             site && site.configured
-                ? `/integration-services/${integrationKey}/edit/${site.id}`
-                : `/integration-services/${integrationKey}/create/${site.id}`;
+                ? `/apps/${integrationKey}/edit/${site.id}`
+                : `/apps/${integrationKey}/create/${site.id}`;
         this.router.navigate([route]);
     }
 

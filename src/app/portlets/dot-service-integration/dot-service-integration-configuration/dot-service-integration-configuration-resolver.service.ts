@@ -35,16 +35,16 @@ export class DotServiceIntegrationConfigurationResolver
             [key: string]: string;
         }> = this.dotMessageService
             .getMessages([
-                'service.integration.configurations',
-                'service.integration.no.configurations',
-                'service.integration.confirmation.delete.all.button',
-                'service.integration.confirmation.title',
-                'service.integration.key',
-                'service.integration.confirmation.description.show.more',
-                'service.integration.confirmation.description.show.less',
-                'service.integration.confirmation.delete.all.message',
-                'service.integration.confirmation.accept',
-                'service.integration.search.placeholder'
+                'apps.configurations',
+                'apps.no.configurations',
+                'apps.confirmation.delete.all.button',
+                'apps.confirmation.title',
+                'apps.key',
+                'apps.confirmation.description.show.more',
+                'apps.confirmation.description.show.less',
+                'apps.confirmation.delete.all.message',
+                'apps.confirmation.accept',
+                'apps.search.placeholder'
             ])
             .pipe(take(1));
 

@@ -9,16 +9,16 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { By } from '@angular/platform-browser';
 
 const messages = {
-    'service.integration.key': 'Key',
-    'service.integration.configurations': 'Configurations',
-    'service.integration.no.configurations': 'No Configurations',
-    'service.integration.confirmation.delete.all.button': 'Delete All',
-    'service.integration.confirmation.title': 'Are you sure?',
-    'service.integration.confirmation.description.show.more': 'Show More',
-    'service.integration.confirmation.description.show.less': 'Show Less',
-    'service.integration.confirmation.delete.all.message': 'Delete all?',
-    'service.integration.confirmation.accept': 'Ok',
-    'service.integration.search.placeholder': 'Search by name'
+    'apps.key': 'Key',
+    'apps.configurations': 'Configurations',
+    'apps.no.configurations': 'No Configurations',
+    'apps.confirmation.delete.all.button': 'Delete All',
+    'apps.confirmation.title': 'Are you sure?',
+    'apps.confirmation.description.show.more': 'Show More',
+    'apps.confirmation.description.show.less': 'Show Less',
+    'apps.confirmation.delete.all.message': 'Delete all?',
+    'apps.confirmation.accept': 'Ok',
+    'apps.search.placeholder': 'Search by name'
 };
 
 const sites = [
@@ -76,7 +76,7 @@ describe('DotServiceIntegrationConfigurationItemComponent', () => {
                 fixture.debugElement.query(
                     By.css('.dot-service-integration-configuration-list__host-key')
                 ).nativeElement.textContent
-            ).toContain(`${component.messagesKey['service.integration.key']} ${sites[0].id}`);
+            ).toContain(`${component.messagesKey['apps.key']} ${sites[0].id}`);
         });
 
         it('should have 2 icon buttons for delete and edit', () => {

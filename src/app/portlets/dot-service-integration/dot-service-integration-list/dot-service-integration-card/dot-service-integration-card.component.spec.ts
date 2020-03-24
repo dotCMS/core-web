@@ -12,8 +12,8 @@ describe('DotServiceIntegrationCardComponent', () => {
     let fixture: ComponentFixture<DotServiceIntegrationCardComponent>;
 
     const messageServiceMock = new MockDotMessageService({
-        'service.integration.configurations': 'Configurations',
-        'service.integration.no.configurations': 'No Configurations'
+        'apps.configurations': 'Configurations',
+        'apps.no.configurations': 'No Configurations'
     });
 
     beforeEach(async(() => {
@@ -67,7 +67,7 @@ describe('DotServiceIntegrationCardComponent', () => {
                 fixture.debugElement.query(By.css('.dot-service-integration-card__configurations'))
                     .nativeElement.textContent
             ).toContain(
-                `${component.serviceIntegration.configurationsCount} ${component.messagesKey['service.integration.configurations']}`
+                `${component.serviceIntegration.configurationsCount} ${component.messagesKey['apps.configurations']}`
             );
 
             expect(
@@ -106,7 +106,7 @@ describe('DotServiceIntegrationCardComponent', () => {
             expect(
                 fixture.debugElement.query(By.css('.dot-service-integration-card__configurations'))
                     .nativeElement.textContent
-            ).toContain(component.messagesKey['service.integration.no.configurations']);
+            ).toContain(component.messagesKey['apps.no.configurations']);
         });
     });
 });

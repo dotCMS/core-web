@@ -22,16 +22,16 @@ import { DotServiceIntegrationConfigurationListModule } from './dot-service-inte
 import { PaginatorService } from '@services/paginator';
 
 const messages = {
-    'service.integration.key': 'Key',
-    'service.integration.configurations': 'Configurations',
-    'service.integration.no.configurations': 'No Configurations',
-    'service.integration.confirmation.delete.all.button': 'Delete All',
-    'service.integration.confirmation.title': 'Are you sure?',
-    'service.integration.confirmation.description.show.more': 'Show More',
-    'service.integration.confirmation.description.show.less': 'Show Less',
-    'service.integration.confirmation.delete.all.message': 'Delete all?',
-    'service.integration.confirmation.accept': 'Ok',
-    'service.integration.search.placeholder': 'Search by name'
+    'apps.key': 'Key',
+    'apps.configurations': 'Configurations',
+    'apps.no.configurations': 'No Configurations',
+    'apps.confirmation.delete.all.button': 'Delete All',
+    'apps.confirmation.title': 'Are you sure?',
+    'apps.confirmation.description.show.more': 'Show More',
+    'apps.confirmation.description.show.less': 'Show Less',
+    'apps.confirmation.delete.all.message': 'Delete all?',
+    'apps.confirmation.accept': 'Ok',
+    'apps.search.placeholder': 'Search by name'
 };
 
 const sites = [
@@ -175,7 +175,7 @@ describe('DotServiceIntegrationConfigurationComponent', () => {
                     By.css('.dot-service-integration-configuration__service-key')
                 ).nativeElement.textContent
             ).toContain(
-                `${component.messagesKey['service.integration.key']} ${component.serviceIntegration.key}`
+                `${component.messagesKey['apps.key']} ${component.serviceIntegration.key}`
             );
 
             expect(
@@ -183,7 +183,7 @@ describe('DotServiceIntegrationConfigurationComponent', () => {
                     By.css('.dot-service-integration-configuration__configurations')
                 ).nativeElement.textContent
             ).toContain(
-                `${component.serviceIntegration.configurationsCount} ${component.messagesKey['service.integration.configurations']}`
+                `${component.serviceIntegration.configurationsCount} ${component.messagesKey['apps.configurations']}`
             );
 
             expect(
@@ -196,7 +196,7 @@ describe('DotServiceIntegrationConfigurationComponent', () => {
                 fixture.debugElement.query(
                     By.css('.dot-service-integration-configuration__action_header input')
                 ).nativeElement.placeholder
-            ).toContain(component.messagesKey['service.integration.search.placeholder']);
+            ).toContain(component.messagesKey['apps.search.placeholder']);
 
             expect(
                 fixture.debugElement.query(
@@ -204,7 +204,7 @@ describe('DotServiceIntegrationConfigurationComponent', () => {
                 ).nativeElement.innerText
             ).toContain(
                 component.messagesKey[
-                    'service.integration.confirmation.delete.all.button'
+                    'apps.confirmation.delete.all.button'
                 ].toUpperCase()
             );
         });
@@ -303,7 +303,7 @@ describe('DotServiceIntegrationConfigurationComponent', () => {
                 fixture.debugElement.query(
                     By.css('.dot-service-integration-configuration__configurations')
                 ).nativeElement.textContent
-            ).toContain(component.messagesKey['service.integration.no.configurations']);
+            ).toContain(component.messagesKey['apps.no.configurations']);
         });
     });
 });

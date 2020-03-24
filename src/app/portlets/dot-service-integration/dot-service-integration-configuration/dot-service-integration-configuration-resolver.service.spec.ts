@@ -21,16 +21,16 @@ describe('DotServiceIntegrationConfigurationListResolver', () => {
     let dotIntegrationService: DotServiceIntegrationService;
     let dotServiceIntegrationConfigurationListResolver: DotServiceIntegrationConfigurationResolver;
     const messages = {
-        'service.integration.configurations': 'Configurations',
-        'service.integration.no.configurations': 'No Configurations',
-        'service.integration.confirmation.delete.all.button': 'Delete All',
-        'service.integration.confirmation.title': 'Are you sure?',
-        'service.integration.key': 'Key:',
-        'service.integration.confirmation.description.show.more': 'Show More',
-        'service.integration.confirmation.description.show.less': 'Show Less',
-        'service.integration.confirmation.delete.all.message': 'Delete all?',
-        'service.integration.confirmation.accept': 'Ok',
-        'service.integration.search.placeholder': 'Search'
+        'apps.configurations': 'Configurations',
+        'apps.no.configurations': 'No Configurations',
+        'apps.confirmation.delete.all.button': 'Delete All',
+        'apps.confirmation.title': 'Are you sure?',
+        'apps.key': 'Key:',
+        'apps.confirmation.description.show.more': 'Show More',
+        'apps.confirmation.description.show.less': 'Show Less',
+        'apps.confirmation.delete.all.message': 'Delete all?',
+        'apps.confirmation.accept': 'Ok',
+        'apps.search.placeholder': 'Search'
     };
     const messageServiceMock = new MockDotMessageService(messages);
 

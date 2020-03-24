@@ -29,7 +29,7 @@ export class DotServiceIntegrationListComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.dotMessageService
-            .getMessages(['service.integration.search.placeholder'])
+            .getMessages(['apps.search.placeholder'])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
@@ -63,7 +63,7 @@ export class DotServiceIntegrationListComponent implements OnInit, OnDestroy {
      * @memberof DotServiceIntegrationListComponent
      */
     goToIntegration(key: string): void {
-        this.dotRouterService.gotoPortlet(`/integration-services/${key}`);
+        this.dotRouterService.gotoPortlet(`/apps/${key}`);
     }
 
     private filterIntegrations(searchCriteria?: string): void {

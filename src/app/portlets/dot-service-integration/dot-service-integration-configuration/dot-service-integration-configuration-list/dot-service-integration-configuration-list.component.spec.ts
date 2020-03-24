@@ -9,7 +9,7 @@ import { DotServiceIntegrationConfigurationItemModule } from './dot-service-inte
 import { DotServiceIntegrationConfigurationListComponent } from './dot-service-integration-configuration-list.component';
 
 const messages = {
-    'service.integration.configurations.show.more': 'Show More'
+    'apps.configurations.show.more': 'Show More'
 };
 
 const sites = [
@@ -68,7 +68,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
                     By.css('.dot-service-integration-configuration-list__show-more')
                 ).nativeElement.outerText
             ).toBe(
-                component.messagesKey['service.integration.configurations.show.more'].toUpperCase()
+                component.messagesKey['apps.configurations.show.more'].toUpperCase()
             );
         });
 

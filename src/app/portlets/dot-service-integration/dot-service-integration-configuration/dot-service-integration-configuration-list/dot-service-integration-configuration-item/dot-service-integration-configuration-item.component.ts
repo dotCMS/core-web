@@ -32,10 +32,10 @@ export class DotServiceIntegrationConfigurationItemComponent implements OnInit {
     ngOnInit() {
         this.dotMessageService
             .getMessages([
-                'service.integration.key',
-                'service.integration.confirmation.title',
-                'service.integration.confirmation.delete.message',
-                'service.integration.confirmation.accept'
+                'apps.key',
+                'apps.confirmation.title',
+                'apps.confirmation.delete.message',
+                'apps.confirmation.accept'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
@@ -69,10 +69,10 @@ export class DotServiceIntegrationConfigurationItemComponent implements OnInit {
                 this.delete.emit(site);
             },
             reject: () => {},
-            header: this.messagesKey['service.integration.confirmation.title'],
-            message: `${this.messagesKey['service.integration.confirmation.delete.message']} <b>${site.name}</b> ?`,
+            header: this.messagesKey['apps.confirmation.title'],
+            message: `${this.messagesKey['apps.confirmation.delete.message']} <b>${site.name}</b> ?`,
             footerLabel: {
-                accept: this.messagesKey['service.integration.confirmation.accept']
+                accept: this.messagesKey['apps.confirmation.accept']
             }
         });
     }

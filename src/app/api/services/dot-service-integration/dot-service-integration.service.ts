@@ -6,7 +6,7 @@ import { RequestMethod } from '@angular/http';
 import { CoreWebService, ResponseView } from 'dotcms-js';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
-const serviceIntegrationUrl = `v1/service-integrations`;
+const serviceIntegrationUrl = `v1/apps`;
 
 /**
  * Provide util methods to get service integrations in the system.

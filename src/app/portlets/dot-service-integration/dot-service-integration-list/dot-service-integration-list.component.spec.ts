@@ -44,7 +44,7 @@ describe('DotServiceIntegrationListComponent', () => {
     let routerService: DotRouterService;
 
     const messageServiceMock = new MockDotMessageService({
-        'service.integration.search.placeholder': 'Search'
+        'apps.search.placeholder': 'Search'
     });
 
     beforeEach(async(() => {
@@ -95,7 +95,7 @@ describe('DotServiceIntegrationListComponent', () => {
 
     it('should set messages to Search Input', () => {
         expect(fixture.debugElement.query(By.css('input')).nativeElement.placeholder).toBe(
-            component.messagesKey['service.integration.search.placeholder']
+            component.messagesKey['apps.search.placeholder']
         );
     });
 
