@@ -145,7 +145,6 @@ export class DotEditContentHtmlService {
             model: this.getContentModel(),
             type: PageModelChangeEventType.REMOVE_CONTENT
         });
-        this.updateContainerToolbar(container.identifier);
     }
 
     /**
@@ -218,7 +217,6 @@ export class DotEditContentHtmlService {
                         type: eventType
                     });
                     this.currentAction = DotContentletAction.EDIT;
-                    this.updateContainerToolbar(containerEl.dataset.dotIdentifier);
                 });
         }
     }
@@ -335,14 +333,6 @@ export class DotEditContentHtmlService {
      */
     getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
-    }
-
-    private updateContainerToolbar(dotIdentifier: string) {
-        const doc = this.getEditPageDocument();
-        const target = <HTMLElement>doc.querySelector(
-            `[data-dot-object="container"][data-dot-identifier="${dotIdentifier}"]`
-        );
-        this.dotEditContentToolbarHtmlService.updateContainerToolbar(target);
     }
 
     private getContentletPlaceholder(): HTMLDivElement {

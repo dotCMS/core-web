@@ -23,18 +23,11 @@ interface DotEditPopupMenu {
     items?: DotEditPopupMenuItem[];
 }
 
-enum ValidationError {
-    EnterpriseLicenseError,
-    MaxContentletsLimitReachedError
-}
-
 /**
  * Service to generate the markup related with the Toolbars and sub-menu for containers.
  */
 @Injectable()
 export class DotEditContentToolbarHtmlService {
-    isEnterpriseLicense: boolean;
-
     constructor(
         private dotMessageService: DotMessageService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
@@ -54,37 +47,31 @@ export class DotEditContentToolbarHtmlService {
                 'editpage.content.container.menu.content',
                 'editpage.content.container.menu.widget',
                 'editpage.content.container.menu.form',
-                'dot.common.license.enterprise.only.error',
-                'dot.common.contentlet.max.limit.error'
+                'dot.common.license.enterprise.only.error'
             ])
             .pipe(
                 switchMap(this.dotLicenseService.isEnterprise.bind(this.dotLicenseService)),
                 take(1)
             )
             .subscribe((isEnterpriseLicense: boolean) => {
-                this.isEnterpriseLicense = isEnterpriseLicense;
-
                 const containers = Array.from(
                     doc.querySelectorAll('[data-dot-object="container"]')
                 );
                 containers.forEach((container: HTMLElement) => {
-                    this.createContainerToolbar(container);
+                    const containerToolbar = document.createElement('div');
+                    containerToolbar.classList.add('dotedit-container__toolbar');
+
+                    if (!container.dataset.dotCanAdd.length) {
+                        container.classList.add('disabled');
+                    }
+
+                    containerToolbar.innerHTML = this.getContainerToolbarHtml(
+                        container,
+                        isEnterpriseLicense
+                    );
+                    container.parentNode.insertBefore(containerToolbar, container);
                 });
             });
-    }
-
-    /**
-     * Updates DOM with updated version of a specific Container toolbar
-     *
-     * @param HTMLElement container
-     * @memberof DotEditContentToolbarHtmlService
-     */
-    updateContainerToolbar(container: HTMLElement): void {
-        if (container.parentNode) {
-            const toolbar = container.parentNode.querySelector('.dotedit-container__toolbar');
-            container.parentNode.removeChild(toolbar);
-            this.createContainerToolbar(container);
-        }
     }
 
     /**
@@ -191,19 +178,7 @@ export class DotEditContentToolbarHtmlService {
         });
     }
 
-    private createContainerToolbar(container: HTMLElement) {
-        const containerToolbar = document.createElement('div');
-        containerToolbar.classList.add('dotedit-container__toolbar');
-
-        if (!container.dataset.dotCanAdd.length) {
-            container.classList.add('disabled');
-        }
-
-        containerToolbar.innerHTML = this.getContainerToolbarHtml(container);
-        container.parentNode.insertBefore(containerToolbar, container);
-    }
-
-    private getContainerToolbarHtml(container: HTMLElement): string {
+    private getContainerToolbarHtml(container: HTMLElement, isEnterpriseLicense: boolean): string {
         return this.getDotEditPopupMenuHtml({
             button: {
                 label: `${this.dotMessageService.get('editpage.content.container.action.add')}`,
@@ -214,10 +189,7 @@ export class DotEditContentToolbarHtmlService {
                 .filter((item: string) => item.length)
                 .map((item: string) => {
                     item = item.toLowerCase();
-                    const validationError: ValidationError = this.getContentletValidationError(
-                        item,
-                        container
-                    );
+                    const isDisabledFormAdd = item === 'form' && !isEnterpriseLicense;
 
                     return {
                         label: this.dotMessageService.get(
@@ -229,39 +201,13 @@ export class DotEditContentToolbarHtmlService {
                             identifier: container.dataset.dotIdentifier,
                             uuid: container.dataset.dotUuid
                         },
-                        disabled:
-                            validationError === ValidationError.EnterpriseLicenseError ||
-                            validationError === ValidationError.MaxContentletsLimitReachedError,
-                        tooltip: this.getTooltipErrorMessage(validationError)
+                        disabled: isDisabledFormAdd,
+                        tooltip: isDisabledFormAdd
+                            ? this.dotMessageService.get('dot.common.license.enterprise.only.error')
+                            : ''
                     };
                 })
         });
-    }
-
-    private getContentletValidationError(item: string, container: HTMLElement): ValidationError {
-        if (item === 'form' && !this.isEnterpriseLicense) {
-            return ValidationError.EnterpriseLicenseError;
-        } else if (this.isMaxContentletsLimitReached(container)) {
-            return ValidationError.MaxContentletsLimitReachedError;
-        }
-    }
-
-    private isMaxContentletsLimitReached(container: HTMLElement): boolean {
-        const contentletsSize = Array.from(
-            container.querySelectorAll('[data-dot-object="contentlet"]')
-        ).length;
-        return parseInt(container.dataset.maxContentlets, 10) <= contentletsSize;
-    }
-
-    private getTooltipErrorMessage(validationError: ValidationError): string {
-        let errorMsg = '';
-        if (validationError === ValidationError.EnterpriseLicenseError) {
-            errorMsg = this.dotMessageService.get('dot.common.license.enterprise.only.error');
-        } else if (validationError === ValidationError.MaxContentletsLimitReachedError) {
-            errorMsg = this.dotMessageService.get('dot.common.contentlet.max.limit.error');
-        }
-
-        return errorMsg;
     }
 
     private getDotEditPopupMenuHtml(menu: DotEditPopupMenu): string {
