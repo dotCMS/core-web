@@ -11,7 +11,7 @@ import {
     ConditionGroupActionEvent
 } from './rule-engine.container';
 import { IPublishEnvironment } from './services/bundle-service';
-import { RuleViewService } from './services/dot-view-rule-service';
+import { RuleViewService, DotRuleMessage } from './services/dot-view-rule-service';
 
 const I8N_BASE = 'api.sites.ruleengine';
 
@@ -26,7 +26,7 @@ const I8N_BASE = 'api.sites.ruleengine';
     <div class="header">{{globalError}}</div>
     <p>Please contact an administrator</p>
 
-    <i class="material-icons" class="close-button" (click)="globalError = ''">X</i>
+    <i *ngIf="showCloseButton" class="material-icons" class="close-button" (click)="globalError = ''">X</i>
   </div>
 <div class="cw-rule-engine" *ngIf="!loading && showRules">
   <div class="cw-header">
@@ -123,6 +123,7 @@ export class RuleEngineComponent {
     @Output() updateConditionOperator: EventEmitter<ConditionActionEvent> = new EventEmitter(false);
 
     globalError: string;
+    showCloseButton: boolean;
 
     filterText: string;
     status: string;
@@ -139,8 +140,9 @@ export class RuleEngineComponent {
         this._rsrcCache = {};
         this.status = null;
 
-        this.ruleViewService.message.subscribe((message: string) => {
-            this.globalError = message;
+        this.ruleViewService.message.subscribe((dotRuleMessage: DotRuleMessage) => {
+            this.globalError = dotRuleMessage.message;
+            this.showCloseButton = dotRuleMessage.allowClose;
         });
     }
 
