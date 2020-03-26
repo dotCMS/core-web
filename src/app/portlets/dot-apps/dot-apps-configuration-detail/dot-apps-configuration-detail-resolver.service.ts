@@ -22,11 +22,11 @@ export class DotAppsConfigurationDetailResolver
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<AppsResolverData> {
-        const serviceKey = route.paramMap.get('serviceKey');
+        const appKey = route.paramMap.get('appKey');
         const id = route.paramMap.get('id');
-        console.log('--llego', serviceKey, id);
+        console.log('--llego', appKey, id);
         // const appConfigurations$ = this.dotAppsService
-        //     .getConfiguration(serviceKey, id)
+        //     .getConfiguration(appKey, id)
         //     .pipe(take(1));
         const appConfigurations$ = of({
             name: 'sampleDescriptor1',
@@ -84,8 +84,8 @@ export class DotAppsConfigurationDetailResolver
             .pipe(take(1));
 
         return forkJoin([appConfigurations$, messages$]).pipe(
-            switchMap(([integration, messages]) => {
-                return of({ messages, service: integration });
+            switchMap(([app, messages]) => {
+                return of({ messages, app });
             })
         );
     }

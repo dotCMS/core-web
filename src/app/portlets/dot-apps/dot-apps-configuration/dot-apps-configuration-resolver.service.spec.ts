@@ -8,7 +8,7 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 
 class AppsServicesMock {
-    getConfiguration(_serviceKey: string) {}
+    getConfigurationList(_appKey: string) {}
 }
 
 const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>(
@@ -52,10 +52,10 @@ describe('DotAppsConfigurationListResolver', () => {
         );
     }));
 
-    it('should get and return service integration with configurations', () => {
+    it('should get and return app with configurations', () => {
         const response = {
             integrationsCount: 2,
-            serviceKey: 'google-calendar',
+            appKey: 'google-calendar',
             name: 'Google Calendar',
             description: 'It\'s a tool to keep track of your life\'s events',
             iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg',
@@ -79,7 +79,7 @@ describe('DotAppsConfigurationListResolver', () => {
         dotAppsConfigurationListResolver
             .resolve(activatedRouteSnapshotMock)
             .subscribe((fakeContentType: any) => {
-                expect(fakeContentType).toEqual({service: response, messages});
+                expect(fakeContentType).toEqual({app: response, messages});
             });
         expect(dotAppsServices.getConfigurationList).toHaveBeenCalledWith('123');
     });

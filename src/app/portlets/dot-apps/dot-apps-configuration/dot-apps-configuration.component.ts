@@ -23,7 +23,7 @@ export class DotAppsConfigurationComponent implements OnInit {
     @ViewChild('searchInput')
     searchInput: ElementRef;
     messagesKey: { [key: string]: string } = {};
-    serviceIntegration: DotApps;
+    apps: DotApps;
 
     disabledLoadDataButton: boolean;
     paginationPerPage = 10;
@@ -41,9 +41,9 @@ export class DotAppsConfigurationComponent implements OnInit {
     ngOnInit() {
         this.route.data
             .pipe(pluck('data'), take(1))
-            .subscribe(({ messages, service }: AppsResolverData) => {
-                this.serviceIntegration = service;
-                this.serviceIntegration.sites = [];
+            .subscribe(({ messages, app }: AppsResolverData) => {
+                this.apps = app;
+                this.apps.sites = [];
                 this.messagesKey = messages;
             });
 
@@ -53,7 +53,7 @@ export class DotAppsConfigurationComponent implements OnInit {
                 this.filterConfigurations(keyboardEvent.target['value']);
             });
 
-        this.paginationService.url = `v1/apps/${this.serviceIntegration.key}`;
+        this.paginationService.url = `v1/apps/${this.apps.key}`;
         this.paginationService.paginationPerPage = this.paginationPerPage;
         this.paginationService.sortField = 'name';
         this.paginationService.setExtraParams('filter', '');
@@ -74,12 +74,12 @@ export class DotAppsConfigurationComponent implements OnInit {
             .getWithOffset((event && event.first) || 0)
             .pipe(take(1), pluck('sites'))
             .subscribe((sites: DotAppsSites[]) => {
-                this.serviceIntegration.sites = event
-                    ? this.serviceIntegration.sites.concat(sites)
+                this.apps.sites = event
+                    ? this.apps.sites.concat(sites)
                     : sites;
                 this.totalRecords = this.paginationService.totalRecords;
                 this.disabledLoadDataButton = !this.isThereMoreData(
-                    this.serviceIntegration.sites.length
+                    this.apps.sites.length
                 );
             });
     }
@@ -91,7 +91,7 @@ export class DotAppsConfigurationComponent implements OnInit {
      * @memberof DotAppsConfigurationComponent
      */
     gotoConfiguration(site: DotAppsSites): void {
-        this.dotRouterService.goToAppsServices(this.serviceIntegration.key, site);
+        this.dotRouterService.goToAppsServices(this.apps.key, site);
     }
 
     /**
@@ -102,10 +102,10 @@ export class DotAppsConfigurationComponent implements OnInit {
      */
     deleteConfiguration(site: DotAppsSites): void {
         this.dotAppsService
-            .deleteConfiguration(this.serviceIntegration.key, site.id)
+            .deleteConfiguration(this.apps.key, site.id)
             .pipe(take(1))
             .subscribe(() => {
-                this.serviceIntegration.sites = [];
+                this.apps.sites = [];
                 this.loadData();
             });
     }
@@ -119,10 +119,10 @@ export class DotAppsConfigurationComponent implements OnInit {
         this.dotAlertConfirmService.confirm({
             accept: () => {
                 this.dotAppsService
-                    .deleteAllConfigurations(this.serviceIntegration.key)
+                    .deleteAllConfigurations(this.apps.key)
                     .pipe(take(1))
                     .subscribe(() => {
-                        this.serviceIntegration.sites = [];
+                        this.apps.sites = [];
                         this.loadData();
                     });
             },

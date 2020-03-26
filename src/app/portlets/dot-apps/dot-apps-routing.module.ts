@@ -12,21 +12,21 @@ import { DotAppsConfigurationDetailResolver } from '@portlets/dot-apps/dot-apps-
 const routes: Routes = [
     {
         component: DotAppsConfigurationDetailComponent,
-        path: ':serviceKey/create/:id',
+        path: ':appKey/create/:id',
         resolve: {
             data: DotAppsConfigurationDetailResolver
         }
     },
     {
         component: DotAppsConfigurationDetailComponent,
-        path: ':serviceKey/edit/:id',
+        path: ':appKey/edit/:id',
         resolve: {
             data: DotAppsConfigurationDetailResolver
         }
     },
     {
         component: DotAppsConfigurationComponent,
-        path: ':serviceKey',
+        path: ':appKey',
         resolve: {
             data: DotAppsConfigurationResolver
         }

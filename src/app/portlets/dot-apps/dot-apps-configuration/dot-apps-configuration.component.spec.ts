@@ -47,7 +47,7 @@ const sites = [
     }
 ];
 
-const serviceData = {
+const appData = {
     configurationsCount: 2,
     key: 'google-calendar',
     name: 'Google Calendar',
@@ -57,7 +57,7 @@ const serviceData = {
 };
 
 const routeDatamock = {
-    data: { service: serviceData, messages }
+    data: { app: appData, messages }
 };
 class ActivatedRouteMock {
     get data() {
@@ -135,19 +135,19 @@ describe('DotAppsConfigurationComponent', () => {
     describe('With integrations count', () => {
         beforeEach(() => {
             spyOn(paginationService, 'setExtraParams');
-            spyOn(paginationService, 'getWithOffset').and.returnValue(of(serviceData));
+            spyOn(paginationService, 'getWithOffset').and.returnValue(of(appData));
             spyOn(component.searchInput.nativeElement, 'focus');
             fixture.detectChanges();
         });
 
-        it('should set Service Integration from resolver', () => {
-            expect(component.serviceIntegration).toBe(serviceData);
+        it('should set App from resolver', () => {
+            expect(component.apps).toBe(appData);
             expect(component.messagesKey).toBe(messages);
         });
 
         it('should set onInit Pagination Service with right values', () => {
             expect(paginationService.url).toBe(
-                `v1/apps/${component.serviceIntegration.key}`
+                `v1/apps/${component.apps.key}`
             );
             expect(paginationService.paginationPerPage).toBe(component.paginationPerPage);
             expect(paginationService.sortField).toBe('name');
@@ -168,14 +168,14 @@ describe('DotAppsConfigurationComponent', () => {
                 fixture.debugElement.query(
                     By.css('.dot-apps-configuration__service-name')
                 ).nativeElement.innerText
-            ).toBe(component.serviceIntegration.name);
+            ).toBe(component.apps.name);
 
             expect(
                 fixture.debugElement.query(
                     By.css('.dot-apps-configuration__service-key')
                 ).nativeElement.textContent
             ).toContain(
-                `${component.messagesKey['apps.key']} ${component.serviceIntegration.key}`
+                `${component.messagesKey['apps.key']} ${component.apps.key}`
             );
 
             expect(
@@ -183,14 +183,14 @@ describe('DotAppsConfigurationComponent', () => {
                     By.css('.dot-apps-configuration__configurations')
                 ).nativeElement.textContent
             ).toContain(
-                `${component.serviceIntegration.configurationsCount} ${component.messagesKey['apps.configurations']}`
+                `${component.apps.configurationsCount} ${component.messagesKey['apps.configurations']}`
             );
 
             expect(
                 fixture.debugElement.query(
                     By.css('.dot-apps-configuration__description')
                 ).nativeElement.innerText
-            ).toContain(`${component.serviceIntegration.description}`);
+            ).toContain(`${component.apps.description}`);
 
             expect(
                 fixture.debugElement.query(
@@ -209,23 +209,23 @@ describe('DotAppsConfigurationComponent', () => {
             );
         });
 
-        it('should have Dot-Copy-Button with serviceKey value', () => {
+        it('should have Dot-Copy-Button with appKey value', () => {
             const copyBtn = fixture.debugElement.query(By.css('dot-copy-button')).componentInstance;
-            expect(copyBtn.copy).toBe(component.serviceIntegration.key);
-            expect(copyBtn.label).toBe(component.serviceIntegration.key);
+            expect(copyBtn.copy).toBe(component.apps.key);
+            expect(copyBtn.label).toBe(component.apps.key);
         });
 
         it('should have Dot-Avatar with correct values', () => {
             const avatar = fixture.debugElement.query(By.css('dot-avatar')).componentInstance;
             expect(avatar.size).toBe(112);
-            expect(avatar.url).toBe(component.serviceIntegration.iconUrl);
+            expect(avatar.url).toBe(component.apps.iconUrl);
         });
 
         it('should have dot-apps-configuration-list with correct values', () => {
             const listComp = fixture.debugElement.query(
                 By.css('dot-apps-configuration-list')
             ).componentInstance;
-            expect(listComp.siteConfigurations).toBe(component.serviceIntegration.sites);
+            expect(listComp.siteConfigurations).toBe(component.apps.sites);
             expect(listComp.disabledLoadDataButton).toBe(true);
             expect(listComp.itemsPerPage).toBe(component.paginationPerPage);
         });
@@ -244,7 +244,7 @@ describe('DotAppsConfigurationComponent', () => {
             ).componentInstance;
             listComp.edit.emit(sites[0]);
             expect(routerService.goToAppsServices).toHaveBeenCalledWith(
-                component.serviceIntegration.key,
+                component.apps.key,
                 sites[0]
             );
         });
@@ -263,7 +263,7 @@ describe('DotAppsConfigurationComponent', () => {
             deleteAllBtn.triggerEventHandler('click', null);
             expect(dialogService.confirm).toHaveBeenCalledTimes(1);
             expect(appsServices.deleteAllConfigurations).toHaveBeenCalledWith(
-                component.serviceIntegration.key
+                component.apps.key
             );
         });
 
@@ -275,12 +275,12 @@ describe('DotAppsConfigurationComponent', () => {
             listComp.delete.emit(sites[0]);
 
             expect(appsServices.deleteConfiguration).toHaveBeenCalledWith(
-                component.serviceIntegration.key,
+                component.apps.key,
                 sites[0].id
             );
         });
 
-        it('should call service integration filter on search', fakeAsync(() => {
+        it('should call App filter on search', fakeAsync(() => {
             component.searchInput.nativeElement.value = 'test';
             component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
             tick(550);
@@ -291,8 +291,8 @@ describe('DotAppsConfigurationComponent', () => {
 
     describe('With NO integrations count', () => {
         beforeEach(() => {
-            routeDatamock.data.service = {
-                ...serviceData,
+            routeDatamock.data.app = {
+                ...appData,
                 configurationsCount: 0
             };
             fixture.detectChanges();

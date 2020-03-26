@@ -44,15 +44,15 @@ export class DotAppsService {
 
     /**
      * Return a list of configurations of a specific Apps
-     * @param {string} serviceKey
+     * @param {string} appKey
      * @returns Observable<DotApps>
      * @memberof DotAppsService
      */
-    getConfigurationList(serviceKey: string): Observable<DotApps> {
+    getConfigurationList(appKey: string): Observable<DotApps> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `${serviceIntegrationUrl}/${serviceKey}`
+                url: `${serviceIntegrationUrl}/${appKey}`
             })
             .pipe(
                 pluck('entity'),
@@ -67,16 +67,16 @@ export class DotAppsService {
 
     /**
      * Return a detail configuration of a specific App
-     * @param {string} serviceKey
+     * @param {string} appKey
      * @param {string} id
      * @returns Observable<DotServiceIntegration>
      * @memberof DotAppsService
      */
-    getConfiguration(serviceKey: string, id: string): Observable<DotApps> {
+    getConfiguration(appKey: string, id: string): Observable<DotApps> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `${serviceIntegrationUrl}/${serviceKey}/${id}`
+                url: `${serviceIntegrationUrl}/${appKey}/${id}`
             })
             .pipe(
                 pluck('entity'),
@@ -91,14 +91,14 @@ export class DotAppsService {
 
     /**
      * Saves a detail configuration of a specific Service Integration
-     * @param {string} serviceKey
+     * @param {string} appKey
      * @param {string} id
      * @param {[key: string]: string} params
      * @returns Observable<DotServiceIntegration>
      * @memberof DotServiceIntegrationService
      */
     saveSiteConfiguration(
-        serviceKey: string,
+        appKey: string,
         id: string,
         params: DotAppsSaveData
     ): Observable<string> {
@@ -109,7 +109,7 @@ export class DotAppsService {
                     params
                 },
                 method: RequestMethod.Post,
-                url: `${serviceIntegrationUrl}/${serviceKey}/${id}`
+                url: `${serviceIntegrationUrl}/${appKey}/${id}`
             })
             .pipe(
                 pluck('entity'),
@@ -124,16 +124,16 @@ export class DotAppsService {
 
     /**
      * Delete configuration of a specific Service Integration
-     * @param {string} serviceKey
+     * @param {string} appKey
      * @param {string} hostId
      * @returns Observable<string>
      * @memberof DotAppsService
      */
-    deleteConfiguration(serviceKey: string, hostId: string): Observable<string> {
+    deleteConfiguration(appKey: string, hostId: string): Observable<string> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `${serviceIntegrationUrl}/${serviceKey}/${hostId}`
+                url: `${serviceIntegrationUrl}/${appKey}/${hostId}`
             })
             .pipe(
                 pluck('entity'),
@@ -148,15 +148,15 @@ export class DotAppsService {
 
     /**
      * Delete all configuration of a specific Service Integration
-     * @param {string} serviceKey
+     * @param {string} appKey
      * @returns Observable<string>
      * @memberof DotAppsService
      */
-    deleteAllConfigurations(serviceKey: string): Observable<string> {
+    deleteAllConfigurations(appKey: string): Observable<string> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `${serviceIntegrationUrl}/${serviceKey}`
+                url: `${serviceIntegrationUrl}/${appKey}`
             })
             .pipe(
                 pluck('entity'),

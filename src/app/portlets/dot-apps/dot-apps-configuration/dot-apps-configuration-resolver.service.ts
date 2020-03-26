@@ -8,7 +8,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 
 export interface AppsResolverData {
     messages?: { [key: string]: string };
-    service: DotApps;
+    app: DotApps;
 }
 
 /**
@@ -27,9 +27,9 @@ export class DotAppsConfigurationResolver
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<AppsResolverData> {
-        const serviceKey = route.paramMap.get('serviceKey');
-        const servicesConfigurations$ = this.dotAppsService
-            .getConfigurationList(serviceKey)
+        const appKey = route.paramMap.get('appKey');
+        const appConfigurations$ = this.dotAppsService
+            .getConfigurationList(appKey)
             .pipe(take(1));
         const messages$: Observable<{
             [key: string]: string;
@@ -48,9 +48,9 @@ export class DotAppsConfigurationResolver
             ])
             .pipe(take(1));
 
-        return forkJoin([servicesConfigurations$, messages$]).pipe(
-            switchMap(([integration, messages]) => {
-                return of({ messages, service: integration });
+        return forkJoin([appConfigurations$, messages$]).pipe(
+            switchMap(([app, messages]) => {
+                return of({ messages, app });
             })
         );
     }
