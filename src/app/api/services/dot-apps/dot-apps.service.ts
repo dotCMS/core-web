@@ -22,14 +22,16 @@ export class DotAppsService {
 
     /**
      * Return a list of Service Integrations.
+     * @param {string} filter
      * @returns Observable<DotApps[]>
      * @memberof DotAppsService
      */
-    get(): Observable<DotApps[]> {
+    get(filter?: string): Observable<DotApps[]> {
+        const url = filter ? `${serviceIntegrationUrl}?filter=${filter}` : serviceIntegrationUrl;
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: serviceIntegrationUrl
+                url
             })
             .pipe(
                 pluck('entity'),
@@ -97,11 +99,7 @@ export class DotAppsService {
      * @returns Observable<DotServiceIntegration>
      * @memberof DotServiceIntegrationService
      */
-    saveSiteConfiguration(
-        appKey: string,
-        id: string,
-        params: DotAppsSaveData
-    ): Observable<string> {
+    saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Observable<string> {
         console.log('***param', params);
         return this.coreWebService
             .requestView({

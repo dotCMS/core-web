@@ -6,6 +6,7 @@ import { DotApps } from '@shared/models/dot-apps/dot-apps.model';
 import * as _ from 'lodash';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { ActivatedRoute } from '@angular/router';
+import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 
 @Component({
     selector: 'dot-apps-list',
@@ -24,7 +25,8 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
     constructor(
         public dotMessageService: DotMessageService,
         private route: ActivatedRoute,
-        private dotRouterService: DotRouterService
+        private dotRouterService: DotRouterService,
+        private dotAppsService: DotAppsService
     ) {}
 
     ngOnInit() {
@@ -67,8 +69,8 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
     }
 
     private filterApps(searchCriteria?: string): void {
-        this.appsCopy = this.apps.filter(
-            (app: DotApps) => app.name.toUpperCase().search(searchCriteria.toUpperCase()) >= 0
-        );
+        this.dotAppsService.get(searchCriteria).subscribe((apps: DotApps[]) => {
+            this.appsCopy = apps;
+        });
     }
 }

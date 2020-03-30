@@ -69,6 +69,27 @@ describe('DotAppsService', () => {
         expect(this.lastConnection.request.url).toContain(url);
     });
 
+    it('should get filtered app', () => {
+        const filter = 'asana';
+        const url = `v1/apps?filter=${filter}`;
+        this.dotAppsService.get(filter).subscribe((apps: DotApps[]) => {
+            expect(apps).toEqual([mockDotApps[1]]);
+        });
+
+        this.lastConnection.mockRespond(
+            new Response(
+                new ResponseOptions({
+                    body: {
+                        entity: [mockDotApps[1]]
+                    }
+                })
+            )
+        );
+
+        expect(this.lastConnection.request.method).toBe(RequestMethod.Get);
+        expect(this.lastConnection.request.url).toContain(url);
+    });
+
     it('should throw error on get apps and handle it', () => {
         const error404 = mockResponseView(400);
         spyOn(this.dotHttpErrorManagerService, 'handle').and.callThrough();
