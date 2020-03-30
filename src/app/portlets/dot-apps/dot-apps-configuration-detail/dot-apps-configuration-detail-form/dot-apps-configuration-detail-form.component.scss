@@ -1,0 +1,29 @@
+@import "variables";
+
+:host {
+    form {
+        display: flex;
+        width: 100%;
+    }
+
+    textarea {
+        height: 36px;
+    }
+}
+
+.dot-apps-configuration-detail__form {
+    flex-grow: 1;
+}
+
+.dot-apps-configuration-detail__form-row {
+    margin-bottom: $basic-padding * 3;
+
+    & > * {
+        width: 100%;
+    }
+
+    label.required:before {
+        color: $red;
+        content: "* ";
+    }
+}

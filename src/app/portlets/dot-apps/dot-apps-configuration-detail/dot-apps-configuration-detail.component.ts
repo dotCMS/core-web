@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { pluck, take } from 'rxjs/operators';
 
 import { AppsResolverData } from '../dot-apps-configuration/dot-apps-configuration-resolver.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 
@@ -18,8 +17,9 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
     messagesKey: { [key: string]: string } = {};
     apps: DotApps;
 
+    formData: { [key: string]: string };
     formFields: any[];
-    myFormGroup: FormGroup;
+    formValid: boolean;
 
     constructor(
         private route: ActivatedRoute,
@@ -36,17 +36,17 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
                 this.messagesKey = messages;
             });
 
-        const group = {};
-        this.formFields.forEach((field) => {
-            group[field.name] = new FormControl(
-                field.value || '',
-                field.required ? Validators.required : null
-            );
-        });
-        this.myFormGroup = new FormGroup(group);
-        this.myFormGroup.valueChanges.subscribe((val) => {
-            console.log('change', val);
-        });
+        // const group = {};
+        // this.formFields.forEach((field) => {
+        //     group[field.name] = new FormControl(
+        //         field.value || '',
+        //         field.required ? Validators.required : null
+        //     );
+        // });
+        // this.myFormGroup = new FormGroup(group);
+        // this.myFormGroup.valueChanges.subscribe((val) => {
+        //     console.log('change', val);
+        // });
     }
 
     onSubmit() {
@@ -57,6 +57,10 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
                 this.getTransformedFormData()
             )
             .subscribe();
+    }
+
+    setFormData(form: { [key: string]: string }): void {
+        this.formData = form;
     }
 
     /**
@@ -71,10 +75,10 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
 
     private getTransformedFormData(): DotAppsSaveData {
         const params = {};
-        for (const key of Object.keys(this.myFormGroup.value)) {
+        for (const key of Object.keys(this.formData)) {
             params[key] = {
-                hidden: this.myFormGroup.value[`${key}Hidden`] || false,
-                value: this.myFormGroup.value[key]
+                hidden: this.formData[`${key}Hidden`] || false,
+                value: this.formData[key]
             };
         }
         return params;

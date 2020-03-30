@@ -6,15 +6,6 @@
     display: flex;
     height: 100%;
     padding: $basic-padding * 3;
-
-    form {
-        display: flex;
-        width: 100%;
-    }
-
-    textarea {
-        height: 36px;
-    }
 }
 
 .dot-apps-configuration-detail__header {
@@ -67,6 +58,10 @@
     padding: $basic-padding * 3;
 }
 
+.dot-apps-configuration-detail__form-content {
+    margin: $basic-padding * 3;
+}
+
 .dot-apps-configuration-detail__container {
     background-color: $white;
     box-shadow: $md-shadow-4;
@@ -74,21 +69,4 @@
     flex-direction: column;
     overflow-y: auto;
     width: 100%;
-}
-
-.dot-apps-configuration-detail__form {
-    padding: $basic-padding * 3 $basic-padding * 3 0 $basic-padding * 3;
-}
-
-.dot-apps-configuration-detail__form-row {
-    margin-bottom: $basic-padding * 3;
-
-    & > * {
-        width: 100%;
-    }
-
-    label.required:before {
-        color: $red;
-        content: "* ";
-    }
 }
