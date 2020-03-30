@@ -248,7 +248,7 @@ export class DotEditContentToolbarHtmlService {
 
     private isMaxContentletsLimitReached(container: HTMLElement): boolean {
         const contentletsSize = Array.from(
-            container.querySelectorAll('[data-dot-object="contentlet"]')
+            container.querySelectorAll('[data-dot-object="contentlet"][data-dot-has-page-lang-version="true"]')
         ).length;
         return parseInt(container.dataset.maxContentlets, 10) <= contentletsSize;
     }
