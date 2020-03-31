@@ -1,9 +1,9 @@
 export interface DotApps {
+    configurationsCount?: number;
     description?: string;
     iconUrl?: string;
-    configurationsCount?: number;
-    name: string;
     key: string;
+    name: string;
     sites?: DotAppsSites[];
 }
 

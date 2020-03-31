@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {
-    DotApps,
-    DotAppsSites
-} from '@shared/models/dot-apps/dot-apps.model';
+import { DotApps, DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, take, debounceTime } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
@@ -69,18 +66,16 @@ export class DotAppsConfigurationComponent implements OnInit {
      * @param LazyLoadEvent event
      * @memberof DotAppsConfigurationComponent
      */
-    loadData(event?: LazyLoadEvent) {
+    loadData(event?: LazyLoadEvent): void {
         this.paginationService
             .getWithOffset((event && event.first) || 0)
-            .pipe(take(1), pluck('sites'))
-            .subscribe((sites: DotAppsSites[]) => {
-                this.apps.sites = event
-                    ? this.apps.sites.concat(sites)
-                    : sites;
+            .pipe(take(1))
+            .subscribe((apps: DotApps[]) => {
+                const app = [].concat(apps)[0];
+                this.apps.sites = event ? this.apps.sites.concat(app.sites) : app.sites;
+                this.apps.configurationsCount = app.configurationsCount;
                 this.totalRecords = this.paginationService.totalRecords;
-                this.disabledLoadDataButton = !this.isThereMoreData(
-                    this.apps.sites.length
-                );
+                this.disabledLoadDataButton = !this.isThereMoreData(this.apps.sites.length);
             });
     }
 

@@ -6,6 +6,7 @@ import { pluck, take } from 'rxjs/operators';
 import { AppsResolverData } from '../dot-apps-configuration/dot-apps-configuration-resolver.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 @Component({
     selector: 'dot-apps-configuration-detail',
@@ -24,7 +25,8 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private dotRouterService: DotRouterService,
-        private dotAppsService: DotAppsService
+        private dotAppsService: DotAppsService,
+        private dotDialogService: DotAlertConfirmService
     ) {}
 
     ngOnInit() {
@@ -35,18 +37,6 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
                 this.formFields = app.sites[0].secrets;
                 this.messagesKey = messages;
             });
-
-        // const group = {};
-        // this.formFields.forEach((field) => {
-        //     group[field.name] = new FormControl(
-        //         field.value || '',
-        //         field.required ? Validators.required : null
-        //     );
-        // });
-        // this.myFormGroup = new FormGroup(group);
-        // this.myFormGroup.valueChanges.subscribe((val) => {
-        //     console.log('change', val);
-        // });
     }
 
     onSubmit() {
@@ -56,7 +46,18 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
                 this.apps.sites[0].id,
                 this.getTransformedFormData()
             )
-            .subscribe();
+            .subscribe(() => {
+                this.dotDialogService.alert({
+                    accept: () => {
+                        this.goToApps(this.apps.key);
+                    },
+                    header: this.messagesKey['apps.form.dialog.success.header'],
+                    message: this.messagesKey['apps.form.dialog.success.message'],
+                    footerLabel: {
+                        accept: this.messagesKey['ok']
+                    }
+                });
+            });
     }
 
     setFormData(form: { [key: string]: string }): void {

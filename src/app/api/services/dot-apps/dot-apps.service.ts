@@ -100,11 +100,10 @@ export class DotAppsService {
      * @memberof DotServiceIntegrationService
      */
     saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Observable<string> {
-        console.log('***param', params);
         return this.coreWebService
             .requestView({
                 body: {
-                    params
+                    ...params
                 },
                 method: RequestMethod.Post,
                 url: `${serviceIntegrationUrl}/${appKey}/${id}`
