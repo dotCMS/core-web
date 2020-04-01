@@ -206,7 +206,7 @@ export class DotRouterService {
     }
 
     /**
-     * Replace the query params received in the URL
+     * Replace the query params received, in the URL
      *
      * @param {{ [key: string]: string | number }} params
      * @returns {void}
@@ -216,7 +216,6 @@ export class DotRouterService {
         this.router.navigate(
             [],
             {
-                relativeTo: this.route,
                 queryParams: params,
                 queryParamsHandling: 'merge'
             });

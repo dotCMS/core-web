@@ -35,7 +35,7 @@ class ActivatedRouteMock {
     };
 }
 
-fdescribe('DotRouterService', () => {
+describe('DotRouterService', () => {
     let service: DotRouterService;
     let router: Router;
 
@@ -176,5 +176,15 @@ fdescribe('DotRouterService', () => {
                 'c/content%3Ffilter%3DProducts/19d3aecc-5b68-4d98-ba1b-297d5859403c'
             )
         ).toBe('content');
+    });
+
+    it('should navigate replacing URL params', () => {
+        const params = {id: 'content'};
+        service.replaceQueryParams(params);
+        expect(router.navigate).toHaveBeenCalledWith([],
+            {
+                queryParams: params,
+                queryParamsHandling: 'merge'
+            });
     });
 });
