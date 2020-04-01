@@ -28,7 +28,7 @@ const getDotPageRenderStateMock = () => {
     return new DotPageRenderState(mockUser, mockDotRenderedPage);
 };
 
-describe('DotPageStateService', () => {
+fdescribe('DotPageStateService', () => {
     let backend: MockBackend;
     let dotContentletLockerService: DotContentletLockerService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;

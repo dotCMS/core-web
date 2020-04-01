@@ -35,7 +35,7 @@ class ActivatedRouteMock {
     };
 }
 
-describe('DotRouterService', () => {
+fdescribe('DotRouterService', () => {
     let service: DotRouterService;
     let router: Router;
 
