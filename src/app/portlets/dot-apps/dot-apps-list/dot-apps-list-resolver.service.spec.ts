@@ -15,7 +15,7 @@ const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnaps
 );
 activatedRouteSnapshotMock.paramMap = {};
 
-fdescribe('DotAppsListResolver', () => {
+describe('DotAppsListResolver', () => {
     let dotAppsServices: DotAppsService;
     let dotAppsListResolver: DotAppsListResolver;
 

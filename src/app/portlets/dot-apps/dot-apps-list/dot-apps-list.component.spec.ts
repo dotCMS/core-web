@@ -43,7 +43,7 @@ class ActivatedRouteMock {
     }
 }
 
-fdescribe('DotAppsListComponent', () => {
+describe('DotAppsListComponent', () => {
     let component: DotAppsListComponent;
     let fixture: ComponentFixture<DotAppsListComponent>;
     let routerService: DotRouterService;

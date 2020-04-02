@@ -26,7 +26,7 @@ const mockDotApps = [
     }
 ];
 
-fdescribe('DotAppsService', () => {
+describe('DotAppsService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.configureTestingModule({
             providers: [

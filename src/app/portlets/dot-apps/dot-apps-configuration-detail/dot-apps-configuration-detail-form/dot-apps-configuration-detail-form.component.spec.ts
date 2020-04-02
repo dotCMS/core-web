@@ -45,7 +45,7 @@ const formState = {
     enabled: JSON.parse(secrets[2].value)
 };
 
-fdescribe('DotAppsConfigurationDetailFormComponent', () => {
+describe('DotAppsConfigurationDetailFormComponent', () => {
     let component: DotAppsConfigurationDetailFormComponent;
     let fixture: ComponentFixture<DotAppsConfigurationDetailFormComponent>;
 

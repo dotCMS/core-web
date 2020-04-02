@@ -75,7 +75,7 @@ class MockDotAppsService {
     }
 }
 
-fdescribe('DotAppsConfigurationComponent', () => {
+describe('DotAppsConfigurationComponent', () => {
     let component: DotAppsConfigurationComponent;
     let fixture: ComponentFixture<DotAppsConfigurationComponent>;
     let dialogService: DotAlertConfirmService;
