@@ -7,7 +7,7 @@ import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { CardModule } from 'primeng/primeng';
 
-describe('DotAppsCardComponent', () => {
+fdescribe('DotAppsCardComponent', () => {
     let component: DotAppsCardComponent;
     let fixture: ComponentFixture<DotAppsCardComponent>;
 

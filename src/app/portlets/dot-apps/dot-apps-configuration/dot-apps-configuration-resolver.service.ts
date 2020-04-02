@@ -16,7 +16,7 @@ export interface AppsResolverData {
  *
  * @export
  * @class DotAppsPageResolver
- * @implements {Resolve<AppsResolverData>}
+ * @implements {Resolve<{[key: string]: string}>}
  */
 @Injectable()
 export class DotAppsConfigurationResolver
@@ -27,9 +27,9 @@ export class DotAppsConfigurationResolver
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<AppsResolverData> {
-        const appKey = route.paramMap.get('appKey');
-        const appConfigurations$ = this.dotAppsService
-            .getConfigurationList(appKey)
+        const appsKey = route.paramMap.get('appKey');
+        const appsConfigurations$ = this.dotAppsService
+            .getConfigurationList(appsKey)
             .pipe(take(1));
         const messages$: Observable<{
             [key: string]: string;
@@ -48,7 +48,7 @@ export class DotAppsConfigurationResolver
             ])
             .pipe(take(1));
 
-        return forkJoin([appConfigurations$, messages$]).pipe(
+        return forkJoin([appsConfigurations$, messages$]).pipe(
             switchMap(([app, messages]) => {
                 return of({ messages, app });
             })

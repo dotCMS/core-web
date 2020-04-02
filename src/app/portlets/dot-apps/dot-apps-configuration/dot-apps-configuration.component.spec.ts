@@ -75,7 +75,7 @@ class MockDotAppsService {
     }
 }
 
-describe('DotAppsConfigurationComponent', () => {
+fdescribe('DotAppsConfigurationComponent', () => {
     let component: DotAppsConfigurationComponent;
     let fixture: ComponentFixture<DotAppsConfigurationComponent>;
     let dialogService: DotAlertConfirmService;
@@ -146,9 +146,7 @@ describe('DotAppsConfigurationComponent', () => {
         });
 
         it('should set onInit Pagination Service with right values', () => {
-            expect(paginationService.url).toBe(
-                `v1/apps/${component.apps.key}`
-            );
+            expect(paginationService.url).toBe(`v1/apps/${component.apps.key}`);
             expect(paginationService.paginationPerPage).toBe(component.paginationPerPage);
             expect(paginationService.sortField).toBe('name');
             expect(paginationService.sortOrder).toBe(1);
@@ -165,48 +163,36 @@ describe('DotAppsConfigurationComponent', () => {
 
         it('should set messages/values in DOM correctly', () => {
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__service-name')
-                ).nativeElement.innerText
+                fixture.debugElement.query(By.css('.dot-apps-configuration__service-name'))
+                    .nativeElement.innerText
             ).toBe(component.apps.name);
 
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__service-key')
-                ).nativeElement.textContent
-            ).toContain(
-                `${component.messagesKey['apps.key']} ${component.apps.key}`
-            );
+                fixture.debugElement.query(By.css('.dot-apps-configuration__service-key'))
+                    .nativeElement.textContent
+            ).toContain(`${component.messagesKey['apps.key']} ${component.apps.key}`);
 
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__configurations')
-                ).nativeElement.textContent
+                fixture.debugElement.query(By.css('.dot-apps-configuration__configurations'))
+                    .nativeElement.textContent
             ).toContain(
                 `${component.apps.configurationsCount} ${component.messagesKey['apps.configurations']}`
             );
 
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__description')
-                ).nativeElement.innerText
+                fixture.debugElement.query(By.css('.dot-apps-configuration__description'))
+                    .nativeElement.innerText
             ).toContain(`${component.apps.description}`);
 
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__action_header input')
-                ).nativeElement.placeholder
+                fixture.debugElement.query(By.css('.dot-apps-configuration__action_header input'))
+                    .nativeElement.placeholder
             ).toContain(component.messagesKey['apps.search.placeholder']);
 
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__action_header button')
-                ).nativeElement.innerText
-            ).toContain(
-                component.messagesKey[
-                    'apps.confirmation.delete.all.button'
-                ].toUpperCase()
-            );
+                fixture.debugElement.query(By.css('.dot-apps-configuration__action_header button'))
+                    .nativeElement.innerText
+            ).toContain(component.messagesKey['apps.confirmation.delete.all.button'].toUpperCase());
         });
 
         it('should have Dot-Copy-Button with appKey value', () => {
@@ -222,26 +208,23 @@ describe('DotAppsConfigurationComponent', () => {
         });
 
         it('should have dot-apps-configuration-list with correct values', () => {
-            const listComp = fixture.debugElement.query(
-                By.css('dot-apps-configuration-list')
-            ).componentInstance;
+            const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
+                .componentInstance;
             expect(listComp.siteConfigurations).toBe(component.apps.sites);
             expect(listComp.disabledLoadDataButton).toBe(true);
             expect(listComp.itemsPerPage).toBe(component.paginationPerPage);
         });
 
         it('should dot-apps-configuration-list emit action to load more data', () => {
-            const listComp = fixture.debugElement.query(
-                By.css('dot-apps-configuration-list')
-            ).componentInstance;
+            const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
+                .componentInstance;
             listComp.loadData.emit({ first: 10 });
             expect(paginationService.getWithOffset).toHaveBeenCalledWith(10);
         });
 
         it('should redirect to goto configuration page action', () => {
-            const listComp = fixture.debugElement.query(
-                By.css('dot-apps-configuration-list')
-            ).componentInstance;
+            const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
+                .componentInstance;
             listComp.edit.emit(sites[0]);
             expect(routerService.goToAppsServices).toHaveBeenCalledWith(
                 component.apps.key,
@@ -262,16 +245,13 @@ describe('DotAppsConfigurationComponent', () => {
 
             deleteAllBtn.triggerEventHandler('click', null);
             expect(dialogService.confirm).toHaveBeenCalledTimes(1);
-            expect(appsServices.deleteAllConfigurations).toHaveBeenCalledWith(
-                component.apps.key
-            );
+            expect(appsServices.deleteAllConfigurations).toHaveBeenCalledWith(component.apps.key);
         });
 
         it('should delete a specific configuration', () => {
             spyOn(appsServices, 'deleteConfiguration').and.returnValue(of(null));
-            const listComp = fixture.debugElement.query(
-                By.css('dot-apps-configuration-list')
-            ).componentInstance;
+            const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
+                .componentInstance;
             listComp.delete.emit(sites[0]);
 
             expect(appsServices.deleteConfiguration).toHaveBeenCalledWith(
@@ -300,9 +280,8 @@ describe('DotAppsConfigurationComponent', () => {
 
         it('should show No configurations label', () => {
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__configurations')
-                ).nativeElement.textContent
+                fixture.debugElement.query(By.css('.dot-apps-configuration__configurations'))
+                    .nativeElement.textContent
             ).toContain(component.messagesKey['apps.no.configurations']);
         });
     });

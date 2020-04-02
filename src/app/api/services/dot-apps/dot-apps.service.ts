@@ -6,10 +6,10 @@ import { RequestMethod } from '@angular/http';
 import { CoreWebService, ResponseView } from 'dotcms-js';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
-const serviceIntegrationUrl = `v1/apps`;
+const appsUrl = `v1/apps`;
 
 /**
- * Provide util methods to get service integrations in the system.
+ * Provide util methods to get apps in the system.
  * @export
  * @class DotAppsService
  */
@@ -21,13 +21,13 @@ export class DotAppsService {
     ) {}
 
     /**
-     * Return a list of Service Integrations.
+     * Return a list of apps.
      * @param {string} filter
      * @returns Observable<DotApps[]>
      * @memberof DotAppsService
      */
     get(filter?: string): Observable<DotApps[]> {
-        const url = filter ? `${serviceIntegrationUrl}?filter=${filter}` : serviceIntegrationUrl;
+        const url = filter ? `${appsUrl}?filter=${filter}` : appsUrl;
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
@@ -54,7 +54,7 @@ export class DotAppsService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `${serviceIntegrationUrl}/${appKey}`
+                url: `${appsUrl}/${appKey}`
             })
             .pipe(
                 pluck('entity'),
@@ -71,14 +71,14 @@ export class DotAppsService {
      * Return a detail configuration of a specific App
      * @param {string} appKey
      * @param {string} id
-     * @returns Observable<DotServiceIntegration>
+     * @returns Observable<DotApps>
      * @memberof DotAppsService
      */
     getConfiguration(appKey: string, id: string): Observable<DotApps> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `${serviceIntegrationUrl}/${appKey}/${id}`
+                url: `${appsUrl}/${appKey}/${id}`
             })
             .pipe(
                 pluck('entity'),
@@ -96,8 +96,8 @@ export class DotAppsService {
      * @param {string} appKey
      * @param {string} id
      * @param {[key: string]: string} params
-     * @returns Observable<DotServiceIntegration>
-     * @memberof DotServiceIntegrationService
+     * @returns Observable<string>
+     * @memberof DotAppsService
      */
     saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Observable<string> {
         return this.coreWebService
@@ -106,7 +106,7 @@ export class DotAppsService {
                     ...params
                 },
                 method: RequestMethod.Post,
-                url: `${serviceIntegrationUrl}/${appKey}/${id}`
+                url: `${appsUrl}/${appKey}/${id}`
             })
             .pipe(
                 pluck('entity'),
@@ -130,7 +130,7 @@ export class DotAppsService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `${serviceIntegrationUrl}/${appKey}/${hostId}`
+                url: `${appsUrl}/${appKey}/${hostId}`
             })
             .pipe(
                 pluck('entity'),
@@ -153,7 +153,7 @@ export class DotAppsService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `${serviceIntegrationUrl}/${appKey}`
+                url: `${appsUrl}/${appKey}`
             })
             .pipe(
                 pluck('entity'),

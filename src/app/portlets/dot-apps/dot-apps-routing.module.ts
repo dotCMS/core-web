@@ -4,9 +4,7 @@ import { DotAppsListComponent } from './dot-apps-list/dot-apps-list.component';
 import { DotAppsListResolver } from './dot-apps-list/dot-apps-list-resolver.service';
 import { DotAppsConfigurationComponent } from './dot-apps-configuration/dot-apps-configuration.component';
 import { DotAppsConfigurationResolver } from './dot-apps-configuration/dot-apps-configuration-resolver.service';
-// tslint:disable-next-line:max-line-length
 import { DotAppsConfigurationDetailComponent } from '@portlets/dot-apps/dot-apps-configuration-detail/dot-apps-configuration-detail.component';
-// tslint:disable-next-line:max-line-length
 import { DotAppsConfigurationDetailResolver } from '@portlets/dot-apps/dot-apps-configuration-detail/dot-apps-configuration-detail-resolver.service';
 
 const routes: Routes = [

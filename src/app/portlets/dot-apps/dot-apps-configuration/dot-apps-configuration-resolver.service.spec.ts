@@ -8,7 +8,7 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 
 class AppsServicesMock {
-    getConfigurationList(_appKey: string) {}
+    getConfigurationList(_serviceKey: string) {}
 }
 
 const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>(
@@ -17,7 +17,7 @@ const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnaps
 );
 activatedRouteSnapshotMock.paramMap = {};
 
-describe('DotAppsConfigurationListResolver', () => {
+fdescribe('DotAppsConfigurationListResolver', () => {
     let dotAppsServices: DotAppsService;
     let dotAppsConfigurationListResolver: DotAppsConfigurationResolver;
     const messages = {
@@ -52,12 +52,12 @@ describe('DotAppsConfigurationListResolver', () => {
         );
     }));
 
-    it('should get and return app with configurations', () => {
+    it('should get and return apps with configurations', () => {
         const response = {
             integrationsCount: 2,
-            appKey: 'google-calendar',
+            serviceKey: 'google-calendar',
             name: 'Google Calendar',
-            description: 'It\'s a tool to keep track of your life\'s events',
+            description: "It's a tool to keep track of your life's events",
             iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg',
             hosts: [
                 {
