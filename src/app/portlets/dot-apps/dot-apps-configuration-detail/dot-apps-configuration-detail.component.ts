@@ -20,7 +20,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
 
     formData: { [key: string]: string };
     formFields: any[];
-    formValid: boolean;
+    formValid = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -60,10 +60,6 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
             });
     }
 
-    setFormData(form: { [key: string]: string }): void {
-        this.formData = form;
-    }
-
     /**
      * Redirects to app configuration listing page
      *
@@ -79,7 +75,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
         for (const key of Object.keys(this.formData)) {
             params[key] = {
                 hidden: this.formData[`${key}Hidden`] || false,
-                value: this.formData[key]
+                value: this.formData[key].toString()
             };
         }
         return params;

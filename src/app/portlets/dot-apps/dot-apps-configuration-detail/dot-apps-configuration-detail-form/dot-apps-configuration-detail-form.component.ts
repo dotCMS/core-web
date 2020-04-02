@@ -1,22 +1,16 @@
-import {
-    Component,
-    OnInit,
-    Input,
-    Output,
-    EventEmitter,
-    ViewChild,
-    AfterContentChecked
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
+import { DotAppsSecrets } from '@shared/models/dot-apps/dot-apps.model';
 
 @Component({
     selector: 'dot-apps-configuration-detail-form',
     templateUrl: './dot-apps-configuration-detail-form.component.html',
     styleUrls: ['./dot-apps-configuration-detail-form.component.scss']
 })
-export class DotAppsConfigurationDetailFormComponent implements OnInit, AfterContentChecked {
+export class DotAppsConfigurationDetailFormComponent implements OnInit {
     @ViewChild('form') public form: NgForm;
-    @Input() formFields: any[];
+
+    @Input() formFields: DotAppsSecrets[];
     @Output() data = new EventEmitter<FormGroup>();
     @Output() valid = new EventEmitter<boolean>();
     myFormGroup: FormGroup;
@@ -25,22 +19,27 @@ export class DotAppsConfigurationDetailFormComponent implements OnInit, AfterCon
 
     ngOnInit() {
         const group = {};
-        this.formFields.forEach((field) => {
+        this.formFields.forEach((field: DotAppsSecrets) => {
             group[field.name] = new FormControl(
-                field.value || '',
+                this.getFieldValue(field),
                 field.required ? Validators.required : null
             );
         });
         this.myFormGroup = new FormGroup(group);
 
         this.myFormGroup.valueChanges.subscribe(() => {
-            this.data.emit(this.myFormGroup.value);
-            this.valid.emit(this.form.valid);
+            this.emitValues();
         });
+
+        this.emitValues();
     }
 
-    ngAfterContentChecked(): void {
+    private getFieldValue(field: DotAppsSecrets): string | boolean {
+        return field.value && field.type === 'BOOL' ? JSON.parse(field.value) : field.value;
+    }
+
+    private emitValues(): void {
         this.data.emit(this.myFormGroup.value);
-        this.valid.emit(this.form.valid);
+        this.valid.emit(this.myFormGroup.status === 'VALID');
     }
 }
