@@ -14,7 +14,15 @@ export class DotParseHtmlService {
         this.renderer = rendererFactory.createRenderer(null, null);
     }
 
-    parse(code: string, element: HTMLElement, clear: boolean) {
+    /**
+     * Insert in an element the given code including the execution of scripts.
+     *
+     * @param {string} code
+     * @param {HTMLElement} element
+     * @param {boolean} clear
+     * @memberof DotParseHtmlService
+     */
+    parse(code: string, element: HTMLElement, clear: boolean): void {
         if (clear) {
             this.clearElement(element);
         }
