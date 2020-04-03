@@ -95,7 +95,7 @@ export class DotAppsService {
      * Saves a detail configuration of a specific Service Integration
      * @param {string} appKey
      * @param {string} id
-     * @param {[key: string]: string} params
+     * @param {DotAppsSaveData} params
      * @returns Observable<string>
      * @memberof DotAppsService
      */

@@ -45,7 +45,7 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
             });
 
         observableFromEvent(this.searchInput.nativeElement, 'keyup')
-            .pipe(debounceTime(500))
+            .pipe(debounceTime(500), takeUntil(this.destroy$))
             .subscribe((keyboardEvent: Event) => {
                 this.filterApps(keyboardEvent.target['value']);
             });

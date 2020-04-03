@@ -29,7 +29,7 @@
     color: $gray;
     display: inline-block;
     font-size: $font-size-large;
-    height: 24px;
+    height: $basic-padding * 3;
     margin: $basic-padding * 3 0 0 $basic-padding * 2;
     vertical-align: bottom;
 }

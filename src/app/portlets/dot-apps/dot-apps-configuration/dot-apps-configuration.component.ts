@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { DotApps, DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
 import { ActivatedRoute } from '@angular/router';
-import { pluck, take, debounceTime } from 'rxjs/operators';
+import { pluck, take, debounceTime, takeUntil } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
-import { fromEvent as observableFromEvent } from 'rxjs';
+import { fromEvent as observableFromEvent, Subject } from 'rxjs';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -16,7 +16,7 @@ import { DotAppsResolverData } from './dot-apps-configuration-resolver.service';
     templateUrl: './dot-apps-configuration.component.html',
     styleUrls: ['./dot-apps-configuration.component.scss']
 })
-export class DotAppsConfigurationComponent implements OnInit {
+export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     @ViewChild('searchInput')
     searchInput: ElementRef;
     messagesKey: { [key: string]: string } = {};
@@ -26,6 +26,8 @@ export class DotAppsConfigurationComponent implements OnInit {
     paginationPerPage = 10;
     totalRecords: number;
     showMore: boolean;
+
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private dotAlertConfirmService: DotAlertConfirmService,
@@ -45,7 +47,7 @@ export class DotAppsConfigurationComponent implements OnInit {
             });
 
         observableFromEvent(this.searchInput.nativeElement, 'keyup')
-            .pipe(debounceTime(500))
+            .pipe(debounceTime(500), takeUntil(this.destroy$))
             .subscribe((keyboardEvent: Event) => {
                 this.filterConfigurations(keyboardEvent.target['value']);
             });
@@ -58,6 +60,11 @@ export class DotAppsConfigurationComponent implements OnInit {
         this.loadData();
 
         this.searchInput.nativeElement.focus();
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     /**
