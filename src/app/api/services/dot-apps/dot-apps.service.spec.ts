@@ -151,7 +151,7 @@ describe('DotAppsService', () => {
         );
 
         expect(this.lastConnection.request.method).toBe(RequestMethod.Delete);
-        expect(this.lastConnection.request.url).toContain(url);
+        expect(this.lastConnection.request.url).toBe(url);
     });
 
     it('should throw error on delete a specific app and handle it', () => {

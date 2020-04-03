@@ -4,23 +4,23 @@ import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { take, switchMap } from 'rxjs/operators';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { DotMessageService } from '@services/dot-messages-service';
-import { AppsResolverData } from '../dot-apps-configuration/dot-apps-configuration-resolver.service';
+import { DotAppsResolverData } from '../dot-apps-configuration/dot-apps-configuration-resolver.service';
 
 /**
  * Returns app configuration detail from the api
  *
  * @export
  * @class DotAppsConfigurationDetailResolver
- * @implements {Resolve<AppsResolverData>}
+ * @implements {Resolve<DotAppsResolverData>}
  */
 @Injectable()
-export class DotAppsConfigurationDetailResolver implements Resolve<AppsResolverData> {
+export class DotAppsConfigurationDetailResolver implements Resolve<DotAppsResolverData> {
     constructor(
         private dotAppsService: DotAppsService,
         public dotMessageService: DotMessageService
     ) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<AppsResolverData> {
+    resolve(route: ActivatedRouteSnapshot): Observable<DotAppsResolverData> {
         const appKey = route.paramMap.get('appKey');
         const id = route.paramMap.get('id');
         const appConfigurations$ = this.dotAppsService.getConfiguration(appKey, id).pipe(take(1));

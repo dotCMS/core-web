@@ -9,7 +9,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 import { LazyLoadEvent } from 'primeng/primeng';
 import { PaginatorService } from '@services/paginator';
-import { AppsResolverData } from './dot-apps-configuration-resolver.service';
+import { DotAppsResolverData } from './dot-apps-configuration-resolver.service';
 
 @Component({
     selector: 'dot-apps-configuration',
@@ -38,7 +38,7 @@ export class DotAppsConfigurationComponent implements OnInit {
     ngOnInit() {
         this.route.data
             .pipe(pluck('data'), take(1))
-            .subscribe(({ messages, app }: AppsResolverData) => {
+            .subscribe(({ messages, app }: DotAppsResolverData) => {
                 this.apps = app;
                 this.apps.sites = [];
                 this.messagesKey = messages;

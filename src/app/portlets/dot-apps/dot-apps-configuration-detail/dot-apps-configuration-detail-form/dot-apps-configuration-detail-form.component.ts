@@ -11,7 +11,7 @@ export class DotAppsConfigurationDetailFormComponent implements OnInit {
     @ViewChild('form') public form: NgForm;
 
     @Input() formFields: DotAppsSecrets[];
-    @Output() data = new EventEmitter<FormGroup>();
+    @Output() data = new EventEmitter<{ [key: string]: string }>();
     @Output() valid = new EventEmitter<boolean>();
     myFormGroup: FormGroup;
 

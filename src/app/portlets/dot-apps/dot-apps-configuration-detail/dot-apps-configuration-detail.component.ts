@@ -3,7 +3,7 @@ import { DotApps, DotAppsSaveData } from '@shared/models/dot-apps/dot-apps.model
 import { ActivatedRoute } from '@angular/router';
 import { pluck, take } from 'rxjs/operators';
 
-import { AppsResolverData } from '../dot-apps-configuration/dot-apps-configuration-resolver.service';
+import { DotAppsResolverData } from '../dot-apps-configuration/dot-apps-configuration-resolver.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
@@ -32,20 +32,26 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
     ngOnInit() {
         this.route.data
             .pipe(pluck('data'), take(1))
-            .subscribe(({ messages, app }: AppsResolverData) => {
+            .subscribe(({ messages, app }: DotAppsResolverData) => {
                 this.apps = app;
                 this.formFields = app.sites[0].secrets;
                 this.messagesKey = messages;
             });
     }
 
-    onSubmit() {
+    /**
+     * Saves the secrets configuration data of the app
+     *
+     * @memberof DotAppsConfigurationDetailComponent
+     */
+    onSubmit(): void {
         this.dotAppsService
             .saveSiteConfiguration(
                 this.apps.key,
                 this.apps.sites[0].id,
                 this.getTransformedFormData()
             )
+            .pipe(take(1))
             .subscribe(() => {
                 this.dotDialogService.alert({
                     accept: () => {
@@ -64,7 +70,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
      * Redirects to app configuration listing page
      *
      * @param string key
-     * @memberof DotAppsListComponent
+     * @memberof DotAppsConfigurationDetailComponent
      */
     goToApps(key: string): void {
         this.dotRouterService.gotoPortlet(`/apps/${key}`);
