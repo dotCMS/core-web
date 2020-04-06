@@ -14,14 +14,14 @@ const mockDotApps = [
         configurationsCount: 0,
         key: 'google-calendar',
         name: 'Google Calendar',
-        description: 'It\'s a tool to keep track of your life\'s events',
+        description: "It's a tool to keep track of your life's events",
         iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg'
     },
     {
         configurationsCount: 1,
         key: 'asana',
         name: 'Asana',
-        description: 'It\'s asana to keep track of your asana events',
+        description: "It's asana to keep track of your asana events",
         iconUrl: '/dA/792c7c9f-6b6f-427b-80ff-1643376c9999/photo/mountain-persona.jpg'
     }
 ];
@@ -108,11 +108,9 @@ describe('DotAppsService', () => {
             })
         );
 
-        this.dotAppsService
-            .getConfigurationList(appKey)
-            .subscribe((apps: DotApps) => {
-                expect(apps).toEqual(mockDotApps[0]);
-            });
+        this.dotAppsService.getConfigurationList(appKey).subscribe((apps: DotApps) => {
+            expect(apps).toEqual(mockDotApps[0]);
+        });
 
         expect(this.coreWebService.requestView).toHaveBeenCalledWith({
             method: RequestMethod.Get,
@@ -129,16 +127,55 @@ describe('DotAppsService', () => {
         expect(this.dotHttpErrorManagerService.handle).toHaveBeenCalledWith(mockResponseView(400));
     });
 
+    it('should save a specific configuration from an app', () => {
+        const appKey = '1';
+        const hostId = 'abc';
+        const params = {
+            name: { hidden: false, value: 'test' }
+        };
+        const url = `v1/apps/${appKey}/${hostId}`;
+
+        this.dotAppsService
+            .saveSiteConfiguration(appKey, hostId, params)
+            .subscribe((response: string) => {
+                expect(response).toEqual('ok');
+            });
+
+        this.lastConnection.mockRespond(
+            new Response(
+                new ResponseOptions({
+                    body: {
+                        entity: 'ok'
+                    }
+                })
+            )
+        );
+
+        expect(this.lastConnection.request.method).toBe(RequestMethod.Post);
+        expect(this.lastConnection.request._body).toEqual(params);
+        expect(this.lastConnection.request.url).toBe(url);
+    });
+
+    it('should throw error on Save a specific app and handle it', () => {
+        const params = {
+            name: { hidden: false, value: 'test' }
+        };
+        const error404 = mockResponseView(400);
+        spyOn(this.dotHttpErrorManagerService, 'handle').and.callThrough();
+        spyOn(this.coreWebService, 'requestView').and.returnValue(throwError(error404));
+
+        this.dotAppsService.saveSiteConfiguration('test', '123', params).subscribe();
+        expect(this.dotHttpErrorManagerService.handle).toHaveBeenCalledWith(mockResponseView(400));
+    });
+
     it('should delete a specific configuration from an app', () => {
         const appKey = '1';
         const hostId = 'abc';
         const url = `v1/apps/${appKey}/${hostId}`;
 
-        this.dotAppsService
-            .deleteConfiguration(appKey, hostId)
-            .subscribe((response: string) => {
-                expect(response).toEqual('ok');
-            });
+        this.dotAppsService.deleteConfiguration(appKey, hostId).subscribe((response: string) => {
+            expect(response).toEqual('ok');
+        });
 
         this.lastConnection.mockRespond(
             new Response(
@@ -167,11 +204,9 @@ describe('DotAppsService', () => {
         const appKey = '1';
         const url = `v1/apps/${appKey}`;
 
-        this.dotAppsService
-            .deleteAllConfigurations(appKey)
-            .subscribe((response: string) => {
-                expect(response).toEqual('ok');
-            });
+        this.dotAppsService.deleteAllConfigurations(appKey).subscribe((response: string) => {
+            expect(response).toEqual('ok');
+        });
 
         this.lastConnection.mockRespond(
             new Response(
