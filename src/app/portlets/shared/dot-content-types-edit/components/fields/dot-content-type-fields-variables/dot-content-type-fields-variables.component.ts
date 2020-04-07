@@ -1,16 +1,12 @@
 import {
     Component,
     Input,
-    SimpleChanges,
-    OnChanges,
     OnInit,
     OnDestroy,
     ViewChild
 } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
-import {
-    DotFieldVariablesService
-} from './services/dot-field-variables.service';
+import { DotFieldVariablesService } from './services/dot-field-variables.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotFieldVariable } from './models/dot-field-variable.interface';
 import { ResponseView } from 'dotcms-js';
@@ -25,7 +21,7 @@ import { DotCMSContentTypeField } from 'dotcms-models';
     styleUrls: ['./dot-content-type-fields-variables.component.scss'],
     templateUrl: './dot-content-type-fields-variables.component.html'
 })
-export class DotContentTypeFieldsVariablesComponent implements OnInit, OnChanges, OnDestroy {
+export class DotContentTypeFieldsVariablesComponent implements OnInit, OnDestroy {
     @ViewChild('table')
     table: Table;
 
@@ -58,12 +54,6 @@ export class DotContentTypeFieldsVariablesComponent implements OnInit, OnChanges
             });
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        // if (changes.field.currentValue && !changes.field.firstChange) {
-        //     this.initTableData();
-        // }
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
@@ -79,12 +69,8 @@ export class DotContentTypeFieldsVariablesComponent implements OnInit, OnChanges
      */
     deleteVariable(fieldVariable: DotFieldVariable, fieldIndex: number): void {
         if (fieldVariable.id) {
-            console.log('---deleteVariable 3', fieldVariable)
             this.deleteExistingVariable(fieldIndex);
         } else {
-            // this.deleteEmptyVariable(fieldIndex);
-            console.log('---deleteVariable 4', fieldVariable)
-
             this.cleanEmptyVariable(fieldIndex);
         }
     }
@@ -112,16 +98,7 @@ export class DotContentTypeFieldsVariablesComponent implements OnInit, OnChanges
      * @memberof DotContentTypeFieldsVariablesComponent
      */
     onCancel(fieldIndex: number): void {
-        console.log('---onCancel fieldIndex', fieldIndex)
-        // if (this.fieldVariables[fieldIndex].id) {
-
-            this.fieldVariablesBackup[fieldIndex] = _.cloneDeep(this.fieldVariables[fieldIndex]);
-            console.log('---onCancel 1', this.fieldVariablesBackup[fieldIndex])
-        // } else {
-            // this.deleteVariable(this.fieldVariables[fieldIndex], fieldIndex);
-            // console.log('---onCancel 2', this.fieldVariables[fieldIndex])
-
-        // }
+        this.fieldVariablesBackup[fieldIndex] = _.cloneDeep(this.fieldVariables[fieldIndex]);
     }
 
     private initTableData(): void {
@@ -149,7 +126,6 @@ export class DotContentTypeFieldsVariablesComponent implements OnInit, OnChanges
                             (_item: DotFieldVariable, index: number) => index !== fieldIndex
                         );
                     });
-                    console.log('---deleteVariables', this.fieldVariables, this.fieldVariablesBackup)
                 },
                 (err: ResponseView) => {
                     this.dotHttpErrorManagerService
@@ -158,15 +134,6 @@ export class DotContentTypeFieldsVariablesComponent implements OnInit, OnChanges
                         .subscribe();
                 }
             );
-    }
-
-    private deleteEmptyVariable(fieldIndex: number): void {
-        [this.fieldVariables, this.fieldVariablesBackup] = [
-            this.fieldVariables,
-            this.fieldVariablesBackup
-        ].map((variables: DotFieldVariable[]) => {
-            return variables.filter((_item: DotFieldVariable, index: number) => index !== fieldIndex);
-        });
     }
 
     private cleanEmptyVariable(fieldIndex: number): void {
@@ -184,7 +151,9 @@ export class DotContentTypeFieldsVariablesComponent implements OnInit, OnChanges
                         savedVariable,
                         variableIndex
                     );
-                    this.fieldVariablesBackup[variableIndex] = _.cloneDeep(this.fieldVariables[variableIndex]);
+                    this.fieldVariablesBackup[variableIndex] = _.cloneDeep(
+                        this.fieldVariables[variableIndex]
+                    );
                     this.addEmptyVariable();
                 },
                 (err: ResponseView) => {
