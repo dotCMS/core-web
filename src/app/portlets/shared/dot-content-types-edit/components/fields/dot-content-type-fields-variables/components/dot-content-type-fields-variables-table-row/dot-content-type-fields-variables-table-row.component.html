@@ -87,10 +87,14 @@
         </ng-template>
         <ng-template #formButtons>
             <dot-icon-button
+                *ngIf="fieldVariable.id"
                 icon="delete_outline"
                 (click)="delete.emit(variableIndex)"
             ></dot-icon-button>
-            <dot-icon-button icon="edit" (click)="focusKeyInput($event)"></dot-icon-button>
+            <dot-icon-button
+                icon="edit"
+                (click)="focusKeyInput($event)"
+            ></dot-icon-button>
         </ng-template>
     </td>
 </tr>

@@ -66,12 +66,15 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
-                if (!this.isEditing) {
+                console.log('***onINIT', )
+// /*                
+                if (!this.isEditing && this.variableIndex === 0) {
                     // "setTimeout" needs to be set so "keyCell" DOM gets rendered and tests don't fail
                     setTimeout(() => {
                         this.keyCell.nativeElement.click();
                     }, 0);
                 }
+// */
             });
     }
 
@@ -88,7 +91,11 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
      */
     focusKeyInput($event: Event): void {
         $event.stopPropagation();
-        this.valueCell.nativeElement.click();
+        if (this.variableIndex === 0) {
+            this.keyCell.nativeElement.click();
+        } else {
+            this.valueCell.nativeElement.click();
+        }
     }
 
     /**
@@ -121,7 +128,9 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
      * @memberof DotContentTypeFieldsVariablesTableRowComponent
      */
     onCancel($event: KeyboardEvent): void {
+        console.log('**onCancel')
         $event.stopPropagation();
+        this.showEditMenu = false;
         this.cancel.emit(this.variableIndex);
     }
 
