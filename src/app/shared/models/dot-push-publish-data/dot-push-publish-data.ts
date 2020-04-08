@@ -1,9 +1,9 @@
 /**
  * Data required for push publish
  * @export
- * @interface PushPublishData
+ * @interface DotPushPublishData
  */
-export interface PushPublishData {
+export interface DotPushPublishData {
     pushActionSelected: string;
     publishdate: string;
     publishdatetime: string;
