@@ -1,4 +1,5 @@
 import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
+import { DotPushPublishDialogData } from '@models/dot-push-publish-dialog-data/dot-push-publish-dialog-data.model';
 
 const mockEventData = { assetIdentifier: 'test', title: 'Title' };
 
@@ -7,9 +8,11 @@ describe('DotPushPublishDialogService', () => {
     let data;
 
     beforeEach(() => {
-        dotPushPublishDialogService.showDialog$.subscribe(eventData => {
-            data = eventData;
-        });
+        dotPushPublishDialogService.showDialog$.subscribe(
+            (dialogData: DotPushPublishDialogData) => {
+                data = dialogData;
+            }
+        );
     });
 
     it('should receive data', () => {
