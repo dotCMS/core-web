@@ -21,7 +21,7 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
     @Input()
     assetIdentifier: string;
     @Input()
-    showList: false;
+    showList = false;
     pushEnvironments$: Observable<any>;
     selectedEnvironments: DotEnvironment[];
     selectedEnvironmentIds: string[] = [];
