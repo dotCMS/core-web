@@ -11,16 +11,16 @@ import {
 } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
-import { DotFieldVariable } from '../../models/dot-field-variable.interface';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
+import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 
 @Component({
-    selector: 'dot-content-type-fields-variables-table-row',
-    styleUrls: ['./dot-content-type-fields-variables-table-row.component.scss'],
-    templateUrl: './dot-content-type-fields-variables-table-row.component.html'
+    selector: 'dot-key-value-table-row',
+    styleUrls: ['./dot-key-value-table-row.component.scss'],
+    templateUrl: './dot-key-value-table-row.component.html'
 })
-export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, OnChanges {
+export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     @ViewChild('saveButton')
     saveButton: ElementRef;
     @ViewChild('keyCell')
@@ -29,11 +29,11 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     valueCell: ElementRef;
 
     @Input()
-    fieldVariable: DotFieldVariable;
+    variable: DotKeyValue;
     @Input()
     variableIndex: number;
     @Input()
-    variablesList: DotFieldVariable[] = [];
+    variablesList: DotKeyValue[] = [];
 
     @Output()
     save: EventEmitter<number> = new EventEmitter(false);
@@ -76,15 +76,15 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.fieldVariable) {
-            this.isEditing = !!changes.fieldVariable.currentValue.value;
+        if (changes.variable) {
+            this.isEditing = !!changes.variable.currentValue.value;
         }
     }
 
     /**
      * Focus on Key input
      * @param {Event} [$event]
-     * @memberof DotContentTypeFieldsVariablesTableRowComponent
+     * @memberof DotKeyValueTableRowComponent
      */
     focusKeyInput($event: Event): void {
         $event.stopPropagation();
@@ -99,7 +99,7 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
      * Sets initial fields properties
      *
      * @param {Event} $event
-     * @memberof DotContentTypeFieldsVariablesTableRowComponent
+     * @memberof DotKeyValueTableRowComponent
      */
     editFieldInit($event: Event): void {
         this.rowActiveHighlight = true;
@@ -120,9 +120,9 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     }
 
     /**
-     * Handle Cancel event
+     * Handle Cancel event event emmitting variable index to parent component
      * @param {KeyboardEvent} $event
-     * @memberof DotContentTypeFieldsVariablesTableRowComponent
+     * @memberof DotKeyValueTableRowComponent
      */
     onCancel($event: KeyboardEvent): void {
         $event.stopPropagation();
@@ -133,12 +133,12 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     /**
      * Handle Enter key event
      * @param {KeyboardEvent} $event
-     * @memberof DotContentTypeFieldsVariablesTableRowComponent
+     * @memberof DotKeyValueTableRowComponent
      */
     onPressEnter($event: KeyboardEvent): void {
         if (this.keyInputInvalid($event)) {
             this.elemRef = this.keyCell;
-        } else if (this.fieldVariable.key !== '') {
+        } else if (this.variable.key !== '') {
             this.getElementToFocus($event);
         }
 
@@ -148,8 +148,8 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     }
 
     /**
-     * Handle Save event
-     * @memberof DotContentTypeFieldsVariablesTableRowComponent
+     * Handle Save event emmitting variable value to parent component
+     * @memberof DotKeyValueTableRowComponent
      */
     saveVariable(): void {
         this.save.emit(this.variableIndex);
@@ -160,7 +160,7 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     }
 
     private isFieldDisabled(): boolean {
-        return this.fieldVariable.key === '' || this.fieldVariable.value === '';
+        return this.variable.key === '' || this.variable.value === '';
     }
 
     private shouldDisplayDuplicatedVariableError(
@@ -173,26 +173,27 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     private isFieldVariableKeyDuplicated(): boolean {
         return (
             this.variablesList.filter(
-                (variable: DotFieldVariable) =>
-                    variable.id && variable.key === this.fieldVariable.key
+                (variable: DotKeyValue, index: number) =>
+                    index !== 0 && variable.key === this.variable.key
             ).length > 0
         );
     }
 
     private keyInputInvalid($event: KeyboardEvent): boolean {
-        return this.fieldVariable.key === '' && this.isKeyInput($event);
+        return this.variable.key === '' && this.isKeyInput($event);
     }
 
     // tslint:disable-next-line:cyclomatic-complexity
     private getElementToFocus($event: KeyboardEvent): void {
-        if (this.isKeyInput($event) || this.fieldVariable.value === '') {
+        if (this.isKeyInput($event) || this.variable.value === '') {
             this.elemRef = this.valueCell;
-        } else if (this.fieldVariable.value !== '') {
+        } else if (this.variable.value !== '') {
             this.elemRef = this.saveButton;
         }
     }
 
     private isKeyInput($event: KeyboardEvent): boolean {
-        return $event.srcElement.classList.contains('field-variable-key-input');
+        const element = <HTMLElement>$event.srcElement;
+        return element.classList.contains('field-key-input');
     }
 }

@@ -1,16 +1,16 @@
-<tr class="field-variable-row" [ngClass]="{ 'field-variable-row-highlight': rowActiveHighlight }">
+<tr class="dot-key-value-table-row" [ngClass]="{ 'dot-key-value-table-row-highlight': rowActiveHighlight }">
     <ng-template [ngIf]="isEditing" [ngIfElse]="editable">
         <td>
-            {{ fieldVariable.key }}
+            {{ variable.key }}
         </td>
     </ng-template>
     <ng-template #editable>
-        <td #keyCell [pEditableColumn]="fieldVariable.key" pEditableColumnField="key">
+        <td #keyCell [pEditableColumn]="variable.key" pEditableColumnField="key">
             <p-cellEditor>
                 <ng-template pTemplate="input">
                     <input
                         pInputText
-                        class="field-variable-key-input"
+                        class="field-key-input"
                         type="text"
                         [placeholder]="
                             messages['contenttypes.field.variables.key_input.placeholder']
@@ -20,14 +20,14 @@
                         (keyup)="editFieldInit($event)"
                         (keydown.escape)="onCancel($event)"
                         (keydown.enter)="onPressEnter($event)"
-                        [(ngModel)]="fieldVariable.key"
+                        [(ngModel)]="variable.key"
                     />
                 </ng-template>
                 <ng-template pTemplate="output">
-                    <span *ngIf="fieldVariable.key">
-                        {{ fieldVariable.key }}
+                    <span *ngIf="variable.key">
+                        {{ variable.key }}
                     </span>
-                    <span class="empty-placeholder" *ngIf="!fieldVariable.key">
+                    <span class="empty-placeholder" *ngIf="!variable.key">
                         {{ messages['contenttypes.field.variables.key_input.placeholder'] }}
                     </span>
                 </ng-template>
@@ -35,12 +35,12 @@
         </td>
     </ng-template>
 
-    <td #valueCell [pEditableColumn]="fieldVariable.value" pEditableColumnField="value">
+    <td #valueCell [pEditableColumn]="variable.value" pEditableColumnField="value">
         <p-cellEditor>
             <ng-template pTemplate="input">
                 <input
                     pInputText
-                    class="field-variable-value-input"
+                    class="field-value-input"
                     type="text"
                     [placeholder]="messages['contenttypes.field.variables.value_input.placeholder']"
                     (blur)="rowActiveHighlight = false"
@@ -48,26 +48,26 @@
                     (keyup)="editFieldInit($event)"
                     (keydown.escape)="onCancel($event)"
                     (keydown.enter)="onPressEnter($event)"
-                    [(ngModel)]="fieldVariable.value"
+                    [(ngModel)]="variable.value"
                 />
             </ng-template>
             <ng-template pTemplate="output">
-                <span *ngIf="fieldVariable.value">
-                    {{ fieldVariable.value }}
+                <span *ngIf="variable.value">
+                    {{ variable.value }}
                 </span>
-                <span class="empty-placeholder" *ngIf="!fieldVariable.value">
+                <span class="empty-placeholder" *ngIf="!variable.value">
                     {{ messages['contenttypes.field.variables.value_input.placeholder'] }}
                 </span>
             </ng-template>
         </p-cellEditor>
     </td>
-    <td class="content-type-fields__variables-actions">
+    <td class="dot-key-value-table-row__variables-actions">
         <ng-template [ngIf]="showEditMenu" [ngIfElse]="formButtons">
             <button
                 pButton
                 secondary
                 tiny
-                class="content-type-fields__variables-actions-edit-cancel"
+                class="dot-key-value-table-row__variables-actions-edit-cancel"
                 [label]="messages['contenttypes.action.cancel']"
                 (blur)="rowActiveHighlight = false"
                 (focus)="rowActiveHighlight = true"
@@ -77,7 +77,7 @@
                 #saveButton
                 pButton
                 tiny
-                class="content-type-fields__variables-actions-edit-save"
+                class="dot-key-value-table-row__variables-actions-edit-save"
                 [label]="messages['contenttypes.action.save']"
                 [disabled]="saveDisabled"
                 (blur)="rowActiveHighlight = false"
@@ -87,7 +87,7 @@
         </ng-template>
         <ng-template #formButtons>
             <dot-icon-button
-                *ngIf="fieldVariable.id"
+                *ngIf="variableIndex"
                 icon="delete_outline"
                 (click)="delete.emit(variableIndex)"
             ></dot-icon-button>
