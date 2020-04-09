@@ -148,7 +148,7 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     }
 
     /**
-     * Handle Save event emmitting variable value to parent component
+     * Handle Save event emitting variable value to parent component
      * @memberof DotKeyValueTableRowComponent
      */
     saveVariable(): void {
