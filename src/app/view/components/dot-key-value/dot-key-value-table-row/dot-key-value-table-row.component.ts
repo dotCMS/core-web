@@ -57,11 +57,11 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     ngOnInit(): void {
         this.dotMessageService
             .getMessages([
-                'contenttypes.field.variables.key_input.placeholder',
-                'contenttypes.field.variables.value_input.placeholder',
-                'contenttypes.action.save',
-                'contenttypes.action.cancel',
-                'contenttypes.field.variables.error.duplicated.variable'
+                'keyValue.key_input.placeholder',
+                'keyValue.value_input.placeholder',
+                'Save',
+                'Cancel',
+                'keyValue.error.duplicated.variable'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
@@ -111,7 +111,7 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
             this.dotMessageDisplayService.push({
                 life: 3000,
                 message: this.messages[
-                    'contenttypes.field.variables.error.duplicated.variable'
+                    'keyValue.error.duplicated.variable'
                 ].replace('{0}', (<HTMLInputElement>$event.target).value),
                 severity: DotMessageSeverity.ERROR,
                 type: DotMessageType.SIMPLE_MESSAGE

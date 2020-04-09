@@ -13,7 +13,7 @@
                         class="field-key-input"
                         type="text"
                         [placeholder]="
-                            messages['contenttypes.field.variables.key_input.placeholder']
+                            messages['keyValue.key_input.placeholder']
                         "
                         (blur)="rowActiveHighlight = false; editFieldInit($event)"
                         (focus)="editFieldInit($event)"
@@ -28,7 +28,7 @@
                         {{ variable.key }}
                     </span>
                     <span class="empty-placeholder" *ngIf="!variable.key">
-                        {{ messages['contenttypes.field.variables.key_input.placeholder'] }}
+                        {{ messages['keyValue.key_input.placeholder'] }}
                     </span>
                 </ng-template>
             </p-cellEditor>
@@ -42,7 +42,7 @@
                     pInputText
                     class="field-value-input"
                     type="text"
-                    [placeholder]="messages['contenttypes.field.variables.value_input.placeholder']"
+                    [placeholder]="messages['keyValue.value_input.placeholder']"
                     (blur)="rowActiveHighlight = false"
                     (focus)="editFieldInit($event)"
                     (keyup)="editFieldInit($event)"
@@ -56,7 +56,7 @@
                     {{ variable.value }}
                 </span>
                 <span class="empty-placeholder" *ngIf="!variable.value">
-                    {{ messages['contenttypes.field.variables.value_input.placeholder'] }}
+                    {{ messages['keyValue.value_input.placeholder'] }}
                 </span>
             </ng-template>
         </p-cellEditor>
@@ -68,7 +68,7 @@
                 secondary
                 tiny
                 class="dot-key-value-table-row__variables-actions-edit-cancel"
-                [label]="messages['contenttypes.action.cancel']"
+                [label]="messages['Cancel']"
                 (blur)="rowActiveHighlight = false"
                 (focus)="rowActiveHighlight = true"
                 (click)="onCancel($event)"
@@ -78,7 +78,7 @@
                 pButton
                 tiny
                 class="dot-key-value-table-row__variables-actions-edit-save"
-                [label]="messages['contenttypes.action.save']"
+                [label]="messages['Save']"
                 [disabled]="saveDisabled"
                 (blur)="rowActiveHighlight = false"
                 (focus)="rowActiveHighlight = true"

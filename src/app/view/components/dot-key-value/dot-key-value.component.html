@@ -9,13 +9,13 @@
     <ng-template pTemplate="header" let-columns>
         <tr>
             <th [ngStyle]="{ 'text-align': 'left', width: '33%' }">
-                {{ messages['contenttypes.field.variables.key_header.label'] }}
+                {{ messages['keyValue.key_header.label'] }}
             </th>
             <th [ngStyle]="{ 'text-align': 'left', width: '33%' }">
-                {{ messages['contenttypes.field.variables.value_header.label'] }}
+                {{ messages['keyValue.value_header.label'] }}
             </th>
             <th [ngStyle]="{ 'text-align': 'right', width: '185px', 'padding-right': '32px' }">
-                {{ messages['contenttypes.field.variables.actions_header.label'] }}
+                {{ messages['keyValue.actions_header.label'] }}
             </th>
         </tr>
     </ng-template>
@@ -34,7 +34,7 @@
     <ng-template pTemplate="emptymessage" let-variables>
         <tr>
             <td [attr.colspan]="3">
-                {{ messages['contenttypes.field.variables.value_no_rows.label'] }}
+                {{ messages['keyValue.value_no_rows.label'] }}
             </td>
         </tr>
     </ng-template>

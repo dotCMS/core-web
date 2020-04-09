@@ -30,10 +30,10 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
     ngOnInit(): void {
         this.dotMessageService
             .getMessages([
-                'contenttypes.field.variables.key_header.label',
-                'contenttypes.field.variables.value_header.label',
-                'contenttypes.field.variables.actions_header.label',
-                'contenttypes.field.variables.value_no_rows.label'
+                'keyValue.key_header.label',
+                'keyValue.value_header.label',
+                'keyValue.actions_header.label',
+                'keyValue.value_no_rows.label'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {

@@ -18,14 +18,13 @@ import { mockFieldVariables } from '@tests/field-variable-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { PrimeTemplate } from 'primeng/primeng';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
-// tslint:disable-next-line:max-line-length
-import { DotFieldVariable } from '@portlets/shared/dot-content-types-edit/components/fields/dot-content-type-fields-variables/models/dot-field-variable.interface';
+import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 
 @Component({
     selector: 'dot-test-host-component',
     template: `
         <dot-key-value-table-row
-            [fieldVariable]="fieldVariable"
+            [variable]="variable"
             [variableIndex]="variableIndex"
             [variablesList]="variablesList"
         >
@@ -33,9 +32,9 @@ import { DotFieldVariable } from '@portlets/shared/dot-content-types-edit/compon
     `
 })
 class TestHostComponent {
-    @Input() fieldVariable: DotFieldVariable;
+    @Input() variable: DotKeyValue;
     @Input() variableIndex: number;
-    @Input() variablesList: DotFieldVariable[];
+    @Input() variablesList: DotKeyValue[];
 }
 
 @Directive({
@@ -90,11 +89,11 @@ describe('DotKeyValueTableRowComponent', () => {
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
-            'contenttypes.field.variables.key_input.placeholder': 'Enter Key',
-            'contenttypes.field.variables.value_input.placeholder': 'Enter Value',
-            'contenttypes.action.save': 'Save',
-            'contenttypes.action.cancel': 'Cancel',
-            'contenttypes.field.variables.error.duplicated.variable': 'test {0}'
+            'keyValue.key_input.placeholder': 'Enter Key',
+            'keyValue.value_input.placeholder': 'Enter Value',
+            Save: 'Save',
+            Cancel: 'Cancel',
+            'keyValue.error.duplicated.variable': 'test {0}'
         });
 
         DOTTestBed.configureTestingModule({
@@ -113,12 +112,9 @@ describe('DotKeyValueTableRowComponent', () => {
 
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
         hostComponent = hostComponentfixture.componentInstance;
-        comp = hostComponentfixture.debugElement.query(
-            By.css('dot-key-value-table-row')
-        ).componentInstance;
-        de = hostComponentfixture.debugElement.query(
-            By.css('dot-key-value-table-row')
-        );
+        comp = hostComponentfixture.debugElement.query(By.css('dot-key-value-table-row'))
+            .componentInstance;
+        de = hostComponentfixture.debugElement.query(By.css('dot-key-value-table-row'));
 
         dotMessageDisplayService = de.injector.get(DotMessageDisplayService);
         hostComponent.variableIndex = 0;
@@ -126,7 +122,8 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should load the component', () => {
-        hostComponent.fieldVariable = mockFieldVariables[0];
+        hostComponent.variableIndex = 1;
+        hostComponent.variable = mockFieldVariables[0];
         hostComponentfixture.detectChanges();
         const inputs = de.queryAll(By.css('input'));
         const btns = de.queryAll(By.css('button'));
@@ -137,7 +134,7 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should focus on "Key" input when an empty variable is added', (done) => {
-        hostComponent.fieldVariable = {
+        hostComponent.variable = {
             key: '',
             value: ''
         };
@@ -153,12 +150,14 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should focus on "Value" input when "Edit" button clicked', () => {
-        hostComponent.fieldVariable = { key: 'TestKey', value: 'TestValue' };
+        hostComponent.variableIndex = 1;
+        hostComponent.variable = { key: 'TestKey', value: 'TestValue' };
         spyOn(comp.valueCell.nativeElement, 'click');
         hostComponentfixture.detectChanges();
-        de.queryAll(
-            By.css('.content-type-fields__variables-actions dot-icon-button')
-        )[1].triggerEventHandler('click', {
+        const button = de.queryAll(
+            By.css('.dot-key-value-table-row__variables-actions dot-icon-button')
+        )[1];
+        button.triggerEventHandler('click', {
             stopPropagation: () => {}
         });
         hostComponentfixture.detectChanges();
@@ -166,7 +165,7 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should show edit menu when focus/key.up on a field', () => {
-        hostComponent.fieldVariable = mockFieldVariables[0];
+        hostComponent.variable = mockFieldVariables[0];
         hostComponentfixture.detectChanges();
         expect(comp.rowActiveHighlight).toBe(false);
         expect(comp.showEditMenu).toBe(false);
@@ -181,7 +180,7 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should focus on "Value" field, if entered valid "Key"', () => {
-        hostComponent.fieldVariable = { key: 'test', value: '' };
+        hostComponent.variable = { key: 'test', value: '' };
         hostComponentfixture.detectChanges();
         de.query(By.css('.field-key-input')).nativeElement.dispatchEvent(
             new KeyboardEvent('keydown', { key: 'Enter' })
@@ -190,7 +189,7 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should focus on "Key" field, if entered invalid "Key"', () => {
-        hostComponent.fieldVariable = { key: '', value: '' };
+        hostComponent.variable = { key: '', value: '' };
         hostComponentfixture.detectChanges();
         de.query(By.css('.field-key-input')).nativeElement.dispatchEvent(
             new KeyboardEvent('keydown', { key: 'Enter' })
@@ -199,7 +198,7 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should emit cancel event when press "Escape"', () => {
-        hostComponent.fieldVariable = mockFieldVariables[0];
+        hostComponent.variable = mockFieldVariables[0];
         hostComponentfixture.detectChanges();
         spyOn(comp.cancel, 'emit');
         hostComponentfixture.detectChanges();
@@ -210,8 +209,8 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should disabled save button when new variable key added is duplicated', () => {
-        hostComponent.fieldVariable = { key: 'Key1', value: '' };
-        hostComponent.variablesList = [hostComponent.fieldVariable, ...mockFieldVariables];
+        hostComponent.variable = { key: 'Key1', value: '' };
+        hostComponent.variablesList = [hostComponent.variable, ...mockFieldVariables];
         spyOn(dotMessageDisplayService, 'push');
         hostComponentfixture.detectChanges();
         de.query(By.css('.field-key-input')).triggerEventHandler('blur', {
@@ -219,7 +218,7 @@ describe('DotKeyValueTableRowComponent', () => {
             target: { value: 'Key1' }
         });
         hostComponentfixture.detectChanges();
-        const saveBtn = de.query(By.css('.content-type-fields__variables-actions-edit-save'))
+        const saveBtn = de.query(By.css('.dot-key-value-table-row__variables-actions-edit-save'))
             .nativeElement;
         hostComponentfixture.detectChanges();
         expect(saveBtn.disabled).toBe(true);
@@ -227,15 +226,14 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should emit save event when button clicked and not modify "isEditing" variable when component gets updated', () => {
-        hostComponent.fieldVariable = { key: 'Key1', value: 'Value1' };
+        hostComponent.variable = { key: 'Key1', value: 'Value1' };
         hostComponentfixture.detectChanges();
         spyOn(comp.save, 'emit');
         de.query(By.css('.field-value-input')).triggerEventHandler('focus', {});
         hostComponentfixture.detectChanges();
-        de.query(By.css('.content-type-fields__variables-actions-edit-save')).triggerEventHandler(
-            'click',
-            {}
-        );
+        de.query(
+            By.css('.dot-key-value-table-row__variables-actions-edit-save')
+        ).triggerEventHandler('click', {});
         hostComponent.variablesList = [];
         hostComponentfixture.detectChanges();
         expect(comp.save.emit).toHaveBeenCalledWith(comp.variableIndex);
@@ -243,25 +241,25 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should emit cancel event when button clicked', () => {
-        hostComponent.fieldVariable = { key: 'Key1', value: 'Value1' };
+        hostComponent.variable = { key: 'Key1', value: 'Value1' };
         hostComponentfixture.detectChanges();
         spyOn(comp.save, 'emit');
         de.query(By.css('.field-value-input')).triggerEventHandler('focus', {});
         spyOn(comp.cancel, 'emit');
         hostComponentfixture.detectChanges();
-        de.query(By.css('.content-type-fields__variables-actions-edit-cancel')).triggerEventHandler(
-            'click',
-            { stopPropagation: () => {} }
-        );
+        de.query(
+            By.css('.dot-key-value-table-row__variables-actions-edit-cancel')
+        ).triggerEventHandler('click', { stopPropagation: () => {} });
         expect(comp.cancel.emit).toHaveBeenCalledWith(comp.variableIndex);
     });
 
     it('should emit delete event when button clicked', () => {
-        hostComponent.fieldVariable = { key: 'TestKey', value: 'TestValue' };
+        hostComponent.variableIndex = 1;
+        hostComponent.variable = { key: 'TestKey', value: 'TestValue' };
         spyOn(comp.delete, 'emit');
         hostComponentfixture.detectChanges();
         de.queryAll(
-            By.css('.content-type-fields__variables-actions dot-icon-button')
+            By.css('.dot-key-value-table-row__variables-actions dot-icon-button')
         )[0].triggerEventHandler('click', {});
         expect(comp.delete.emit).toHaveBeenCalledWith(comp.variableIndex);
     });
