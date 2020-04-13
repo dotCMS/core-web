@@ -8,11 +8,14 @@
 >
     <ng-template pTemplate="header" let-columns>
         <tr>
-            <th [ngStyle]="{ 'text-align': 'left', width: '33%' }">
+            <th [ngStyle]="{ 'text-align': 'left' }">
                 {{ messages['keyValue.key_header.label'] }}
             </th>
-            <th [ngStyle]="{ 'text-align': 'left', width: '33%' }">
+            <th [ngStyle]="{ 'text-align': 'left' }">
                 {{ messages['keyValue.value_header.label'] }}
+            </th>
+            <th *ngIf="showHiddenField" [ngStyle]="{ 'text-align': 'center' }">
+                {{ messages['keyValue.hidden_header.label'] }}
             </th>
             <th [ngStyle]="{ 'text-align': 'right', width: '185px', 'padding-right': '32px' }">
                 {{ messages['keyValue.actions_header.label'] }}
@@ -22,6 +25,7 @@
     <ng-template pTemplate="body" let-variable let-rowIndex="rowIndex">
         <dot-key-value-table-row
             #tableRow
+            [showHiddenField]="showHiddenField"
             [variable]="variable"
             [variableIndex]="rowIndex"
             [variablesList]="variables"

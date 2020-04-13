@@ -11,6 +11,10 @@
     p-celleditor {
         cursor: pointer;
     }
+
+    p-inputSwitch {
+        display: inline-block;
+    }
 }
 
 .dot-key-value-table-row td,
@@ -35,3 +39,8 @@
         margin-left: $basic-padding;
     }
 }
+
+.dot-key-value-table-row__variables-hidden {
+    text-align: center;
+}
+

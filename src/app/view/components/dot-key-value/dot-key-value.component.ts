@@ -18,6 +18,7 @@ import { DotKeyValue, DotKeyValueSaveData } from '@shared/models/dot-key-value/d
     templateUrl: './dot-key-value.component.html'
 })
 export class DotKeyValueComponent implements OnInit, OnChanges {
+    @Input() showHiddenField: boolean;
     @Input() variables: DotKeyValue[] = [];
     @Output() delete: EventEmitter<number> = new EventEmitter(false);
     @Output() save: EventEmitter<DotKeyValueSaveData> = new EventEmitter(false);
@@ -60,6 +61,7 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
      * @memberof DotKeyValueComponent
      */
     saveVariable(fieldIndex: number): void {
+        this.setHiddenValue(fieldIndex);
         this.save.emit({
             variable: this.variablesBackup[fieldIndex],
             variableIndex: fieldIndex
@@ -73,5 +75,12 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
      */
     onCancel(fieldIndex: number): void {
         this.variablesBackup[fieldIndex] = _.cloneDeep(this.variables[fieldIndex]);
+    }
+
+    private setHiddenValue(fieldIndex: number): void {
+        this.variablesBackup[fieldIndex].hidden =
+            this.showHiddenField && this.variablesBackup[fieldIndex].hidden
+                ? this.variablesBackup[fieldIndex].hidden
+                : false;
     }
 }

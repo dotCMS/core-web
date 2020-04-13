@@ -28,6 +28,7 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     @ViewChild('valueCell')
     valueCell: ElementRef;
 
+    @Input() showHiddenField: boolean;
     @Input()
     variable: DotKeyValue;
     @Input()
@@ -101,7 +102,7 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
      * @param {Event} $event
      * @memberof DotKeyValueTableRowComponent
      */
-    editFieldInit($event: Event): void {
+    editFieldInit($event?: Event): void {
         this.rowActiveHighlight = true;
         this.showEditMenu = true;
         const isKeyVariableDuplicated = this.isFieldVariableKeyDuplicated();
@@ -110,9 +111,10 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
         if (this.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
             this.dotMessageDisplayService.push({
                 life: 3000,
-                message: this.messages[
-                    'keyValue.error.duplicated.variable'
-                ].replace('{0}', (<HTMLInputElement>$event.target).value),
+                message: this.messages['keyValue.error.duplicated.variable'].replace(
+                    '{0}',
+                    (<HTMLInputElement>$event.target).value
+                ),
                 severity: DotMessageSeverity.ERROR,
                 type: DotMessageType.SIMPLE_MESSAGE
             });
@@ -153,6 +155,10 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
      */
     saveVariable(): void {
         this.save.emit(this.variableIndex);
+    }
+
+    handleChange(): void {
+        this.editFieldInit();
     }
 
     private isSaveDisabled(isKeyVariableDuplicated: boolean) {
