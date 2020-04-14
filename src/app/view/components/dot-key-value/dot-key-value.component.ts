@@ -64,7 +64,7 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
         this.setHiddenValue(fieldIndex);
         this.save.emit({
             variable: this.variablesBackup[fieldIndex],
-            variableIndex: fieldIndex
+            index: fieldIndex
         });
     }
 

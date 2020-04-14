@@ -20,4 +20,18 @@
             padding-left: $basic-padding * 3;
         }
     }
+
+    .dot-key-value__header-keyValue-label {
+        text-align: left;
+    }
+
+    .dot-key-value__header-hidden-label {
+        text-align: center;
+    }
+
+    p-table .dot-key-value__header-actions-label {
+        padding-right: $basic-padding * 4;
+        text-align: right;
+        width: 185px;
+    }
 }

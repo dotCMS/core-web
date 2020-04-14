@@ -47,29 +47,22 @@ export class DotContentTypeFieldsVariablesComponent implements OnChanges, OnDest
             .pipe(take(1))
             .subscribe(
                 () => {
-                    [this.fieldVariables] = [this.fieldVariables].map(
-                        (variables: DotFieldVariable[]) => {
-                            return variables.filter(
-                                (_item: DotFieldVariable, index: number) => index !== fieldIndex
-                            );
-                        }
+                    this.fieldVariables = this.fieldVariables.filter(
+                        (_item: DotFieldVariable, index: number) => index !== fieldIndex
                     );
                 },
                 (err: ResponseView) => {
-                    this.dotHttpErrorManagerService
-                        .handle(err)
-                        .pipe(take(1))
-                        .subscribe();
+                    this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe();
                 }
             );
     }
 
     /**
      * Handle Save event doing a Post to the Backend
-     * @param {DotKeyValueSaveData} { variable, variableIndex }:
+     * @param {DotKeyValueSaveData} { variable, index }:
      * @memberof DotContentTypeFieldsVariablesComponent
      */
-    updateExistingVariable({ variable, variableIndex }: DotKeyValueSaveData): void {
+    updateExistingVariable({ variable, index }: DotKeyValueSaveData): void {
         this.fieldVariablesService
             .save(this.field, variable)
             .pipe(take(1))
@@ -77,15 +70,12 @@ export class DotContentTypeFieldsVariablesComponent implements OnChanges, OnDest
                 (savedVariable: DotFieldVariable) => {
                     this.fieldVariables = this.updateVariableCollection(
                         savedVariable,
-                        variableIndex
+                        index
                     );
                     this.addEmptyVariable();
                 },
                 (err: ResponseView) => {
-                    this.dotHttpErrorManagerService
-                        .handle(err)
-                        .pipe(take(1))
-                        .subscribe();
+                    this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe();
                 }
             );
     }

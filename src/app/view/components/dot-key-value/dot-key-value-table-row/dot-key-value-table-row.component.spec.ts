@@ -42,11 +42,9 @@ class TestHostComponent {
     selector: '[pEditableColumn]'
 })
 class MockEditableColumnDirective {
-    // tslint:disable-next-line:no-input-rename
-    @Input('pEditableColumn')
+    @Input()
     public pEditableColumn: any;
-    // tslint:disable-next-line:no-input-rename
-    @Input('pEditableColumnField')
+    @Input()
     public pEditableColumnField: any;
 }
 

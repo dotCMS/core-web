@@ -8,16 +8,16 @@
 >
     <ng-template pTemplate="header" let-columns>
         <tr>
-            <th [ngStyle]="{ 'text-align': 'left' }">
+            <th class="dot-key-value__header-keyValue-label">
                 {{ messages['keyValue.key_header.label'] }}
             </th>
-            <th [ngStyle]="{ 'text-align': 'left' }">
+            <th class="dot-key-value__header-keyValue-label">
                 {{ messages['keyValue.value_header.label'] }}
             </th>
-            <th *ngIf="showHiddenField" [ngStyle]="{ 'text-align': 'center' }">
+            <th *ngIf="showHiddenField" class="dot-key-value__header-hidden-label">
                 {{ messages['keyValue.hidden_header.label'] }}
             </th>
-            <th [ngStyle]="{ 'text-align': 'right', width: '185px', 'padding-right': '32px' }">
+            <th class="dot-key-value__header-actions-label">
                 {{ messages['keyValue.actions_header.label'] }}
             </th>
         </tr>
@@ -38,7 +38,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage" let-variables>
         <tr>
-            <td [attr.colspan]="3">
+            <td [attr.colspan]="showHiddenField ? 4 : 3">
                 {{ messages['keyValue.value_no_rows.label'] }}
             </td>
         </tr>

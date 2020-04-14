@@ -6,5 +6,5 @@ export interface DotKeyValue {
 
 export interface DotKeyValueSaveData {
     variable: DotKeyValue;
-    variableIndex: number;
+    index: number;
 }
