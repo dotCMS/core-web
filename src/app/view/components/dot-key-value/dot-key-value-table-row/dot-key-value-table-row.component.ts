@@ -29,6 +29,7 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     valueCell: ElementRef;
 
     @Input() showHiddenField: boolean;
+    @Input() isHiddenField: boolean;
     @Input()
     variable: DotKeyValue;
     @Input()

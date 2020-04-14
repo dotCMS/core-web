@@ -36,37 +36,48 @@
         </td>
     </ng-template>
 
-    <td #valueCell [pEditableColumn]="variable.value" pEditableColumnField="value">
-        <p-cellEditor>
-            <ng-template pTemplate="input">
-                <input
-                    pInputText
-                    class="field-value-input"
-                    [type]="variable.hidden ? 'password' : 'text'"
-                    [placeholder]="messages['keyValue.value_input.placeholder']"
-                    (blur)="rowActiveHighlight = false"
-                    (focus)="editFieldInit($event); $event.target.select();"
-                    (keyup)="editFieldInit($event)"
-                    (keydown.escape)="onCancel($event)"
-                    (keydown.enter)="onPressEnter($event)"
-                    [(ngModel)]="variable.value"
-                />
-            </ng-template>
-            <ng-template pTemplate="output">
-                <span *ngIf="variable.value && !variable.hidden">
-                    {{ variable.value }}
-                </span>
-                <span *ngIf="variable.hidden">
-                    ********
-                </span>
-                <span class="empty-placeholder" *ngIf="!variable.value">
-                    {{ messages['keyValue.value_input.placeholder'] }}
-                </span>
-            </ng-template>
-        </p-cellEditor>
-    </td>
+    <ng-template [ngIf]="isHiddenField" [ngIfElse]="editableValue">
+        <td>
+            {{ variable.value }}
+        </td>
+    </ng-template>
+    <ng-template #editableValue>
+        <td #valueCell [pEditableColumn]="variable.value" pEditableColumnField="value">
+            <p-cellEditor>
+                <ng-template pTemplate="input">
+                    <input
+                        pInputText
+                        class="field-value-input"
+                        [type]="variable.hidden ? 'password' : 'text'"
+                        [placeholder]="messages['keyValue.value_input.placeholder']"
+                        (blur)="rowActiveHighlight = false"
+                        (focus)="editFieldInit($event)"
+                        (keyup)="editFieldInit($event)"
+                        (keydown.escape)="onCancel($event)"
+                        (keydown.enter)="onPressEnter($event)"
+                        [(ngModel)]="variable.value"
+                    />
+                </ng-template>
+                <ng-template pTemplate="output">
+                    <span *ngIf="variable.value && !variable.hidden">
+                        {{ variable.value }}
+                    </span>
+                    <span *ngIf="variable.value && variable.hidden">
+                        ********
+                    </span>
+                    <span class="empty-placeholder" *ngIf="!variable.value">
+                        {{ messages['keyValue.value_input.placeholder'] }}
+                    </span>
+                </ng-template>
+            </p-cellEditor>
+        </td>
+    </ng-template>
     <td *ngIf="showHiddenField" class="dot-key-value-table-row__variables-hidden">
-        <p-inputSwitch [(ngModel)]="variable.hidden" (onChange)="handleChange()"></p-inputSwitch>
+        <p-inputSwitch
+            [disabled]="isHiddenField"
+            [(ngModel)]="variable.hidden"
+            (onChange)="handleChange()"
+        ></p-inputSwitch>
     </td>
     <td class="dot-key-value-table-row__variables-actions">
         <ng-template [ngIf]="showEditMenu" [ngIfElse]="formButtons">
@@ -98,7 +109,11 @@
                 icon="delete_outline"
                 (click)="delete.emit(variableIndex)"
             ></dot-icon-button>
-            <dot-icon-button icon="edit" (click)="focusKeyInput($event)"></dot-icon-button>
+            <dot-icon-button
+                icon="edit"
+                [attr.disabled]="isHiddenField || null"
+                (click)="focusKeyInput($event)"
+            ></dot-icon-button>
         </ng-template>
     </td>
 </tr>
