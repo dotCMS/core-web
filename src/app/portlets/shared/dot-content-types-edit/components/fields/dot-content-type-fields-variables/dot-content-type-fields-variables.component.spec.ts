@@ -57,7 +57,6 @@ describe('DotContentTypeFieldsVariablesComponent', () => {
 
         fixtureHost = DOTTestBed.createComponent(TestHostComponent);
         deHost = fixtureHost.debugElement;
-        componentHost = fixtureHost.componentInstance;
         de = deHost.query(By.css('dot-content-type-fields-variables'));
         comp = de.componentInstance;
 

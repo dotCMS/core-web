@@ -4,7 +4,6 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
-import { mockFieldVariables } from '@tests/field-variable-service.mock';
 import { TableModule } from 'primeng/table';
 import * as _ from 'lodash';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
@@ -14,14 +13,24 @@ import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotKeyValueTableRowComponent } from './dot-key-value-table-row/dot-key-value-table-row.component';
 
+export const mockKeyValue = [
+    {
+        key: 'name',
+        hidden: false,
+        value: 'John'
+    },
+    {
+        key: 'password',
+        hidden: true,
+        value: '*****'
+    }
+];
 @Component({
     selector: 'dot-test-host-component',
-    template: `
-        <dot-key-value [variables]="value"></dot-key-value>
-    `
+    template: ` <dot-key-value [variables]="value"></dot-key-value> `
 })
 class TestHostComponent {
-    value: DotKeyValue[] = mockFieldVariables;
+    value: DotKeyValue[] = mockKeyValue;
 }
 
 describe('DotKeyValueComponent', () => {
@@ -73,8 +82,8 @@ describe('DotKeyValueComponent', () => {
         fixtureHost.detectChanges();
         const dataTable = de.query(By.css('p-table'));
         tableRow = de.query(By.css('dot-key-value-table-row')).componentInstance;
-        expect(tableRow.variablesList).toEqual(mockFieldVariables);
-        expect(dataTable.componentInstance.value).toEqual(mockFieldVariables);
+        expect(tableRow.variablesList).toEqual(mockKeyValue);
+        expect(dataTable.componentInstance.value).toEqual(mockKeyValue);
         expect(dataTable.listeners[0].name).toBe('keydown.enter');
     });
 
@@ -84,10 +93,10 @@ describe('DotKeyValueComponent', () => {
         fixtureHost.detectChanges();
 
         tableRow = de.query(By.css('dot-key-value-table-row')).componentInstance;
-        tableRow.save.emit(1);
+        tableRow.save.emit(0);
         expect(component.save.emit).toHaveBeenCalledWith({
-            variable: mockFieldVariables[1],
-            variableIndex: 1
+            variable: mockKeyValue[0],
+            index: 0
         });
     });
 

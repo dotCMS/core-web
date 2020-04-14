@@ -14,11 +14,11 @@ import { DotKeyValueTableRowComponent } from './dot-key-value-table-row.componen
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DOTTestBed } from '@tests/dot-test-bed';
-import { mockFieldVariables } from '@tests/field-variable-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
-import { PrimeTemplate } from 'primeng/primeng';
+import { PrimeTemplate, InputSwitchModule } from 'primeng/primeng';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
+import { mockKeyValue } from '../dot-key-value.component.spec';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -101,7 +101,7 @@ describe('DotKeyValueTableRowComponent', () => {
                 MockEditableColumnDirective,
                 TestHostComponent
             ],
-            imports: [DotIconButtonModule],
+            imports: [DotIconButtonModule, InputSwitchModule],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
                 DotMessageDisplayService
@@ -116,12 +116,12 @@ describe('DotKeyValueTableRowComponent', () => {
 
         dotMessageDisplayService = de.injector.get(DotMessageDisplayService);
         hostComponent.variableIndex = 0;
-        hostComponent.variablesList = mockFieldVariables;
+        hostComponent.variablesList = mockKeyValue;
     });
 
     it('should load the component', () => {
         hostComponent.variableIndex = 1;
-        hostComponent.variable = mockFieldVariables[0];
+        hostComponent.variable = mockKeyValue[0];
         hostComponentfixture.detectChanges();
         const inputs = de.queryAll(By.css('input'));
         const btns = de.queryAll(By.css('button'));
@@ -150,8 +150,9 @@ describe('DotKeyValueTableRowComponent', () => {
     it('should focus on "Value" input when "Edit" button clicked', () => {
         hostComponent.variableIndex = 1;
         hostComponent.variable = { key: 'TestKey', value: 'TestValue' };
-        spyOn(comp.valueCell.nativeElement, 'click');
+        console.log(comp);
         hostComponentfixture.detectChanges();
+        spyOn(comp.valueCell.nativeElement, 'click');
         const button = de.queryAll(
             By.css('.dot-key-value-table-row__variables-actions dot-icon-button')
         )[1];
@@ -163,7 +164,7 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should show edit menu when focus/key.up on a field', () => {
-        hostComponent.variable = mockFieldVariables[0];
+        hostComponent.variable = mockKeyValue[0];
         hostComponentfixture.detectChanges();
         expect(comp.rowActiveHighlight).toBe(false);
         expect(comp.showEditMenu).toBe(false);
@@ -196,7 +197,7 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should emit cancel event when press "Escape"', () => {
-        hostComponent.variable = mockFieldVariables[0];
+        hostComponent.variable = mockKeyValue[0];
         hostComponentfixture.detectChanges();
         spyOn(comp.cancel, 'emit');
         hostComponentfixture.detectChanges();
@@ -207,10 +208,10 @@ describe('DotKeyValueTableRowComponent', () => {
     });
 
     it('should disabled save button when new variable key added is duplicated', () => {
-        hostComponent.variable = { key: 'Key1', value: '' };
-        hostComponent.variablesList = [hostComponent.variable, ...mockFieldVariables];
-        spyOn(dotMessageDisplayService, 'push');
+        hostComponent.variable = { key: 'name', value: '' };
+        hostComponent.variablesList = [hostComponent.variable, ...mockKeyValue];
         hostComponentfixture.detectChanges();
+        spyOn(dotMessageDisplayService, 'push');
         de.query(By.css('.field-key-input')).triggerEventHandler('blur', {
             type: 'blur',
             target: { value: 'Key1' }
