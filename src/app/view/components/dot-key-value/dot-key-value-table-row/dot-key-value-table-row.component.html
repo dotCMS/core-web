@@ -76,7 +76,7 @@
         <p-inputSwitch
             [disabled]="isHiddenField"
             [(ngModel)]="variable.hidden"
-            (onChange)="handleChange()"
+            (click)="editFieldInit()"
         ></p-inputSwitch>
     </td>
     <td class="dot-key-value-table-row__variables-actions">

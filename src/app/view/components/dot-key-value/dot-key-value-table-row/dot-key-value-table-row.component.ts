@@ -158,10 +158,6 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
         this.save.emit(this.variableIndex);
     }
 
-    handleChange(): void {
-        this.editFieldInit();
-    }
-
     private isSaveDisabled(isKeyVariableDuplicated: boolean) {
         return this.isFieldDisabled() || (isKeyVariableDuplicated && !this.isEditing);
     }
