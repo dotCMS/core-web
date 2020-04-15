@@ -12,6 +12,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "target": "es5",
+    "jsx": "react",
     "typeRoots": [
       "node_modules/@types"
     ],

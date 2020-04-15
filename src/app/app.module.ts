@@ -19,13 +19,14 @@ import { SharedModule } from './shared/shared.module';
 import { HotkeyModule } from 'angular2-hotkeys';
 import { DotDirectivesModule } from './shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
+import { ReactRendererComponent } from './react/react-rendered.component';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
 @NgModule({
     bootstrap: [AppComponent],
-    declarations: [AppComponent, ...COMPONENTS],
+    declarations: [AppComponent, ...COMPONENTS, ReactRendererComponent],
     imports: [
         ...CUSTOM_MODULES,
         ...NGFACES_MODULES,

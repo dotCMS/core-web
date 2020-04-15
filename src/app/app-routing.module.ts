@@ -12,8 +12,13 @@ import { MenuGuardService } from '@services/guards/menu-guard.service';
 import { PublicAuthGuardService } from '@services/guards/public-auth-guard.service';
 import { DotLoginPageComponent } from '@components/login/main/dot-login-page.component';
 import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
+import { ReactRendererComponent } from './react/react-rendered.component';
 
-const PORTLETS_ANGULAR = [
+const PORTLETS_ANGULAR: Routes = [
+    {
+        path: 'react',
+        component: ReactRendererComponent
+    },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
