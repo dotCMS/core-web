@@ -1,0 +1,58 @@
+<tr class="dot-key-value-table-input-row">
+    <td>
+        <input
+            #keyCell
+            pInputText
+            class="field-key-input"
+            type="text"
+            [placeholder]="messages['keyValue.key_input.placeholder']"
+            (blur)="rowActiveHighlight = false; editFieldInit($event)"
+            (focus)="editFieldInit($event)"
+            (keyup)="editFieldInit($event)"
+            (keydown.escape)="onCancel($event)"
+            (keydown.enter)="onPressEnter($event)"
+            [(ngModel)]="variable.key"
+        />
+    </td>
+    <td>
+        <input
+            #valueCell
+            pInputText
+            class="field-value-input"
+            [type]="variable.hidden ? 'password' : 'text'"
+            [placeholder]="messages['keyValue.value_input.placeholder']"
+            (blur)="rowActiveHighlight = false"
+            (focus)="editFieldInit($event)"
+            (keyup)="editFieldInit($event)"
+            (keydown.escape)="onCancel($event)"
+            (keydown.enter)="onPressEnter($event)"
+            [(ngModel)]="variable.value"
+        />
+    </td>
+    <td *ngIf="showHiddenField" class="dot-key-value-table-input-row__variables-hidden">
+        <p-inputSwitch [(ngModel)]="variable.hidden" (click)="editFieldInit()"></p-inputSwitch>
+    </td>
+    <td class="dot-key-value-table-input-row__variables-actions">
+        <button
+            pButton
+            secondary
+            tiny
+            class="dot-key-value-table-input-row__variables-actions-edit-cancel"
+            [label]="messages['Cancel']"
+            (blur)="rowActiveHighlight = false"
+            (focus)="rowActiveHighlight = true"
+            (click)="onCancel($event)"
+        ></button>
+        <button
+            #saveButton
+            pButton
+            tiny
+            class="dot-key-value-table-input-row__variables-actions-edit-save"
+            [label]="messages['Save']"
+            [disabled]="saveDisabled"
+            (blur)="rowActiveHighlight = false"
+            (focus)="rowActiveHighlight = true"
+            (click)="saveVariable()"
+        ></button>
+    </td>
+</tr>

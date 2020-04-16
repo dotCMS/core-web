@@ -10,7 +10,7 @@ import {
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 import * as _ from 'lodash';
-import { DotKeyValue, DotKeyValueSaveData } from '@shared/models/dot-key-value/dot-key-value.model';
+import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 
 @Component({
     selector: 'dot-key-value',
@@ -20,8 +20,8 @@ import { DotKeyValue, DotKeyValueSaveData } from '@shared/models/dot-key-value/d
 export class DotKeyValueComponent implements OnInit, OnChanges {
     @Input() showHiddenField: boolean;
     @Input() variables: DotKeyValue[] = [];
-    @Output() delete: EventEmitter<number> = new EventEmitter(false);
-    @Output() save: EventEmitter<DotKeyValueSaveData> = new EventEmitter(false);
+    @Output() delete: EventEmitter<DotKeyValue> = new EventEmitter(false);
+    @Output() save: EventEmitter<DotKeyValue> = new EventEmitter(false);
 
     variablesBackup: DotKeyValue[] = [];
     messages: { [key: string]: string } = {};
@@ -51,21 +51,34 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
      * @param {number} fieldIndex
      * @memberof DotKeyValueComponent
      */
-    deleteVariable(fieldIndex: number): void {
-        this.delete.emit(fieldIndex);
+    deleteVariable(variable: DotKeyValue): void {
+        [this.variables, this.variablesBackup] = [
+            this.variables,
+            this.variablesBackup
+        ].map((variables: DotKeyValue[]) =>
+            variables.filter((item: DotKeyValue) => item.key !== variable.key)
+        );
+        this.delete.emit(variable);
     }
 
     /**
      * Handle Save event, emitting the variable be handled by a parent smart component
-     * @param {number} fieldIndex
+     * @param {DotKeyValue} variable
      * @memberof DotKeyValueComponent
      */
-    saveVariable(fieldIndex: number): void {
-        this.setHiddenValue(fieldIndex);
-        this.save.emit({
-            variable: this.variablesBackup[fieldIndex],
-            index: fieldIndex
-        });
+    saveVariable(variable: DotKeyValue): void {
+        this.save.emit(variable);
+
+        variable = this.setHiddenValue(variable);
+
+        const indexChanged = this.getVariableIndexChanged(variable);
+        if (indexChanged !== null) {
+            this.variables[indexChanged] = _.cloneDeep(variable);
+        } else {
+            this.variables = [].concat(variable, this.variables);
+        }
+
+        this.variablesBackup = _.cloneDeep(this.variables);
     }
 
     /**
@@ -77,10 +90,23 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
         this.variablesBackup[fieldIndex] = _.cloneDeep(this.variables[fieldIndex]);
     }
 
-    private setHiddenValue(fieldIndex: number): void {
-        this.variablesBackup[fieldIndex].hidden =
-            this.showHiddenField && this.variablesBackup[fieldIndex].hidden
-                ? this.variablesBackup[fieldIndex].hidden
-                : false;
+    setHiddenValue(variable: DotKeyValue): DotKeyValue {
+        variable.value = variable.hidden ? '********' : variable.value;
+        return variable;
+        // this.variablesBackup[fieldIndex].hidden =
+        //     this.showHiddenField && this.variablesBackup[fieldIndex].hidden
+        //         ? this.variablesBackup[fieldIndex].hidden
+        //         : false;
+    }
+
+    // tslint:disable-next-line:cyclomatic-complexity
+    private getVariableIndexChanged(variable: DotKeyValue): number {
+        let index = null;
+        for (let i = 0, total = this.variables.length; total > i; i++) {
+            if (!index && this.variables[i].key === variable.key) {
+                index = i;
+            }
+        }
+        return index;
     }
 }

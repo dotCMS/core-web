@@ -16,11 +16,11 @@ import { DotMessageSeverity, DotMessageType } from '@components/dot-message-disp
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 
 @Component({
-    selector: 'dot-key-value-table-row',
-    styleUrls: ['./dot-key-value-table-row.component.scss'],
-    templateUrl: './dot-key-value-table-row.component.html'
+    selector: 'dot-key-value-table-input-row',
+    styleUrls: ['./dot-key-value-table-input-row.component.scss'],
+    templateUrl: './dot-key-value-table-input-row.component.html'
 })
-export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
+export class DotKeyValueTableInputRowComponent implements OnInit, OnChanges {
     @ViewChild('saveButton')
     saveButton: ElementRef;
     @ViewChild('keyCell')
@@ -29,27 +29,19 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     valueCell: ElementRef;
 
     @Input() showHiddenField: boolean;
-    @Input() isHiddenField: boolean;
-    @Input()
-    variable: DotKeyValue;
-    @Input()
-    variableIndex: number;
     @Input()
     variablesList: DotKeyValue[] = [];
 
     @Output()
     save: EventEmitter<DotKeyValue> = new EventEmitter(false);
-    @Output()
-    cancel: EventEmitter<number> = new EventEmitter(false);
-    @Output()
-    delete: EventEmitter<number> = new EventEmitter(false);
 
     rowActiveHighlight: Boolean = false;
-    showEditMenu: Boolean = false;
+    // showEditMenu: Boolean = false;
     saveDisabled: Boolean = false;
     messages: { [key: string]: string } = {};
     elemRef: ElementRef;
     isEditing = false;
+    variable: DotKeyValue = { key: '', hidden: false, value: '' };
 
     constructor(
         public dotMessageService: DotMessageService,
@@ -68,44 +60,44 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
-                if (!this.isEditing && this.variableIndex === 0) {
-                    // "setTimeout" needs to be set so "keyCell" DOM gets rendered and tests don't fail
-                    setTimeout(() => {
-                        this.keyCell.nativeElement.click();
-                    }, 0);
-                }
+                // if (!this.isEditing && this.variableIndex === 0) {
+                // "setTimeout" needs to be set so "keyCell" DOM gets rendered and tests don't fail
+                // setTimeout(() => {
+                this.keyCell.nativeElement.focus();
+                // }, 0);
+                // }
             });
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.variable) {
-            this.isEditing = !!changes.variable.currentValue.value;
-        }
+    ngOnChanges(_changes: SimpleChanges) {
+        // if (changes.variable) {
+        //     this.isEditing = !!changes.variable.currentValue.value;
+        // }
     }
 
     /**
      * Focus on Key input
      * @param {Event} [$event]
-     * @memberof DotKeyValueTableRowComponent
+     * @memberof DotKeyValueTableInputRowComponent
      */
-    focusKeyInput($event: Event): void {
-        $event.stopPropagation();
-        if (this.variableIndex === 0) {
-            this.keyCell.nativeElement.click();
-        } else {
-            this.valueCell.nativeElement.click();
-        }
-    }
+    // focusKeyInput($event: Event): void {
+    //     $event.stopPropagation();
+    //     if (this.variableIndex === 0) {
+    //         this.keyCell.nativeElement.click();
+    //     } else {
+    //         this.valueCell.nativeElement.click();
+    //     }
+    // }
 
     /**
      * Sets initial fields properties
      *
      * @param {Event} $event
-     * @memberof DotKeyValueTableRowComponent
+     * @memberof DotKeyValueTableInputRowComponent
      */
     editFieldInit($event?: Event): void {
-        this.rowActiveHighlight = true;
-        this.showEditMenu = true;
+        // this.rowActiveHighlight = true;
+        // this.showEditMenu = true;
         const isKeyVariableDuplicated = this.isFieldVariableKeyDuplicated();
         this.saveDisabled = this.isSaveDisabled(isKeyVariableDuplicated);
 
@@ -125,18 +117,20 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     /**
      * Handle Cancel event event emmitting variable index to parent component
      * @param {KeyboardEvent} $event
-     * @memberof DotKeyValueTableRowComponent
+     * @memberof DotKeyValueTableInputRowComponent
      */
     onCancel($event: KeyboardEvent): void {
         $event.stopPropagation();
-        this.showEditMenu = false;
-        this.cancel.emit(this.variableIndex);
+        this.cleanVariableValues();
+        this.keyCell.nativeElement.focus();
+        // this.showEditMenu = false;
+        // this.cancel.emit(this.variableIndex);
     }
 
     /**
      * Handle Enter key event
      * @param {KeyboardEvent} $event
-     * @memberof DotKeyValueTableRowComponent
+     * @memberof DotKeyValueTableInputRowComponent
      */
     onPressEnter($event: KeyboardEvent): void {
         if (this.keyInputInvalid($event)) {
@@ -152,11 +146,12 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
 
     /**
      * Handle Save event emitting variable value to parent component
-     * @memberof DotKeyValueTableRowComponent
+     * @memberof DotKeyValueTableInputRowComponent
      */
     saveVariable(): void {
-        this.showEditMenu = false;
+        // this.showEditMenu = false;
         this.save.emit(this.variable);
+        this.cleanVariableValues();
     }
 
     private isSaveDisabled(isKeyVariableDuplicated: boolean) {
@@ -199,5 +194,10 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     private isKeyInput($event: KeyboardEvent): boolean {
         const element = <HTMLElement>$event.srcElement;
         return element.classList.contains('field-key-input');
+    }
+
+    private cleanVariableValues(): void {
+        this.variable = { key: '', hidden: false, value: '' };
+        this.saveDisabled = true;
     }
 }

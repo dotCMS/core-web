@@ -6,7 +6,9 @@ import { ResponseView } from 'dotcms-js';
 import { take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
 import { DotCMSContentTypeField } from 'dotcms-models';
-import { DotKeyValueSaveData } from '@shared/models/dot-key-value/dot-key-value.model';
+import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
+// import { DotKeyValueSaveData, DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
+// import { DotKeyValueModule } from '@components/dot-key-value/dot-key-value.module';
 
 @Component({
     selector: 'dot-content-type-fields-variables',
@@ -41,14 +43,14 @@ export class DotContentTypeFieldsVariablesComponent implements OnChanges, OnDest
      * @param {number} fieldIndex
      * @memberof DotContentTypeFieldsVariablesComponent
      */
-    deleteExistingVariable(fieldIndex: number): void {
+    deleteExistingVariable(variable: DotKeyValue): void {
         this.fieldVariablesService
-            .delete(this.field, this.fieldVariables[fieldIndex])
+            .delete(this.field, variable)
             .pipe(take(1))
             .subscribe(
                 () => {
                     this.fieldVariables = this.fieldVariables.filter(
-                        (_item: DotFieldVariable, index: number) => index !== fieldIndex
+                        (item: DotFieldVariable) => item.key !== variable.key
                     );
                 },
                 (err: ResponseView) => {
@@ -62,17 +64,14 @@ export class DotContentTypeFieldsVariablesComponent implements OnChanges, OnDest
      * @param {DotKeyValueSaveData} { variable, index }:
      * @memberof DotContentTypeFieldsVariablesComponent
      */
-    updateExistingVariable({ variable, index }: DotKeyValueSaveData): void {
+    updateExistingVariable(variable: DotKeyValue): void {
         this.fieldVariablesService
             .save(this.field, variable)
             .pipe(take(1))
             .subscribe(
                 (savedVariable: DotFieldVariable) => {
-                    this.fieldVariables = this.updateVariableCollection(
-                        savedVariable,
-                        index
-                    );
-                    this.addEmptyVariable();
+                    this.fieldVariables = this.updateVariableCollection(savedVariable);
+                    // this.addEmptyVariable();
                 },
                 (err: ResponseView) => {
                     this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe();
@@ -86,33 +85,36 @@ export class DotContentTypeFieldsVariablesComponent implements OnChanges, OnDest
             .pipe(takeUntil(this.destroy$))
             .subscribe((fieldVariables: DotFieldVariable[]) => {
                 this.fieldVariables = fieldVariables;
-                this.addEmptyVariable();
+                // this.addEmptyVariable();
             });
     }
 
-    private addEmptyVariable(): void {
-        if (this.fieldVariables.length === 0 || this.isEmptyVariableNotAdded()) {
-            const emptyVariable: DotFieldVariable = {
-                key: '',
-                value: ''
-            };
-            this.fieldVariables = [].concat(emptyVariable, this.fieldVariables);
-        }
-    }
+    // private addEmptyVariable(): void {
+    //     if (this.fieldVariables.length === 0 || this.isEmptyVariableNotAdded()) {
+    //         const emptyVariable: DotFieldVariable = {
+    //             key: '',
+    //             value: ''
+    //         };
+    //         this.fieldVariables = [].concat(emptyVariable, this.fieldVariables);
+    //     }
+    // }
 
-    private isEmptyVariableNotAdded(): boolean {
-        return this.fieldVariables.length > 0 && this.fieldVariables[0].key !== '';
-    }
+    // private isEmptyVariableNotAdded(): boolean {
+    //     return this.fieldVariables.length > 0 && this.fieldVariables[0].key !== '';
+    // }
 
-    private updateVariableCollection(
-        savedVariable: DotFieldVariable,
-        variableIndex: number
-    ): DotFieldVariable[] {
-        return this.fieldVariables.map((item, index) => {
-            if (index === variableIndex) {
-                item = savedVariable;
-            }
-            return item;
-        });
+    private updateVariableCollection(savedVariable: DotFieldVariable): DotFieldVariable[] {
+        const variableExist = this.fieldVariables.find(
+            (item: DotKeyValue) => item.key === savedVariable.key
+        );
+
+        return variableExist
+            ? this.fieldVariables.map((item) => {
+                  if (item.key === savedVariable.key) {
+                      item = savedVariable;
+                  }
+                  return item;
+              })
+            : [].concat(savedVariable, this.fieldVariables);
     }
 }

@@ -21,6 +21,12 @@
                 {{ messages['keyValue.actions_header.label'] }}
             </th>
         </tr>
+        <dot-key-value-table-input-row
+            [showHiddenField]="showHiddenField"
+            [variablesList]="variables"
+            (save)="saveVariable($event)"
+        >
+        </dot-key-value-table-input-row>
     </ng-template>
     <ng-template pTemplate="body" let-variable let-rowIndex="rowIndex">
         <dot-key-value-table-row

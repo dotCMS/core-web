@@ -1,7 +1,4 @@
-<tr
-    class="dot-key-value-table-row"
-    [ngClass]="{ 'dot-key-value-table-row-highlight': rowActiveHighlight }"
->
+<tr class="dot-key-value-table-row">
     <ng-template [ngIf]="isEditing" [ngIfElse]="editable">
         <td>
             {{ variable.key }}
@@ -76,7 +73,7 @@
         <p-inputSwitch
             [disabled]="isHiddenField"
             [(ngModel)]="variable.hidden"
-            (click)="editFieldInit()"
+            (onChange)="showEditMenu = true"
         ></p-inputSwitch>
     </td>
     <td class="dot-key-value-table-row__variables-actions">
@@ -105,9 +102,8 @@
         </ng-template>
         <ng-template #formButtons>
             <dot-icon-button
-                *ngIf="variableIndex"
                 icon="delete_outline"
-                (click)="delete.emit(variableIndex)"
+                (click)="delete.emit(variable)"
             ></dot-icon-button>
             <dot-icon-button
                 icon="edit"
