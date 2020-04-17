@@ -12,6 +12,7 @@ import { DotKeyValueComponent } from './dot-key-value.component';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotKeyValueTableRowComponent } from './dot-key-value-table-row/dot-key-value-table-row.component';
+import { DotKeyValueTableInputRowModule } from './dot-key-value-table-input-row/dot-key-value-table-input-row.module';
 
 export const mockKeyValue = [
     {
@@ -27,9 +28,12 @@ export const mockKeyValue = [
 ];
 @Component({
     selector: 'dot-test-host-component',
-    template: ` <dot-key-value [variables]="value"></dot-key-value> `
+    template: `
+        <dot-key-value [showHiddenField]="showHiddenField" [variables]="value"></dot-key-value>
+    `
 })
 class TestHostComponent {
+    showHiddenField: boolean;
     value: DotKeyValue[] = mockKeyValue;
 }
 
@@ -47,13 +51,19 @@ describe('DotKeyValueComponent', () => {
             'keyValue.value_header.label': 'Value',
             'keyValue.key_header.label': 'Key',
             'keyValue.value_no_rows.label': 'No Rows',
+            'keyValue.hidden_header.label': 'Hidden',
             Save: 'Save',
             Cancel: 'Cancel'
         });
 
         DOTTestBed.configureTestingModule({
             declarations: [TestHostComponent, DotKeyValueComponent],
-            imports: [DotIconModule, TableModule, DotKeyValueTableRowModule],
+            imports: [
+                DotIconModule,
+                TableModule,
+                DotKeyValueTableRowModule,
+                DotKeyValueTableInputRowModule
+            ],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
                 DotMessageDisplayService
@@ -87,17 +97,24 @@ describe('DotKeyValueComponent', () => {
         expect(dataTable.listeners[0].name).toBe('keydown.enter');
     });
 
-    it('should save a variable', () => {
+    it('should save an existing variable', () => {
         spyOn(component.save, 'emit');
 
         fixtureHost.detectChanges();
 
         tableRow = de.query(By.css('dot-key-value-table-row')).componentInstance;
-        tableRow.save.emit(0);
-        expect(component.save.emit).toHaveBeenCalledWith({
-            variable: mockKeyValue[0],
-            index: 0
-        });
+        tableRow.save.emit(mockKeyValue[0]);
+        expect(component.save.emit).toHaveBeenCalledWith(mockKeyValue[0]);
+    });
+
+    it('should save a new variable', () => {
+        spyOn(component.save, 'emit');
+
+        fixtureHost.detectChanges();
+
+        tableRow = de.query(By.css('dot-key-value-table-input-row')).componentInstance;
+        tableRow.save.emit(mockKeyValue[0]);
+        expect(component.save.emit).toHaveBeenCalledWith(mockKeyValue[0]);
     });
 
     it('should delete a variable from the server', () => {
@@ -105,9 +122,9 @@ describe('DotKeyValueComponent', () => {
         fixtureHost.detectChanges();
 
         tableRow = de.query(By.css('dot-key-value-table-row')).componentInstance;
-        tableRow.delete.emit(0);
+        tableRow.delete.emit(mockKeyValue[0]);
 
-        expect(component.delete.emit).toHaveBeenCalledWith(0);
+        expect(component.delete.emit).toHaveBeenCalledWith(mockKeyValue[0]);
     });
 
     it('should restore a variable value with saved value in the UI, when cancelled', () => {
@@ -128,5 +145,25 @@ describe('DotKeyValueComponent', () => {
         });
 
         expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should load the component with hidden header', () => {
+        componentHost.value = [];
+        componentHost.showHiddenField = true;
+        fixtureHost.detectChanges();
+
+        const dataTable = de.query(By.css('p-table'));
+        expect(dataTable.nativeElement.innerText).toContain('Hidden');
+    });
+
+    it('should save a hidden variable', () => {
+        spyOn(component.save, 'emit');
+
+        fixtureHost.detectChanges();
+
+        tableRow = de.query(By.css('dot-key-value-table-input-row')).componentInstance;
+        tableRow.save.emit(mockKeyValue[1]);
+        expect(component.save.emit).toHaveBeenCalledWith(mockKeyValue[1]);
+        expect(component.variables[1]).toEqual({ ...mockKeyValue[1], value: '********' });
     });
 });

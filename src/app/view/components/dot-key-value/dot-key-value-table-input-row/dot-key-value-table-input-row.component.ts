@@ -109,7 +109,6 @@ export class DotKeyValueTableInputRowComponent implements OnInit {
         } else if (this.variable.key !== '') {
             this.getElementToFocus($event);
         }
-
         setTimeout(() => {
             this.elemRef.nativeElement.type === 'text'
                 ? this.elemRef.nativeElement.focus()

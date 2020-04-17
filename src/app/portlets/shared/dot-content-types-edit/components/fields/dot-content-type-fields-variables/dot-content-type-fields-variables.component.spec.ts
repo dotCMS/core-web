@@ -42,9 +42,7 @@ describe('DotContentTypeFieldsVariablesComponent', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             declarations: [TestHostComponent, DotContentTypeFieldsVariablesComponent],
-            imports: [
-                DotKeyValueModule
-            ],
+            imports: [DotKeyValueModule],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
                 {
@@ -61,18 +59,17 @@ describe('DotContentTypeFieldsVariablesComponent', () => {
         comp = de.componentInstance;
 
         dotFieldVariableService = de.injector.get(DotFieldVariablesService);
-
     });
 
     it('should load the component with one empty row', () => {
         spyOn(dotFieldVariableService, 'load').and.returnValue(of([]));
         fixtureHost.detectChanges();
-        expect(comp.fieldVariables[0]).toEqual({ key: '', value: '' });
+        expect(comp.fieldVariables.length).toBe(0);
     });
 
     it('should save a variable', () => {
         spyOn(dotFieldVariableService, 'save').and.returnValue(of(mockFieldVariables[0]));
-        const response = { variable: mockFieldVariables[0], variableIndex: 0 };
+        const response = mockFieldVariables[0];
 
         fixtureHost.detectChanges();
 
@@ -82,25 +79,21 @@ describe('DotContentTypeFieldsVariablesComponent', () => {
             comp.field,
             mockFieldVariables[0]
         );
-        expect(comp.fieldVariables[0]).toEqual({ key: '', value: '' });
-        expect(comp.fieldVariables[1]).toEqual(mockFieldVariables[0]);
+        expect(comp.fieldVariables[0]).toEqual(mockFieldVariables[0]);
     });
 
     it('should delete a variable from the server', () => {
+        const variableToDelete = mockFieldVariables[0];
         spyOn(dotFieldVariableService, 'delete').and.returnValue(of([]));
-        const deletedCollection = [{ key: '', value: '' }].concat(
-            mockFieldVariables.filter((_item: DotFieldVariable, index: number) => index !== 0)
+        const deletedCollection = mockFieldVariables.filter(
+            (item: DotFieldVariable) => variableToDelete.key !== item.key
         );
         fixtureHost.detectChanges();
 
         const dotKeyValue = de.query(By.css('dot-key-value')).componentInstance;
-        dotKeyValue.delete.emit(1);
+        dotKeyValue.delete.emit(variableToDelete);
 
-        expect(dotFieldVariableService.delete).toHaveBeenCalledWith(
-            comp.field,
-            mockFieldVariables[0]
-        );
+        expect(dotFieldVariableService.delete).toHaveBeenCalledWith(comp.field, variableToDelete);
         expect(comp.fieldVariables).toEqual(deletedCollection);
     });
-
 });

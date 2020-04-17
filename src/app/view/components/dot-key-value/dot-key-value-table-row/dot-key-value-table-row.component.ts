@@ -12,8 +12,6 @@ import {
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 import * as _ from 'lodash';
-import { DotMessageDisplayService } from '@components/dot-message-display/services';
-import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 import { DotKeyValueUtil } from '../util/dot-key-value-util';
 
@@ -47,10 +45,7 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     messages: { [key: string]: string } = {};
     elemRef: ElementRef;
 
-    constructor(
-        public dotMessageService: DotMessageService,
-        private dotMessageDisplayService: DotMessageDisplayService
-    ) {}
+    constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
         this.dotMessageService
@@ -87,10 +82,9 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     /**
      * Sets initial fields properties
      *
-     * @param {Event} $event
      * @memberof DotKeyValueTableRowComponent
      */
-    editFieldInit($event?: Event): void {
+    editFieldInit(): void {
         this.showEditMenu = true;
         const isKeyVariableDuplicated = DotKeyValueUtil.isFieldVariableKeyDuplicated(
             this.variableCopy,
@@ -101,18 +95,6 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
             isKeyVariableDuplicated,
             this.variableCopy
         );
-
-        if (DotKeyValueUtil.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
-            this.dotMessageDisplayService.push({
-                life: 3000,
-                message: this.messages['keyValue.error.duplicated.variable'].replace(
-                    '{0}',
-                    (<HTMLInputElement>$event.target).value
-                ),
-                severity: DotMessageSeverity.ERROR,
-                type: DotMessageType.SIMPLE_MESSAGE
-            });
-        }
     }
 
     /**

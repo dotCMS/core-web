@@ -87,7 +87,6 @@ describe('DotKeyValueTableRowComponent', () => {
     let hostComponent: TestHostComponent;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
-    let dotMessageDisplayService: DotMessageDisplayService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -118,7 +117,6 @@ describe('DotKeyValueTableRowComponent', () => {
             .componentInstance;
         de = hostComponentfixture.debugElement.query(By.css('dot-key-value-table-row'));
 
-        dotMessageDisplayService = de.injector.get(DotMessageDisplayService);
         hostComponent.variableIndex = 0;
         hostComponent.variablesList = mockKeyValue;
     });
@@ -134,22 +132,6 @@ describe('DotKeyValueTableRowComponent', () => {
             expect(btns[0].nativeElement.innerText).toContain('delete_outline');
             expect(btns[1].nativeElement.innerText).toContain('edit');
             expect(comp.saveDisabled).toBe(false);
-        });
-
-        it('should focus on "Key" input when an empty variable is added', (done) => {
-            hostComponent.variable = {
-                key: '',
-                value: ''
-            };
-            hostComponentfixture.detectChanges();
-            de.query(By.css('.field-key-input')).triggerEventHandler('focus', {});
-            spyOn(comp.keyCell.nativeElement, 'click');
-            hostComponentfixture.detectChanges();
-            setTimeout(() => {
-                expect(comp.saveDisabled).toBe(true);
-                expect(comp.keyCell.nativeElement.click).toHaveBeenCalled();
-                done();
-            }, 0);
         });
 
         it('should focus on "Value" input when "Edit" button clicked', () => {
@@ -170,34 +152,14 @@ describe('DotKeyValueTableRowComponent', () => {
         it('should show edit menu when focus/key.up on a field', () => {
             hostComponent.variable = mockKeyValue[0];
             hostComponentfixture.detectChanges();
-            expect(comp.rowActiveHighlight).toBe(false);
             expect(comp.showEditMenu).toBe(false);
             expect(comp.saveDisabled).toBe(false);
             de.query(By.css('.field-value-input')).triggerEventHandler('keyup', {
                 target: { value: 'a' }
             });
             hostComponentfixture.detectChanges();
-            expect(comp.rowActiveHighlight).toBe(true);
             expect(comp.showEditMenu).toBe(true);
             expect(comp.saveDisabled).toBe(false);
-        });
-
-        it('should focus on "Value" field, if entered valid "Key"', () => {
-            hostComponent.variable = { key: 'test', value: '' };
-            hostComponentfixture.detectChanges();
-            de.query(By.css('.field-key-input')).nativeElement.dispatchEvent(
-                new KeyboardEvent('keydown', { key: 'Enter' })
-            );
-            expect(comp.elemRef).toBe(comp.valueCell);
-        });
-
-        it('should focus on "Key" field, if entered invalid "Key"', () => {
-            hostComponent.variable = { key: '', value: '' };
-            hostComponentfixture.detectChanges();
-            de.query(By.css('.field-key-input')).nativeElement.dispatchEvent(
-                new KeyboardEvent('keydown', { key: 'Enter' })
-            );
-            expect(comp.elemRef).toBe(comp.keyCell);
         });
 
         it('should emit cancel event when press "Escape"', () => {
@@ -209,39 +171,24 @@ describe('DotKeyValueTableRowComponent', () => {
                 new KeyboardEvent('keydown', { key: 'Escape' })
             );
             expect(comp.cancel.emit).toHaveBeenCalledWith(comp.variableIndex);
+            expect(comp.showEditMenu).toBe(false);
         });
 
-        it('should disabled save button when new variable key added is duplicated', () => {
-            hostComponent.variable = { key: 'name', value: '' };
-            hostComponent.variablesList = [hostComponent.variable, ...mockKeyValue];
-            hostComponentfixture.detectChanges();
-            spyOn(dotMessageDisplayService, 'push');
-            de.query(By.css('.field-key-input')).triggerEventHandler('blur', {
-                type: 'blur',
-                target: { value: 'Key1' }
-            });
-            hostComponentfixture.detectChanges();
-            const saveBtn = de.query(
-                By.css('.dot-key-value-table-row__variables-actions-edit-save')
-            ).nativeElement;
-            hostComponentfixture.detectChanges();
-            expect(saveBtn.disabled).toBe(true);
-            expect(dotMessageDisplayService.push).toHaveBeenCalled();
-        });
-
-        it('should emit save event when button clicked and not modify "isEditing" variable when component gets updated', () => {
+        it('should emit save event when button clicked', () => {
             hostComponent.variable = { key: 'Key1', value: 'Value1' };
             hostComponentfixture.detectChanges();
             spyOn(comp.save, 'emit');
             de.query(By.css('.field-value-input')).triggerEventHandler('focus', {});
             hostComponentfixture.detectChanges();
-            de.query(
-                By.css('.dot-key-value-table-row__variables-actions-edit-save')
-            ).triggerEventHandler('click', {});
-            hostComponent.variablesList = [];
-            hostComponentfixture.detectChanges();
-            expect(comp.save.emit).toHaveBeenCalledWith(comp.variableIndex);
-            expect(comp.isEditing).toBe(true);
+            hostComponentfixture.whenStable().then(() => {
+                de.query(
+                    By.css('.dot-key-value-table-row__variables-actions-edit-save')
+                ).triggerEventHandler('click', {});
+                hostComponent.variablesList = [];
+                hostComponentfixture.detectChanges();
+                expect(comp.save.emit).toHaveBeenCalledWith(comp.variable);
+                expect(comp.showEditMenu).toBe(false);
+            });
         });
 
         it('should emit cancel event when button clicked', () => {
@@ -255,17 +202,17 @@ describe('DotKeyValueTableRowComponent', () => {
                 By.css('.dot-key-value-table-row__variables-actions-edit-cancel')
             ).triggerEventHandler('click', { stopPropagation: () => {} });
             expect(comp.cancel.emit).toHaveBeenCalledWith(comp.variableIndex);
+            expect(comp.showEditMenu).toBe(false);
         });
 
         it('should emit delete event when button clicked', () => {
-            hostComponent.variableIndex = 1;
             hostComponent.variable = { key: 'TestKey', value: 'TestValue' };
             spyOn(comp.delete, 'emit');
             hostComponentfixture.detectChanges();
             de.queryAll(
                 By.css('.dot-key-value-table-row__variables-actions dot-icon-button')
             )[0].triggerEventHandler('click', {});
-            expect(comp.delete.emit).toHaveBeenCalledWith(comp.variableIndex);
+            expect(comp.delete.emit).toHaveBeenCalledWith(comp.variable);
         });
     });
 
@@ -276,7 +223,7 @@ describe('DotKeyValueTableRowComponent', () => {
             hostComponent.variable = mockKeyValue[1];
         });
 
-        it('should load the component with edit and switch button disabled', () => {
+        it('should load the component with edit icon and switch button disabled', () => {
             hostComponent.isHiddenField = true;
             hostComponentfixture.detectChanges();
             const switchButton = de.query(By.css('p-inputSwitch'));
@@ -295,7 +242,7 @@ describe('DotKeyValueTableRowComponent', () => {
             hostComponentfixture.detectChanges();
             const valueInput = de.query(By.css('.field-value-input'));
             const switchButton = de.query(By.css('p-inputSwitch')).nativeElement;
-            switchButton.dispatchEvent(new MouseEvent('click'));
+            switchButton.dispatchEvent(new Event('onChange'));
             hostComponentfixture.detectChanges();
             hostComponentfixture.whenStable().then(() => {
                 expect(comp.showEditMenu).toBe(true);
