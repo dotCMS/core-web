@@ -8,10 +8,6 @@
         width: 100%;
     }
 
-    p-celleditor {
-        cursor: pointer;
-    }
-
     p-inputSwitch {
         display: inline-block;
     }
@@ -24,7 +20,7 @@
         background-color: $gray-bg;
     }
 
-    td:nth-child(-n+3) {
+    td:nth-child(-n + 2) {
         padding-right: $basic-padding * 3;
     }
 }

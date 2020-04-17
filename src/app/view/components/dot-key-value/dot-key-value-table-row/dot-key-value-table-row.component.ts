@@ -11,9 +11,11 @@ import {
 } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
+import * as _ from 'lodash';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
+import { DotKeyValueUtil } from '../util/dot-key-value-util';
 
 @Component({
     selector: 'dot-key-value-table-row',
@@ -23,33 +25,27 @@ import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
     @ViewChild('saveButton')
     saveButton: ElementRef;
-    @ViewChild('keyCell')
-    keyCell: ElementRef;
     @ViewChild('valueCell')
     valueCell: ElementRef;
 
     @Input() showHiddenField: boolean;
     @Input() isHiddenField: boolean;
-    @Input()
-    variable: DotKeyValue;
-    @Input()
-    variableIndex: number;
-    @Input()
-    variablesList: DotKeyValue[] = [];
+    @Input() variable: DotKeyValue;
+    @Input() variableIndex: number;
+    @Input() variablesList: DotKeyValue[] = [];
 
     @Output()
     save: EventEmitter<DotKeyValue> = new EventEmitter(false);
     @Output()
     cancel: EventEmitter<number> = new EventEmitter(false);
     @Output()
-    delete: EventEmitter<number> = new EventEmitter(false);
+    delete: EventEmitter<DotKeyValue> = new EventEmitter(false);
 
-    rowActiveHighlight: Boolean = false;
+    variableCopy: DotKeyValue;
     showEditMenu: Boolean = false;
     saveDisabled: Boolean = false;
     messages: { [key: string]: string } = {};
     elemRef: ElementRef;
-    isEditing = false;
 
     constructor(
         public dotMessageService: DotMessageService,
@@ -68,18 +64,13 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
-                if (!this.isEditing && this.variableIndex === 0) {
-                    // "setTimeout" needs to be set so "keyCell" DOM gets rendered and tests don't fail
-                    setTimeout(() => {
-                        this.keyCell.nativeElement.click();
-                    }, 0);
-                }
             });
+        this.variableCopy = _.cloneDeep(this.variable);
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.variable) {
-            this.isEditing = !!changes.variable.currentValue.value;
+            this.variableCopy = _.cloneDeep(this.variable);
         }
     }
 
@@ -90,11 +81,7 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
      */
     focusKeyInput($event: Event): void {
         $event.stopPropagation();
-        if (this.variableIndex === 0) {
-            this.keyCell.nativeElement.click();
-        } else {
-            this.valueCell.nativeElement.click();
-        }
+        this.valueCell.nativeElement.click();
     }
 
     /**
@@ -104,12 +91,18 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
      * @memberof DotKeyValueTableRowComponent
      */
     editFieldInit($event?: Event): void {
-        this.rowActiveHighlight = true;
         this.showEditMenu = true;
-        const isKeyVariableDuplicated = this.isFieldVariableKeyDuplicated();
-        this.saveDisabled = this.isSaveDisabled(isKeyVariableDuplicated);
+        const isKeyVariableDuplicated = DotKeyValueUtil.isFieldVariableKeyDuplicated(
+            this.variableCopy,
+            this.variablesList
+        );
 
-        if (this.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
+        this.saveDisabled = DotKeyValueUtil.isSaveDisabled(
+            isKeyVariableDuplicated,
+            this.variableCopy
+        );
+
+        if (DotKeyValueUtil.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
             this.dotMessageDisplayService.push({
                 life: 3000,
                 message: this.messages['keyValue.error.duplicated.variable'].replace(
@@ -135,19 +128,10 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
 
     /**
      * Handle Enter key event
-     * @param {KeyboardEvent} $event
      * @memberof DotKeyValueTableRowComponent
      */
-    onPressEnter($event: KeyboardEvent): void {
-        if (this.keyInputInvalid($event)) {
-            this.elemRef = this.keyCell;
-        } else if (this.variable.key !== '') {
-            this.getElementToFocus($event);
-        }
-
-        setTimeout(() => {
-            this.elemRef.nativeElement.click();
-        });
+    onPressEnter(): void {
+        this.saveButton.nativeElement.click();
     }
 
     /**
@@ -156,48 +140,6 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
      */
     saveVariable(): void {
         this.showEditMenu = false;
-        this.save.emit(this.variable);
-    }
-
-    private isSaveDisabled(isKeyVariableDuplicated: boolean) {
-        return this.isFieldDisabled() || (isKeyVariableDuplicated && !this.isEditing);
-    }
-
-    private isFieldDisabled(): boolean {
-        return this.variable.key === '' || this.variable.value === '';
-    }
-
-    private shouldDisplayDuplicatedVariableError(
-        isKeyVariableDuplicated: boolean,
-        $event: Event
-    ): boolean {
-        return isKeyVariableDuplicated && $event && $event.type === 'blur';
-    }
-
-    private isFieldVariableKeyDuplicated(): boolean {
-        return (
-            this.variablesList.filter(
-                (variable: DotKeyValue, index: number) =>
-                    index !== 0 && variable.key === this.variable.key
-            ).length > 0
-        );
-    }
-
-    private keyInputInvalid($event: KeyboardEvent): boolean {
-        return this.variable.key === '' && this.isKeyInput($event);
-    }
-
-    // tslint:disable-next-line:cyclomatic-complexity
-    private getElementToFocus($event: KeyboardEvent): void {
-        if (this.isKeyInput($event) || this.variable.value === '') {
-            this.elemRef = this.valueCell;
-        } else if (this.variable.value !== '') {
-            this.elemRef = this.saveButton;
-        }
-    }
-
-    private isKeyInput($event: KeyboardEvent): boolean {
-        const element = <HTMLElement>$event.srcElement;
-        return element.classList.contains('field-key-input');
+        this.save.emit(this.variableCopy);
     }
 }

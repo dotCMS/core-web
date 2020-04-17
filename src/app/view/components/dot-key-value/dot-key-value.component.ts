@@ -34,7 +34,8 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
                 'keyValue.key_header.label',
                 'keyValue.value_header.label',
                 'keyValue.actions_header.label',
-                'keyValue.value_no_rows.label'
+                'keyValue.value_no_rows.label',
+                'keyValue.hidden_header.label'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
@@ -47,8 +48,9 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
     }
 
     /**
-     * Handle Delete event, emitting the index be handled by a parent smart component
-     * @param {number} fieldIndex
+     * Handle Delete event, deleting the variable locally and emitting
+     * the variable to be handled by a parent smart component
+     * @param {DotKeyValue} variable
      * @memberof DotKeyValueComponent
      */
     deleteVariable(variable: DotKeyValue): void {
@@ -62,7 +64,8 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
     }
 
     /**
-     * Handle Save event, emitting the variable be handled by a parent smart component
+     * Handle Save event, saving the variable locally and emitting
+     * the variable to be handled by a parent smart component
      * @param {DotKeyValue} variable
      * @memberof DotKeyValueComponent
      */
@@ -70,15 +73,13 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
         this.save.emit(variable);
 
         variable = this.setHiddenValue(variable);
-
         const indexChanged = this.getVariableIndexChanged(variable);
         if (indexChanged !== null) {
             this.variables[indexChanged] = _.cloneDeep(variable);
         } else {
             this.variables = [].concat(variable, this.variables);
         }
-
-        this.variablesBackup = _.cloneDeep(this.variables);
+        this.variablesBackup = [].concat(this.variables);
     }
 
     /**
@@ -90,21 +91,17 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
         this.variablesBackup[fieldIndex] = _.cloneDeep(this.variables[fieldIndex]);
     }
 
-    setHiddenValue(variable: DotKeyValue): DotKeyValue {
+    private setHiddenValue(variable: DotKeyValue): DotKeyValue {
         variable.value = variable.hidden ? '********' : variable.value;
         return variable;
-        // this.variablesBackup[fieldIndex].hidden =
-        //     this.showHiddenField && this.variablesBackup[fieldIndex].hidden
-        //         ? this.variablesBackup[fieldIndex].hidden
-        //         : false;
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
     private getVariableIndexChanged(variable: DotKeyValue): number {
         let index = null;
         for (let i = 0, total = this.variables.length; total > i; i++) {
-            if (!index && this.variables[i].key === variable.key) {
+            if (this.variables[i].key === variable.key) {
                 index = i;
+                break;
             }
         }
         return index;

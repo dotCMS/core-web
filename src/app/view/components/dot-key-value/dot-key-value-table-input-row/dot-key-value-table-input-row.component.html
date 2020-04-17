@@ -5,8 +5,9 @@
             pInputText
             class="field-key-input"
             type="text"
+            autocomplete="false"
             [placeholder]="messages['keyValue.key_input.placeholder']"
-            (blur)="rowActiveHighlight = false; editFieldInit($event)"
+            (blur)="editFieldInit($event)"
             (focus)="editFieldInit($event)"
             (keyup)="editFieldInit($event)"
             (keydown.escape)="onCancel($event)"
@@ -19,9 +20,9 @@
             #valueCell
             pInputText
             class="field-value-input"
+            autocomplete="false"
             [type]="variable.hidden ? 'password' : 'text'"
             [placeholder]="messages['keyValue.value_input.placeholder']"
-            (blur)="rowActiveHighlight = false"
             (focus)="editFieldInit($event)"
             (keyup)="editFieldInit($event)"
             (keydown.escape)="onCancel($event)"
@@ -39,8 +40,6 @@
             tiny
             class="dot-key-value-table-input-row__variables-actions-edit-cancel"
             [label]="messages['Cancel']"
-            (blur)="rowActiveHighlight = false"
-            (focus)="rowActiveHighlight = true"
             (click)="onCancel($event)"
         ></button>
         <button
@@ -50,8 +49,6 @@
             class="dot-key-value-table-input-row__variables-actions-edit-save"
             [label]="messages['Save']"
             [disabled]="saveDisabled"
-            (blur)="rowActiveHighlight = false"
-            (focus)="rowActiveHighlight = true"
             (click)="saveVariable()"
         ></button>
     </td>

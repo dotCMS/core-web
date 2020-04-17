@@ -5,22 +5,21 @@ import {
     Output,
     EventEmitter,
     ViewChild,
-    ElementRef,
-    OnChanges,
-    SimpleChanges
+    ElementRef
 } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
+import { DotKeyValueUtil } from '../util/dot-key-value-util';
 
 @Component({
     selector: 'dot-key-value-table-input-row',
     styleUrls: ['./dot-key-value-table-input-row.component.scss'],
     templateUrl: './dot-key-value-table-input-row.component.html'
 })
-export class DotKeyValueTableInputRowComponent implements OnInit, OnChanges {
+export class DotKeyValueTableInputRowComponent implements OnInit {
     @ViewChild('saveButton')
     saveButton: ElementRef;
     @ViewChild('keyCell')
@@ -35,12 +34,9 @@ export class DotKeyValueTableInputRowComponent implements OnInit, OnChanges {
     @Output()
     save: EventEmitter<DotKeyValue> = new EventEmitter(false);
 
-    rowActiveHighlight: Boolean = false;
-    // showEditMenu: Boolean = false;
     saveDisabled: Boolean = false;
     messages: { [key: string]: string } = {};
     elemRef: ElementRef;
-    isEditing = false;
     variable: DotKeyValue = { key: '', hidden: false, value: '' };
 
     constructor(
@@ -60,34 +56,9 @@ export class DotKeyValueTableInputRowComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
-                // if (!this.isEditing && this.variableIndex === 0) {
-                // "setTimeout" needs to be set so "keyCell" DOM gets rendered and tests don't fail
-                // setTimeout(() => {
                 this.keyCell.nativeElement.focus();
-                // }, 0);
-                // }
             });
     }
-
-    ngOnChanges(_changes: SimpleChanges) {
-        // if (changes.variable) {
-        //     this.isEditing = !!changes.variable.currentValue.value;
-        // }
-    }
-
-    /**
-     * Focus on Key input
-     * @param {Event} [$event]
-     * @memberof DotKeyValueTableInputRowComponent
-     */
-    // focusKeyInput($event: Event): void {
-    //     $event.stopPropagation();
-    //     if (this.variableIndex === 0) {
-    //         this.keyCell.nativeElement.click();
-    //     } else {
-    //         this.valueCell.nativeElement.click();
-    //     }
-    // }
 
     /**
      * Sets initial fields properties
@@ -96,12 +67,14 @@ export class DotKeyValueTableInputRowComponent implements OnInit, OnChanges {
      * @memberof DotKeyValueTableInputRowComponent
      */
     editFieldInit($event?: Event): void {
-        // this.rowActiveHighlight = true;
-        // this.showEditMenu = true;
-        const isKeyVariableDuplicated = this.isFieldVariableKeyDuplicated();
-        this.saveDisabled = this.isSaveDisabled(isKeyVariableDuplicated);
+        const isKeyVariableDuplicated = DotKeyValueUtil.isFieldVariableKeyDuplicated(
+            this.variable,
+            this.variablesList,
+            true
+        );
+        this.saveDisabled = DotKeyValueUtil.isSaveDisabled(isKeyVariableDuplicated, this.variable);
 
-        if (this.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
+        if (DotKeyValueUtil.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
             this.dotMessageDisplayService.push({
                 life: 3000,
                 message: this.messages['keyValue.error.duplicated.variable'].replace(
@@ -123,8 +96,6 @@ export class DotKeyValueTableInputRowComponent implements OnInit, OnChanges {
         $event.stopPropagation();
         this.cleanVariableValues();
         this.keyCell.nativeElement.focus();
-        // this.showEditMenu = false;
-        // this.cancel.emit(this.variableIndex);
     }
 
     /**
@@ -133,14 +104,16 @@ export class DotKeyValueTableInputRowComponent implements OnInit, OnChanges {
      * @memberof DotKeyValueTableInputRowComponent
      */
     onPressEnter($event: KeyboardEvent): void {
-        if (this.keyInputInvalid($event)) {
+        if (DotKeyValueUtil.keyInputInvalid($event, this.variable)) {
             this.elemRef = this.keyCell;
         } else if (this.variable.key !== '') {
             this.getElementToFocus($event);
         }
 
         setTimeout(() => {
-            this.elemRef.nativeElement.click();
+            this.elemRef.nativeElement.type === 'text'
+                ? this.elemRef.nativeElement.focus()
+                : this.elemRef.nativeElement.click();
         });
     }
 
@@ -149,51 +122,18 @@ export class DotKeyValueTableInputRowComponent implements OnInit, OnChanges {
      * @memberof DotKeyValueTableInputRowComponent
      */
     saveVariable(): void {
-        // this.showEditMenu = false;
         this.save.emit(this.variable);
         this.cleanVariableValues();
-    }
-
-    private isSaveDisabled(isKeyVariableDuplicated: boolean) {
-        return this.isFieldDisabled() || (isKeyVariableDuplicated && !this.isEditing);
-    }
-
-    private isFieldDisabled(): boolean {
-        return this.variable.key === '' || this.variable.value === '';
-    }
-
-    private shouldDisplayDuplicatedVariableError(
-        isKeyVariableDuplicated: boolean,
-        $event: Event
-    ): boolean {
-        return isKeyVariableDuplicated && $event && $event.type === 'blur';
-    }
-
-    private isFieldVariableKeyDuplicated(): boolean {
-        return (
-            this.variablesList.filter(
-                (variable: DotKeyValue, index: number) =>
-                    index !== 0 && variable.key === this.variable.key
-            ).length > 0
-        );
-    }
-
-    private keyInputInvalid($event: KeyboardEvent): boolean {
-        return this.variable.key === '' && this.isKeyInput($event);
+        this.keyCell.nativeElement.focus();
     }
 
     // tslint:disable-next-line:cyclomatic-complexity
     private getElementToFocus($event: KeyboardEvent): void {
-        if (this.isKeyInput($event) || this.variable.value === '') {
+        if (DotKeyValueUtil.isKeyInput($event) || this.variable.value === '') {
             this.elemRef = this.valueCell;
         } else if (this.variable.value !== '') {
             this.elemRef = this.saveButton;
         }
-    }
-
-    private isKeyInput($event: KeyboardEvent): boolean {
-        const element = <HTMLElement>$event.srcElement;
-        return element.classList.contains('field-key-input');
     }
 
     private cleanVariableValues(): void {
