@@ -3,8 +3,3 @@ export interface DotKeyValue {
     hidden?: boolean;
     value: string;
 }
-
-export interface DotKeyValueSaveData {
-    variable: DotKeyValue;
-    index: number;
-}

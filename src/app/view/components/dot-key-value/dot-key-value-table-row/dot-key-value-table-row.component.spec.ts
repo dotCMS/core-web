@@ -16,7 +16,6 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotMessageService } from '@services/dot-messages-service';
 import { PrimeTemplate, InputSwitchModule } from 'primeng/primeng';
-import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 import { mockKeyValue } from '../dot-key-value.component.spec';
 
@@ -105,10 +104,7 @@ describe('DotKeyValueTableRowComponent', () => {
                 TestHostComponent
             ],
             imports: [DotIconButtonModule, InputSwitchModule],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-                DotMessageDisplayService
-            ]
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
         }).compileComponents();
 
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
