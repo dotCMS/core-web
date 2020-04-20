@@ -78,9 +78,9 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
         if (indexChanged !== null) {
             this.variables[indexChanged] = _.cloneDeep(variable);
         } else {
-            this.variables = [].concat(variable, this.variables);
+            this.variables = [variable, ...this.variables];
         }
-        this.variablesBackup = [].concat(this.variables);
+        this.variablesBackup = [...this.variables];
     }
 
     /**

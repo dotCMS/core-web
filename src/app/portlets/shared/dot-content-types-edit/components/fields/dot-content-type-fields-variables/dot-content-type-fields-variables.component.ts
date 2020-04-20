@@ -91,12 +91,12 @@ export class DotContentTypeFieldsVariablesComponent implements OnChanges, OnDest
         );
 
         return variableExist
-            ? this.fieldVariables.map((item) => {
+            ? this.fieldVariables.map((item: DotFieldVariable) => {
                   if (item.key === savedVariable.key) {
                       item = savedVariable;
                   }
                   return item;
               })
-            : [].concat(savedVariable, this.fieldVariables);
+            : [savedVariable, ...this.fieldVariables];
     }
 }
