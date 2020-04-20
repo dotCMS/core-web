@@ -11,6 +11,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
+import { DotKeyValueUtil } from './util/dot-key-value-util';
 
 @Component({
     selector: 'dot-key-value',
@@ -73,7 +74,7 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
         this.save.emit(variable);
 
         variable = this.setHiddenValue(variable);
-        const indexChanged = this.getVariableIndexChanged(variable);
+        const indexChanged = DotKeyValueUtil.getVariableIndexChanged(variable, this.variables);
         if (indexChanged !== null) {
             this.variables[indexChanged] = _.cloneDeep(variable);
         } else {
@@ -94,16 +95,5 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
     private setHiddenValue(variable: DotKeyValue): DotKeyValue {
         variable.value = variable.hidden ? '********' : variable.value;
         return variable;
-    }
-
-    private getVariableIndexChanged(variable: DotKeyValue): number {
-        let index = null;
-        for (let i = 0, total = this.variables.length; total > i; i++) {
-            if (this.variables[i].key === variable.key) {
-                index = i;
-                break;
-            }
-        }
-        return index;
     }
 }

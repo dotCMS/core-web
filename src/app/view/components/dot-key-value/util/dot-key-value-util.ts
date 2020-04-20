@@ -77,4 +77,23 @@ export class DotKeyValueUtil {
         const element = <HTMLElement>event.srcElement;
         return element.classList.contains('field-key-input');
     }
+
+    /**
+     * Checks if a variable exist on a list, if exists returns the index
+     * otherwise returns null
+     * @param {DotKeyValue} variable
+     * @param {DotKeyValue[]} variablesList
+     * @returns number | null
+     * @memberof DotKeyValueUtil
+     */
+    static getVariableIndexChanged(variable: DotKeyValue, variableList: DotKeyValue[]): number {
+        let index = null;
+        for (let i = 0, total = variableList.length; total > i; i++) {
+            if (variableList[i].key === variable.key) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
 }
