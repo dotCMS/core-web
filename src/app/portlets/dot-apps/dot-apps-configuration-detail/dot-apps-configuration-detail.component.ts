@@ -31,7 +31,6 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        console.log('***messagesKey', this.messagesKey)
         this.route.data
             .pipe(pluck('data'), take(1))
             .subscribe(({ messages, app }: DotAppsResolverData) => {
