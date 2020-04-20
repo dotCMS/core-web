@@ -24,6 +24,7 @@
         width: 100%;
     }
 
+    ::ng-deep p-checkbox.required label:before,
     label.required:before {
         color: $red;
         content: "* ";
