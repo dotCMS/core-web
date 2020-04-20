@@ -126,11 +126,10 @@ export class DotKeyValueTableInputRowComponent implements OnInit {
         this.keyCell.nativeElement.focus();
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
     private getElementToFocus($event: KeyboardEvent): void {
         if (DotKeyValueUtil.isKeyInput($event) || this.variable.value === '') {
             this.elemRef = this.valueCell;
-        } else if (this.variable.value !== '') {
+        } else {
             this.elemRef = this.saveButton;
         }
     }

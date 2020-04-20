@@ -81,10 +81,10 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
      */
     saveDynamicVariable(variable: DotKeyValue): void {
         const indexChanged = DotKeyValueUtil.getVariableIndexChanged(variable, this.dynamicVariables);
-        if (indexChanged !== null) {
+        if (indexChanged) {
             this.dynamicVariables[indexChanged] = _.cloneDeep(variable);
         } else {
-            this.dynamicVariables = [].concat(variable, this.dynamicVariables);
+            this.dynamicVariables = [variable, ...this.dynamicVariables];
         }
     }
 
