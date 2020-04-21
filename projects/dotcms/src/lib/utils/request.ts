@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import nodeFetch from 'node-fetch';
 import { DotCMSConfigurationParams, DotAppHttpRequestParams } from '../models';
 
 async function getLangQueryParam(language: string): Promise<string> {
@@ -42,5 +42,6 @@ function getOpts(
 export async function request(params: DotAppHttpRequestParams, config: DotCMSConfigurationParams) {
     const url = await getUrl(params, config);
     const opts = getOpts(params, config);
+    const fetch = config.fetch || nodeFetch;
     return fetch(url, opts);
 }

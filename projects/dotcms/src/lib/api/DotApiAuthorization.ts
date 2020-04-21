@@ -1,5 +1,5 @@
-import fetch from 'node-fetch';
-import { DotCMSAuthorizationLoginParams, DotCMSError } from '../models';
+import nodeFetch from 'node-fetch';
+import { DotCMSAuthorizationLoginParams, DotCMSError, DotCMSConfigurationParams } from '../models';
 
 function getErrorMessage(data: { [key: string]: any }) {
     if (data.errors) {
@@ -16,12 +16,19 @@ function getErrorMessage(data: { [key: string]: any }) {
  *
  */
 export class DotApiAuthorization {
+    private _config: DotCMSConfigurationParams;
+
+    constructor(config: DotCMSConfigurationParams) {
+        this._config = config;
+    }
+
     /**
      * Given user, password and expiration date to get a DotCMS Autorization Token
      */
     getToken(params: DotCMSAuthorizationLoginParams): Promise<Response> {
         const { user, password, expirationDays, host } = params;
 
+        const fetch = this._config.fetch || nodeFetch;
         return fetch(`${host || ''}/api/v1/authentication/api-token`, {
             method: 'POST',
             headers: {
@@ -32,7 +39,7 @@ export class DotApiAuthorization {
                 password: password,
                 expirationDays: expirationDays || 10
             })
-        }).then(async (res: Response) => {
+        }).then(async (res) => {
             const data = await res.json();
 
             if (res.status === 200) {

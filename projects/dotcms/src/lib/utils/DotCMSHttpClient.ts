@@ -8,7 +8,7 @@ export class DotCMSHttpClient {
         this._config = config;
     }
 
-    public request(params: DotAppHttpRequestParams): Promise<any> {
+    public request(params: DotAppHttpRequestParams) {
         return request(params, this._config);
     }
 }

@@ -37,7 +37,7 @@ export const initDotCMS = (config: DotCMSConfigurationParams): DotCMSApp => {
     const dotApiContentType = new DotApiContentType(httpClient);
 
     return {
-        auth: new DotApiAuthorization(),
+        auth: new DotApiAuthorization(config),
         config: apiConfig,
         content: content,
         contentType: new DotApiContentType(httpClient),

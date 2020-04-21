@@ -1,8 +1,10 @@
+import fetch from 'node-fetch';
 import { DotCMSLanguageItem } from './';
 
 export interface DotCMSConfigurationParams {
     token: string;
     host?: string;
+    fetch?: typeof fetch;
 }
 
 export interface DotCMSConfigurationItem {
