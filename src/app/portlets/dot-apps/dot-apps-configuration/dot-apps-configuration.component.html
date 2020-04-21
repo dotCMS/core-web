@@ -1,8 +1,13 @@
 <div class="dot-apps-configuration__container">
     <div class="dot-apps-configuration__header">
-        <dot-avatar [size]="112" [url]="apps.iconUrl" [label]="apps.name"></dot-avatar>
+        <dot-avatar
+            [size]="112"
+            [url]="apps.iconUrl"
+            [label]="apps.name"
+            (click)="goToApps(apps.key)"
+        ></dot-avatar>
         <div class="dot-apps-configuration__data">
-            <span class="dot-apps-configuration__service-name">
+            <span class="dot-apps-configuration__service-name" (click)="goToApps(apps.key)">
                 {{ apps.name }}
             </span>
             <div class="dot-apps-configuration__service-key">
