@@ -32,6 +32,7 @@ export class DotAppsConfigurationDetailResolver implements Resolve<DotAppsResolv
                 'apps.add.property',
                 'apps.form.dialog.success.header',
                 'apps.form.dialog.success.message',
+                'apps.custom.properties',
                 'ok',
                 'Cancel',
                 'Save'

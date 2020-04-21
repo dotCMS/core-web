@@ -82,7 +82,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
                 this.apps.sites = event ? this.apps.sites.concat(app.sites) : app.sites;
                 this.apps.configurationsCount = app.configurationsCount;
                 this.totalRecords = this.paginationService.totalRecords;
-                this.hideLoadDataButton = this.isThereMoreData(this.apps.sites.length);
+                this.hideLoadDataButton = !this.isThereMoreData(this.apps.sites.length);
             });
     }
 
