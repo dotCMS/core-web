@@ -27,10 +27,10 @@
                     'dot-apps-configuration__description__show-more': showMore
                 }"
             >
-                {{ apps.description }}
+                <ngx-md>{{ apps.description }}</ngx-md>
                 <a
                     class="dot-apps-configuration__description__link_show-more"
-                    *ngIf="apps.description.length > 220"
+                    *ngIf="apps.description.length > 270"
                     (click)="showMore = !showMore"
                     >{{
                         showMore
