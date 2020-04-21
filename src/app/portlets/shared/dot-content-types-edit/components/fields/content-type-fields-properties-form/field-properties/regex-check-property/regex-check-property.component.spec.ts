@@ -83,4 +83,14 @@ describe('RegexCheckPropertyComponent', () => {
             comp.group.get('regexCheck').value
         );
     });
+
+
+    fit('Should compile all the regex pattern', () => {
+        comp.regexCheckTempletes
+            .map(regex => regex.value)
+            .forEach(pattern => {
+                new RegExp(pattern).compile();
+            });
+
+    });
 });

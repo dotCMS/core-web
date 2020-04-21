@@ -88,7 +88,7 @@ export class RegexCheckPropertyComponent implements OnInit {
                         ],
                         value:
                             // tslint:disable-next-line:max-line-length
-                            '^((http|ftp|https)://w{3}[d]*.|(http|ftp|https)://|w{3}[d]*.)([wd._-#()[],;:]+@[wd._-#()[],;:])?([a-z0-9]+.)*[a-z-0-9]+.([a-z]{2,3})?[a-z]{2,6}(:[0-9]+)?(/[/a-zA-Z0-9._-,%s]+)*(/|?[a-z0-9=%&.-,#]+)?$'
+                            '^((http|ftp|https):\\/\\/w{3}[d]*.|(http|ftp|https):\\/\\/|w{3}[d]*.)([wd._\\-#\\(\\)\\[\\],;:]+@[wd._\\-#\\(\\)\\[\\],;:])?([a-z0-9]+.)*[a-z-0-9]+.([a-z]{2,3})?[a-z]{2,6}(:[0-9]+)?(\\/[\\/a-zA-Z0-9._\\-,%s]+)*(\\/|\\?[a-z0-9=%&.\\-,#]+)?$'
                     },
                     {
                         label: this.i18nMessages[
