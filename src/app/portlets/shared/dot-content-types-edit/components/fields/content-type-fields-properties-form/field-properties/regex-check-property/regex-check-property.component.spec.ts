@@ -85,7 +85,7 @@ describe('RegexCheckPropertyComponent', () => {
     });
 
 
-    fit('Should compile all the regex pattern', () => {
+    it('Should compile all the regex pattern', () => {
         comp.regexCheckTempletes
             .map(regex => regex.value)
             .forEach(pattern => {
