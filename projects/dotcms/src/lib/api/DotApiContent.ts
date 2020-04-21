@@ -35,18 +35,18 @@ export class DotApiContent {
         this.dotCMSHttpClient = httpClient;
     }
 
-    query(params: DotCMSContentQuery): Promise<Response> {
+    query(params: DotCMSContentQuery) {
         const url = `/api/content/query/+contentType:${params.contentType}%20${populateQueryUrl(
             params
         )}`;
         return this.doRequest(url, null, 'GET');
     }
 
-    save<Content extends DotCMSContent>(params: Content): Promise<Response> {
+    save<Content extends DotCMSContent>(params: Content) {
         return this.doRequest('/api/content/save/1', params);
     }
 
-    publish<Content extends DotCMSContent>(params: Content): Promise<Response> {
+    publish<Content extends DotCMSContent>(params: Content) {
         return this.doRequest('/api/content/publish/1', params);
     }
 
@@ -54,7 +54,7 @@ export class DotApiContent {
         url: string,
         params?: Content,
         httpMethod = 'POST'
-    ): Promise<Response> {
+    ) {
         const response = await this.dotCMSHttpClient.request({
             url,
             method: httpMethod,

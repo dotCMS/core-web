@@ -20,7 +20,7 @@ export class DotApiWidget {
             .request({
                 url: `/api/widget/id/${widgetId}`
             })
-            .then(async (response: Response) => {
+            .then(async (response) => {
                 if (response.status === 200) {
                     return response.text();
                 }

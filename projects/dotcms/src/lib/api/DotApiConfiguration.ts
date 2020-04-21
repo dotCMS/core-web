@@ -18,7 +18,7 @@ export class DotApiConfiguration {
             .request({
                 url: '/api/v1/configuration'
             })
-            .then(async (response: Response) => {
+            .then(async (response) => {
                 if (response.status === 200) {
                     const data = await response.json();
                     return data.entity;

@@ -25,7 +25,7 @@ export class DotApiAuthorization {
     /**
      * Given user, password and expiration date to get a DotCMS Autorization Token
      */
-    getToken(params: DotCMSAuthorizationLoginParams): Promise<Response> {
+    getToken(params: DotCMSAuthorizationLoginParams) {
         const { user, password, expirationDays, host } = params;
 
         const fetch = this._config.fetch || nodeFetch;

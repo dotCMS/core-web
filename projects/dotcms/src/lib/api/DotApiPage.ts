@@ -38,7 +38,7 @@ export class DotApiPage {
             url: `/api/v1/page/${format}${params.url}`
         };
 
-        return this.dotCMSHttpClient.request(params).then(async (res: Response) => {
+        return this.dotCMSHttpClient.request(params).then(async (res) => {
             if (res.status === 200) {
                 const data = await res.json();
                 return <DotCMSPageAsset>data.entity;
