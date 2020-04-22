@@ -2,7 +2,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { RegexCheckPropertyComponent } from './index';
+import { RegexCheckPropertyComponent, RegexTemplate } from './index';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
@@ -87,8 +87,8 @@ describe('RegexCheckPropertyComponent', () => {
 
     it('Should compile all the regex pattern', () => {
         comp.regexCheckTempletes
-            .map(regex => regex.value)
-            .forEach(pattern => {
+            .map((regex: RegexTemplate) => regex.value)
+            .forEach((pattern: string) => {
                 new RegExp(pattern).compile();
             });
 

@@ -4,13 +4,17 @@ import { FieldProperty } from '../field-properties.model';
 import { FormGroup } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
+export interface RegexTemplate {
+    label: string;
+     value: string;
+}
 @Component({
     selector: 'dot-regex-check-property',
     templateUrl: './regex-check-property.component.html',
     styleUrls: ['./regex-check-property.component.scss']
 })
 export class RegexCheckPropertyComponent implements OnInit {
-    regexCheckTempletes = [];
+    regexCheckTempletes: RegexTemplate[] = [];
 
     property: FieldProperty;
     group: FormGroup;
