@@ -31,7 +31,6 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        console.log('***messagesKey', this.messagesKey)
         this.route.data
             .pipe(pluck('data'), take(1))
             .subscribe(({ messages, app }: DotAppsResolverData) => {
@@ -39,8 +38,8 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
                 this.formFields = this.getSecrets(app.sites[0].secrets);
                 this.messagesKey = messages;
 
-                this.dynamicVariables = [].concat(
-                    this.transformSecretsToKeyValue(this.getSecrets(app.sites[0].secrets, true))
+                this.dynamicVariables = this.transformSecretsToKeyValue(
+                    this.getSecrets(app.sites[0].secrets, true)
                 );
             });
     }
@@ -80,7 +79,10 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
      * @memberof DotAppsConfigurationDetailComponent
      */
     saveDynamicVariable(variable: DotKeyValue): void {
-        const indexChanged = DotKeyValueUtil.getVariableIndexChanged(variable, this.dynamicVariables);
+        const indexChanged = DotKeyValueUtil.getVariableIndexChanged(
+            variable,
+            this.dynamicVariables
+        );
         if (indexChanged) {
             this.dynamicVariables[indexChanged] = _.cloneDeep(variable);
         } else {
@@ -121,9 +123,9 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
 
     private getSecrets(
         secrets: DotAppsSecrets[],
-        getDynamicFields: boolean = false
+        includeDinamicFields: boolean = false
     ): DotAppsSecrets[] {
-        return secrets.filter((secret: DotAppsSecrets) => secret.dynamic === getDynamicFields);
+        return secrets.filter((secret: DotAppsSecrets) => secret.dynamic === includeDinamicFields);
     }
 
     private transformSecretsToKeyValue(secrets: DotAppsSecrets[]): DotKeyValue[] {

@@ -72,9 +72,9 @@ export class DotKeyValueTableInputRowComponent implements OnInit {
             this.variablesList,
             true
         );
-        this.saveDisabled = DotKeyValueUtil.isSaveDisabled(isKeyVariableDuplicated, this.variable);
+        this.saveDisabled = isKeyVariableDuplicated || DotKeyValueUtil.isEmpty(this.variable);
 
-        if (DotKeyValueUtil.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
+        if (isKeyVariableDuplicated && DotKeyValueUtil.isEventBlur($event)) {
             this.dotMessageDisplayService.push({
                 life: 3000,
                 message: this.messages['keyValue.error.duplicated.variable'].replace(
@@ -109,11 +109,9 @@ export class DotKeyValueTableInputRowComponent implements OnInit {
         } else if (this.variable.key !== '') {
             this.getElementToFocus($event);
         }
-        setTimeout(() => {
-            this.elemRef.nativeElement.type === 'text'
-                ? this.elemRef.nativeElement.focus()
-                : this.elemRef.nativeElement.click();
-        });
+        this.elemRef.nativeElement.type === 'text'
+            ? this.elemRef.nativeElement.focus()
+            : this.elemRef.nativeElement.click();
     }
 
     /**
