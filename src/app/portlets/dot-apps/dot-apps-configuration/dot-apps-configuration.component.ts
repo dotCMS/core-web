@@ -25,7 +25,6 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     hideLoadDataButton: boolean;
     paginationPerPage = 40;
     totalRecords: number;
-    showMore: boolean;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -94,16 +93,6 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
      */
     gotoConfiguration(site: DotAppsSites): void {
         this.dotRouterService.goToAppsServices(this.apps.key, site);
-    }
-
-    /**
-     * Redirects to app configuration listing page
-     *
-     * @param string key
-     * @memberof DotAppsConfigurationDetailComponent
-     */
-    goToApps(key: string): void {
-        this.dotRouterService.gotoPortlet(`/apps/${key}`);
     }
 
     /**
