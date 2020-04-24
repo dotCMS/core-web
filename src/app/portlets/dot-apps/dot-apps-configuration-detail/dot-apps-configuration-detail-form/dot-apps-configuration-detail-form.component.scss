@@ -29,4 +29,9 @@
         color: $red;
         content: "* ";
     }
+
+    textarea {
+        font-family: "Menlo", "Monaco", "Consolas";
+        font-size: $font-size-medium;
+    }
 }
