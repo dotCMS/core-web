@@ -75,7 +75,7 @@ export class DotKeyValueComponent implements OnInit, OnChanges {
 
         variable = this.setHiddenValue(variable);
         const indexChanged = DotKeyValueUtil.getVariableIndexChanged(variable, this.variables);
-        if (indexChanged !== null) {
+        if (indexChanged) {
             this.variables[indexChanged] = _.cloneDeep(variable);
         } else {
             this.variables = [variable, ...this.variables];

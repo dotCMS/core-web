@@ -2,38 +2,23 @@ import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 
 export class DotKeyValueUtil {
     /**
-     * Checks if Save button should be disabled
-     * @param {boolean} isKeyVariableDuplicated
-     * @param {DotKeyValue} variable
-     * @returns boolean
-     * @memberof DotKeyValueUtil
-     */
-    static isSaveDisabled(isKeyVariableDuplicated: boolean, variable: DotKeyValue): boolean {
-        return this.isFieldDisabled(variable) || isKeyVariableDuplicated;
-    }
-
-    /**
      * Checks based on field values if the whole field should be disable
      * @param {DotKeyValue} variable
      * @returns boolean
      * @memberof DotKeyValueUtil
      */
-    static isFieldDisabled(variable: DotKeyValue): boolean {
+    static isEmpty(variable: DotKeyValue): boolean {
         return variable.key === '' || variable.value === '';
     }
 
     /**
-     * Checks if growl message should be displayed
-     * @param {boolean} isKeyVariableDuplicated
+     * Checks if event is blur
      * @param {Event} event
      * @returns boolean
      * @memberof DotKeyValueUtil
      */
-    static shouldDisplayDuplicatedVariableError(
-        isKeyVariableDuplicated: boolean,
-        $event: Event
-    ): boolean {
-        return isKeyVariableDuplicated && $event && $event.type === 'blur';
+    static isEventBlur($event: Event): boolean {
+        return $event && $event.type === 'blur';
     }
 
     /**
