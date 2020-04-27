@@ -5,6 +5,7 @@ export interface DotApps {
     key: string;
     name: string;
     sites?: DotAppsSites[];
+    sitesWithWarnings?: number;
 }
 
 export interface DotAppsSites {
@@ -12,6 +13,7 @@ export interface DotAppsSites {
     id: string;
     name: string;
     secrets?: DotAppsSecrets[];
+    secretsWithWarnings?: number;
 }
 
 export interface DotAppsSecrets {
@@ -23,6 +25,7 @@ export interface DotAppsSecrets {
     required: boolean;
     type: string;
     value: string;
+    warnings?: string[];
 }
 
 export interface DotAppsSaveData {

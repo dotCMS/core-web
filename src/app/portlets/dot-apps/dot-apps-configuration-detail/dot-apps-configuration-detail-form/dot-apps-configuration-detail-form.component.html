@@ -16,6 +16,12 @@
                         }"
                         >{{ field.label }}</label
                     >
+                    <dot-icon
+                        *ngIf="field.warnings && field.warnings.length"
+                        name="warning"
+                        pTooltip="{{ field.warnings.length ? field.warnings.join('. ') : '' }}"
+                        size="18"
+                    ></dot-icon>
                     <input
                         pInputText
                         type="password"
@@ -34,6 +40,12 @@
                         }"
                         >{{ field.label }}</label
                     >
+                    <dot-icon
+                        *ngIf="field.warnings && field.warnings.length"
+                        name="warning"
+                        pTooltip="{{ field.warnings.length ? field.warnings.join('. ') : '' }}"
+                        size="18"
+                    ></dot-icon>
                     <textarea
                         #inputTextarea
                         pInputTextarea
@@ -55,6 +67,12 @@
                     [formControlName]="field.name"
                     [value]="field.value"
                 ></p-checkbox>
+                <dot-icon
+                    *ngIf="field.warnings && field.warnings.length"
+                    name="warning"
+                    pTooltip="{{ field.warnings.length ? field.warnings.join('. ') : '' }}"
+                    size="18"
+                ></dot-icon>
                 <span class="form__group-hint">{{ field.hint }}</span>
             </ng-container>
         </div>
