@@ -14,7 +14,7 @@ class DotLicenseServiceMock {
     }
 }
 
-fdescribe('DotEditContentToolbarHtmlService', () => {
+describe('DotEditContentToolbarHtmlService', () => {
     let dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService;
     let testDoc: Document;
     let dummyContainer: HTMLDivElement;
