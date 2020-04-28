@@ -70,6 +70,16 @@ dot-avatar {
     text-overflow: ellipsis;
 }
 
+.dot-apps-card__label-container {
+    position: relative;
+
+    dot-icon {
+        bottom: 0;
+        position: absolute;
+        right: 0;
+    }
+}
+
 .dot-apps-card__configurations {
     color: $gray;
     display: block;
@@ -82,7 +92,7 @@ dot-avatar {
     color: $gray;
     padding: 0;
 
-    .ui-card-content p{
+    .ui-card-content p {
         height: 60px;
         font-size: $font-size-large;
         line-height: 1.5rem;
