@@ -1,4 +1,5 @@
 export interface DotApps {
+    allowExtraParams: boolean;
     configurationsCount?: number;
     description?: string;
     iconUrl?: string;
