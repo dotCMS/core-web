@@ -6,13 +6,9 @@ import { SelectItem } from 'primeng/primeng';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService } from 'dotcms-js';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { takeUntil, catchError } from 'rxjs/operators';
-import { combineLatest, of } from 'rxjs';
+import { takeUntil, map, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
-import {
-    DotPushPublishFiltersService,
-    DotPushPublishFilter
-} from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
 import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
 import { DotPushPublishDialogData } from '@models/dot-push-publish-dialog-data/dot-push-publish-dialog-data.model';
 import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
@@ -28,7 +24,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     dialogShow = false;
     form: FormGroup;
     pushActions: SelectItem[];
-    filterOptions: SelectItem[];
+    filterOptions: SelectItem[] = [];
 
     @Input() assetIdentifier: string;
 
@@ -40,14 +36,13 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     private destroy$: Subject<boolean> = new Subject<boolean>();
     private eventData: DotPushPublishDialogData = { assetIdentifier: '', title: '' };
     private defaultFilterKey: string;
-    private i18nMessages: { [key: string]: string } = {};
+    private i18nMessages: { [key: string]: string } = null;
 
     constructor(
         private pushPublishService: PushPublishService,
         public fb: FormBuilder,
         public dotMessageService: DotMessageService,
         public loggerService: LoggerService,
-        private dotPushPublishFiltersService: DotPushPublishFiltersService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
         private dotParseHtmlService: DotParseHtmlService
     ) {}
@@ -57,18 +52,15 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         this.dotPushPublishDialogService.showDialog$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: DotPushPublishDialogData) => {
-                this.eventData = data;
-                if (this.eventData.customCode) {
-                    this.loadCustomCode();
+                if (this.i18nMessages) {
+                    this.loadData(data);
                 } else {
-                    this.assetIdentifier = this.eventData.assetIdentifier;
-                    this.pushActions = this.getPushPublishActions(this.i18nMessages);
-                    this.initForm({
-                        filterKey: this.defaultFilterKey
-                    });
-                    this.setDialogConfig(this.i18nMessages, this.form);
+                    this.loadMessagesAndFilters()
+                        .pipe(take(1))
+                        .subscribe(() => {
+                            this.loadData(data);
+                        });
                 }
-                this.dialogShow = true;
             });
     }
 
@@ -119,55 +111,80 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         this.formEl.ngSubmit.emit();
     }
 
+    private loadData(data: DotPushPublishDialogData): void {
+        this.eventData = data;
+        if (this.eventData.customCode) {
+            this.loadCustomCode();
+        } else {
+            this.assetIdentifier = this.eventData.assetIdentifier;
+            this.pushActions = this.getPushPublishActions(this.i18nMessages);
+            this.initForm({
+                filterKey: this.defaultFilterKey
+            });
+            this.setDialogConfig(this.i18nMessages, this.form);
+        }
+        this.dialogShow = true;
+    }
+
     private loadCustomCode(): void {
         this.dotParseHtmlService.parse(
             this.eventData.customCode,
-            this.customCodeContainer.nativeElement, true
+            this.customCodeContainer.nativeElement,
+            true
         );
     }
 
-    private loadMessagesAndFilters(): void {
-        const messages$ = this.dotMessageService.getMessages([
-            'contenttypes.content.push_publish',
-            'contenttypes.content.push_publish.filters',
-            'contenttypes.content.push_publish.action.push',
-            'contenttypes.content.push_publish.action.remove',
-            'contenttypes.content.push_publish.action.pushremove',
-            'contenttypes.content.push_publish.I_want_To',
-            'contenttypes.content.push_publish.force_push',
-            'contenttypes.content.push_publish.publish_date',
-            'contenttypes.content.push_publish.expire_date',
-            'contenttypes.content.push_publish.push_to',
-            'contenttypes.content.push_publish.push_to_errormsg',
-            'contenttypes.content.push_publish.form.cancel',
-            'contenttypes.content.push_publish.form.push',
-            'contenttypes.content.push_publish.publish_date_errormsg',
-            'contenttypes.content.push_publish.expire_date_errormsg'
-        ]);
-        const filterOptions$ = this.dotPushPublishFiltersService
-            .get()
-            .pipe(catchError(() => of([])));
-
-        combineLatest(messages$, filterOptions$)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (
-                    [messages, filterOptions]: [{ [key: string]: string }, DotPushPublishFilter[]]
-                ) => {
+    private loadMessagesAndFilters(): Observable<void> {
+        return this.dotMessageService
+            .getMessages([
+                'contenttypes.content.push_publish',
+                'contenttypes.content.push_publish.filters',
+                'contenttypes.content.push_publish.action.push',
+                'contenttypes.content.push_publish.action.remove',
+                'contenttypes.content.push_publish.action.pushremove',
+                'contenttypes.content.push_publish.I_want_To',
+                'contenttypes.content.push_publish.force_push',
+                'contenttypes.content.push_publish.publish_date',
+                'contenttypes.content.push_publish.expire_date',
+                'contenttypes.content.push_publish.push_to',
+                'contenttypes.content.push_publish.push_to_errormsg',
+                'contenttypes.content.push_publish.form.cancel',
+                'contenttypes.content.push_publish.form.push',
+                'contenttypes.content.push_publish.publish_date_errormsg',
+                'contenttypes.content.push_publish.expire_date_errormsg'
+            ])
+            .pipe(
+                take(1),
+                map(messages => {
                     this.i18nMessages = messages;
-                    this.filterOptions = filterOptions.map((filter: DotPushPublishFilter) => {
-                        return {
-                            label: filter.title,
-                            value: filter.key
-                        };
-                    });
-
-                    this.defaultFilterKey = filterOptions
-                        .filter((filter: DotPushPublishFilter) => filter.default)
-                        .map(({ key }: DotPushPublishFilter) => key)
-                        .join();
-                }
+                })
             );
+        // Commenting this until filter service is ready
+        // const filterOptions$ = this.dotPushPublishFiltersService
+        //     .get()
+        //     .pipe(catchError(() => of([])));
+        //
+        // return combineLatest(messages$, filterOptions$).pipe(
+        //     takeUntil(this.destroy$),
+        //     map(
+        //         (
+        //             [messages, filterOptions]: [{ [key: string]: string }, DotPushPublishFilter[]]
+        //         ) => {
+        //             this.i18nMessages = messages;
+        //             this.filterOptions = filterOptions.map((filter: DotPushPublishFilter) => {
+        //                 return {
+        //                     label: filter.title,
+        //                     value: filter.key
+        //                 };
+        //             });
+        //
+        //             this.defaultFilterKey = filterOptions
+        //                 .filter((filter: DotPushPublishFilter) => filter.default)
+        //                 .map(({ key }: DotPushPublishFilter) => key)
+        //                 .join();
+        //         }
+        //     )
+        // );
     }
 
     private initForm(params?: { [key: string]: any }): void {
