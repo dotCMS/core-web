@@ -190,7 +190,7 @@ describe('DotAppsConfigurationComponent', () => {
             const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
                 .componentInstance;
             listComp.edit.emit(sites[0]);
-            expect(routerService.goToAppsServices).toHaveBeenCalledWith(
+            expect(routerService.goToUpdateAppsConfiguration).toHaveBeenCalledWith(
                 component.apps.key,
                 sites[0]
             );

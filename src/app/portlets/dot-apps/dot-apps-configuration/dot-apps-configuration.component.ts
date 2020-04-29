@@ -92,7 +92,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
      * @memberof DotAppsConfigurationComponent
      */
     gotoConfiguration(site: DotAppsSites): void {
-        this.dotRouterService.goToAppsServices(this.apps.key, site);
+        this.dotRouterService.goToUpdateAppsConfiguration(this.apps.key, site);
     }
 
     /**

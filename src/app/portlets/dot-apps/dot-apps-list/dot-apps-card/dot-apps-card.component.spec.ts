@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { CardModule } from 'primeng/primeng';
+import { NgxMdModule } from 'ngx-md';
 
 describe('DotAppsCardComponent', () => {
     let component: DotAppsCardComponent;
@@ -18,7 +19,7 @@ describe('DotAppsCardComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            imports: [CardModule, DotAvatarModule],
+            imports: [CardModule, DotAvatarModule, NgxMdModule],
             declarations: [DotAppsCardComponent],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
         });
@@ -35,7 +36,7 @@ describe('DotAppsCardComponent', () => {
                 configurationsCount: 1,
                 key: 'asana',
                 name: 'Asana',
-                description: 'It\'s asana to keep track of your asana events',
+                description: "It's asana to keep track of your asana events",
                 iconUrl: '/dA/792c7c9f-6b6f-427b-80ff-1643376c9999/photo/mountain-persona.jpg'
             };
             fixture.detectChanges();
@@ -59,13 +60,12 @@ describe('DotAppsCardComponent', () => {
 
         it('should set messages/values in DOM correctly', () => {
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-card__name'))
-                    .nativeElement.innerText
+                fixture.debugElement.query(By.css('.dot-apps-card__name')).nativeElement.innerText
             ).toBe(component.app.name);
 
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-card__configurations'))
-                    .nativeElement.textContent
+                fixture.debugElement.query(By.css('.dot-apps-card__configurations')).nativeElement
+                    .textContent
             ).toContain(
                 `${component.app.configurationsCount} ${component.messagesKey['apps.configurations']}`
             );
@@ -82,7 +82,7 @@ describe('DotAppsCardComponent', () => {
                 configurationsCount: 0,
                 key: 'asana',
                 name: 'Asana',
-                description: 'It\'s asana to keep track of your asana events',
+                description: "It's asana to keep track of your asana events",
                 iconUrl: '/dA/792c7c9f-6b6f-427b-80ff-1643376c9999/photo/mountain-persona.jpg'
             };
             fixture.detectChanges();
@@ -104,8 +104,8 @@ describe('DotAppsCardComponent', () => {
 
         it('should set messages/values in DOM correctly', () => {
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-card__configurations'))
-                    .nativeElement.textContent
+                fixture.debugElement.query(By.css('.dot-apps-card__configurations')).nativeElement
+                    .textContent
             ).toContain(component.messagesKey['apps.no.configurations']);
         });
     });
