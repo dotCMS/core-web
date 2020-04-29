@@ -67,6 +67,17 @@ dot-avatar {
     text-overflow: ellipsis;
 }
 
+.dot-apps-card__label-container {
+    position: relative;
+
+    dot-icon {
+        bottom: 0;
+        color: $brand-primary;
+        position: absolute;
+        right: 0;
+    }
+}
+
 .dot-apps-card__configurations {
     color: $gray;
     display: block;

@@ -23,6 +23,18 @@
         width: 100%;
     }
 
+    .form__label,
+    p-checkbox {
+        display: inline;
+    }
+
+    dot-icon {
+        color: $brand-primary;
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+
+    ::ng-deep p-checkbox.required label:before,
     label.required:before {
         color: $red;
         content: "* ";
