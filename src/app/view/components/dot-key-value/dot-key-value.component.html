@@ -22,6 +22,7 @@
             </th>
         </tr>
         <dot-key-value-table-input-row
+            [autoFocus]="autoFocus"
             [showHiddenField]="showHiddenField"
             [variablesList]="variables"
             (save)="saveVariable($event)"

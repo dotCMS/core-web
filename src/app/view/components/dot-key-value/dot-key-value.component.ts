@@ -19,6 +19,7 @@ import { DotKeyValueUtil } from './util/dot-key-value-util';
     templateUrl: './dot-key-value.component.html'
 })
 export class DotKeyValueComponent implements OnInit, OnChanges {
+    @Input() autoFocus = true;
     @Input() showHiddenField: boolean;
     @Input() variables: DotKeyValue[] = [];
     @Output() delete: EventEmitter<DotKeyValue> = new EventEmitter(false);

@@ -27,12 +27,11 @@ export class DotKeyValueTableInputRowComponent implements OnInit {
     @ViewChild('valueCell')
     valueCell: ElementRef;
 
+    @Input() autoFocus = true;
     @Input() showHiddenField: boolean;
-    @Input()
-    variablesList: DotKeyValue[] = [];
+    @Input() variablesList: DotKeyValue[] = [];
 
-    @Output()
-    save: EventEmitter<DotKeyValue> = new EventEmitter(false);
+    @Output() save: EventEmitter<DotKeyValue> = new EventEmitter(false);
 
     saveDisabled: Boolean = false;
     messages: { [key: string]: string } = {};
@@ -56,7 +55,9 @@ export class DotKeyValueTableInputRowComponent implements OnInit {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
-                this.keyCell.nativeElement.focus();
+                if (this.autoFocus) {
+                    this.keyCell.nativeElement.focus();
+                }
             });
     }
 
