@@ -8,6 +8,8 @@
     }
 
     textarea {
+        font-family: $code-text;
+        font-size: $font-size-medium;
         height: 36px;
         max-height: 400px;
     }
@@ -20,7 +22,8 @@
 .dot-apps-configuration-detail__form-row {
     margin-bottom: $basic-padding * 3;
 
-    & > * {
+    input,
+    textarea {
         width: 100%;
     }
 
