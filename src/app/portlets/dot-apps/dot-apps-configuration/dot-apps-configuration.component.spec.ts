@@ -49,6 +49,7 @@ const sites = [
 ];
 
 const appData = {
+    allowExtraParams: true,
     configurationsCount: 2,
     key: 'google-calendar',
     name: 'Google Calendar',
