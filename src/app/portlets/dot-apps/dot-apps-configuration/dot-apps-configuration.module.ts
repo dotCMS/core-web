@@ -9,6 +9,7 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/dot-apps-configuration-list.module';
+import { NgxMdModule } from 'ngx-md';
 
 @NgModule({
     imports: [
@@ -19,6 +20,7 @@ import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/do
         DotActionButtonModule,
         DotCopyButtonModule,
         DotAppsConfigurationListModule,
+        NgxMdModule
     ],
     declarations: [DotAppsConfigurationComponent],
     exports: [DotAppsConfigurationComponent],

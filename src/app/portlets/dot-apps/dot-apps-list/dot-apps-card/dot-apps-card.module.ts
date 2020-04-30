@@ -4,9 +4,10 @@ import { CardModule } from 'primeng/primeng';
 
 import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
+import { NgxMdModule } from 'ngx-md';
 
 @NgModule({
-    imports: [CommonModule, CardModule, DotAvatarModule],
+    imports: [CommonModule, CardModule, DotAvatarModule, NgxMdModule],
     declarations: [DotAppsCardComponent],
     exports: [DotAppsCardComponent]
 })

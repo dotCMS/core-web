@@ -3,6 +3,7 @@
 :host {
     form {
         display: flex;
+        max-width: 900px;
         width: 100%;
     }
 
@@ -21,17 +22,6 @@
 
     & > * {
         width: 100%;
-    }
-
-    .form__label,
-    p-checkbox {
-        display: inline;
-    }
-
-    dot-icon {
-        color: $brand-primary;
-        margin-left: $basic-padding;
-        vertical-align: middle;
     }
 
     ::ng-deep p-checkbox.required label:before,

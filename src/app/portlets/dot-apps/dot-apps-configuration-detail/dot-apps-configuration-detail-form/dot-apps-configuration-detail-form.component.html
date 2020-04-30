@@ -47,6 +47,9 @@
             <ng-container *ngSwitchCase="'BOOL'">
                 <p-checkbox
                     binary="true"
+                    [ngClass]="{
+                        required: field.required
+                    }"
                     [id]="field.name"
                     [label]="field.label"
                     [formControlName]="field.name"

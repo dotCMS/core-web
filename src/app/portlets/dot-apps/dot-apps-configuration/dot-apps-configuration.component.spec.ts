@@ -20,6 +20,7 @@ import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { CommonModule } from '@angular/common';
 import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/dot-apps-configuration-list.module';
 import { PaginatorService } from '@services/paginator';
+import { NgxMdModule } from 'ngx-md';
 
 const messages = {
     'apps.key': 'Key',
@@ -100,6 +101,7 @@ describe('DotAppsConfigurationComponent', () => {
                 CommonModule,
                 DotAvatarModule,
                 DotActionButtonModule,
+                NgxMdModule,
                 DotCopyButtonModule,
                 DotAppsConfigurationListModule
             ],
@@ -212,7 +214,7 @@ describe('DotAppsConfigurationComponent', () => {
             const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
                 .componentInstance;
             expect(listComp.siteConfigurations).toBe(component.apps.sites);
-            expect(listComp.disabledLoadDataButton).toBe(true);
+            expect(listComp.hideLoadDataButton).toBe(true);
             expect(listComp.itemsPerPage).toBe(component.paginationPerPage);
         });
 

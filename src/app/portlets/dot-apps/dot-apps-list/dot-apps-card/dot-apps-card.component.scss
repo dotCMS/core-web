@@ -41,6 +41,9 @@
         .ui-widget-content {
             background-color: $gray-bg;
         }
+        .dot-apps-card__name {
+            color: $gray;
+        }
     }
 }
 
@@ -90,9 +93,10 @@ dot-avatar {
     color: $gray;
     padding: 0;
 
-    .ui-card-content {
+    .ui-card-content p{
         height: 60px;
         font-size: $font-size-large;
+        line-height: 1.5rem;
         overflow: hidden;
         text-overflow: ellipsis;
         margin: $basic-padding * 3 $basic-padding * 2;
