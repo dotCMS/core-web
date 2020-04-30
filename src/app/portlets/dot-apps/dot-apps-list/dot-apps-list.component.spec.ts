@@ -115,6 +115,6 @@ describe('DotAppsListComponent', () => {
         const card: DotAppsCardComponent = fixture.debugElement.queryAll(By.css('dot-apps-card'))[0]
             .componentInstance;
         card.actionFired.emit(component.apps[0].key);
-        expect(routerService.gotoPortlet).toHaveBeenCalledWith(`/apps/${component.apps[0].key}`);
+        expect(routerService.goToAppsConfiguration).toHaveBeenCalledWith(component.apps[0].key);
     });
 });

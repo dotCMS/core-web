@@ -69,7 +69,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
      * @memberof DotAppsConfigurationDetailComponent
      */
     goToApps(key: string): void {
-        this.dotRouterService.gotoPortlet(`/apps/${key}`);
+        this.dotRouterService.goToAppsConfiguration(key);
     }
 
     /**
