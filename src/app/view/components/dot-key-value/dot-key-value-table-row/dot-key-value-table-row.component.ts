@@ -91,10 +91,7 @@ export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
             this.variablesList
         );
 
-        this.saveDisabled = DotKeyValueUtil.isSaveDisabled(
-            isKeyVariableDuplicated,
-            this.variableCopy
-        );
+        this.saveDisabled = isKeyVariableDuplicated || DotKeyValueUtil.isEmpty(this.variableCopy);
     }
 
     /**
