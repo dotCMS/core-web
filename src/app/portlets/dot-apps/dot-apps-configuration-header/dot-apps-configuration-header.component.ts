@@ -44,5 +44,6 @@ export class DotAppsConfigurationHeaderComponent implements OnInit {
      */
     goToApps(key: string): void {
         this.dotRouterService.gotoPortlet(`/apps/${key}`);
+        this.dotRouterService.goToAppsConfiguration(key);
     }
 }

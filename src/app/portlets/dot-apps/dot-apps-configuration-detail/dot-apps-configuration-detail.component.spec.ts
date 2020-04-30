@@ -18,6 +18,7 @@ import { DotAppsConfigurationDetailComponent } from './dot-apps-configuration-de
 import { By } from '@angular/platform-browser';
 import { DotAppsSaveData } from '@shared/models/dot-apps/dot-apps.model';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
+import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
 
 const messages = {
     'apps.key': 'Key',
@@ -134,6 +135,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
                 ButtonModule,
                 CommonModule,
                 DotCopyButtonModule,
+                DotAppsConfigurationHeaderModule,
                 DotAppsConfigurationDetailFormModule
             ],
             declarations: [DotAppsConfigurationDetailComponent, MockDotKeyValueComponent],
@@ -175,14 +177,6 @@ describe('DotAppsConfigurationDetailComponent', () => {
         });
 
         it('should set labels and buttons with right values', () => {
-            expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration-detail__service-name'))
-                    .nativeElement.textContent
-            ).toContain(component.apps.name);
-            expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration-detail__service-key'))
-                    .nativeElement.textContent
-            ).toContain(`${component.messagesKey['apps.key']} ${component.apps.key}`);
             expect(
                 fixture.debugElement.queryAll(
                     By.css('.dot-apps-configuration-detail-actions button')
@@ -235,7 +229,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
                 By.css('.dot-apps-configuration-detail-actions button')
             )[0];
             cancelBtn.triggerEventHandler('click', {});
-            expect(routerService.gotoPortlet).toHaveBeenCalledWith(`/apps/${component.apps.key}`);
+            expect(routerService.goToAppsConfiguration).toHaveBeenCalledWith(component.apps.key);
         });
 
         it('should have Dot-Copy-Button with appKey value', () => {

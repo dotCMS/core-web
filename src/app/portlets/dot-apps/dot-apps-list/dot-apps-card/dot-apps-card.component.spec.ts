@@ -35,6 +35,7 @@ describe('DotAppsCardComponent', () => {
     describe('With configuration', () => {
         beforeEach(() => {
             component.app = {
+                allowExtraParams: true,
                 configurationsCount: 1,
                 key: 'asana',
                 name: 'Asana',
@@ -85,6 +86,7 @@ describe('DotAppsCardComponent', () => {
     describe('With No configuration & warnings', () => {
         beforeEach(() => {
             component.app = {
+                allowExtraParams: false,
                 configurationsCount: 0,
                 key: 'asana',
                 name: 'Asana',

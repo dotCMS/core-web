@@ -20,6 +20,10 @@
         align-self: center;
         margin-right: $basic-padding * 2;
     }
+
+    dot-icon {
+        color: $brand-primary;
+    }
 }
 
 .dot-apps-configuration-list__name,

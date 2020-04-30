@@ -10,6 +10,7 @@ import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button
 import { NgxMdModule } from 'ngx-md';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DebugElement } from '@angular/core';
 
 const messages = {
     'apps.configurations': 'Configurations',
@@ -20,6 +21,7 @@ const messages = {
 };
 
 const appData = {
+    allowExtraParams: true,
     configurationsCount: 2,
     key: 'google-calendar',
     name: 'Google Calendar',
@@ -35,6 +37,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
     let component: DotAppsConfigurationHeaderComponent;
     let fixture: ComponentFixture<DotAppsConfigurationHeaderComponent>;
     let routerService: DotRouterService;
+    let de: DebugElement;
 
     const messageServiceMock = new MockDotMessageService(messages);
 
@@ -54,6 +57,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotAppsConfigurationHeaderComponent);
+        de = fixture.debugElement;
         component = fixture.debugElement.componentInstance;
         routerService = fixture.debugElement.injector.get(DotRouterService);
         component.app = appData;
@@ -63,36 +67,31 @@ describe('DotAppsConfigurationHeaderComponent', () => {
     it('should set messages/values in DOM correctly', () => {
         fixture.whenStable().then(() => {
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration__service-name'))
-                    .nativeElement.outerText
+                de.query(By.css('.dot-apps-configuration__service-name')).nativeElement.outerText
             ).toBe(component.app.name);
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration__service-key'))
-                    .nativeElement.outerText
+                de.query(By.css('.dot-apps-configuration__service-key')).nativeElement.outerText
             ).toContain(messages['apps.key']);
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration__configurations'))
-                    .nativeElement.outerText
+                de.query(By.css('.dot-apps-configuration__configurations')).nativeElement.outerText
             ).toContain(`${appData.configurationsCount} ${messages['apps.configurations']}`);
             const description = component.app.description
                 .replace(/\n/gi, '')
                 .replace(/\r/gi, '')
                 .replace(/   /gi, '');
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration__description'))
-                    .nativeElement.outerText
+                de.query(By.css('.dot-apps-configuration__description')).nativeElement.outerText
             ).toContain(description);
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__description__link_show-more')
-                ).nativeElement.outerText
+                de.query(By.css('.dot-apps-configuration__description__link_show-more'))
+                    .nativeElement.outerText
             ).toBe(component.messagesKey['apps.confirmation.description.show.more']);
         });
     });
 
     it('should DotCopy & DotAvatar with right properties', () => {
-        const dotAvatar = fixture.debugElement.query(By.css('dot-avatar')).componentInstance;
-        const dotCopy = fixture.debugElement.query(By.css('dot-copy-button')).componentInstance;
+        const dotAvatar = de.query(By.css('dot-avatar')).componentInstance;
+        const dotCopy = de.query(By.css('dot-copy-button')).componentInstance;
         expect(dotAvatar.label).toBe(component.app.name);
         expect(dotAvatar.size).toBe(112);
         expect(dotAvatar.url).toBe(component.app.iconUrl);
@@ -101,12 +100,12 @@ describe('DotAppsConfigurationHeaderComponent', () => {
     });
 
     it('should redirect to detail configuration list page when app Card clicked', () => {
-        const dotAvatar = fixture.debugElement.query(By.css('dot-avatar'));
+        const dotAvatar = de.query(By.css('dot-avatar'));
         dotAvatar.triggerEventHandler('click', { key: appData.key });
-        expect(routerService.gotoPortlet).toHaveBeenCalledWith(`/apps/${component.app.key}`);
-        const title = fixture.debugElement.query(By.css('.dot-apps-configuration__service-name'));
+        expect(routerService.goToAppsConfiguration).toHaveBeenCalledWith(component.app.key);
+        const title = de.query(By.css('.dot-apps-configuration__service-name'));
         title.triggerEventHandler('click', { key: appData.key });
-        expect(routerService.gotoPortlet).toHaveBeenCalledWith(`/apps/${component.app.key}`);
+        expect(routerService.goToAppsConfiguration).toHaveBeenCalledWith(component.app.key);
     });
 
     it('should show right message and no "Show More" link when no configurations and description short', () => {
@@ -115,13 +114,10 @@ describe('DotAppsConfigurationHeaderComponent', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration__configurations'))
-                    .nativeElement.outerText
+                de.query(By.css('.dot-apps-configuration__configurations')).nativeElement.outerText
             ).toContain(messages['apps.no.configurations']);
             expect(
-                fixture.debugElement.query(
-                    By.css('.dot-apps-configuration__description__link_show-more')
-                )
+                de.query(By.css('.dot-apps-configuration__description__link_show-more'))
             ).toBeFalsy();
         });
     });
