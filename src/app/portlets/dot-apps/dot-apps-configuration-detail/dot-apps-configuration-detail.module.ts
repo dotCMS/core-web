@@ -8,6 +8,7 @@ import { DotAppsConfigurationDetailResolver } from './dot-apps-configuration-det
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotAppsConfigurationDetailFormModule } from './dot-apps-configuration-detail-form/dot-apps-configuration-detail-form.module';
 import { DotKeyValueModule } from '@components/dot-key-value/dot-key-value.module';
+import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
 
 @NgModule({
     imports: [
@@ -15,6 +16,7 @@ import { DotKeyValueModule } from '@components/dot-key-value/dot-key-value.modul
         CommonModule,
         DotKeyValueModule,
         DotCopyButtonModule,
+        DotAppsConfigurationHeaderModule,
         DotAppsConfigurationDetailFormModule
     ],
     declarations: [DotAppsConfigurationDetailComponent],

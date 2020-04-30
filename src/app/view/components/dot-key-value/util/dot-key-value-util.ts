@@ -2,6 +2,7 @@ import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 
 export class DotKeyValueUtil {
     /**
+
      * Checks based on field values if the whole field should be disable
      * @param {DotKeyValue} variable
      * @returns boolean
