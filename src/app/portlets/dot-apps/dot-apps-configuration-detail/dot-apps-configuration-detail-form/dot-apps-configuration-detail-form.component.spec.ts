@@ -95,6 +95,15 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
             expect(fixture.debugElement.query(By.css('dot-icon'))).toBeFalsy();
         });
 
+        it('should focus on first input when loaded', () => {
+            const focusField = component.formContainer.nativeElement.querySelector('#name');
+            spyOn(focusField, 'focus');
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                expect(focusField.focus).toHaveBeenCalledTimes(1);
+            });
+        });
+
         it('should load Label, Textarea & Hint with right attributes', () => {
             const row = fixture.debugElement.queryAll(
                 By.css('.dot-apps-configuration-detail__form-row')

@@ -14,6 +14,7 @@ import { DotKeyValueTableInputRowComponent } from './dot-key-value-table-input-r
     selector: 'dot-test-host-component',
     template: `
         <dot-key-value-table-input-row
+            [autoFocus]="autoFocus"
             [showHiddenField]="showHiddenField"
             [variablesList]="variablesList"
         >
@@ -21,6 +22,7 @@ import { DotKeyValueTableInputRowComponent } from './dot-key-value-table-input-r
     `
 })
 class TestHostComponent {
+    @Input() autoFocus: boolean;
     @Input() showHiddenField: boolean;
     @Input() variablesList: DotKeyValue[];
 }
@@ -58,6 +60,8 @@ describe('DotKeyValueTableInputRowComponent', () => {
 
         dotMessageDisplayService = de.injector.get(DotMessageDisplayService);
         hostComponent.variablesList = mockKeyValue;
+        hostComponent.autoFocus = true;
+
     });
 
     describe('Without Hidden Fields', () => {
@@ -80,6 +84,15 @@ describe('DotKeyValueTableInputRowComponent', () => {
             hostComponentfixture.detectChanges();
             hostComponentfixture.whenStable().then(() => {
                 expect(comp.keyCell.nativeElement.focus).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        it('should not focus on "Key" input when loaded', () => {
+            hostComponent.autoFocus = false;
+            spyOn(comp.keyCell.nativeElement, 'focus');
+            hostComponentfixture.detectChanges();
+            hostComponentfixture.whenStable().then(() => {
+                expect(comp.keyCell.nativeElement.focus).toHaveBeenCalledTimes(0);
             });
         });
 
