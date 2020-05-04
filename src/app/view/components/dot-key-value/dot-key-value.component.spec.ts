@@ -105,6 +105,7 @@ describe('DotKeyValueComponent', () => {
         tableRow = de.query(By.css('dot-key-value-table-row')).componentInstance;
         tableRow.save.emit(mockKeyValue[0]);
         expect(component.save.emit).toHaveBeenCalledWith(mockKeyValue[0]);
+        expect(component.variables.length).toBe(2);
     });
 
     it('should save a new variable', () => {

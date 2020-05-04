@@ -83,7 +83,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
             variable,
             this.dynamicVariables
         );
-        if (indexChanged) {
+        if (indexChanged !== null) {
             this.dynamicVariables[indexChanged] = _.cloneDeep(variable);
         } else {
             this.dynamicVariables = [variable, ...this.dynamicVariables];
