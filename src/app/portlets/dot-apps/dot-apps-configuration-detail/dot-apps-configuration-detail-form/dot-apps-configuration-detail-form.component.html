@@ -8,7 +8,7 @@
 </ng-template>
 
 <form #form="ngForm" [formGroup]="myFormGroup" class="form__group" novalidate>
-    <div class="dot-apps-configuration-detail__form">
+    <div #formContainer class="dot-apps-configuration-detail__form">
         <div
             class="dot-apps-configuration-detail__form-row"
             *ngFor="let field of formFields"

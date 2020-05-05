@@ -31,6 +31,7 @@
             <div *ngIf="apps.allowExtraParams">
                 <h5>{{ messagesKey['apps.custom.properties'] }}</h5>
                 <dot-key-value
+                    [autoFocus]="false"
                     [showHiddenField]="true"
                     [variables]="dynamicVariables"
                     (delete)="deleteDynamicVariable($event)"
