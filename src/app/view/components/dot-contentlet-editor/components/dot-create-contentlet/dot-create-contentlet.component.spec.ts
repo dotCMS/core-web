@@ -13,7 +13,7 @@ import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('DotCreateContentletComponent', () => {
+fdescribe('DotCreateContentletComponent', () => {
     let de: DebugElement;
     let fixture: ComponentFixture<DotCreateContentletComponent>;
     let dotCreateContentletWrapper: DebugElement;

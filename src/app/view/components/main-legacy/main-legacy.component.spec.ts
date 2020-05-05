@@ -56,7 +56,7 @@ class MockDotLargeMessageDisplayComponent {
 class MockDotPushPublishDialogComponent {
 }
 
-describe('MainComponentLegacyComponent', () => {
+fdescribe('MainComponentLegacyComponent', () => {
     let fixture: ComponentFixture<MainComponentLegacyComponent>;
     let de: DebugElement;
     let dotIframeService: DotIframeService;

@@ -45,7 +45,7 @@ class MockDotEditContentletComponent {
     custom = new EventEmitter<any>();
 }
 
-describe('DotEditPageMainComponent', () => {
+fdescribe('DotEditPageMainComponent', () => {
     let component: DotEditPageMainComponent;
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;

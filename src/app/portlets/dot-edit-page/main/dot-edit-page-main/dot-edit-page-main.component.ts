@@ -8,6 +8,7 @@ import { DotPageStateService } from '../../content/services/dot-page-state/dot-p
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 
 @Component({
     selector: 'dot-edit-page-main',
@@ -25,6 +26,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
         private dotContentletEditorService: DotContentletEditorService,
         private dotPageStateService: DotPageStateService,
         private dotRouterService: DotRouterService,
+        private dotCustomEventHandlerService: DotCustomEventHandlerService,
         public dotMessageService: DotMessageService
     ) {
         if (!this.customEventsHandler) {
@@ -64,8 +66,11 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
      * @memberof DotEditPageMainComponent
      */
     onCustomEvent($event: CustomEvent): void {
+        debugger;
         if (this.customEventsHandler[$event.detail.name]) {
             this.customEventsHandler[$event.detail.name]($event);
+        } else {
+            this.dotCustomEventHandlerService.handle($event);
         }
     }
 

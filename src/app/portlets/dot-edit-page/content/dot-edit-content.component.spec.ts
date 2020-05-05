@@ -45,6 +45,7 @@ import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loadi
 import { DotPageMode, DotPageContainer, DotPageContent } from '../shared/models';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { dotcmsContentletMock } from '@tests/dotcms-contentlet.mock';
+import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 
 @Component({
     selector: 'dot-global-message',
@@ -87,7 +88,7 @@ const mockRenderedPageState = new DotPageRenderState(
     new DotPageRender(mockDotRenderedPage)
 );
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -159,6 +160,7 @@ describe('DotEditContentComponent', () => {
                 DotEditPageService,
                 DotGlobalMessageService,
                 DotPageStateService,
+                DotCustomEventHandlerService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
