@@ -301,6 +301,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
             const keyValue = fixture.debugElement.query(By.css('dot-key-value'));
             keyValue.componentInstance.save.emit(variableEmitted);
             expect(component.dynamicVariables[0]).toEqual(variableEmitted);
+            expect(component.dynamicVariables.length).toEqual(1);
         });
 
         it('should delete from local collection', () => {
