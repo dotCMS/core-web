@@ -1,5 +1,5 @@
-<ul class="dot-nav-sub"
-    [@expandAnimation]="( data.isOpen && !collapsed ) ? 'expanded' : 'collapsed'"
+<ul
+    class="dot-nav-sub"
     [class.contextmenu]="data.isOpen && collapsed"
 >
     <li *ngFor="let subItem of data.menuItems" class="dot-nav-sub__item">
@@ -7,6 +7,8 @@
             class="dot-nav-sub__link"
             [class.dot-nav-sub__link--active]="subItem.active"
             (click)="onItemClick($event, subItem)"
-            [routerLink]="subItem.menuLink">{{ subItem.label }}</a>
+            [routerLink]="subItem.menuLink"
+            >{{ subItem.label }}</a
+        >
     </li>
 </ul>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DotMenu, DotMenuItem } from '@models/navigation';
 
@@ -31,6 +31,10 @@ export class DotSubNavComponent {
     @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
     @Input() collapsed: boolean;
+
+    @HostBinding('@expandAnimation') get getToggleDrawer(): string {
+        return this.data.isOpen && !this.collapsed ? 'expanded' : 'collapsed';
+    }
 
     constructor() {}
 
