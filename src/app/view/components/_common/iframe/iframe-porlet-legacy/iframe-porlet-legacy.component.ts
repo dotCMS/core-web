@@ -50,7 +50,7 @@ export class IframePortletLegacyComponent implements OnInit {
     /**
      * Handle the custom events emmited by the iframe
      *
-     * @param any $event
+     * @param CustomEvent $event
      * @memberof IframePortletLegacyComponent
      */
     onCustomEvent($event: CustomEvent): void {

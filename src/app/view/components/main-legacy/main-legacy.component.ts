@@ -34,7 +34,7 @@ export class MainComponentLegacyComponent implements OnInit {
     /**
      * Handle the custom events emmited by the Create Contentlet
      *
-     * @param any $event
+     * @param CustomEvent $event
      * @memberof MainComponentLegacyComponent
      */
     onCustomEvent($event: CustomEvent): void {

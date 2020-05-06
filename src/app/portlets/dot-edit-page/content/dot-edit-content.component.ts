@@ -215,7 +215,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     /**
      * Handle the custom events emmited by the Edit Contentlet
      *
-     * @param any $event
+     * @param CustomEvent $event
      * @memberof DotEditContentComponent
      */
     onCustomEvent($event: CustomEvent): void {

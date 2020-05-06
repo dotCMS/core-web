@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotContentletsComponent } from './dot-contentlets.component';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotContentletEditorModule } from '@components/dot-contentlet-editor/dot-contentlet-editor.module';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { LoginService } from 'dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
@@ -68,19 +68,16 @@ describe('DotContentletsComponent', () => {
         fixture.detectChanges();
     });
 
-    it(
-        'should call contentlet modal',
-        async(() => {
-            const params = {
-                data: {
-                    inode: '5cd3b647-e465-4a6d-a78b-e834a7a7331a'
-                }
-            };
-            setTimeout(() => {
-                expect(dotContentletEditorService.edit).toHaveBeenCalledWith(params);
-            }, 0);
-        })
-    );
+    it('should call contentlet modal', () => {
+        const params = {
+            data: {
+                inode: '5cd3b647-e465-4a6d-a78b-e834a7a7331a'
+            }
+        };
+        fixture.whenStable().then(() => {
+            expect(dotContentletEditorService.edit).toHaveBeenCalledWith(params);
+        });
+    });
 
     it('should go current portlet and reload data when modal closed', () => {
         const edit = de.query(By.css('dot-edit-contentlet'));

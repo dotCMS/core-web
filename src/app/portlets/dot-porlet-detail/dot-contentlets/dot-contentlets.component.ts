@@ -42,7 +42,7 @@ export class DotContentletsComponent implements AfterViewInit {
     /**
      * Handle the custom events emmited by the Edit Contentlet
      *
-     * @param any $event
+     * @param CustomEvent $event
      * @memberof DotContentletsComponent
      */
     onCustomEvent($event: CustomEvent): void {
