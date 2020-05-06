@@ -13,7 +13,7 @@ import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-fdescribe('DotCreateContentletComponent', () => {
+describe('DotCreateContentletComponent', () => {
     let de: DebugElement;
     let fixture: ComponentFixture<DotCreateContentletComponent>;
     let dotCreateContentletWrapper: DebugElement;
@@ -47,6 +47,7 @@ fdescribe('DotCreateContentletComponent', () => {
         dotCreateContentletWrapper = de.query(By.css('dot-contentlet-wrapper'));
         dotCreateContentletWrapperComponent = dotCreateContentletWrapper.componentInstance;
         spyOn(component.close, 'emit');
+        spyOn(component.custom, 'emit');
     });
 
     describe('default', () => {
@@ -57,6 +58,11 @@ fdescribe('DotCreateContentletComponent', () => {
         it('should emit close', () => {
             dotCreateContentletWrapper.triggerEventHandler('close', {});
             expect(component.close.emit).toHaveBeenCalledTimes(1);
+        });
+
+        it('should emit custom', () => {
+            dotCreateContentletWrapper.triggerEventHandler('custom', {});
+            expect(component.custom.emit).toHaveBeenCalledTimes(1);
         });
 
         it('should have url in null', () => {

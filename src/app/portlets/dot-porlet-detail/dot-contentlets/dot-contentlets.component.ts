@@ -46,7 +46,6 @@ export class DotContentletsComponent implements AfterViewInit {
      * @memberof DotContentletsComponent
      */
     onCustomEvent($event: CustomEvent): void {
-        debugger;
         this.dotCustomEventHandlerService.handle($event);
     }
 }

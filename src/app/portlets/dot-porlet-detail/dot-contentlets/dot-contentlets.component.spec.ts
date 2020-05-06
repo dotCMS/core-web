@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
+import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 
 @Injectable()
 class MockDotContentletEditorService {
@@ -24,6 +25,7 @@ describe('DotContentletsComponent', () => {
     let dotRouterService: DotRouterService;
     let dotIframeService: DotIframeService;
     let dotContentletEditorService: DotContentletEditorService;
+    let dotCustomEventHandlerService: DotCustomEventHandlerService;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -32,6 +34,7 @@ describe('DotContentletsComponent', () => {
             providers: [
                 DotContentletEditorService,
                 DotIframeService,
+                DotCustomEventHandlerService,
                 {
                     provide: ActivatedRoute,
                     useValue: {
@@ -59,26 +62,37 @@ describe('DotContentletsComponent', () => {
         dotRouterService = de.injector.get(DotRouterService);
         dotIframeService = de.injector.get(DotIframeService);
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
+        dotCustomEventHandlerService = de.injector.get(DotCustomEventHandlerService);
 
         spyOn(dotIframeService, 'reloadData');
         fixture.detectChanges();
     });
 
-    it('should call contentlet modal', async(() => {
-        const params = {
-            data: {
-                inode: '5cd3b647-e465-4a6d-a78b-e834a7a7331a'
-            }
-        };
-        setTimeout(() => {
-            expect(dotContentletEditorService.edit).toHaveBeenCalledWith(params);
-        }, 0);
-    }));
+    it(
+        'should call contentlet modal',
+        async(() => {
+            const params = {
+                data: {
+                    inode: '5cd3b647-e465-4a6d-a78b-e834a7a7331a'
+                }
+            };
+            setTimeout(() => {
+                expect(dotContentletEditorService.edit).toHaveBeenCalledWith(params);
+            }, 0);
+        })
+    );
 
     it('should go current portlet and reload data when modal closed', () => {
         const edit = de.query(By.css('dot-edit-contentlet'));
         edit.triggerEventHandler('close', {});
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/123-567');
         expect(dotIframeService.reloadData).toHaveBeenCalledWith('123-567');
+    });
+
+    it('should call dotCustomEventHandlerService on customEvent', () => {
+        spyOn(dotCustomEventHandlerService, 'handle');
+        const edit = de.query(By.css('dot-edit-contentlet'));
+        edit.triggerEventHandler('custom', { data: 'test' });
+        expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
     });
 });

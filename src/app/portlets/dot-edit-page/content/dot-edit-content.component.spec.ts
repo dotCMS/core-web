@@ -88,7 +88,7 @@ const mockRenderedPageState = new DotPageRenderState(
     new DotPageRender(mockDotRenderedPage)
 );
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -104,6 +104,7 @@ fdescribe('DotEditContentComponent', () => {
     let dotLoadingIndicatorService: DotLoadingIndicatorService;
     let dotContentletEditorService: DotContentletEditorService;
     let dotDialogService: DotAlertConfirmService;
+    let dotCustomEventHandlerService: DotCustomEventHandlerService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -213,6 +214,7 @@ fdescribe('DotEditContentComponent', () => {
         dotLoadingIndicatorService = de.injector.get(DotLoadingIndicatorService);
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
         dotDialogService = de.injector.get(DotAlertConfirmService);
+        dotCustomEventHandlerService = de.injector.get(DotCustomEventHandlerService);
 
         spyOn(dotPageStateService, 'reload');
 
@@ -329,6 +331,13 @@ fdescribe('DotEditContentComponent', () => {
 
             it('should have', () => {
                 expect(dotEditContentlet).not.toBeNull();
+            });
+
+            it('should call dotCustomEventHandlerService on customEvent', () => {
+                spyOn(dotCustomEventHandlerService, 'handle');
+                dotEditContentlet.triggerEventHandler('custom', {data: 'test'});
+
+                expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({data: 'test'});
             });
         });
 
