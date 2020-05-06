@@ -5,7 +5,7 @@ import { LoginServiceMock, mockLoginFormResponse } from '@tests/login-service.mo
 import { of } from 'rxjs';
 import { DotLoginInformation } from '@models/dot-login';
 
-fdescribe('DotLoginPageStateServiceService', () => {
+describe('DotLoginPageStateServiceService', () => {
     let dotloginPageStateService: DotLoginPageStateService;
     let loginService: LoginService;
 
