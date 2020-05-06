@@ -19,6 +19,7 @@ import { LoginServiceMock } from '@tests/login-service.mock';
 import { LoginService, SiteService } from 'dotcms-js';
 import { DotAddPersonaDialogComponent } from '@components/dot-add-persona-dialog/dot-add-persona-dialog.component';
 import { SiteServiceMock } from '@tests/site-service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
     selector: 'dot-host-component',
@@ -82,7 +83,8 @@ describe('DotPersonaSelectorComponent', () => {
                     SearchableDropDownModule,
                     DotPersonaSelectedItemModule,
                     DotPersonaSelectorOptionModule,
-                    DotAddPersonaDialogModule
+                    DotAddPersonaDialogModule,
+                    HttpClientTestingModule
                 ],
                 providers: [
                     IframeOverlayService,

@@ -66,7 +66,6 @@ describe('DotAlertConfirmComponent', () => {
 
             fixture.detectChanges();
             const confirm = de.query(By.css('p-confirmDialog')).componentInstance;
-            expect(confirm.responsive).toBe(true, 'responsive');
             expect(confirm.width).toBe('400', 'width');
             expect(confirm.closable).toBe(false, 'closable');
         });

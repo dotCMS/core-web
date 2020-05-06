@@ -21,6 +21,7 @@ import { SiteServiceMock } from '@tests/site-service.mock';
 import { mockResponseView } from '@tests/response-view.mock';
 import { SiteSelectorFieldModule } from '@components/_common/dot-site-selector-field/dot-site-selector-field.module';
 import { DotCreatePersonaFormModule } from '@components/dot-add-persona-dialog/dot-create-persona-form/dot-create-persona-form.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
     selector: 'dot-field-validation-message',
@@ -51,7 +52,8 @@ describe('DotAddPersonaDialogComponent', () => {
                 DotDialogModule,
                 FileUploadModule,
                 SiteSelectorFieldModule,
-                DotCreatePersonaFormModule
+                DotCreatePersonaFormModule,
+                HttpClientTestingModule
             ],
             providers: [
                 DotWorkflowActionsFireService,
