@@ -8,13 +8,17 @@ import { DotMenu, DotMenuItem } from '@models/navigation';
 })
 export class DotNavItemComponent {
     @Input() data: DotMenu;
+
     @Output()
     menuRightClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
+
     @Output()
     menuClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
+
     @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
-    @HostBinding('class.collapsed')
+
+    @HostBinding('class.dot-nav-item__collapsed')
     @Input()
     collapsed: boolean;
 
