@@ -22,7 +22,7 @@ import { DotMenu, DotMenuItem } from '@models/navigation';
             state(
                 'short_menu',
                 style({
-                    height: 'auto'
+                    height: '0'
                 })
             ),
             transition('expanded <=> collapsed', animate('250ms ease-in-out'))

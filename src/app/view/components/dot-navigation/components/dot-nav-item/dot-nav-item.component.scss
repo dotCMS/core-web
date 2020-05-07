@@ -12,9 +12,16 @@
             background-color: rgba(var(--color-white_rgb), 0.1);
 
             dot-sub-nav {
-                pointer-events: all;
+                height: auto !important;
+
+                left: $navigation-width-collased;
                 opacity: 1;
-                transform: translateY(0);
+                pointer-events: all;
+                position: absolute;
+                top: 0;
+                transform: translateY(1rem);
+                transition: opacity $basic-speed ease, transform $basic-speed ease;
+                z-index: 2;
             }
         }
 
@@ -30,12 +37,6 @@
             border-bottom-right-radius: 0.1875rem;
             border-top-right-radius: 0.1875rem;
             box-shadow: $md-shadow-2;
-            left: $navigation-width-collased;
-            position: absolute;
-            top: 0;
-            transform: translateY(1rem);
-            transition: opacity $basic-speed ease, transform $basic-speed ease;
-            z-index: 2;
         }
 
         dot-icon {
