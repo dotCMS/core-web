@@ -19,12 +19,6 @@ import { DotMenu, DotMenuItem } from '@models/navigation';
                     overflow: 'hidden'
                 })
             ),
-            state(
-                'short_menu',
-                style({
-                    height: '0'
-                })
-            ),
             transition('expanded <=> collapsed', animate('250ms ease-in-out'))
         ])
     ],
@@ -40,10 +34,6 @@ export class DotSubNavComponent {
 
     // tslint:disable-next-line: cyclomatic-complexity
     @HostBinding('@expandAnimation') get getAnimation(): string {
-        if (this.collapsed) {
-            return 'short_menu';
-        }
-
         return !this.collapsed && this.data.isOpen ? 'expanded' : 'collapsed';
     }
 

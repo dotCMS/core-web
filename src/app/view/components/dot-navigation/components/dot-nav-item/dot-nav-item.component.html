@@ -1,16 +1,16 @@
 <div class="dot-nav__title">
     <div
-        class="dot-nav__item"
         (click)="clickHandler($event, data)"
         [class.dot-nav__item--active]="data.active"
         appendTo="target"
+        class="dot-nav__item"
     >
         <dot-nav-icon [icon]="data.tabIcon" aria-hidden="true"></dot-nav-icon>
         <span class="dot-nav__item-label">{{ data.tabName }}</span>
         <dot-icon
+            aria-hidden="true"
             class="dot-nav__item-arrow"
             name="{{ data.isOpen ? 'arrow_drop_down' : 'arrow_drop_up' }}"
-            aria-hidden="true"
         >
         </dot-icon>
     </div>
