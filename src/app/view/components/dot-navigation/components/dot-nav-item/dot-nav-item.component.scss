@@ -40,12 +40,16 @@
             transform: translateY(1rem);
         }
 
+        dot-icon {
+            opacity: 0;
+        }
+
         .dot-nav__title {
             width: $navigation-width-collased;
         }
 
-        dot-icon {
-            opacity: 0;
+        .dot-nav__item {
+            height: $navigation-item-height;
         }
 
         .dot-nav__item--active {
