@@ -40,12 +40,12 @@
             transform: translateY(1rem);
         }
 
-        dot-icon {
-            opacity: 0;
+        .dot-nav__title {
+            width: $navigation-width-collased;
         }
 
-        .dot-nav__item {
-            width: $navigation-width-collased;
+        dot-icon {
+            opacity: 0;
         }
 
         .dot-nav__item--active {
@@ -54,15 +54,20 @@
     }
 }
 
+.dot-nav__title {
+    overflow: hidden;
+    transition: width $basic-speed ease;
+    width: $navigation-width;
+}
+
 .dot-nav__item {
     align-items: center;
     display: flex;
     justify-content: space-between;
     min-height: $navigation-item-height;
-    padding: 14px $basic-padding 13px 23px; // top and bottom padding to get min 48px height
+    padding: 14px $basic-padding * 3 13px 23px; // top and bottom padding to get min 48px height
     position: relative;
-    transition: background-color $basic-speed ease, width $basic-speed ease;
-    white-space: nowrap;
+    transition: background-color $basic-speed ease;
     width: $navigation-width;
 }
 
