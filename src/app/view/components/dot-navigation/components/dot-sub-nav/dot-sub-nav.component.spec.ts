@@ -82,6 +82,10 @@ describe('DotSubNavComponent', () => {
         link.triggerEventHandler('click', { hello: 'world' });
     });
 
+    it('should NOT have collapsed class', () => {
+        expect(de.query(By.css('.dot-nav-sub__collapsed'))).toBeNull();
+    });
+
     describe('dot-sub-nav', () => {
         describe('is Open', () => {
             beforeEach(() => {
@@ -96,6 +100,10 @@ describe('DotSubNavComponent', () => {
 
                 it('should set expandAnimation collapsed', () => {
                     expect(component.getAnimation).toEqual('collapsed');
+                });
+
+                it('should have collapsed class', () => {
+                    expect(de.query(By.css('.dot-nav-sub__collapsed'))).not.toBeNull();
                 });
             });
 
