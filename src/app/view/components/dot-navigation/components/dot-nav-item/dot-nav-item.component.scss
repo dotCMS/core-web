@@ -7,19 +7,19 @@
 
     &.dot-nav-item__collapsed {
         position: relative;
+        transition: background-color $basic-speed ease;
 
         &:hover {
             background-color: rgba(var(--color-white_rgb), 0.1);
 
             dot-sub-nav {
                 height: auto !important;
-
                 left: $navigation-width-collased;
                 opacity: 1;
                 pointer-events: all;
                 position: absolute;
                 top: 0;
-                transform: translateY(1rem);
+                transform: translateY(0);
                 transition: opacity $basic-speed ease, transform $basic-speed ease;
                 z-index: 2;
             }
@@ -37,6 +37,7 @@
             border-bottom-right-radius: 0.1875rem;
             border-top-right-radius: 0.1875rem;
             box-shadow: $md-shadow-2;
+            transform: translateY(1rem);
         }
 
         dot-icon {
@@ -44,7 +45,6 @@
         }
 
         .dot-nav__item {
-            pointer-events: none;
             width: $navigation-width-collased;
         }
 
