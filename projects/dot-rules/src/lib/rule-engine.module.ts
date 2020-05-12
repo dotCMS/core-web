@@ -36,7 +36,6 @@ import {
     DotcmsConfigService,
     DotcmsEventsService,
     LoggerService,
-    SiteService,
     StringUtils,
     UserModel,
     BrowserUtil
@@ -99,10 +98,8 @@ import { RuleViewService } from './services/dot-view-rule-service';
         DotcmsConfigService,
         DotcmsEventsService,
         LoggerService,
-        SiteService,
         StringUtils,
         UserModel,
-
 
         ActionService,
         BundleService,
