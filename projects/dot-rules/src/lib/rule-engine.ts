@@ -12,7 +12,7 @@ import {
 } from './rule-engine.container';
 import { IPublishEnvironment } from './services/bundle-service';
 import { RuleViewService, DotRuleMessage } from './services/dot-view-rule-service';
-import {take, takeUntil} from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { DotPushPublishDialogService } from 'dotcms-js';
 
 const I8N_BASE = 'api.sites.ruleengine';
@@ -155,8 +155,9 @@ export class RuleEngineComponent implements OnDestroy {
                 this.showCloseButton = dotRuleMessage.allowClose;
             });
 
-        this.rsrc('pushPublish.title').subscribe(label => {
-            this.pushPublishTitleLabel = label;
+        this.rsrc('pushPublish.title').pipe(take(1))
+            .subscribe(label => {
+                this.pushPublishTitleLabel = label;
         });
     }
 
