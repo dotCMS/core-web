@@ -15,7 +15,9 @@ import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publi
  * @export
  * @class PushPublishService
  */
-@Injectable()
+@Injectable(
+    {providedIn: 'root'}
+)
 export class PushPublishService {
     private pushEnvironementsUrl = 'environment/loadenvironments/roleId';
     private _lastEnvironmentPushed: string[];

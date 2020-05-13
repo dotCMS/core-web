@@ -42,6 +42,7 @@ import {
 import { ServerSideTypeModel } from './services/ServerSideFieldModel';
 import { IPublishEnvironment } from './services/bundle-service';
 import { LoggerService } from 'dotcms-js';
+import { DotPushPublishDialogService } from 'dotcms-js';
 
 const I8N_BASE = 'api.sites.ruleengine';
 // tslint:disable-next-line:no-unused-variable
@@ -62,11 +63,6 @@ const rsrc = {
       [assetId]="rule.key"
       [hidden]="!showAddToBundleDialog"
       (close)="showAddToBundleDialog = false; showMoreMenu = false"></cw-add-to-bundle-dialog-container>
-  <cw-push-publish-dialog-container
-      [environmentStores]="environmentStores"
-      [assetId]="rule.key"
-      [hidden]="!showPushPublishDialog"
-      (close)="showPushPublishDialog = false; showMoreMenu = false"></cw-push-publish-dialog-container>
   <div class="cw-rule" [class.cw-hidden]="hidden" [class.cw-disabled]="!rule.enabled"
     [class.cw-saving]="saving" [class.cw-saved]="saved" [class.cw-out-of-sync]="!saved && !saving">
   <div flex layout="row" class="cw-header" *ngIf="!hidden" (click)="setRuleExpandedState(!rule._expanded)">
@@ -115,7 +111,7 @@ const rsrc = {
           (click)="showAddToBundleDialog = true; $event.stopPropagation()">Add to bundle</a>
 
         <a class="item" *ngIf="environmentStores.length > 0 && (rule._id || rule.key) &&  !apiRoot.hideRulePushOptions"
-          (click)="showPushPublishDialog = true; $event.stopPropagation()">Push Publish</a>
+          (click)="showPushPublishDialog(rule.key); $event.stopPropagation()">Push Publish</a>
         <a class="item" (click)="deleteRuleClicked($event)">Delete rule</a>
       </div>
     </div>
@@ -203,8 +199,6 @@ class RuleComponent {
     showMoreMenu = false;
     // tslint:disable-next-line:no-unused-variable
     showAddToBundleDialog = false;
-    // tslint:disable-next-line:no-unused-variable
-    showPushPublishDialog = false;
     hideFireOn: boolean;
     actionTypePlaceholder = '';
     conditionTypePlaceholder = '';
@@ -224,7 +218,8 @@ class RuleComponent {
         public ruleService: RuleService,
         public apiRoot: ApiRoot,
         fb: FormBuilder,
-        private loggerService: LoggerService
+        private loggerService: LoggerService,
+        private dotPushPublishDialogService: DotPushPublishDialogService,
     ) {
         this._rsrcCache = {};
         this.hideFireOn = document.location.hash.includes('edit-page') || apiRoot.hideFireOn;
@@ -449,6 +444,13 @@ class RuleComponent {
         if (noWarn || confirm('Are you sure you want delete this rule?')) {
             this.deleteRule.emit({ payload: { rule: this.rule }, type: RULE_DELETE });
         }
+    }
+
+    showPushPublishDialog(ruleKey: string): void {
+        this.dotPushPublishDialogService.open({
+            assetIdentifier: ruleKey,
+            title: this.rsrc('inputs.action.firesActions')
+        });
     }
 }
 

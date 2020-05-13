@@ -9,8 +9,8 @@ import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { takeUntil, map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
-import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
-import { DotPushPublishDialogData } from '@models/dot-push-publish-dialog-data/dot-push-publish-dialog-data.model';
+import { DotPushPublishDialogService } from 'dotcms-js';
+import { DotPushPublishDialogData } from 'dotcms-models';
 import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
 
 @Component({
