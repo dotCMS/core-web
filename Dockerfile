@@ -18,7 +18,7 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
     gcloud config set metrics/environment github_docker_image && \
     gcloud --version
 #
-    
+
 WORKDIR /usr/src/app
 
 RUN apt-get update \
@@ -34,13 +34,16 @@ COPY angular.json .
 
 COPY tsconfig.json .
 
-COPY ./projects/dotcms-js ./projects/dotcms-js  
+COPY ./projects/dotcms-models ./projects/dotcms-models
+RUN ng build dotcms-models
+
+COPY ./projects/dotcms-js ./projects/dotcms-js
 RUN ng build dotcms-js
 
-COPY ./projects/dot-layout-grid ./projects/dot-layout-grid 
+COPY ./projects/dot-layout-grid ./projects/dot-layout-grid
 RUN ng build dot-layout-grid
 
-COPY ./projects/dot-rules ./projects/dot-rules 
+COPY ./projects/dot-rules ./projects/dot-rules
 
 COPY karma.conf.js .
 
