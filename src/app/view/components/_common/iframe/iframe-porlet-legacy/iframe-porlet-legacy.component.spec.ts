@@ -8,10 +8,9 @@ import { DotMenuService } from '@services/dot-menu.service';
 import { IFrameModule } from '../index';
 import { IframePortletLegacyComponent } from './iframe-porlet-legacy.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SiteService, LoginService } from 'dotcms-js';
-import { DotIframeEventsHandler } from './services/iframe-events-handler.service';
+import { SiteService, LoginService, DotPushPublishDialogService } from 'dotcms-js';
+import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
-import { DotPushPublishDialogService } from '@services/dot-push-publish-dialog/dot-push-publish-dialog.service';
 
 describe('IframePortletLegacyComponent', () => {
     let comp: IframePortletLegacyComponent;
@@ -19,7 +18,7 @@ describe('IframePortletLegacyComponent', () => {
     let de: DebugElement;
     let dotIframe: DebugElement;
     let dotMenuService: DotMenuService;
-    let dotIframeEventsHandler: DotIframeEventsHandler;
+    let dotCustomEventHandlerService: DotCustomEventHandlerService;
     let route: ActivatedRoute;
 
     beforeEach(async(() => {
@@ -28,7 +27,7 @@ describe('IframePortletLegacyComponent', () => {
             imports: [IFrameModule, RouterTestingModule],
             providers: [
                 DotContentTypeService,
-                DotIframeEventsHandler,
+                DotCustomEventHandlerService,
                 DotPushPublishDialogService,
                 DotMenuService,
                 LoginService,
@@ -53,7 +52,7 @@ describe('IframePortletLegacyComponent', () => {
         de = fixture.debugElement;
         dotIframe = de.query(By.css('dot-iframe'));
         dotMenuService = de.injector.get(DotMenuService);
-        dotIframeEventsHandler = de.injector.get(DotIframeEventsHandler);
+        dotCustomEventHandlerService = de.injector.get(DotCustomEventHandlerService);
         route = de.injector.get(ActivatedRoute);
     }));
 
@@ -94,7 +93,7 @@ describe('IframePortletLegacyComponent', () => {
     });
 
     it('should handle custom events', () => {
-        spyOn(dotIframeEventsHandler, 'handle');
+        spyOn(dotCustomEventHandlerService, 'handle');
 
         dotIframe.triggerEventHandler('custom', {
             this: {
@@ -102,7 +101,7 @@ describe('IframePortletLegacyComponent', () => {
             }
         });
 
-        expect(dotIframeEventsHandler.handle).toHaveBeenCalledWith({
+        expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
             this: {
                 is: 'a custom event'
             }
