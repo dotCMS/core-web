@@ -72,7 +72,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
         private dotWorkflowService: DotWorkflowService,
         private dotLicenseService: DotLicenseService,
-        public dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService
     ) {
         dotMessageService
             .getMessages([
