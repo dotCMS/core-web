@@ -57,6 +57,7 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     goToEditContentlet(inode: string): Promise<boolean> {
+        console.log('======goToEditContentlet', this.currentPortlet.url, inode)
         return this.router.navigate([`${this.currentPortlet.url}/${inode}`]);
     }
 
