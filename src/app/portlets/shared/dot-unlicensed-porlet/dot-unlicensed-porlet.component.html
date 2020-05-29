@@ -1,17 +1,22 @@
-<dot-icon name="business" [size]="120"></dot-icon>
-
-<h4 [innerHTML]="data.title"></h4>
-<p [innerHTML]="data.description"></p>
+<dot-icon [name]="data.icon" [size]="120"></dot-icon>
+<h4 [innerHTML]="messagesKey[data.titleKey]"></h4>
+<p [innerHTML]="messagesKey['only-available-in-enterprise']"></p>
 <ul>
-    <li *ngFor="let item of data.links">
-        <a [href]="item.link" target="_blank">{{ item.text }}</a>
+    <li>
+        <a target="_blank" href="https://dotcms.com/product/features/feature-list">{{
+            messagesKey['Learn-more-about-dotCMS-Enterprise']
+        }}</a>
+    </li>
+    <li>
+        <a target="_blank" href="https://dotcms.com/contact-us/"
+            >{{ messagesKey['Contact-Us-for-more-Information'] }}'</a
+        >
     </li>
 </ul>
-
 <p>
     <a
         class="ui-link"
         href="https://dotcms.com/licensing/request-a-license-3/index"
-        [innerText]="requestLicenseLabel$ | async"
+        [innerText]="messagesKey['request.a.trial.license']"
     ></a>
 </p>

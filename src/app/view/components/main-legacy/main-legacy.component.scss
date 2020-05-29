@@ -34,3 +34,9 @@
         width: 0;
     }
 }
+
+dot-unlicensed-porlet {
+    box-shadow: $md-shadow-4;
+    height: calc(100vh - 48px - #{$toolbar-height});
+    margin: $basic-padding * 3;
+}

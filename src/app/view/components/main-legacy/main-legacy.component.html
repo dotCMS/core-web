@@ -1,5 +1,8 @@
 <!-- TODO: Move this to iframe-portlet-legacy -->
-<dot-create-contentlet (close)="onCloseContentletEditor()" (custom)="onCustomEvent($event)"></dot-create-contentlet>
+<dot-create-contentlet
+    (close)="onCloseContentletEditor()"
+    (custom)="onCustomEvent($event)"
+></dot-create-contentlet>
 <dot-message-display></dot-message-display>
 
 <div class="layout">
@@ -11,7 +14,11 @@
             <dot-main-nav></dot-main-nav>
         </aside>
         <main class="layout__main">
-            <router-outlet></router-outlet>
+            <router-outlet *ngIf="canAccessEnterprisePortlet"></router-outlet>
+            <dot-unlicensed-porlet
+                *ngIf="unlicenseData && !canAccessEnterprisePortlet"
+                [data]="unlicenseData"
+            ></dot-unlicensed-porlet>
         </main>
     </div>
 </div>

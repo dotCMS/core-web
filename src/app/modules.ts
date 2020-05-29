@@ -39,6 +39,7 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotMessageDisplayModule } from '@components/dot-message-display/dot-message-display.module';
 import { DotToolbarModule } from '@components/dot-toolbar/dot-toolbar.module';
 import { DotPushPublishDialogModule } from '@components/_common/dot-push-publish-dialog';
+import { DotUnlicensedPorletModule } from '@portlets/shared/dot-unlicensed-porlet';
 
 export const CUSTOM_MODULES = [
     DotToolbarModule,
@@ -56,7 +57,8 @@ export const CUSTOM_MODULES = [
     SearchableDropDownModule,
     DotSiteSelectorModule,
     DotLargeMessageDisplayModule,
-    DotPushPublishDialogModule
+    DotPushPublishDialogModule,
+    DotUnlicensedPorletModule
 ];
 
 export const NGFACES_MODULES = [

@@ -1,26 +1,38 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { DotUnlicensedPortlet } from '@portlets/dot-form-builder/resolvers/dot-form-resolver.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
+import { UnlicensedPortletData } from '@services/dot-license/dot-license.service';
 
 @Component({
     selector: 'dot-unlicensed-porlet',
     templateUrl: './dot-unlicensed-porlet.component.html',
     styleUrls: ['./dot-unlicensed-porlet.component.scss']
 })
-export class DotUnlicensedPorletComponent implements OnInit {
-    @Input() data: DotUnlicensedPortlet;
+export class DotUnlicensedPorletComponent implements OnChanges {
+    @Input() data: UnlicensedPortletData;
 
+    messagesKey: { [key: string]: string } = {};
     requestLicenseLabel$: Observable<string>;
 
     constructor(private dotMessageService: DotMessageService) {}
 
-    ngOnInit() {
-        this.requestLicenseLabel$ = this.dotMessageService
-            .getMessages(['request.a.trial.license'])
-            .pipe(
-                map((messages: { [key: string]: string }) => messages['request.a.trial.license'])
-            );
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.data.currentValue) {
+            this.dotMessageService
+                .getMessages([
+                    this.data.titleKey,
+                    ...[
+                        'request.a.trial.license',
+                        'Contact-Us-for-more-Information',
+                        'Learn-more-about-dotCMS-Enterprise',
+                        'only-available-in-enterprise'
+                    ]
+                ])
+                .pipe(take(1))
+                .subscribe((messages: { [key: string]: string }) => {
+                    this.messagesKey = messages;
+                });
+        }
     }
 }
