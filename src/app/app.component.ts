@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.dotMessageService.getAll();
         this.notLicensedService.init();
         this.dotCmsConfigService
             .getConfig()
@@ -26,6 +27,5 @@ export class AppComponent implements OnInit {
             .subscribe((colors: DotUiColors) => {
                 this.dotUiColors.setColors(document.querySelector('html'), colors);
             });
-        this.dotMessageService.getAll();
     }
 }

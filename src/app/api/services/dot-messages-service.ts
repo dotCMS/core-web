@@ -49,14 +49,17 @@ export class DotMessageService {
         const keys: { [key: string]: string } = this.dotLocalstorageService.getItem(
             this.STORED_MESSAGES_KEY
         );
+        debugger
+
         if (language || !keys) {
             this.coreWebService
                 .requestView({
                     method: RequestMethod.Get,
-                    url: `/api/v2/languages/i18n/all`
+                    url: `/api/v2/languages/en_us/i18n/`
                 })
                 .pipe(take(1), pluck('entity'))
                 .subscribe((messages: { [key: string]: string }) => {
+                    debugger
                     this.messageMap = messages;
                     this.dotLocalstorageService.setItem(this.STORED_MESSAGES_KEY, this.messageMap);
                 });
@@ -73,7 +76,7 @@ export class DotMessageService {
      * @memberof DotMessageService
      */
     get(key: string, ...args: string[]): string {
-        console.log(this.messageMap[key]);
+        console.log(this.messageMap);
         return this.messageMap[key]
             ? args.length ? this.formatMessage(this.messageMap[key], args) : this.messageMap[key]
             : key;
@@ -144,7 +147,6 @@ export class DotMessageService {
      * Do the request to the server to get messages
      */
     private requestMessages(): void {
-        debugger;
         this._messageMap$.next(this.messageMap);
 
        //
