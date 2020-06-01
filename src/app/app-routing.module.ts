@@ -12,6 +12,7 @@ import { MenuGuardService } from '@services/guards/menu-guard.service';
 import { PublicAuthGuardService } from '@services/guards/public-auth-guard.service';
 import { DotLoginPageComponent } from '@components/login/main/dot-login-page.component';
 import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
+import { DotLicenseGuardService } from '@services/guards/dot-license-guard.service';
 
 const PORTLETS_ANGULAR = [
     {
@@ -21,7 +22,7 @@ const PORTLETS_ANGULAR = [
         loadChildren: '@portlets/dot-content-types/dot-content-types.module#DotContentTypesModule'
     },
     {
-        canActivate: [MenuGuardService],
+        canActivate: [MenuGuardService, DotLicenseGuardService],
         canActivateChild: [MenuGuardService],
         path: 'forms',
         loadChildren: '@portlets/dot-form-builder/dot-form-builder.module#DotFormBuilderModule',
@@ -30,7 +31,7 @@ const PORTLETS_ANGULAR = [
         }
     },
     {
-        canActivate: [MenuGuardService],
+        canActivate: [MenuGuardService, DotLicenseGuardService],
         canActivateChild: [MenuGuardService],
         path: 'rules',
         loadChildren: '@portlets/dot-rules/dot-rules.module#DotRulesModule'
@@ -68,7 +69,7 @@ const PORTLETS_ANGULAR = [
 ];
 const PORTLETS_IFRAME = [
     {
-        canActivateChild: [MenuGuardService],
+        canActivateChild: [MenuGuardService, DotLicenseGuardService],
         path: 'c',
         children: [
             {
@@ -89,7 +90,7 @@ const PORTLETS_IFRAME = [
         ]
     },
     {
-        canActivateChild: [ContentletGuardService],
+        canActivateChild: [ContentletGuardService, DotLicenseGuardService],
         path: 'add',
         children: [
             {
@@ -115,23 +116,37 @@ const appRoutes: Routes = [
         loadChildren: '@components/login/dot-login-page.module#DotLoginPageModule'
     },
     {
-        canActivate: [AuthGuardService],
+        canActivate: [AuthGuardService, DotLicenseGuardService],
         children: [
             {
                 path: 'rules',
                 loadChildren: '@portlets/dot-rules/dot-rules.module#DotRulesModule',
                 canActivate: [AuthGuardService]
+            },
+            {
+                path: 'notLicensedWithoutWrapper',
+                loadChildren: '@components/not-licensed/not-licensed.module#NotLicensedModule'
             }
         ],
         component: MainCoreLegacyComponent,
         path: 'fromCore'
     },
     {
+        children: [
+            {
+                path: '',
+                loadChildren: '@components/not-licensed/not-licensed.module#NotLicensedModule'
+            }
+        ],
+        component: MainCoreLegacyComponent,
+        path: 'notLicensedWithoutWrapper'
+    },
+    {
         component: DotLogOutContainerComponent,
         path: 'logout'
     },
     {
-        canActivate: [AuthGuardService],
+        canActivate: [AuthGuardService, DotLicenseGuardService],
         component: MainComponentLegacyComponent,
         children: [...PORTLETS_IFRAME, ...PORTLETS_ANGULAR],
         path: ''
