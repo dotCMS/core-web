@@ -58,7 +58,6 @@ export class DotMessageService {
      * @memberof DotMessageService
      */
     get(key: string, ...args: string[]): string {
-        console.log(this.messageMap);
         return this.messageMap[key]
             ? args.length ? this.formatMessage(this.messageMap[key], args) : this.messageMap[key]
             : key;
