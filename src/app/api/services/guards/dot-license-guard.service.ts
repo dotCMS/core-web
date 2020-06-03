@@ -1,5 +1,6 @@
 import { of as observableOf, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { environment } from '../../../../environments/environment';
@@ -14,7 +15,8 @@ import { take } from 'rxjs/internal/operators/take';
 export class DotLicenseGuardService implements CanActivate {
     constructor(
         private dotRouterService: DotRouterService,
-        private dotLicense: DotLicenseService
+        private dotLicense: DotLicenseService,
+        private location: Location
     ) {}
 
     canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
@@ -38,6 +40,7 @@ export class DotLicenseGuardService implements CanActivate {
             map((canAccess: boolean) => {
                 if (!canAccess) {
                     this.isRulesInternalPortlet(url);
+                    this.location.replaceState(url);
                 }
                 return canAccess;
             })
