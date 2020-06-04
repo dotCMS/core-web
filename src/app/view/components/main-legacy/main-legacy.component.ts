@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
-import { Router } from '@angular/router';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -13,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class MainComponentLegacyComponent implements OnInit {
     constructor(
-        public router: Router,
         private dotRouterService: DotRouterService,
         private dotIframeService: DotIframeService,
         private dotCustomEventHandlerService: DotCustomEventHandlerService
@@ -42,4 +40,5 @@ export class MainComponentLegacyComponent implements OnInit {
     onCustomEvent($event: CustomEvent): void {
         this.dotCustomEventHandlerService.handle($event);
     }
+
 }

@@ -125,24 +125,10 @@ const appRoutes: Routes = [
                 path: 'rules',
                 loadChildren: '@portlets/dot-rules/dot-rules.module#DotRulesModule',
                 canActivate: [AuthGuardService]
-            },
-            {
-                path: 'notLicensedWithoutWrapper',
-                loadChildren: '@components/not-licensed/not-licensed.module#NotLicensedModule'
             }
         ],
         component: MainCoreLegacyComponent,
         path: 'fromCore'
-    },
-    {
-        children: [
-            {
-                path: '',
-                loadChildren: '@components/not-licensed/not-licensed.module#NotLicensedModule'
-            }
-        ],
-        component: MainCoreLegacyComponent,
-        path: 'notLicensedWithoutWrapper'
     },
     {
         component: DotLogOutContainerComponent,

@@ -167,17 +167,7 @@ export class DotRouterService {
     }
 
     goToNotLicensed(): void {
-        this.router.navigate(['/notLicensed'], {
-            skipLocationChange: true,
-            replaceUrl: false
-        });
-    }
-
-    goToNotLicensedWithoutWrapper(): void {
-        this.router.navigate(['/notLicensedWithoutWrapper'], {
-            skipLocationChange: true,
-            replaceUrl: false
-        });
+        this.router.navigate(['c/notLicensed']);
     }
 
     getPortletId(url: string): string {

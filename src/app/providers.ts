@@ -29,7 +29,6 @@ import { DotContentTypeService } from '@services/dot-content-type/dot-content-ty
 import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
 import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { DotPushPublishDialogService } from 'dotcms-js';
-import { DotLicenseGuardService } from '@services/guards/dot-license-guard.service';
 
 export const LOCATION_TOKEN = new InjectionToken<Location>('Window location object');
 
@@ -56,7 +55,6 @@ const PROVIDERS: any[] = [
     FormatDateService,
     IframeOverlayService,
     MenuGuardService,
-    DotLicenseGuardService,
     NotLicensedService,
     NotificationsService,
     PaginatorService,

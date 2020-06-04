@@ -15,7 +15,6 @@ export class DotIframePortletLegacyResolver implements Resolve<boolean> {
     constructor(private dotLicenseService: DotLicenseService) {}
 
     resolve(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        debugger;
         return this.dotLicenseService.canAccessEnterprisePortlet(state.url).pipe(
             take(1),
             map((canAccess: boolean) => canAccess)

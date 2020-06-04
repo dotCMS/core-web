@@ -69,10 +69,7 @@ export class DotLicenseService {
      * @memberof DotLicenseService
      */
     isEnterprise(): Observable<boolean> {
-        return this.getLicense().pipe(
-            take(1),
-            map((license) => license['level'] >= 200)
-        );
+        return this.getLicense().pipe(map((license) => license['level'] >= 200));
     }
 
     canAccessEnterprisePortlet(url: string): Observable<boolean> {
@@ -107,6 +104,6 @@ export class DotLicenseService {
                 method: RequestMethod.Get,
                 url: this.licenseURL
             })
-            .pipe(take(1), pluck('entity', 'config', 'license'));
+            .pipe(pluck('entity', 'config', 'license'));
     }
 }

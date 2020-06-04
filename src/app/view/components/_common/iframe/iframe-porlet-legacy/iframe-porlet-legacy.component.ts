@@ -51,7 +51,6 @@ export class IframePortletLegacyComponent implements OnInit, OnDestroy {
         this.route.data
             .pipe(pluck('canAccessPortlet'), takeUntil(this.destroy$))
             .subscribe((canAccessPortlet: boolean) => {
-                debugger
                 if (canAccessPortlet) {
                     this.setIframeSrc();
                 }
