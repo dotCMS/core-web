@@ -12,7 +12,7 @@ import { MenuGuardService } from '@services/guards/menu-guard.service';
 import { PublicAuthGuardService } from '@services/guards/public-auth-guard.service';
 import { DotLoginPageComponent } from '@components/login/main/dot-login-page.component';
 import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
-// import { DotLicenseGuardService } from '@services/guards/dot-license-guard.service';
+import { DotIframePortletLegacyResolver } from '@components/_common/iframe/service/dot-iframe-porlet-legacy-resolver.service';
 
 const PORTLETS_ANGULAR = [
     {
@@ -23,7 +23,6 @@ const PORTLETS_ANGULAR = [
     },
     {
         canActivate: [MenuGuardService],
-        // canActivate: [MenuGuardService, DotLicenseGuardService],
         canActivateChild: [MenuGuardService],
         path: 'forms',
         loadChildren: '@portlets/dot-form-builder/dot-form-builder.module#DotFormBuilderModule',
@@ -33,7 +32,6 @@ const PORTLETS_ANGULAR = [
     },
     {
         canActivate: [MenuGuardService],
-        // canActivate: [MenuGuardService, DotLicenseGuardService],
         canActivateChild: [MenuGuardService],
         path: 'rules',
         loadChildren: '@portlets/dot-rules/dot-rules.module#DotRulesModule'
@@ -72,7 +70,6 @@ const PORTLETS_ANGULAR = [
 const PORTLETS_IFRAME = [
     {
         canActivateChild: [MenuGuardService],
-        // canActivateChild: [MenuGuardService, DotLicenseGuardService],
         path: 'c',
         children: [
             {
@@ -84,7 +81,10 @@ const PORTLETS_IFRAME = [
                             '@portlets/dot-porlet-detail/dot-portlet-detail.module#DotPortletDetailModule',
                         path: ':asset'
                     }
-                ]
+                ],
+                resolve: {
+                    canAccessPortlet: DotIframePortletLegacyResolver
+                }
             },
             {
                 path: '',
@@ -94,7 +94,6 @@ const PORTLETS_IFRAME = [
     },
     {
         canActivateChild: [ContentletGuardService],
-        // canActivateChild: [ContentletGuardService, DotLicenseGuardService],
         path: 'add',
         children: [
             {
@@ -121,7 +120,6 @@ const appRoutes: Routes = [
     },
     {
         canActivate: [AuthGuardService],
-        // canActivate: [AuthGuardService, DotLicenseGuardService],
         children: [
             {
                 path: 'rules',
@@ -152,7 +150,6 @@ const appRoutes: Routes = [
     },
     {
         canActivate: [AuthGuardService],
-        // canActivate: [AuthGuardService, DotLicenseGuardService],
         component: MainComponentLegacyComponent,
         children: [...PORTLETS_IFRAME, ...PORTLETS_ANGULAR],
         path: ''

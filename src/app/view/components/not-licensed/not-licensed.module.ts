@@ -15,6 +15,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [CommonModule, RouterModule.forChild(routes), ButtonModule, DotIconModule],
-    declarations: [NotLicensedComponent]
+    declarations: [NotLicensedComponent],
+    exports: [NotLicensedComponent]
 })
 export class NotLicensedModule {}

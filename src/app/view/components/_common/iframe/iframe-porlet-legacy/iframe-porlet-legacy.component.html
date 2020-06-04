@@ -1,7 +1,10 @@
 <dot-iframe
     #iframe
+    *ngIf="canAccessPortlet"
     (custom)="onCustomEvent($event)"
     [isLoading]="isLoading"
-    [src]="url | async">
+    [src]="url | async"
+>
 </dot-iframe>
+<dot-not-licensed-component *ngIf="!canAccessPortlet"></dot-not-licensed-component>
 <router-outlet></router-outlet>

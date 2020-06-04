@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
     UnlicensedPortletData,
     DotLicenseService
 } from '@services/dot-license/dot-license.service';
-import { Observable } from 'rxjs';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 
@@ -13,10 +12,7 @@ import { take } from 'rxjs/operators';
     templateUrl: 'not-licensed.component.html'
 })
 export class NotLicensedComponent implements OnInit {
-    @Input() data: UnlicensedPortletData;
-
     messagesKey: { [key: string]: string } = {};
-    requestLicenseLabel$: Observable<string>;
     unlicenseData: UnlicensedPortletData;
 
     constructor(
