@@ -2,7 +2,7 @@ import { pluck, map, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { RequestMethod } from '@angular/http';
 import { CoreWebService } from 'dotcms-js';
-import { Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 export interface UnlicensedPortletData {
     icon: string;
@@ -55,8 +55,12 @@ const enterprisePorlets: UnlicensedPortletData[] = [
  */
 @Injectable()
 export class DotLicenseService {
+    unlicenseData: Subject<UnlicensedPortletData> = new BehaviorSubject({
+        icon: '',
+        titleKey: '',
+        url: ''
+    });
     private licenseURL: string;
-    private unlicenseCurrentIndex = 0;
 
     constructor(private coreWebService: CoreWebService) {
         this.licenseURL = 'v1/appconfiguration';
@@ -82,16 +86,12 @@ export class DotLicenseService {
         );
     }
 
-    getUnlicensedPortletData(): UnlicensedPortletData {
-        return enterprisePorlets[this.unlicenseCurrentIndex];
-    }
-
     private checksIfEnterpriseUrl(url: string): boolean {
         let urlMatch = false;
         for (let i = 0, total = enterprisePorlets.length; i < total; i++) {
             if (url.indexOf(enterprisePorlets[i].url) >= 0) {
                 urlMatch = true;
-                this.unlicenseCurrentIndex = i;
+                this.unlicenseData.next(enterprisePorlets[i]);
                 break;
             }
         }
