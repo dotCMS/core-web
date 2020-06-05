@@ -65,10 +65,6 @@ describe('DotAppsConfigurationItemComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should load messages keys', () => {
-            expect(component.messagesKey).toBe(messages);
-        });
-
         it('should set messages/values in DOM correctly', () => {
             expect(
                 fixture.debugElement.query(By.css('.dot-apps-configuration-list__name'))
@@ -78,7 +74,7 @@ describe('DotAppsConfigurationItemComponent', () => {
             expect(
                 fixture.debugElement.query(By.css('.dot-apps-configuration-list__host-key'))
                     .nativeElement.textContent
-            ).toContain(`${component.messagesKey['apps.key']} ${sites[0].id}`);
+            ).toContain(`${messageServiceMock.get('apps.key')} ${sites[0].id}`);
         });
 
         it('should have 2 icon buttons for delete and edit', () => {
@@ -94,7 +90,7 @@ describe('DotAppsConfigurationItemComponent', () => {
             expect(warningIcon.attributes['name']).toBe('warning');
             expect(warningIcon.attributes['size']).toBe('18');
             expect(warningIcon.attributes['ng-reflect-text']).toBe(
-                `${component.site.secretsWithWarnings} ${component.messagesKey['apps.invalid.secrets']}`
+                `${component.site.secretsWithWarnings} ${messageServiceMock.get('apps.invalid.secrets')}`
             );
         });
 

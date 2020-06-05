@@ -82,7 +82,7 @@ const appData = {
 };
 
 const routeDatamock = {
-    data: { app: appData, messages }
+    data: { app: appData }
 };
 class ActivatedRouteMock {
     get data() {
@@ -174,9 +174,8 @@ describe('DotAppsConfigurationDetailComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should set App & Messages from resolver', () => {
+        it('should set App from resolver', () => {
             expect(component.apps).toBe(appData);
-            expect(component.messagesKey).toBe(messages);
         });
 
         it('should set labels and buttons with right values', () => {
@@ -184,12 +183,12 @@ describe('DotAppsConfigurationDetailComponent', () => {
                 fixture.debugElement.queryAll(
                     By.css('.dot-apps-configuration-detail-actions button')
                 )[0].nativeElement.innerText
-            ).toContain(component.messagesKey['Cancel']);
+            ).toContain(messageServiceMock.get('Cancel'));
             expect(
                 fixture.debugElement.queryAll(
                     By.css('.dot-apps-configuration-detail-actions button')
                 )[1].nativeElement.innerText
-            ).toContain(component.messagesKey['Save']);
+            ).toContain(messageServiceMock.get('Save'));
             expect(
                 fixture.debugElement.query(By.css('.dot-apps-configuration-detail__host-name'))
                     .nativeElement.textContent

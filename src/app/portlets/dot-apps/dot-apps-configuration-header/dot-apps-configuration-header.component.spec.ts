@@ -85,7 +85,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
             expect(
                 de.query(By.css('.dot-apps-configuration__description__link_show-more'))
                     .nativeElement.outerText
-            ).toBe(component.messagesKey['apps.confirmation.description.show.more']);
+            ).toBe(messageServiceMock.get('apps.confirmation.description.show.more'));
         });
     });
 

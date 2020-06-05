@@ -141,7 +141,6 @@ describe('DotAppsConfigurationComponent', () => {
 
         it('should set App from resolver', () => {
             expect(component.apps).toBe(appData);
-            expect(component.messagesKey).toBe(messages);
         });
 
         it('should set onInit Pagination Service with right values', () => {
@@ -164,12 +163,12 @@ describe('DotAppsConfigurationComponent', () => {
             expect(
                 fixture.debugElement.query(By.css('.dot-apps-configuration__action_header input'))
                     .nativeElement.placeholder
-            ).toContain(component.messagesKey['apps.search.placeholder']);
+            ).toContain(messageServiceMock.get('apps.search.placeholder'));
 
             expect(
                 fixture.debugElement.query(By.css('.dot-apps-configuration__action_header button'))
                     .nativeElement.innerText
-            ).toContain(component.messagesKey['apps.confirmation.delete.all.button'].toUpperCase());
+            ).toContain(messageServiceMock.get('apps.confirmation.delete.all.button').toUpperCase());
         });
 
         it('should have dot-apps-configuration-list with correct values', () => {

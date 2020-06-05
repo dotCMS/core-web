@@ -101,7 +101,7 @@ describe('DotAppsListComponent', () => {
 
     it('should set messages to Search Input', () => {
         expect(fixture.debugElement.query(By.css('input')).nativeElement.placeholder).toBe(
-            component.messagesKey['apps.search.placeholder']
+            messageServiceMock.get('apps.search.placeholder')
         );
     });
 
