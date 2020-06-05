@@ -15,11 +15,11 @@ export class AppComponent implements OnInit {
         private notLicensedService: NotLicensedService,
         private dotCmsConfigService: DotcmsConfigService,
         private dotUiColors: DotUiColorsService,
-        public dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
-        this.dotMessageService.getAll();
+        this.dotMessageService.init();
         this.notLicensedService.init();
         this.dotCmsConfigService
             .getConfig()

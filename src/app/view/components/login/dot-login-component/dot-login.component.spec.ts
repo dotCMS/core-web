@@ -23,14 +23,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { MockDotLoginPageStateService } from '@components/login/dot-login-page-resolver.service.spec';
+import {DotMessageService} from '@services/dot-messages-service';
 
-describe('DotLoginComponent', () => {
+fdescribe('DotLoginComponent', () => {
     let component: DotLoginComponent;
     let fixture: ComponentFixture<DotLoginComponent>;
     let de: DebugElement;
     let loginService: LoginService;
     let dotRouterService: DotRouterService;
     let loginPageStateService: DotLoginPageStateService;
+    let dotMessageService: DotMessageService;
     let signInButton: DebugElement;
     const credentials = {
         login: 'admin@dotcms.com',
@@ -58,6 +60,7 @@ describe('DotLoginComponent', () => {
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
                 { provide: DotLoginPageStateService, useClass: MockDotLoginPageStateService },
+                DotMessageService,
                 DotLoadingIndicatorService
             ]
         });
@@ -69,6 +72,7 @@ describe('DotLoginComponent', () => {
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
         loginPageStateService = de.injector.get(DotLoginPageStateService);
+        dotMessageService = de.injector.get(DotMessageService);
         fixture.detectChanges();
         signInButton = de.query(By.css('button[pButton]'));
     });
@@ -95,10 +99,12 @@ describe('DotLoginComponent', () => {
         );
     });
 
-    it('should call service on language change', () => {
+    it('should call services on language change', () => {
+        spyOn(dotMessageService, 'init');
         const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
         pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
+        expect(dotMessageService.init).toHaveBeenCalledWith('es_ES');
         expect(loginPageStateService.update).toHaveBeenCalledWith('es_ES');
     });
 
