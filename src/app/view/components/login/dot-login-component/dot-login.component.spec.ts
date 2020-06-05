@@ -4,7 +4,7 @@ import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginService } from 'dotcms-js';
-import { LoginServiceMock } from '@tests/login-service.mock';
+import {LoginServiceMock, mockUser} from '@tests/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -23,9 +23,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { MockDotLoginPageStateService } from '@components/login/dot-login-page-resolver.service.spec';
-import {DotMessageService} from '@services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 
-fdescribe('DotLoginComponent', () => {
+describe('DotLoginComponent', () => {
     let component: DotLoginComponent;
     let fixture: ComponentFixture<DotLoginComponent>;
     let de: DebugElement;
@@ -129,12 +129,14 @@ fdescribe('DotLoginComponent', () => {
     it('should make a login request correctly and redirect after login', () => {
         component.loginForm.setValue(credentials);
         spyOn(loginService, 'loginUser').and.callThrough();
+        spyOn(dotMessageService, 'setRelativeDateMessages');
         fixture.detectChanges();
 
         expect(signInButton.nativeElement.disabled).toBeFalsy();
         signInButton.triggerEventHandler('click', {});
         expect(loginService.loginUser).toHaveBeenCalledWith(credentials);
         expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
+        expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(mockUser.languageId);
     });
 
     it('should disable fields while waiting login response', () => {
