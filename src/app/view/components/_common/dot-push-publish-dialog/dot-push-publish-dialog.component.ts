@@ -6,8 +6,8 @@ import { SelectItem } from 'primeng/primeng';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService, DotPushPublishDialogService } from 'dotcms-js';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { takeUntil, map, catchError, take } from 'rxjs/operators';
-import { combineLatest, Observable, of } from 'rxjs';
+import { takeUntil, map, take, catchError } from 'rxjs/operators';
+import { Observable, of, combineLatest } from 'rxjs';
 import { Subject } from 'rxjs';
 import { DotPushPublishDialogData } from 'dotcms-models';
 import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
@@ -47,8 +47,8 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         public dotMessageService: DotMessageService,
         public loggerService: LoggerService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
-        private dotPushPublishFiltersService: DotPushPublishFiltersService,
-        private dotParseHtmlService: DotParseHtmlService
+        private dotParseHtmlService: DotParseHtmlService,
+        private dotPushPublishFiltersService: DotPushPublishFiltersService
     ) {}
 
     ngOnInit() {
@@ -156,6 +156,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
             'contenttypes.content.push_publish.publish_date_errormsg',
             'contenttypes.content.push_publish.expire_date_errormsg'
         ]);
+
         const filterOptions$ = this.dotPushPublishFiltersService
             .get()
             .pipe(catchError(() => of([])));
@@ -163,9 +164,10 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         return combineLatest(messages$, filterOptions$).pipe(
             takeUntil(this.destroy$),
             map(
-                (
-                    [messages, filterOptions]: [{ [key: string]: string }, DotPushPublishFilter[]]
-                ) => {
+                ([messages, filterOptions]: [
+                    { [key: string]: string },
+                    DotPushPublishFilter[]
+                ]) => {
                     this.i18nMessages = messages;
                     this.filterOptions = filterOptions.map((filter: DotPushPublishFilter) => {
                         return {

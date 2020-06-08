@@ -27,24 +27,18 @@ export class DotMessageService {
      * @param string language
      * @memberof DotMessageService
      */
-    getAll(language?: string): void {
+    init(language?: string): void {
         const keys: { [key: string]: string } = this.dotLocalstorageService.getItem(
             this.MESSAGES_LOCALSTORAGE_KEY
         );
         if (language || !keys) {
-            this.coreWebService
-                .requestView({
-                    method: RequestMethod.Get,
-                    url: this.geti18nURL(language)
-                })
-                .pipe(take(1), pluck('entity'))
-                .subscribe((messages: { [key: string]: string }) => {
-                    this.messageMap = messages;
-                    this.dotLocalstorageService.setItem(
-                        this.MESSAGES_LOCALSTORAGE_KEY,
-                        this.messageMap
-                    );
-                });
+            this.getAll(language).subscribe((messages: { [key: string]: string }) => {
+                this.messageMap = messages;
+                this.dotLocalstorageService.setItem(
+                    this.MESSAGES_LOCALSTORAGE_KEY,
+                    this.messageMap
+                );
+            });
         } else {
             this.messageMap = keys;
         }
@@ -105,6 +99,15 @@ export class DotMessageService {
             });
             this.formatDateService.setLang(languageId.split('_')[0], relativeDateMessages);
         });
+    }
+
+    private getAll(lang: string): Observable<{ [key: string]: string }> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Get,
+                url: this.geti18nURL(lang)
+            })
+            .pipe(take(1), pluck('entity'));
     }
 
     private geti18nURL(lang: string): string {

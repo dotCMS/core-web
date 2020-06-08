@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 
 @Pipe({
-    name: 'dotMessage'
+    name: 'dm'
 })
 export class DotMessagePipe implements PipeTransform {
     constructor(private dotMessageService: DotMessageService) {}

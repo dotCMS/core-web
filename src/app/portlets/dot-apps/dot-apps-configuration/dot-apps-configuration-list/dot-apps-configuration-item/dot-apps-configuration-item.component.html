@@ -2,13 +2,13 @@
     {{ site.name }}
 </div>
 
-<div class="dot-apps-configuration-list__host-key">{{ 'apps.key' | dotMessage }} {{ site.id }}</div>
+<div class="dot-apps-configuration-list__host-key">{{ 'apps.key' | dm }} {{ site.id }}</div>
 
 <ng-container *ngIf="site.configured; else noConfigurations">
     <dot-icon
         *ngIf="site.secretsWithWarnings"
         name="warning"
-        pTooltip="{{ site.secretsWithWarnings + ' ' + ('apps.invalid.secrets' | dotMessage) }}"
+        pTooltip="{{ site.secretsWithWarnings + ' ' + ('apps.invalid.secrets' | dm) }}"
         size="18"
     ></dot-icon>
     <dot-icon-button icon="delete_outline" (click)="confirmDelete($event, site)"></dot-icon-button>

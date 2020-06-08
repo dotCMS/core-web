@@ -18,15 +18,15 @@
             <span class="dot-apps-card__configurations"
                 >{{
                     app.configurationsCount
-                        ? app.configurationsCount + ' ' + ('apps.configurations' | dotMessage)
-                        : ('apps.no.configurations' | dotMessage)
+                        ? app.configurationsCount + ' ' + ('apps.configurations' | dm)
+                        : ('apps.no.configurations' | dm)
                 }}
             </span>
             <dot-icon
                 *ngIf="app.sitesWithWarnings"
                 name="warning"
                 pTooltip="{{
-                    app.sitesWithWarnings + ' ' + ('apps.invalid.configurations'| dotMessage)
+                    app.sitesWithWarnings + ' ' + ('apps.invalid.configurations'| dm)
                 }}"
                 size="18"
             ></dot-icon>
