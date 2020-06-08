@@ -76,6 +76,13 @@ export class DotLicenseService {
         return this.getLicense().pipe(map((license) => license['level'] >= 200));
     }
 
+    /**
+     * Verifies if an url is an enterprise portlet and user has enterprise
+     *
+     * @param string url
+     * @returns Observable<boolean>
+     * @memberof DotLicenseService
+     */
     canAccessEnterprisePortlet(url: string): Observable<boolean> {
         return this.isEnterprise().pipe(
             take(1),
@@ -87,15 +94,13 @@ export class DotLicenseService {
     }
 
     private checksIfEnterpriseUrl(url: string): boolean {
-        let urlMatch = false;
-        for (let i = 0, total = enterprisePorlets.length; i < total; i++) {
-            if (url.indexOf(enterprisePorlets[i].url) >= 0) {
-                urlMatch = true;
-                this.unlicenseData.next(enterprisePorlets[i]);
-                break;
-            }
+        const urlMatch = enterprisePorlets.filter((item) => {
+            return url.indexOf(item.url) >= 0;
+        });
+        if (urlMatch.length > 0) {
+            this.unlicenseData.next(...urlMatch);
         }
-        return urlMatch;
+        return urlMatch.length > 0;
     }
 
     private getLicense(): Observable<any> {
