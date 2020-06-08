@@ -9,6 +9,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { By } from '@angular/platform-browser';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { TooltipModule } from 'primeng/primeng';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.key': 'Key',
@@ -45,13 +46,21 @@ describe('DotAppsConfigurationItemComponent', () => {
 
     const messageServiceMock = new MockDotMessageService(messages);
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [CommonModule, DotIconButtonModule, DotIconModule, TooltipModule],
-            declarations: [DotAppsConfigurationItemComponent],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
-    }));
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [
+                    CommonModule,
+                    DotIconButtonModule,
+                    DotIconModule,
+                    TooltipModule,
+                    DotDirectivesModule
+                ],
+                declarations: [DotAppsConfigurationItemComponent],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotAppsConfigurationItemComponent);
@@ -90,7 +99,9 @@ describe('DotAppsConfigurationItemComponent', () => {
             expect(warningIcon.attributes['name']).toBe('warning');
             expect(warningIcon.attributes['size']).toBe('18');
             expect(warningIcon.attributes['ng-reflect-text']).toBe(
-                `${component.site.secretsWithWarnings} ${messageServiceMock.get('apps.invalid.secrets')}`
+                `${component.site.secretsWithWarnings} ${messageServiceMock.get(
+                    'apps.invalid.secrets'
+                )}`
             );
         });
 
@@ -98,7 +109,7 @@ describe('DotAppsConfigurationItemComponent', () => {
             const stopPropagationSpy = jasmine.createSpy('spy');
             const deleteBtn = fixture.debugElement.queryAll(By.css('dot-icon-button'))[0];
 
-            spyOn(dialogService, 'confirm').and.callFake((conf) => {
+            spyOn(dialogService, 'confirm').and.callFake(conf => {
                 conf.accept();
             });
 

@@ -63,7 +63,7 @@ describe('DotAppsConfigurationDetailResolver', () => {
         dotAppsConfigurationDetailResolver
             .resolve(activatedRouteSnapshotMock)
             .subscribe((fakeContentType: any) => {
-                expect(fakeContentType).toEqual({ app: response });
+                expect(fakeContentType).toEqual(response);
             });
 
         expect(dotAppsServices.getConfiguration).toHaveBeenCalledWith(

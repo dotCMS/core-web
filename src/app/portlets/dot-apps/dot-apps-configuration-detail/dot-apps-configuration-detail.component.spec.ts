@@ -20,6 +20,7 @@ import { By } from '@angular/platform-browser';
 import { DotAppsSaveData } from '@shared/models/dot-apps/dot-apps.model';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.key': 'Key',
@@ -82,7 +83,7 @@ const appData = {
 };
 
 const routeDatamock = {
-    data: { app: appData }
+    data: appData
 };
 class ActivatedRouteMock {
     get data() {
@@ -106,16 +107,11 @@ class MockDotAppsService {
     template: ''
 })
 class MockDotKeyValueComponent {
-    @Input()
-    autoFocus: boolean;
-    @Input()
-    showHiddenField: string;
-    @Input()
-    variables: DotKeyValue[];
-    @Output()
-    delete = new EventEmitter<DotKeyValue>();
-    @Output()
-    save = new EventEmitter<DotKeyValue>();
+    @Input() autoFocus: boolean;
+    @Input() showHiddenField: string;
+    @Input() variables: DotKeyValue[];
+    @Output() delete = new EventEmitter<DotKeyValue>();
+    @Output() save = new EventEmitter<DotKeyValue>();
 }
 
 describe('DotAppsConfigurationDetailComponent', () => {
@@ -126,40 +122,43 @@ describe('DotAppsConfigurationDetailComponent', () => {
 
     const messageServiceMock = new MockDotMessageService(messages);
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule.withRoutes([
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [
+                    RouterTestingModule.withRoutes([
+                        {
+                            component: DotAppsConfigurationDetailComponent,
+                            path: ''
+                        }
+                    ]),
+                    ButtonModule,
+                    CommonModule,
+                    DotCopyButtonModule,
+                    DotAppsConfigurationHeaderModule,
+                    DotAppsConfigurationDetailFormModule,
+                    DotDirectivesModule
+                ],
+                declarations: [DotAppsConfigurationDetailComponent, MockDotKeyValueComponent],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     {
-                        component: DotAppsConfigurationDetailComponent,
-                        path: ''
-                    }
-                ]),
-                ButtonModule,
-                CommonModule,
-                DotCopyButtonModule,
-                DotAppsConfigurationHeaderModule,
-                DotAppsConfigurationDetailFormModule
-            ],
-            declarations: [DotAppsConfigurationDetailComponent, MockDotKeyValueComponent],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-                {
-                    provide: ActivatedRoute,
-                    useClass: ActivatedRouteMock
-                },
-                {
-                    provide: DotAppsService,
-                    useClass: MockDotAppsService
-                },
-                {
-                    provide: DotRouterService,
-                    useClass: MockDotRouterService
-                },
-                DotAppsConfigurationDetailResolver
-            ]
-        });
-    }));
+                        provide: ActivatedRoute,
+                        useClass: ActivatedRouteMock
+                    },
+                    {
+                        provide: DotAppsService,
+                        useClass: MockDotAppsService
+                    },
+                    {
+                        provide: DotRouterService,
+                        useClass: MockDotRouterService
+                    },
+                    DotAppsConfigurationDetailResolver
+                ]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotAppsConfigurationDetailComponent);
@@ -271,17 +270,20 @@ describe('DotAppsConfigurationDetailComponent', () => {
     describe('With dynamic variables', () => {
         beforeEach(() => {
             const sitesDynamic = _.cloneDeep(sites);
-            sitesDynamic[0].secrets = [...sites[0].secrets, {
-                dynamic: true,
-                name: 'custom',
-                hidden: false,
-                hint: 'dynamic variable',
-                label: '',
-                required: false,
-                type: 'STRING',
-                value: 'test'
-            }];
-            routeDatamock.data.app = {
+            sitesDynamic[0].secrets = [
+                ...sites[0].secrets,
+                {
+                    dynamic: true,
+                    name: 'custom',
+                    hidden: false,
+                    hint: 'dynamic variable',
+                    label: '',
+                    required: false,
+                    type: 'STRING',
+                    value: 'test'
+                }
+            ];
+            routeDatamock.data = {
                 ...appData,
                 allowExtraParams: true,
                 sites: sitesDynamic

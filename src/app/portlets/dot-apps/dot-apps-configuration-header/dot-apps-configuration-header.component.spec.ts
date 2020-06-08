@@ -11,6 +11,7 @@ import { NgxMdModule } from 'ngx-md';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DebugElement } from '@angular/core';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.configurations': 'Configurations',
@@ -41,19 +42,27 @@ describe('DotAppsConfigurationHeaderComponent', () => {
 
     const messageServiceMock = new MockDotMessageService(messages);
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [CommonModule, DotAvatarModule, DotCopyButtonModule, NgxMdModule],
-            declarations: [DotAppsConfigurationHeaderComponent],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-                {
-                    provide: DotRouterService,
-                    useClass: MockDotRouterService
-                }
-            ]
-        });
-    }));
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [
+                    CommonModule,
+                    DotAvatarModule,
+                    DotCopyButtonModule,
+                    NgxMdModule,
+                    DotDirectivesModule
+                ],
+                declarations: [DotAppsConfigurationHeaderComponent],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    {
+                        provide: DotRouterService,
+                        useClass: MockDotRouterService
+                    }
+                ]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotAppsConfigurationHeaderComponent);

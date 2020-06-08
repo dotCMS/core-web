@@ -7,6 +7,7 @@ import { By } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
 import { DotAppsConfigurationItemModule } from './dot-apps-configuration-item/dot-apps-configuration-item.module';
 import { DotAppsConfigurationListComponent } from './dot-apps-configuration-list.component';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.configurations.show.more': 'Show More'
@@ -31,13 +32,20 @@ describe('DotAppsConfigurationListComponent', () => {
 
     const messageServiceMock = new MockDotMessageService(messages);
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [CommonModule, ButtonModule, DotAppsConfigurationItemModule],
-            declarations: [DotAppsConfigurationListComponent],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
-    }));
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [
+                    CommonModule,
+                    ButtonModule,
+                    DotAppsConfigurationItemModule,
+                    DotDirectivesModule
+                ],
+                declarations: [DotAppsConfigurationListComponent],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotAppsConfigurationListComponent);
@@ -51,7 +59,6 @@ describe('DotAppsConfigurationListComponent', () => {
             component.hideLoadDataButton = false;
             fixture.detectChanges();
         });
-
 
         it('should set messages/values in DOM correctly', () => {
             expect(

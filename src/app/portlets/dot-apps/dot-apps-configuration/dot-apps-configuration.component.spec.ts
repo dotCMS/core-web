@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/dot-apps-configuration-list.module';
 import { PaginatorService } from '@services/paginator';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.key': 'Key',
@@ -57,7 +58,7 @@ const appData = {
 };
 
 const routeDatamock = {
-    data: { app: appData, messages }
+    data: appData
 };
 class ActivatedRouteMock {
     get data() {
@@ -85,42 +86,45 @@ describe('DotAppsConfigurationComponent', () => {
 
     const messageServiceMock = new MockDotMessageService(messages);
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule.withRoutes([
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [
+                    RouterTestingModule.withRoutes([
+                        {
+                            component: DotAppsConfigurationComponent,
+                            path: ''
+                        }
+                    ]),
+                    InputTextModule,
+                    ButtonModule,
+                    CommonModule,
+                    DotActionButtonModule,
+                    DotAppsConfigurationHeaderModule,
+                    DotAppsConfigurationListModule,
+                    DotDirectivesModule
+                ],
+                declarations: [DotAppsConfigurationComponent],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     {
-                        component: DotAppsConfigurationComponent,
-                        path: ''
-                    }
-                ]),
-                InputTextModule,
-                ButtonModule,
-                CommonModule,
-                DotActionButtonModule,
-                DotAppsConfigurationHeaderModule,
-                DotAppsConfigurationListModule
-            ],
-            declarations: [DotAppsConfigurationComponent],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-                {
-                    provide: ActivatedRoute,
-                    useClass: ActivatedRouteMock
-                },
-                {
-                    provide: DotAppsService,
-                    useClass: MockDotAppsService
-                },
-                {
-                    provide: DotRouterService,
-                    useClass: MockDotRouterService
-                },
-                DotAppsConfigurationResolver,
-                PaginatorService
-            ]
-        });
-    }));
+                        provide: ActivatedRoute,
+                        useClass: ActivatedRouteMock
+                    },
+                    {
+                        provide: DotAppsService,
+                        useClass: MockDotAppsService
+                    },
+                    {
+                        provide: DotRouterService,
+                        useClass: MockDotRouterService
+                    },
+                    DotAppsConfigurationResolver,
+                    PaginatorService
+                ]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotAppsConfigurationComponent);
@@ -168,7 +172,9 @@ describe('DotAppsConfigurationComponent', () => {
             expect(
                 fixture.debugElement.query(By.css('.dot-apps-configuration__action_header button'))
                     .nativeElement.innerText
-            ).toContain(messageServiceMock.get('apps.confirmation.delete.all.button').toUpperCase());
+            ).toContain(
+                messageServiceMock.get('apps.confirmation.delete.all.button').toUpperCase()
+            );
         });
 
         it('should have dot-apps-configuration-list with correct values', () => {
@@ -201,7 +207,7 @@ describe('DotAppsConfigurationComponent', () => {
                 By.css('.dot-apps-configuration__action_header button')
             );
 
-            spyOn(dialogService, 'confirm').and.callFake((conf) => {
+            spyOn(dialogService, 'confirm').and.callFake(conf => {
                 conf.accept();
             });
 
@@ -224,12 +230,15 @@ describe('DotAppsConfigurationComponent', () => {
             );
         });
 
-        it('should call App filter on search', fakeAsync(() => {
-            component.searchInput.nativeElement.value = 'test';
-            component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
-            tick(550);
-            expect(paginationService.setExtraParams).toHaveBeenCalledWith('filter', 'test');
-            expect(paginationService.getWithOffset).toHaveBeenCalled();
-        }));
+        it(
+            'should call App filter on search',
+            fakeAsync(() => {
+                component.searchInput.nativeElement.value = 'test';
+                component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
+                tick(550);
+                expect(paginationService.setExtraParams).toHaveBeenCalledWith('filter', 'test');
+                expect(paginationService.getWithOffset).toHaveBeenCalled();
+            })
+        );
     });
 });

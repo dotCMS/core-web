@@ -14,6 +14,7 @@ import { DotAppsCardModule } from './dot-apps-card/dot-apps-card.module';
 import { By } from '@angular/platform-browser';
 import { DotAppsCardComponent } from './dot-apps-card/dot-apps-card.component';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 class AppsServicesMock {
     get() {}
@@ -54,34 +55,37 @@ describe('DotAppsListComponent', () => {
         'apps.search.placeholder': 'Search'
     });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule.withRoutes([
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [
+                    RouterTestingModule.withRoutes([
+                        {
+                            component: DotAppsListComponent,
+                            path: ''
+                        }
+                    ]),
+                    DotAppsCardModule,
+                    InputTextModule,
+                    DotDirectivesModule
+                ],
+                declarations: [DotAppsListComponent],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     {
-                        component: DotAppsListComponent,
-                        path: ''
-                    }
-                ]),
-                DotAppsCardModule,
-                InputTextModule
-            ],
-            declarations: [DotAppsListComponent],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-                {
-                    provide: ActivatedRoute,
-                    useClass: ActivatedRouteMock
-                },
-                {
-                    provide: DotRouterService,
-                    useClass: MockDotRouterService
-                },
-                { provide: DotAppsService, useClass: AppsServicesMock },
-                DotAppsListResolver
-            ]
-        });
-    }));
+                        provide: ActivatedRoute,
+                        useClass: ActivatedRouteMock
+                    },
+                    {
+                        provide: DotRouterService,
+                        useClass: MockDotRouterService
+                    },
+                    { provide: DotAppsService, useClass: AppsServicesMock },
+                    DotAppsListResolver
+                ]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotAppsListComponent);

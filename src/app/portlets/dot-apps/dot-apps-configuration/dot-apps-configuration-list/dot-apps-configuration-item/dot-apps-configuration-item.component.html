@@ -8,7 +8,7 @@
     <dot-icon
         *ngIf="site.secretsWithWarnings"
         name="warning"
-        pTooltip="{{ site.secretsWithWarnings + ' ' + 'apps.invalid.secrets' | dotMessage }}"
+        pTooltip="{{ site.secretsWithWarnings + ' ' + ('apps.invalid.secrets' | dotMessage) }}"
         size="18"
     ></dot-icon>
     <dot-icon-button icon="delete_outline" (click)="confirmDelete($event, site)"></dot-icon-button>

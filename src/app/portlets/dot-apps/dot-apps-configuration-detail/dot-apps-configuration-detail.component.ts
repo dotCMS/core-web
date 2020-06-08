@@ -29,7 +29,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
 
     ngOnInit() {
         this.route.data
-            .pipe(pluck('app'), take(1))
+            .pipe(pluck('data'), take(1))
             .subscribe(( app: DotApps) => {
                 this.apps = app;
                 this.formFields = this.getSecrets(app.sites[0].secrets);
