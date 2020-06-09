@@ -5,11 +5,19 @@ import { ContentTypeFieldsAddRowComponent } from './content-type-fields-add-row.
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 @NgModule({
     declarations: [ContentTypeFieldsAddRowComponent],
     exports: [ContentTypeFieldsAddRowComponent],
-    imports: [CommonModule, ButtonModule, TooltipModule, DotIconButtonModule, SplitButtonModule],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        TooltipModule,
+        DotIconButtonModule,
+        SplitButtonModule,
+        DotDirectivesModule
+    ],
     providers: [HotkeysService]
 })
 export class ContentTypeFieldsAddRowModule {}

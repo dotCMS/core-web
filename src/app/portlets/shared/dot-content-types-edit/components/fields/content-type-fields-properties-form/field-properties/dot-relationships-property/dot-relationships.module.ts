@@ -10,6 +10,7 @@ import { DotFieldValidationMessageModule } from '@components/_common/dot-field-v
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 import { DotNewRelationshipsComponent } from './dot-new-relationships/dot-new-relationships.component';
 import { DotEditRelationshipsComponent } from './dot-edit-relationship/dot-edit-relationships.component';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { DotEditRelationshipsComponent } from './dot-edit-relationship/dot-edit-
         DotFieldValidationMessageModule,
         FormsModule,
         RadioButtonModule,
-        SearchableDropDownModule
+        SearchableDropDownModule,
+        DotDirectivesModule
     ],
     providers: [
         DotRelationshipService,
