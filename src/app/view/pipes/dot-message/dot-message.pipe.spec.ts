@@ -7,13 +7,20 @@ describe('DotMessagePipe', () => {
     let pipe: DotMessagePipe;
     beforeEach(() => {
         messageServiceMock = new MockDotMessageService({
-            'apps.search.placeholder': 'Search'
+            'apps.search.placeholder': 'Search',
+            'apps.best': 'Test {0} {1}'
         });
         pipe = new DotMessagePipe((messageServiceMock as unknown) as DotMessageService);
     });
 
     it('should return message requested', () => {
         expect(pipe.transform('apps.search.placeholder')).toEqual('Search');
+    });
+
+    it('should return message requested with replaced values', () => {
+        expect(pipe.transform('apps.best', ['Costa Rica', 'Panama'])).toEqual(
+            'Test Costa Rica Panama'
+        );
     });
 
     it('should return key if message not found', () => {
