@@ -1,5 +1,5 @@
 <dot-icon [name]="unlicenseData.icon" [size]="120"></dot-icon>
-<h4 [innerHTML]="messagesKey[unlicenseData.titleKey]"></h4>
+<h4>{{ messagesKey[unlicenseData.titleKey] }}</h4>
 <p>{{ messagesKey[unlicenseData.titleKey] }} {{ messagesKey['only-available-in-enterprise'] }}</p>
 <ul>
     <li>
@@ -8,9 +8,9 @@
         }}</a>
     </li>
     <li>
-        <a target="_blank" href="https://dotcms.com/contact-us/"
-            >{{ messagesKey['Contact-Us-for-more-Information'] }}</a
-        >
+        <a target="_blank" href="https://dotcms.com/contact-us/">{{
+            messagesKey['Contact-Us-for-more-Information']
+        }}</a>
     </li>
 </ul>
 <p>

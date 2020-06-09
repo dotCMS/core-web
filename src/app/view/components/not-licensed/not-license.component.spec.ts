@@ -1,4 +1,4 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
@@ -32,7 +32,7 @@ describe('NotLicensedComponent', () => {
     let dotLicenseService: DotLicenseService;
     let component: NotLicensedComponent;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         DOTTestBed.configureTestingModule({
             declarations: [NotLicensedComponent],
             imports: [CommonModule, ButtonModule, DotIconModule],
@@ -44,9 +44,7 @@ describe('NotLicensedComponent', () => {
                 DotLicenseService
             ]
         }).compileComponents();
-    }));
 
-    beforeEach(() => {
         fixture = DOTTestBed.createComponent(NotLicensedComponent);
         de = fixture.debugElement;
         dotLicenseService = de.injector.get(DotLicenseService);
@@ -54,33 +52,33 @@ describe('NotLicensedComponent', () => {
         spyOn(dotLicenseService, 'unlicenseData');
         dotLicenseService.unlicenseData.next(portletData);
         fixture.detectChanges();
+    });
 
-        it('should set labels and attributes on Html elements', () => {
-            const links = de.queryAll(By.css('a'));
-            expect(de.query(By.css('dot-icon')).componentInstance.name).toEqual(portletData.icon);
-            expect(de.query(By.css('dot-icon')).componentInstance.size).toEqual(120);
-            expect(de.query(By.css('h4')).nativeElement.innerText).toEqual(
-                component.messagesKey['portlet.title']
-            );
-            expect(de.query(By.css('h4 ~ p')).nativeElement.innerText).toEqual(
-                `${component.messagesKey['portlet.title']} ${component.messagesKey['only-available-in-enterprise']}`
-            );
-            expect(links[0].nativeElement.innerText).toEqual(
-                component.messagesKey['Learn-more-about-dotCMS-Enterprise']
-            );
-            expect(links[0].nativeElement.href).toEqual(
-                'https://dotcms.com/product/features/feature-list'
-            );
-            expect(links[1].nativeElement.innerText).toEqual(
-                component.messagesKey['Contact-Us-for-more-Information']
-            );
-            expect(links[1].nativeElement.href).toEqual('https://dotcms.com/contact-us/');
-            expect(links[2].nativeElement.innerText).toEqual(
-                component.messagesKey['request.a.trial.license'].toUpperCase()
-            );
-            expect(links[2].nativeElement.href).toEqual(
-                'https://dotcms.com/licensing/request-a-license-3/index'
-            );
-        });
+    it('should set labels and attributes on Html elements', () => {
+        const links = de.queryAll(By.css('a'));
+        expect(de.query(By.css('dot-icon')).componentInstance.name).toEqual(portletData.icon);
+        expect(de.query(By.css('dot-icon')).componentInstance.size).toEqual(120);
+        expect(de.query(By.css('h4')).nativeElement.innerText).toEqual(
+            component.messagesKey['portlet.title']
+        );
+        expect(de.query(By.css('h4 ~ p')).nativeElement.innerText).toEqual(
+            `${component.messagesKey['portlet.title']} ${component.messagesKey['only-available-in-enterprise']}`
+        );
+        expect(links[0].nativeElement.innerText).toEqual(
+            component.messagesKey['Learn-more-about-dotCMS-Enterprise']
+        );
+        expect(links[0].nativeElement.href).toEqual(
+            'https://dotcms.com/product/features/feature-list'
+        );
+        expect(links[1].nativeElement.innerText).toEqual(
+            component.messagesKey['Contact-Us-for-more-Information']
+        );
+        expect(links[1].nativeElement.href).toEqual('https://dotcms.com/contact-us/');
+        expect(links[2].nativeElement.innerText).toEqual(
+            component.messagesKey['request.a.trial.license'].toUpperCase()
+        );
+        expect(links[2].nativeElement.href).toEqual(
+            'https://dotcms.com/licensing/request-a-license-3/index'
+        );
     });
 });

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-    UnlicensedPortletData,
+    DotUnlicensedPortletData,
     DotLicenseService
 } from '@services/dot-license/dot-license.service';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 })
 export class NotLicensedComponent implements OnInit, OnDestroy {
     messagesKey: { [key: string]: string } = {};
-    unlicenseData: UnlicensedPortletData;
+    unlicenseData: DotUnlicensedPortletData;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -26,7 +26,7 @@ export class NotLicensedComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.dotLicense.unlicenseData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((unlicenseData: UnlicensedPortletData) => {
+            .subscribe((unlicenseData: DotUnlicensedPortletData) => {
                 this.unlicenseData = unlicenseData;
                 this.dotMessageService
                     .getMessages([

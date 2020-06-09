@@ -12,24 +12,27 @@ export class DotUnlicenseComponent implements OnInit {
     learnMoreEnterpriseLabel: string;
     contactUsLabel: string;
     requestTrialLabel: string;
+    resources: I18nService;
 
     constructor(resources: I18nService) {
-        resources.get('com.dotcms.repackage.javax.portlet.title.rules').subscribe((label) => {
+        this.resources = resources;
+    }
+
+    ngOnInit() {
+        this.resources.get('com.dotcms.repackage.javax.portlet.title.rules').subscribe((label) => {
             this.rulesTitle = label;
         });
-        resources.get('only-available-in-enterprise').subscribe((label) => {
+        this.resources.get('only-available-in-enterprise').subscribe((label) => {
             this.onlyEnterpriseLabel = label;
         });
-        resources.get('Learn-more-about-dotCMS-Enterprise').subscribe((label) => {
+        this.resources.get('Learn-more-about-dotCMS-Enterprise').subscribe((label) => {
             this.learnMoreEnterpriseLabel = label;
         });
-        resources.get('Contact-Us-for-more-Information').subscribe((label) => {
+        this.resources.get('Contact-Us-for-more-Information').subscribe((label) => {
             this.contactUsLabel = label;
         });
-        resources.get('request-trial-license').subscribe((label) => {
+        this.resources.get('request-trial-license').subscribe((label) => {
             this.requestTrialLabel = label;
         });
     }
-
-    ngOnInit() {}
 }

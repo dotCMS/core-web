@@ -58,13 +58,13 @@ describe('DotIframePorletLegacyResolver', () => {
         state.url = '/rules';
     }));
 
-    it('should return a DotRenderedPageState', () => {
+    it('should return if user can access url to be rendered with current license', () => {
         const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage));
         dotPageStateServiceRequestPageSpy.and.returnValue(of(mock));
         spyOn(dotLicenseService, 'canAccessEnterprisePortlet').and.returnValue(of(true));
 
-        resolver.resolve(route, state).subscribe((canAcess: boolean) => {
-            expect(canAcess).toEqual(true);
+        resolver.resolve(route, state).subscribe((canAccess: boolean) => {
+            expect(canAccess).toEqual(true);
         });
     });
 });

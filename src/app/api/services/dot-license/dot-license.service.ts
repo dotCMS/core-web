@@ -4,13 +4,13 @@ import { RequestMethod } from '@angular/http';
 import { CoreWebService } from 'dotcms-js';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
-export interface UnlicensedPortletData {
+export interface DotUnlicensedPortletData {
     icon: string;
     titleKey: string;
     url: string;
 }
 
-const enterprisePorlets: UnlicensedPortletData[] = [
+const enterprisePorlets: DotUnlicensedPortletData[] = [
     {
         icon: 'tune',
         titleKey: 'com.dotcms.repackage.javax.portlet.title.rules',
@@ -55,7 +55,7 @@ const enterprisePorlets: UnlicensedPortletData[] = [
  */
 @Injectable()
 export class DotLicenseService {
-    unlicenseData: Subject<UnlicensedPortletData> = new BehaviorSubject({
+    unlicenseData: Subject<DotUnlicensedPortletData> = new BehaviorSubject({
         icon: '',
         titleKey: '',
         url: ''
@@ -95,12 +95,12 @@ export class DotLicenseService {
 
     private checksIfEnterpriseUrl(url: string): boolean {
         const urlMatch = enterprisePorlets.filter((item) => {
-            return url.indexOf(item.url) >= 0;
+            return url.indexOf(item.url) === 0;
         });
-        if (urlMatch.length > 0) {
+        if (!!urlMatch.length) {
             this.unlicenseData.next(...urlMatch);
         }
-        return urlMatch.length > 0;
+        return !!urlMatch.length;
     }
 
     private getLicense(): Observable<any> {
