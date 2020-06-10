@@ -14,15 +14,7 @@ export class DotGlobalMessageService {
     constructor(
         public dotMessageService: DotMessageService,
         private dotEventsService: DotEventsService
-    ) {
-        this.dotMessageService
-            .getMessages([
-                'dot.common.message.loading',
-                'dot.common.message.loaded',
-                'dot.common.message.error'
-            ])
-            .subscribe();
-    }
+    ) {}
 
     /**
      * Display text messages.

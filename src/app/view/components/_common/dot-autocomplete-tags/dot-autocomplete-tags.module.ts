@@ -5,9 +5,17 @@ import { DotAutocompleteTagsComponent } from './dot-autocomplete-tags.component'
 import { FormsModule } from '@angular/forms';
 import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 @NgModule({
-    imports: [CommonModule, ChipsModule, AutoCompleteModule, FormsModule, DotIconModule],
+    imports: [
+        CommonModule,
+        ChipsModule,
+        AutoCompleteModule,
+        FormsModule,
+        DotIconModule,
+        DotDirectivesModule
+    ],
     declarations: [DotAutocompleteTagsComponent],
     providers: [DotTagsService],
     exports: [DotAutocompleteTagsComponent, ChipsModule]

@@ -31,7 +31,7 @@ class TestFieldValidationMessageComponent {
     @Input() message: string;
 }
 
-describe('DotAddPersonaDialogComponent', () => {
+fdescribe('DotAddPersonaDialogComponent', () => {
     let component: DotAddPersonaDialogComponent;
     let fixture: ComponentFixture<DotAddPersonaDialogComponent>;
     let dotDialog: DebugElement;

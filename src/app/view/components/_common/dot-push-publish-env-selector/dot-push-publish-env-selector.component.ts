@@ -25,10 +25,6 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
     pushEnvironments$: Observable<any>;
     selectedEnvironments: DotEnvironment[];
     selectedEnvironmentIds: string[] = [];
-    messages: {
-        [key: string]: string;
-    } = {};
-
     value: string[];
 
     constructor(
@@ -49,11 +45,6 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
                 this.valueChange('', this.selectedEnvironments);
             }
         });
-        this.dotMessageService
-            .getMessages(['contenttypes.content.push_publish.select_environment'])
-            .subscribe((messages: { [key: string]: string }) => {
-                this.messages = messages;
-            });
     }
 
     propagateChange = (_: any) => {};
