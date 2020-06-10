@@ -53,7 +53,7 @@ export class DotThemeSelectorComponent implements OnInit {
     dialogActions: DotDialogActions;
 
     constructor(
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         public paginatorService: PaginatorService,
         private siteService: SiteService
     ) {}

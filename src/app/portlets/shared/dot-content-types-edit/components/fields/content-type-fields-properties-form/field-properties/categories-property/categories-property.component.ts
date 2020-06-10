@@ -25,7 +25,7 @@ export class CategoriesPropertyComponent implements OnInit {
     placeholder: string;
 
     constructor(
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         public paginationService: PaginatorService
     ) {}
 

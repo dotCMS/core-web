@@ -16,7 +16,7 @@ export class DotAppsConfigurationItemComponent {
     @Output() delete = new EventEmitter<DotAppsSites>();
 
     constructor(
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private dotAlertConfirmService: DotAlertConfirmService
     ) {}
 

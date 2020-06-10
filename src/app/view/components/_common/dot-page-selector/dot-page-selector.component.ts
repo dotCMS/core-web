@@ -47,7 +47,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
 
     constructor(
         private dotPageSelectorService: DotPageSelectorService,
-        public dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService
     ) {}
 
     propagateChange = (_: any) => {};

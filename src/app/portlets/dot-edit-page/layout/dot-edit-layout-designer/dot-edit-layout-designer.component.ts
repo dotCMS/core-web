@@ -63,7 +63,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
         private loginService: LoginService,
         private dotPageLayoutService: DotPageLayoutService,
         private templateContainersCacheService: TemplateContainersCacheService,
-        public dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService
     ) {}
 
     ngOnInit(): void {

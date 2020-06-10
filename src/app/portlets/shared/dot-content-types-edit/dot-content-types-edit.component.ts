@@ -69,7 +69,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
         private dotRouterService: DotRouterService,
         private fieldService: FieldService,
         private route: ActivatedRoute,
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         public router: Router,
         private dotEditContentTypeCacheService: DotEditContentTypeCacheService
     ) {}

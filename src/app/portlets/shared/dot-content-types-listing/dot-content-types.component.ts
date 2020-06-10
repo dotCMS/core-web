@@ -53,7 +53,7 @@ export class DotContentTypesPortletComponent implements OnInit {
         private pushPublishService: PushPublishService,
         private route: ActivatedRoute,
         private router: Router,
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private dotPushPublishDialogService: DotPushPublishDialogService
     ) {}
 

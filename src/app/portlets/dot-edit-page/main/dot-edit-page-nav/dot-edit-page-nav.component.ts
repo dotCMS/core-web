@@ -34,7 +34,7 @@ export class DotEditPageNavComponent implements OnChanges {
     constructor(
         private dotLicenseService: DotLicenseService,
         private dotContentletEditorService: DotContentletEditorService,
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         public route: ActivatedRoute
     ) {}
 

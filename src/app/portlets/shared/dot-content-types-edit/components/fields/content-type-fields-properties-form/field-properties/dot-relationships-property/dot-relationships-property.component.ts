@@ -38,7 +38,7 @@ export class DotRelationshipsPropertyComponent implements OnInit {
     } = {};
 
     constructor(
-        public dotMessageService: DotMessageService) {
+        private dotMessageService: DotMessageService) {
 
     }
     ngOnInit() {

@@ -43,7 +43,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     constructor(
         private pushPublishService: PushPublishService,
         public fb: FormBuilder,
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         public loggerService: LoggerService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
         private dotParseHtmlService: DotParseHtmlService,

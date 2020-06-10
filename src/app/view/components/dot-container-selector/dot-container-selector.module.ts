@@ -5,11 +5,18 @@ import { CommonModule } from '@angular/common';
 import { DotContainerSelectorComponent } from './dot-container-selector.component';
 import { NgModule } from '@angular/core';
 import { PaginatorService } from '@services/paginator';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 @NgModule({
     declarations: [DotContainerSelectorComponent],
     exports: [DotContainerSelectorComponent],
-    imports: [CommonModule, FormsModule, ButtonModule, SearchableDropDownModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ButtonModule,
+        SearchableDropDownModule,
+        DotDirectivesModule
+    ],
     providers: [PaginatorService]
 })
 export class DotContainerSelectorModule {}

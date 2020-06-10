@@ -78,7 +78,7 @@ export class DotEditLayoutGridComponent implements OnInit, OnDestroy, ControlVal
     constructor(
         private dotDialogService: DotAlertConfirmService,
         private dotEditLayoutService: DotEditLayoutService,
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private dotEventsService: DotEventsService,
         public fb: FormBuilder
     ) {}

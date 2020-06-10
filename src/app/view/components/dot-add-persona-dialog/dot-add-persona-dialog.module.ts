@@ -4,9 +4,10 @@ import { DotAddPersonaDialogComponent } from '@components/dot-add-persona-dialog
 import { DotCreatePersonaFormModule } from '@components/dot-add-persona-dialog/dot-create-persona-form/dot-create-persona-form.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 @NgModule({
-    imports: [CommonModule, DotCreatePersonaFormModule, DotDialogModule],
+    imports: [CommonModule, DotCreatePersonaFormModule, DotDialogModule, DotDirectivesModule],
     providers: [DotWorkflowActionsFireService],
     declarations: [DotAddPersonaDialogComponent],
     exports: [DotAddPersonaDialogComponent]

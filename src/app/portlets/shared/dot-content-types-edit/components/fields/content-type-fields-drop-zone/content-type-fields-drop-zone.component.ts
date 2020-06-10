@@ -68,7 +68,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private fieldDragDropService: FieldDragDropService,
         private fieldPropertyService: FieldPropertyService,
         private dotEventsService: DotEventsService,

@@ -18,7 +18,7 @@ export class RegexCheckPropertyComponent implements OnInit {
     property: FieldProperty;
     group: FormGroup;
 
-    constructor(public dotMessageService: DotMessageService) {}
+    constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
         this.regexCheckTempletes = [

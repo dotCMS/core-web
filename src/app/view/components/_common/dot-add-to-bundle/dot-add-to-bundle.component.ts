@@ -37,7 +37,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit, OnDestroy
     constructor(
         private addToBundleService: AddToBundleService,
         public fb: FormBuilder,
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         public loggerService: LoggerService
     ) {}
 

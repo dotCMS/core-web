@@ -13,7 +13,7 @@ export class DefaultValuePropertyComponent implements OnInit {
     errorLabel: string;
     private errorLabelsMap = new Map<string, string>();
 
-    constructor(public dotMessageService: DotMessageService) {}
+    constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
         this.setErrorLabelMap();

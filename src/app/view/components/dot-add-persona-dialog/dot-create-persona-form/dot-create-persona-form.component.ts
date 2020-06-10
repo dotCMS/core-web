@@ -24,7 +24,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private fb: FormBuilder,
         private siteService: SiteService
     ) {}

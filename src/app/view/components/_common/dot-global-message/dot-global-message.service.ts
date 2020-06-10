@@ -12,7 +12,7 @@ export class DotGlobalMessageService {
     private messageLife = 3000;
 
     constructor(
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private dotEventsService: DotEventsService
     ) {}
 

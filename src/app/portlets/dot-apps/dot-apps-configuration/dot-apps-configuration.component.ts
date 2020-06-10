@@ -31,7 +31,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
         private dotAppsService: DotAppsService,
         private dotRouterService: DotRouterService,
         private route: ActivatedRoute,
-        public dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         public paginationService: PaginatorService
     ) {}
 

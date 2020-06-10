@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DotMessageService } from '@services/dot-messages-service';
 import { FieldProperty } from '../field-properties.model';
 import { DATA_TYPE_PROPERTY_INFO } from '../../../service/data-type-property-info';
 
@@ -13,7 +12,7 @@ export class DataTypePropertyComponent implements OnInit {
     group: FormGroup;
     radioInputs: object;
 
-    constructor(public dotMessageService: DotMessageService) {}
+    constructor() {}
 
     ngOnInit(): void {
         this.radioInputs = DATA_TYPE_PROPERTY_INFO[this.property.field.clazz];

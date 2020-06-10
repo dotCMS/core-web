@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { DotApps } from '@shared/models/dot-apps/dot-apps.model';
 import * as _ from 'lodash';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { DotMessageService } from '@services/dot-messages-service';
 
 @Component({
     selector: 'dot-apps-configuration-header',
@@ -15,8 +14,7 @@ export class DotAppsConfigurationHeaderComponent {
     @Input() app: DotApps;
 
     constructor(
-        private dotRouterService: DotRouterService,
-        public dotMessageService: DotMessageService
+        private dotRouterService: DotRouterService
     ) {}
 
     /**

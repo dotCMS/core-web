@@ -1,15 +1,7 @@
-import {
-    Component,
-    ViewChild,
-    ElementRef,
-    Input,
-    Output,
-    EventEmitter
-} from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
 
 import { LazyLoadEvent } from 'primeng/primeng';
-import { DotMessageService } from '@services/dot-messages-service';
 
 @Component({
     selector: 'dot-apps-configuration-list',
@@ -17,8 +9,7 @@ import { DotMessageService } from '@services/dot-messages-service';
     styleUrls: ['./dot-apps-configuration-list.component.scss']
 })
 export class DotAppsConfigurationListComponent {
-    @ViewChild('searchInput')
-    searchInput: ElementRef;
+    @ViewChild('searchInput') searchInput: ElementRef;
 
     @Input() hideLoadDataButton: boolean;
     @Input() itemsPerPage: number;
@@ -28,7 +19,7 @@ export class DotAppsConfigurationListComponent {
     @Output() edit = new EventEmitter<DotAppsSites>();
     @Output() delete = new EventEmitter<DotAppsSites>();
 
-    constructor(public dotMessageService: DotMessageService) {}
+    constructor() {}
 
     /**
      * Emits action to load next configuration page
