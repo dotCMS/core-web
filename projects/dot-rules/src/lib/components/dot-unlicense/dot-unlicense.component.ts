@@ -12,11 +12,8 @@ export class DotUnlicenseComponent implements OnInit {
     learnMoreEnterpriseLabel: string;
     contactUsLabel: string;
     requestTrialLabel: string;
-    resources: I18nService;
 
-    constructor(resources: I18nService) {
-        this.resources = resources;
-    }
+    constructor(private resources: I18nService) {}
 
     ngOnInit() {
         this.resources.get('com.dotcms.repackage.javax.portlet.title.rules').subscribe((label) => {

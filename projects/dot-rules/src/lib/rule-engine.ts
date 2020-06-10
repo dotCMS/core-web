@@ -26,7 +26,7 @@ const I8N_BASE = 'api.sites.ruleengine';
   <div class="cw-modal-glasspane"  [class.cw-loading]="loading" *ngIf="loading"></div>
   <div *ngIf="!loading && globalError && globalError.errorKey !== 'dotcms.api.error.license.required'" class="ui negative message cw-message">
     <div class="header">{{ globalError.message }}</div>
-    <p>Please contact an administrator...</p>
+    <p>{{ rsrc('contact.admin.error') | async }}</p>
     <i *ngIf="showCloseButton" class="material-icons" class="close-button" (click)="globalError.message = ''">X</i>
   </div>
   <dot-unlicense *ngIf="!loading && globalError && globalError.errorKey === 'dotcms.api.error.license.required'"></dot-unlicense>
