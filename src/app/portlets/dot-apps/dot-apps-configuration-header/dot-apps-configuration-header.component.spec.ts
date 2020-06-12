@@ -11,7 +11,6 @@ import { NgxMdModule } from 'ngx-md';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DebugElement } from '@angular/core';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.configurations': 'Configurations',
@@ -49,8 +48,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
                     CommonModule,
                     DotAvatarModule,
                     DotCopyButtonModule,
-                    NgxMdModule,
-                    DotDirectivesModule
+                    NgxMdModule
                 ],
                 declarations: [DotAppsConfigurationHeaderComponent],
                 providers: [

@@ -19,7 +19,6 @@ import { CommonModule } from '@angular/common';
 import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/dot-apps-configuration-list.module';
 import { PaginatorService } from '@services/paginator';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.key': 'Key',
@@ -101,8 +100,7 @@ describe('DotAppsConfigurationComponent', () => {
                     CommonModule,
                     DotActionButtonModule,
                     DotAppsConfigurationHeaderModule,
-                    DotAppsConfigurationListModule,
-                    DotDirectivesModule
+                    DotAppsConfigurationListModule
                 ],
                 declarations: [DotAppsConfigurationComponent],
                 providers: [

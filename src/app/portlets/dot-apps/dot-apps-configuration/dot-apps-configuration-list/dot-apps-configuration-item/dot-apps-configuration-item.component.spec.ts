@@ -9,7 +9,6 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { By } from '@angular/platform-browser';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { TooltipModule } from 'primeng/primeng';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.key': 'Key',
@@ -53,8 +52,7 @@ describe('DotAppsConfigurationItemComponent', () => {
                     CommonModule,
                     DotIconButtonModule,
                     DotIconModule,
-                    TooltipModule,
-                    DotDirectivesModule
+                    TooltipModule
                 ],
                 declarations: [DotAppsConfigurationItemComponent],
                 providers: [{ provide: DotMessageService, useValue: messageServiceMock }]

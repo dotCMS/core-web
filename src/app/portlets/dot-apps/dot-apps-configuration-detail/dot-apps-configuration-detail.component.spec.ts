@@ -20,7 +20,6 @@ import { By } from '@angular/platform-browser';
 import { DotAppsSaveData } from '@shared/models/dot-apps/dot-apps.model';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.key': 'Key',
@@ -136,8 +135,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
                     CommonModule,
                     DotCopyButtonModule,
                     DotAppsConfigurationHeaderModule,
-                    DotAppsConfigurationDetailFormModule,
-                    DotDirectivesModule
+                    DotAppsConfigurationDetailFormModule
                 ],
                 declarations: [DotAppsConfigurationDetailComponent, MockDotKeyValueComponent],
                 providers: [

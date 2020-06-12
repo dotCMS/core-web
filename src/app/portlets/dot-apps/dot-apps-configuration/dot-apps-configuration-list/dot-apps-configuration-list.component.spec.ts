@@ -25,7 +25,7 @@ const sites = [
     }
 ];
 
-fdescribe('DotAppsConfigurationListComponent', () => {
+describe('DotAppsConfigurationListComponent', () => {
     let component: DotAppsConfigurationListComponent;
     let fixture: ComponentFixture<DotAppsConfigurationListComponent>;
 

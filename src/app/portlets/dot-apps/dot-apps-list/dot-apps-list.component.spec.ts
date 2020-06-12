@@ -14,7 +14,6 @@ import { DotAppsCardModule } from './dot-apps-card/dot-apps-card.module';
 import { By } from '@angular/platform-browser';
 import { DotAppsCardComponent } from './dot-apps-card/dot-apps-card.component';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 class AppsServicesMock {
     get() {}
@@ -66,8 +65,7 @@ describe('DotAppsListComponent', () => {
                         }
                     ]),
                     DotAppsCardModule,
-                    InputTextModule,
-                    DotDirectivesModule
+                    InputTextModule
                 ],
                 declarations: [DotAppsListComponent],
                 providers: [
