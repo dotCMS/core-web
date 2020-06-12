@@ -8,7 +8,7 @@ import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
 import { DotLayoutSidebarModule } from './dot-layout-property-sidebar/dot-layout-property-sidebar.module';
 import { DotLayoutPropertiesItemModule } from './dot-layout-properties-item/dot-layout-properties-item.module';
 import { DotLayoutPropertiesComponent } from './dot-layout-properties.component';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     declarations: [DotLayoutPropertiesComponent],
@@ -20,7 +20,7 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
         ButtonModule,
         ReactiveFormsModule,
         DotIconButtonModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     exports: [DotLayoutPropertiesComponent],
     providers: []

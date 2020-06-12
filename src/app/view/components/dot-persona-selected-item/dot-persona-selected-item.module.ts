@@ -6,7 +6,7 @@ import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/primeng';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     imports: [
@@ -16,7 +16,7 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
         DotAvatarModule,
         ButtonModule,
         TooltipModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     declarations: [DotPersonaSelectedItemComponent],
     exports: [DotPersonaSelectedItemComponent]

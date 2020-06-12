@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule, InputTextModule, InputSwitchModule } from 'primeng/primeng';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotKeyValueTableRowComponent } from './dot-key-value-table-row.component';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     imports: [
@@ -16,7 +16,7 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
         FormsModule,
         TableModule,
         DotIconButtonModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     exports: [DotKeyValueTableRowComponent],
     declarations: [DotKeyValueTableRowComponent]

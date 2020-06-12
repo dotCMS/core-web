@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DotContainerSelectorComponent } from './dot-container-selector.component';
 import { NgModule } from '@angular/core';
 import { PaginatorService } from '@services/paginator';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     declarations: [DotContainerSelectorComponent],
@@ -15,7 +15,7 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
         FormsModule,
         ButtonModule,
         SearchableDropDownModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     providers: [PaginatorService]
 })

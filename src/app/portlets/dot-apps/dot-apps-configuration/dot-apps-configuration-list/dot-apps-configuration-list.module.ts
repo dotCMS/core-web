@@ -4,14 +4,14 @@ import { ButtonModule } from 'primeng/primeng';
 
 import { DotAppsConfigurationListComponent } from './dot-apps-configuration-list.component';
 import { DotAppsConfigurationItemModule } from './dot-apps-configuration-item/dot-apps-configuration-item.module';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     imports: [
         ButtonModule,
         CommonModule,
         DotAppsConfigurationItemModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     declarations: [DotAppsConfigurationListComponent],
     exports: [DotAppsConfigurationListComponent]

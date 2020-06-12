@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { DotLanguageSelectorModule } from '@components/dot-language-selector/dot-language-selector.module';
 import { DotDeviceSelectorModule } from '@components/dot-device-selector/dot-device-selector.module';
 import { DotPersonaSelectorModule } from '@components/dot-persona-selector/dot-persona.selector.module';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     imports: [
@@ -16,7 +16,7 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
         DotPersonaSelectorModule,
         DotLanguageSelectorModule,
         DotDeviceSelectorModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     declarations: [DotEditPageViewAsControllerComponent],
     exports: [DotEditPageViewAsControllerComponent]

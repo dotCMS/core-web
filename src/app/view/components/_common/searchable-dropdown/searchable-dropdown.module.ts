@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DotIconModule } from '../dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../dot-icon-button/dot-icon-button.module';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 export const SEARCHABLE_NGFACES_MODULES = [
     ButtonModule,
@@ -14,7 +14,7 @@ export const SEARCHABLE_NGFACES_MODULES = [
     DataViewModule,
     FormsModule,
     InputTextModule,
-    OverlayPanelModule
+        OverlayPanelModule
 ];
 
 @NgModule({
@@ -26,7 +26,7 @@ export const SEARCHABLE_NGFACES_MODULES = [
         ...SEARCHABLE_NGFACES_MODULES,
         DotIconModule,
         DotIconButtonModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     providers: []
 })

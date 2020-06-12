@@ -7,10 +7,10 @@ import { DotIframeDialogModule } from '../dot-iframe-dialog/dot-iframe-dialog.mo
 import { DotContentletEditorService } from './services/dot-contentlet-editor.service';
 import { DotContentletWrapperComponent } from './components/dot-contentlet-wrapper/dot-contentlet-wrapper.component';
 import { DotReorderMenuComponent } from './components/dot-reorder-menu/dot-reorder-menu.component';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
-    imports: [CommonModule, DotIframeDialogModule, DotDirectivesModule],
+    imports: [CommonModule, DotIframeDialogModule, DotPipesModule],
     declarations: [
         DotAddContentletComponent,
         DotContentletWrapperComponent,

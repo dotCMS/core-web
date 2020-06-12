@@ -6,10 +6,10 @@ import { DotAppsListComponent } from './dot-apps-list.component';
 import { DotAppsCardModule } from './dot-apps-card/dot-apps-card.module';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { DotAppsListResolver } from './dot-apps-list-resolver.service';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
-    imports: [InputTextModule, CommonModule, DotAppsCardModule, DotDirectivesModule],
+    imports: [InputTextModule, CommonModule, DotAppsCardModule, DotPipesModule],
     declarations: [DotAppsListComponent],
     exports: [DotAppsListComponent],
     providers: [DotAppsService, DotAppsListResolver]

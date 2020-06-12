@@ -6,7 +6,7 @@ import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { NgxMdModule } from 'ngx-md';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     imports: [
@@ -16,7 +16,7 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
         DotIconModule,
         NgxMdModule,
         TooltipModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     declarations: [DotAppsCardComponent],
     exports: [DotAppsCardComponent]

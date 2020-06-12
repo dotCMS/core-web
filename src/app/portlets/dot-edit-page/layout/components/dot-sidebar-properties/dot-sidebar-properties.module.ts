@@ -3,7 +3,7 @@ import { ButtonModule, RadioButtonModule, OverlayPanelModule } from 'primeng/pri
 import { CommonModule } from '@angular/common';
 import { DotSidebarPropertiesComponent } from './dot-sidebar-properties.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     declarations: [DotSidebarPropertiesComponent],
@@ -14,7 +14,7 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
         RadioButtonModule,
         OverlayPanelModule,
         ReactiveFormsModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     exports: [DotSidebarPropertiesComponent]
 })

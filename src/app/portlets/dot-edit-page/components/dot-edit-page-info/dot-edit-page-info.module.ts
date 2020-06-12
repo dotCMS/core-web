@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/primeng';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { LOCATION_TOKEN } from 'src/app/providers';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
     imports: [
@@ -13,7 +13,7 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
         ButtonModule,
         DotCopyButtonModule,
         DotApiLinkModule,
-        DotDirectivesModule
+        DotPipesModule
     ],
     exports: [DotEditPageInfoComponent],
     declarations: [DotEditPageInfoComponent],

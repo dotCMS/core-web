@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { DotPersonaSelectorOptionComponent } from './dot-persona-selector-option.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { ButtonModule } from 'primeng/button';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, DotAvatarModule, ButtonModule, DotDirectivesModule],
+    imports: [CommonModule, FormsModule, DotAvatarModule, ButtonModule, DotPipesModule],
     declarations: [DotPersonaSelectorOptionComponent],
     exports: [DotPersonaSelectorOptionComponent]
 })
