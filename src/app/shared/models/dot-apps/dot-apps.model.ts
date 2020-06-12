@@ -23,6 +23,7 @@ export interface DotAppsSecrets {
     hint: string;
     label: string;
     name: string;
+    options?: LabelValueOption[];
     required: boolean;
     type: string;
     value: string;
@@ -34,4 +35,9 @@ export interface DotAppsSaveData {
         hidden: string;
         value: string;
     };
+}
+
+interface LabelValueOption {
+    label: string;
+    value: string;
 }
