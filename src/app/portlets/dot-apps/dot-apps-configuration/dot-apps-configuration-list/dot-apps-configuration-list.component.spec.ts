@@ -7,7 +7,6 @@ import { By } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
 import { DotAppsConfigurationItemModule } from './dot-apps-configuration-item/dot-apps-configuration-item.module';
 import { DotAppsConfigurationListComponent } from './dot-apps-configuration-list.component';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 const messages = {
     'apps.configurations.show.more': 'Show More'
@@ -26,7 +25,7 @@ const sites = [
     }
 ];
 
-describe('DotAppsConfigurationListComponent', () => {
+fdescribe('DotAppsConfigurationListComponent', () => {
     let component: DotAppsConfigurationListComponent;
     let fixture: ComponentFixture<DotAppsConfigurationListComponent>;
 
@@ -38,8 +37,7 @@ describe('DotAppsConfigurationListComponent', () => {
                 imports: [
                     CommonModule,
                     ButtonModule,
-                    DotAppsConfigurationItemModule,
-                    DotDirectivesModule
+                    DotAppsConfigurationItemModule
                 ],
                 declarations: [DotAppsConfigurationListComponent],
                 providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
