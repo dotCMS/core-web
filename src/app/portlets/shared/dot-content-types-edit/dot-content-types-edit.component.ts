@@ -137,23 +137,21 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
      * @memberof DotContentTypesEditComponent
      */
     setTemplateInfo(): void {
-        this.dotMessageService.messageMap$.pipe(take(1)).subscribe(() => {
-            const type = this.contentTypesInfoService.getLabel(this.data.baseType);
-            const contentTypeName = this.dotMessageService.get(`contenttypes.content.${type}`);
+        const type = this.contentTypesInfoService.getLabel(this.data.baseType);
+        const contentTypeName = this.dotMessageService.get(`contenttypes.content.${type}`);
 
-            this.templateInfo = {
-                icon: this.contentTypesInfoService.getIcon(type),
-                header: this.isEditMode()
-                    ? this.dotMessageService.get(
-                          'contenttypes.content.edit.contenttype',
-                          contentTypeName
-                      )
-                    : this.dotMessageService.get(
-                          'contenttypes.content.create.contenttype',
-                          contentTypeName
-                      )
-            };
-        });
+        this.templateInfo = {
+            icon: this.contentTypesInfoService.getIcon(type),
+            header: this.isEditMode()
+                ? this.dotMessageService.get(
+                    'contenttypes.content.edit.contenttype',
+                    contentTypeName
+                )
+                : this.dotMessageService.get(
+                    'contenttypes.content.create.contenttype',
+                    contentTypeName
+                )
+        };
     }
 
     /**
