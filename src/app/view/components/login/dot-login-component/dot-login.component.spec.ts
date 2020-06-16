@@ -23,7 +23,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { MockDotLoginPageStateService } from '@components/login/dot-login-page-resolver.service.spec';
-import { DotMessageService } from '@services/dot-messages-service';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 describe('DotLoginComponent', () => {
     let component: DotLoginComponent;

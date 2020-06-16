@@ -9,7 +9,7 @@ import { NotLicensedService } from '@services/not-licensed-service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { DotcmsConfigService } from 'dotcms-js';
 import { of } from 'rxjs';
-import { DotMessageService } from '@services/dot-messages-service';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;
