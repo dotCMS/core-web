@@ -25,10 +25,10 @@ import {
     DotCMSContentTypeLayoutRow,
     DotCMSSystemActionMappings,
     DotCMSSystemActionType,
-    DotCMSWorkflow
+    DotCMSWorkflow,
+    DotCMSSystemAction
 } from 'dotcms-models';
 import { FieldUtil } from '../fields/util/field-util';
-import { DotCMSSystemAction } from '../../../../../../../projects/dotcms-models/src/dot-workflow-action';
 
 /**
  * Form component to create or edit content types
