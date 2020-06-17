@@ -11,12 +11,14 @@ import {
 import { DotAppsConfigurationDetailFormComponent } from './dot-apps-configuration-detail-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotFileUploadModule } from '@components/dot-file-upload/dot-file-upload.module';
 
 @NgModule({
     imports: [
         CheckboxModule,
         CommonModule,
         DotIconModule,
+        DotFileUploadModule,
         DropdownModule,
         InputTextareaModule,
         InputTextModule,

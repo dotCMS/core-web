@@ -33,6 +33,16 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
             .subscribe(( app: DotApps) => {
                 this.apps = app;
                 this.formFields = this.getSecrets(app.sites[0].secrets);
+                this.formFields.push({
+                    dynamic: false,
+                    name: 'file',
+                    hidden: false,
+                    hint: 'This is a file',
+                    label: 'File:',
+                    required: false,
+                    type: 'FILE',
+                    value: ''
+                });
                 this.dynamicVariables = this.transformSecretsToKeyValue(
                     this.getSecrets(app.sites[0].secrets, true)
                 );
@@ -98,7 +108,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
 
     private getTransformedFormData(): DotAppsSaveData {
         const params = {};
-
+        console.log('***formData', this.formFields)
         for (const key of Object.keys(this.formData)) {
             params[key] = {
                 hidden: this.formData[`${key}Hidden`] || false,

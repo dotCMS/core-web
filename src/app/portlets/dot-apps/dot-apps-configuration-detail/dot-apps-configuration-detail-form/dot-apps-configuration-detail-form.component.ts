@@ -5,7 +5,7 @@ import {
     Output,
     EventEmitter,
     ViewChild,
-    ElementRef
+    ElementRef,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 import { DotAppsSecrets } from '@shared/models/dot-apps/dot-apps.model';
@@ -54,6 +54,7 @@ export class DotAppsConfigurationDetailFormComponent implements OnInit {
         setTimeout(() => {
             this.formContainer.nativeElement.querySelector(`#${this.formFields[0].name}`).focus();
         }, 0);
+
     }
 
     private getFieldValue(field: DotAppsSecrets): string | boolean {
@@ -61,6 +62,7 @@ export class DotAppsConfigurationDetailFormComponent implements OnInit {
     }
 
     private emitValues(): void {
+        console.log('----emitValue', this.myFormGroup)
         this.data.emit(this.myFormGroup.value);
         this.valid.emit(this.myFormGroup.status === 'VALID');
     }

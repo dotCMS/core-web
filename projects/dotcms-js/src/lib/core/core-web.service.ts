@@ -134,9 +134,19 @@ export class CoreWebService {
      * @returns DotCMSHttpResponse
      */
     public requestView(options: RequestOptionsArgs): Observable<ResponseView> {
-        const request = this.getRequestOpts(options);
+        let request: Observable<Response>;
 
-        return this._http.request(request).pipe(
+        if (
+            options.headers &&
+            options.headers.get('Content-Type').indexOf('multipart/form-data') !== -1
+        ) {
+            request = this._http.post(options.url, options.body);
+        } else {
+            const requestParams = this.getRequestOpts(options);
+            request = this._http.request(requestParams);
+        }
+
+        return request.pipe(
             map((resp) => {
                 if (resp.json().errors && resp.json().errors.length > 0) {
                     return this.handleRequestViewErrors(resp);
@@ -148,20 +158,20 @@ export class CoreWebService {
         );
     }
 
-    private handleRequestViewErrors(resp: Response): ResponseView {
-        if (resp.status === 401) {
-            this.router.navigate(['/public/login']);
-          }
-
-        return new ResponseView(resp);
-    }
-
     public subscribeTo(httpErrorCode: number): Observable<any> {
         if (!this.httpErrosSubjects[httpErrorCode]) {
             this.httpErrosSubjects[httpErrorCode] = new Subject();
         }
 
         return this.httpErrosSubjects[httpErrorCode].asObservable();
+    }
+
+    private handleRequestViewErrors(resp: Response): ResponseView {
+        if (resp.status === 401) {
+            this.router.navigate(['/public/login']);
+        }
+
+        return new ResponseView(resp);
     }
 
     private getRequestOpts(options: RequestOptionsArgs): Request {
@@ -179,15 +189,14 @@ export class CoreWebService {
             options.body && typeof options.body !== 'string'
                 ? JSON.stringify(options.body)
                 : options.body
-                    ? options.body
-                    : '';
+                ? options.body
+                : '';
 
         options.headers = headers;
 
         if (options.url.indexOf('://') === -1) {
-
-            options.url = options.url.startsWith('/api') ?
-                `${this._apiRoot.baseUrl}${options.url.substr(1)}`
+            options.url = options.url.startsWith('/api')
+                ? `${this._apiRoot.baseUrl}${options.url.substr(1)}`
                 : `${this._apiRoot.baseUrl}api/${options.url}`;
         }
 

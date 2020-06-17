@@ -93,6 +93,22 @@
                 ></p-dropdown>
                 <span class="form__group-hint">{{ field.hint }}</span>
             </ng-container>
+            <ng-container *ngSwitchCase="'FILE'">
+                <ng-container
+                    *ngTemplateOutlet="labelField; context: { field: field }"
+                ></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="warningIcon; context: { field: field }"
+                ></ng-container>
+                <dot-file-upload
+                    [id]="field.name"
+                    [formControlName]="field.name"
+                    [ngClass]="{
+                        required: field.required
+                    }"
+                ></dot-file-upload>
+                <span class="form__group-hint">{{ field.hint }}</span>
+            </ng-container>
         </div>
     </div>
 </form>
