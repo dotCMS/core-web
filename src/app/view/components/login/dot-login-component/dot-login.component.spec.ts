@@ -73,6 +73,7 @@ describe('DotLoginComponent', () => {
         dotRouterService = de.injector.get(DotRouterService);
         loginPageStateService = de.injector.get(DotLoginPageStateService);
         dotMessageService = de.injector.get(DotMessageService);
+        spyOn(dotMessageService, 'init');
         fixture.detectChanges();
         signInButton = de.query(By.css('button[pButton]'));
     });
@@ -99,8 +100,11 @@ describe('DotLoginComponent', () => {
         );
     });
 
+    it('should init messages on page load with default language', () => {
+        expect(dotMessageService.init).toHaveBeenCalledWith('default');
+    });
+
     it('should call services on language change', () => {
-        spyOn(dotMessageService, 'init');
         const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
         pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 

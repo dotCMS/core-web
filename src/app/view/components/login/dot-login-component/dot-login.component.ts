@@ -40,6 +40,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        this.dotMessageService.init('default');
         this.loginForm = this.fb.group({
             login: ['', [Validators.required]],
             language: [''],
