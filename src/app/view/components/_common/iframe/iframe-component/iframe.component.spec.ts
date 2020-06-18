@@ -5,7 +5,7 @@ import { ComponentFixture, async } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { SafePipe } from './../../../../pipes/safe-url.pipe';
+import { SafePipe } from '@pipes/dot-safe-url/dot-safe-url.pipe';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { IframeComponent } from './iframe.component';
 import { LoginService, DotcmsEventsService } from 'dotcms-js';
