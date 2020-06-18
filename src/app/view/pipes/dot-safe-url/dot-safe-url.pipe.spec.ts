@@ -32,7 +32,6 @@ describe('DotSafeUrlPipe', () => {
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [DotSafeUrlPipe],
             providers: [
                 { provide: ActivatedRoute, useValue: fakeActivatedRoute },
                 {
