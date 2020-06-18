@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
+import { DotMessagePipe, DotStringFormatPipe } from '@pipes/index';
 
 @NgModule({
-    declarations: [DotMessagePipe],
-    exports: [DotMessagePipe]
+    declarations: [DotMessagePipe, DotStringFormatPipe],
+    exports: [DotMessagePipe, DotStringFormatPipe]
 })
 export class DotPipesModule {}
