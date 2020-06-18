@@ -66,37 +66,54 @@ describe('DotMessageService', () => {
     });
 
     describe('init', () => {
+
         it('should call languages endpoint with default language and set them in local storage', () => {
-            spyOn(dotLocalstorageService, 'getItem');
             spyOn(dotLocalstorageService, 'setItem');
-            service.init();
-            expect(dotLocalstorageService.getItem).toHaveBeenCalledWith('dotMessagesKeys');
-            expect(dotLocalstorageService.setItem).toHaveBeenCalledWith(
-                'dotMessagesKeys',
-                messages
-            );
+            spyOn(dotLocalstorageService, 'getItem');
+            service.init(true);
+            expect(dotLocalstorageService.getItem).not.toHaveBeenCalled();
             expect(coreWebService.requestView).toHaveBeenCalledWith({
                 method: RequestMethod.Get,
                 url: '/api/v2/languages/default/keys'
             });
+            expect(dotLocalstorageService.setItem).toHaveBeenCalledWith(
+                'dotMessagesKeys',
+                messages
+            );
+        });
+        it('should try to laod mesasges otherwise get the default one and set them in local storage', () => {
+            spyOn(dotLocalstorageService, 'setItem');
+            spyOn(dotLocalstorageService, 'getItem');
+            service.init(false);
+            expect(dotLocalstorageService.getItem).toHaveBeenCalledWith('dotMessagesKeys');
+            expect(coreWebService.requestView).toHaveBeenCalledWith({
+                method: RequestMethod.Get,
+                url: '/api/v2/languages/default/keys'
+            });
+            expect(dotLocalstorageService.setItem).toHaveBeenCalledWith(
+                'dotMessagesKeys',
+                messages
+            );
         });
         it('should call languages endpoint with passed language', () => {
-            service.init('en_US');
+            service.init(true, 'en_US');
             expect(coreWebService.requestView).toHaveBeenCalledWith({
                 method: RequestMethod.Get,
                 url: '/api/v2/languages/en_US/keys'
             });
         });
         it('should read messages from local storage', () => {
+            spyOn(dotLocalstorageService, 'getItem').and.callThrough();
             dotLocalstorageService.setItem(MESSAGES_LOCALSTORAGE_KEY, messages);
-            service.init();
+            service.init(false);
+            expect(dotLocalstorageService.getItem).toHaveBeenCalledWith('dotMessagesKeys');
             expect(coreWebService.requestView).not.toHaveBeenCalled();
         });
     });
 
     describe('get', () => {
         beforeEach(() => {
-            service.init();
+            service.init(true);
         });
         it('should return message', () => {
             const label = service.get('dot.common.cancel');
@@ -114,7 +131,7 @@ describe('DotMessageService', () => {
 
     it('should set relative date messages', () => {
         spyOn(formatDateService, 'setLang');
-        service.init();
+        service.init(true);
         service.setRelativeDateMessages('en_US');
         expect(formatDateService.setLang).toHaveBeenCalledWith('en', relativeDateMessages);
     });

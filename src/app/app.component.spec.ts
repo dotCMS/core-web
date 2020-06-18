@@ -56,7 +56,7 @@ describe('AppComponent', () => {
     });
 
     it('should init message service', () => {
-        expect(dotMessageService.init).toHaveBeenCalledTimes(1);
+        expect(dotMessageService.init).toHaveBeenCalledWith(false);
     });
 
     it('should have router-outlet', () => {

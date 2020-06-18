@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.dotMessageService.init();
+        this.dotMessageService.init(false);
         this.notLicensedService.init();
         this.dotCmsConfigService
             .getConfig()

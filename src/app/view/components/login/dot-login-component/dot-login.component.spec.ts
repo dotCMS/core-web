@@ -101,14 +101,14 @@ describe('DotLoginComponent', () => {
     });
 
     it('should init messages on page load with default language', () => {
-        expect(dotMessageService.init).toHaveBeenCalledWith('default');
+        expect(dotMessageService.init).toHaveBeenCalledWith(true);
     });
 
     it('should call services on language change', () => {
         const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
         pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
-        expect(dotMessageService.init).toHaveBeenCalledWith('es_ES');
+        expect(dotMessageService.init).toHaveBeenCalledWith(true, 'es_ES');
         expect(loginPageStateService.update).toHaveBeenCalledWith('es_ES');
     });
 
