@@ -46,6 +46,7 @@ export class DotNavItemComponent {
      * @memberof DotNavItemComponent
      */
     setSubMenuPosition(): void {
+
         if (this.collapsed) {
             const [rects] = this.subnav.ul.nativeElement.getClientRects();
 
