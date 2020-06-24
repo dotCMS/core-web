@@ -35,6 +35,6 @@ export interface DotAppsSecrets {
 export interface DotAppsSaveData {
     [key: string]: {
         hidden: string;
-        value: string;
+        value: string | File;
     };
 }

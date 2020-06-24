@@ -17,7 +17,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
     apps: DotApps;
 
     dynamicVariables: DotKeyValue[];
-    formData: { [key: string]: string };
+    formData: { [key: string]: string | File };
     formFields: any[];
     formValid = false;
 
@@ -28,25 +28,23 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.route.data
-            .pipe(pluck('data'), take(1))
-            .subscribe(( app: DotApps) => {
-                this.apps = app;
-                this.formFields = this.getSecrets(app.sites[0].secrets);
-                this.formFields.push({
-                    dynamic: false,
-                    name: 'file',
-                    hidden: false,
-                    hint: 'This is a file',
-                    label: 'File:',
-                    required: false,
-                    type: 'FILE',
-                    value: ''
-                });
-                this.dynamicVariables = this.transformSecretsToKeyValue(
-                    this.getSecrets(app.sites[0].secrets, true)
-                );
+        this.route.data.pipe(pluck('data'), take(1)).subscribe((app: DotApps) => {
+            this.apps = app;
+            this.formFields = this.getSecrets(app.sites[0].secrets);
+            this.formFields.push({
+                dynamic: false,
+                name: 'file',
+                hidden: false,
+                hint: 'This is a file',
+                label: 'File:',
+                required: false,
+                type: 'FILE',
+                value: ''
             });
+            this.dynamicVariables = this.transformSecretsToKeyValue(
+                this.getSecrets(app.sites[0].secrets, true)
+            );
+        });
     }
 
     /**
@@ -106,13 +104,16 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
         );
     }
 
+    // tslint:disable-next-line:cyclomatic-complexity
     private getTransformedFormData(): DotAppsSaveData {
         const params = {};
-        console.log('***formData', this.formFields)
         for (const key of Object.keys(this.formData)) {
             params[key] = {
                 hidden: this.formData[`${key}Hidden`] || false,
-                value: this.formData[key].toString()
+                value:
+                    this.formData[key] instanceof File
+                        ? this.formData[key]
+                        : this.formData[key].toString()
             };
         }
 
