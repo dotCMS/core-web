@@ -40,6 +40,7 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
                 required: false,
                 type: 'FILE',
                 value: ''
+                // value: 'data:text/plain;base64,RmlsZSB0ZXN0'
             });
             this.dynamicVariables = this.transformSecretsToKeyValue(
                 this.getSecrets(app.sites[0].secrets, true)

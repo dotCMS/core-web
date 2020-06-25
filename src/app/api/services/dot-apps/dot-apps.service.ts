@@ -1,5 +1,6 @@
 import { pluck, catchError, take, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { Headers } from '@angular/http';
 import { Observable } from 'rxjs';
 import { DotApps, DotAppsSaveData } from '@models/dot-apps/dot-apps.model';
 import { RequestMethod } from '@angular/http';
@@ -100,7 +101,38 @@ export class DotAppsService {
      * @memberof DotAppsService
      */
     saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Observable<string> {
-        console.log('***req params', params)
+        console.log('***req params', params);
+
+        const formData = new FormData();
+        Object.entries(params).forEach(([key, val]) => {
+            if (val.value instanceof File) {
+                formData.append(key, val.value);
+            } else {
+                formData.append(key, JSON.stringify(val));
+            }
+        });
+
+        const headers = new Headers();
+        headers.append('Content-Type', 'multipart/form-data');
+
+        return this.coreWebService
+            .requestView({
+                headers,
+                body: formData,
+                method: RequestMethod.Post,
+                url: `${appsUrl}/${appKey}/${id}`
+            })
+            .pipe(
+                pluck('entity'),
+                catchError((error: ResponseView) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
+            );
+
+        /*
         return this.coreWebService
             .requestView({
                 body: {
@@ -118,6 +150,7 @@ export class DotAppsService {
                     );
                 })
             );
+        */
     }
 
     /**

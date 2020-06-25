@@ -15,14 +15,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class DotFileUploadComponent implements ControlValueAccessor {
     @Input() id: string;
-    value: string;
+    @Input() previewImageName: string;
 
     constructor() {}
 
     @HostListener('dotValueChange', ['$event'])
     public valueChange(event): void {
         this.propagateChange(event.detail.value);
-        console.log(event.detail.value, this.value);
+        console.log(event.detail.value);
+        this.previewImageName = event.detail.value.name;
         // this.dotFileUploadService.upload(event.detail.value).subscribe((data: any) => {
         //     console.log('***sub data', data);
         // });
@@ -32,8 +33,8 @@ export class DotFileUploadComponent implements ControlValueAccessor {
 
     writeValue(value: string): void {
         if (value) {
-            this.value = value;
-            console.log('***writeValue', this.value);
+            this.previewImageName = value;
+            console.log('***writeValuem previewImageName', this.previewImageName);
         }
     }
 
