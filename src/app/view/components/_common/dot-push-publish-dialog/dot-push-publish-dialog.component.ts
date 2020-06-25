@@ -185,7 +185,6 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
             .get('pushActionSelected')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((pushActionSelected: string) => {
-                console.log('pushActionSelected', pushActionSelected);
                 switch (pushActionSelected) {
                     case 'publish': {
                         publishDate.enable();
@@ -196,7 +195,6 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
                     case 'expire': {
                         publishDate.disable();
                         expireDate.enable();
-                        console.log('disabling')
                         ppFilter.disable();
                         break;
                     }
