@@ -106,6 +106,7 @@
                     [ngClass]="{
                         required: field.required
                     }"
+                    [previewImageName]="field.name"
                 ></dot-file-upload>
                 <span class="form__group-hint">{{ field.hint }}</span>
             </ng-container>

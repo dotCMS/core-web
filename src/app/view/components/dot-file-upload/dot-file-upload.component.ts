@@ -16,6 +16,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class DotFileUploadComponent implements ControlValueAccessor {
     @Input() id: string;
     @Input() previewImageName: string;
+    @Input() value: string;
 
     constructor() {}
 
@@ -33,7 +34,7 @@ export class DotFileUploadComponent implements ControlValueAccessor {
 
     writeValue(value: string): void {
         if (value) {
-            this.previewImageName = value;
+            this.value = value;
             console.log('***writeValuem previewImageName', this.previewImageName);
         }
     }
