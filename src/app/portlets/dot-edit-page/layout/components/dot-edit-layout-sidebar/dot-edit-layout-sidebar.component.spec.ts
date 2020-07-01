@@ -31,7 +31,7 @@ class TestHostComponent {
     }
 }
 
-fdescribe('DotEditLayoutSidebarComponent', () => {
+describe('DotEditLayoutSidebarComponent', () => {
     let component: DotEditLayoutSidebarComponent;
     let de: DebugElement;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;
