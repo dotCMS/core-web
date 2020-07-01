@@ -31,7 +31,7 @@ class TestHostComponent {
     }
 }
 
-describe('DotEditLayoutSidebarComponent', () => {
+fdescribe('DotEditLayoutSidebarComponent', () => {
     let component: DotEditLayoutSidebarComponent;
     let de: DebugElement;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;
@@ -110,7 +110,7 @@ describe('DotEditLayoutSidebarComponent', () => {
                     uuid: undefined
                 },
                 {
-                    identifier: mockDotContainers[1].container.identifier,
+                    identifier: mockDotContainers[1].container.path,
                     uuid: undefined
                 }
             ],
