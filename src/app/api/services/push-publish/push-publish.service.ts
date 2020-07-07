@@ -86,7 +86,6 @@ export class PushPublishService {
             filterKey
         }: DotPushPublishData
     ): string {
-        debugger;
         let result = '';
         result += `assetIdentifier=${assetIdentifier}`;
         result += `&remotePublishDate=${moment(publishdate).format('YYYY-MM-DD')}`;
