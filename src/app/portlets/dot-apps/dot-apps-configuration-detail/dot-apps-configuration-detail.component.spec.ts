@@ -28,6 +28,7 @@ const messages = {
     'apps.custom.properties': 'Custom Properties',
     'apps.form.dialog.success.header': 'Header',
     'apps.form.dialog.success.message': 'Message',
+    'apps.validate.configuration': 'Validate',
     ok: 'OK'
 };
 
@@ -99,6 +100,9 @@ class MockDotAppsService {
     ): Observable<string> {
         return of('');
     }
+    validateConfiguration(_appKey: string, _params: { [key: string]: string }): Observable<string> {
+        return of('');
+    }
 }
 
 @Component({
@@ -121,42 +125,40 @@ describe('DotAppsConfigurationDetailComponent', () => {
 
     const messageServiceMock = new MockDotMessageService(messages);
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                imports: [
-                    RouterTestingModule.withRoutes([
-                        {
-                            component: DotAppsConfigurationDetailComponent,
-                            path: ''
-                        }
-                    ]),
-                    ButtonModule,
-                    CommonModule,
-                    DotCopyButtonModule,
-                    DotAppsConfigurationHeaderModule,
-                    DotAppsConfigurationDetailFormModule
-                ],
-                declarations: [DotAppsConfigurationDetailComponent, MockDotKeyValueComponent],
-                providers: [
-                    { provide: DotMessageService, useValue: messageServiceMock },
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            imports: [
+                RouterTestingModule.withRoutes([
                     {
-                        provide: ActivatedRoute,
-                        useClass: ActivatedRouteMock
-                    },
-                    {
-                        provide: DotAppsService,
-                        useClass: MockDotAppsService
-                    },
-                    {
-                        provide: DotRouterService,
-                        useClass: MockDotRouterService
-                    },
-                    DotAppsConfigurationDetailResolver
-                ]
-            });
-        })
-    );
+                        component: DotAppsConfigurationDetailComponent,
+                        path: ''
+                    }
+                ]),
+                ButtonModule,
+                CommonModule,
+                DotCopyButtonModule,
+                DotAppsConfigurationHeaderModule,
+                DotAppsConfigurationDetailFormModule
+            ],
+            declarations: [DotAppsConfigurationDetailComponent, MockDotKeyValueComponent],
+            providers: [
+                { provide: DotMessageService, useValue: messageServiceMock },
+                {
+                    provide: ActivatedRoute,
+                    useClass: ActivatedRouteMock
+                },
+                {
+                    provide: DotAppsService,
+                    useClass: MockDotAppsService
+                },
+                {
+                    provide: DotRouterService,
+                    useClass: MockDotRouterService
+                },
+                DotAppsConfigurationDetailResolver
+            ]
+        });
+    }));
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotAppsConfigurationDetailComponent);
@@ -180,11 +182,16 @@ describe('DotAppsConfigurationDetailComponent', () => {
                 fixture.debugElement.queryAll(
                     By.css('.dot-apps-configuration-detail-actions button')
                 )[0].nativeElement.innerText
-            ).toContain(messageServiceMock.get('Cancel'));
+            ).toContain(messageServiceMock.get('apps.validate.configuration').toUpperCase());
             expect(
                 fixture.debugElement.queryAll(
                     By.css('.dot-apps-configuration-detail-actions button')
                 )[1].nativeElement.innerText
+            ).toContain(messageServiceMock.get('Cancel'));
+            expect(
+                fixture.debugElement.queryAll(
+                    By.css('.dot-apps-configuration-detail-actions button')
+                )[2].nativeElement.innerText
             ).toContain(messageServiceMock.get('Save'));
             expect(
                 fixture.debugElement.query(By.css('.dot-apps-configuration-detail__host-name'))
@@ -226,7 +233,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
         it('should redirect to Apps page when Cancel button clicked', () => {
             const cancelBtn = fixture.debugElement.queryAll(
                 By.css('.dot-apps-configuration-detail-actions button')
-            )[0];
+            )[1];
             cancelBtn.triggerEventHandler('click', {});
             expect(routerService.goToAppsConfiguration).toHaveBeenCalledWith(component.apps.key);
         });
@@ -254,7 +261,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
             };
             const saveBtn = fixture.debugElement.queryAll(
                 By.css('.dot-apps-configuration-detail-actions button')
-            )[1];
+            )[2];
 
             saveBtn.triggerEventHandler('click', {});
             expect(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
@@ -335,12 +342,30 @@ describe('DotAppsConfigurationDetailComponent', () => {
             };
             const saveBtn = fixture.debugElement.queryAll(
                 By.css('.dot-apps-configuration-detail-actions button')
-            )[1];
+            )[2];
 
             saveBtn.triggerEventHandler('click', {});
             expect(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
                 component.apps.key,
                 component.apps.sites[0].id,
+                transformedData
+            );
+        });
+
+        it('should validate custom configuration when Validate Configuration button clicked', () => {
+            spyOn(appsServices, 'validateConfiguration').and.returnValue(of({}));
+            const transformedData = {
+                name: 'John',
+                enabled: 'true',
+                custom: 'test'
+            };
+            const validateBtn = fixture.debugElement.queryAll(
+                By.css('.dot-apps-configuration-detail-actions button')
+            )[0];
+
+            validateBtn.triggerEventHandler('click', {});
+            expect(appsServices.validateConfiguration).toHaveBeenCalledWith(
+                component.apps.key,
                 transformedData
             );
         });

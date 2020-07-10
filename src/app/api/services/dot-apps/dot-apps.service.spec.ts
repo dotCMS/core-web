@@ -129,6 +129,34 @@ describe('DotAppsService', () => {
         expect(this.dotHttpErrorManagerService.handle).toHaveBeenCalledWith(mockResponseView(400));
     });
 
+    it('should validate a specific configuration from an app', () => {
+        const appKey = '1';
+        const params = {
+            name: 'value'
+        };
+        const url = `v1/apps/validate/${appKey}`;
+
+        this.dotAppsService
+            .validateConfiguration(appKey, params)
+            .subscribe((response: string) => {
+                expect(response).toEqual('ok');
+            });
+
+        this.lastConnection.mockRespond(
+            new Response(
+                new ResponseOptions({
+                    body: {
+                        entity: 'ok'
+                    }
+                })
+            )
+        );
+
+        expect(this.lastConnection.request.method).toBe(RequestMethod.Post);
+        expect(this.lastConnection.request._body).toEqual(params);
+        expect(this.lastConnection.request.url).toBe(url);
+    });
+
     it('should save a specific configuration from an app', () => {
         const appKey = '1';
         const hostId = 'abc';

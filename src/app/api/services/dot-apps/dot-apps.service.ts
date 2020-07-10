@@ -92,6 +92,33 @@ export class DotAppsService {
     }
 
     /**
+     * Send a request to the custom validator endpoint to check for issues
+     * @param {string} appKey
+     * @param { [key: string]: string } params
+     * @returns Observable<string>
+     * @memberof DotAppsService
+     */
+    validateConfiguration(appKey: string, params: { [key: string]: string }): Observable<string> {
+        return this.coreWebService
+            .requestView({
+                body: {
+                    ...params
+                },
+                method: RequestMethod.Post,
+                url: `${appsUrl}/validate/${appKey}`
+            })
+            .pipe(
+                pluck('entity'),
+                catchError((error: ResponseView) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
+            );
+    }
+
+    /**
      * Saves a detail configuration of a specific Service Integration
      * @param {string} appKey
      * @param {string} id

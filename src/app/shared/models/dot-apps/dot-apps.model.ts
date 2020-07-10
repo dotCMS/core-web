@@ -3,6 +3,7 @@ import { SelectItem } from "primeng/primeng";
 export interface DotApps {
     allowExtraParams: boolean;
     configurationsCount?: number;
+    customValidator?: string;
     description?: string;
     iconUrl?: string;
     key: string;

@@ -28,15 +28,13 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.route.data
-            .pipe(pluck('data'), take(1))
-            .subscribe(( app: DotApps) => {
-                this.apps = app;
-                this.formFields = this.getSecrets(app.sites[0].secrets);
-                this.dynamicVariables = this.transformSecretsToKeyValue(
-                    this.getSecrets(app.sites[0].secrets, true)
-                );
-            });
+        this.route.data.pipe(pluck('data'), take(1)).subscribe((app: DotApps) => {
+            this.apps = app;
+            this.formFields = this.getSecrets(app.sites[0].secrets);
+            this.dynamicVariables = this.transformSecretsToKeyValue(
+                this.getSecrets(app.sites[0].secrets, true)
+            );
+        });
     }
 
     /**
@@ -65,6 +63,17 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
      */
     goToApps(key: string): void {
         this.dotRouterService.goToAppsConfiguration(key);
+    }
+
+    /**
+     * Sends form data to be validated by a custom validator
+     *
+     * @param string appKey
+     * @memberof DotAppsConfigurationDetailComponent
+     */
+    validateConfiguration(appKey: string): void {
+        const formData = this.getNotHiddenFormData();
+        this.dotAppsService.validateConfiguration(appKey, formData).pipe(take(1)).subscribe();
     }
 
     /**
@@ -111,6 +120,24 @@ export class DotAppsConfigurationDetailComponent implements OnInit {
                 hidden: item.hidden || false,
                 value: item.value.toString()
             };
+        });
+
+        return params;
+    }
+
+    private getNotHiddenFormData(): { [key: string]: string } {
+        const params = {};
+
+        this.formFields.forEach((field: DotAppsSecrets) => {
+            if (!field.hidden) {
+                params[field.name] = this.formData[field.name].toString();
+            }
+        });
+
+        this.dynamicVariables.forEach((item: DotKeyValue) => {
+            if (!item.hidden) {
+                params[item.key] = item.value.toString();
+            }
         });
 
         return params;

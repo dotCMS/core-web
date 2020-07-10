@@ -5,6 +5,14 @@
             <span>{{ apps.sites[0].name }}</span>
             <div class="dot-apps-configuration-detail-actions">
                 <button
+                    *ngIf="apps.customValidator"
+                    pButton
+                    secondary
+                    type="button"
+                    [label]="'apps.validate.configuration' | dm"
+                    (click)="validateConfiguration(apps.key)"
+                ></button>
+                <button
                     pButton
                     secondary
                     type="button"
