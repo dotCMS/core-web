@@ -56,6 +56,7 @@ export class DotLayoutGrid {
     }
 
     get boxes() {
+        // console.log(this.dotLayoutGridBoxs);
         return this.dotLayoutGridBoxs;
     }
 
@@ -80,11 +81,13 @@ export class DotLayoutGrid {
 
     addBox(): void {
         const conf: NgGridItemConfig = this.getConfigOfNewBox();
+        console.log('addBox()', conf.sizex);
         this.dotLayoutGridBoxs.push({ config: conf, containers: [] });
         this.setRowClases();
     }
 
     deleteEmptyRows(): void {
+        console.log('deleteEmptyRows()', this.dotLayoutGridBoxs);
         this.dotLayoutGridBoxs = _.chain(this.dotLayoutGridBoxs)
             .sortBy('config.row')
             .groupBy('config.row')
@@ -107,6 +110,7 @@ export class DotLayoutGrid {
     }
 
     removeContainer(index: number): void {
+        console.log('removeContainer()', this.dotLayoutGridBoxs);
         this.dotLayoutGridBoxs.splice(index, 1);
         this.deleteEmptyRows();
         this.setRowClases();
@@ -128,7 +132,7 @@ export class DotLayoutGrid {
 
     private getConfigOfNewBox(): NgGridItemConfig {
         const newRow: NgGridItemConfig = DotLayoutGrid.getDefaultConfig();
-
+        console.log('getConfigOfNewBox');
         if (this.dotLayoutGridBoxs.length) {
             const lastContainer = _.chain(this.dotLayoutGridBoxs)
                 .groupBy('config.row')

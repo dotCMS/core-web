@@ -17,6 +17,7 @@
         *ngFor="let gridBox of grid.boxes; let i = index"
         [(ngGridItem)]="gridBox.config"
     >
+        {{ gridBox.config | json }}
         <dot-container-selector
             (change)="propagateGridLayoutChange($event)"
             (remove)="onRemoveContainer(i)"
