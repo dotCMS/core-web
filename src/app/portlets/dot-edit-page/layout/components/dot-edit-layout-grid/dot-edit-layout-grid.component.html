@@ -1,4 +1,3 @@
-{{grid.boxes | json }}
 <div class="grid" [ngGrid]="gridConfig" (onDragStop)="updateModel()" (onResizeStop)="updateModel()">
     <div
         class="box__add-row-class-button"
@@ -16,9 +15,8 @@
     <div
         class="box"
         *ngFor="let gridBox of grid.boxes; let i = index"
-        [ngGridItem]="gridBox.config"
+        [(ngGridItem)]="gridBox.config"
     >
-        {{ gridBox.config | json }}
         <dot-container-selector
             (change)="propagateGridLayoutChange($event)"
             (remove)="onRemoveContainer(i)"

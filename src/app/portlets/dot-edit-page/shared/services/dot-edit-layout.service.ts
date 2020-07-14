@@ -47,7 +47,6 @@ export class DotEditLayoutService {
                 });
             });
         });
-        console.log('getDotLayoutGridBox');
         return new DotLayoutGrid(grid, dotLayoutBody.rows.map((row: DotLayoutRow) => row.styleClass));
     }
 

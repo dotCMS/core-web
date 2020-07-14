@@ -95,7 +95,6 @@ export class DotEditLayoutGridComponent implements OnInit, OnDestroy, ControlVal
             .listen('layout-sidebar-change')
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                console.log('this.resizeGrid();');
                 this.resizeGrid();
             });
 
@@ -310,11 +309,9 @@ export class DotEditLayoutGridComponent implements OnInit, OnDestroy, ControlVal
     }
 
     private setGridValue(): void {
-        console.log('setGridValue');
         this.grid = this.isHaveRows()
             ? this.dotEditLayoutService.getDotLayoutGridBox(this.value)
             : DotLayoutGrid.getDefaultGrid();
-        debugger;
         this.rowClass = this.grid.getAllRowClass();
     }
 

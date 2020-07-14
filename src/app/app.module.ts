@@ -20,14 +20,13 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import { DotDirectivesModule } from './shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { DotDownloadBundleDialogComponent } from './view/components/_common/dot-download-bundle-dialog/dot-download-bundle-dialog.component';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
 @NgModule({
     bootstrap: [AppComponent],
-    declarations: [AppComponent, ...COMPONENTS, DotDownloadBundleDialogComponent],
+    declarations: [AppComponent, ...COMPONENTS],
     imports: [
         ...CUSTOM_MODULES,
         ...NGFACES_MODULES,
