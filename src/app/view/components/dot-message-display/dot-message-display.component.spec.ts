@@ -63,6 +63,19 @@ describe('DotMessageDisplayComponent', () => {
         expect(fixture.debugElement.query(By.css('dot-icon'))).not.toBeNull();
     });
 
+    it('should have set check class on sucess', () => {
+        dotMessageDisplayServiceMock.messages$.next({
+            life: 300,
+            message: 'message',
+            portletIdList: [],
+            severity: DotMessageSeverity.SUCCESS,
+            type: DotMessageType.SIMPLE_MESSAGE
+        });
+        fixture.detectChanges()
+        const icon = fixture.debugElement.query(By.css('dot-icon'));
+        expect(icon.nativeElement.classList.contains('success')).toBe(true);
+    });
+
     it('should have span', () => {
         dotMessageDisplayServiceMock.messages$.next({
             life: 300,
