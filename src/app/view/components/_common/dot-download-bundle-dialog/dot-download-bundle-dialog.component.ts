@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import { DOCUMENT} from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { SelectItem } from 'primeng/api';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import {
@@ -7,7 +7,7 @@ import {
     DotPushPublishFiltersService
 } from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
 import { Observable, of, Subject } from 'rxjs';
-import {catchError, delay, map, take, takeUntil} from 'rxjs/operators';
+import { catchError, map, take, takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -17,6 +17,9 @@ enum DownloadType {
     UNPUBLISH = 'unpublish',
     PUBLISH = 'publish'
 }
+
+const DOWNLOAD_URL =
+    '/DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/downloadUnpushedBundle/bundleId/';
 
 @Component({
     selector: 'dot-dot-download-bundle-dialog',
@@ -29,36 +32,32 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
     dialogActions: DotDialogActions;
     form: FormGroup;
     showDialog = false;
+    building = false;
 
     private currentFilterKey: string;
     private destroy$: Subject<boolean> = new Subject<boolean>();
-    private _filterOptions: SelectItem[] = null;
+    private filters: SelectItem[] = null;
 
     constructor(
         public fb: FormBuilder,
         private dotMessageService: DotMessageService,
         private dotPushPublishFiltersService: DotPushPublishFiltersService,
         private dotDownloadBundleDialogService: DotDownloadBundleDialogService,
-        @Inject(DOCUMENT) private document: Document,
+        @Inject(DOCUMENT) private document: Document
     ) {}
 
     ngOnInit() {
         this.dotDownloadBundleDialogService.showDialog$
             .pipe(takeUntil(this.destroy$))
             .subscribe((bundleId: string) => {
-                this.initForm({
-                    bundleId: bundleId
-                });
-                this.setDialogActions();
-                this.lisentForChanges();
-                this.showDialog = true;
+                this.initDialog(bundleId);
             });
 
         this.loadFilters()
             .pipe(take(1))
             .subscribe((options: SelectItem[]) => {
-                this.filterOptions = options;
-                this.downloadOptions = this.getDonwloadOptions();
+                this.filters = options;
+                this.downloadOptions = this.getDownloadOptions();
             });
     }
 
@@ -68,11 +67,12 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Close the dialog and reset the form
+     * Close the dialog
      * @memberof DotDownloadBundleDialogComponent
      */
     close(): void {
         this.showDialog = false;
+        this.building = false;
     }
 
     /**
@@ -81,48 +81,28 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
      */
     downloadFile(): void {
         if (this.form.valid) {
-            let location = `/DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/downloadUnpushedBundle/bundleId/${this
-                .form.value.bundleId}/operation/${this.form.value.downloadOptionSelected}`;
+            const value = this.form.value;
+            let location = `${DOWNLOAD_URL}${value.bundleId}/operation/${value.downloadOptionSelected}`;
             if (this.form.controls['filterKey'].value === DownloadType.PUBLISH) {
-                location += `/filterKey/${this.form.value.filterKey}`;
+                location += `/filterKey/${value.filterKey}`;
             }
-            delay(1000);
-            fetch(location)
-                .then( res => res.blob() )
-                .then( blob => {
-                    const file = window.URL.createObjectURL(blob);
-                    window.location.assign(file);
-                    this.close();
-                    this.document.location.href = location;
-                });
-
-
-
-            // fetch(location).then(response => {
-            //     if (!response.ok) {
-            //         throw new Error(response.statusText);
-            //     }
-            //     debugger;
-            //     this.
-            //         let blob = new Blob([response]);
-            //     let url = window.URL.createObjectURL(blob);
-            //     let pwa = window.open(url);
-            //     if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
-            //         alert( 'Please disable your Pop-up blocker and try again.');
-            //     }
-            //     this.close();
-            // });
-
-            // this.coreWebService.requestView({
-            //     method: RequestMethod.Get,
-            //     url: location
-            // }).pipe(take(1)).subscribe(() => this.close());
-
-            // this.document.location.href = location;
+            this.building = true;
+            this.dialogActions.accept.disabled = true;
+            this.dialogActions.cancel.disabled = true;
+            setTimeout(() => {
+                fetch(location)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = window.URL.createObjectURL(blob);
+                        window.location.assign(file);
+                        this.close();
+                        this.document.location.href = location;
+                    });
+            }, 2000);
         }
     }
 
-    private getDonwloadOptions(): SelectItem[] {
+    private getDownloadOptions(): SelectItem[] {
         return [
             {
                 label: this.dotMessageService.get('download.bundle.publish'),
@@ -135,12 +115,16 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
         ];
     }
 
-    private initForm(params?: { [key: string]: any }): void {
+    private initDialog(bundleId: string): void {
+        this.filterOptions = this.filters;
         this.form = this.fb.group({
             downloadOptionSelected: [this.downloadOptions[0].value, [Validators.required]],
             filterKey: this.currentFilterKey,
-            ...params
+            bundleId: bundleId
         });
+        this.setDialogActions();
+        this.listenForChanges();
+        this.showDialog = true;
     }
 
     private loadFilters(): Observable<SelectItem[]> {
@@ -190,7 +174,7 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
         };
     }
 
-    private lisentForChanges(): void {
+    private listenForChanges(): void {
         this.form
             .get('downloadOptionSelected')
             .valueChanges.pipe(takeUntil(this.destroy$))
@@ -202,13 +186,11 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
     private handleDropDownState(state: string): void {
         const filterKey = this.form.controls['filterKey'];
         if (state === DownloadType.UNPUBLISH) {
-            this._filterOptions = this.filterOptions;
-            this.currentFilterKey = filterKey.value;
             filterKey.disable();
             filterKey.setValue('');
             this.filterOptions = [];
         } else {
-            this.filterOptions = this._filterOptions;
+            this.filterOptions = this.filters;
             filterKey.enable();
             filterKey.setValue(this.currentFilterKey);
         }
