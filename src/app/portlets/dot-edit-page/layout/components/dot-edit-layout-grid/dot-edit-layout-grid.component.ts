@@ -312,6 +312,7 @@ export class DotEditLayoutGridComponent implements OnInit, OnDestroy, ControlVal
         this.grid = this.isHaveRows()
             ? this.dotEditLayoutService.getDotLayoutGridBox(this.value)
             : DotLayoutGrid.getDefaultGrid();
+
         this.rowClass = this.grid.getAllRowClass();
     }
 

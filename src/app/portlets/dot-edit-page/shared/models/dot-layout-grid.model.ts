@@ -128,7 +128,7 @@ export class DotLayoutGrid {
 
     private getConfigOfNewBox(): NgGridItemConfig {
         const newRow: NgGridItemConfig = DotLayoutGrid.getDefaultConfig();
-        console.log('getConfigOfNewBox');
+
         if (this.dotLayoutGridBoxs.length) {
             const lastContainer = _.chain(this.dotLayoutGridBoxs)
                 .groupBy('config.row')

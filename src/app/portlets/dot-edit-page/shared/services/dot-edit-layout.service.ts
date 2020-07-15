@@ -33,7 +33,6 @@ export class DotEditLayoutService {
 
         dotLayoutBody.rows.forEach((row: DotLayoutRow, rowIndex) => {
             row.columns.forEach((column: DotLayoutColumn) => {
-                console.log(column.width);
                 grid.push({
                     containers: this.getDotContainerColumnBoxFromDotPageContainer(
                         column.containers
@@ -47,6 +46,7 @@ export class DotEditLayoutService {
                 });
             });
         });
+
         return new DotLayoutGrid(grid, dotLayoutBody.rows.map((row: DotLayoutRow) => row.styleClass));
     }
 
