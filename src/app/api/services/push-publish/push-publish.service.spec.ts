@@ -89,6 +89,7 @@ describe('PushPublishService', () => {
             'DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish'
         );
         expect(this.lastConnection.request.getBody()).toBe(
+            // tslint:disable-next-line:max-line-length
             'assetIdentifier=1234567890&remotePublishDate=2020-07-08&remotePublishTime=10-10&remotePublishExpireDate=2020-07-15&remotePublishExpireTime=22-10&iWantTo=publish&whoToSend=env1&bundleName=&bundleSelect=&forcePush=true&filterKey=hol'
         );
         expect(result).toEqual(mockResponse);
@@ -107,6 +108,7 @@ describe('PushPublishService', () => {
         );
         tick();
         expect(this.lastConnection.request.getBody()).toBe(
+            // tslint:disable-next-line:max-line-length
             'assetIdentifier=1234567890&remotePublishDate=2020-07-08&remotePublishTime=10-10&remotePublishExpireDate=2020-07-15&remotePublishExpireTime=22-10&iWantTo=publish&whoToSend=env1&bundleName=&bundleSelect=&forcePush=true'
         );
     }));
@@ -130,6 +132,7 @@ describe('PushPublishService', () => {
             'DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/pushBundle'
         );
         expect(this.lastConnection.request.getBody()).toBe(
+            // tslint:disable-next-line:max-line-length
             'assetIdentifier=1234567890&remotePublishDate=2020-07-08&remotePublishTime=10-10&remotePublishExpireDate=2020-07-15&remotePublishExpireTime=22-10&iWantTo=publish&whoToSend=env1&bundleName=&bundleSelect=&forcePush=true&filterKey=hol'
         );
         expect(result).toEqual(mockResponse);
