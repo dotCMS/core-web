@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule, SelectButtonModule } from 'primeng/primeng';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
-import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotDownloadBundleDialogComponent } from '@components/_common/dot-download-bundle-dialog/dot-download-bundle-dialog.component';
 
@@ -18,7 +17,6 @@ import { DotDownloadBundleDialogComponent } from '@components/_common/dot-downlo
         DotDialogModule,
         ReactiveFormsModule,
         DropdownModule,
-        DotFieldValidationMessageModule,
         SelectButtonModule,
         DotPipesModule
     ]

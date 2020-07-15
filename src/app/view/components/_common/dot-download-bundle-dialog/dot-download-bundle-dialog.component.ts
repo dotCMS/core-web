@@ -1,5 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import {
@@ -32,7 +31,6 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
     dialogActions: DotDialogActions;
     form: FormGroup;
     showDialog = false;
-    building = false;
 
     private currentFilterKey: string;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -42,22 +40,24 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
         public fb: FormBuilder,
         private dotMessageService: DotMessageService,
         private dotPushPublishFiltersService: DotPushPublishFiltersService,
-        private dotDownloadBundleDialogService: DotDownloadBundleDialogService,
-        @Inject(DOCUMENT) private document: Document
+        private dotDownloadBundleDialogService: DotDownloadBundleDialogService
     ) {}
 
     ngOnInit() {
         this.dotDownloadBundleDialogService.showDialog$
             .pipe(takeUntil(this.destroy$))
             .subscribe((bundleId: string) => {
-                this.initDialog(bundleId);
-            });
-
-        this.loadFilters()
-            .pipe(take(1))
-            .subscribe((options: SelectItem[]) => {
-                this.filters = options;
-                this.downloadOptions = this.getDownloadOptions();
+                if (this.filters) {
+                    this.initDialog(bundleId);
+                } else {
+                    this.loadFilters()
+                        .pipe(take(1))
+                        .subscribe((options: SelectItem[]) => {
+                            this.filters = options;
+                            this.downloadOptions = this.getDownloadOptions();
+                            this.initDialog(bundleId);
+                        });
+                }
             });
     }
 
@@ -67,12 +67,11 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Close the dialog
+     * hide the dialog
      * @memberof DotDownloadBundleDialogComponent
      */
     close(): void {
         this.showDialog = false;
-        this.building = false;
     }
 
     /**
@@ -83,22 +82,21 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
         if (this.form.valid) {
             const value = this.form.value;
             let location = `${DOWNLOAD_URL}${value.bundleId}/operation/${value.downloadOptionSelected}`;
-            if (this.form.controls['filterKey'].value === DownloadType.PUBLISH) {
+            if (value.downloadOptionSelected === DownloadType.PUBLISH) {
                 location += `/filterKey/${value.filterKey}`;
             }
-            this.building = true;
             this.dialogActions.accept.disabled = true;
+            this.dialogActions.accept.label = this.dotMessageService.get(
+                'download.bundle.downloading'
+            );
             this.dialogActions.cancel.disabled = true;
-            setTimeout(() => {
-                fetch(location)
-                    .then(res => res.blob())
-                    .then(blob => {
-                        const file = window.URL.createObjectURL(blob);
-                        window.location.assign(file);
-                        this.close();
-                        this.document.location.href = location;
-                    });
-            }, 2000);
+            fetch(location)
+                .then(res => res.blob())
+                .then(blob => {
+                    const file = window.URL.createObjectURL(blob);
+                    window.location.assign(file);
+                    this.close();
+                });
         }
     }
 
@@ -116,13 +114,13 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
     }
 
     private initDialog(bundleId: string): void {
+        this.setDialogActions();
         this.filterOptions = this.filters;
         this.form = this.fb.group({
             downloadOptionSelected: [this.downloadOptions[0].value, [Validators.required]],
             filterKey: this.currentFilterKey,
             bundleId: bundleId
         });
-        this.setDialogActions();
         this.listenForChanges();
         this.showDialog = true;
     }
