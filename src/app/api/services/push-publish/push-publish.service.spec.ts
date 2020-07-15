@@ -16,8 +16,8 @@ const mockResponse = {
 
 const mockFormValue: DotPushPublishData = {
     pushActionSelected: 'publish',
-    publishdate: 'Wed Jul 08 2020 10:10:50 GMT-0600',
-    expiredate: 'Wed Jul 15 2020 22:10:50 GMT-0600',
+    publishdate: 'Wed Jul 08 2020 10:10:50',
+    expiredate: 'Wed Jul 15 2020 22:10:50',
     environment: ['env1'],
     forcePush: true,
     filterKey: 'hol'
