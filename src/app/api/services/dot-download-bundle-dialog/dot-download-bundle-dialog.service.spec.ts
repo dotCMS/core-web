@@ -1,12 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-
 import { DotDownloadBundleDialogService } from './dot-download-bundle-dialog.service';
 
 describe('DotDownloadBundleDialogService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+    let service: DotDownloadBundleDialogService;
+    let bundleID: string;
 
-  it('should be created', () => {
-    const service: DotDownloadBundleDialogService = TestBed.get(DotDownloadBundleDialogService);
-    expect(service).toBeTruthy();
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.get(DotDownloadBundleDialogService);
+        service.showDialog$.subscribe((data: string) => (bundleID = data));
+    });
+
+    it('should be created', () => {
+        service.open('ZXC!2');
+        expect(bundleID).toEqual('ZXC!2');
+    });
 });

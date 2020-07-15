@@ -11,6 +11,12 @@ export class DotDownloadBundleDialogService {
         return this.data.asObservable();
     }
 
+    /**
+     * Notify subscribers with new data
+     *
+     * @param string data
+     * @memberof DotDownloadBundleDialogService
+     */
     open(data: string): void {
         this.data.next(data);
     }
