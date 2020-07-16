@@ -11,7 +11,7 @@ describe('DotDownloadBundleDialogService', () => {
         service.showDialog$.subscribe((data: string) => (bundleID = data));
     });
 
-    it('should be created', () => {
+    it('should receive bundleID', () => {
         service.open('ZXC!2');
         expect(bundleID).toEqual('ZXC!2');
     });
