@@ -6,11 +6,12 @@ import { DropdownModule, SelectButtonModule } from 'primeng/primeng';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotDownloadBundleDialogComponent } from '@components/_common/dot-download-bundle-dialog/dot-download-bundle-dialog.component';
+import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 
 @NgModule({
     declarations: [DotDownloadBundleDialogComponent],
     exports: [DotDownloadBundleDialogComponent],
-    providers: [DotPushPublishFiltersService],
+    providers: [DotPushPublishFiltersService, DotDownloadBundleDialogService],
     imports: [
         CommonModule,
         FormsModule,
