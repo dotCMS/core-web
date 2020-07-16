@@ -6,7 +6,7 @@ describe('DotDownloadBundleDialogService', () => {
     let bundleID: string;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({});
+        TestBed.configureTestingModule({ providers: [DotDownloadBundleDialogService] });
         service = TestBed.get(DotDownloadBundleDialogService);
         service.showDialog$.subscribe((data: string) => (bundleID = data));
     });
