@@ -12,7 +12,8 @@ import { DotMessageSeverity } from './model';
 import { DotMessageType } from './model';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DotIconComponent } from '@components/_common/dot-icon/dot-icon.component';
 
 @Injectable()
 export class DotMessageDisplayServiceMock {
@@ -30,15 +31,17 @@ describe('DotMessageDisplayComponent', () => {
     const dotMessageDisplayServiceMock: DotMessageDisplayServiceMock = new DotMessageDisplayServiceMock();
     let fixture: ComponentFixture<DotMessageDisplayComponent>;
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [ToastModule, DotIconModule, DotIconButtonModule],
-            declarations: [DotMessageDisplayComponent],
-            providers: [
-                { provide: DotMessageDisplayService, useValue: dotMessageDisplayServiceMock },
-            ]
-        }).compileComponents();
-    }));
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [ToastModule, DotIconModule, DotIconButtonModule, BrowserAnimationsModule],
+                declarations: [DotMessageDisplayComponent],
+                providers: [
+                    { provide: DotMessageDisplayService, useValue: dotMessageDisplayServiceMock }
+                ]
+            }).compileComponents();
+        })
+    );
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DotMessageDisplayComponent);
@@ -48,6 +51,44 @@ describe('DotMessageDisplayComponent', () => {
 
     it('should have p-toast', () => {
         expect(fixture.debugElement.query(By.css('p-toast'))).not.toBeNull();
+    });
+
+    it('should have dot-icon', () => {
+        dotMessageDisplayServiceMock.messages$.next({
+            life: 300,
+            message: 'message',
+            portletIdList: [],
+            severity: DotMessageSeverity.ERROR,
+            type: DotMessageType.SIMPLE_MESSAGE
+        });
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css('dot-icon'))).not.toBeNull();
+    });
+
+    it('should have set check name on sucess', () => {
+        dotMessageDisplayServiceMock.messages$.next({
+            life: 300,
+            message: 'message',
+            portletIdList: [],
+            severity: DotMessageSeverity.SUCCESS,
+            type: DotMessageType.SIMPLE_MESSAGE
+        });
+        fixture.detectChanges();
+        const icon: DotIconComponent = fixture.debugElement.query(By.css('dot-icon'))
+            .componentInstance;
+        expect(icon.name).toEqual('check');
+    });
+
+    it('should have span', () => {
+        dotMessageDisplayServiceMock.messages$.next({
+            life: 300,
+            message: 'message',
+            portletIdList: [],
+            severity: DotMessageSeverity.ERROR,
+            type: DotMessageType.SIMPLE_MESSAGE
+        });
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css('span'))).not.toBeNull();
     });
 
     it('should add a new message', () => {
