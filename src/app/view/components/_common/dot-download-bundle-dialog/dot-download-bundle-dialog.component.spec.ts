@@ -94,7 +94,6 @@ describe('DotDownloadBundleDialogComponent', () => {
             providers: [
                 DotDownloadBundleDialogService,
                 DotPushPublishFiltersService,
-                DotcmsEventsService,
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: DotcmsEventsService, useValue: dotEventsService }
             ]
