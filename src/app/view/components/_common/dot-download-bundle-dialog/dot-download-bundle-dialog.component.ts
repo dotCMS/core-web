@@ -60,7 +60,6 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
                         });
                 }
             });
-        // this.subscribeToWSEvents();
     }
 
     ngOnDestroy(): void {
