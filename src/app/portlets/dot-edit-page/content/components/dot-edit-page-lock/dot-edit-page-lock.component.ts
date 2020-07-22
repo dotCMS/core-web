@@ -1,17 +1,26 @@
-import { Component, OnInit, Input,  OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    OnChanges,
+    SimpleChanges,
+    Output,
+    EventEmitter,
+    OnDestroy
+} from '@angular/core';
 
-import { take, switchMap } from 'rxjs/operators';
-import { Observable, of, from } from 'rxjs';
+import { take, switchMap, takeUntil } from 'rxjs/operators';
+import { Observable, of, from, Subject, merge } from 'rxjs';
 
 import { SelectItem } from 'primeng/primeng';
 
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
 import { DotPageRenderState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
 import { DotPageRenderOptions } from '@services/dot-page-render/dot-page-render.service';
+import { DotEditPageLockInfoComponent } from '../dot-edit-page-state-controller/components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
 
 enum DotConfirmationType {
     LOCK,
@@ -19,20 +28,25 @@ enum DotConfirmationType {
 }
 
 @Component({
-    selector: 'dot-edit-page-state-controller',
-    templateUrl: './dot-edit-page-state-controller.component.html',
-    styleUrls: ['./dot-edit-page-state-controller.component.scss']
+    selector: 'dot-edit-page-lock',
+    templateUrl: './dot-edit-page-lock.component.html',
+    styleUrls: ['./dot-edit-page-lock.component.scss']
 })
-export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
-    pageLockInfo: DotEditPageLockInfoComponent;
+export class DotEditPageLockComponent implements OnInit, OnChanges, OnDestroy {
+    @ViewChild('pageLockInfo') pageLockInfo: DotEditPageLockInfoComponent;
 
-    @Input() pageState: DotPageRenderState;
+    // @Input() pageState: DotPageRenderState;
     @Output() modeChange = new EventEmitter<DotPageMode>();
 
     lock: boolean;
     lockWarn = false;
     mode: DotPageMode;
     options: SelectItem[] = [];
+
+    pageState: DotPageRenderState;
+    pageState$: Observable<DotPageRenderState>;
+    private destroy$: Subject<boolean> = new Subject<boolean>();
+
     constructor(
         private dotAlertConfirmService: DotAlertConfirmService,
         private dotMessageService: DotMessageService,
@@ -40,10 +54,28 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         private dotPersonalizeService: DotPersonalizeService
     ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.pageState$ = merge(this.dotPageStateService.state$).pipe(takeUntil(this.destroy$));
+        this.pageState$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((pageState: DotPageRenderState) => {
+                debugger;
+                this.pageState = pageState;
+
+                this.lock = this.isLocked(pageState);
+                this.lockWarn = this.shouldWarnLock(pageState);
+                this.mode = pageState.state.mode;
+
+            });
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         const pageState = changes.pageState.currentValue;
+        console.log(
+            '---*** CHANGE ONLOCK',
+            pageState.state.lockedByAnotherUser ? false : pageState.state.locked
+        );
+
         this.options = this.getStateModeOptions(pageState);
         /*
             When the page is lock but the page is being load from an user that can lock the page
@@ -52,6 +84,11 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         this.lock = this.isLocked(pageState);
         this.lockWarn = this.shouldWarnLock(pageState);
         this.mode = pageState.state.mode;
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     /**
@@ -156,6 +193,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     }
 
     private isLocked(pageState: DotPageRenderState): boolean {
+        debugger;
         return pageState.state.locked && !this.canTakeLock(pageState);
     }
 
@@ -164,6 +202,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     }
 
     private setLockerState() {
+        debugger;
         if (!this.lock && this.mode === DotPageMode.EDIT) {
             this.mode = DotPageMode.PREVIEW;
         }
@@ -177,6 +216,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     }
 
     private shouldAskToLock(): boolean {
+        debugger
         return this.pageState.page.canLock && this.pageState.state.lockedByAnotherUser;
     }
 
@@ -221,8 +261,12 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
             this.dotAlertConfirmService.confirm({
                 accept: resolve,
                 reject: reject,
-                header: this.dotMessageService.get('editpage.content.steal.lock.confirmation.message.header'),
-                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation.message')
+                header: this.dotMessageService.get(
+                    'editpage.content.steal.lock.confirmation.message.header'
+                ),
+                message: this.dotMessageService.get(
+                    'editpage.content.steal.lock.confirmation.message'
+                )
             });
         });
     }

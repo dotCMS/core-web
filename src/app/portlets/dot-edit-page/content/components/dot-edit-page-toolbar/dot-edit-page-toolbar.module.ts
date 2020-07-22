@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotEditPageToolbarComponent } from './dot-edit-page-toolbar.component';
-import { CheckboxModule, ToolbarModule, ButtonModule } from 'primeng/primeng';
+import { CheckboxModule, ToolbarModule, ButtonModule, InputSwitchModule } from 'primeng/primeng';
 import { FormsModule } from '@angular/forms';
 import { DotEditPageViewAsControllerModule } from '../dot-edit-page-view-as-controller/dot-edit-page-view-as-controller.module';
 import { DotEditPageStateControllerModule } from '../dot-edit-page-state-controller/dot-edit-page-state-controller.module';
@@ -10,6 +10,8 @@ import { DotGlobalMessageModule } from '@components/_common/dot-global-message/d
 import { DotEditPageWorkflowsActionsModule } from '../dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { DotEditPageLockModule } from '../dot-edit-page-lock/dot-edit-page-lock.module';
+import { DotEditPageMenuModule } from '../dot-edit-page-menu/dot-edit-page-menu.module';
 
 @NgModule({
     imports: [
@@ -18,13 +20,16 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         CheckboxModule,
         DotEditPageWorkflowsActionsModule,
         DotEditPageInfoModule,
+        DotEditPageLockModule,
+        DotEditPageMenuModule,
         DotEditPageViewAsControllerModule,
         DotEditPageStateControllerModule,
         DotSecondaryToolbarModule,
         DotGlobalMessageModule,
         FormsModule,
         ToolbarModule,
-        DotPipesModule
+        DotPipesModule,
+        InputSwitchModule
     ],
     exports: [DotEditPageToolbarComponent],
     declarations: [DotEditPageToolbarComponent]
