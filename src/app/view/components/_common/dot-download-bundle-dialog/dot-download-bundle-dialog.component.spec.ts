@@ -65,7 +65,7 @@ const FILTERS_SORTED = [
 const DOWNLOAD_URL =
     '/DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/downloadUnpushedBundle/bundleId/';
 
-fdescribe('DotDownloadBundleDialogComponent', () => {
+describe('DotDownloadBundleDialogComponent', () => {
     let component: DotDownloadBundleDialogComponent;
     let fixture: ComponentFixture<DotDownloadBundleDialogComponent>;
     let dotDialogComponent: DotDialogComponent;
