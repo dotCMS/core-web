@@ -214,7 +214,7 @@ describe('DotDownloadBundleDialogComponent', () => {
                     spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
                     anchor = document.createElement('a');
                     spyOn(anchor, 'click');
-                    spyOn(dotUtils, 'dotDownloadBlobFile').and.returnValue(anchor);
+                    spyOn(dotUtils, 'getDownloadLink').and.returnValue(anchor);
 
                 });
                 it('should disable buttons and change to label to downloading...', () => {
@@ -233,7 +233,7 @@ describe('DotDownloadBundleDialogComponent', () => {
                         expect(window.fetch).toHaveBeenCalledWith(
                             `${DOWNLOAD_URL}${BUNDLE_ID}/operation/publish/filterKey/2`
                         );
-                        expect(dotUtils.dotDownloadBlobFile).toHaveBeenCalledWith(
+                        expect(dotUtils.getDownloadLink).toHaveBeenCalledWith(
                             blobMock,
                             fileName
                         );

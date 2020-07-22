@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { dotDownloadBlobFile } from '@shared/dot-utils';
+import { getDownloadLink } from '@shared/dot-utils';
 
 enum DownloadType {
     UNPUBLISH = 'unpublish',
@@ -203,7 +203,7 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
                 return res.blob();
             })
             .then((blob: Blob) => {
-                dotDownloadBlobFile(blob, fileName).click();
+                getDownloadLink(blob, fileName).click();
                 this.close();
             })
             .catch(() => {

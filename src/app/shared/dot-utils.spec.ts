@@ -5,7 +5,7 @@ describe('Dot Utils', () => {
         const blobMock = new Blob(['']);
         const fileName = 'doc.txt';
         spyOn(window.URL, 'createObjectURL');
-        const anchor = dotUtils.dotDownloadBlobFile(blobMock, fileName);
+        const anchor = dotUtils.getDownloadLink(blobMock, fileName);
 
         expect(anchor.download).toEqual(fileName);
         expect(window.URL.createObjectURL).toHaveBeenCalledWith(blobMock);
