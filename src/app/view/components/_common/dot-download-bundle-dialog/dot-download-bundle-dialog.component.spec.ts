@@ -200,7 +200,7 @@ describe('DotDownloadBundleDialogComponent', () => {
                 const fileName = 'asd-01EDSTVT6KGQ8CQ80PPA8717AN.tar.gz';
                 const mockResponse = {
                     headers: {
-                        get: (header: string) => {
+                        get: (_header: string) => {
                             return `attachment; filename=${fileName}`;
                         }
                     },
@@ -208,10 +208,14 @@ describe('DotDownloadBundleDialogComponent', () => {
                         return blobMock;
                     }
                 };
+                let anchor: HTMLAnchorElement;
 
                 beforeEach(() => {
                     spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
-                    spyOn(dotUtils, 'dotDownloadBlobFile');
+                    anchor = document.createElement('a');
+                    spyOn(anchor, 'click');
+                    spyOn(dotUtils, 'dotDownloadBlobFile').and.returnValue(anchor);
+
                 });
                 it('should disable buttons and change to label to downloading...', () => {
                     downloadButton.click();
@@ -233,6 +237,7 @@ describe('DotDownloadBundleDialogComponent', () => {
                             blobMock,
                             fileName
                         );
+                        expect(anchor.click).toHaveBeenCalledTimes(1);
                         expect(dotDialogComponent.visible).toEqual(false);
                     })
                 );

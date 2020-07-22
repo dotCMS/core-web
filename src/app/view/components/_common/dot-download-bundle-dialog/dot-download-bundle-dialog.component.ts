@@ -203,11 +203,10 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
                 return res.blob();
             })
             .then((blob: Blob) => {
-                dotDownloadBlobFile(blob, fileName);
+                dotDownloadBlobFile(blob, fileName).click();
                 this.close();
             })
             .catch(() => {
-                debugger
                 this.setDialogActions();
                 this.errorMessage = this.dotMessageService.get('download.bundle.error');
             });
