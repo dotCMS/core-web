@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+import { dotDownloadBlobFile } from '@shared/dot-utils';
 
 enum DownloadType {
     UNPUBLISH = 'unpublish',
@@ -196,21 +197,17 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
     private downloadFile(url: string): void {
         let fileName = '';
         fetch(url)
-            .then(res => {
+            .then((res: Response) => {
                 const contentDisposition = res.headers.get('content-disposition');
                 fileName = this.getFilenameFromContentDisposition(contentDisposition);
                 return res.blob();
             })
-            .then(blob => {
-                // This approach is needed because FF do not hear WS events while waiting for a request.
-                const file = window.URL.createObjectURL(blob);
-                const anchor = document.createElement('a');
-                anchor.download = fileName;
-                anchor.href = file;
-                anchor.click();
+            .then((blob: Blob) => {
+                dotDownloadBlobFile(blob, fileName);
                 this.close();
             })
             .catch(() => {
+                debugger
                 this.setDialogActions();
                 this.errorMessage = this.dotMessageService.get('download.bundle.error');
             });
@@ -221,4 +218,3 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
         return contentDisposition.slice(contentDisposition.indexOf(key) + key.length);
     }
 }
-
