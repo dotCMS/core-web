@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,  OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 import { take, switchMap } from 'rxjs/operators';
 import { Observable, of, from } from 'rxjs';
@@ -24,7 +24,7 @@ enum DotConfirmationType {
     styleUrls: ['./dot-edit-page-state-controller.component.scss']
 })
 export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
-    pageLockInfo: DotEditPageLockInfoComponent;
+    @ViewChild('pageLockInfo') pageLockInfo: DotEditPageLockInfoComponent;
 
     @Input() pageState: DotPageRenderState;
     @Output() modeChange = new EventEmitter<DotPageMode>();

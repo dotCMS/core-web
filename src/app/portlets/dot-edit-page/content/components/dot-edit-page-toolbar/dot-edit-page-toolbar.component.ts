@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import * as _ from 'lodash';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageRenderState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 
@@ -39,7 +38,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
      * @memberof DotEditPageToolbarComponent
      */
     stateChange(): void {
-
         if (this.showWhatsChanged) {
             this.showWhatsChanged = false;
             this.whatschange.emit(this.showWhatsChanged);

@@ -4,11 +4,7 @@
     </div>
 
     <div class="main-toolbar-right">
-        ...
         <dot-global-message></dot-global-message>
-        <dot-edit-page-lock
-            (modeChange)="stateChange()"
-        ></dot-edit-page-lock>
         <button
             pButton
             secondary
@@ -25,14 +21,7 @@
     </div>
 
     <div class="lower-toolbar-left">
-        <dot-edit-page-menu
-            (modeChange)="stateChange($event)"
-            [pageState]="pageState"
-        ></dot-edit-page-menu>
-        <dot-edit-page-state-controller
-            (modeChange)="stateChange($event)"
-            [pageState]="pageState"
-        ></dot-edit-page-state-controller>
+        <dot-edit-page-state-controller (modeChange)="stateChange()" [pageState]="pageState"></dot-edit-page-state-controller>
 
         <p-checkbox
             class="dot-edit__what-changed-button"
