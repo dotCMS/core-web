@@ -20,7 +20,7 @@
         }
     }
 
-    @media only screen and (max-width: 1640px) {
+    @media only screen and (max-width: $screen-device-container-max) {
         ::ng-deep {
             p-dropdown .ui-dropdown {
                 width: 10px !important;
