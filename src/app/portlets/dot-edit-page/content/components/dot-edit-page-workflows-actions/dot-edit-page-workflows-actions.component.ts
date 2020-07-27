@@ -11,6 +11,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { tap, map, mergeMap, catchError, pluck } from 'rxjs/operators';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 
+
 @Component({
     selector: 'dot-edit-page-workflows-actions',
     templateUrl: './dot-edit-page-workflows-actions.component.html',
@@ -41,9 +42,11 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
     private getWorkflowActions(inode: string): Observable<MenuItem[]> {
         return this.dotWorkflowsActionsService.getByInode(inode).pipe(
             tap((workflows: DotCMSWorkflowAction[]) => {
+                debugger;
                 this.actionsAvailable = !!workflows.length;
             }),
             map((newWorkflows: DotCMSWorkflowAction[]) => {
+                debugger;
                 return newWorkflows.length !== 0 ? this.getWorkflowOptions(newWorkflows) : [];
             })
         );
@@ -54,7 +57,11 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
             return {
                 label: workflow.name,
                 command: () => {
+                    debugger;
                     const currentMenuActions = this.actions;
+                    // const hasPushPublish = workflow.actionInputs.filter((actionInput: DotCMSWorkflowInput) => {
+                    //
+                    // })
                     this.actions = this.dotWorkflowActionsFireService
                         .fireTo(this.page.workingInode, workflow.id)
                         .pipe(
