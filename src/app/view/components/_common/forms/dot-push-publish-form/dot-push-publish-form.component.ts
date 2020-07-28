@@ -14,13 +14,13 @@ import {
 import { catchError, filter, map, take, takeUntil } from 'rxjs/operators';
 import { DotPushPublishDialogData } from 'dotcms-models';
 import { Observable, of, Subject } from 'rxjs';
-import { SelectItem } from 'primeng/primeng';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
+import { SelectItem } from 'primeng/api';
 
 @Component({
     selector: 'dot-push-publish-form',

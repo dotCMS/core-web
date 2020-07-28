@@ -8,7 +8,7 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotPushPublishFiltersService } from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
 import { DotPushPublishDialogComponent } from '@components/_common/dot-push-publish-dialog/dot-push-publish-dialog.component';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { DotPushPublishFormModule } from '@components/_common/dot-push-publish-form/dot-push-publish-form.module';
+import { DotPushPublishFormModule } from '@components/_common/forms/dot-push-publish-form/dot-push-publish-form.module';
 
 @NgModule({
     declarations: [DotPushPublishDialogComponent],
