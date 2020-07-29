@@ -10,12 +10,19 @@
     </ng-template> -->
 
     <dot-language-selector
+    [pTooltip]="pageState.viewAs.language.language"
+    tooltipPosition="bottom"
+    appendTo="target"
+
         (selected)="changeLanguageHandler($event)"
         [value]="pageState.viewAs.language"
     ></dot-language-selector>
 
     <ng-template [ngIf]="isEnterpriseLicense">
         <dot-device-selector
+        [pTooltip]="pageState.viewAs.device?.name || ('editpage.viewas.default.device' | dm)"
+        tooltipPosition="bottom"
+        appendTo="target"
             (selected)="changeDeviceHandler($event)"
             [value]="pageState.viewAs.device"
         ></dot-device-selector>

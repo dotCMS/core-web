@@ -22,12 +22,6 @@
         class="dot-edit__page-wrapper"
         [class.dot-edit__page-wrapper--deviced]="pageState.viewAs.device"
     >
-        <div class="device-info" *ngIf="pageState.viewAs.device">
-            <span class="device-info__content">
-                {{ pageState.viewAs.device.name }} - {{ pageState.viewAs.device.cssWidth }} x
-                {{ pageState.viewAs.device.cssHeight }}
-            </span>
-        </div>
         <div class="dot-edit__device-wrapper">
             <div class="dot-edit__iframe-wrapper">
                 <dot-overlay-mask

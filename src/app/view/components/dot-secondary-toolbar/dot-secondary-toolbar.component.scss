@@ -18,12 +18,6 @@
         padding: 0 $basic-padding * 2;
     }
 
-    @media only screen and (max-width: $screen-device-container-max) {
-        .dot-secondary-toolbar__lower {
-            flex-direction: column;
-        }
-    }
-
     ::ng-deep {
         .main-toolbar-left,
         .lower-toolbar-left {
