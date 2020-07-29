@@ -11,6 +11,13 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 @NgModule({
     declarations: [DotEditPageStateControllerComponent, DotEditPageLockInfoComponent],
     exports: [DotEditPageStateControllerComponent],
-    imports: [CommonModule, FormsModule, InputSwitchModule, SelectButtonModule, DotPipesModule, TooltipModule]
+    imports: [
+        CommonModule,
+        FormsModule,
+        InputSwitchModule,
+        SelectButtonModule,
+        DotPipesModule,
+        TooltipModule
+    ]
 })
 export class DotEditPageStateControllerModule {}

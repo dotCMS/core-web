@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewChild,
+    OnChanges,
+    SimpleChanges,
+    Output,
+    EventEmitter
+} from '@angular/core';
 
 import { take, switchMap } from 'rxjs/operators';
 import { Observable, of, from } from 'rxjs';
@@ -221,8 +230,12 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
             this.dotAlertConfirmService.confirm({
                 accept: resolve,
                 reject: reject,
-                header: this.dotMessageService.get('editpage.content.steal.lock.confirmation.message.header'),
-                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation.message')
+                header: this.dotMessageService.get(
+                    'editpage.content.steal.lock.confirmation.message.header'
+                ),
+                message: this.dotMessageService.get(
+                    'editpage.content.steal.lock.confirmation.message'
+                )
             });
         });
     }

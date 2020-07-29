@@ -39,7 +39,7 @@
     }
 
     @media only screen and (max-width: $screen-device-container-max) {
-        &{
+        & {
             width: unset;
         }
     }
@@ -95,12 +95,11 @@ dot-icon {
     }
 }
 
-
 @media only screen and (max-width: $screen-device-container-max) {
     .dot-persona-selector__label-container {
         display: none;
     }
-    
+
     .dot-persona-selector__container {
         width: 48px;
     }
