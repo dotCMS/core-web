@@ -49,7 +49,7 @@ const pageRenderStateMock: DotPageRenderState = new DotPageRenderState(
     `
 })
 class TestHostComponent {
-    pageState: DotPageRenderState = pageRenderStateMock;
+    pageState: DotPageRenderState = _.cloneDeep(pageRenderStateMock);
 }
 
 describe('DotEditPageStateControllerComponent', () => {
