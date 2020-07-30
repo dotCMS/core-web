@@ -19,7 +19,6 @@ import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { DotEditPageViewAsControllerModule } from '../dot-edit-page-view-as-controller/dot-edit-page-view-as-controller.module';
 import { DotEditPageStateControllerModule } from '../dot-edit-page-state-controller/dot-edit-page-state-controller.module';
-import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
 import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
 import { SiteService, LoginService } from 'dotcms-js';
 import { SiteServiceMock } from '@tests/site-service.mock';
@@ -27,6 +26,7 @@ import { DotEditPageWorkflowsActionsModule } from '../dot-edit-page-workflows-ac
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 import { mockDotPersona } from '@tests/dot-persona.mock';
+import { DotMessageDisplayService } from '@components/dot-message-display/services';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -65,7 +65,6 @@ describe('DotEditPageToolbarComponent', () => {
                 ToolbarModule,
                 DotEditPageViewAsControllerModule,
                 DotEditPageStateControllerModule,
-                DotGlobalMessageModule,
                 DotEditPageInfoModule,
                 DotEditPageWorkflowsActionsModule
             ],
@@ -89,7 +88,8 @@ describe('DotEditPageToolbarComponent', () => {
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
-                }
+                },
+                DotMessageDisplayService
             ]
         });
     }));
@@ -115,9 +115,6 @@ describe('DotEditPageToolbarComponent', () => {
             const editPageInfo = de.query(
                 By.css('dot-secondary-toolbar .main-toolbar-left dot-edit-page-info')
             );
-            const globalMessage = de.query(
-                By.css('dot-secondary-toolbar .main-toolbar-right dot-global-message')
-            );
             const editCancelBtn = de.query(
                 By.css('dot-secondary-toolbar .main-toolbar-right .edit-page-toolbar__cancel')
             );
@@ -137,7 +134,6 @@ describe('DotEditPageToolbarComponent', () => {
             );
             expect(editToolbar).toBeDefined();
             expect(editPageInfo).toBeDefined();
-            expect(globalMessage).toBeDefined();
             expect(editCancelBtn).toBeDefined();
             expect(editWorkflowActions).toBeDefined();
             expect(editStateController).toBeDefined();

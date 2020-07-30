@@ -3,12 +3,11 @@ import { Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { DOTTestBed } from '@tests/dot-test-bed';
-import { mockDotRenderedPageState } from '@tests/dot-rendered-page-state.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotPageStateServiceMock } from '@tests/dot-page-state.service.mock';
 import { DotPersonalizeServiceMock } from '@tests/dot-personalize-service.mock';
 
-import { InputSwitchModule, SelectButtonModule } from 'primeng/primeng';
+import { InputSwitchModule, SelectButtonModule, TooltipModule } from 'primeng/primeng';
 
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
@@ -16,8 +15,15 @@ import { DotEditPageStateControllerComponent } from './dot-edit-page-state-contr
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
 import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
-import { DotPageRenderState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
+import {
+    DotPageRenderState,
+    DotPageMode,
+    DotPageRender
+} from '@portlets/dot-edit-page/shared/models';
 import * as _ from 'lodash';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { mockUser } from '@tests/login-service.mock';
+import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
 
 const mockDotMessageService = new MockDotMessageService({
     'editpage.toolbar.edit.page': 'Edit',
@@ -27,8 +33,14 @@ const mockDotMessageService = new MockDotMessageService({
     'editpage.content.steal.lock.confirmation.message': 'Steal lock',
     'editpage.personalization.confirm.message': 'Are you sure?',
     'editpage.personalization.confirm.header': 'Personalization',
-    'editpage.personalization.confirm.with.lock': 'Also steal lcok'
+    'editpage.personalization.confirm.with.lock': 'Also steal lock',
+    'editpage.toolbar.page.locked.by.user': 'Page locked by {0}'
 });
+
+const pageRenderStateMock: DotPageRenderState = new DotPageRenderState(
+    { ...mockUser, userId: '456' },
+    new DotPageRender(mockDotRenderedPage)
+);
 
 @Component({
     selector: 'dot-test-host-component',
@@ -37,7 +49,7 @@ const mockDotMessageService = new MockDotMessageService({
     `
 })
 class TestHostComponent {
-    pageState: DotPageRenderState = _.cloneDeep(mockDotRenderedPageState);
+    pageState: DotPageRenderState = pageRenderStateMock;
 }
 
 describe('DotEditPageStateControllerComponent', () => {
@@ -47,38 +59,36 @@ describe('DotEditPageStateControllerComponent', () => {
     let de: DebugElement;
     let deHost: DebugElement;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [
-                    TestHostComponent,
-                    DotEditPageStateControllerComponent,
-                    DotEditPageLockInfoComponent
-                ],
-                providers: [
-                    {
-                        provide: DotMessageService,
-                        useValue: mockDotMessageService
-                    },
-                    {
-                        provide: DotPageStateService,
-                        useClass: DotPageStateServiceMock
-                    },
-                    {
-                        provide: DotPersonalizeService,
-                        useClass: DotPersonalizeServiceMock
-                    },
-                    {
-                        provide: DotAlertConfirmService,
-                        useValue: {
-                            confirm: jasmine.createSpy()
-                        }
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [
+                TestHostComponent,
+                DotEditPageStateControllerComponent,
+                DotEditPageLockInfoComponent
+            ],
+            providers: [
+                {
+                    provide: DotMessageService,
+                    useValue: mockDotMessageService
+                },
+                {
+                    provide: DotPageStateService,
+                    useClass: DotPageStateServiceMock
+                },
+                {
+                    provide: DotPersonalizeService,
+                    useClass: DotPersonalizeServiceMock
+                },
+                {
+                    provide: DotAlertConfirmService,
+                    useValue: {
+                        confirm: jasmine.createSpy()
                     }
-                ],
-                imports: [InputSwitchModule, SelectButtonModule]
-            }).compileComponents();
-        })
-    );
+                }
+            ],
+            imports: [InputSwitchModule, SelectButtonModule, TooltipModule, DotPipesModule]
+        }).compileComponents();
+    }));
 
     beforeEach(() => {
         fixtureHost = DOTTestBed.createComponent(TestHostComponent);
@@ -107,19 +117,22 @@ describe('DotEditPageStateControllerComponent', () => {
                 });
             });
 
-            it('should have locker', () => {
+            it('should have locker with right attributes', () => {
                 const lockerDe = de.query(By.css('p-inputSwitch'));
                 const locker = lockerDe.componentInstance;
                 fixtureHost.whenRenderingDone().then(() => {
-                    expect(lockerDe.classes.warn).toBe(false, 'warn class');
-                    expect(locker.checked).toBe(true, 'checked');
+                    expect(lockerDe.classes.warn).toBe(true, 'warn class');
+                    expect(lockerDe.attributes.appendTo).toBe('target');
+                    expect(lockerDe.attributes['ng-reflect-text']).toBe('Page locked by Some One');
+                    expect(lockerDe.attributes['ng-reflect-tooltip-position']).toBe('top');
+                    expect(locker.checked).toBe(false, 'checked');
                     expect(locker.disabled).toBe(false, 'disabled');
                 });
             });
 
             it('should have lock info', () => {
                 const message = de.query(By.css('dot-edit-page-lock-info')).componentInstance;
-                expect(message.pageState).toEqual(mockDotRenderedPageState);
+                expect(message.pageState).toEqual(pageRenderStateMock);
             });
         });
 
