@@ -1,3 +1,26 @@
-dot-dialog {
-    min-width: 400px;
+.dot-wizard__step {
+    width: 400px;
+    flex-shrink: 0;
+    //display: none;
+    //&.active {
+    //    display: block;
+    //}
 }
+
+:host {
+    ::ng-deep {
+        ul[p-tabviewnav] {
+            display: none;
+        }
+    }
+}
+
+.dot-wizard__view {
+    width: 400px;
+    overflow: hidden;
+}
+
+.dot-wizard__container{
+    display: flex;
+}
+

@@ -21,13 +21,14 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
 import { SelectItem } from 'primeng/api';
+import { DotFormModel } from '@models/dot-form/dot-form.model';
 
 @Component({
     selector: 'dot-push-publish-form',
     templateUrl: './dot-push-publish-form.component.html',
     styleUrls: ['./dot-push-publish-form.component.scss']
 })
-export class DotPushPublishFormComponent implements OnInit, OnDestroy {
+export class DotPushPublishFormComponent implements OnInit, OnDestroy, DotFormModel<DotPushPublishDialogData, DotPushPublishData> {
     dateFieldMinDate = new Date();
     dialogActions: DotDialogActions;
     dialogShow = false;

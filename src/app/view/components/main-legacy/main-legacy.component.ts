@@ -2,6 +2,9 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
+import { DotAssigneeFormComponent } from '@components/_common/forms/dot-assignee-form/dot-assignee-form.component';
+import { DotCommentFormComponent } from '@components/_common/forms/dot-comment-form/dot-comment-form.component';
+import { DotPushPublishFormComponent } from '@components/_common/forms/dot-push-publish-form/dot-push-publish-form.component';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -11,6 +14,15 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
     templateUrl: './main-legacy.component.html'
 })
 export class MainComponentLegacyComponent implements OnInit {
+    test = [
+        {
+            component: DotAssigneeFormComponent,
+            data: { roleId: '654b0931-1027-41f7-ad4d-173115ed8ec1' }
+        },
+        { component: DotCommentFormComponent, data: {} },
+        { component: DotPushPublishFormComponent, data: {} }
+    ];
+
     constructor(
         private dotRouterService: DotRouterService,
         private dotIframeService: DotIframeService,
@@ -40,5 +52,4 @@ export class MainComponentLegacyComponent implements OnInit {
     onCustomEvent($event: CustomEvent): void {
         this.dotCustomEventHandlerService.handle($event);
     }
-
 }

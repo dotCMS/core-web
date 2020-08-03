@@ -1,4 +1,21 @@
-<dot-dialog [visible]="true">
-    <dot-comment-form></dot-comment-form>
-    <dot-assignee-form></dot-assignee-form>
+<dot-dialog
+    #dialog
+    [visible]="true"
+    [actions]="dialogActions"
+    (hide)="close()">
+
+<!--    <p-tabView [activeIndex]="currentStep">-->
+<!--        <p-tabPanel *ngFor="let step of steps; let i = index">-->
+<!--            <ng-template dotContainerReference ></ng-template>-->
+<!--        </p-tabPanel>-->
+<!--    </p-tabView>-->
+
+    <div class="dot-wizard__view">
+        <div class="dot-wizard__container">
+            <div class="dot-wizard__step" *ngFor="let step of steps;">
+                <ng-template dotContainerReference ></ng-template>
+            </div>
+        </div>
+    </div>
+
 </dot-dialog>
