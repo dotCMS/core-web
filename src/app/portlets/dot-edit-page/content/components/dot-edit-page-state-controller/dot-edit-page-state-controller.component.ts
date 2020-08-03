@@ -117,7 +117,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
                     () => {
                         this.updatePageState(
                             {
-                                mode: this.mode
+                                mode
                             },
                             this.lock
                         );
@@ -133,7 +133,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
             const lock = mode === DotPageMode.EDIT || null;
             this.updatePageState(
                 {
-                    mode: this.mode
+                    mode
                 },
                 lock
             );
