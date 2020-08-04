@@ -1,4 +1,9 @@
 <div class="form__group">
     <label class="form__label">{{ 'comment.form.comments' | dm }}:</label>
-    <textarea pinputtextarea (keyup)="emit()" [(ngModel)]="comment"></textarea>
+    <textarea
+        pInputTextarea
+        [style]="{ width: '100%' }"
+        (keyup)="emit()"
+        [(ngModel)]="comment">
+    </textarea>
 </div>

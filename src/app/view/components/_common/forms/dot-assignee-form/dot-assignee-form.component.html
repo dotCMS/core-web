@@ -1,7 +1,9 @@
-
-
 <div class="form__group">
     <label class="form__label">{{ 'assignee.form.assignee' | dm }}:</label>
-    <p-dropdown [options]="options" (onChange)="emit($event)" appendTo="body"></p-dropdown>
-
+    <p-dropdown
+        [options]="options"
+        [style]="{ width: '100%' }"
+        (onChange)="emit($event)"
+        appendTo="body">
+    </p-dropdown>
 </div>

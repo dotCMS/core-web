@@ -13,17 +13,22 @@ import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ComponentRef } from '@angular/core/src/linker/component_factory';
 import { Dialog } from 'primeng/dialog';
+import { DotWizardStep } from '@models/dot-wizard-step/dot-wizard-step.model';
+import { DotWizardService } from '@services/dot-wizard/dot-wizard.service';
+import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'dot-wizard',
     templateUrl: './dot-wizard.component.html',
     styleUrls: ['./dot-wizard.component.scss']
 })
-export class DotWizardComponent implements OnInit, AfterViewInit {
+export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
     wizardData: { [key: string]: string };
     dialogActions: DotDialogActions;
+    transform = '';
 
-    @Input() steps: any[];
+    @Input() steps: DotWizardStep[] = [];
     @ViewChildren(DotContainerReferenceDirective)
     formHosts: QueryList<DotContainerReferenceDirective>;
     @ViewChild('dialog') dialog: Dialog;
@@ -31,19 +36,34 @@ export class DotWizardComponent implements OnInit, AfterViewInit {
     private currentStep = 0;
     private componentsHost: DotContainerReferenceDirective[];
     private stepsValidation: boolean[];
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private componentFactoryResolver: ComponentFactoryResolver,
-        private dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService,
+        private dotWizardService: DotWizardService
     ) {}
 
-    ngOnInit() {}
-
-    ngAfterViewInit() {
-        setTimeout(() => {
+    ngOnInit() {
+        debugger;
+        this.dotWizardService.showDialog$.subscribe(data => {
+            debugger;
+            this.steps = data;
             this.loadComponents();
             this.setDialogActions();
-        }, 0);
+        });
+    }
+
+    ngAfterViewInit() {
+        // setTimeout(() => {
+        //     this.loadComponents();
+        //     this.setDialogActions();
+        // }, 0);
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     close(): void {
@@ -94,6 +114,7 @@ export class DotWizardComponent implements OnInit, AfterViewInit {
 
     private loadNextStep(next: number) {
         this.currentStep += next;
+        this.updateTransform();
         if (this.isLastStep()) {
             this.dialogActions.accept.label = this.dotMessageService.get('send');
             this.dialogActions.cancel.disabled = false;
@@ -120,7 +141,6 @@ export class DotWizardComponent implements OnInit, AfterViewInit {
     }
 
     private setValid(valid: boolean, step: number): void {
-        debugger;
         this.stepsValidation[step] = valid;
         if (this.currentStep === step) {
             this.dialogActions.accept.disabled = !valid;
@@ -128,7 +148,13 @@ export class DotWizardComponent implements OnInit, AfterViewInit {
     }
 
     private sendValue(): void {
+        this.dotWizardService.output$(this.wizardData);
+        this.steps = [];
         console.log('data: ', this.wizardData);
         // TODO: send value to service.
+    }
+
+    private updateTransform(): void {
+        this.transform = `translateX(${this.currentStep * 400 * -1}px)`;
     }
 }

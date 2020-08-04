@@ -8,9 +8,9 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotPage } from '../../../shared/models/dot-page.model';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
-import { tap, map, mergeMap, catchError, pluck } from 'rxjs/operators';
+import { tap, map, mergeMap, catchError, pluck, take } from 'rxjs/operators';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
-
+import { DotWizardService } from '@services/dot-wizard/dot-wizard.service';
 
 @Component({
     selector: 'dot-edit-page-workflows-actions',
@@ -30,7 +30,8 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
         private dotWorkflowsActionsService: DotWorkflowsActionsService,
         private dotMessageService: DotMessageService,
         private httpErrorManagerService: DotHttpErrorManagerService,
-        private dotGlobalMessageService: DotGlobalMessageService
+        private dotGlobalMessageService: DotGlobalMessageService,
+        private dotWizardService: DotWizardService
     ) {}
 
     ngOnChanges(changes: SimpleChanges) {
@@ -42,11 +43,9 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
     private getWorkflowActions(inode: string): Observable<MenuItem[]> {
         return this.dotWorkflowsActionsService.getByInode(inode).pipe(
             tap((workflows: DotCMSWorkflowAction[]) => {
-                debugger;
                 this.actionsAvailable = !!workflows.length;
             }),
             map((newWorkflows: DotCMSWorkflowAction[]) => {
-                debugger;
                 return newWorkflows.length !== 0 ? this.getWorkflowOptions(newWorkflows) : [];
             })
         );
@@ -57,37 +56,53 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
             return {
                 label: workflow.name,
                 command: () => {
+                    this.dotWizardService.showDialog$.subscribe(() => {
+                        console.log('tests');
+                    });
                     debugger;
                     const currentMenuActions = this.actions;
                     // const hasPushPublish = workflow.actionInputs.filter((actionInput: DotCMSWorkflowInput) => {
                     //
                     // })
-                    this.actions = this.dotWorkflowActionsFireService
-                        .fireTo(this.page.workingInode, workflow.id)
-                        .pipe(
-                            pluck('inode'),
-                            tap(() => {
-                                this.dotGlobalMessageService.display(
-                                    this.dotMessageService.get(
-                                        'editpage.actions.fire.confirmation',
-                                        workflow.name
-                                    )
-                                );
-                            }),
-                            // TODO: A better implementation needs to be done to handle workflow actions errors, which are edge cases
-                            catchError(() => observableOf(null)),
-                            mergeMap((inode: string) => {
-                                const newInode = inode || this.page.workingInode;
-                                this.fired.emit();
-                                return this.getWorkflowActions(newInode);
-                            }),
-                            catchError(error => {
-                                this.httpErrorManagerService.handle(error);
-                                return currentMenuActions;
-                            })
-                        );
+                    if (workflow.actionInputs.length) {
+                        this.dotWizardService
+                            .open(this.dotWorkflowsActionsService.setWizardSteps(workflow))
+                            .pipe(take(1))
+                            .subscribe((data: { [key: string]: string }) => {
+                                console.log('data: ', data);
+                                this.actions = this.dotWorkflowActionsFireService
+                                    .fireTo(this.page.workingInode, workflow.id)
+                                    .pipe(
+                                        pluck('inode'),
+                                        tap(() => {
+                                            this.dotGlobalMessageService.display(
+                                                this.dotMessageService.get(
+                                                    'editpage.actions.fire.confirmation',
+                                                    workflow.name
+                                                )
+                                            );
+                                        }),
+                                        // TODO: A better implementation needs to be done to handle workflow
+                                        //  actions errors, which are edge cases
+                                        catchError(() => observableOf(null)),
+                                        mergeMap((inode: string) => {
+                                            const newInode = inode || this.page.workingInode;
+                                            this.fired.emit();
+                                            return this.getWorkflowActions(newInode);
+                                        }),
+                                        catchError(error => {
+                                            this.httpErrorManagerService.handle(error);
+                                            return currentMenuActions;
+                                        })
+                                    );
+                            });
+                    }
                 }
             };
         });
     }
+
+    // private executeWorkflow(): void {
+    //
+    // }
 }
