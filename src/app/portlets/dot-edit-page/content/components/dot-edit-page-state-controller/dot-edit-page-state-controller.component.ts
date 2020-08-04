@@ -105,11 +105,11 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
                 .pipe(
                     take(1),
                     switchMap((type: DotConfirmationType) => {
-                        const pageId = this.pageState.page.identifier;
-                        const personaKeyTag = this.pageState.viewAs.persona.keyTag;
-
                         return type === DotConfirmationType.PERSONALIZATION
-                            ? this.dotPersonalizeService.personalized(pageId, personaKeyTag)
+                            ? this.dotPersonalizeService.personalized(
+                                  this.pageState.page.identifier,
+                                  this.pageState.viewAs.persona.keyTag
+                              )
                             : of(null);
                     })
                 )
@@ -117,7 +117,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
                     () => {
                         this.updatePageState(
                             {
-                                mode: this.mode
+                                mode
                             },
                             this.lock
                         );
@@ -133,7 +133,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
             const lock = mode === DotPageMode.EDIT || null;
             this.updatePageState(
                 {
-                    mode: this.mode
+                    mode
                 },
                 lock
             );
