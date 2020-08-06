@@ -2,7 +2,7 @@
     #dialog
     [visible]="steps && steps.length"
     [actions]="dialogActions"
-    (hide)="close()">
+    >
     <div class="dot-wizard__view" *ngIf="steps && steps.length">
         <div class="dot-wizard__container"  [ngStyle]="{transform: transform}" >
             <div class="dot-wizard__step" *ngFor="let step of steps;">

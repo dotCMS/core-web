@@ -5,16 +5,20 @@ import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { DotCMSWorkflowAction, DotCMSWorkflow } from 'dotcms-models';
 import { DotWizardStep } from '@models/dot-wizard-step/dot-wizard-step.model';
-import { DotAssigneeFormComponent } from '@components/_common/forms/dot-assignee-form/dot-assignee-form.component';
-import { DotCommentFormComponent } from '@components/_common/forms/dot-comment-form/dot-comment-form.component';
+import { DotCommentAndAssignFormComponent } from '@components/_common/forms/dot-comment-and-assign-form/dot-comment-and-assign-form.component';
 import { DotPushPublishFormComponent } from '@components/_common/forms/dot-push-publish-form/dot-push-publish-form.component';
 import { DotCMSWorkflowInput } from '../../../../../projects/dotcms-models/src/dot-workflow-action';
+
+enum DotActionInputs {
+    ASSIGNABLE = 'assignable',
+    COMMENTABLE = 'commentable',
+    COMMENTANDASSIGN = 'commentAndAssign'
+}
 
 @Injectable()
 export class DotWorkflowsActionsService {
     private workflowStepMap = {
-        assignable: DotAssigneeFormComponent,
-        commentable: DotCommentFormComponent,
+        commentAndAssign: DotCommentAndAssignFormComponent,
         pushPublish: DotPushPublishFormComponent
     };
 
@@ -57,15 +61,38 @@ export class DotWorkflowsActionsService {
 
     setWizardSteps(workflow: DotCMSWorkflowAction): DotWizardStep[] {
         const steps: DotWizardStep[] = [];
+        this.mergeCommentAndAssign(workflow);
         workflow.actionInputs.forEach((input: DotCMSWorkflowInput) => {
             if (this.workflowStepMap[input.id]) {
                 steps.push({
                     component: this.workflowStepMap[input.id],
-                    data: input.id === 'assignable' ? this.getAssignableData(workflow) : {}
+                    data: input.body
                 });
             }
         });
         return steps;
+    }
+
+    private mergeCommentAndAssign(workflow: DotCMSWorkflowAction): void {
+        const body = {};
+        workflow.actionInputs.forEach(input => {
+            if (this.isCommentOrAssign(input.id)) {
+                body[input.id] = true;
+            }
+        });
+        if (Object.keys(body)) {
+            workflow.actionInputs = workflow.actionInputs.filter(
+                input => !this.isCommentOrAssign(input.id)
+            );
+            workflow.actionInputs.unshift({
+                id: DotActionInputs.COMMENTANDASSIGN,
+                body: { ...body, ...this.getAssignableData(workflow) }
+            });
+        }
+    }
+
+    private isCommentOrAssign(id: string): boolean {
+        return id === DotActionInputs.ASSIGNABLE || id === DotActionInputs.COMMENTABLE;
     }
 
     private getWorkFlowId(workflow: DotCMSWorkflow): string {

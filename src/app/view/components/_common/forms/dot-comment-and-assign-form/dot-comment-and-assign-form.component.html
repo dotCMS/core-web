@@ -1,0 +1,26 @@
+<form
+    *ngIf="form"
+    [formGroup]="form"
+    (ngSubmit)="emitValues()"
+    (keyup.enter)="emitValues()"
+    novalidate
+>
+    <div class="form__group" *ngIf="data['assignable']">
+        <label class="form__label">{{ 'assignee.form.assignee' | dm }}:</label>
+        <p-dropdown #field
+            [options]="dotRoles"
+            [style]="{ width: '100%' }"
+            formControlName="assign"
+            appendTo="body"
+            autofocus>
+        </p-dropdown>
+    </div>
+    <div class="form__group" *ngIf="data['commentable']">
+        <label class="form__label">{{ 'comment.form.comments' | dm }}:</label>
+        <textarea #field
+            pInputTextarea
+            [style]="{ width: '100%' }"
+            formControlName="comments">
+        </textarea>
+    </div>
+</form>

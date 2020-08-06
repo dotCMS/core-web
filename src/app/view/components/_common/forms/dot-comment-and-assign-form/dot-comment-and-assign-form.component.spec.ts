@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotAssigneeFormComponent } from './dot-assignee-form.component';
+import { DotCommentAndAssignFormComponent } from './dot-comment-and-assign-form.component';
 
 describe('DotAssigneeFormComponent', () => {
-  let component: DotAssigneeFormComponent;
-  let fixture: ComponentFixture<DotAssigneeFormComponent>;
+  let component: DotCommentAndAssignFormComponent;
+  let fixture: ComponentFixture<DotCommentAndAssignFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DotAssigneeFormComponent ]
+      declarations: [ DotCommentAndAssignFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DotAssigneeFormComponent);
+    fixture = TestBed.createComponent(DotCommentAndAssignFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

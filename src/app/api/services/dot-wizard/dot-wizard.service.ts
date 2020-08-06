@@ -16,7 +16,6 @@ export class DotWizardService {
     }
 
     open(steps: DotWizardStep[]): Observable<{ [key: string]: string }> {
-        debugger;
         this.input.next(steps);
         return this.output.asObservable();
     }

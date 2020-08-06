@@ -1,4 +1,4 @@
 export interface DotWizardStep {
     component: any;
-    data: { [key: string]: string };
+    data: { [key: string]: any };
 }

@@ -16,7 +16,6 @@ import { DotPushPublishDialogData } from 'dotcms-models';
 import { Observable, of, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
-import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
@@ -28,9 +27,9 @@ import { DotFormModel } from '@models/dot-form/dot-form.model';
     templateUrl: './dot-push-publish-form.component.html',
     styleUrls: ['./dot-push-publish-form.component.scss']
 })
-export class DotPushPublishFormComponent implements OnInit, OnDestroy, DotFormModel<DotPushPublishDialogData, DotPushPublishData> {
+export class DotPushPublishFormComponent
+    implements OnInit, OnDestroy, DotFormModel<DotPushPublishDialogData, DotPushPublishData> {
     dateFieldMinDate = new Date();
-    dialogActions: DotDialogActions;
     dialogShow = false;
     form: FormGroup;
     pushActions: SelectItem[];
@@ -73,6 +72,11 @@ export class DotPushPublishFormComponent implements OnInit, OnDestroy, DotFormMo
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
+    }
+
+    emitValues(): void {
+        this.value.emit(this.form.value);
+        this.valid.emit(this.form.status === 'VALID');
     }
 
     private loadData(data: DotPushPublishDialogData): void {
@@ -216,8 +220,5 @@ export class DotPushPublishFormComponent implements OnInit, OnDestroy, DotFormMo
         return this.eventData.restricted || this.eventData.cats;
     }
 
-    private emitValues(): void {
-        this.value.emit(this.form.value);
-        this.valid.emit(this.form.status === 'VALID');
-    }
+
 }

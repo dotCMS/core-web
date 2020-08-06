@@ -13,7 +13,7 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
 export class MainComponentLegacyComponent implements OnInit {
     // test = [
     //     {
-    //         component: DotAssigneeFormComponent,
+    //         component: DotCommentAndAssignFormComponent,
     //         data: { roleId: '654b0931-1027-41f7-ad4d-173115ed8ec1' }
     //     },
     //     { component: DotCommentFormComponent, data: {} },

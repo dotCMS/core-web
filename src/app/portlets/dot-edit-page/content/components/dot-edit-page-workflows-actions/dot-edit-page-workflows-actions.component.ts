@@ -56,22 +56,15 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
             return {
                 label: workflow.name,
                 command: () => {
-                    this.dotWizardService.showDialog$.subscribe(() => {
-                        console.log('tests');
-                    });
-                    debugger;
                     const currentMenuActions = this.actions;
-                    // const hasPushPublish = workflow.actionInputs.filter((actionInput: DotCMSWorkflowInput) => {
-                    //
-                    // })
                     if (workflow.actionInputs.length) {
                         this.dotWizardService
                             .open(this.dotWorkflowsActionsService.setWizardSteps(workflow))
                             .pipe(take(1))
-                            .subscribe((data: { [key: string]: string }) => {
-                                console.log('data: ', data);
+                            .subscribe((data: { [key: string]: any }) => {
+                                debugger
                                 this.actions = this.dotWorkflowActionsFireService
-                                    .fireTo(this.page.workingInode, workflow.id)
+                                    .fireTo(this.page.workingInode, workflow.id, this.processWorkflowPayload(data))
                                     .pipe(
                                         pluck('inode'),
                                         tap(() => {
@@ -102,7 +95,13 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
         });
     }
 
-    // private executeWorkflow(): void {
-    //
-    // }
+    private processWorkflowPayload(data: { [key: string]: any }): { [key: string]: any } {
+        const whereToSend = data.environment ? data.environment.join() : null;
+        if (whereToSend) {
+            delete data.environment;
+            data['whereToSend'] = whereToSend;
+        }
+        console.log('processWorkflowPayload: ', data);
+        return data;
+    }
 }

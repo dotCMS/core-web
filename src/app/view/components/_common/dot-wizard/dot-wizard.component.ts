@@ -45,21 +45,16 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        debugger;
         this.dotWizardService.showDialog$.subscribe(data => {
-            debugger;
             this.steps = data;
-            this.loadComponents();
-            this.setDialogActions();
+            setTimeout(() => {
+                this.loadComponents();
+                this.setDialogActions();
+            }, 0);
         });
     }
 
-    ngAfterViewInit() {
-        // setTimeout(() => {
-        //     this.loadComponents();
-        //     this.setDialogActions();
-        // }, 0);
-    }
+    ngAfterViewInit() {}
 
     ngOnDestroy(): void {
         this.destroy$.next(true);
@@ -73,17 +68,35 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
     private loadComponents(): void {
         this.componentsHost = this.formHosts.toArray();
         this.stepsValidation = [];
-        this.steps.forEach((step, index: number) => {
-            const comp = this.componentFactoryResolver.resolveComponentFactory(step.component);
+        this.loadComponent(0);
+
+        // this.steps.forEach((step, index: number) => {
+        //     const comp = this.componentFactoryResolver.resolveComponentFactory(step.component);
+        //     const viewContainerRef = this.componentsHost[index].viewContainerRef;
+        //     viewContainerRef.clear();
+        //     const componentRef: ComponentRef<any> = viewContainerRef.createComponent(comp);
+        //     componentRef.instance.data = step.data;
+        //     componentRef.instance.value.subscribe(data => this.consolidateValues(data));
+        //     componentRef.instance.valid.subscribe(valid => {
+        //         this.setValid(valid, index);
+        //     });
+        // });
+    }
+
+    private loadComponent(index: number): void {
+        if (this.stepsValidation[index] === undefined) {
+            const comp = this.componentFactoryResolver.resolveComponentFactory(
+                this.steps[index].component
+            );
             const viewContainerRef = this.componentsHost[index].viewContainerRef;
-            viewContainerRef.clear();
+            // viewContainerRef.clear();
             const componentRef: ComponentRef<any> = viewContainerRef.createComponent(comp);
-            componentRef.instance.data = step.data;
+            componentRef.instance.data = this.steps[index].data;
             componentRef.instance.value.subscribe(data => this.consolidateValues(data));
             componentRef.instance.valid.subscribe(valid => {
                 this.setValid(valid, index);
             });
-        });
+        }
     }
 
     private consolidateValues(data: { [key: string]: string }): void {
@@ -114,6 +127,7 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private loadNextStep(next: number) {
         this.currentStep += next;
+        this.loadComponent(this.currentStep);
         this.updateTransform();
         if (this.isLastStep()) {
             this.dialogActions.accept.label = this.dotMessageService.get('send');
@@ -151,7 +165,6 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dotWizardService.output$(this.wizardData);
         this.steps = [];
         console.log('data: ', this.wizardData);
-        // TODO: send value to service.
     }
 
     private updateTransform(): void {
