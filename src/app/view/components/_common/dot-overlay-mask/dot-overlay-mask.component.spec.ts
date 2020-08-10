@@ -11,7 +11,7 @@ describe('DotOverlayMaskComponent', () => {
         TestBed.configureTestingModule({
             declarations: [],
             imports: [DotOverlayMaskModule]
-        });
+        }).compileComponents();
         fixture = TestBed.createComponent(DotOverlayMaskComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

@@ -59,7 +59,7 @@ describe('ContentTypesFieldsListComponent', () => {
                         }
                     }
                 ]
-            });
+            }).compileComponents();
 
             fixture = TestBed.createComponent(ContentTypesFieldsListComponent);
             de = fixture.debugElement;

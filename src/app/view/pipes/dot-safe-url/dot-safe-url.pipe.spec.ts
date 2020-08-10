@@ -41,7 +41,7 @@ describe('DotSafeUrlPipe', () => {
                 { provide: DotRouterService, useClass: MockDotRouterService },
             ],
             imports: [BrowserAnimationsModule]
-        });
+        }).compileComponents();
         dotRouterService = TestBed.get(DotRouterService);
         activatedRoute = TestBed.get(ActivatedRoute);
         domSanitizer = TestBed.get(DomSanitizer);

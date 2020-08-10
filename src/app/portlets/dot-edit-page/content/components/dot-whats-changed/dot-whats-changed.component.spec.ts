@@ -41,7 +41,7 @@ describe('DotWhatsChangedComponent', () => {
                     useClass: LoginServiceMock
                 }
             ]
-        });
+        }).compileComponents();
     }));
 
     beforeEach(() => {

@@ -34,7 +34,7 @@ describe('NamePropertyComponent', () => {
             declarations: [NamePropertyComponent, TestFieldValidationMessageComponent],
             imports: [DotCopyButtonModule, ReactiveFormsModule, DotPipesModule],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(NamePropertyComponent);
         de = fixture.debugElement;

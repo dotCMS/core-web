@@ -11,7 +11,7 @@ describe('DotIconComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [DotIconComponent]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotIconComponent);
         de = fixture.debugElement;

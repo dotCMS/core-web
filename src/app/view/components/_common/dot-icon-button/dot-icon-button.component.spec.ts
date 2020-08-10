@@ -11,7 +11,7 @@ describe('DotIconButtonComponent', () => {
         TestBed.configureTestingModule({
             declarations: [DotIconButtonComponent],
             imports: [DotIconModule]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotIconButtonComponent);
         comp = fixture.componentInstance;

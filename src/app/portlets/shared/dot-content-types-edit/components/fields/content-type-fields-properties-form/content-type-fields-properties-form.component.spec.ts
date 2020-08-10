@@ -138,7 +138,7 @@ describe('ContentTypeFieldsPropertiesFormComponent', () => {
                 { provide: FieldPropertyService, useClass: TestFieldPropertiesService },
                 { provide: DotMessageService, useValue: messageServiceMock }
             ]
-        });
+        }).compileComponents();
 
         hostFixture = TestBed.createComponent(DotHostTesterComponent);
         hostComp = hostFixture.componentInstance;

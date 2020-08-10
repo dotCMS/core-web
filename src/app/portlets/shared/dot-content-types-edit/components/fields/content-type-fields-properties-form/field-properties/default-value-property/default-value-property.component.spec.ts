@@ -26,7 +26,7 @@ describe('DefaultValuePropertyComponent', () => {
             declarations: [DefaultValuePropertyComponent, DotFieldValidationMessageComponent],
             imports: [ReactiveFormsModule, DotPipesModule],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DefaultValuePropertyComponent);
         comp = fixture.componentInstance;

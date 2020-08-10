@@ -25,7 +25,7 @@ describe('DotApiLinkComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [TestHostComponent, DotApiLinkComponent]
-        });
+        }).compileComponents();
     }));
 
     beforeEach(() => {

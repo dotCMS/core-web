@@ -48,7 +48,7 @@ describe('DotLayoutPropertiesComponent', () => {
                 ReactiveFormsModule
             ],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotLayoutPropertiesComponent);
         comp = fixture.componentInstance;

@@ -17,7 +17,7 @@ describe('ActionMenuButtonComponent', () => {
         TestBed.configureTestingModule({
             declarations: [ActionMenuButtonComponent],
             imports: [DotIconButtonTooltipModule, DotMenuModule]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(ActionMenuButtonComponent);
         comp = fixture.componentInstance;

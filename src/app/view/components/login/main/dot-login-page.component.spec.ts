@@ -36,7 +36,7 @@ describe('DotLoginPageComponent', () => {
                     useClass: MockLoginPageStateService
                 }
             ]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotLoginPageComponent);
         fixture.detectChanges();

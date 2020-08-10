@@ -26,7 +26,7 @@ describe('DotSecondaryToolbarComponent', () => {
             TestBed.configureTestingModule({
                 declarations: [HostTestComponent, DotSecondaryToolbarComponent],
                 imports: [CommonModule]
-            });
+            }).compileComponents();
         })
     );
 

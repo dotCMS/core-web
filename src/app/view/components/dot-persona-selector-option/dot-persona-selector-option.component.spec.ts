@@ -28,7 +28,7 @@ describe('DotPersonaSelectorOptionComponent', () => {
                     useValue: messageServiceMock
                 }
             ]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotPersonaSelectorOptionComponent);
         component = fixture.componentInstance;

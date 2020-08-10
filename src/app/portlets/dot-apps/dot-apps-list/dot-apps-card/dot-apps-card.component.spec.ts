@@ -24,7 +24,7 @@ describe('DotAppsCardComponent', () => {
             imports: [CardModule, DotAvatarModule, DotIconModule, NgxMdModule, TooltipModule, DotPipesModule],
             declarations: [DotAppsCardComponent],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+        }).compileComponents();
     }));
 
     beforeEach(() => {

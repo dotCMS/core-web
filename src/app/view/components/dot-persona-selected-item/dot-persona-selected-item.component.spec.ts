@@ -39,7 +39,7 @@ describe('DotPersonaSelectedItemComponent', () => {
                 }
             ],
             imports: [BrowserAnimationsModule, DotIconModule, DotAvatarModule, TooltipModule, DotPipesModule]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotPersonaSelectedItemComponent);
         component = fixture.componentInstance;

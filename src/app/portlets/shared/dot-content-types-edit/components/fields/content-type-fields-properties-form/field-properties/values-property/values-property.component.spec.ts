@@ -33,7 +33,7 @@ describe('ValuesPropertyComponent', () => {
                 declarations: [TestFieldValidationMessageComponent, ValuesPropertyComponent],
                 imports: [DotTextareaContentModule, DotFieldHelperModule, ReactiveFormsModule, DotPipesModule],
                 providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-            });
+            }).compileComponents();
 
             fixture = TestBed.createComponent(ValuesPropertyComponent);
             comp = fixture.componentInstance;

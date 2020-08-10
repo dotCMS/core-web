@@ -33,7 +33,7 @@ describe('DotCopyButtonComponent', () => {
                 DotClipboardUtil
             ],
             imports: [DotIconButtonModule, TooltipModule]
-        });
+        }).compileComponents();
     }));
 
     beforeEach(() => {

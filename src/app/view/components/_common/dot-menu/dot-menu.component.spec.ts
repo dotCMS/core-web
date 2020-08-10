@@ -15,7 +15,7 @@ describe('DotMenuComponent', () => {
         TestBed.configureTestingModule({
             declarations: [DotMenuComponent],
             imports: [CommonModule, DotIconButtonModule]
-        });
+        }).compileComponents();
     });
 
     beforeEach(() => {

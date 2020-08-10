@@ -50,7 +50,7 @@ describe('DotAutocompleteTagsComponent', () => {
                 { provide: DotTagsService, useClass: DotTagsServiceMock },
                 { provide: DotMessageService, useValue: messageServiceMock }
             ]
-        });
+        }).compileComponents();
         fixture = TestBed.createComponent(DotAutocompleteTagsComponent);
         de = fixture.debugElement;
         component = fixture.componentInstance;

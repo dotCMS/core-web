@@ -402,10 +402,11 @@ describe('SearchableDropdownComponent', () => {
                 ...SEARCHABLE_NGFACES_MODULES,
                 BrowserAnimationsModule,
                 DotIconModule,
-                DotIconButtonModule
+                DotIconButtonModule,
+                DotPipesModule
             ],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+        }).compileComponents();
 
         hostFixture = TestBed.createComponent(HostTestExternalTemplateComponent);
         de = hostFixture.debugElement.query(By.css('dot-searchable-dropdown'));

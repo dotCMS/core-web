@@ -12,7 +12,7 @@ describe('FieldValidationComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [DotFieldValidationMessageComponent]
-        });
+        }).compileComponents();
     }));
 
     beforeEach(() => {

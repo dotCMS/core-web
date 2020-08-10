@@ -108,11 +108,10 @@ describe('DotNavigationComponent', () => {
                     useClass: LoginServiceMock
                 }
             ]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotNavigationComponent);
         de = fixture.debugElement;
-        fixture.componentRef;
 
         dotNavigationService = de.injector.get(DotNavigationService);
 

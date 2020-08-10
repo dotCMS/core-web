@@ -59,7 +59,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
                         useClass: MockDotRouterService
                     }
                 ]
-            });
+            }).compileComponents();
         })
     );
 

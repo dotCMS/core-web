@@ -34,7 +34,7 @@ describe('DotAvatarComponent', () => {
         TestBed.configureTestingModule({
             declarations: [HostTestComponent, DotAvatarComponent],
             imports: [CommonModule]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(HostTestComponent);
         de = fixture.debugElement;

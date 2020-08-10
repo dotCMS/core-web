@@ -26,7 +26,7 @@ describe('DotUnlicensedPorletComponent', () => {
                 }
             ],
             imports: [DotIconModule, DotPipesModule]
-        });
+        }).compileComponents();
     }));
 
     beforeEach(() => {

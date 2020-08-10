@@ -12,7 +12,7 @@ describe('DotSpinnerComponent', () => {
         TestBed.configureTestingModule({
             declarations: [],
             imports: [DotSpinnerModule]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotSpinnerComponent);
         component = fixture.componentInstance;

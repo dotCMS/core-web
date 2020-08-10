@@ -100,7 +100,7 @@ describe('DotToolbarNotificationsComponent', () => {
                 { provide: LoginService, useClass: MockLoginService },
                 { provide: NotificationsService, useClass: MockNotificationsService },
             ]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotToolbarNotificationsComponent);
     }));

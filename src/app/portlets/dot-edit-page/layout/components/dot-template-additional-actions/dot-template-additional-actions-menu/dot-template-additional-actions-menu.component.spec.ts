@@ -32,7 +32,7 @@ describe('DotLegacyAdditionalActionsMenuComponent', () => {
         TestBed.configureTestingModule({
             declarations: [DotTemplateAdditionalActionsMenuComponent, MockPrimeNGMenuComponent],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotTemplateAdditionalActionsMenuComponent);
         component = fixture.componentInstance;

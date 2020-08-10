@@ -34,7 +34,7 @@ describe('DotCrumbtrailComponent', () => {
                     useValue: dotCrumbtrailService
                 }
             ]
-        });
+        }).compileComponents();
     }));
 
     beforeEach(() => {

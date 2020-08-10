@@ -28,7 +28,7 @@ describe('DotTextareaContentComponent', () => {
                 TinymceModule.withConfig({}),
                 FormsModule
             ]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotTextareaContentComponent);
         component = fixture.componentInstance;

@@ -26,7 +26,7 @@ describe('ActionButtonComponent', () => {
                     }
                 ])
             ]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotActionButtonComponent);
         de = fixture.debugElement;

@@ -10,7 +10,7 @@ describe('DotSiteBrowserComponent', () => {
         async(() => {
             TestBed.configureTestingModule({
                 declarations: [DotSiteBrowserComponent]
-            });
+            }).compileComponents();
         })
     );
 

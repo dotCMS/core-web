@@ -14,7 +14,7 @@ describe('DotNavIconComponent', () => {
         TestBed.configureTestingModule({
             declarations: [DotNavIconComponent],
             imports: [DotIconModule]
-        });
+        }).compileComponents();
 
         fixture = TestBed.createComponent(DotNavIconComponent);
         de = fixture.debugElement;
