@@ -141,14 +141,13 @@ export class DotPushPublishFormComponent
         this.form = this.fb.group({
             ...params,
             pushActionSelected: [this.pushActions[0].value, [Validators.required]],
-            publishdate: [new Date(), [Validators.required]],
-            expiredate: [{ value: new Date(), disabled: true }, [Validators.required]],
-            environment: ['', [Validators.required]],
-            forcePush: false
+            publishDate: [new Date(), [Validators.required]],
+            expireDate: [{ value: new Date(), disabled: true }, [Validators.required]],
+            environment: ['', [Validators.required]]
         });
 
-        const publishDate = this.form.get('publishdate');
-        const expireDate = this.form.get('expiredate');
+        const publishDate = this.form.get('publishDate');
+        const expireDate = this.form.get('expireDate');
         const ppFilter = this.form.get('filterKey');
 
         const enableFilters = () => {

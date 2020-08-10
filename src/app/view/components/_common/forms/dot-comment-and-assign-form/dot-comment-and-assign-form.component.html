@@ -11,8 +11,7 @@
             [options]="dotRoles"
             [style]="{ width: '100%' }"
             formControlName="assign"
-            appendTo="body"
-            autofocus>
+            appendTo="body">
         </p-dropdown>
     </div>
     <div class="form__group" *ngIf="data['commentable']">
@@ -20,7 +19,7 @@
         <textarea #field
             pInputTextarea
             [style]="{ width: '100%' }"
-            formControlName="comments">
+            formControlName="comments" >
         </textarea>
     </div>
 </form>

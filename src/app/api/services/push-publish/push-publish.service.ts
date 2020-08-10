@@ -78,25 +78,23 @@ export class PushPublishService {
     private getPublishEnvironmentData(
         assetIdentifier: string,
         {
-            publishdate,
-            expiredate,
+            publishDate,
+            expireDate,
             pushActionSelected,
             environment,
-            forcePush,
             filterKey
         }: DotPushPublishData
     ): string {
         let result = '';
         result += `assetIdentifier=${assetIdentifier}`;
-        result += `&remotePublishDate=${moment(publishdate).format('YYYY-MM-DD')}`;
-        result += `&remotePublishTime=${moment(publishdate).format('HH-mm')}`;
-        result += `&remotePublishExpireDate=${moment(expiredate).format('YYYY-MM-DD')}`;
-        result += `&remotePublishExpireTime=${moment(expiredate).format('HH-mm')}`;
+        result += `&remotePublishDate=${moment(publishDate).format('YYYY-MM-DD')}`;
+        result += `&remotePublishTime=${moment(publishDate).format('HH-mm')}`;
+        result += `&remotePublishExpireDate=${moment(expireDate).format('YYYY-MM-DD')}`;
+        result += `&remotePublishExpireTime=${moment(expireDate).format('HH-mm')}`;
         result += `&iWantTo=${pushActionSelected}`;
         result += `&whoToSend=${environment}`;
         result += '&bundleName=';
         result += '&bundleSelect=';
-        result += `&forcePush=${forcePush}`;
 
         if (filterKey) {
             result += `&filterKey=${filterKey}`;

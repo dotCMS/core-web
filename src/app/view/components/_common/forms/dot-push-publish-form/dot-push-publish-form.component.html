@@ -39,7 +39,7 @@
                 <p-calendar
                     appendTo="body"
                     class="push-publish-dialog__calendar-date"
-                    formControlName="publishdate"
+                    formControlName="publishDate"
                     dataType="string"
                     dateFormat="yy-mm-dd"
                     placeholder="yyyy-mm-dd hh:mm"
@@ -49,7 +49,7 @@
             </div>
             <dot-field-validation-message
                 message="{{ 'contenttypes.content.push_publish.publish_date_errormsg' | dm }}"
-                [field]="form.get('publishdate')"
+                [field]="form.get('publishDate')"
             ></dot-field-validation-message>
         </div>
         <div class="form__group push-publish-dialog__expire-date">
@@ -60,7 +60,7 @@
                 <p-calendar
                     appendTo="body"
                     class="push-publish-dialog__calendar-date"
-                    formControlName="expiredate"
+                    formControlName="expireDate"
                     dataType="string"
                     dateFormat="yy-mm-dd"
                     placeholder="yyyy-mm-dd hh:mm"
@@ -70,7 +70,7 @@
             </div>
             <dot-field-validation-message
                 message="{{ 'contenttypes.content.push_publish.expire_date_errormsg' | dm}}"
-                [field]="form.get('expiredate')"
+                [field]="form.get('expireDate')"
             ></dot-field-validation-message>
         </div>
     </div>

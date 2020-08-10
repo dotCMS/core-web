@@ -16,6 +16,7 @@ import { SelectItem } from 'primeng/api';
 import { DotFormModel } from '@models/dot-form/dot-form.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { Dropdown } from 'primeng/dropdown';
 
 enum DotActionInputs {
     ASSIGNABLE = 'assignable'
@@ -59,16 +60,18 @@ export class DotCommentAndAssignFormComponent
         }
     }
 
-    ngAfterViewChecked() {
-        if (this.fields.first) {
-            //    debugger;
-            //   this.fields.first.nativeElement.focus();
-        }
+    ngAfterViewChecked() {}
+
+    hanldeTab(event: any): void {
+        debugger;
+        console.log(event);
     }
 
     emitValues(): void {
-        this.value.emit(this.form.value);
-        this.valid.emit(this.form.status === 'VALID');
+        if (this.form.valid) {
+            this.value.emit(this.form.value);
+        }
+        this.valid.emit(this.form.valid);
     }
 
     private initForm(): void {
@@ -78,5 +81,13 @@ export class DotCommentAndAssignFormComponent
         });
         this.emitValues();
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.emitValues());
+
+        setTimeout(() => {
+            if (this.fields.first instanceof Dropdown) {
+                (this.fields.first as Dropdown).focus();
+            } else {
+                this.fields.first.nativeElement.focus();
+            }
+        }, 0);
     }
 }

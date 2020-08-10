@@ -91,21 +91,21 @@ xdescribe('DotPushPublishDialogComponent', () => {
     it('should be invalid if publish date is empty', () => {
         fixture.detectChanges();
         comp.form.get('environment').setValue('my environment');
-        comp.form.get('publishdate').setValue('');
+        comp.form.get('publishDate').setValue('');
         expect(comp.form.valid).toEqual(false);
     });
 
     it('should be invalid if expire date is empty', () => {
         fixture.detectChanges();
         comp.form.get('environment').setValue('my environment');
-        comp.form.get('expiredate').setValue('');
+        comp.form.get('expireDate').setValue('');
         expect(comp.form.valid).toEqual(false);
     });
 
     it('should be valid if all required fields are filled', () => {
         fixture.detectChanges();
-        comp.form.get('publishdate').setValue(new Date());
-        comp.form.get('expiredate').setValue(new Date());
+        comp.form.get('publishDate').setValue(new Date());
+        comp.form.get('expireDate').setValue(new Date());
         comp.form.get('environment').setValue('my environment');
         expect(comp.form.valid).toEqual(true);
     });
@@ -214,8 +214,8 @@ xdescribe('DotPushPublishDialogComponent', () => {
             form = fixture.debugElement.query(By.css('form'));
 
             comp.form.get('pushActionSelected').setValue('publishexpire');
-            comp.form.get('publishdate').setValue(newDate);
-            comp.form.get('expiredate').setValue(newDate);
+            comp.form.get('publishDate').setValue(newDate);
+            comp.form.get('expireDate').setValue(newDate);
             comp.form.get('environment').setValue(['my environment, my second environment']);
             comp.form.get('forcePush').setValue(true);
 
@@ -232,8 +232,8 @@ xdescribe('DotPushPublishDialogComponent', () => {
                 pushPublishServiceMock.pushPublishContent
             ).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
                 pushActionSelected: 'publishexpire',
-                publishdate: newDate,
-                expiredate: newDate,
+                publishDate: newDate,
+                expireDate: newDate,
                 environment: ['my environment, my second environment'],
                 forcePush: true
             });
@@ -248,8 +248,8 @@ xdescribe('DotPushPublishDialogComponent', () => {
                 pushPublishServiceMock.pushPublishContent
             ).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
                 pushActionSelected: 'publishexpire',
-                publishdate: newDate,
-                expiredate: newDate,
+                publishDate: newDate,
+                expireDate: newDate,
                 environment: ['my environment, my second environment'],
                 forcePush: true
             });
