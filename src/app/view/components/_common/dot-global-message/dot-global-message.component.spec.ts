@@ -16,7 +16,7 @@ describe('DotGlobalMessageComponent', () => {
             declarations: [DotGlobalMessageComponent],
             providers: [DotEventsService],
             imports: [DotIconModule, DotSpinnerModule]
-        }).compileComponents();
+        });
 
         fixture = TestBed.createComponent(DotGlobalMessageComponent);
         component = fixture.componentInstance;

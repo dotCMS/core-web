@@ -1,8 +1,7 @@
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotSecondaryToolbarComponent } from './dot-secondary-toolbar.component';
 
 @Component({
@@ -24,7 +23,7 @@ describe('DotSecondaryToolbarComponent', () => {
 
     beforeEach(
         async(() => {
-            DOTTestBed.configureTestingModule({
+            TestBed.configureTestingModule({
                 declarations: [HostTestComponent, DotSecondaryToolbarComponent],
                 imports: [CommonModule]
             });
@@ -32,7 +31,7 @@ describe('DotSecondaryToolbarComponent', () => {
     );
 
     beforeEach(() => {
-        fixture = DOTTestBed.createComponent(HostTestComponent);
+        fixture = TestBed.createComponent(HostTestComponent);
         fixture.detectChanges();
     });
 

@@ -45,7 +45,7 @@ describe('DotNavItemComponent', () => {
                 BrowserAnimationsModule,
                 TooltipModule
             ]
-        }).compileComponents();
+        });
     }));
 
     beforeEach(() => {

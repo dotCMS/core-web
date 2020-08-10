@@ -30,7 +30,7 @@ describe('DotSubNavComponent', () => {
         TestBed.configureTestingModule({
             declarations: [DotSubNavComponent],
             imports: [RouterTestingModule, BrowserAnimationsModule]
-        }).compileComponents();
+        });
     }));
 
     beforeEach(() => {
