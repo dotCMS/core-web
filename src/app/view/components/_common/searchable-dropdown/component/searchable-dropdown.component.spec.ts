@@ -129,7 +129,7 @@ describe('SearchableDropdownComponent', () => {
         hostFixture.detectChanges();
 
         mainButton = de.query(By.css('button'));
-        mainButton.triggerEventHandler('click', {});
+        mainButton.nativeElement.dispatchEvent(new MouseEvent('click'));
     });
 
     it('should disabled', () => {
@@ -436,7 +436,7 @@ describe('SearchableDropdownComponent', () => {
         hostFixture.detectChanges();
 
         mainButton = de.query(By.css('.dot-persona-selector__testContainer'));
-        mainButton.triggerEventHandler('click', {});
+        mainButton.nativeElement.dispatchEvent(new MouseEvent('click'));
     });
 
     it('should render external dropdown template', () => {
