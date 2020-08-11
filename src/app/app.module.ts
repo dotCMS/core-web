@@ -20,7 +20,6 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import { DotDirectivesModule } from './shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
-import {DotWizardModule} from '@components/_common/dot-wizard/dot-wizard.module';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -43,7 +42,7 @@ import {DotWizardModule} from '@components/_common/dot-wizard/dot-wizard.module'
         DotDirectivesModule,
         DotPipesModule,
         HotkeyModule.forRoot(),
-        DotWizardModule
+
     ],
     providers: [ENV_PROVIDERS]
 })

@@ -30,7 +30,6 @@ import { DotFormModel } from '@models/dot-form/dot-form.model';
 export class DotPushPublishFormComponent
     implements OnInit, OnDestroy, DotFormModel<DotPushPublishDialogData, DotPushPublishData> {
     dateFieldMinDate = new Date();
-    dialogShow = false;
     form: FormGroup;
     pushActions: SelectItem[];
     filterOptions: SelectItem[] = null;
@@ -74,6 +73,10 @@ export class DotPushPublishFormComponent
         this.destroy$.complete();
     }
 
+    /**
+     * Emit if form is valid and the value.
+     * @memberof DotPushPublishFormComponent
+     */
     emitValues(): void {
         this.valid.emit(this.form.valid);
         this.value.emit(this.form.value);
@@ -94,7 +97,6 @@ export class DotPushPublishFormComponent
             });
             this.emitValues();
         }
-        this.dialogShow = true;
     }
 
     private loadCustomCode(): void {

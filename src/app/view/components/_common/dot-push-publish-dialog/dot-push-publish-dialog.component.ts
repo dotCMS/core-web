@@ -49,8 +49,8 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Close the dialog.
-     * @memberof PushPublishContentTypesDialogComponent
+     * Close the dialog and clear the data.
+     * @memberof DotPushPublishDialogComponent
      */
     close(): void {
         this.cancel.emit(true);
@@ -60,8 +60,8 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
 
     /**
      * When form is submitted
-     * If form is valid then call pushPublishService with contentTypeId and form value params
-     * @memberof PushPublishContentTypesDialogComponent
+     * If form is valid then call pushPublishService with the corresponding form values
+     * @memberof DotPushPublishDialogComponent
      */
     submitPushAction(): void {
         if (this.formValid) {
@@ -78,6 +78,11 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Update dialog action and form validation flag.
+     * @param {boolean} valid
+     * @memberof DotPushPublishDialogComponent
+     */
     updateFormValid(valid: boolean): void {
         this.dialogActions.accept.disabled = !valid;
         this.formValid = valid;

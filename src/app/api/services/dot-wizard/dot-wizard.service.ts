@@ -11,10 +11,21 @@ export class DotWizardService {
         return this.input.asObservable();
     }
 
+    /**
+     * Notify the data collected in wizard.
+     * @param {{ [key: string]: string }} form
+     * @memberof DotWizardService
+     */
     output$(form: { [key: string]: string }): void {
         this.output.next(form);
     }
 
+    /**
+     * Send the steps to in input subscription and waits for the output
+     * @param {DotWizardStep[]} steps
+     * @returns Observable<{ [key: string]: string }>
+     * @memberof DotWizardService
+     */
     open(steps: DotWizardStep[]): Observable<{ [key: string]: string }> {
         this.input.next(steps);
         return this.output.asObservable();

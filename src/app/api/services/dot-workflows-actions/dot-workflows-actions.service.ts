@@ -59,6 +59,13 @@ export class DotWorkflowsActionsService {
             .pipe(pluck('entity'));
     }
 
+    /**
+     * Returns the steps needed to collect information of the Workflow inputs.
+     *
+     * @param {DotCMSWorkflowAction} workflow
+     * @returns DotWizardStep[]
+     * @memberof DotWorkflowsActionsService
+     */
     setWizardSteps(workflow: DotCMSWorkflowAction): DotWizardStep[] {
         const steps: DotWizardStep[] = [];
         this.mergeCommentAndAssign(workflow).forEach((input: DotCMSWorkflowInput) => {

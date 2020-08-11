@@ -1,6 +1,5 @@
-<div #customCode [ngClass]="{ hidden: !eventData.customCode }" class="custom-code"></div>
 <form
-    *ngIf="pushActions && dialogShow && !eventData.customCode"
+    *ngIf="pushActions && !eventData.customCode"
     [formGroup]="form"
     (ngSubmit)="emitValues()"
     (keyup.enter)="emitValues()"
@@ -89,3 +88,4 @@
         ></dot-field-validation-message>
     </div>
 </form>
+<div #customCode [ngClass]="{ hidden: !eventData.customCode }" class="custom-code"></div>

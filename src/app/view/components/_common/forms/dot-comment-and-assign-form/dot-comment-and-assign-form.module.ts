@@ -6,7 +6,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DotRolesService } from '@services/dot-roles/dot-roles.service';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import {DotAutofocusModule} from '@directives/dot-autofocus/dot-autofocus.module';
 
 @NgModule({
     imports: [
@@ -15,8 +14,7 @@ import {DotAutofocusModule} from '@directives/dot-autofocus/dot-autofocus.module
         ReactiveFormsModule,
         DotPipesModule,
         InputTextareaModule,
-        DropdownModule,
-        DotAutofocusModule
+        DropdownModule
     ],
     declarations: [DotCommentAndAssignFormComponent],
     exports: [DotCommentAndAssignFormComponent],

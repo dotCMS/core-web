@@ -54,15 +54,15 @@ export class DotWizardComponent implements OnInit, OnDestroy {
         });
     }
 
-    test(a: KeyboardEvent): void {
-        console.log(a);
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
     }
 
+    /**
+     * Close the dialog and reset the wizard state
+     * @memberof DotWizardComponent
+     */
     close(): void {
         this.dialog.visible = false;
         this.steps = [];
@@ -70,6 +70,12 @@ export class DotWizardComponent implements OnInit, OnDestroy {
         this.updateTransform();
     }
 
+    /**
+     * handle the tab event, so when is the last field of a a step
+     * focus the next/submit button.
+     * @param {KeyboardEvent} event
+     * @memberof DotWizardComponent
+     */
     handleTab(event: KeyboardEvent): void {
         const formNodes: Node[] = event
             .composedPath()
@@ -86,6 +92,10 @@ export class DotWizardComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * handle the enter event, if the form is valid move to the next step
+     * @memberof DotWizardComponent
+     */
     handleEnter(): void {
         if (this.stepsValidation[this.currentStep]) {
             this.dialogActions.accept.action();

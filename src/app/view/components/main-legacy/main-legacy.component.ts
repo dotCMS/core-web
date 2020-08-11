@@ -11,15 +11,6 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
     templateUrl: './main-legacy.component.html'
 })
 export class MainComponentLegacyComponent implements OnInit {
-    // test = [
-    //     {
-    //         component: DotCommentAndAssignFormComponent,
-    //         data: { roleId: '654b0931-1027-41f7-ad4d-173115ed8ec1' }
-    //     },
-    //     { component: DotCommentFormComponent, data: {} },
-    //     { component: DotPushPublishFormComponent, data: {} }
-    // ];
-
     constructor(
         private dotRouterService: DotRouterService,
         private dotIframeService: DotIframeService,

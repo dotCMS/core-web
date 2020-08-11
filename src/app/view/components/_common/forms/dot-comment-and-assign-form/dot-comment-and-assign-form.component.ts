@@ -1,5 +1,4 @@
 import {
-    AfterViewChecked,
     Component,
     ElementRef,
     EventEmitter,
@@ -28,9 +27,7 @@ enum DotActionInputs {
     styleUrls: ['./dot-comment-and-assign-form.component.scss']
 })
 export class DotCommentAndAssignFormComponent
-    implements AfterViewChecked,
-        OnInit,
-        DotFormModel<{ [key: string]: any }, { [key: string]: string }> {
+    implements OnInit, DotFormModel<{ [key: string]: any }, { [key: string]: string }> {
     form: FormGroup;
     @Input() data: { [key: string]: any };
     @Output() value = new EventEmitter<{ [key: string]: string }>();
@@ -60,8 +57,10 @@ export class DotCommentAndAssignFormComponent
         }
     }
 
-    ngAfterViewChecked() {}
-
+    /**
+     * Emit if form is valid and the value.
+     * @memberof DotCommentAndAssignFormComponent
+     */
     emitValues(): void {
         this.valid.emit(this.form.valid);
         this.value.emit(this.form.value);
