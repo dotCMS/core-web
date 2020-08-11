@@ -19,14 +19,16 @@ import { LoginServiceMock } from '@tests/login-service.mock';
 import { LoginService, SiteService } from 'dotcms-js';
 import { DotAddPersonaDialogComponent } from '@components/dot-add-persona-dialog/dot-add-persona-dialog.component';
 import { SiteServiceMock } from '@tests/site-service.mock';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { TooltipModule } from 'primeng/primeng';
 
 @Component({
     selector: 'dot-host-component',
     template: `
         <dot-persona-selector
-                [disabled]="disabled"
-                (selected)="selectedPersonaHandler($event)"
-                (delete)="deletePersonaHandler($event)"
+            [disabled]="disabled"
+            (selected)="selectedPersonaHandler($event)"
+            (delete)="deletePersonaHandler($event)"
         ></dot-persona-selector>
     `
 })
@@ -67,36 +69,36 @@ describe('DotPersonaSelectorComponent', () => {
         const personaSelectedItem = hostFixture.debugElement.query(
             By.css('dot-persona-selected-item')
         );
-        personaSelectedItem.triggerEventHandler('click', new MouseEvent('mousedown'));
+        personaSelectedItem.nativeElement.dispatchEvent(new MouseEvent('click'));
         hostFixture.detectChanges();
     };
 
     const siteServiceMock = new SiteServiceMock();
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [DotPersonaSelectorComponent, HostTestComponent],
-                imports: [
-                    BrowserAnimationsModule,
-                    SearchableDropDownModule,
-                    DotPersonaSelectedItemModule,
-                    DotPersonaSelectorOptionModule,
-                    DotAddPersonaDialogModule
-                ],
-                providers: [
-                    IframeOverlayService,
-                    {
-                        provide: DotMessageService,
-                        useValue: messageServiceMock
-                    },
-                    { provide: PaginatorService, useClass: TestPaginatorService },
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    { provide: SiteService, useValue: siteServiceMock }
-                ]
-            });
-        })
-    );
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [DotPersonaSelectorComponent, HostTestComponent],
+            imports: [
+                BrowserAnimationsModule,
+                SearchableDropDownModule,
+                DotPersonaSelectedItemModule,
+                DotPersonaSelectorOptionModule,
+                DotAddPersonaDialogModule,
+                TooltipModule,
+                DotPipesModule
+            ],
+            providers: [
+                IframeOverlayService,
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                },
+                { provide: PaginatorService, useClass: TestPaginatorService },
+                { provide: LoginService, useClass: LoginServiceMock },
+                { provide: SiteService, useValue: siteServiceMock }
+            ]
+        });
+    }));
 
     beforeEach(() => {
         hostFixture = DOTTestBed.createComponent(HostTestComponent);
@@ -131,6 +133,13 @@ describe('DotPersonaSelectorComponent', () => {
         expect(dropdown.componentInstance.totalRecords).toBe(1);
     });
 
+    it('should set dot-persona-selected-item with right attributes', () => {
+        const personaSelectedItemDe = de.query(By.css('dot-persona-selected-item'));
+        expect(personaSelectedItemDe.attributes.appendTo).toBe('target');
+        expect(personaSelectedItemDe.attributes['ng-reflect-text']).toBe('Default Visitor');
+        expect(personaSelectedItemDe.attributes['ng-reflect-tooltip-position']).toBe('bottom');
+    });
+
     it('should call toggle when selected dot-persona-selected-item', () => {
         spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
         hostFixture.whenStable().then(() => {
@@ -157,27 +166,23 @@ describe('DotPersonaSelectorComponent', () => {
     it('should execute "change" event from dot-persona-selector-option', () => {
         hostFixture.whenStable().then(() => {
             spyOn(component.selected, 'emit');
-            spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
             openOverlay();
             const personaOption = hostFixture.debugElement.query(
                 By.css('dot-persona-selector-option')
             );
             personaOption.triggerEventHandler('change', defaultPersona);
             expect(component.selected.emit).toHaveBeenCalledWith(defaultPersona);
-            expect(dropdown.componentInstance.toggleOverlayPanel).toHaveBeenCalled();
         });
     });
 
     it('should execute "delete" event from dot-persona-selector-option', () => {
         hostFixture.whenStable().then(() => {
-            spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
             spyOn(component.delete, 'emit');
             openOverlay();
             const personaOption = hostFixture.debugElement.query(
                 By.css('dot-persona-selector-option')
             );
             personaOption.triggerEventHandler('delete', defaultPersona);
-            expect(dropdown.componentInstance.toggleOverlayPanel).toHaveBeenCalled();
             expect(component.delete.emit).toHaveBeenCalledWith(defaultPersona);
         });
     });
@@ -201,6 +206,8 @@ describe('DotPersonaSelectorComponent', () => {
             expect(dropdown.componentInstance.toggleOverlayPanel).toHaveBeenCalled();
             expect(personaDialog.visible).toBe(true);
             expect(personaDialog.personaName).toBe('Bill');
+            personaDialog.visible = false;
+            hostFixture.detectChanges();
         });
 
         it('should emit persona and refresh the list on Add new persona', () => {
