@@ -86,8 +86,9 @@ export class DotEditContentToolbarHtmlService {
     addContentletMarkup(doc: Document): void {
         let counter = 0
 
+        const contentletQuery = `[data-dot-object="contentlet"][data-dot-has-page-lang-version="true"]`;
+
         const intervalId = setInterval(() => {
-            const contentletQuery = `[data-dot-object="contentlet"][data-dot-has-page-lang-version="true"]`;
 
             const contentlets: HTMLDivElement[] = Array.from(doc.querySelectorAll(contentletQuery));
 
