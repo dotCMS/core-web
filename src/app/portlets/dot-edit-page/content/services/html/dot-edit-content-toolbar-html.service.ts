@@ -104,7 +104,6 @@ export class DotEditContentToolbarHtmlService {
     }
 
     addToolbarToContentlet(contentlet: HTMLElement) {
-        // debugger;
         const contentletToolbar = document.createElement('div');
         contentletToolbar.classList.add('dotedit-contentlet__toolbar');
 
