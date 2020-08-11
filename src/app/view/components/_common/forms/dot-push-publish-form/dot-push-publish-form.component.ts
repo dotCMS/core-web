@@ -75,8 +75,8 @@ export class DotPushPublishFormComponent
     }
 
     emitValues(): void {
+        this.valid.emit(this.form.valid);
         this.value.emit(this.form.value);
-        this.valid.emit(this.form.status === 'VALID');
     }
 
     private loadData(data: DotPushPublishDialogData): void {
@@ -218,6 +218,4 @@ export class DotPushPublishFormComponent
     private isRestrictedOrCategory(): boolean {
         return this.eventData.restricted || this.eventData.cats;
     }
-
-
 }

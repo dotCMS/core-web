@@ -1,3 +1,4 @@
+<div #customCode [ngClass]="{ hidden: !eventData.customCode }" class="custom-code"></div>
 <form
     *ngIf="pushActions && dialogShow && !eventData.customCode"
     [formGroup]="form"

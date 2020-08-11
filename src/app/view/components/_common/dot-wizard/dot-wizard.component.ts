@@ -1,5 +1,4 @@
 import {
-    AfterViewInit,
     Component,
     ComponentFactoryResolver,
     Input,
@@ -24,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './dot-wizard.component.html',
     styleUrls: ['./dot-wizard.component.scss']
 })
-export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DotWizardComponent implements OnInit, OnDestroy {
     wizardData: { [key: string]: string };
     dialogActions: DotDialogActions;
     transform = '';
@@ -55,7 +54,9 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    ngAfterViewInit() {}
+    test(a: KeyboardEvent): void {
+        console.log(a);
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next(true);
@@ -69,11 +70,31 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateTransform();
     }
 
+    handleTab(event: KeyboardEvent): void {
+        const formNodes: Node[] = event
+            .composedPath()
+            .filter((x: Node) => x.nodeName === 'FORM') as Node[];
+        if (formNodes.length) {
+            const form: HTMLFieldSetElement = formNodes[0] as HTMLFieldSetElement;
+            if (form.elements.item(form.elements.length - 1) === event.target) {
+                const acceptButton = document.getElementsByClassName(
+                    'dialog__button-accept'
+                )[0] as HTMLButtonElement;
+                acceptButton.focus();
+                event.preventDefault();
+            }
+        }
+    }
+
+    handleEnter(): void {
+        if (this.stepsValidation[this.currentStep]) {
+            this.dialogActions.accept.action();
+        }
+    }
+
     private loadComponents(): void {
         this.componentsHost = this.formHosts.toArray();
         this.stepsValidation = [];
-        // this.loadComponent(0);
-
         this.steps.forEach((step, index: number) => {
             const comp = this.componentFactoryResolver.resolveComponentFactory(step.component);
             const viewContainerRef = this.componentsHost[index].viewContainerRef;
@@ -88,22 +109,6 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
     }
-
-    // private loadComponent(index: number): void {
-    //     if (this.stepsValidation[index] === undefined) {
-    //         const comp = this.componentFactoryResolver.resolveComponentFactory(
-    //             this.steps[index].component
-    //         );
-    //         const viewContainerRef = this.componentsHost[index].viewContainerRef;
-    //         // viewContainerRef.clear();
-    //         const componentRef: ComponentRef<any> = viewContainerRef.createComponent(comp);
-    //         componentRef.instance.data = this.steps[index].data;
-    //         componentRef.instance.value.pipe(takeUntil(this.destroy$)).subscribe(data => this.consolidateValues(data));
-    //         componentRef.instance.valid.pipe(takeUntil(this.destroy$)).subscribe(valid => {
-    //             this.setValid(valid, index);
-    //         });
-    //     }
-    // }
 
     private consolidateValues(data: { [key: string]: string }, step: number): void {
         if (this.stepsValidation[step] === true) {
@@ -134,7 +139,7 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private loadNextStep(next: number) {
         this.currentStep += next;
-        // this.loadComponent(this.currentStep);
+        this.focusFistFormElement();
         this.updateTransform();
         if (this.isLastStep()) {
             this.dialogActions.accept.label = this.dotMessageService.get('send');
@@ -175,5 +180,13 @@ export class DotWizardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private updateTransform(): void {
         this.transform = `translateX(${this.currentStep * 400 * -1}px)`;
+    }
+
+    private focusFistFormElement(): void {
+        this.componentsHost[
+            this.currentStep
+        ].viewContainerRef.element.nativeElement.parentNode.children[0]
+            .getElementsByTagName('form')[0]
+            .elements[0].focus();
     }
 }

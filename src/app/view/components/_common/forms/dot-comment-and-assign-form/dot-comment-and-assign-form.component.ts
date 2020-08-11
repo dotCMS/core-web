@@ -62,16 +62,9 @@ export class DotCommentAndAssignFormComponent
 
     ngAfterViewChecked() {}
 
-    hanldeTab(event: any): void {
-        debugger;
-        console.log(event);
-    }
-
     emitValues(): void {
-        if (this.form.valid) {
-            this.value.emit(this.form.value);
-        }
         this.valid.emit(this.form.valid);
+        this.value.emit(this.form.value);
     }
 
     private initForm(): void {

@@ -18,6 +18,7 @@
         <label class="form__label">{{ 'comment.form.comments' | dm }}:</label>
         <textarea #field
             pInputTextarea
+            (keydown.enter)="$event.stopPropagation()"
             [style]="{ width: '100%' }"
             formControlName="comments" >
         </textarea>
