@@ -176,7 +176,7 @@ let dotHttpErrorManagerService: DotHttpErrorManagerService;
 let testHotKeysMock: TestHotkeysMock;
 let dialog: DebugElement;
 
-fdescribe('DotContentTypesEditComponent', () => {
+describe('DotContentTypesEditComponent', () => {
     describe('create mode', () => {
         beforeEach(async(() => {
             testHotKeysMock = new TestHotkeysMock();
