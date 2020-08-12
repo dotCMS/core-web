@@ -306,7 +306,6 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
                     this.show = false;
                 },
                 (err: ResponseView) => {
-                    console.log(err);
                     this.handleHttpError(err);
                 }
             );
