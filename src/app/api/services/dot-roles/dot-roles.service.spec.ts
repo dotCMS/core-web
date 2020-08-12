@@ -3,11 +3,10 @@ import { DOTTestBed } from '@tests/dot-test-bed';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { DotRole } from '@models/dot-role/dot-role.model';
-import { mockDotPersona } from '@tests/dot-persona.mock';
 
 const mockRoles: DotRole[] = [{ id: '1', name: 'Anonymous User' }, { id: '2', name: 'Other User' }];
 
-fdescribe('DotRolesService', () => {
+describe('DotRolesService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotRolesService]);
         this.dotRolesService = this.injector.get(DotRolesService);
@@ -31,7 +30,7 @@ fdescribe('DotRolesService', () => {
             )
         );
 
-        expect(result).toEqual(Array.of(mockDotPersona));
+        expect(result).toEqual(mockRoles);
         expect(this.lastConnection.request.method).toBe(0); // 0 is GET method
         expect(this.lastConnection.request.url).toBe(url);
     });

@@ -1,4 +1,4 @@
-import { of as observableOf, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { DotCMSWorkflowAction } from 'dotcms-models';
@@ -74,7 +74,9 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                                     } else {
                                         this.dotMessageDisplayService.push({
                                             life: 3000,
-                                            message: 'in order to execute the action an environment is needed, <a href="/dotAdmin/#/c/configuration">click here</a> to add it',
+                                            message: this.dotMessageService.get(
+                                                'editpage.actions.fire.error.add.environment'
+                                            ),
                                             severity: DotMessageSeverity.ERROR,
                                             type: DotMessageType.SIMPLE_MESSAGE
                                         });
@@ -85,7 +87,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                             this.openWizard(workflow);
                         }
                     } else {
-                        this.fireWorkflowAction(workflow, {});
+                        this.fireWorkflowAction(workflow);
                     }
                 }
             };
@@ -104,7 +106,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
             });
     }
 
-    private fireWorkflowAction(workflow: DotCMSWorkflowAction, data: { [key: string]: any }): void {
+    private fireWorkflowAction(workflow: DotCMSWorkflowAction, data?: { [key: string]: any }): void {
         const currentMenuActions = this.actions;
         this.actions = this.dotWorkflowActionsFireService
             .fireTo(this.page.workingInode, workflow.id, data)
@@ -118,9 +120,6 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                         )
                     );
                 }),
-                // TODO: A better implementation needs to be done to handle workflow
-                //  actions errors, which are edge cases
-                catchError(() => observableOf(null)),
                 mergeMap((inode: string) => {
                     const newInode = inode || this.page.workingInode;
                     this.fired.emit();

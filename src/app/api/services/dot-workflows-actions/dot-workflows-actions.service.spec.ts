@@ -6,6 +6,9 @@ import { DOTTestBed } from '@tests/dot-test-bed';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 import { DotCMSWorkflowAction } from 'dotcms-models';
 import { mockWorkflows } from '@tests/dot-workflow-service.mock';
+import { DotWizardStep } from '@models/dot-wizard-step/dot-wizard-step.model';
+import { DotCommentAndAssignFormComponent } from '@components/_common/forms/dot-comment-and-assign-form/dot-comment-and-assign-form.component';
+import { DotPushPublishFormComponent } from '@components/_common/forms/dot-push-publish-form/dot-push-publish-form.component';
 
 describe('DotWorkflowsActionsService', () => {
     let TestBed;
@@ -56,7 +59,7 @@ describe('DotWorkflowsActionsService', () => {
     it('should get workflows by inode', () => {
         let result;
         const inode = 'cc2cdf9c-a20d-4862-9454-2a76c1132123';
-        dotWorkflowActionsService.getByInode(inode).subscribe((res) => {
+        dotWorkflowActionsService.getByInode(inode).subscribe(res => {
             result = res;
         });
 
@@ -105,5 +108,47 @@ describe('DotWorkflowsActionsService', () => {
             }
         ]);
         expect(lastConnection.request.url).toContain(`v1/workflow/contentlet/${inode}/actions`);
+    });
+
+    describe('wizard steps', () => {
+        const mockWorkflowActions: DotCMSWorkflowAction = {
+            ...mockWorkflowsActions[0]
+        };
+        let steps: DotWizardStep<any>[];
+
+        beforeEach(() => {});
+        it('should merge comment and assign steps', () => {
+            const mockWizardSteps: DotWizardStep<any>[] = [
+                {
+                    component: DotCommentAndAssignFormComponent,
+                    data: {
+                        assignable: true,
+                        commentable: true,
+                        roleId: mockWorkflowsActions[0].nextAssign
+                    }
+                },
+                {
+                    component: DotPushPublishFormComponent,
+                    data: {}
+                }
+            ];
+            steps = dotWorkflowActionsService.setWizardSteps(mockWorkflowActions);
+
+            expect(steps).toEqual(mockWizardSteps);
+        });
+        it('should return only valid Components ', () => {
+            mockWorkflowActions.actionInputs = [
+                {
+                    body: {},
+                    id: 'invalidID'
+                },
+                {
+                    body: {},
+                    id: 'invalidID2'
+                }
+            ];
+            steps = dotWorkflowActionsService.setWizardSteps(mockWorkflowActions);
+            expect(steps).toEqual([]);
+        });
     });
 });

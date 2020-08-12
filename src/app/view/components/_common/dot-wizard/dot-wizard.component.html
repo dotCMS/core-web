@@ -4,7 +4,7 @@
     [actions]="dialogActions"
     (hide)="close()"
     >
-    <div class="dot-wizard__view" *ngIf="steps && steps.length">
+    <div class="dot-wizard__view" *ngIf="steps?.length">
         <div class="dot-wizard__container"
              (keydown.tab)="handleTab($event)"
              (keydown.enter)="handleEnter()"

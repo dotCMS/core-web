@@ -4,10 +4,10 @@ import { DotWizardStep } from '@models/dot-wizard-step/dot-wizard-step.model';
 
 @Injectable()
 export class DotWizardService {
-    private input: Subject<DotWizardStep[]> = new Subject<DotWizardStep[]>();
+    private input: Subject<DotWizardStep<any>[]> = new Subject<DotWizardStep<any>[]>();
     private output: Subject<{ [key: string]: string }> = new Subject<{ [key: string]: string }>();
 
-    get showDialog$(): Observable<DotWizardStep[]> {
+    get showDialog$(): Observable<DotWizardStep<any>[]> {
         return this.input.asObservable();
     }
 
@@ -16,7 +16,7 @@ export class DotWizardService {
      * @param {{ [key: string]: string }} form
      * @memberof DotWizardService
      */
-    output$(form: { [key: string]: string }): void {
+    output$(form: { [key: string]: any }): void {
         this.output.next(form);
     }
 
@@ -26,7 +26,7 @@ export class DotWizardService {
      * @returns Observable<{ [key: string]: string }>
      * @memberof DotWizardService
      */
-    open(steps: DotWizardStep[]): Observable<{ [key: string]: string }> {
+    open(steps: DotWizardStep<any>[]): Observable<{ [key: string]: string }> {
         this.input.next(steps);
         return this.output.asObservable();
     }

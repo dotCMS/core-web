@@ -1,4 +1,4 @@
-export interface DotWizardStep {
-    component: any;
+export interface DotWizardStep<T> {
+    component: T;
     data: { [key: string]: any };
 }

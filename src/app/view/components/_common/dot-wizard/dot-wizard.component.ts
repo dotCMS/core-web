@@ -28,7 +28,7 @@ export class DotWizardComponent implements OnInit, OnDestroy {
     dialogActions: DotDialogActions;
     transform = '';
 
-    @Input() steps: DotWizardStep[] = [];
+    @Input() steps: DotWizardStep<any>[] = [];
     @ViewChildren(DotContainerReferenceDirective)
     formHosts: QueryList<DotContainerReferenceDirective>;
     @ViewChild('dialog') dialog: Dialog;
@@ -45,7 +45,7 @@ export class DotWizardComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.dotWizardService.showDialog$.subscribe(data => {
+        this.dotWizardService.showDialog$.pipe(takeUntil(this.destroy$)).subscribe(data => {
             this.steps = data;
             setTimeout(() => {
                 this.loadComponents();
@@ -77,11 +77,10 @@ export class DotWizardComponent implements OnInit, OnDestroy {
      * @memberof DotWizardComponent
      */
     handleTab(event: KeyboardEvent): void {
-        const formNodes: Node[] = event
+        const [form]: HTMLFieldSetElement[] = event
             .composedPath()
-            .filter((x: Node) => x.nodeName === 'FORM') as Node[];
-        if (formNodes.length) {
-            const form: HTMLFieldSetElement = formNodes[0] as HTMLFieldSetElement;
+            .filter((x: Node) => x.nodeName === 'FORM') as HTMLFieldSetElement[];
+        if (form) {
             if (form.elements.item(form.elements.length - 1) === event.target) {
                 const acceptButton = document.getElementsByClassName(
                     'dialog__button-accept'
@@ -105,7 +104,7 @@ export class DotWizardComponent implements OnInit, OnDestroy {
     private loadComponents(): void {
         this.componentsHost = this.formHosts.toArray();
         this.stepsValidation = [];
-        this.steps.forEach((step, index: number) => {
+        this.steps.forEach((step: DotWizardStep<any>, index: number) => {
             const comp = this.componentFactoryResolver.resolveComponentFactory(step.component);
             const viewContainerRef = this.componentsHost[index].viewContainerRef;
             viewContainerRef.clear();

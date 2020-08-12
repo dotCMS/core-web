@@ -1,11 +1,11 @@
 @import "variables";
 
 .dot-wizard__step {
-    width: 400px;
+    width: $form-width;
     flex-shrink: 0;
 }
 .dot-wizard__view {
-    width: 400px;
+    width: $form-width;
     overflow: hidden;
 }
 

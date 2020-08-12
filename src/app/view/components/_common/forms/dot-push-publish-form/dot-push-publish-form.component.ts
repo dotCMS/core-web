@@ -21,6 +21,7 @@ import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
 import { SelectItem } from 'primeng/api';
 import { DotFormModel } from '@models/dot-form/dot-form.model';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 @Component({
     selector: 'dot-push-publish-form',
@@ -51,6 +52,7 @@ export class DotPushPublishFormComponent
         private dotPushPublishFiltersService: DotPushPublishFiltersService,
         private dotParseHtmlService: DotParseHtmlService,
         private dotMessageService: DotMessageService,
+        private httpErrorManagerService: DotHttpErrorManagerService,
         public fb: FormBuilder
     ) {}
 
@@ -135,7 +137,10 @@ export class DotPushPublishFormComponent
                     .map(({ key }: DotPushPublishFilter) => key)
                     .join();
             }),
-            catchError(() => of([]))
+            catchError(error => {
+                this.httpErrorManagerService.handle(error);
+                return of([]);
+            })
         );
     }
 

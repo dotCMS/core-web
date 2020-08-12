@@ -66,8 +66,8 @@ export class DotWorkflowsActionsService {
      * @returns DotWizardStep[]
      * @memberof DotWorkflowsActionsService
      */
-    setWizardSteps(workflow: DotCMSWorkflowAction): DotWizardStep[] {
-        const steps: DotWizardStep[] = [];
+    setWizardSteps(workflow: DotCMSWorkflowAction): DotWizardStep<any>[] {
+        const steps: DotWizardStep<any>[] = [];
         this.mergeCommentAndAssign(workflow).forEach((input: DotCMSWorkflowInput) => {
             if (this.workflowStepMap[input.id]) {
                 steps.push({
@@ -87,7 +87,7 @@ export class DotWorkflowsActionsService {
                 body[input.id] = true;
             }
         });
-        if (Object.keys(body)) {
+        if (Object.keys(body).length) {
             workflows = workflow.actionInputs.filter(input => !this.isCommentOrAssign(input.id));
             workflows.unshift({
                 id: DotActionInputs.COMMENTANDASSIGN,

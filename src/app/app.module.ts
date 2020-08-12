@@ -41,8 +41,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         MdInputTextModule,
         DotDirectivesModule,
         DotPipesModule,
-        HotkeyModule.forRoot(),
-
+        HotkeyModule.forRoot()
     ],
     providers: [ENV_PROVIDERS]
 })
