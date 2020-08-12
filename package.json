@@ -43,7 +43,7 @@
         "core-js": "^2.5.4",
         "dotcms-models": "^0.0.9",
         "font-awesome": "^4.7.0",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.19",
         "md5": "^2.2.1",
         "moment": "^2.19.4",
         "ng2-ace-editor": "^0.3.8",
