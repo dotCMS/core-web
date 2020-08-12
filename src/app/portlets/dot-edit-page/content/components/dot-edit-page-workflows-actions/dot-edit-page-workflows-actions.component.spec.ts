@@ -41,7 +41,7 @@ class TestHostComponent {
     @Input() page: DotPage;
 }
 
-fdescribe('DotEditPageWorkflowsActionsComponent', () => {
+describe('DotEditPageWorkflowsActionsComponent', () => {
     let component: TestHostComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;

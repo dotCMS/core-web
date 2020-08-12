@@ -2,13 +2,14 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { DotPushPublishDialogService, LoggerService } from 'dotcms-js';
+import { DotPushPublishDialogService } from 'dotcms-js';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { takeUntil } from 'rxjs/operators';
 
 import { Subject } from 'rxjs';
 import { DotPushPublishDialogData } from 'dotcms-models';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
+import {AjaxActionResponseView} from '@models/ajax-action-response/ajax-action-response';
 
 @Component({
     selector: 'dot-push-publish-dialog',
@@ -21,6 +22,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     eventData: DotPushPublishDialogData;
     formData: DotPushPublishData;
     formValid = false;
+    errorMessage = null;
 
     @Input() assetIdentifier: string;
 
@@ -31,8 +33,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
     constructor(
         private pushPublishService: PushPublishService,
         private dotMessageService: DotMessageService,
-        private dotPushPublishDialogService: DotPushPublishDialogService,
-        private loggerService: LoggerService
+        private dotPushPublishDialogService: DotPushPublishDialogService
     ) {}
 
     ngOnInit() {
@@ -56,6 +57,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
         this.cancel.emit(true);
         this.dialogShow = false;
         this.eventData = null;
+        this.errorMessage = null;
     }
 
     /**
@@ -68,11 +70,11 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
             this.pushPublishService
                 .pushPublishContent(this.assetIdentifier, this.formData, !!this.eventData.isBundle)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((result: any) => {
+                .subscribe((result: AjaxActionResponseView) => {
                     if (!result.errors) {
                         this.close();
                     } else {
-                        this.loggerService.debug(result.errorMessages);
+                        this.errorMessage = result.errors;
                     }
                 });
         }
@@ -101,7 +103,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
                     this.submitPushAction();
                 },
                 label: this.dotMessageService.get('contenttypes.content.push_publish.form.push'),
-                disabled: this.formValid
+                disabled: !this.formValid
             },
             cancel: {
                 action: () => {
