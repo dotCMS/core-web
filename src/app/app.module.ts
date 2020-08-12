@@ -2,7 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 // App is our top level component
 import { AppComponent } from './app.component';
@@ -44,6 +44,5 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         HotkeyModule.forRoot()
     ],
     providers: [ENV_PROVIDERS],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}
