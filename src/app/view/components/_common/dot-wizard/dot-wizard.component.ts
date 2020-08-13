@@ -50,6 +50,7 @@ export class DotWizardComponent implements OnInit, OnDestroy {
             setTimeout(() => {
                 this.loadComponents();
                 this.setDialogActions();
+                this.focusFistFormElement();
             }, 0);
         });
     }

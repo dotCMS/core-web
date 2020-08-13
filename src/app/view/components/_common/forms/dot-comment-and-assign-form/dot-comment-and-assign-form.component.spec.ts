@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotCommentAndAssignFormComponent } from './dot-comment-and-assign-form.component';
 
-describe('DotAssigneeFormComponent', () => {
+fdescribe('DotAssigneeFormComponent', () => {
   let component: DotCommentAndAssignFormComponent;
   let fixture: ComponentFixture<DotCommentAndAssignFormComponent>;
 
