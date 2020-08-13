@@ -1,13 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    QueryList,
-    ViewChildren
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotRolesService } from '@services/dot-roles/dot-roles.service';
 import { take, takeUntil } from 'rxjs/operators';
 import { DotRole } from '@models/dot-role/dot-role.model';
@@ -15,7 +6,6 @@ import { SelectItem } from 'primeng/api';
 import { DotFormModel } from '@models/dot-form/dot-form.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { Dropdown } from 'primeng/dropdown';
 
 enum DotActionInputs {
     ASSIGNABLE = 'assignable'
@@ -32,7 +22,6 @@ export class DotCommentAndAssignFormComponent
     @Input() data: { [key: string]: any };
     @Output() value = new EventEmitter<{ [key: string]: string }>();
     @Output() valid = new EventEmitter<boolean>();
-    @ViewChildren('field') fields: QueryList<ElementRef>;
     dotRoles: SelectItem[];
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -73,13 +62,5 @@ export class DotCommentAndAssignFormComponent
         });
         this.emitValues();
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.emitValues());
-
-        setTimeout(() => {
-            if (this.fields.first instanceof Dropdown) {
-                (this.fields.first as Dropdown).focus();
-            } else {
-                this.fields.first.nativeElement.focus();
-            }
-        }, 0);
     }
 }

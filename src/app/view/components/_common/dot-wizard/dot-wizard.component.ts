@@ -47,6 +47,7 @@ export class DotWizardComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.dotWizardService.showDialog$.pipe(takeUntil(this.destroy$)).subscribe(data => {
             this.steps = data;
+            // need to wait to render the dotContainerReference.
             setTimeout(() => {
                 this.loadComponents();
                 this.setDialogActions();
@@ -193,10 +194,19 @@ export class DotWizardComponent implements OnInit, OnDestroy {
     }
 
     private focusFistFormElement(): void {
-        this.componentsHost[
-            this.currentStep
-        ].viewContainerRef.element.nativeElement.parentNode.children[0]
-            .getElementsByTagName('form')[0]
-            .elements[0].focus();
+        let count = 0;
+        // need to wait dynamic component to load the form.
+        const interval = setInterval(() => {
+            const form: HTMLFormElement = this.componentsHost[
+                this.currentStep
+            ].viewContainerRef.element.nativeElement.parentNode.children[0].getElementsByTagName(
+                'form'
+            )[0];
+            if (form || count === 10) {
+                (form.elements[0] as HTMLElement).focus();
+                clearInterval(interval);
+            }
+            count++;
+        }, 200);
     }
 }

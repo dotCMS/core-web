@@ -7,7 +7,7 @@
 >
     <div class="form__group" *ngIf="data['assignable']">
         <label class="form__label">{{ 'assignee.form.assignee' | dm }}:</label>
-        <p-dropdown #field
+        <p-dropdown
             [options]="dotRoles"
             [style]="{ width: '100%' }"
             formControlName="assign"
@@ -16,7 +16,7 @@
     </div>
     <div class="form__group" *ngIf="data['commentable']">
         <label class="form__label">{{ 'comment.form.comments' | dm }}:</label>
-        <textarea #field
+        <textarea
             pInputTextarea
             (keydown.enter)="$event.stopPropagation()"
             [style]="{ width: '100%' }"

@@ -88,7 +88,7 @@ describe('DotWizardComponent', () => {
             stepContainers = fixture.debugElement.queryAll(By.css('.dot-wizard__step'));
             dotWizardService.open(steps);
             fixture.detectChanges();
-            tick(1);
+            tick(201); // interval time to focus first element.
             fixture.detectChanges();
             acceptButton = fixture.debugElement.query(By.css('.dialog__button-accept'));
             closeButton = fixture.debugElement.query(By.css('.dialog__button-cancel'));
