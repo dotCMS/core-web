@@ -93,6 +93,8 @@ const mockPushActions: SelectItem[] = [
     }
 ];
 
+const mockDate = new Date('2020, 8, 14');
+
 describe('DotPushPublishFormComponent', () => {
     let hostComponent: TestHostComponent;
     let pushPublishForm: DotPushPublishFormComponent;
@@ -101,9 +103,6 @@ describe('DotPushPublishFormComponent', () => {
     let dotPushPublishFiltersService: DotPushPublishFiltersService;
     let pushActionsSelect: SelectButton;
     let selectActionButtons: DebugElement[];
-
-    const mockDate = new Date();
-    jasmine.clock().mockDate(mockDate);
 
     const mockFormInitialValue = {
         filterKey: mockFilters[0].key,
@@ -148,6 +147,8 @@ describe('DotPushPublishFormComponent', () => {
     );
 
     beforeEach(() => {
+        jasmine.clock().install();
+        jasmine.clock().mockDate(mockDate);
         fixture = TestBed.createComponent(TestHostComponent);
         dotPushPublishFiltersService = fixture.debugElement.injector.get(
             DotPushPublishFiltersService
@@ -159,6 +160,10 @@ describe('DotPushPublishFormComponent', () => {
         pushPublishForm = fixture.debugElement.query(By.css('dot-push-publish-form'))
             .componentInstance;
         pushActionsSelect = fixture.debugElement.query(By.css('p-selectButton')).componentInstance;
+    });
+
+    afterEach(() => {
+        jasmine.clock().uninstall();
     });
 
     it('should load filters on load', () => {
