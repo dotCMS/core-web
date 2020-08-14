@@ -148,7 +148,7 @@ export class DotWizardComponent implements OnInit, OnDestroy {
         };
     }
 
-    private loadNextStep(next: number) {
+    private loadNextStep(next: number): void {
         this.currentStep += next;
         this.focusFistFormElement();
         this.updateTransform();

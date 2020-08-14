@@ -1,8 +1,4 @@
-import {
-    async,
-    ComponentFixture,
-    TestBed
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotCommentAndAssignFormComponent } from './dot-comment-and-assign-form.component';
 import { DotRolesService } from '@services/dot-roles/dot-roles.service';
@@ -17,8 +13,8 @@ import { MockBackend } from '@angular/http/testing';
 import { FormatDateService } from '@services/format-date-service';
 import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { DotRole } from '@models/dot-role/dot-role.model';
 import { of } from 'rxjs';
+import { mockProcessedRoles } from '@services/dot-roles/dot-roles.service.spec';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -28,8 +24,6 @@ import { of } from 'rxjs';
 class TestHostComponent {
     @Input() data: any;
 }
-
-const mockRoles: DotRole[] = [{ id: '1', name: 'role1' }, { id: '2', name: 'role2' }];
 
 describe('DotAssigneeFormComponent', () => {
     let component: TestHostComponent;
@@ -66,7 +60,7 @@ describe('DotAssigneeFormComponent', () => {
         fixture = TestBed.createComponent(TestHostComponent);
         component = fixture.componentInstance;
         dotRolesService = fixture.debugElement.injector.get(DotRolesService);
-        spyOn(dotRolesService, 'get').and.returnValue(of(mockRoles));
+        spyOn(dotRolesService, 'get').and.returnValue(of(mockProcessedRoles));
     });
 
     it('should show only commentable field', () => {
@@ -84,8 +78,8 @@ describe('DotAssigneeFormComponent', () => {
         textArea = fixture.debugElement.query(By.css('textarea'));
         dropdown = fixture.debugElement.query(By.css('p-dropdown')).componentInstance;
         expect(dropdown.options).toEqual([
-            { label: mockRoles[0].name, value: mockRoles[0].id },
-            { label: mockRoles[1].name, value: mockRoles[1].id }
+            { label: mockProcessedRoles[0].name, value: mockProcessedRoles[0].id },
+            { label: mockProcessedRoles[1].name, value: mockProcessedRoles[1].id }
         ]);
         expect(textArea).toBeNull();
     });
@@ -105,7 +99,7 @@ describe('DotAssigneeFormComponent', () => {
 
         it('should emit value and valid on form change', () => {
             const mockFormValue = {
-                assign: mockRoles[0].id,
+                assign: mockProcessedRoles[0].id,
                 comments: 'test'
             };
             const formComponent: DotCommentAndAssignFormComponent = fixture.debugElement.query(

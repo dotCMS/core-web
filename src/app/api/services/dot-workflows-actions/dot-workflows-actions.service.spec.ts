@@ -132,7 +132,6 @@ describe('DotWorkflowsActionsService', () => {
         };
         let steps: DotWizardStep<any>[];
 
-        beforeEach(() => {});
         it('should merge comment and assign steps', () => {
             const mockWizardSteps: DotWizardStep<any>[] = [
                 {

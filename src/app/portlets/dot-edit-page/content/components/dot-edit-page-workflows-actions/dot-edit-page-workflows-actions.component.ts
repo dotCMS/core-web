@@ -80,7 +80,6 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                                             severity: DotMessageSeverity.ERROR,
                                             type: DotMessageType.SIMPLE_MESSAGE
                                         });
-                                        console.log('show toast');
                                     }
                                 });
                         } else {
@@ -106,7 +105,10 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
             });
     }
 
-    private fireWorkflowAction(workflow: DotCMSWorkflowAction, data?: { [key: string]: any }): void {
+    private fireWorkflowAction(
+        workflow: DotCMSWorkflowAction,
+        data?: { [key: string]: any }
+    ): void {
         const currentMenuActions = this.actions;
         this.actions = this.dotWorkflowActionsFireService
             .fireTo(this.page.workingInode, workflow.id, data)

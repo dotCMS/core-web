@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js';
 import { Observable } from 'rxjs';
-import { DotRole } from '@models/dot-role/dot-role.model';
 import { RequestMethod } from '@angular/http';
-import { pluck } from 'rxjs/operators';
+import { map, pluck } from 'rxjs/operators';
+import { DotRole } from '@models/dot-role/dot-role.model';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+
+const CURRENT_USER_KEY = 'CMS Anonymous';
 
 @Injectable()
 export class DotRolesService {
-    constructor(private coreWebService: CoreWebService) {}
+    constructor(
+        private dotMessageService: DotMessageService,
+        private coreWebService: CoreWebService
+    ) {}
 
     /**
      * Return list of roles associated to specific role .
@@ -19,8 +25,18 @@ export class DotRolesService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `/api/role/users/id/${roleId}`
+                url: `/api/v1/roles/${roleId}/rolehierarchyanduserroles`
             })
-            .pipe(pluck('entity'));
+            .pipe(
+                pluck('entity'),
+                map((roles: DotRole[]) =>
+                    roles.filter(role => role.user === false).map((role: DotRole) => {
+                        if (role.roleKey === CURRENT_USER_KEY) {
+                            role.name = this.dotMessageService.get('current-user');
+                        }
+                        return role;
+                    })
+                )
+            );
     }
 }
