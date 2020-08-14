@@ -1,7 +1,5 @@
 import { DebugElement, Component } from '@angular/core';
-import { async, ComponentFixture } from '@angular/core/testing';
-
-import { DOTTestBed } from '../../../test/dot-test-bed';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DotDialogComponent, DotDialogActions } from './dot-dialog.component';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
@@ -71,7 +69,7 @@ describe('DotDialogComponent', () => {
         let hostFixture: ComponentFixture<TestHostComponent>;
 
         beforeEach(async(() => {
-            DOTTestBed.configureTestingModule({
+            TestBed.configureTestingModule({
                 imports: [DotIconButtonModule, ButtonModule, BrowserAnimationsModule],
                 providers: [],
                 declarations: [DotDialogComponent, TestHostComponent]
@@ -79,7 +77,7 @@ describe('DotDialogComponent', () => {
         }));
 
         beforeEach(() => {
-            hostFixture = DOTTestBed.createComponent(TestHostComponent);
+            hostFixture = TestBed.createComponent(TestHostComponent);
             hostDe = hostFixture.debugElement;
             hostComponent = hostFixture.componentInstance;
         });
@@ -286,6 +284,27 @@ describe('DotDialogComponent', () => {
                             hostFixture.detectChanges();
 
                             expect(cancelAction).toHaveBeenCalledTimes(1);
+                            expect(component.hide.emit).not.toHaveBeenCalled();
+                        });
+                    });
+
+
+                    it('should trigger cancel action and close the dialog on Escape', () => {
+                        hostComponent.actions = {
+                            ...hostComponent.actions,
+                            cancel: {
+                                ...hostComponent.actions.cancel,
+                                action: null
+                            }
+                        };
+                        hostFixture.detectChanges();
+                        hostFixture.whenStable().then(() => {
+                            expect(component.visible).toBe(true);
+
+                            dispatchKeydownEvent('Escape');
+
+                            hostFixture.detectChanges();
+
                             expect(component.visible).toBe(false);
                             expect(component.hide.emit).toHaveBeenCalledTimes(1);
                         });
@@ -335,7 +354,7 @@ describe('DotDialogComponent', () => {
                         expect(accceptAction).toHaveBeenCalledTimes(1);
                     });
 
-                    it('should call cancel action and close the dialog', () => {
+                    it('should call cancel action when is set', () => {
                         hostFixture.whenStable().then(() => {
                             expect(component.visible).toBe(true);
 
@@ -345,6 +364,27 @@ describe('DotDialogComponent', () => {
                             hostFixture.detectChanges();
 
                             expect(cancelAction).toHaveBeenCalledTimes(1);
+                            expect(component.hide.emit).not.toHaveBeenCalled();
+                        });
+                    });
+
+                    it('should close the dialog', () => {
+                        hostComponent.actions = {
+                            ...hostComponent.actions,
+                            cancel: {
+                                ...hostComponent.actions.cancel,
+                                action: null
+                            }
+                        };
+                        hostFixture.detectChanges();
+                        hostFixture.whenStable().then(() => {
+                            expect(component.visible).toBe(true);
+
+                            const cancel: DebugElement = de.query(By.css('.dialog__button-cancel'));
+                            cancel.triggerEventHandler('click', {});
+
+                            hostFixture.detectChanges();
+
                             expect(component.visible).toBe(false);
                             expect(component.hide.emit).toHaveBeenCalledTimes(1);
                         });
@@ -370,7 +410,7 @@ describe('DotDialogComponent', () => {
         let hostFixture: ComponentFixture<TestHost2Component>;
 
         beforeEach(async(() => {
-            DOTTestBed.configureTestingModule({
+            TestBed.configureTestingModule({
                 imports: [DotIconButtonModule, ButtonModule, BrowserAnimationsModule],
                 providers: [],
                 declarations: [DotDialogComponent, TestHost2Component]
@@ -378,7 +418,7 @@ describe('DotDialogComponent', () => {
         }));
 
         beforeEach(() => {
-            hostFixture = DOTTestBed.createComponent(TestHost2Component);
+            hostFixture = TestBed.createComponent(TestHost2Component);
             hostDe = hostFixture.debugElement;
             hostComponent = hostFixture.componentInstance;
             hostComponent.show = true;

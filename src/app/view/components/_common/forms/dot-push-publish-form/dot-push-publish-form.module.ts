@@ -23,7 +23,7 @@ import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.ser
         DropdownModule,
         DotFieldValidationMessageModule,
         SelectButtonModule,
-        DotPipesModule
+        DotPipesModule,
     ],
     providers: [PushPublishService, DotParseHtmlService]
 })

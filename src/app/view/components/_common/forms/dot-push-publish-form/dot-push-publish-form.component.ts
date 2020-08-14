@@ -217,12 +217,12 @@ export class DotPushPublishFormComponent
                     'contenttypes.content.push_publish.action.pushremove'
                 ),
                 value: 'publishexpire',
-                disabled: this.eventData.removeOnly || this.isRestrictedOrCategory()
+                disabled: !!this.eventData.removeOnly || this.isRestrictedOrCategory()
             }
         ];
     }
 
     private isRestrictedOrCategory(): boolean {
-        return this.eventData.restricted || this.eventData.cats;
+        return !!(this.eventData.restricted || this.eventData.cats);
     }
 }

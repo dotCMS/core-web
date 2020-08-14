@@ -37,11 +37,11 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 
-class MockDotUiColorsService {
+export class MockDotUiColorsService {
     setColors() {}
 }
 
-const dotEventSocketURLFactory = () => {
+export const dotEventSocketURLFactory = () => {
     return new DotEventsSocketURL(
         `${window.location.hostname}:${window.location.port}/api/ws/v1/system/events`,
         window.location.protocol === 'https:'
