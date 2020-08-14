@@ -1,25 +1,41 @@
-import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
+import {
+    ConnectionBackend,
+    ResponseOptions,
+    Response,
+    RequestOptions,
+    BaseRequestOptions,
+    Http
+} from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
 import { DotWorkflowsActionsService } from './dot-workflows-actions.service';
-import { DOTTestBed } from '@tests/dot-test-bed';
+import { TestBed } from '@angular/core/testing';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 import { DotCMSWorkflowAction } from 'dotcms-models';
 import { mockWorkflows } from '@tests/dot-workflow-service.mock';
 import { DotWizardStep } from '@models/dot-wizard-step/dot-wizard-step.model';
 import { DotCommentAndAssignFormComponent } from '@components/_common/forms/dot-comment-and-assign-form/dot-comment-and-assign-form.component';
 import { DotPushPublishFormComponent } from '@components/_common/forms/dot-push-publish-form/dot-push-publish-form.component';
+import { CoreWebService } from 'dotcms-js';
+import { CoreWebServiceMock } from '../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
 
 describe('DotWorkflowsActionsService', () => {
-    let TestBed;
     let dotWorkflowActionsService: DotWorkflowsActionsService;
     let backend;
     let lastConnection;
 
     beforeEach(() => {
-        TestBed = DOTTestBed.resolveAndCreate([DotWorkflowsActionsService]);
+        TestBed.configureTestingModule({
+            providers: [
+                DotWorkflowsActionsService,
+                { provide: ConnectionBackend, useClass: MockBackend },
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                { provide: RequestOptions, useClass: BaseRequestOptions },
+                Http
+            ]
+        });
         dotWorkflowActionsService = TestBed.get(DotWorkflowsActionsService);
-        backend = TestBed.get(ConnectionBackend) as MockBackend;
+        backend = TestBed.get(ConnectionBackend);
         backend.connections.subscribe((connection: any) => {
             lastConnection = connection;
         });
