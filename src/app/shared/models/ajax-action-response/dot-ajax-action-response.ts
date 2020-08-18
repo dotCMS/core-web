@@ -3,7 +3,7 @@
  *
  * @interface
  */
-export interface AjaxActionResponseView {
+export interface DotAjaxActionResponseView {
     _body: any;
     errorMessages: string[];
     total: number;

@@ -11,9 +11,9 @@ import { MockBackend } from '@angular/http/testing';
 import { DotRole } from '@models/dot-role/dot-role.model';
 import { TestBed } from '@angular/core/testing';
 import { CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from '../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 
 const mockRoles: DotRole[] = [
     {

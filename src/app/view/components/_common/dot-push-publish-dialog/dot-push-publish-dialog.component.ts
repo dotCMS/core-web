@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DotPushPublishDialogData } from 'dotcms-models';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
-import { AjaxActionResponseView } from '@models/ajax-action-response/ajax-action-response';
+import { DotAjaxActionResponseView } from '@models/ajax-action-response/dot-ajax-action-response';
 
 @Component({
     selector: 'dot-push-publish-dialog',
@@ -72,7 +72,7 @@ export class DotPushPublishDialogComponent implements OnInit, OnDestroy {
                     !!this.eventData.isBundle
                 )
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((result: AjaxActionResponseView) => {
+                .subscribe((result: DotAjaxActionResponseView) => {
                     if (!result.errors) {
                         this.close();
                     } else {

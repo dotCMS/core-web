@@ -21,8 +21,8 @@ export class DotWizardService {
     }
 
     /**
-     * Send the steps to in input subscription and waits for the output
-     * @param {DotWizardStep[]} steps
+     * Send the wizard data to in input subscription and waits for the output
+     * @param {DotWizardInput} data
      * @returns Observable<{ [key: string]: string }>
      * @memberof DotWizardService
      */

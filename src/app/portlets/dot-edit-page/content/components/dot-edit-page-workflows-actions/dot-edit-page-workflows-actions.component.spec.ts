@@ -39,7 +39,7 @@ import { DotMessageDisplayService } from '@components/dot-message-display/servic
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import { CoreWebServiceMock } from '../../../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { dotEventSocketURLFactory } from '@tests/dot-test-bed';

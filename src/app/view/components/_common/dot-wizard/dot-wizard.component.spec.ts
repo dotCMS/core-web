@@ -50,6 +50,12 @@ const wizardInput: DotWizardInput = {
     steps: mockSteps
 };
 
+const stopImmediatePropagation = jasmine.createSpy('');
+
+const enterEvent = {
+    stopImmediatePropagation: stopImmediatePropagation
+};
+
 describe('DotWizardComponent', () => {
     let component: DotWizardComponent;
     let fixture: ComponentFixture<DotWizardComponent>;
@@ -173,11 +179,8 @@ describe('DotWizardComponent', () => {
 
     it('should change step on enter if form is valid', () => {
         spyOn(component.dialog, 'acceptAction');
-        const stopImmediatePropagation = jasmine.createSpy('');
         form1.valid.emit(true);
-        formsContainer.triggerEventHandler('keydown.enter', {
-            stopImmediatePropagation: stopImmediatePropagation
-        });
+        formsContainer.triggerEventHandler('keydown.enter', enterEvent);
         expect(stopImmediatePropagation).toHaveBeenCalled();
         expect(component.dialog.acceptAction).toHaveBeenCalled();
     });
@@ -185,7 +188,7 @@ describe('DotWizardComponent', () => {
     it('should NOT change step on enter if form is invalid', () => {
         spyOn(component.dialogActions.accept, 'action');
         form1.valid.emit(false);
-        formsContainer.triggerEventHandler('keydown.enter', {});
+        formsContainer.triggerEventHandler('keydown.enter', enterEvent);
 
         expect(component.dialogActions.accept.action).not.toHaveBeenCalled();
     });

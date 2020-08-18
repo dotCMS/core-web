@@ -63,7 +63,8 @@ export class DotWorkflowsActionsService {
      * Returns the input needed to collect information of the Workflow inputs.
      *
      * @param {DotCMSWorkflowAction} workflow
-     * @returns DotWizardStep[]
+     * @param {string} title
+     * @returns DotWizardInput
      * @memberof DotWorkflowsActionsService
      */
     setWizardInput(workflow: DotCMSWorkflowAction, title: string): DotWizardInput {

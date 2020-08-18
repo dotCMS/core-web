@@ -13,7 +13,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
 import { ApiRoot, CoreWebService, LoggerService, StringUtils, UserModel } from 'dotcms-js';
-import { CoreWebServiceMock } from '../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 
 const mockResponse = {
     errorMessages: [],
