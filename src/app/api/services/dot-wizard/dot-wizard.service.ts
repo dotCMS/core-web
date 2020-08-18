@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { DotWizardStep } from '@models/dot-wizard-step/dot-wizard-step.model';
+import { DotWizardInput } from '@models/dot-wizard-input/dot-wizard-input.model';
 
 @Injectable()
 export class DotWizardService {
-    private input: Subject<DotWizardStep<any>[]> = new Subject<DotWizardStep<any>[]>();
+    private input: Subject<DotWizardInput> = new Subject<DotWizardInput>();
     private output: Subject<{ [key: string]: string }> = new Subject<{ [key: string]: string }>();
 
-    get showDialog$(): Observable<DotWizardStep<any>[]> {
+    get showDialog$(): Observable<DotWizardInput> {
         return this.input.asObservable();
     }
 
@@ -26,8 +26,8 @@ export class DotWizardService {
      * @returns Observable<{ [key: string]: string }>
      * @memberof DotWizardService
      */
-    open(steps: DotWizardStep<any>[]): Observable<{ [key: string]: string }> {
-        this.input.next(steps);
+    open(data: DotWizardInput): Observable<{ [key: string]: string }> {
+        this.input.next(data);
         return this.output.asObservable();
     }
 }

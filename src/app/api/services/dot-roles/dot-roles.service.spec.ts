@@ -22,8 +22,8 @@ const mockRoles: DotRole[] = [
         user: false,
         roleKey: 'CMS Anonymous'
     },
-    { id: '2', name: 'Test Name', user: true, roleKey: 'Test' },
-    { id: '2', name: 'Some Role ', user: false, roleKey: 'roleKey1' }
+    { id: '2', name: 'Test Name', user: true, roleKey: 'anonymous' },
+    { id: '2', name: 'Some Role ', user: true, roleKey: 'roleKey1' }
 ];
 
 export const mockProcessedRoles: DotRole[] = [
@@ -33,11 +33,11 @@ export const mockProcessedRoles: DotRole[] = [
         user: false,
         roleKey: 'CMS Anonymous'
     },
-    { id: '2', name: 'Some Role ', user: false, roleKey: 'roleKey1' }
+    { id: '2', name: 'Some Role ', user: true, roleKey: 'roleKey1' }
 ];
 
 const messageServiceMock = new MockDotMessageService({
-    'current-user': 'Current User',
+    'current-user': 'Current User'
 });
 
 describe('DotRolesService', () => {
@@ -63,9 +63,9 @@ describe('DotRolesService', () => {
 
     it('should get Roles', () => {
         let result;
-        const url = '/api/v1/roles/123/rolehierarchyanduserroles';
+        const url = '/api/v1/roles/123/rolehierarchyanduserroles?roleHierarchyForAssign=false';
 
-        service.get('123').subscribe(res => {
+        service.get('123', false).subscribe(res => {
             result = res;
         });
 

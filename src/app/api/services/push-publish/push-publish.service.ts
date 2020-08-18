@@ -64,7 +64,6 @@ export class PushPublishService {
         pushPublishData: DotPushPublishData,
         isBundle: boolean
     ): Observable<AjaxActionResponseView> {
-        debugger;
         this._lastEnvironmentPushed = pushPublishData.environment;
         return this.coreWebService.request({
             body: this.getPublishEnvironmentData(assetIdentifier, pushPublishData),

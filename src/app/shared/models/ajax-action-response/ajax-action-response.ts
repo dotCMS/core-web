@@ -4,6 +4,7 @@
  * @interface
  */
 export interface AjaxActionResponseView {
+    _body: any;
     errorMessages: string[];
     total: number;
     bundleId: string;
