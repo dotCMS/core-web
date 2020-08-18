@@ -2,17 +2,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Input } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { of } from 'rxjs';
-import {MenuModule, Menu, ConfirmationService} from 'primeng/primeng';
+import { MenuModule, Menu, ConfirmationService } from 'primeng/primeng';
 import {
     CoreWebService,
     DotcmsConfigService,
     DotcmsEventsService,
     DotEventsSocket,
-    DotEventsSocketURL, LoggerService,
-    LoginService, StringUtils
+    DotEventsSocketURL,
+    LoggerService,
+    LoginService,
+    StringUtils
 } from 'dotcms-js';
 import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
 import { LoginServiceMock } from '@tests/login-service.mock';
@@ -35,12 +37,12 @@ import { PushPublishService } from '@services/push-publish/push-publish.service'
 import { MockPushPublishService } from '@portlets/shared/dot-content-types-listing/dot-content-types.component.spec';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
-import {BaseRequestOptions, ConnectionBackend, Http, RequestOptions} from '@angular/http';
-import {MockBackend} from '@angular/http/testing';
-import {CoreWebServiceMock} from '../../../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
-import {DotAlertConfirmService} from '@services/dot-alert-confirm';
-import {DotEventsService} from '@services/dot-events/dot-events.service';
-import {dotEventSocketURLFactory} from '@tests/dot-test-bed';
+import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
+import { CoreWebServiceMock } from '../../../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { dotEventSocketURLFactory } from '@tests/dot-test-bed';
 
 @Component({
     selector: 'dot-test-host-component',

@@ -12,7 +12,7 @@ import { MockBackend } from '@angular/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
-import {ApiRoot, CoreWebService, LoggerService, StringUtils, UserModel} from 'dotcms-js';
+import { ApiRoot, CoreWebService, LoggerService, StringUtils, UserModel } from 'dotcms-js';
 import { CoreWebServiceMock } from '../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
 
 const mockResponse = {
@@ -55,9 +55,7 @@ describe('PushPublishService', () => {
         pushPublishService = TestBed.get(PushPublishService);
         dotCurrentUserService = TestBed.get(DotCurrentUserService);
         connectionBackend = TestBed.get(ConnectionBackend);
-        connectionBackend.connections.subscribe(
-            (connection: any) => (lastConnection = connection)
-        );
+        connectionBackend.connections.subscribe((connection: any) => (lastConnection = connection));
     });
 
     it(
@@ -133,7 +131,7 @@ describe('PushPublishService', () => {
     it(
         'should do a post request and push publish an asset with no filter',
         fakeAsync(() => {
-            const formValue: DotPushPublishData = {...mockFormValue, filterKey: null};
+            const formValue: DotPushPublishData = { ...mockFormValue, filterKey: null };
 
             pushPublishService.pushPublishContent('1234567890', formValue, false).subscribe();
             lastConnection.mockRespond(
