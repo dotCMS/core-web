@@ -19,6 +19,10 @@ describe('DotWorkflowTaskDetailService', () => {
     });
 
     it('should set data to view', (done) => {
+        service.view({
+            header: 'This is a header for view',
+            id: '999'
+        });
         service.viewUrl$.subscribe((url: string) => {
             expect(url).toEqual(
                 [
@@ -40,11 +44,6 @@ describe('DotWorkflowTaskDetailService', () => {
 
         service.header$.subscribe((header: string) => {
             expect(header).toEqual('This is a header for view');
-        });
-
-        service.view({
-            header: 'This is a header for view',
-            id: '999'
         });
     });
 
