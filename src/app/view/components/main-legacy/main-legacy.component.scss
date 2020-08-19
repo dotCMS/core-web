@@ -23,6 +23,11 @@
 .layout__main {
     flex-grow: 1;
     background-color: $gray-bg;
+    overflow: auto;
+}
+
+.layout__main-rightSideBar {
+    margin-right: 80px;
 }
 
 .layout__sidebar {

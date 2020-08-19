@@ -1,5 +1,8 @@
 <!-- TODO: Move this to iframe-portlet-legacy -->
-<dot-create-contentlet (close)="onCloseContentletEditor()" (custom)="onCustomEvent($event)"></dot-create-contentlet>
+<dot-create-contentlet
+    (close)="onCloseContentletEditor()"
+    (custom)="onCustomEvent($event)"
+></dot-create-contentlet>
 <dot-message-display></dot-message-display>
 
 <div class="layout">
@@ -10,7 +13,7 @@
         <aside class="layout__sidebar">
             <dot-main-nav></dot-main-nav>
         </aside>
-        <main class="layout__main">
+        <main class="layout__main" [class.layout__main-rightSideBar]="hasRightSideBar">
             <router-outlet></router-outlet>
         </main>
     </div>

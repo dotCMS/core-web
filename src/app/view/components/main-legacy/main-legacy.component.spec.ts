@@ -1,13 +1,16 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { DebugElement, Component, Input } from '@angular/core';
+import { DebugElement, Component, Input, Injectable } from '@angular/core';
 import { MainComponentLegacyComponent } from './main-legacy.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
-    CoreWebService, DotcmsConfigService,
+    CoreWebService,
+    DotcmsConfigService,
     DotcmsEventsService,
     DotEventsSocket,
-    DotEventsSocketURL, LoggerService,
-    LoginService, StringUtils
+    DotEventsSocketURL,
+    LoggerService,
+    LoginService,
+    StringUtils
 } from 'dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
@@ -27,6 +30,19 @@ import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@an
 import { MockBackend } from '@angular/http/testing';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { Subject, Observable } from 'rxjs';
+import { NavigationEnd } from '@angular/router';
+
+const navigationEnd: Subject<NavigationEnd> = new Subject();
+
+@Injectable()
+class MockDotNavigationService {
+    onNavigationEnd(): Observable<NavigationEnd> {
+        return navigationEnd.asObservable();
+    }
+}
 
 @Component({
     selector: 'dot-alert-confirm',
@@ -75,48 +91,51 @@ describe('MainComponentLegacyComponent', () => {
     let dotRouterService: DotRouterService;
     let dotCustomEventHandlerService: DotCustomEventHandlerService;
 
-    beforeEach(
-        async(() => {
-            TestBed.configureTestingModule({
-                imports: [
-                    RouterTestingModule,
-                    DotContentletEditorModule,
-                    DotDownloadBundleDialogModule,
-                    DotWizardModule
-                ],
-                providers: [
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    { provide: DotRouterService, useClass: MockDotRouterService },
-                    { provide: DotUiColorsService, useClass: MockDotUiColorsService },
-                    { provide: CoreWebService, useClass: CoreWebServiceMock },
-                    { provide: ConnectionBackend, useClass: MockBackend },
-                    { provide: RequestOptions, useClass: BaseRequestOptions },
-                    Http,
-                    DotMenuService,
-                    DotCustomEventHandlerService,
-                    DotIframeService,
-                    FormatDateService,
-                    DotAlertConfirmService,
-                    ConfirmationService,
-                    DotcmsEventsService,
-                    DotEventsSocket,
-                    { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
-                    DotcmsConfigService,
-                    LoggerService,
-                    StringUtils
-                ],
-                declarations: [
-                    MainComponentLegacyComponent,
-                    MockDotDialogComponent,
-                    MockDotMainNavComponent,
-                    MockDotToolbarComponent,
-                    MockDotMessageDisplayComponent,
-                    MockDotLargeMessageDisplayComponent,
-                    MockDotPushPublishDialogComponent
-                ]
-            });
-        })
-    );
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                RouterTestingModule,
+                DotContentletEditorModule,
+                DotDownloadBundleDialogModule,
+                DotWizardModule
+            ],
+            providers: [
+                { provide: LoginService, useClass: LoginServiceMock },
+                { provide: DotRouterService, useClass: MockDotRouterService },
+                { provide: DotUiColorsService, useClass: MockDotUiColorsService },
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                { provide: ConnectionBackend, useClass: MockBackend },
+                { provide: RequestOptions, useClass: BaseRequestOptions },
+                {
+                    provide: DotNavigationService,
+                    useClass: MockDotNavigationService
+                },
+                Http,
+                DotMenuService,
+                DotCustomEventHandlerService,
+                DotEventsService,
+                DotIframeService,
+                FormatDateService,
+                DotAlertConfirmService,
+                ConfirmationService,
+                DotcmsEventsService,
+                DotEventsSocket,
+                { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
+                DotcmsConfigService,
+                LoggerService,
+                StringUtils
+            ],
+            declarations: [
+                MainComponentLegacyComponent,
+                MockDotDialogComponent,
+                MockDotMainNavComponent,
+                MockDotToolbarComponent,
+                MockDotMessageDisplayComponent,
+                MockDotLargeMessageDisplayComponent,
+                MockDotPushPublishDialogComponent
+            ]
+        });
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(MainComponentLegacyComponent);
@@ -129,6 +148,7 @@ describe('MainComponentLegacyComponent', () => {
     });
 
     it('should have basic layout elements', () => {
+        expect(de.query(By.css('.layout__main')).classes['layout__main-rightSideBar']).toBe(false);
         expect(de.query(By.css('dot-alert-confirm')) !== null).toBe(true);
         expect(de.query(By.css('dot-toolbar')) !== null).toBe(true);
         expect(de.query(By.css('dot-main-nav')) !== null).toBe(true);
@@ -141,6 +161,17 @@ describe('MainComponentLegacyComponent', () => {
     it('should have messages components', () => {
         expect(de.query(By.css('dot-large-message-display')) !== null).toBe(true);
         expect(de.query(By.css('dot-large-message-display')) !== null).toBe(true);
+    });
+
+    it('should set right side bar css class', () => {
+        navigationEnd.next({
+            url: '/edit-page',
+            urlAfterRedirects: '/edit-page',
+            id: 1
+        });
+        fixture.detectChanges();
+
+        expect(de.query(By.css('.layout__main')).classes['layout__main-rightSideBar']).toBe(true);
     });
 
     describe('Create Contentlet', () => {

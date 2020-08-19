@@ -2,6 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
+import { NavigationEnd } from '@angular/router';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -11,11 +13,18 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
     templateUrl: './main-legacy.component.html'
 })
 export class MainComponentLegacyComponent implements OnInit {
+    hasRightSideBar = false;
+
     constructor(
+        public dotNavigationService: DotNavigationService,
         private dotRouterService: DotRouterService,
         private dotIframeService: DotIframeService,
         private dotCustomEventHandlerService: DotCustomEventHandlerService
-    ) {}
+    ) {
+        this.dotNavigationService.onNavigationEnd().subscribe((event: NavigationEnd) => {
+            this.hasRightSideBar = this.shouldHaveRightSideBar(event.url);
+        });
+    }
 
     ngOnInit(): void {
         document.body.style.backgroundColor = '';
@@ -39,5 +48,9 @@ export class MainComponentLegacyComponent implements OnInit {
      */
     onCustomEvent($event: CustomEvent): void {
         this.dotCustomEventHandlerService.handle($event);
+    }
+
+    private shouldHaveRightSideBar(url: string): boolean {
+        return url.indexOf('/edit-page') >= 0;
     }
 }
