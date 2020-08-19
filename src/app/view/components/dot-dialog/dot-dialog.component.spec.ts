@@ -62,7 +62,7 @@ class TestHost2Component {
     beforeClose(): void {}
 }
 
-fdescribe('DotDialogComponent', () => {
+describe('DotDialogComponent', () => {
     describe('regular close', () => {
         let component: DotDialogComponent;
         let de: DebugElement;
