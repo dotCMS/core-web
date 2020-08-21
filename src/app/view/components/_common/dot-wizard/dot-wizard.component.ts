@@ -216,12 +216,11 @@ export class DotWizardComponent implements OnInit, OnDestroy {
                 label: this.dotMessageService.get('cancel'),
                 disabled: false
             };
-        } else {
-            return {
-                action: () => this.loadNextStep(-1),
-                label: this.dotMessageService.get('previous'),
-                disabled: true
-            };
         }
+        return {
+            action: () => this.loadNextStep(-1),
+            label: this.dotMessageService.get('previous'),
+            disabled: true
+        };
     }
 }
