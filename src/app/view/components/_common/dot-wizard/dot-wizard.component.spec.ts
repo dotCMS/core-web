@@ -225,7 +225,7 @@ describe('DotWizardComponent', () => {
         });
     });
 
-    describe('single steps', () => {
+    describe('single step', () => {
         beforeEach(
             fakeAsync(() => {
                 fixture = TestBed.createComponent(DotWizardComponent);

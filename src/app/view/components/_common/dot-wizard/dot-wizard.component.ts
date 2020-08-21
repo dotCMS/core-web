@@ -8,7 +8,11 @@ import {
     ViewChildren
 } from '@angular/core';
 import { DotContainerReferenceDirective } from '@directives/dot-container-reference/dot-container-reference.directive';
-import {DialogButton, DotDialogActions, DotDialogComponent} from '@components/dot-dialog/dot-dialog.component';
+import {
+    DialogButton,
+    DotDialogActions,
+    DotDialogComponent
+} from '@components/dot-dialog/dot-dialog.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ComponentRef } from '@angular/core/src/linker/component_factory';
 import { DotWizardStep } from '@models/dot-wizard-step/dot-wizard-step.model';
