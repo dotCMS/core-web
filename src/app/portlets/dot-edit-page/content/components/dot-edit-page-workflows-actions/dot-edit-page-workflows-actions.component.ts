@@ -114,6 +114,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
         data?: { [key: string]: any }
     ): void {
         const currentMenuActions = this.actions;
+        debugger;
         this.actions = this.dotWorkflowActionsFireService
             .fireTo(this.page.workingInode, workflow.id, data)
             .pipe(
