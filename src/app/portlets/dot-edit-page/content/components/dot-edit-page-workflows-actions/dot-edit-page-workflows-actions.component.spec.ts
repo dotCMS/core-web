@@ -43,6 +43,7 @@ import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.ser
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { dotEventSocketURLFactory } from '@tests/dot-test-bed';
+import {DotWorkflowEventHandlerService} from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -54,7 +55,7 @@ class TestHostComponent {
     @Input() page: DotPage;
 }
 
-fdescribe('DotEditPageWorkflowsActionsComponent', () => {
+describe('DotEditPageWorkflowsActionsComponent', () => {
     let component: TestHostComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
@@ -112,7 +113,8 @@ fdescribe('DotEditPageWorkflowsActionsComponent', () => {
                     { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                     DotcmsConfigService,
                     LoggerService,
-                    StringUtils
+                    StringUtils,
+                    DotWorkflowEventHandlerService
                 ]
             });
         })

@@ -25,9 +25,7 @@ enum DotActionInputs {
     COMMENTANDASSIGN = 'commentAndAssign'
 }
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DotWorkflowEventHandlerService {
     private workflowStepMap = {
         commentAndAssign: DotCommentAndAssignFormComponent,
