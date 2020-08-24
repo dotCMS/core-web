@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DotCMSWorkflowActionEvent } from '../../../../../projects/dotcms-models/src/dot-workflow-action';
-import { catchError, take } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 import { DotCMSWorkflowAction, DotCMSWorkflowInput } from 'dotcms-models';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
@@ -16,6 +16,8 @@ import { DotPushPublishFormComponent } from '@components/_common/forms/dot-push-
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { Observable } from 'rxjs';
+import { DotEnvironment } from '@models/dot-environment/dot-environment';
 
 enum DotActionInputs {
     ASSIGNABLE = 'assignable',
@@ -43,23 +45,18 @@ export class DotWorkflowEventHandlerService {
         private dotGlobalMessageService: DotGlobalMessageService
     ) {}
 
+    /**
+     * Fire the event to open the wizard to collect data
+     * @param {DotCMSWorkflowActionEvent} event
+     * @memberof DotWorkflowEventHandlerService
+     */
     open(event: DotCMSWorkflowActionEvent): void {
         if (this.containsPushPublish(event.workflow.actionInputs)) {
-            this.pushPublishService
-                .getEnvironments()
+            this.checkPublishEnvironments()
                 .pipe(take(1))
-                .subscribe(environments => {
-                    if (environments.length) {
+                .subscribe((hasEnviroments: boolean) => {
+                    if (hasEnviroments) {
                         this.openWizard(event);
-                    } else {
-                        this.dotMessageDisplayService.push({
-                            life: 3000,
-                            message: this.dotMessageService.get(
-                                'editpage.actions.fire.error.add.environment'
-                            ),
-                            severity: DotMessageSeverity.ERROR,
-                            type: DotMessageType.SIMPLE_MESSAGE
-                        });
                     }
                 });
         } else {
@@ -67,10 +64,48 @@ export class DotWorkflowEventHandlerService {
         }
     }
 
+    /**
+     * Check if there are environments present otherwise send a notification
+     * @memberof DotWorkflowEventHandlerService
+     */
+    checkPublishEnvironments(): Observable<boolean> {
+        return this.pushPublishService.getEnvironments().pipe(
+            take(1),
+            map((environments: DotEnvironment[]) => {
+                if (environments.length) {
+                    return true;
+                } else {
+                    this.dotMessageDisplayService.push({
+                        life: 3000,
+                        message: this.dotMessageService.get(
+                            'editpage.actions.fire.error.add.environment'
+                        ),
+                        severity: DotMessageSeverity.ERROR,
+                        type: DotMessageType.SIMPLE_MESSAGE
+                    });
+                }
+                return false;
+            })
+        );
+    }
+
+    /**
+     * Check if Push Publish is par of th sub-actions of the workflow.
+     * @param {DotCMSWorkflowInput[]} inputs
+     * returns boolean
+     * @memberof DotWorkflowEventHandlerService
+     */
     containsPushPublish(inputs: DotCMSWorkflowInput[]): boolean {
         return inputs.some(input => input.id === 'pushPublish');
     }
 
+    /**
+     * Convert Worflow action inputs in wizard steps
+     * @param {DotCMSWorkflowAction} workflow
+     * @param {string} title
+     * @returns DotWizardInput
+     * @memberof DotWorkflowEventHandlerService
+     */
     setWizardInput(workflow: DotCMSWorkflowAction, title: string): DotWizardInput {
         const steps: DotWizardStep<any>[] = [];
         this.mergeCommentAndAssign(workflow).forEach((input: DotCMSWorkflowInput) => {
@@ -89,6 +124,13 @@ export class DotWorkflowEventHandlerService {
             : null;
     }
 
+    /**
+     * conver the data collected to what is expecting the endpoint.
+     * @param {{ [key: string]: any }} data
+     * @param {DotCMSWorkflowInput[]} inputs
+     * @returns { [key: string]: any }
+     * @memberof DotWorkflowEventHandlerService
+     */
     processWorkflowPayload(
         data: { [key: string]: any },
         inputs: DotCMSWorkflowInput[]
@@ -154,9 +196,11 @@ export class DotWorkflowEventHandlerService {
                 take(1)
             )
             .subscribe(() => {
-                debugger;
                 this.dotGlobalMessageService.display(
-                    this.dotMessageService.get('editpage.actions.fire.confirmation', event.workflow.name)
+                    this.dotMessageService.get(
+                        'editpage.actions.fire.confirmation',
+                        event.workflow.name
+                    )
                 );
                 this.dotIframeService.run(event.callback);
             });
