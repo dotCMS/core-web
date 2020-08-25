@@ -113,7 +113,7 @@ describe('ContainerSelectorComponent', () => {
             });
 
             tick();
-            expect(paginatorService.getWithOffset.child).toHaveBeenCalledWith(10);
+            expect(paginatorService.getWithOffset).toHaveBeenCalledWith(10);
         })
     );
 
