@@ -67,6 +67,7 @@ export class DotWorkflowEventHandlerService {
 
     /**
      * Check if there are environments present otherwise send a notification
+     * @returns Observable<boolean>
      * @memberof DotWorkflowEventHandlerService
      */
     checkPublishEnvironments(): Observable<boolean> {
@@ -93,7 +94,7 @@ export class DotWorkflowEventHandlerService {
     /**
      * Check if Push Publish is par of th sub-actions of the workflow.
      * @param {DotCMSWorkflowInput[]} inputs
-     * returns boolean
+     * @returns boolean
      * @memberof DotWorkflowEventHandlerService
      */
     containsPushPublish(inputs: DotCMSWorkflowInput[]): boolean {
@@ -127,7 +128,7 @@ export class DotWorkflowEventHandlerService {
     }
 
     /**
-     * conver the data collected to what is expecting the endpoint.
+     * convert the data collected to what is expecting the endpoint.
      * @param {{ [key: string]: any }} data
      * @param {DotCMSWorkflowInput[]} inputs
      * @returns { [key: string]: any }
