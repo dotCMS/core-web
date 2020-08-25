@@ -98,7 +98,8 @@ export class DotWorkflowEventHandlerService {
     }
 
     /**
-     * Convert Worflow action inputs in wizard steps
+     * Returns the input needed to collect information of the Workflow inputs.
+     *
      * @param {DotCMSWorkflowAction} workflow
      * @param {string} title
      * @returns DotWizardInput

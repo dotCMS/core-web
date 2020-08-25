@@ -86,7 +86,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
     private openWizard(workflow: DotCMSWorkflowAction): void {
         this.dotWizardService
             .open(
-                this.dotWorkflowsActionsService.setWizardInput(
+                this.dotWorkflowEventHandlerService.setWizardInput(
                     workflow,
                     this.dotMessageService.get('Workflow-Action')
                 )

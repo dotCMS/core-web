@@ -39,6 +39,7 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/primeng';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { DotCMSWorkflowAction } from 'dotcms-models';
 
 const mockWAEvent: DotCMSWorkflowActionEvent = {
     workflow: mockWorkflowsActions[0],
@@ -89,7 +90,7 @@ const mockWizardOutputTransformedData = {
     whereToSend: '37fe23d5-588d-4c61-a9ea-70d01e913344'
 };
 
-fdescribe('DotWorkflowEventHandlerService', () => {
+describe('DotWorkflowEventHandlerService', () => {
     let dotWorkflowEventHandlerService: DotWorkflowEventHandlerService;
     let dotWizardService: DotWizardService;
     let dotWorkflowActionsFireService: DotWorkflowActionsFireService;
@@ -155,8 +156,8 @@ fdescribe('DotWorkflowEventHandlerService', () => {
 
     describe('wizard', () => {
         it('should open with the correct data', () => {
-            spyOn(dotWizardService, 'open');
-            dotWorkflowEventHandlerService.open(mockWAEvent);
+            spyOn(dotWizardService, 'open').and.callThrough();
+            dotWorkflowEventHandlerService.open({...mockWAEvent});
             expect(dotWizardService.open).toHaveBeenCalledWith(mockWizardInput);
         });
         it('should fire the workflow action with the correct data, execute the callback and send a message on output', () => {
@@ -164,8 +165,8 @@ fdescribe('DotWorkflowEventHandlerService', () => {
 
             spyOn(dotGlobalMessageService, 'display');
             spyOn(dotIframeService, 'run');
-            dotWorkflowEventHandlerService.open(mockWAEvent);
-            dotWizardService.output$(mockWizardOutputData);
+            dotWorkflowEventHandlerService.open({...mockWAEvent});
+            dotWizardService.output$({...mockWizardOutputData});
 
             expect(dotWorkflowActionsFireService.fireTo).toHaveBeenCalledWith(
                 mockWAEvent.inode,
@@ -233,9 +234,30 @@ fdescribe('DotWorkflowEventHandlerService', () => {
         expect(input).toEqual(mockWizardInput);
     });
 
+    it('should return only valid Components ', () => {
+        const mockWorkflowActions: DotCMSWorkflowAction = {
+            ...mockWorkflowsActions[0]
+        };
+        mockWorkflowActions.actionInputs = [
+            {
+                body: {},
+                id: 'invalidID'
+            },
+            {
+                body: {},
+                id: 'invalidID2'
+            }
+        ];
+        const wizardInput: DotWizardInput = dotWorkflowEventHandlerService.setWizardInput(
+            mockWorkflowActions,
+            'Title Test'
+        );
+        expect(wizardInput).toEqual(null);
+    });
+
     it('should process workflow payload', () => {
         const data = dotWorkflowEventHandlerService.processWorkflowPayload(
-            mockWizardOutputData,
+            {...mockWizardOutputData},
             mockWorkflowsActions[0].actionInputs
         );
 
