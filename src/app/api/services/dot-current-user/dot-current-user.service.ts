@@ -8,7 +8,7 @@ import { pluck, take } from 'rxjs/operators';
 @Injectable()
 export class DotCurrentUserService {
     private currentUsersUrl = 'v1/users/current/';
-    private porletAccessUrl = 'v1/portlet/permissions/';
+    private porletAccessUrl = 'v1/portlet/{0}/_doesuserhaveaccess';
 
     constructor(private coreWebService: CoreWebService) {}
 
@@ -35,7 +35,7 @@ export class DotCurrentUserService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `${this.porletAccessUrl}${portletid}`
+                url: this.porletAccessUrl.replace('{0}', portletid)
             })
             .pipe(take(1), pluck('entity', 'response'));
     }

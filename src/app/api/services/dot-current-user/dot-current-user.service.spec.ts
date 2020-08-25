@@ -75,7 +75,7 @@ describe('DotCurrentUserService', () => {
             )
         );
         expect(lastConnection.request.method).toBe(0); // 0 is GET method
-        expect(lastConnection.request.url).toContain('v1/portlet/permissions/test');
+        expect(lastConnection.request.url).toContain('v1/portlet/test/_doesuserhaveaccess');
         expect(userHasAccess).toEqual(true);
     });
 });
