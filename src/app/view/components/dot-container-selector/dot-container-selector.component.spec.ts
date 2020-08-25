@@ -52,7 +52,10 @@ describe('ContainerSelectorComponent', () => {
                     identifier: '427c47a4-c380-439f',
                     name: 'Container 1',
                     type: 'Container',
-                    source: CONTAINER_SOURCE.DB
+                    source: CONTAINER_SOURCE.DB,
+                    parentPermissionable: {
+                        hostname: 'demo.dotcms.com'
+                    }
                 },
                 {
                     categoryId: '40204d-c380-439f-a6d0-97d8sdeed57e',
@@ -62,9 +65,28 @@ describe('ContainerSelectorComponent', () => {
                     name: 'Container 2',
                     type: 'Container',
                     source: CONTAINER_SOURCE.FILE,
-                    path: 'container/path'
+                    path: 'container/path',
+                    parentPermissionable: {
+                        hostname: 'demo.dotcms.com'
+                    }
                 }
             ];
+        })
+    );
+
+    it('should show the hots name and container name',
+        fakeAsync(() => {
+            comp.data = [
+                {
+                    container: containers[0],
+                    uuid: '1'
+                }
+            ];
+
+            fixture.detectChanges();
+
+            const dataItem = de.query(By.css('.container-selector__list-item span'));
+            expect(dataItem.nativeElement.textContent).toEqual('Container 1 (demo.dotcms.com)')
         })
     );
 
@@ -91,7 +113,7 @@ describe('ContainerSelectorComponent', () => {
             });
 
             tick();
-            expect(paginatorService.getWithOffset).toHaveBeenCalledWith(10);
+            expect(paginatorService.getWithOffset.child).toHaveBeenCalledWith(10);
         })
     );
 
