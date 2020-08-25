@@ -48,7 +48,7 @@
             <dot-iframe [src]="relationshipURL"></dot-iframe>
         </ng-template>
     </p-tabPanel>
-    <p-tabPanel class="content-type__permissions" header="{{ 'contenttypes.tab.permissions.header' | dm }}" *ngIf="contentType && showPermissionsTab" [cache]="false">
+    <p-tabPanel class="content-type__permissions" header="{{ 'contenttypes.tab.permissions.header' | dm }}" *ngIf="contentType && showPermissionsTab | async" [cache]="false">
         <ng-template pTemplate="content">
             <dot-iframe [src]="permissionURL"></dot-iframe>
         </ng-template>

@@ -7,6 +7,7 @@ import { MenuItem } from 'primeng/api';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotCMSContentType } from 'dotcms-models';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'dot-content-type-layout',
@@ -19,7 +20,7 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
     permissionURL: string;
     pushHistoryURL: string;
     relationshipURL: string;
-    showPermissionsTab: boolean;
+    showPermissionsTab: Observable<boolean>;
 
     actions: MenuItem[];
 
@@ -32,11 +33,7 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.dotCurrentUserService
-            .hasAccessToPortlet('permissions')
-            .subscribe((access: boolean) => {
-                this.showPermissionsTab = access;
-            });
+        this.showPermissionsTab = this.dotCurrentUserService.hasAccessToPortlet('permissions');
         this.fieldDragDropService.setBagOptions();
         this.loadActions();
     }
