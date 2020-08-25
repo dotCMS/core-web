@@ -8,7 +8,7 @@ import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { DotCMSWorkflowActionEvent } from '../../../../../projects/dotcms-models/src/dot-workflow-action';
+import { DotCMSWorkflowActionEvent } from 'dotcms-models';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 import { MockPushPublishService } from '@portlets/shared/dot-content-types-listing/dot-content-types.component.spec';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
@@ -157,7 +157,7 @@ describe('DotWorkflowEventHandlerService', () => {
     describe('wizard', () => {
         it('should open with the correct data', () => {
             spyOn(dotWizardService, 'open').and.callThrough();
-            dotWorkflowEventHandlerService.open({...mockWAEvent});
+            dotWorkflowEventHandlerService.open({ ...mockWAEvent });
             expect(dotWizardService.open).toHaveBeenCalledWith(mockWizardInput);
         });
         it('should fire the workflow action with the correct data, execute the callback and send a message on output', () => {
@@ -165,8 +165,8 @@ describe('DotWorkflowEventHandlerService', () => {
 
             spyOn(dotGlobalMessageService, 'display');
             spyOn(dotIframeService, 'run');
-            dotWorkflowEventHandlerService.open({...mockWAEvent});
-            dotWizardService.output$({...mockWizardOutputData});
+            dotWorkflowEventHandlerService.open({ ...mockWAEvent });
+            dotWizardService.output$({ ...mockWizardOutputData });
 
             expect(dotWorkflowActionsFireService.fireTo).toHaveBeenCalledWith(
                 mockWAEvent.inode,
@@ -257,7 +257,7 @@ describe('DotWorkflowEventHandlerService', () => {
 
     it('should process workflow payload', () => {
         const data = dotWorkflowEventHandlerService.processWorkflowPayload(
-            {...mockWizardOutputData},
+            { ...mockWizardOutputData },
             mockWorkflowsActions[0].actionInputs
         );
 

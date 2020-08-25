@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DotCMSWorkflowActionEvent } from '../../../../../projects/dotcms-models/src/dot-workflow-action';
 import { catchError, map, take } from 'rxjs/operators';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
-import { DotCMSWorkflowAction, DotCMSWorkflowInput } from 'dotcms-models';
+import {
+    DotCMSWorkflowAction,
+    DotCMSWorkflowInput,
+    DotCMSWorkflowActionEvent
+} from 'dotcms-models';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
