@@ -25,6 +25,15 @@ dot-whats-changed,
     justify-content: center;
     padding: 0 $basic-padding * 2 $basic-padding * 2;
     width: 100%;
+
+    &.dot-edit__page-wrapper--deviced {
+        display: block;
+        height: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        overflow: scroll;
+        width: 100%;
+    }
 }
 
 .device-info {
@@ -47,6 +56,8 @@ dot-whats-changed,
         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f0f0f0', GradientType=1);
         margin: 0 auto;
         padding: 0 10px;
+        width: fit-content;
+
 
         &:before {
             content: "";
