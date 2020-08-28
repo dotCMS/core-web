@@ -22,7 +22,15 @@
         class="dot-edit__page-wrapper"
         [class.dot-edit__page-wrapper--deviced]="pageState.viewAs.device"
     >
-        <div class="dot-edit__device-wrapper">
+        <div 
+            class="dot-edit__device-wrapper"
+            [ngStyle]="{
+                width: pageState.viewAs.device ? pageState.viewAs.device.cssWidth + 'px' : '',
+                height: pageState.viewAs.device ? pageState.viewAs.device.cssHeight + 'px' : '',
+                visibility: showWhatsChanged ? 'hidden' : '',
+                position: showWhatsChanged ? 'absolute' : ''
+            }"
+        >
             <div class="dot-edit__iframe-wrapper">
                 <dot-overlay-mask
                     *ngIf="showOverlay"
@@ -41,16 +49,6 @@
                     frameborder="0"
                     class="dot-edit__iframe"
                     (load)="onLoad($event)"
-                    [ngStyle]="{
-                        width: pageState.viewAs.device
-                            ? pageState.viewAs.device.cssWidth + 'px'
-                            : '',
-                        height: pageState.viewAs.device
-                            ? pageState.viewAs.device.cssHeight + 'px'
-                            : '',
-                        visibility: showWhatsChanged ? 'hidden' : '',
-                        position: showWhatsChanged ? 'absolute' : ''
-                    }"
                 ></iframe>
             </div>
         </div>

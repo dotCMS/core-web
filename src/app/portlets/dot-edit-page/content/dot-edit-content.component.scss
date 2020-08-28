@@ -18,11 +18,11 @@ dot-whats-changed,
 }
 
 .dot-edit__page-wrapper {
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: center;
+    height: 100%;
+    max-width: 100%;
+    overflow: scroll;
+    min-width: 100%;
+    width: 100%;
     padding: 0 $basic-padding * 2 $basic-padding * 2;
     width: 100%;
 }
