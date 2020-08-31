@@ -26,9 +26,7 @@
             class="dot-edit__device-wrapper"
             [ngStyle]="{
                 width: pageState.viewAs.device ? pageState.viewAs.device.cssWidth + 'px' : '100%',
-                height: pageState.viewAs.device ? pageState.viewAs.device.cssHeight + 'px' : '100%',
-                visibility: showWhatsChanged ? 'hidden' : '',
-                position: showWhatsChanged ? 'absolute' : ''
+                height: pageState.viewAs.device ? pageState.viewAs.device.cssHeight + 'px' : '100%'
             }"
         >
             <div class="dot-edit__iframe-wrapper">
@@ -49,6 +47,10 @@
                     frameborder="0"
                     class="dot-edit__iframe"
                     (load)="onLoad($event)"
+                    [ngStyle]="{
+                        visibility: showWhatsChanged ? 'hidden' : '',
+                        position: showWhatsChanged ? 'absolute' : ''
+                     }"
                 ></iframe>
             </div>
         </div>
