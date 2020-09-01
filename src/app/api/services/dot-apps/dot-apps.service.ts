@@ -101,7 +101,7 @@ export class DotAppsService {
      */
     saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Observable<string> {
         return this.coreWebService
-            .requestView({
+            .requestView2({
                 body: {
                     ...params
                 },

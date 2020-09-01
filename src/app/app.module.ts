@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 // App is our top level component
 import { AppComponent } from './app.component';
@@ -34,6 +35,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         BrowserModule,
         FormsModule,
         HttpModule,
+        HttpClientModule,
         JsonpModule,
         ReactiveFormsModule,
         SharedModule.forRoot(),

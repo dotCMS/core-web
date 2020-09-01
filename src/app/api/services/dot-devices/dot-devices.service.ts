@@ -21,7 +21,7 @@ export class DotDevicesService {
      */
     get(): Observable<DotDevice[]> {
         return this.coreWebService
-            .requestView({
+            .requestView2({
                 method: RequestMethod.Get,
                 url: [
                     'content',

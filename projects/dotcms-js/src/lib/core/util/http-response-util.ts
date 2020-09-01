@@ -1,5 +1,6 @@
 import { Response, Request } from '@angular/http';
 import { HttpCode } from './http-code';
+import { HttpResponse, HttpRequest } from '@angular/common/http';
 
 export const NETWORK_CONNECTION_ERROR = 1;
 export const UNKNOWN_RESPONSE_ERROR = 2;
@@ -14,6 +15,16 @@ export class CwError {
         public message: string,
         public request?: Request,
         public response?: Response,
+        public source?: any
+    ) {}
+}
+
+export class CwError2 {
+    constructor(
+        public code: number,
+        public message: string,
+        public request?: HttpRequest<any>,
+        public response?: HttpResponse<any>,
         public source?: any
     ) {}
 }
