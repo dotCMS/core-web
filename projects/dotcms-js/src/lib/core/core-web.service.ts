@@ -162,7 +162,10 @@ export class CoreWebService {
                             response.status === HttpCode.SERVER_ERROR ||
                             response.status === HttpCode.FORBIDDEN
                         ) {
-                            if (response.statusText && response.statusText.indexOf('ECONNREFUSED') >= 0) {
+                            if (
+                                response.statusText &&
+                                response.statusText.indexOf('ECONNREFUSED') >= 0
+                            ) {
                                 throw new CwError2(
                                     NETWORK_CONNECTION_ERROR,
                                     CLIENTS_ONLY_MESSAGES[NETWORK_CONNECTION_ERROR],
@@ -231,7 +234,6 @@ export class CoreWebService {
 
     public requestView2(options: RequestOptionsArgs): Observable<ResponseView2> {
         const request = this.getRequestOpts2(options);
-        debugger
         return this.http.request(request).pipe(
             filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
             map((resp: HttpResponse<any>) => {
@@ -318,22 +320,24 @@ export class CoreWebService {
 
     // tslint:disable-next-line:cyclomatic-complexity
     private getRequestOpts2(options: RequestOptionsArgs): HttpRequest<any> {
-        let headers: HttpHeaders = this._apiRoot.getDefaultRequestHeaders2();
+        const optionsArgs: RequestOptionsParams = {
+            headers: new HttpHeaders(),
+            params: new HttpParams()
+        };
+
+        optionsArgs.headers = this._apiRoot.getDefaultRequestHeaders2();
         const tempHeaders = options.headers
             ? options.headers
             : { 'Content-Type': 'application/json' };
 
         Object.keys(tempHeaders).forEach((key) => {
-            headers = headers.set(key, tempHeaders[key]);
+            optionsArgs.headers = optionsArgs.headers.set(key, tempHeaders[key]);
         });
 
-        // https://github.com/angular/angular/issues/10612#issuecomment-238712920
         const body =
             options.body && typeof options.body !== 'string'
                 ? JSON.stringify(options.body)
-                : options.body
-                ? options.body
-                : '';
+                : options.body;
 
         if (options.url.indexOf('://') === -1) {
             options.url = options.url.startsWith('/api')
@@ -342,26 +346,32 @@ export class CoreWebService {
         }
 
         if (this.browserUtil.isIE11()) {
-            options = options || {};
-            let searchOptions = new HttpParams();
-            Object.keys(options.search).forEach((key) => {
-                searchOptions = searchOptions.set(key, tempHeaders[key]);
-            });
-            const currentTime = new Date().getTime();
-            options.params = searchOptions.set('timestamp', String(currentTime));
+            optionsArgs.params = optionsArgs.params.set('timestamp', String(new Date().getTime()));
         }
 
-        const optionsArgs: RequestOptionsParams = {
-            headers,
-            params: new HttpParams()
-        };
-
         if (options.params) {
-            Object.keys(options.params).forEach((key) => {
-                optionsArgs.params = optionsArgs.params.set(key, options.params[key]);
-            });
+            optionsArgs.params = this.setHttpParams(
+                <URLSearchParams>options.params,
+                optionsArgs.params
+            );
+        }
+
+        if (options.search) {
+            optionsArgs.params = this.setHttpParams(
+                <URLSearchParams>options.search,
+                optionsArgs.params
+            );
         }
 
         return new HttpRequest(RequestMethod[options.method], options.url, body, optionsArgs);
+    }
+
+    private setHttpParams(urlParams: URLSearchParams, httpParams: HttpParams): HttpParams {
+        const searchParams = urlParams.toString().split('&');
+        searchParams.forEach((paramString: string) => {
+            const [key, value] = paramString.split('=');
+            httpParams = httpParams.set(key, value);
+        });
+        return httpParams;
     }
 }
