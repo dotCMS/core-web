@@ -17,7 +17,10 @@ import * as moment from 'moment';
 import { DotCommentAndAssignFormComponent } from '@components/_common/forms/dot-comment-and-assign-form/dot-comment-and-assign-form.component';
 import { DotPushPublishFormComponent } from '@components/_common/forms/dot-push-publish-form/dot-push-publish-form.component';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
+import {
+    DotActionBulkRequestOptions,
+    DotWorkflowActionsFireService
+} from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { Observable } from 'rxjs';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
@@ -151,6 +154,22 @@ export class DotWorkflowEventHandlerService {
         return data;
     }
 
+    // let pushPublish = {
+    //     whereToSend:whereToSend,
+    //
+    //     publishDate:publishDate,
+    //     publishTime:publishTime,
+    //     expireDate:expireDate,
+    //     expireTime:expireTime,
+    //
+    //     // forcePush:forcePush,
+    //     inode:inode,
+    //     actionId:actionId,
+    //     structureInode:structureInode,
+    //     hasCondition:hasCondition,
+    //     neverExpire:neverExpire
+    // };
+
     private mergeCommentAndAssign(workflow: DotCMSWorkflowAction): DotCMSWorkflowInput[] {
         const body = {};
         let workflows: DotCMSWorkflowInput[];
@@ -186,27 +205,38 @@ export class DotWorkflowEventHandlerService {
         event: DotCMSWorkflowActionEvent,
         data?: { [key: string]: any }
     ): void {
-        this.dotWorkflowActionsFireService
-            .fireTo(
-                event.inode,
-                event.workflow.id,
-                this.processWorkflowPayload(data, event.workflow.actionInputs)
-            )
-            .pipe(
-                catchError(error => {
-                    return this.httpErrorManagerService.handle(error);
-                }),
-                take(1)
-            )
-            .subscribe(() => {
-                this.dotGlobalMessageService.display(
-                    this.dotMessageService.get(
-                        'editpage.actions.fire.confirmation',
-                        event.workflow.name
-                    )
-                );
-                this.dotIframeService.run(event.callback);
-            });
+        if (event.selectedInodes && event.selectedInodes.length) {
+            this.dotWorkflowActionsFireService
+                .bulkFire(this.processBulkData(event, data))
+                .subscribe();
+            //TODO: hanlde error
+            //TODO: find a way to refresh workflow actions dialog.
+
+
+            debugger
+        } else {
+            this.dotWorkflowActionsFireService
+                .fireTo(
+                    event.inode,
+                    event.workflow.id,
+                    this.processWorkflowPayload(data, event.workflow.actionInputs)
+                )
+                .pipe(
+                    catchError(error => {
+                        return this.httpErrorManagerService.handle(error);
+                    }),
+                    take(1)
+                )
+                .subscribe(() => {
+                    this.dotGlobalMessageService.display(
+                        this.dotMessageService.get(
+                            'editpage.actions.fire.confirmation',
+                            event.workflow.name
+                        )
+                    );
+                    this.dotIframeService.run(event.callback);
+                });
+        }
     }
 
     private getAssignableData(workflow: DotCMSWorkflowAction): { [key: string]: any } {
@@ -215,5 +245,53 @@ export class DotWorkflowEventHandlerService {
 
     private isCommentOrAssign(id: string): boolean {
         return id === DotActionInputs.ASSIGNABLE || id === DotActionInputs.COMMENTABLE;
+    }
+
+    private processBulkData(
+        event: DotCMSWorkflowActionEvent,
+        data?: { [key: string]: any }
+    ): DotActionBulkRequestOptions {
+        data = this.processWorkflowPayload(data, event.workflow.actionInputs);
+        const requestOptions: DotActionBulkRequestOptions = {
+            workflowActionId: event.workflow.id,
+            additionalParams: {
+                assignComment: {
+                    comment: data.comments,
+                    assign: data.assign
+                },
+                pushPublish: {
+                    whereToSend: data.whereToSend,
+                    iWantTo: data.iWantTo,
+                    expireDate: data.expireDate,
+                    expireTime: data.expireTime,
+                    publishDate: data.publishDate,
+                    publishTime: data.publishTime,
+                    filterKey: data.filterKey
+                }
+            }
+        };
+
+        // requestOptions.workflowActionId = event.workflow.id;
+        if (Array.isArray(event.selectedInodes)) {
+            requestOptions['contentletIds'] = event.selectedInodes;
+        } else {
+            requestOptions['query'] = event.selectedInodes;
+        }
+        // requestOptions.additionalParams = {
+        //     assignComment: {
+        //         comment: data.comments,
+        //         assign: data.assign
+        //     },
+        //     pushPublish: {
+        //         whereToSend: data.whereToSend,
+        //         iWantTo: data.iWantTo,
+        //         expireDate: data.expireDate,
+        //         expireTime: data.expireTime,
+        //         publishDate: data.publishDate,
+        //         publishTime: data.publishTime,
+        //         filterKey: data.filterKey
+        //     }
+        // };
+        return requestOptions;
     }
 }

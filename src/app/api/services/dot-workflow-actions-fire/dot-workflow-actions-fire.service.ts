@@ -11,6 +11,34 @@ interface DotActionRequestOptions {
     action: ActionToFire;
 }
 
+export  interface DotActionBulkRequestOptions {
+    workflowActionId: string;
+    contentletIds?: string[];
+    query?: string;
+    additionalParams: {
+        assignComment: {
+            comment: string;
+            assign: string;
+        };
+        pushPublish: {
+            whereToSend: string;
+            iWantTo: string;
+            expireDate: string;
+            expireTime: string;
+            publishDate: string;
+            publishTime: string;
+            filterKey: string;
+        };
+    };
+}
+
+/* data['whereToSend'] = data.environment.join();
+        data['iWantTo'] = data.pushActionSelected;
+        data['publishTime'] = moment(data.publishDate).format('HH-mm');
+        data['publishDate'] = moment(data.publishDate).format('YYYY-MM-DD');
+        data['expireTime'] = moment(data.expireDate).format('HH-mm');
+        data['expireDate'] = moment(data.expireDate).format('YYYY-MM-DD');*/
+
 enum ActionToFire {
     NEW = 'NEW',
     PUBLISH = 'PUBLISH'
@@ -29,12 +57,26 @@ export class DotWorkflowActionsFireService {
      * @returns Observable<any> // contentlet
      * @memberof DotWorkflowActionsFireService
      */
-    fireTo(inode: string, actionId: string, data?: { [key: string]: string }): Observable<DotCMSContentlet> {
+    fireTo(
+        inode: string,
+        actionId: string,
+        data?: { [key: string]: string }
+    ): Observable<DotCMSContentlet> {
         return this.coreWebService
             .requestView({
                 body: data,
                 method: RequestMethod.Put,
                 url: `v1/workflow/actions/${actionId}/fire?inode=${inode}`
+            })
+            .pipe(pluck('entity'));
+    }
+
+    bulkFire( data: DotActionBulkRequestOptions ): Observable<DotCMSContentlet> {
+        return this.coreWebService
+            .requestView({
+                body: data,
+                method: RequestMethod.Put,
+                url: `/api/v1/workflow/contentlet/actions/bulk/fire`
             })
             .pipe(pluck('entity'));
     }
@@ -95,9 +137,6 @@ export class DotWorkflowActionsFireService {
                 url: `v1/workflow/actions/default/fire/${action}`,
                 body: { contentlet: { contentType: contentType, ...data } }
             })
-            .pipe(
-                take(1),
-                pluck('entity')
-            );
+            .pipe(take(1), pluck('entity'));
     }
 }
