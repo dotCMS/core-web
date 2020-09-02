@@ -23,7 +23,7 @@ dot-whats-changed,
     overflow: scroll;
     min-width: 100%;
     width: 100%;
-    padding: 0 $basic-padding * 2 $basic-padding * 2;
+    padding: $basic-padding * 4;
     width: 100%;
 }
 
@@ -32,19 +32,17 @@ dot-whats-changed,
     padding: $basic-padding 0;
 }
 
+.dot-edit__page-wrapper:after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 66.5rem;
+}
+
 .dot-edit__device-wrapper {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-
-    .dot-edit__page-wrapper--deviced {
-        &:after {
-            content: "";
-            display: block;
-            height: 50px;
-            width: 65.5rem;
-        }
-    }
 
     .dot-edit__page-wrapper--deviced & {
         flex-grow: 0;
