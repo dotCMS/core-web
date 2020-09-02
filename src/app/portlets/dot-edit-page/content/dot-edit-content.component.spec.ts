@@ -460,10 +460,20 @@ describe('DotEditContentComponent', () => {
                         fixture.detectChanges();
                         const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
                         expect(iframeEl.styles).toEqual({
-                            height: '100px',
                             position: '',
                             visibility: '',
-                            width: '100px'
+                        });
+                        done();
+                    }, 0);
+                });
+
+                it('should add inline styles to device wrapper', done => {
+                    setTimeout(() => {
+                        fixture.detectChanges();
+                        const deviceWraper = de.query(By.css('.dot-edit__device-wrapper'));
+                        expect(deviceWraper.styles).toEqual({
+                            width: '100px',
+                            height: '100px'
                         });
                         done();
                     }, 0);
