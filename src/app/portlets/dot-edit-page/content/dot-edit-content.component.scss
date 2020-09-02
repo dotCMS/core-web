@@ -37,6 +37,15 @@ dot-whats-changed,
     display: flex;
     flex-direction: column;
 
+    .dot-edit__page-wrapper--deviced {
+        &:after {
+            content: "";
+            display: block;
+            height: 50px;
+            width: 65.5rem;
+        }
+    }
+
     .dot-edit__page-wrapper--deviced & {
         flex-grow: 0;
         border-radius: 10px;
