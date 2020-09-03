@@ -75,19 +75,7 @@ export class ApiRoot {
         }
     }
 
-    getDefaultRequestHeaders(): Headers {
-        const headers = new Headers();
-        headers.append('com.dotmarketing.session_host', this.siteId);
-        headers.append('Accept', '*/*');
-        // headers.append('Accept', 'application/json');
-        // headers.append('Content-Type', 'application/json,text/html');
-        if (this.authToken) {
-            headers.append('Authorization', this.authToken);
-        }
-        return headers;
-    }
-
-    getDefaultRequestHeaders2(): HttpHeaders {
+    getDefaultRequestHeaders(): HttpHeaders {
         let headers = new HttpHeaders()
             .set('com.dotmarketing.session_host', this.siteId)
             .set('Accept', '*/*');

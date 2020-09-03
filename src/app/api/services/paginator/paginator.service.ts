@@ -141,7 +141,7 @@ export class PaginatorService {
         }
 
         return this.coreWebService
-            .requestView2({
+            .requestView({
                 method: RequestMethod.Get,
                 search: params,
                 url: url || this.url

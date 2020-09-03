@@ -681,7 +681,7 @@ export class RuleEngineContainer implements OnDestroy {
     let handled = false;
     try {
       if (e && e.response.status === HttpCode.FORBIDDEN) {
-        const errorJson = e.response.json();
+        const errorJson = e.response.body;
         if (errorJson && errorJson.error) {
           this.ruleViewService.showErrorMessage(errorJson.error.replace('dotcms.api.error.forbidden: ', ''));
           handled = true;

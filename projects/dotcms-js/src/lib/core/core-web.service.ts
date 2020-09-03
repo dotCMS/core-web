@@ -1,26 +1,17 @@
-import {
-    Http,
-    Response,
-    Request,
-    Headers,
-    RequestOptionsArgs,
-    URLSearchParams,
-    RequestMethod
-} from '@angular/http';
+import { RequestOptionsArgs, URLSearchParams, RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Subject, Observable, throwError } from 'rxjs';
 import { map, catchError, filter } from 'rxjs/operators';
 
 import {
     CwError,
-    CwError2,
     NETWORK_CONNECTION_ERROR,
     UNKNOWN_RESPONSE_ERROR,
     CLIENTS_ONLY_MESSAGES,
     SERVER_RESPONSE_ERROR
 } from './util/http-response-util';
 import { ApiRoot } from './api-root.service';
-import { ResponseView, ResponseView2 } from './util/response-view';
+import { ResponseView } from './util/response-view';
 import { LoggerService } from './logger.service';
 import { BrowserUtil } from './browser-util.service';
 import { HttpCode } from './util/http-code';
@@ -73,74 +64,14 @@ export class CoreWebService {
 
     constructor(
         private _apiRoot: ApiRoot,
-        private _http: Http,
         private loggerService: LoggerService,
         private browserUtil: BrowserUtil,
         private router: Router,
         private http: HttpClient
     ) {}
 
-    request(options: any): Observable<any> {
+    request(options: RequestOptionsArgs): Observable<any> {
         const request = this.getRequestOpts(options);
-        const source = options.body;
-
-        return this._http.request(request).pipe(
-            map((resp: Response) => {
-                // some endpoints have empty body.
-                try {
-                    return resp.json();
-                } catch (error) {
-                    return resp;
-                }
-            }),
-            catchError(
-                // tslint:disable-next-line:cyclomatic-complexity
-                (response: Response, _original: Observable<any>): Observable<any> => {
-                    if (response) {
-                        this.handleHttpError(response);
-                        if (
-                            response.status === HttpCode.SERVER_ERROR ||
-                            response.status === HttpCode.FORBIDDEN
-                        ) {
-                            if (response.text() && response.text().indexOf('ECONNREFUSED') >= 0) {
-                                throw new CwError(
-                                    NETWORK_CONNECTION_ERROR,
-                                    CLIENTS_ONLY_MESSAGES[NETWORK_CONNECTION_ERROR],
-                                    request,
-                                    response,
-                                    source
-                                );
-                            } else {
-                                throw new CwError(
-                                    SERVER_RESPONSE_ERROR,
-                                    response.json().message,
-                                    request,
-                                    response,
-                                    source
-                                );
-                            }
-                        } else if (response.status === HttpCode.NOT_FOUND) {
-                            this.loggerService.error(
-                                'Could not execute request: 404 path not valid.',
-                                options.url
-                            );
-                            throw new CwError(
-                                UNKNOWN_RESPONSE_ERROR,
-                                response.headers.get('error-message'),
-                                request,
-                                response,
-                                source
-                            );
-                        }
-                    }
-                    return null;
-                }
-            )
-        );
-    }
-
-    request2(options: RequestOptionsArgs): Observable<any> {
-        const request = this.getRequestOpts2(options);
         const source = options.body;
 
         return this.http.request(request).pipe(
@@ -148,7 +79,7 @@ export class CoreWebService {
             map((resp: HttpResponse<any>) => {
                 // some endpoints have empty body.
                 try {
-                    return resp;
+                    return resp.body;
                 } catch (error) {
                     return resp;
                 }
@@ -166,7 +97,7 @@ export class CoreWebService {
                                 response.statusText &&
                                 response.statusText.indexOf('ECONNREFUSED') >= 0
                             ) {
-                                throw new CwError2(
+                                throw new CwError(
                                     NETWORK_CONNECTION_ERROR,
                                     CLIENTS_ONLY_MESSAGES[NETWORK_CONNECTION_ERROR],
                                     request,
@@ -174,7 +105,7 @@ export class CoreWebService {
                                     source
                                 );
                             } else {
-                                throw new CwError2(
+                                throw new CwError(
                                     SERVER_RESPONSE_ERROR,
                                     response.body.message,
                                     request,
@@ -187,7 +118,7 @@ export class CoreWebService {
                                 'Could not execute request: 404 path not valid.',
                                 options.url
                             );
-                            throw new CwError2(
+                            throw new CwError(
                                 UNKNOWN_RESPONSE_ERROR,
                                 response.headers.get('error-message'),
                                 request,
@@ -219,31 +150,16 @@ export class CoreWebService {
      */
     public requestView(options: RequestOptionsArgs): Observable<ResponseView> {
         const request = this.getRequestOpts(options);
-
-        return this._http.request(request).pipe(
-            map((resp) => {
-                if (resp.json().errors && resp.json().errors.length > 0) {
+        return this.http.request(request).pipe(
+            filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
+            map((resp: HttpResponse<any>) => {
+                if (resp.body && resp.body.errors && resp.body.errors.length > 0) {
                     return this.handleRequestViewErrors(resp);
                 } else {
                     return new ResponseView(resp);
                 }
             }),
-            catchError((err: Response) => throwError(this.handleRequestViewErrors(err)))
-        );
-    }
-
-    public requestView2(options: RequestOptionsArgs): Observable<ResponseView2> {
-        const request = this.getRequestOpts2(options);
-        return this.http.request(request).pipe(
-            filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
-            map((resp: HttpResponse<any>) => {
-                if (resp.body && resp.body.errors && resp.body.errors.length > 0) {
-                    return this.handleRequestViewErrors2(resp);
-                } else {
-                    return new ResponseView2(resp);
-                }
-            }),
-            catchError((err: Response) => {
+            catchError(<T>(err: HttpResponse<T>) => {
                 return throwError(this.handleRequestViewErrors(err));
             })
         );
@@ -257,7 +173,7 @@ export class CoreWebService {
         return this.httpErrosSubjects[httpErrorCode].asObservable();
     }
 
-    private handleRequestViewErrors(resp: Response): ResponseView {
+    private handleRequestViewErrors<T>(resp: HttpResponse<T>): ResponseView {
         if (resp.status === 401) {
             this.router.navigate(['/public/login']);
         }
@@ -265,52 +181,7 @@ export class CoreWebService {
         return new ResponseView(resp);
     }
 
-    private handleRequestViewErrors2<T>(resp: HttpResponse<T>): ResponseView2 {
-        if (resp.status === 401) {
-            this.router.navigate(['/public/login']);
-        }
-
-        return new ResponseView2(resp);
-    }
-
-    // tslint:disable-next-line:cyclomatic-complexity
-    private getRequestOpts(options: RequestOptionsArgs): Request {
-        const headers: Headers = this._apiRoot.getDefaultRequestHeaders();
-        const tempHeaders = options.headers
-            ? options.headers
-            : { 'Content-Type': 'application/json' };
-
-        Object.keys(tempHeaders).forEach((key) => {
-            headers.set(key, tempHeaders[key]);
-        });
-
-        // https://github.com/angular/angular/issues/10612#issuecomment-238712920
-        options.body =
-            options.body && typeof options.body !== 'string'
-                ? JSON.stringify(options.body)
-                : options.body
-                ? options.body
-                : '';
-
-        options.headers = headers;
-
-        if (options.url.indexOf('://') === -1) {
-            options.url = options.url.startsWith('/api')
-                ? `${this._apiRoot.baseUrl}${options.url.substr(1)}`
-                : `${this._apiRoot.baseUrl}api/${options.url}`;
-        }
-
-        if (this.browserUtil.isIE11()) {
-            options = options || {};
-            options.search = options.search || new URLSearchParams();
-            const currentTime = new Date().getTime();
-            (<URLSearchParams>options.search).set('timestamp', String(currentTime));
-        }
-
-        return new Request(<any>options);
-    }
-
-    private handleHttpError(response): void {
+    private handleHttpError<T>(response: HttpResponse<T>): void {
         if (!this.httpErrosSubjects[response.status]) {
             this.httpErrosSubjects[response.status] = new Subject();
         }
@@ -318,14 +189,13 @@ export class CoreWebService {
         this.httpErrosSubjects[response.status].next(response);
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
-    private getRequestOpts2(options: RequestOptionsArgs): HttpRequest<any> {
+    private getRequestOpts(options: RequestOptionsArgs): HttpRequest<any> {
         const optionsArgs: RequestOptionsParams = {
             headers: new HttpHeaders(),
             params: new HttpParams()
         };
 
-        optionsArgs.headers = this._apiRoot.getDefaultRequestHeaders2();
+        optionsArgs.headers = this._apiRoot.getDefaultRequestHeaders();
         const tempHeaders = options.headers
             ? options.headers
             : { 'Content-Type': 'application/json' };

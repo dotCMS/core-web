@@ -1,4 +1,4 @@
-import { Response, Request } from '@angular/http';
+import { Response } from '@angular/http';
 import { HttpCode } from './http-code';
 import { HttpResponse, HttpRequest } from '@angular/common/http';
 
@@ -10,16 +10,6 @@ export const CLIENTS_ONLY_MESSAGES = {
 };
 
 export class CwError {
-    constructor(
-        public code: number,
-        public message: string,
-        public request?: Request,
-        public response?: Response,
-        public source?: any
-    ) {}
-}
-
-export class CwError2 {
     constructor(
         public code: number,
         public message: string,

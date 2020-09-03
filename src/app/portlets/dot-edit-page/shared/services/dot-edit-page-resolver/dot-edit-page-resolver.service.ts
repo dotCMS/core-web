@@ -1,7 +1,6 @@
 import { throwError, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { Response, Headers } from '@angular/http';
 
 import { ResponseView, HttpCode } from 'dotcms-js';
 import { tap, switchMap, filter, catchError, map } from 'rxjs/operators';
@@ -11,6 +10,7 @@ import { DotPageStateService } from '../../../content/services/dot-page-state/do
 import { DotPageRenderOptions } from '@services/dot-page-render/dot-page-render.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { HttpResponse, HttpHeaders } from '@angular/common/http';
 
 /**
  * With the url return a string of the edit page html
@@ -73,26 +73,24 @@ export class DotEditPageResolver implements Resolve<DotPageRenderState> {
         if (!dotRenderedPageState.page.canEdit) {
             return throwError(
                 new ResponseView(
-                    new Response({
+                    new HttpResponse({
                         body: {},
                         status: HttpCode.FORBIDDEN,
                         headers: null,
                         url: '',
-                        merge: null
                     })
                 )
             );
         } else if (!dotRenderedPageState.layout) {
             return throwError(
                 new ResponseView(
-                    new Response({
+                    new HttpResponse({
                         body: {},
                         status: HttpCode.FORBIDDEN,
-                        headers: new Headers({
+                        headers: new HttpHeaders({
                             'error-key': 'dotcms.api.error.license.required'
                         }),
                         url: '',
-                        merge: null
                     })
                 )
             );

@@ -7,6 +7,7 @@ import { ResponseView, LoginService, HttpCode } from 'dotcms-js';
 
 import { DotAlertConfirmService } from '../dot-alert-confirm';
 import { Response } from '@angular/http';
+import { HttpResponse } from '@angular/common/http';
 
 export interface DotHttpErrorHandled {
     redirected: boolean;
@@ -62,7 +63,7 @@ export class DotHttpErrorManagerService {
         return of(result);
     }
 
-    private callErrorHandler(response: Response): boolean {
+    private callErrorHandler<T>(response: HttpResponse<T>): boolean {
         const code = response.status;
 
         return code === HttpCode.FORBIDDEN
@@ -79,7 +80,7 @@ export class DotHttpErrorManagerService {
         );
     }
 
-    private isLicenseError(response: Response): boolean {
+    private isLicenseError<T>(response: HttpResponse<T>): boolean {
         return (
             response.headers &&
             response.headers.get('error-key') === 'dotcms.api.error.license.required'

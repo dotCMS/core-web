@@ -3,7 +3,7 @@ import {of as observableOf, Observable, Subject} from 'rxjs';
 
 import {map, mergeMap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {RequestMethod} from '@angular/http';
+import {Headers, RequestMethod} from '@angular/http';
 
 import {ApiRoot} from 'dotcms-js';
 import {CoreWebService} from 'dotcms-js';
@@ -107,11 +107,11 @@ export class BundleService {
   addRuleToBundle(ruleId: string, bundle: IBundle): Observable<{errorMessages: string[],
                   total: number, errors: number}> {
 
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this.coreWebService.request({
       body: `assetIdentifier=${ruleId}&bundleName=${bundle.name}&bundleSelect=${bundle.id}`,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+      headers,
       method: RequestMethod.Post,
       url: this._addToBundleUrl
     });
@@ -120,11 +120,11 @@ export class BundleService {
   pushPublishRule(ruleId: string, environmentId: string): Observable<{errorMessages: string[],
                   total: number, bundleId: string, errors: number}> {
 
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this.coreWebService.request({
       body: this.getPublishRuleData(ruleId, environmentId),
-          headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+          headers,
       method: RequestMethod.Post,
       url: this._pushRuleUrl
     });
