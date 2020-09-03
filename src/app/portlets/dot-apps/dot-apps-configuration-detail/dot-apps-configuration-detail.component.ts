@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
-import { DotKeyValueUtil } from '@components/dot-key-value/util/dot-key-value-util';
+import { DotKeyValueUtil } from '@components/dot-key-value-ng/util/dot-key-value-util';
 
 @Component({
     selector: 'dot-apps-configuration-detail',
