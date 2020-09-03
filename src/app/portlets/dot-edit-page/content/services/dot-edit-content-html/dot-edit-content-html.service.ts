@@ -69,6 +69,7 @@ export class DotEditContentHtmlService {
                     | DotContentletEventSelect
                     | DotContentletEventSave
             ) => {
+                console.log('here', this)
                 this.handlerContentletEvents(contentletEvent.name)(contentletEvent.data);
             }
         );
