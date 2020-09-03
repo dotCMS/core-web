@@ -4,7 +4,7 @@ import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 import { DotKeyValueUtil } from './util/dot-key-value-util';
 
 @Component({
-    selector: 'dot-key-value',
+    selector: 'dot-key-value-ng',
     styleUrls: ['./dot-key-value.component.scss'],
     templateUrl: './dot-key-value.component.html'
 })

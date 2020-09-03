@@ -73,7 +73,7 @@ describe('DotContentTypeFieldsVariablesComponent', () => {
 
         fixtureHost.detectChanges();
 
-        const dotKeyValue = de.query(By.css('dot-key-value')).componentInstance;
+        const dotKeyValue = de.query(By.css('dot-key-value-ng')).componentInstance;
         dotKeyValue.save.emit(response);
         expect(dotFieldVariableService.save).toHaveBeenCalledWith(
             comp.field,
@@ -90,7 +90,7 @@ describe('DotContentTypeFieldsVariablesComponent', () => {
         );
         fixtureHost.detectChanges();
 
-        const dotKeyValue = de.query(By.css('dot-key-value')).componentInstance;
+        const dotKeyValue = de.query(By.css('dot-key-value-ng')).componentInstance;
         dotKeyValue.delete.emit(variableToDelete);
 
         expect(dotFieldVariableService.delete).toHaveBeenCalledWith(comp.field, variableToDelete);
