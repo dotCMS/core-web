@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotCMSContentTypeField } from 'dotcms-models';
-import { DotKeyValueModule } from '@components/dot-key-value-ng/dot-key-value.module';
+import { DotKeyValueModule } from '@components/dot-key-value-ng/dot-key-value-ng.module';
 import { DotFieldVariable } from './models/dot-field-variable.interface';
 
 @Component({

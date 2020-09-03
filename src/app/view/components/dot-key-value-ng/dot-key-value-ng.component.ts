@@ -5,8 +5,8 @@ import { DotKeyValueUtil } from './util/dot-key-value-util';
 
 @Component({
     selector: 'dot-key-value-ng',
-    styleUrls: ['./dot-key-value.component.scss'],
-    templateUrl: './dot-key-value.component.html'
+    styleUrls: ['./dot-key-value-ng.component.scss'],
+    templateUrl: './dot-key-value-ng.component.html'
 })
 export class DotKeyValueComponent implements OnChanges {
     @Input() autoFocus = true;

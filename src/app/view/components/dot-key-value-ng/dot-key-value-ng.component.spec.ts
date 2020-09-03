@@ -8,7 +8,7 @@ import { TableModule } from 'primeng/table';
 import * as _ from 'lodash';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotKeyValueTableRowModule } from '@components/dot-key-value-ng/dot-key-value-table-row/dot-key-value-table-row.module';
-import { DotKeyValueComponent } from './dot-key-value.component';
+import { DotKeyValueComponent } from './dot-key-value-ng.component';
 import { DotKeyValue } from '@shared/models/dot-key-value/dot-key-value.model';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotKeyValueTableRowComponent } from './dot-key-value-table-row/dot-key-value-table-row.component';
