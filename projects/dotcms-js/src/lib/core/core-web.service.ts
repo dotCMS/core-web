@@ -237,11 +237,17 @@ export class CoreWebService {
     }
 
     private setHttpParams(urlParams: URLSearchParams, httpParams: HttpParams): HttpParams {
-        const searchParams = urlParams.toString().split('&');
-        searchParams.forEach((paramString: string) => {
-            const [key, value] = paramString.split('=');
-            httpParams = httpParams.set(key, value);
-        });
+        if (urlParams.paramsMap) {
+            const searchParams = urlParams.toString().split('&');
+            searchParams.forEach((paramString: string) => {
+                const [key, value] = paramString.split('=');
+                httpParams = httpParams.set(key, value);
+            });
+        } else {
+            Object.keys(urlParams).forEach((key: string) => {
+                httpParams = httpParams.set(key, urlParams[key]);
+            });
+        }
         return httpParams;
     }
 }
