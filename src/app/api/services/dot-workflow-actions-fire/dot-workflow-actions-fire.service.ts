@@ -4,40 +4,14 @@ import { RequestMethod } from '@angular/http';
 import { pluck, take } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js';
 import { DotCMSContentlet } from 'dotcms-models';
+import { DotActionBulkRequestOptions } from '@models/dot-action-bulk-request-options/dot-action-bulk-request-options.model';
+import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 
 interface DotActionRequestOptions {
     contentType: string;
     data: { [key: string]: any };
     action: ActionToFire;
 }
-
-export  interface DotActionBulkRequestOptions {
-    workflowActionId: string;
-    contentletIds?: string[];
-    query?: string;
-    additionalParams: {
-        assignComment: {
-            comment: string;
-            assign: string;
-        };
-        pushPublish: {
-            whereToSend: string;
-            iWantTo: string;
-            expireDate: string;
-            expireTime: string;
-            publishDate: string;
-            publishTime: string;
-            filterKey: string;
-        };
-    };
-}
-
-/* data['whereToSend'] = data.environment.join();
-        data['iWantTo'] = data.pushActionSelected;
-        data['publishTime'] = moment(data.publishDate).format('HH-mm');
-        data['publishDate'] = moment(data.publishDate).format('YYYY-MM-DD');
-        data['expireTime'] = moment(data.expireDate).format('HH-mm');
-        data['expireDate'] = moment(data.expireDate).format('YYYY-MM-DD');*/
 
 enum ActionToFire {
     NEW = 'NEW',
@@ -71,7 +45,14 @@ export class DotWorkflowActionsFireService {
             .pipe(pluck('entity'));
     }
 
-    bulkFire( data: DotActionBulkRequestOptions ): Observable<DotCMSContentlet> {
+    /**
+     * Fire a workflow action over a contentlet
+     *
+     * @param {DotActionBulkRequestOptions} data
+     * @returns Observable<any> // contentlet
+     * @memberof DotWorkflowActionsFireService
+     */
+    bulkFire(data: DotActionBulkRequestOptions): Observable<DotActionBulkResult> {
         return this.coreWebService
             .requestView({
                 body: data,
