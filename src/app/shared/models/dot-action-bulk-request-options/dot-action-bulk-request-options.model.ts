@@ -3,7 +3,6 @@
  *
  * @interface
  */
-
 export interface DotActionBulkRequestOptions {
     workflowActionId: string;
     contentletIds?: string[];

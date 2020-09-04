@@ -74,7 +74,6 @@ export class IframeComponent implements OnInit, OnDestroy {
             .ran()
             .pipe(takeUntil(this.destroy$))
             .subscribe((func: DotFunctionInfo) => {
-                debugger;
                 if (
                     this.getIframeWindow() &&
                     typeof this.getIframeWindow()[func.name] === 'function'

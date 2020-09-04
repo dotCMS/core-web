@@ -259,28 +259,11 @@ export class DotWorkflowEventHandlerService {
                 }
             }
         };
-
-        // requestOptions.workflowActionId = event.workflow.id;
         if (Array.isArray(event.selectedInodes)) {
             requestOptions['contentletIds'] = event.selectedInodes;
         } else {
             requestOptions['query'] = event.selectedInodes;
         }
-        // requestOptions.additionalParams = {
-        //     assignComment: {
-        //         comment: data.comments,
-        //         assign: data.assign
-        //     },
-        //     pushPublish: {
-        //         whereToSend: data.whereToSend,
-        //         iWantTo: data.iWantTo,
-        //         expireDate: data.expireDate,
-        //         expireTime: data.expireTime,
-        //         publishDate: data.publishDate,
-        //         publishTime: data.publishTime,
-        //         filterKey: data.filterKey
-        //     }
-        // };
         return requestOptions;
     }
 }

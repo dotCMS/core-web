@@ -52,7 +52,6 @@ export class DotIframeService {
     ran(): Observable<DotFunctionInfo> {
         return this._actions.asObservable().pipe(
             filter((action: DotFunctionInfo) => {
-                debugger;
                 return !!action.name;
             })
         );
