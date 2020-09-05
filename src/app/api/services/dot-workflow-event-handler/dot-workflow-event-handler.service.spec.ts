@@ -40,11 +40,14 @@ import { ConfirmationService } from 'primeng/primeng';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotCMSWorkflowAction } from 'dotcms-models';
+import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
+import { DotActionBulkRequestOptions } from '@models/dot-action-bulk-request-options/dot-action-bulk-request-options.model';
 
 const mockWAEvent: DotCMSWorkflowActionEvent = {
     workflow: mockWorkflowsActions[0],
     callback: 'test',
-    inode: '123Inode'
+    inode: '123Inode',
+    selectedInodes: []
 };
 
 const mockWizardSteps: DotWizardStep<any>[] = [
@@ -178,7 +181,53 @@ describe('DotWorkflowEventHandlerService', () => {
                 `The action "${mockWorkflowsActions[0].name}" was executed correctly`
             );
 
-            expect(dotIframeService.run).toHaveBeenCalledWith(mockWAEvent.callback);
+            expect(dotIframeService.run).toHaveBeenCalledWith({ name: mockWAEvent.callback });
+        });
+
+        it('should fire BULK action with the correct data, execute the callback and send a message on output', () => {
+            const mockBulkResponse: DotActionBulkResult = {
+                skippedCount: 1,
+                successCount: 2,
+                fails: null
+            };
+
+            const mockBulkRequest: DotActionBulkRequestOptions = {
+                workflowActionId: '44d4d4cd-c812-49db-adb1-1030be73e69a',
+                additionalParams: {
+                    assignComment: {
+                        comment: 'ds',
+                        assign: '654b0931-1027-41f7-ad4d-173115ed8ec1'
+                    },
+                    pushPublish: {
+                        whereToSend: '37fe23d5-588d-4c61-a9ea-70d01e913344',
+                        iWantTo: 'publishexpire',
+                        expireDate: '2020-08-11',
+                        expireTime: '19-59',
+                        publishDate: '2020-08-05',
+                        publishTime: '17-59',
+                        filterKey: 'Intelligent.yml'
+                    }
+                },
+                query: 'query'
+            };
+
+            spyOn(dotWorkflowActionsFireService, 'bulkFire').and.returnValue(of(mockBulkResponse));
+
+            spyOn(dotGlobalMessageService, 'display');
+            spyOn(dotIframeService, 'run');
+            dotWorkflowEventHandlerService.open({ ...mockWAEvent, selectedInodes: 'query' });
+            dotWizardService.output$({ ...mockWizardOutputData });
+
+            expect(dotWorkflowActionsFireService.bulkFire).toHaveBeenCalledWith(mockBulkRequest);
+
+            expect(dotGlobalMessageService.display).toHaveBeenCalledWith(
+                `The action "${mockWorkflowsActions[0].name}" was executed correctly`
+            );
+
+            expect(dotIframeService.run).toHaveBeenCalledWith({
+                name: mockWAEvent.callback,
+                args: [mockBulkResponse]
+            });
         });
     });
 

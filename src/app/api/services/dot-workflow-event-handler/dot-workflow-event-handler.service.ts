@@ -53,7 +53,7 @@ export class DotWorkflowEventHandlerService {
      * @param {DotCMSWorkflowActionEvent} event
      * @memberof DotWorkflowEventHandlerService
      */
-    open(event: DotCMSWorkflowActionEvent): void {
+     open(event: DotCMSWorkflowActionEvent): void {
         if (this.containsPushPublish(event.workflow.actionInputs)) {
             this.checkPublishEnvironments()
                 .pipe(take(1))
@@ -174,12 +174,14 @@ export class DotWorkflowEventHandlerService {
     }
 
     private openWizard(event: DotCMSWorkflowActionEvent): void {
+        debugger;
         this.dotWizardService
             .open(
                 this.setWizardInput(event.workflow, this.dotMessageService.get('Workflow-Action'))
             )
             .pipe(take(1))
             .subscribe((data: { [key: string]: any }) => {
+                debugger;
                 this.fireWorkflowAction(event, data);
             });
     }
