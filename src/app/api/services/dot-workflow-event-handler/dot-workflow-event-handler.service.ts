@@ -174,14 +174,12 @@ export class DotWorkflowEventHandlerService {
     }
 
     private openWizard(event: DotCMSWorkflowActionEvent): void {
-        debugger;
         this.dotWizardService
             .open(
                 this.setWizardInput(event.workflow, this.dotMessageService.get('Workflow-Action'))
             )
             .pipe(take(1))
             .subscribe((data: { [key: string]: any }) => {
-                debugger;
                 this.fireWorkflowAction(event, data);
             });
     }
