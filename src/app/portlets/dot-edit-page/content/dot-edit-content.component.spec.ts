@@ -455,28 +455,28 @@ describe('DotEditContentComponent', () => {
                     expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
                 });
 
-                it('should add inline styles to iframe', done => {
-                    setTimeout(() => {
-                        fixture.detectChanges();
+                it('should add inline styles to iframe', async (done) => {
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
                         const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
                         expect(iframeEl.styles).toEqual({
                             position: '',
-                            visibility: '',
+                            visibility: ''
                         });
-                        done();
-                    }, 0);
+                    })
+                    done();
                 });
 
-                it('should add inline styles to device wrapper', done => {
-                    setTimeout(() => {
-                        fixture.detectChanges();
+                it('should add inline styles to device wrapper', async (done) => {
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
                         const deviceWraper = de.query(By.css('.dot-edit__device-wrapper'));
                         expect(deviceWraper.styles).toEqual({
                             width: '100px',
                             height: '100px'
                         });
-                        done();
-                    }, 0);
+                    });
+                    done();
                 });
             });
         });
