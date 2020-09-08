@@ -455,7 +455,7 @@ describe('DotEditContentComponent', () => {
                     expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
                 });
 
-                it('should add inline styles to iframe', async (done) => {
+                it('should add inline styles to iframe', async () => {
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
                         const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
@@ -464,10 +464,9 @@ describe('DotEditContentComponent', () => {
                             visibility: ''
                         });
                     })
-                    done();
                 });
 
-                it('should add inline styles to device wrapper', async (done) => {
+                it('should add inline styles to device wrapper', async () => {
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
                         const deviceWraper = de.query(By.css('.dot-edit__device-wrapper'));
@@ -476,7 +475,6 @@ describe('DotEditContentComponent', () => {
                             height: '100px'
                         });
                     });
-                    done();
                 });
             });
         });
