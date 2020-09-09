@@ -17,3 +17,7 @@ jobs:
       - name: Run tests
         run: |
           npm run test-headless
+      - uses: actions/upload-artifact@v2   
+        with:
+          name: report
+          path: karma_html/ # or path/to/artifact
