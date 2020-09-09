@@ -15,18 +15,16 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '10.15.3'  
-      - name: Test node version
-        run: node --version    
       - name: Install dependencies
         run: npm install
-      - name: Building libraries
+      - name: Build libraries
         run: npm run build:libs
-      - name: Building production
+      - name: Build production
         run: npm run build:prod
-      - name: Running tests
+      - name: Run tests
         run: |
           npm run test-headless
       - uses: actions/upload-artifact@v2   
         with:
-          name: report
+          name: test_report
           path: karma_html/ # or path/to/artifact
