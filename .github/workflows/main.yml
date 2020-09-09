@@ -19,6 +19,10 @@ jobs:
         run: node --version    
       - name: Install dependencies
         run: npm install
+      - name: Build Production
+        run: npm build:prod
+      - name: Build Libraries
+        run: npm build:libs
       - name: Run tests
         run: |
           npm run test-headless
