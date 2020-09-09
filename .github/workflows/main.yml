@@ -19,11 +19,11 @@ jobs:
         run: node --version    
       - name: Install dependencies
         run: npm install
-      - name: Build Production
-        run: npm build:prod
-      - name: Build Libraries
-        run: npm build:libs
-      - name: Run tests
+      - name: Building production
+        run: npm run build:prod
+      - name: Building libraries
+        run: npm run build:libs
+      - name: Running tests
         run: |
           npm run test-headless
       - uses: actions/upload-artifact@v2   
