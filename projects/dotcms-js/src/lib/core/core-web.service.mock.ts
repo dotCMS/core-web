@@ -17,6 +17,15 @@ export class CoreWebServiceMock {
                 options.body,
                 options.params
             )
+        ).pipe(
+            filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
+            map((resp: HttpResponse<any>) => {
+                try {
+                    return resp.body;
+                } catch (error) {
+                    return resp;
+                }
+            })
         );
     }
 

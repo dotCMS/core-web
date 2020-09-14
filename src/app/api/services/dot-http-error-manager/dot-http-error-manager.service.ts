@@ -6,7 +6,6 @@ import { Injectable } from '@angular/core';
 import { ResponseView, LoginService, HttpCode } from 'dotcms-js';
 
 import { DotAlertConfirmService } from '../dot-alert-confirm';
-import { Response } from '@angular/http';
 import { HttpResponse } from '@angular/common/http';
 
 export interface DotHttpErrorHandled {
@@ -119,11 +118,11 @@ export class DotHttpErrorManagerService {
         return false;
     }
 
-    private handleBadRequestError(response: Response): boolean {
+    private handleBadRequestError<T>(response: HttpResponse<T>): boolean {
         this.dotDialogService.alert({
             message:
                 this.getErrorMessage(response) ||
-                response.json()['message'] ||
+                response.body['message'] ||
                 this.dotMessageService.get('dot.common.http.error.400.message'),
             header: this.dotMessageService.get('dot.common.http.error.400.header')
         });
@@ -148,7 +147,7 @@ export class DotHttpErrorManagerService {
         return false;
     }
 
-    private getErrorMessage(response: Response): string {
-        return response.json()['errors'] ? response.json()['errors'][0].message : null;
+    private getErrorMessage<T>(response: HttpResponse<T>): string {
+        return response.body['errors'] ? response.body['errors'][0].message : null;
     }
 }

@@ -10,12 +10,12 @@ import { DotPageStateService } from '../../../content/services/dot-page-state/do
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { LoginService, HttpCode, ResponseView } from 'dotcms-js';
 import { LoginServiceMock, mockUser } from './../../../../../test/login-service.mock';
-import { Response, Headers } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async } from '@angular/core/testing';
 import { mockDotRenderedPage } from '../../../../../test/dot-page-render.mock';
 import { mockResponseView } from '../../../../../test/response-view.mock';
 import { throwError, of } from 'rxjs';
+import { HttpResponse, HttpHeaders } from '@angular/common/http';
 
 const route: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
     'toString'
@@ -151,12 +151,11 @@ describe('DotEditPageResolver', () => {
             expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(
                 new ResponseView(
-                    new Response({
+                    new HttpResponse({
                         body: {},
                         status: HttpCode.FORBIDDEN,
                         headers: null,
-                        url: '',
-                        merge: null
+                        url: ''
                     })
                 )
             );
@@ -178,14 +177,13 @@ describe('DotEditPageResolver', () => {
             expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(
                 new ResponseView(
-                    new Response({
+                    new HttpResponse({
                         body: {},
                         status: HttpCode.FORBIDDEN,
-                        headers: new Headers({
+                        headers: new HttpHeaders({
                             'error-key': 'dotcms.api.error.license.required'
                         }),
-                        url: '',
-                        merge: null
+                        url: ''
                     })
                 )
             );

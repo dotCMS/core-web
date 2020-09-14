@@ -6,7 +6,7 @@ import { FormatDateService } from '@services/format-date-service';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotLocalstorageService } from '@services/dot-localstorage/dot-localstorage.service';
 
-describe('DotMessageService', () => {
+fdescribe('DotMessageService', () => {
     let service: DotMessageService;
     let coreWebService: CoreWebService;
     let formatDateService: FormatDateService;

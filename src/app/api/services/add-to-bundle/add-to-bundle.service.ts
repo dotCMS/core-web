@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 import { Headers, RequestMethod } from '@angular/http';
 import { DotCurrentUser } from '@models/dot-current-user/dot-current-user';
 import { DotBundle } from '@models/dot-bundle/dot-bundle';
-import { DotAjaxActionResponseView } from '@models/ajax-action-response/dot-ajax-action-response';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
+import { DotAjaxActionResponseView } from '@shared/models/ajax-action-response/dot-ajax-action-response';
 
 @Injectable()
 export class AddToBundleService {
