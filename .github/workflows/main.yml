@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
       
       - name: Setting Node.js 10.x
-      - uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2-beta
         with:
           node-version: '10.15.3'  
 
@@ -32,7 +32,7 @@ jobs:
           npm run test-headless
        
       - name: Uploading artifacts    
-      - uses: actions/upload-artifact@v2   
-        with:
-          name: test_report
-          path: karma_html/
+        uses: actions/upload-artifact@v2   
+          with:
+            name: test_report
+            path: karma_html/
