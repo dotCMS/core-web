@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - release-*
+      - issue-*
 jobs:
   build:
     runs-on: ubuntu-latest
