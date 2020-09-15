@@ -13,21 +13,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
+ 
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
+
       - name: Setting Node.js 10.x
         uses: actions/setup-node@v2-beta
         with:
           node-version: '10.15.3'  
-
+      
       - name: Installing dependencies
         run: npm install
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            **/node_modules
-          key: ${{ runner.os }}-cache 
 
       - name: Building libraries
         run: npm run build:libs
@@ -39,8 +37,8 @@ jobs:
         run: |
           npm run test-headless
        
-      - name: Uploading artifacts    
-        uses: actions/upload-artifact@v2   
-        with:
-          name: test_report
-          path: karma_html/
+      - name: Logging stuff
+        env: 
+          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+        run: |
+          echo ${GOOGLE_PROJECT_ID}
