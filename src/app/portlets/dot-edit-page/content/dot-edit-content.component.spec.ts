@@ -450,12 +450,12 @@ describe('DotEditContentComponent', () => {
                     fixture.detectChanges();
                 });
 
-                fit('should add "deviced" class to main wrapper', () => {
+                it('should add "deviced" class to main wrapper', () => {
                     const wrapper = de.query(By.css('.dot-edit__page-wrapper'));
                     expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
                 });
 
-                it('should add inline styles to iframe', async () => {
+                fit('should add inline styles to iframe', async () => {
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
                         const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
