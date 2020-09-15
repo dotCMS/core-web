@@ -37,8 +37,12 @@ jobs:
         run: |
           npm run test-headless
        
-      - name: Logging stuff
-        env: 
-          GOOGLE_PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-        run: |
-          echo ${GOOGLE_PROJECT_ID}
+      - name: Setting up Google Cloud    
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '290.0.1'
+          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }}
+          export_default_credentials: true
+      - run: gcloud info
+          
