@@ -27,7 +27,7 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}  
+          key: ${{ runner.os }}-cache 
 
       - name: Building libraries
         run: npm run build:libs
