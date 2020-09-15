@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { SiteService, LoggerService } from 'dotcms-js';
+import {SiteService, LoggerService, Site} from 'dotcms-js';
 
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { DotMenuService } from '@services/dot-menu.service';
@@ -23,6 +23,7 @@ export class IframePortletLegacyComponent implements OnInit, OnDestroy {
     isLoading = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
+    private currentSite: Site;
 
     constructor(
         private contentletService: DotContentTypeService,
@@ -41,11 +42,12 @@ export class IframePortletLegacyComponent implements OnInit, OnDestroy {
                 this.reloadIframePortlet(portletId);
             }
         });
-        this.siteService.switchSite$.subscribe(() => {
+        this.siteService.switchSite$.subscribe((site: Site) => {
             // prevent set empty URL - when the page first loads.
-            if (this.url.getValue() !== '') {
+            if (this.url.getValue() !== '' && !!this.currentSite) {
                 this.reloadIframePortlet();
             }
+            this.currentSite = site;
         });
 
         this.route.data
