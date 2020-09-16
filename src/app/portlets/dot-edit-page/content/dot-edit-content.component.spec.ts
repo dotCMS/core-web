@@ -59,7 +59,7 @@ import { dotcmsContentletMock } from '@tests/dotcms-contentlet.mock';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotWizardModule } from '@components/_common/dot-wizard/dot-wizard.module';
-import { CoreWebServiceMock } from '../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
@@ -455,18 +455,26 @@ describe('DotEditContentComponent', () => {
                     expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
                 });
 
-                it('should add inline styles to iframe', done => {
-                    setTimeout(() => {
-                        fixture.detectChanges();
+                it('should add inline styles to iframe', async () => {
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
                         const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
                         expect(iframeEl.styles).toEqual({
-                            height: '100px',
                             position: '',
-                            visibility: '',
-                            width: '100px'
+                            visibility: ''
                         });
-                        done();
-                    }, 0);
+                    })
+                });
+
+                it('should add inline styles to device wrapper', async () => {
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        const deviceWraper = de.query(By.css('.dot-edit__device-wrapper'));
+                        expect(deviceWraper.styles).toEqual({
+                            width: '100px',
+                            height: '100px'
+                        });
+                    });
                 });
             });
         });
