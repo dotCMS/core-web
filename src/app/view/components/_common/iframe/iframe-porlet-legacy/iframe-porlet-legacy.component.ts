@@ -43,7 +43,7 @@ export class IframePortletLegacyComponent implements OnInit, OnDestroy {
         });
         this.siteService.switchSite$.subscribe(() => {
             // prevent set empty URL - when the page first loads.
-            if (this.url.getValue() !== '' ) {
+            if (this.url.getValue() !== '') {
                 this.reloadIframePortlet();
             }
         });

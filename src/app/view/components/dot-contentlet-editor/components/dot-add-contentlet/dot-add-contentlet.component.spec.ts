@@ -33,7 +33,7 @@ import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 
-fdescribe('DotAddContentletComponent', () => {
+describe('DotAddContentletComponent', () => {
     let component: DotAddContentletComponent;
     let de: DebugElement;
     let fixture: ComponentFixture<DotAddContentletComponent>;
