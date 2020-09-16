@@ -31,4 +31,8 @@ export class DotEditContentletComponent implements OnInit {
     ngOnInit() {
         this.url$ = this.dotContentletEditorService.editUrl$;
     }
+
+    test() {
+        console.log('test3')
+    }
 }
