@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, JsonpModule } from '@angular/http';
+import { JsonpModule } from '@angular/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -34,7 +34,6 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         BrowserAnimationsModule,
         BrowserModule,
         FormsModule,
-        HttpModule,
         HttpClientModule,
         JsonpModule,
         ReactiveFormsModule,
