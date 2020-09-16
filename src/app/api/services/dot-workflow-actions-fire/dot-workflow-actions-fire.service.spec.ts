@@ -4,7 +4,7 @@ import { DOTTestBed } from '@tests/dot-test-bed';
 import { ConnectionBackend, RequestMethod, Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-describe('DotWorkflowActionsFireService', () => {
+fdescribe('DotWorkflowActionsFireService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotWorkflowActionsFireService]);
         this.dotWorkflowActionsFireService = this.injector.get(DotWorkflowActionsFireService);
