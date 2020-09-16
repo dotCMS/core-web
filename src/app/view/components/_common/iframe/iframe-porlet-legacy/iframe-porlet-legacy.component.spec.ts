@@ -68,7 +68,7 @@ class ActivatedRouteMock {
     }
 }
 
-fdescribe('IframePortletLegacyComponent', () => {
+describe('IframePortletLegacyComponent', () => {
     let comp: IframePortletLegacyComponent;
     let fixture: ComponentFixture<IframePortletLegacyComponent>;
     let de: DebugElement;
