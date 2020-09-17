@@ -21,5 +21,5 @@ function checkForToken {
   echo "Test results token found"
   echo ${GITHUB_TEST_RESULTS_BROWSE_URL}
   echo ${GITHUB_REF}
-  echo ${CURRENT_BRANCH}
+  echo ${GITHUB_REF##*/}
 }
