@@ -16,37 +16,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
  
-      # - uses: actions/cache@v2
-      #   with:
-      #     path: '**/node_modules'
-      #     key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
 
-      # - name: Setting Node.js 10.x
-      #   uses: actions/setup-node@v2-beta
-      #   with:
-      #     node-version: '10.15.3'
+      - name: Setting Node.js 10.x
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '10.15.3'
+      
+      - name: Installing dependencies
+        run: npm install
+
+      - name: Building libraries
+        run: npm run build:libs
+
+      - name: Building production
+        run: npm run build:prod
+
+      - name: Running tests
+        run: |
+          npm run test-headless
       
       - name: Prepare dot-cicd
         run: |
+          mkdir .cicd/${GITHUB_SHA::8} && cp karma_html/report.html .cicd/${GITHUB_SHA::8}
           chmod +x .cicd/github.sh && source .cicd/github.sh
           checkForToken ${GITHUB_TOKEN}
       # - name: Prepare repo
       #   run: |
       #     ./dotcicd/library/docker/setup/build-src/github/githubCommon.sh
       #     checkForToken
-
-      # - name: Installing dependencies
-      #   run: npm install
-
-      # - name: Building libraries
-      #   run: npm run build:libs
-
-      # - name: Building production
-      #   run: npm run build:prod
-
-      # - name: Running tests
-      #   run: |
-      #     npm run test-headless
       
     
       # fetch the test-results repo

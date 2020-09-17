@@ -22,11 +22,10 @@ function checkForToken {
     exit 1
   fi
   echo "Test results token found"
-  echo ${GITHUB_USER}
-  echo ${_CURRENT_BRANCH}
-  echo ${GITHUB_TEST_RESULTS_REMOTE_REPO}
-
+  ls
+  echo $(ls)
 }
+checkForToken
 
 function existsOrCreateAndSwitch {
   local results=${1}
@@ -71,8 +70,8 @@ function persistResults {
       git pull origin ${_CURRENT_BRANCH}
     fi
   fi
-}
 
-persistResults
+  
+}
 
 # persistResults
