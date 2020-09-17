@@ -29,7 +29,6 @@ jobs:
       - name: Prepare dot-cicd
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
-          export BUILD_ID=${{ secrets.GITHUB_SHA }}
           checkForToken ${GITHUB_TOKEN}
       # - name: Prepare repo
       #   run: |

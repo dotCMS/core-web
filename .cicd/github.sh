@@ -19,5 +19,5 @@ function checkForToken {
     exit 1
   fi
   echo "Test results token found"
-  echo ${BUILD_ID}
+  echo ${GITHUB_SHA::8}
 }
