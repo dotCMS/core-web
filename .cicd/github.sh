@@ -18,7 +18,7 @@ function checkForToken {
   #   echo "Error: Test results push token is not defined, aborting..."
   #   exit 1
   # fi
-
+  echo ${1}
   echo "Test results token found"
   echo ${GITHUB_SHA}
 }
