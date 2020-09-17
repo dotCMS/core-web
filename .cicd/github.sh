@@ -5,6 +5,7 @@ GITHUB="github.com"
 GITHACK="raw.githack.com"
 GITHUB_TEST_RESULTS_PATH="dotCMS/${TEST_RESULTS}"
 DOT_CICD_TARGET="core-web"
+GITHUB_USER="dotcmsbuild"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
 export GITHUB_TEST_RESULTS_HOST_PATH="${GITHUB}/${GITHUB_TEST_RESULTS_PATH}"
 export GITHUB_TEST_RESULTS_URL="https://${GITHUB_TEST_RESULTS_HOST_PATH}"
@@ -22,10 +23,12 @@ function checkForToken {
   echo "Test results token found"
   echo ${GITHUB_USER}
   echo ${_CURRENT_BRANCH}
+  echo ${GITHUB_TEST_RESULTS_REMOTE_REPO}
 
 }
 
 function gitConfig {
   git config --global user.email "${GITHUB_USER}@dotcms.com"
   git config --global user.name "${GITHUB_USER}"
+  git config --global pull.rebase false
 }
