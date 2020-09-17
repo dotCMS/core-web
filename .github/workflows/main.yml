@@ -8,9 +8,9 @@ on:
       - release-*
       - issue-*
 jobs:
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
