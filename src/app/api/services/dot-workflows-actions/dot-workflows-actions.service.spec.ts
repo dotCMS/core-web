@@ -20,7 +20,7 @@ import { CoreWebService } from 'dotcms-js';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 import { DotWizardInput } from '@models/dot-wizard-input/dot-wizard-input.model';
 
-describe('DotWorkflowsActionsService', () => {
+fdescribe('DotWorkflowsActionsService', () => {
     let dotWorkflowActionsService: DotWorkflowsActionsService;
     let backend;
     let lastConnection;

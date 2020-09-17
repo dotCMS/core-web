@@ -33,7 +33,7 @@ import { DotEditContentTypeCacheService } from './components/fields/content-type
 import { SiteServiceMock } from 'src/app/test/site-service.mock';
 import * as _ from 'lodash';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { Http, ConnectionBackend, RequestOptions, BaseRequestOptions } from '@angular/http';
+import { ConnectionBackend, RequestOptions, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
@@ -43,6 +43,7 @@ import {
     dotcmsContentTypeFieldBasicMock,
     dotcmsContentTypeBasicMock
 } from '@tests/dot-content-types.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -124,7 +125,8 @@ const getConfig = (route) => {
             BrowserAnimationsModule,
             DotIconModule,
             DotIconButtonModule,
-            DotDialogModule
+            DotDialogModule,
+            HttpClientTestingModule
         ],
         providers: [
             {
@@ -160,7 +162,6 @@ const getConfig = (route) => {
             DotMenuService,
             DotEventsService,
             FieldService,
-            Http,
             Location
         ]
     };
