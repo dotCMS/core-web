@@ -14,11 +14,12 @@ export GITHUB_TEST_RESULTS_REMOTE="https://${GITHUB_USER_TOKEN}@${GITHUB_TEST_RE
 export GITHUB_TEST_RESULTS_REMOTE_REPO="https://${GITHUB_USER_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}.git"
 
 function checkForToken {
-  if [[ -z ${1} ]]; then
-    echo "Error: Test results push token is not defined, aborting..."
-    exit 1
-  fi
+  # if [[ -z ${1} ]]; then
+  #   echo "Error: Test results push token is not defined, aborting..."
+  #   exit 1
+  # fi
 
   echo "Test results token found"
   echo ${GITHUB_SHA}
 }
+checkForToken
