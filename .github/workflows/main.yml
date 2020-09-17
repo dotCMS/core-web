@@ -46,6 +46,7 @@ jobs:
 
       - name: Check files
         run: |
+          cd .cicd
           ls    
       # - name: Prepare repo
       #   run: |
