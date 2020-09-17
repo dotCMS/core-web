@@ -23,25 +23,15 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           node-version: '10.15.3'
-      - name: Set Common Vars
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            BRANCH="${{ github.head_ref }}"
-            COMMIT_MESSG=$(git log -1 --pretty=format:%s)
-            echo ::set-env name=CURRENT_BRANCH::"${{ github.head_ref }}"
-            echo ::set-env name=commitMsg::$(git log -1 --pretty=format:%s)
-          else
-            BRANCH=$(basename "${{ github.ref }}")
-            COMMIT_MESSG=$(git log --format=%s -n 1 ${{ github.event.after }})
-            echo ::set-env name=CURRENT_BRANCH::$(basename "${{ github.ref }}")
-            echo ::set-env name=commitMsg::$(git log --format=%s -n 1 ${{ github.event.after }})
-          fi
-          if [[ "${{ github.event_name }}" == "pull_request" || ${BRANCH} =~ master|^release-.*|^test-.* || ${COMMIT_MESSG} =~ github-all|github-unit ]]; then
-            echo ::set-env name=jobRun::'true'
-          else
-            echo ::set-env name=jobRun::'false'
-          fi      
       
+      - name: Prepare dot-cicd
+        run: |
+          chmod +x .cicd/discover.sh && .cicd/discover.sh
+      - name: Prepare repo
+        run: |
+          . dotcicd/library/docker/setup/build-src/github/githubCommon.sh
+          checkForToken
+
       # - name: Installing dependencies
       #   run: npm install
 
@@ -54,7 +44,7 @@ jobs:
       # - name: Running tests
       #   run: |
       #     npm run test-headless
-       
-      - name: Prepare dot-cicd
-        run: |
-          chmod +x .cicd/discover.sh && .cicd/discover.sh
+      
+    
+      # fetch the test-results repo
+      # commit 
