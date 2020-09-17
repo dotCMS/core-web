@@ -18,7 +18,6 @@ function checkForToken {
     echo "Error: Test results push token is not defined, aborting..."
     exit 1
   fi
-  echo ${STUFF}
   echo "Test results token found"
-  echo ${GITHUB_SHA}
+  echo ${BUILD_ID}
 }
