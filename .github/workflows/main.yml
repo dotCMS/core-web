@@ -43,6 +43,10 @@ jobs:
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           checkForToken ${GITHUB_TOKEN}
+
+      - name: Check files
+        run: |
+          ls    
       # - name: Prepare repo
       #   run: |
       #     ./dotcicd/library/docker/setup/build-src/github/githubCommon.sh
