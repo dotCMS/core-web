@@ -28,7 +28,7 @@ jobs:
       
       - name: Prepare test repo
         run: |
-          chmod +x .cicd/github.sh && ./cicd/github.sh
+          chmod +x ./cicd/github.sh && ./cicd/github.sh
 
 
       # - name: Installing dependencies
