@@ -28,7 +28,7 @@ jobs:
       
       - name: Prepare test repo
         run: |
-          chmod +x .cicd/github.sh && source ./cicd/github.sh
+          chmod +x .cicd/github.sh && source ~/.cicd/github.sh
           checkForToken ${GITHUB_TOKEN}
 
 
