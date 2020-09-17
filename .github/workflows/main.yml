@@ -54,7 +54,6 @@ jobs:
         run: |
           chmod +x .cicd/discover.sh && .cicd/discover.sh
           echo ${env.jobRun}
-        # if: env.jobRun == 'true'
       
       # - name: Installing dependencies
       #   run: npm install
