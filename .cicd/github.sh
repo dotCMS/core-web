@@ -49,8 +49,30 @@ function persistResults {
   echo "Cloning ${GITHUB_TEST_RESULTS_REPO} to ${TEST_RESULTS_PATH}"
   git clone ${GITHUB_TEST_RESULTS_REPO} ${TEST_RESULTS_PATH}
   existsOrCreateAndSwitch ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
-  echo ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
-  ls
+  
+  git fetch --all
+  remoteBranch=$(git ls-remote --heads ${GITHUB_TEST_RESULTS_REMOTE_REPO} ${BUILD_ID} | wc -l | tr -d '[:space:]')
+
+  if [[ ${remoteBranch} == 1 ]]; then
+    echo "git checkout -b ${_CURRENT_BRANCH} --track origin/${_CURRENT_BRANCH}"
+    git checkout -b ${_CURRENT_BRANCH} --track origin/${_CURRENT_BRANCH}
+  else
+    echo "git checkout -b ${_CURRENT_BRANCH}"
+    git checkout -b ${_CURRENT_BRANCH}
+  fi
+  
+  if [[ $? != 0 ]]; then
+    echo "Error checking out branch '${_CURRENT_BRANCH}', continuing with master"
+    git pull origin master
+  else
+    git branch
+    if [[ ${remoteBranch} == 1 ]]; then
+      echo "git pull origin ${_CURRENT_BRANCH}"
+      git pull origin ${_CURRENT_BRANCH}
+    fi
+  fi
 }
+
+persistResults
 
 # persistResults
