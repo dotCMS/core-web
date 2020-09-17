@@ -53,4 +53,4 @@ function persistResults {
   ls
 }
 
-persistResults
+# persistResults
