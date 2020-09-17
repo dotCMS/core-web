@@ -26,9 +26,6 @@ function checkForToken {
 }
 # checkForToken
 
-  ls
-  echo $(ls)
-
 function existsOrCreateAndSwitch {
   local results=${1}
   if [[ ! -d $results ]]; then
@@ -73,7 +70,8 @@ function persistResults {
     fi
   fi
 
-  
+  ls
+  echo $(ls)
 }
 
-# persistResults
+persistResults

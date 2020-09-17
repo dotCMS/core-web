@@ -41,7 +41,6 @@ jobs:
       
       - name: Prepare dot-cicd
         run: |
-          mkdir .cicd/${GITHUB_SHA::8} && cp karma_html/report.html .cicd/${GITHUB_SHA::8}
           chmod +x .cicd/github.sh && source .cicd/github.sh
           checkForToken ${GITHUB_TOKEN}
       # - name: Prepare repo
