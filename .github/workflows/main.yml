@@ -26,7 +26,8 @@ jobs:
       
       - name: Prepare dot-cicd
         run: |
-          chmod +x .cicd/github.sh && .cicd/github.sh
+          chmod +x .cicd/github.sh && source .cicd/github.sh
+          checkForToken
       # - name: Prepare repo
       #   run: |
       #     ./dotcicd/library/docker/setup/build-src/github/githubCommon.sh

@@ -22,4 +22,3 @@ function checkForToken {
   echo "Test results token found"
   echo ${GITHUB_SHA}
 }
-checkForToken
