@@ -22,10 +22,12 @@ function checkForToken {
     exit 1
   fi
   echo "Test results token found"
+
+}
+# checkForToken
+
   ls
   echo $(ls)
-}
-checkForToken
 
 function existsOrCreateAndSwitch {
   local results=${1}
