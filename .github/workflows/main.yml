@@ -29,7 +29,7 @@ jobs:
       - name: Prepare dot-cicd
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
-          export GITHUB_USER_TOKEN=${GITHUB_TOKEN}
+          export _GITHUB_USER_TOKEN=${GITHUB_TOKEN}
           checkForToken ${GITHUB_TOKEN}
       # - name: Prepare repo
       #   run: |
