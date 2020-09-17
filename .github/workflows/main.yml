@@ -26,11 +26,8 @@ jobs:
       
       - name: Prepare dot-cicd
         run: |
-          chmod +x .cicd/discover.sh && .cicd/discover.sh
-      - name: Prepare repo
-        run: |
-          ./dotcicd/library/docker/setup/build-src/github/githubCommon.sh
-          checkForToken
+          chmod +x .cicd/github.sh && .cicd/github.sh
+
 
       # - name: Installing dependencies
       #   run: npm install
