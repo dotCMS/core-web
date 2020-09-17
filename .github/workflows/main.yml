@@ -8,6 +8,8 @@ on:
       - release-*
       - issue-*
 jobs:
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build:
     runs-on: ubuntu-latest
     steps:
@@ -24,9 +26,10 @@ jobs:
         with:
           node-version: '10.15.3'
       
-      - name: Prepare dot-cicd
+      - name: Prepare test repo
         run: |
-          chmod +x .cicd/github.sh && .cicd/github.sh
+          chmod +x .cicd/github.sh && source cicd/github.sh
+          checkForToken ${GITHUB_TOKEN}
 
 
       # - name: Installing dependencies
