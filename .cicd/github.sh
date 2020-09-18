@@ -3,7 +3,7 @@
 TEST_RESULTS="test-results"
 GITHUB="github.com"
 GITHACK="raw.githack.com"
-GITHUB_TEST_RESULTS_PATH="ivorpad/${TEST_RESULTS}" # TODO: Change for DotCMS
+GITHUB_TEST_RESULTS_PATH="DotCMS/${TEST_RESULTS}" # TODO: Change for DotCMS
 DOT_CICD_TARGET="core-web"
 GITHUB_USER="ivorpad"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
