@@ -75,8 +75,6 @@ function persistResults {
     echo "git checkout -b ${_CURRENT_BRANCH}"
     git checkout -b ${_CURRENT_BRANCH}
   fi
-
-  git checkout -b ${_CURRENT_BRANCH}
   
   if [[ $? != 0 ]]; then
     echo "Error checking out branch '${_CURRENT_BRANCH}', continuing with master"
