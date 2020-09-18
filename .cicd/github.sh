@@ -85,7 +85,7 @@ function persistResults {
     fi
   fi
 
-  touch index.html
+  addResults ./${GITHUB_SHA::8}
 }
 
 persistResults
