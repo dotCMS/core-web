@@ -59,7 +59,7 @@ function addResults {
 
 function persistResults {
   TEST_RESULTS_PATH=${DOT_CICD_PATH}/${TEST_RESULTS}
-  gitConfig
+  # gitConfig
   echo "Cloning ${GITHUB_TEST_RESULTS_REPO} to ${TEST_RESULTS_PATH}"
   git clone ${GITHUB_TEST_RESULTS_REPO} ${TEST_RESULTS_PATH}
   existsOrCreateAndSwitch ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
