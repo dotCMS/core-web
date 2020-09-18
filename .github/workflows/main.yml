@@ -49,12 +49,4 @@ jobs:
       - name: Check files
         run: |
           cd ./dotcicd/test-results/projects/core-web/${GITHUB_SHA::8}
-          ls    
-      # - name: Prepare repo
-      #   run: |
-      #     ./dotcicd/library/docker/setup/build-src/github/githubCommon.sh
-      #     checkForToken
-      
-    
-      # fetch the test-results repo
-      # commit 
+          ls
