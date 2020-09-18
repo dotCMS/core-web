@@ -45,6 +45,7 @@ jobs:
       
       - name: Prepare dot-cicd
         run: |
+          export GH_TOKEN = ${{ secrets.GH_USER_TOKEN }}
           chmod +x .cicd/github.sh && source .cicd/github.sh
           checkForToken ${GITHUB_TOKEN}
 
@@ -52,11 +53,6 @@ jobs:
         run: |
           cd ./dotcicd/test-results/projects/core-web/${GITHUB_SHA::8}
           ls
-      - name: Setup user
-        run: |
-          git config --local user.email "ivorjpc@gmail.com"
-          git config --local user.name "ivorpad"
-          git config -l | grep user
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
