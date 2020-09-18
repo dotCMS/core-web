@@ -24,5 +24,6 @@ jobs:
           touch index.html
           mkdir against
           cd ~
+          cd work
           ls
           pwd
