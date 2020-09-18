@@ -11,6 +11,7 @@ jobs:
   build:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -45,7 +46,6 @@ jobs:
       
       - name: Prepare dot-cicd
         run: |
-          export GH_TOKEN = ${{ secrets.GH_USER_TOKEN }}
           chmod +x .cicd/github.sh && source .cicd/github.sh
           checkForToken ${GITHUB_TOKEN}
 
