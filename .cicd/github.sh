@@ -8,12 +8,12 @@ DOT_CICD_TARGET="core-web"
 GITHUB_USER="dotcmsbuild"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
 DOT_CICD_PATH="./dotcicd"
-OUTPUT_FOLDER="/karma_html"
+OUTPUT_FOLDER="karma_html"
 export GITHUB_TEST_RESULTS_HOST_PATH="${GITHUB}/${GITHUB_TEST_RESULTS_PATH}"
 export GITHUB_TEST_RESULTS_URL="https://${GITHUB_TEST_RESULTS_HOST_PATH}"
 export GITHACK_TEST_RESULTS_URL="https://${GITHACK}/${GITHUB_TEST_RESULTS_PATH}"
 export GITHUB_TEST_RESULTS_REPO="${GITHUB_TEST_RESULTS_URL}.git"
-export GITHUB_TEST_RESULTS_BROWSE_URL="${GITHACK_TEST_RESULTS_URL}/${GITHUB_SHA::8}/projects/${DOT_CICD_TARGET}"
+# export GITHUB_TEST_RESULTS_BROWSE_URL="${GITHACK_TEST_RESULTS_URL}/${GITHUB_SHA::8}/projects/${DOT_CICD_TARGET}"
 export GITHUB_TEST_RESULTS_REMOTE="https://${GITHUB_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}"
 export GITHUB_TEST_RESULTS_REMOTE_REPO="https://${GITHUB_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}.git"
 
@@ -44,16 +44,17 @@ function gitConfig {
 
 
 function addResults {
-  local results=${1}
-  if [[ -z "$results" ]]; then
-    echo "Cannot add results since its empty, ignoring"
-    exit 1
-  fi
+  # local results=${1}
+  # if [[ -z "$results" ]]; then
+  #   echo "Cannot add results since its empty, ignoring"
+  #   exit 1
+  # fi
 
-  local targetFolder=${results}
+  local targetFolder="test"
   mkdir -p ${targetFolder}
   echo "Adding test results to: ${targetFolder}"
-  cp -R ${OUTPUT_FOLDER}/* ${targetFolder}
+  echo "output: ${OUTPUT_FOLDER}/* target:${targetFolder}"
+  # cp -R ${OUTPUT_FOLDER}/* ${targetFolder}
 }
 
 function persistResults {
