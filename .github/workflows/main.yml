@@ -21,3 +21,8 @@ jobs:
           ls
           mkdir hello
           cd hello
+          touch index.html
+          mkdir against
+          cd ~
+          ls
+          pwd
