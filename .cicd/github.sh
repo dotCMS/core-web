@@ -9,6 +9,7 @@ GITHUB_USER="ivorpad"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
 DOT_CICD_PATH="./dotcicd"
 OUTPUT_FOLDER="karma_html"
+BUILD_ID="origin/master"
 export GITHUB_TEST_RESULTS_HOST_PATH="${GITHUB}/${GITHUB_TEST_RESULTS_PATH}"
 export GITHUB_TEST_RESULTS_URL="https://${GITHUB_TEST_RESULTS_HOST_PATH}"
 export GITHACK_TEST_RESULTS_URL="https://${GITHACK}/${GITHUB_TEST_RESULTS_PATH}"
@@ -74,6 +75,8 @@ function persistResults {
     echo "git checkout -b ${_CURRENT_BRANCH}"
     git checkout -b ${_CURRENT_BRANCH}
   fi
+
+  git checkout -b ${_CURRENT_BRANCH}
   
   if [[ $? != 0 ]]; then
     echo "Error checking out branch '${_CURRENT_BRANCH}', continuing with master"
