@@ -15,7 +15,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
- 
+        with:
+          persist-credentials: false
+          fetch-depth: 0
       - uses: actions/cache@v2
         with:
           path: |
@@ -54,9 +56,10 @@ jobs:
         run: |
           git config --local user.email "ivorjpc@gmail.com.com"
           git config --local user.name "ivorpad"
+          git config --local --unset-all "http.https://github.com/.extraheader"
           git config -l | grep user
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${GITHUB_TOKEN}
           repository: ivorpad/test-results
