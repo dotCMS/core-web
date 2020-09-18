@@ -2,21 +2,21 @@
 
 TEST_RESULTS="test-results"
 GITHUB="github.com"
-# GITHACK="raw.githack.com"
+GITHACK="raw.githack.com"
 GITHUB_TEST_RESULTS_PATH="DotCMS/${TEST_RESULTS}"
 DOT_CICD_TARGET="core-web"
 GITHUB_USER="dotcmsbuild"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
 DOT_CICD_PATH="./dotcicd"
 OUTPUT_FOLDER="karma_html"
-# BUILD_ID="origin/master"
+BUILD_ID="origin/master"
 export GITHUB_TEST_RESULTS_HOST_PATH="${GITHUB}/${GITHUB_TEST_RESULTS_PATH}"
 export GITHUB_TEST_RESULTS_URL="https://${GITHUB_TEST_RESULTS_HOST_PATH}"
-# export GITHACK_TEST_RESULTS_URL="https://${GITHACK}/${GITHUB_TEST_RESULTS_PATH}"
+export GITHACK_TEST_RESULTS_URL="https://${GITHACK}/${GITHUB_TEST_RESULTS_PATH}"
 export GITHUB_TEST_RESULTS_REPO="${GITHUB_TEST_RESULTS_URL}.git"
-# export GITHUB_TEST_RESULTS_BROWSE_URL="${GITHACK_TEST_RESULTS_URL}/${GITHUB_SHA::8}/projects/${DOT_CICD_TARGET}"
+export GITHUB_TEST_RESULTS_BROWSE_URL="${GITHACK_TEST_RESULTS_URL}/${GITHUB_SHA::8}/projects/${DOT_CICD_TARGET}"
 export GITHUB_TEST_RESULTS_REMOTE="https://${GH_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}"
-# export GITHUB_TEST_RESULTS_REMOTE_REPO="https://${GH_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}.git"
+export GITHUB_TEST_RESULTS_REMOTE_REPO="https://${GH_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}.git"
 
 
 function existsOrCreateAndSwitch {
@@ -47,6 +47,13 @@ function addResults {
   echo "Adding test results to: ${targetFolder}"
   echo "output: ${OUTPUT_FOLDER}/* target:${targetFolder}"
   cp -r "${GITHUB_WORKSPACE}/${OUTPUT_FOLDER}/." ${targetFolder}
+}
+
+# TODO
+function cloneRepo {
+  gitConfig
+  echo "Cloning ${GITHUB_TEST_RESULTS_REPO} to ${TEST_RESULTS_PATH}"
+  git clone ${GITHUB_TEST_RESULTS_REPO} ${TEST_RESULTS_PATH}
 }
 
 function persistResults {
@@ -86,5 +93,8 @@ function persistResults {
   git push ${GITHUB_TEST_RESULTS_REMOTE}
   git status
 }
-
 persistResults
+
+function logResults {
+  echo "${GITHUB_TEST_RESULTS_BROWSE_URL}/report.html"
+}
