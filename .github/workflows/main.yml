@@ -54,7 +54,7 @@ jobs:
           ls
       - name: Setup user
         run: |
-          git config --local user.email "ivorjpc@gmail.com.com"
+          git config --local user.email "ivorjpc@gmail.com"
           git config --local user.name "ivorpad"
           git config --local --unset-all "http.https://github.com/.extraheader"
           git config -l | grep user
