@@ -48,7 +48,7 @@ jobs:
 
       - name: Check files
         run: |
-          cd ./dotcicd/test-results/projects/core-web
+          cd ${GITHUB_WORKSPACE}/karma_html
           ls    
       # - name: Prepare repo
       #   run: |
