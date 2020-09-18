@@ -52,12 +52,11 @@ jobs:
         run: |
           cd ./dotcicd/test-results/projects/core-web/${GITHUB_SHA::8}
           ls
-      - name: Setup user
-        run: |
-          git config --local user.email "ivorjpc@gmail.com"
-          git config --local user.name "ivorpad"
-          git config --local --unset-all http.https://github.com/.extraheader
-          git config -l | grep user
+      # - name: Setup user
+      #   run: |
+      #     git config --local user.email "ivorjpc@gmail.com"
+      #     git config --local user.name "ivorpad"
+      #     git config -l | grep user
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
