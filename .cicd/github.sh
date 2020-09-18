@@ -5,7 +5,7 @@ GITHUB="github.com"
 GITHACK="raw.githack.com"
 GITHUB_TEST_RESULTS_PATH="ivorpad/${TEST_RESULTS}" # TODO: Change for DotCMS
 DOT_CICD_TARGET="core-web"
-GITHUB_USER="dotcmsbuild"
+GITHUB_USER="ivorpad"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
 DOT_CICD_PATH="./dotcicd"
 OUTPUT_FOLDER="karma_html"
@@ -37,7 +37,7 @@ function existsOrCreateAndSwitch {
 }
 
 function gitConfig {
-  git config --global user.email "${GITHUB_USER}@dotcms.com"
+  git config --global user.email "${GITHUB_USER}@gmail.com"
   git config --global user.name "${GITHUB_USER}"
   git config --global pull.rebase false
 }
@@ -59,7 +59,7 @@ function addResults {
 
 function persistResults {
   TEST_RESULTS_PATH=${DOT_CICD_PATH}/${TEST_RESULTS}
-  # gitConfig
+  gitConfig
   echo "Cloning ${GITHUB_TEST_RESULTS_REPO} to ${TEST_RESULTS_PATH}"
   git clone ${GITHUB_TEST_RESULTS_REPO} ${TEST_RESULTS_PATH}
   existsOrCreateAndSwitch ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
