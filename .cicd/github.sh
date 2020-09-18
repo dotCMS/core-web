@@ -14,7 +14,7 @@ export GITHUB_TEST_RESULTS_URL="https://${GITHUB_TEST_RESULTS_HOST_PATH}"
 export GITHACK_TEST_RESULTS_URL="https://${GITHACK}/${GITHUB_TEST_RESULTS_PATH}"
 export GITHUB_TEST_RESULTS_REPO="${GITHUB_TEST_RESULTS_URL}.git"
 export GITHUB_TEST_RESULTS_BROWSE_URL="${GITHACK_TEST_RESULTS_URL}/${GITHUB_SHA::8}/projects/${DOT_CICD_TARGET}"
-export GITHUB_TEST_RESULTS_REMOTE="https://${GITHUB_TEST_RESULTS_HOST_PATH}"
+export GITHUB_TEST_RESULTS_REMOTE="https://${GITHUB_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}"
 export GITHUB_TEST_RESULTS_REMOTE_REPO="https://${GITHUB_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}.git"
 
 function checkForToken {
@@ -89,8 +89,8 @@ function persistResults {
   addResults ./${GITHUB_SHA::8}
   git add .
   git commit -m "Adding tests results for ${GITHUB_SHA::8} from ${_CURRENT_BRANCH}"
-  git push ${GITHUB_TEST_RESULTS_REMOTE}
-  git status
+  # git push ${GITHUB_TEST_RESULTS_REMOTE}
+  # git status
 }
 
 persistResults
