@@ -40,7 +40,7 @@ jobs:
       - name: Prepare and Push to GitHub
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
-          logResults
+          persistResults
       - name: Printing Logs
         run: |
           source .cicd/github.sh

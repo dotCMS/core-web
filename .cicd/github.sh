@@ -93,7 +93,6 @@ function persistResults {
   git push ${GITHUB_TEST_RESULTS_REMOTE}
   git status
 }
-persistResults
 
 function logResults {
   echo "${GITHUB_TEST_RESULTS_BROWSE_URL}/report.html"
