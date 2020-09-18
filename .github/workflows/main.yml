@@ -46,7 +46,7 @@ jobs:
 
       - name: Check files
         run: |
-          cd .cicd
+          cd ./dotcicd/test-results/projects/core-web
           ls    
       # - name: Prepare repo
       #   run: |

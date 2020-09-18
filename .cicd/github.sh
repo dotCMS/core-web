@@ -8,6 +8,7 @@ DOT_CICD_TARGET="core-web"
 GITHUB_USER="dotcmsbuild"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
 DOT_CICD_PATH="./dotcicd"
+OUTPUT_FOLDER="/karma_html"
 export GITHUB_TEST_RESULTS_HOST_PATH="${GITHUB}/${GITHUB_TEST_RESULTS_PATH}"
 export GITHUB_TEST_RESULTS_URL="https://${GITHUB_TEST_RESULTS_HOST_PATH}"
 export GITHACK_TEST_RESULTS_URL="https://${GITHACK}/${GITHUB_TEST_RESULTS_PATH}"
@@ -41,6 +42,20 @@ function gitConfig {
   git config --global pull.rebase false
 }
 
+
+function addResults {
+  local results=${1}
+  if [[ -z "$results" ]]; then
+    echo "Cannot add results since its empty, ignoring"
+    exit 1
+  fi
+
+  local targetFolder=${results}
+  mkdir -p ${targetFolder}
+  echo "Adding test results to: ${targetFolder}"
+  cp -R ${OUTPUT_FOLDER}/* ${targetFolder}
+}
+
 function persistResults {
   TEST_RESULTS_PATH=${DOT_CICD_PATH}/${TEST_RESULTS}
   gitConfig
@@ -70,8 +85,7 @@ function persistResults {
     fi
   fi
 
-  ls
-  echo $(ls)
+  touch index.html
 }
 
 persistResults
