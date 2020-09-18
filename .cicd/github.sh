@@ -38,7 +38,7 @@ function existsOrCreateAndSwitch {
 }
 
 function gitConfig {
-  git config --global user.email "${GITHUB_USER}@@dotcms.com"
+  git config --global user.email "${GITHUB_USER}@dotcms.com"
   git config --global user.name "${GITHUB_USER}"
   git config -l | grep user
 }
