@@ -11,6 +11,12 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
+      GITHACK: "raw.githack.com"
+      TEST_RESULTS: "test-results"
+      GITHUB_TEST_RESULTS_PATH: "DotCMS/${TEST_RESULTS}"
+      GITHACK_TEST_RESULTS_URL: "https://${GITHACK}/${GITHUB_TEST_RESULTS_PATH}"
+      DOT_CICD_TARGET: "core-web"
+      GITHUB_TEST_RESULTS_BROWSE_URL: "${GITHACK_TEST_RESULTS_URL}/${GITHUB_SHA::8}/projects/${DOT_CICD_TARGET}"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,8 +46,6 @@ jobs:
       - name: Prepare and Push to GitHub
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
-          checkForToken ${GITHUB_TOKEN}
       - name: Printing Logs
         run: |
-          cd ./dotcicd/test-results/projects/core-web/${GITHUB_SHA::8}
-          ls
+          echo ${GITHUB_TEST_RESULTS_BROWSE_URL}/report.html

@@ -18,15 +18,6 @@ export GITHUB_TEST_RESULTS_BROWSE_URL="${GITHACK_TEST_RESULTS_URL}/${GITHUB_SHA:
 export GITHUB_TEST_RESULTS_REMOTE="https://${GH_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}"
 export GITHUB_TEST_RESULTS_REMOTE_REPO="https://${GH_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}.git"
 
-function checkForToken {
-  if [[ -z ${1} ]]; then
-    echo "Error: Test results push token is not defined, aborting..."
-    exit 1
-  fi
-  echo "Test results token found"
-
-}
-# checkForToken
 
 function existsOrCreateAndSwitch {
   local results=${1}
@@ -66,6 +57,8 @@ function persistResults {
   existsOrCreateAndSwitch ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
   
   git fetch --all
+
+  # TODO: Remove
   # remoteBranch=$(git ls-remote --heads ${GITHUB_TEST_RESULTS_REMOTE_REPO} ${BUILD_ID} | wc -l | tr -d '[:space:]')
 
   # if [[ ${remoteBranch} == 1 ]]; then
