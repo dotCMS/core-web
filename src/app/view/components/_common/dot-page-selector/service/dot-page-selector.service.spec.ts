@@ -37,7 +37,7 @@ const hostSpecificQuery = {
 export const mockEmptyHostDotSiteSelectorResults = Object.assign({}, mockDotSiteSelectorResults);
 mockEmptyHostDotSiteSelectorResults.query = '';
 
-describe('Service: DotPageSelector', () => {
+describe('DotPageSelectorService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotPageSelectorService]);
         this.dotPageSelectorService = this.injector.get(DotPageSelectorService);

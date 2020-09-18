@@ -40,11 +40,6 @@ describe('DotLicenseService', () => {
     });
 
     it('should return a false response because license is 100 = Community', () => {
-        // let result;
-        // this.dotLicenseService.isEnterprise().subscribe((res) => (result = res));
-        // mockConnectionLicenseResponse(100);
-
-        // expect(result).toBe(false);
         dotLicenseService.isEnterprise().subscribe((result) => {
             expect(result).toBe(false);
         });
@@ -63,12 +58,6 @@ describe('DotLicenseService', () => {
     });
 
     it('should return a true response because license is equal to 200', () => {
-        // let result: boolean;
-        // this.dotLicenseService.isEnterprise().subscribe((res) => (result = res));
-        // mockConnectionLicenseResponse(200);
-
-        // expect(result).toBe(true);
-
         dotLicenseService.isEnterprise().subscribe((result) => {
             expect(result).toBe(true);
         });
@@ -87,12 +76,6 @@ describe('DotLicenseService', () => {
     });
 
     it('should return a true response because license is equal to 400', () => {
-        // let result: boolean;
-        // this.dotLicenseService.isEnterprise().subscribe((res) => (result = res));
-        // mockConnectionLicenseResponse(400);
-
-        // expect(result).toBe(true);
-
         dotLicenseService.isEnterprise().subscribe((result) => {
             expect(result).toBe(true);
         });

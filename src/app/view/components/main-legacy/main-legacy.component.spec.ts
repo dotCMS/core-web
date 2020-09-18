@@ -1,13 +1,16 @@
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, Component, Input } from '@angular/core';
 import { MainComponentLegacyComponent } from './main-legacy.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
-    CoreWebService, DotcmsConfigService,
+    CoreWebService,
+    DotcmsConfigService,
     DotcmsEventsService,
     DotEventsSocket,
-    DotEventsSocketURL, LoggerService,
-    LoginService, StringUtils
+    DotEventsSocketURL,
+    LoggerService,
+    LoginService,
+    StringUtils
 } from 'dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
@@ -27,6 +30,7 @@ import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@an
 import { MockBackend } from '@angular/http/testing';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
     selector: 'dot-alert-confirm',
@@ -75,48 +79,47 @@ describe('MainComponentLegacyComponent', () => {
     let dotRouterService: DotRouterService;
     let dotCustomEventHandlerService: DotCustomEventHandlerService;
 
-    beforeEach(
-        async(() => {
-            TestBed.configureTestingModule({
-                imports: [
-                    RouterTestingModule,
-                    DotContentletEditorModule,
-                    DotDownloadBundleDialogModule,
-                    DotWizardModule
-                ],
-                providers: [
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    { provide: DotRouterService, useClass: MockDotRouterService },
-                    { provide: DotUiColorsService, useClass: MockDotUiColorsService },
-                    { provide: CoreWebService, useClass: CoreWebServiceMock },
-                    { provide: ConnectionBackend, useClass: MockBackend },
-                    { provide: RequestOptions, useClass: BaseRequestOptions },
-                    Http,
-                    DotMenuService,
-                    DotCustomEventHandlerService,
-                    DotIframeService,
-                    FormatDateService,
-                    DotAlertConfirmService,
-                    ConfirmationService,
-                    DotcmsEventsService,
-                    DotEventsSocket,
-                    { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
-                    DotcmsConfigService,
-                    LoggerService,
-                    StringUtils
-                ],
-                declarations: [
-                    MainComponentLegacyComponent,
-                    MockDotDialogComponent,
-                    MockDotMainNavComponent,
-                    MockDotToolbarComponent,
-                    MockDotMessageDisplayComponent,
-                    MockDotLargeMessageDisplayComponent,
-                    MockDotPushPublishDialogComponent
-                ]
-            });
-        })
-    );
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                RouterTestingModule,
+                DotContentletEditorModule,
+                DotDownloadBundleDialogModule,
+                DotWizardModule,
+                HttpClientTestingModule
+            ],
+            providers: [
+                { provide: LoginService, useClass: LoginServiceMock },
+                { provide: DotRouterService, useClass: MockDotRouterService },
+                { provide: DotUiColorsService, useClass: MockDotUiColorsService },
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                { provide: ConnectionBackend, useClass: MockBackend },
+                { provide: RequestOptions, useClass: BaseRequestOptions },
+                Http,
+                DotMenuService,
+                DotCustomEventHandlerService,
+                DotIframeService,
+                FormatDateService,
+                DotAlertConfirmService,
+                ConfirmationService,
+                DotcmsEventsService,
+                DotEventsSocket,
+                { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
+                DotcmsConfigService,
+                LoggerService,
+                StringUtils
+            ],
+            declarations: [
+                MainComponentLegacyComponent,
+                MockDotDialogComponent,
+                MockDotMainNavComponent,
+                MockDotToolbarComponent,
+                MockDotMessageDisplayComponent,
+                MockDotLargeMessageDisplayComponent,
+                MockDotPushPublishDialogComponent
+            ]
+        });
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(MainComponentLegacyComponent);

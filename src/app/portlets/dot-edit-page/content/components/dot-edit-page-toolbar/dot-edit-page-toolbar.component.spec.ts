@@ -43,6 +43,7 @@ import {DotHttpErrorManagerService} from '@services/dot-http-error-manager/dot-h
 import {DotAlertConfirmService} from '@services/dot-alert-confirm';
 import {DotGlobalMessageService} from '@components/_common/dot-global-message/dot-global-message.service';
 import {DotWizardModule} from '@components/_common/dot-wizard/dot-wizard.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -76,6 +77,7 @@ describe('DotEditPageToolbarComponent', () => {
             TestBed.configureTestingModule({
                 declarations: [TestHostComponent, DotEditPageToolbarComponent],
                 imports: [
+                    HttpClientTestingModule,
                     ButtonModule,
                     CommonModule,
                     CheckboxModule,

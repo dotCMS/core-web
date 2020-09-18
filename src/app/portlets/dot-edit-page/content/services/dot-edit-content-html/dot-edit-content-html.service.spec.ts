@@ -1,5 +1,5 @@
 import { of, Observable } from 'rxjs';
-import { async } from '@angular/core/testing';
+import { async, TestBed, getTestBed } from '@angular/core/testing';
 import { DotEditContentHtmlService, DotContentletAction } from './dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
@@ -7,8 +7,7 @@ import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.servic
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { LoggerService, StringUtils } from 'dotcms-js';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { LoggerService, StringUtils, CoreWebService } from 'dotcms-js';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page-content.model';
 import {
@@ -24,6 +23,9 @@ import { mockUser } from '../../../../../test/login-service.mock';
 import { PageModelChangeEventType } from './models';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 import { DotPageRender, DotPageContainer } from '@portlets/dot-edit-page/shared/models';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { ConfirmationService } from 'primeng/primeng';
 
 @Injectable()
 class MockDotLicenseService {
@@ -35,6 +37,7 @@ class MockDotLicenseService {
 describe('DotEditContentHtmlService', () => {
     let dotLicenseService: DotLicenseService;
     let fakeDocument: Document;
+    let injector: TestBed;
 
     const fakeHTML = `
         <html>
@@ -132,22 +135,29 @@ describe('DotEditContentHtmlService', () => {
     });
 
     beforeEach(async(() => {
-        this.injector = DOTTestBed.resolveAndCreate([
-            DotEditContentHtmlService,
-            DotContainerContentletService,
-            DotEditContentToolbarHtmlService,
-            DotDragDropAPIHtmlService,
-            DotDOMHtmlUtilService,
-            LoggerService,
-            StringUtils,
-            DotAlertConfirmService,
-            { provide: DotMessageService, useValue: messageServiceMock },
-            { provide: DotLicenseService, useClass: MockDotLicenseService }
-        ]);
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule],
+            providers: [
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                DotEditContentHtmlService,
+                DotContainerContentletService,
+                DotEditContentToolbarHtmlService,
+                DotDragDropAPIHtmlService,
+                DotDOMHtmlUtilService,
+                LoggerService,
+                StringUtils,
+                DotAlertConfirmService,
+                ConfirmationService,
+                { provide: DotMessageService, useValue: messageServiceMock },
+                { provide: DotLicenseService, useClass: MockDotLicenseService }
+            ]
+        });
+        injector = getTestBed();
         this.dotEditContentHtmlService = <DotEditContentHtmlService>(
-            this.injector.get(DotEditContentHtmlService)
+            injector.get(DotEditContentHtmlService)
         );
-        this.dotEditContentToolbarHtmlService = this.injector.get(DotEditContentToolbarHtmlService);
+        this.dotEditContentToolbarHtmlService = injector.get(DotEditContentToolbarHtmlService);
+        dotLicenseService = injector.get(DotLicenseService);
 
         fakeIframeEl = document.createElement('iframe');
         document.body.appendChild(fakeIframeEl);
@@ -171,7 +181,6 @@ describe('DotEditContentHtmlService', () => {
         );
 
         this.dotEditContentHtmlService.initEditMode(pageState, { nativeElement: fakeIframeEl });
-        dotLicenseService = this.injector.get(DotLicenseService);
         fakeDocument = fakeIframeEl.contentWindow.document;
     }));
 
@@ -301,7 +310,7 @@ describe('DotEditContentHtmlService', () => {
     });
 
     it('should render relocated contentlet', () => {
-        const dotContainerContentletService = this.injector.get(DotContainerContentletService);
+        const dotContainerContentletService = injector.get(DotContainerContentletService);
         spyOn(dotContainerContentletService, 'getContentletToContainer').and.callThrough();
         spyOn(this.dotEditContentHtmlService, 'renderRelocatedContentlet').and.callThrough();
 
@@ -331,7 +340,7 @@ describe('DotEditContentHtmlService', () => {
     });
 
     it('should show loading indicator on relocate contentlet', () => {
-        const dotContainerContentletService = this.injector.get(DotContainerContentletService);
+        const dotContainerContentletService = injector.get(DotContainerContentletService);
         spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue(
             of('<div></div>')
         );
@@ -412,7 +421,7 @@ describe('DotEditContentHtmlService', () => {
         this.dotEditContentHtmlService.currentContainer = currentContainer;
         this.dotEditContentHtmlService.currentAction = DotContentletAction.ADD;
 
-        const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
+        const dotEditContentToolbarHtmlService = injector.get(DotContainerContentletService);
         spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(
             of('<i>testing</i>')
         );
@@ -535,12 +544,12 @@ describe('DotEditContentHtmlService', () => {
 
         this.dotEditContentHtmlService.currentContainer = currentContainer;
 
-        const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
+        const dotEditContentToolbarHtmlService = injector.get(DotContainerContentletService);
         spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(
             of('<i>testing</i>')
         );
 
-        const dotDialogService = this.injector.get(DotAlertConfirmService);
+        const dotDialogService = injector.get(DotAlertConfirmService);
         spyOn(dotDialogService, 'alert');
 
         const contentlet: DotPageContent = {
@@ -587,7 +596,7 @@ describe('DotEditContentHtmlService', () => {
             baseType: 'CONTENT'
         };
 
-        const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
+        const dotEditContentToolbarHtmlService = injector.get(DotContainerContentletService);
         spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(
             of(`
         <div data-dot-object="contentlet" data-dot-identifier="456">
@@ -893,9 +902,7 @@ describe('DotEditContentHtmlService', () => {
                 }
             ];
 
-            const dotEditContentToolbarHtmlService = this.injector.get(
-                DotContainerContentletService
-            );
+            const dotEditContentToolbarHtmlService = injector.get(DotContainerContentletService);
 
             spyOn(dotEditContentToolbarHtmlService, 'getFormToContainer').and.returnValue(
                 of({
@@ -931,9 +938,7 @@ describe('DotEditContentHtmlService', () => {
         });
 
         it('should show content added message', () => {
-            const dotEditContentToolbarHtmlService = this.injector.get(
-                DotContainerContentletService
-            );
+            const dotEditContentToolbarHtmlService = injector.get(DotContainerContentletService);
 
             spyOn(dotEditContentToolbarHtmlService, 'getFormToContainer').and.returnValue(
                 of({

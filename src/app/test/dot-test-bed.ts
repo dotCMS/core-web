@@ -36,6 +36,7 @@ import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.ser
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 export class MockDotUiColorsService {
     setColors() {}
@@ -55,7 +56,8 @@ export class DOTTestBed {
             CommonModule,
             FormsModule,
             ReactiveFormsModule,
-            DotPipesModule
+            DotPipesModule,
+            HttpClientTestingModule
         ],
         providers: [
             { provide: ConnectionBackend, useClass: MockBackend },

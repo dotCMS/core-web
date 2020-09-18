@@ -45,7 +45,6 @@ import { DotContainerContentletService } from './services/dot-container-contentl
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
-
 import { SiteServiceMock } from '@tests/site-service.mock';
 import { LoginServiceMock, mockUser } from '@tests/login-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
@@ -60,8 +59,6 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotWizardModule } from '@components/_common/dot-wizard/dot-wizard.module';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
@@ -69,6 +66,7 @@ import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-tes
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
     selector: 'dot-global-message',
@@ -151,6 +149,7 @@ describe('DotEditContentComponent', () => {
                 MockGlobalMessageComponent
             ],
             imports: [
+                HttpClientTestingModule,
                 BrowserAnimationsModule,
                 ButtonModule,
                 DialogModule,
@@ -217,9 +216,6 @@ describe('DotEditContentComponent', () => {
                 DotMessageDisplayService,
                 ConfirmationService,
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-                Http,
-                { provide: ConnectionBackend, useClass: MockBackend },
-                { provide: RequestOptions, useClass: BaseRequestOptions },
                 DotEventsService,
                 DotHttpErrorManagerService,
                 { provide: DotRouterService, useClass: MockDotRouterService },
