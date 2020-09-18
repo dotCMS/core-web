@@ -54,7 +54,7 @@ function addResults {
   mkdir -p ${targetFolder}
   echo "Adding test results to: ${targetFolder}"
   echo "output: ${OUTPUT_FOLDER}/* target:${targetFolder}"
-  cp -R "${GITHUB_WORKSPACE}/${OUTPUT_FOLDER}/*" ${targetFolder}
+  cp -r "${GITHUB_WORKSPACE}/${OUTPUT_FOLDER}/." ${targetFolder}
 }
 
 function persistResults {
