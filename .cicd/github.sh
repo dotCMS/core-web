@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TEST_RESULTS="test-results"
+TEST_RESULTS="test-results/master"
 GITHUB="github.com"
 GITHACK="raw.githack.com"
 GITHUB_TEST_RESULTS_PATH="DotCMS/${TEST_RESULTS}"
