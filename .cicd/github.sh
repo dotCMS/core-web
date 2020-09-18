@@ -1,9 +1,9 @@
 #!/bin/bash
 
-TEST_RESULTS="test-results/master"
+TEST_RESULTS="test-results"
 GITHUB="github.com"
 GITHACK="raw.githack.com"
-GITHUB_TEST_RESULTS_PATH="DotCMS/${TEST_RESULTS}"
+GITHUB_TEST_RESULTS_PATH="DotCMS/${TEST_RESULTS}/master"
 DOT_CICD_TARGET="core-web"
 GITHUB_USER="dotcmsbuild"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
