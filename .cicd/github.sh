@@ -3,7 +3,7 @@
 TEST_RESULTS="test-results"
 GITHUB="github.com"
 GITHACK="raw.githack.com"
-GITHUB_TEST_RESULTS_PATH="DotCMS/${TEST_RESULTS}" # TODO: Change for DotCMS
+GITHUB_TEST_RESULTS_PATH="DotCMS/${TEST_RESULTS}"
 DOT_CICD_TARGET="core-web"
 GITHUB_USER="dotcmsbuild"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
@@ -66,26 +66,26 @@ function persistResults {
   existsOrCreateAndSwitch ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
   
   git fetch --all
-  remoteBranch=$(git ls-remote --heads ${GITHUB_TEST_RESULTS_REMOTE_REPO} ${BUILD_ID} | wc -l | tr -d '[:space:]')
+  # remoteBranch=$(git ls-remote --heads ${GITHUB_TEST_RESULTS_REMOTE_REPO} ${BUILD_ID} | wc -l | tr -d '[:space:]')
 
-  if [[ ${remoteBranch} == 1 ]]; then
-    echo "git checkout -b ${_CURRENT_BRANCH} --track origin/${_CURRENT_BRANCH}"
-    git checkout -b ${_CURRENT_BRANCH} --track origin/${_CURRENT_BRANCH}
-  else
-    echo "git checkout -b ${_CURRENT_BRANCH}"
-    git checkout -b ${_CURRENT_BRANCH}
-  fi
+  # if [[ ${remoteBranch} == 1 ]]; then
+  #   echo "git checkout -b ${_CURRENT_BRANCH} --track origin/${_CURRENT_BRANCH}"
+  #   git checkout -b ${_CURRENT_BRANCH} --track origin/${_CURRENT_BRANCH}
+  # else
+  #   echo "git checkout -b ${_CURRENT_BRANCH}"
+  #   git checkout -b ${_CURRENT_BRANCH}
+  # fi
   
-  if [[ $? != 0 ]]; then
-    echo "Error checking out branch '${_CURRENT_BRANCH}', continuing with master"
-    git pull origin master
-  else
-    git branch
-    if [[ ${remoteBranch} == 1 ]]; then
-      echo "git pull origin ${_CURRENT_BRANCH}"
-      git pull origin ${_CURRENT_BRANCH}
-    fi
-  fi
+  # if [[ $? != 0 ]]; then
+  #   echo "Error checking out branch '${_CURRENT_BRANCH}', continuing with master"
+  #   git pull origin master
+  # else
+  #   git branch
+  #   if [[ ${remoteBranch} == 1 ]]; then
+  #     echo "git pull origin ${_CURRENT_BRANCH}"
+  #     git pull origin ${_CURRENT_BRANCH}
+  #   fi
+  # fi
 
   addResults ./${GITHUB_SHA::8}
   git add .

@@ -1,5 +1,4 @@
-name: Run Tests
-# Run in all PRs and commits to `master` and releases
+name: DotCMS/core-web Tests
 on:
   pull_request:
   push:
@@ -25,36 +24,24 @@ jobs:
             **/node_modules
             ./dotcicd/test-results
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
-
       - name: Setting Node.js 10.x
         uses: actions/setup-node@v2-beta
         with:
           node-version: '10.15.3'
-          
       - name: Installing dependencies
         run: npm install
-
       - name: Building Libs
         run: npm run build:libs
-
       - name: Building for production
         run: npm run build:prod
-
       - name: Running tests
         run: |
-          npm run test-headless
-      
+          npm run test-headless    
       - name: Prepare and Push to GitHub
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           checkForToken ${GITHUB_TOKEN}
-
-      - name: Check files
+      - name: Printing Logs
         run: |
           cd ./dotcicd/test-results/projects/core-web/${GITHUB_SHA::8}
           ls
-      # - name: Push changes
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     github_token: ${{ secrets.GH_USER_TOKEN }}
-      #     repository: ivorpad/test-results
