@@ -87,6 +87,10 @@ function persistResults {
   fi
 
   addResults ./${GITHUB_SHA::8}
+  git add .
+  git commit -m "Adding tests results for ${GITHUB_SHA::8} from ${_CURRENT_BRANCH}"
+  git push ${GITHUB_TEST_RESULTS_REMOTE}
+  git status
 }
 
 persistResults
