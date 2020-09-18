@@ -53,8 +53,8 @@ jobs:
         run: |
           cd ./dotcicd/test-results/projects/core-web/${GITHUB_SHA::8}
           ls
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_USER_TOKEN }}
-          repository: ivorpad/test-results
+      # - name: Push changes
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     github_token: ${{ secrets.GH_USER_TOKEN }}
+      #     repository: ivorpad/test-results
