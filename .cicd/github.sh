@@ -44,13 +44,13 @@ function gitConfig {
 
 
 function addResults {
-  # local results=${1}
-  # if [[ -z "$results" ]]; then
-  #   echo "Cannot add results since its empty, ignoring"
-  #   exit 1
-  # fi
+  local results=${1}
+  if [[ -z "$results" ]]; then
+    echo "Cannot add results since its empty, ignoring"
+    exit 1
+  fi
 
-  local targetFolder="test"
+  local targetFolder=${results}
   mkdir -p ${targetFolder}
   echo "Adding test results to: ${targetFolder}"
   echo "output: ${OUTPUT_FOLDER}/* target:${targetFolder}"
