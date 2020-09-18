@@ -55,10 +55,10 @@ jobs:
       - name: Setup user
         run: |
           git config --local user.email "ivorjpc@gmail.com"
-          git config --local user.name "ivorpad"
+          git config --local user.name "ivorpad" 
           git config -l | grep user
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${GITHUB_TOKEN}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           repository: ivorpad/test-results
