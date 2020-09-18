@@ -5,7 +5,7 @@ GITHUB="github.com"
 GITHACK="raw.githack.com"
 GITHUB_TEST_RESULTS_PATH="DotCMS/${TEST_RESULTS}" # TODO: Change for DotCMS
 DOT_CICD_TARGET="core-web"
-GITHUB_USER="ivorpad"
+GITHUB_USER="dotcmsbuild"
 _CURRENT_BRANCH=${GITHUB_REF##*/}
 DOT_CICD_PATH="./dotcicd"
 OUTPUT_FOLDER="karma_html"
@@ -38,7 +38,7 @@ function existsOrCreateAndSwitch {
 }
 
 function gitConfig {
-  git config --global user.email "ivorjpc@gmail.com"
+  git config --global user.email "${GITHUB_USER}@@dotcms.com"
   git config --global user.name "${GITHUB_USER}"
   git config -l | grep user
 }

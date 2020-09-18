@@ -30,21 +30,21 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           node-version: '10.15.3'
-      
+          
       - name: Installing dependencies
         run: npm install
 
-      - name: Building libraries
+      - name: Building Libs
         run: npm run build:libs
 
-      - name: Building production
+      - name: Building for production
         run: npm run build:prod
 
       - name: Running tests
         run: |
           npm run test-headless
       
-      - name: Prepare dot-cicd
+      - name: Prepare and Push to GitHub
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           checkForToken ${GITHUB_TOKEN}
