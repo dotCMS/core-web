@@ -54,7 +54,7 @@ function addResults {
   mkdir -p ${targetFolder}
   echo "Adding test results to: ${targetFolder}"
   echo "output: ${OUTPUT_FOLDER}/* target:${targetFolder}"
-  # cp -R ${OUTPUT_FOLDER}/* ${targetFolder}
+  cp -R "./work/core-web/core-web/${OUTPUT_FOLDER}/*" ${targetFolder}
 }
 
 function persistResults {
