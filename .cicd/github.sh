@@ -89,4 +89,4 @@ function persistResults {
   addResults ./${GITHUB_SHA::8}
 }
 
-# persistResults
+persistResults
