@@ -51,11 +51,15 @@ function addResults {
 function persistResults {
   TEST_RESULTS_PATH=${DOT_CICD_PATH}/${TEST_RESULTS}
   gitConfig
-  echo "Cloning ${GITHUB_TEST_RESULTS_REPO} to ${TEST_RESULTS_PATH}"
-  git clone ${GITHUB_TEST_RESULTS_REPO} ${TEST_RESULTS_PATH}
+  
+  if [[ ! -d .cicd/test-results ]]; then
+    echo "Cloning ${GITHUB_TEST_RESULTS_REPO} to ${TEST_RESULTS_PATH}"
+    git clone ${GITHUB_TEST_RESULTS_REPO} ${TEST_RESULTS_PATH}
+  fi
+  
   existsOrCreateAndSwitch ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
   
-  git pull origin master
+  git fetch --all
   addResults ./${GITHUB_SHA::8}
   git add .
   git commit -m "Adding tests results for ${GITHUB_SHA::8} from ${_CURRENT_BRANCH}"
