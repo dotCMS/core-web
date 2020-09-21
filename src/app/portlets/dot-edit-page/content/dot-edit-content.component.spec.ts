@@ -450,18 +450,18 @@ describe('DotEditContentComponent', () => {
                     fixture.detectChanges();
                 });
 
-                it('should add "deviced" class to main wrapper', () => {
+                fit('should add "deviced" class to main wrapper', () => {
                     const wrapper = de.query(By.css('.dot-edit__page-wrapper'));
-                    expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
+                    expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(false);
                 });
 
-                fit('should add inline styles to iframe', async () => {
+                it('should add inline styles to iframe', async () => {
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
                         const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
                         expect(iframeEl.styles).toEqual({
-                            position: '1900px',
-                            visibility: 'hidden'
+                            position: '',
+                            visibility: ''
                         });
                     })
                 });
