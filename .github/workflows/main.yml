@@ -1,5 +1,4 @@
-name: Run Tests
-# Run in all PRs and commits to `master` and releases
+name: DotCMS/core-web Tests
 on:
   pull_request:
   push:
@@ -8,11 +7,40 @@ on:
       - release-*
 jobs:
   build:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ./dotcicd/test-results
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
+      - name: Setting Node.js 10.x
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '10.15.3'
+      - name: Installing dependencies
         run: npm install
-      - name: Run tests
+      - name: Building Libs
+        run: npm run build:libs
+      - name: Building for production
+        run: npm run build:prod
+      - name: Running tests
         run: |
-          npm run test-headless
+          npm run test-headless    
+      - name: Prepare and Push to GitHub
+        run: |
+          chmod +x .cicd/github.sh && source .cicd/github.sh
+          persistResults
+      - name: Printing Logs
+        run: |
+          source .cicd/github.sh
+          logResults
