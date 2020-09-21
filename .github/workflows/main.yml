@@ -35,7 +35,7 @@ jobs:
         run: npm run build:prod
       - name: Running tests
         run: |
-          npm run test-headless    
+          npm run test -- dotcms-ui --watch=false --reporters=html,progress
       - name: Prepare and Push to GitHub
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
