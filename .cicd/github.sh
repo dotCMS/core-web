@@ -33,7 +33,6 @@ function gitConfig {
   git config -l | grep user
 }
 
-
 function addResults {
   local results=${1}
   if [[ -z "$results" ]]; then
