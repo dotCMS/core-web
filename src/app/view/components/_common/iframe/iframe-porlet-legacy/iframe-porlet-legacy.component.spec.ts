@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DotMenuService } from '@services/dot-menu.service';
 import { IFrameModule } from '../index';
@@ -67,48 +67,46 @@ describe('IframePortletLegacyComponent', () => {
     let route: ActivatedRoute;
     const siteServiceMock = new SiteServiceMock();
 
-    beforeEach(
-        async(() => {
-            TestBed.configureTestingModule({
-                declarations: [],
-                imports: [IFrameModule, RouterTestingModule],
-                providers: [
-                    DotContentTypeService,
-                    DotCustomEventHandlerService,
-                    DotPushPublishDialogService,
-                    DotMenuService,
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    { provide: SiteService, useValue: siteServiceMock },
-                    { provide: ActivatedRoute, useClass: ActivatedRouteMock },
-                    { provide: CoreWebService, useClass: CoreWebServiceMock },
-                    Http,
-                    { provide: ConnectionBackend, useClass: MockBackend },
-                    { provide: RequestOptions, useClass: BaseRequestOptions },
-                    { provide: DotRouterService, useClass: MockDotRouterService },
-                    { provide: DotUiColorsService, useClass: MockDotUiColorsService },
-                    ApiRoot,
-                    DotContentletEditorService,
-                    DotIframeService,
-                    DotDownloadBundleDialogService,
-                    LoggerService,
-                    StringUtils,
-                    DotcmsEventsService,
-                    DotEventsSocket,
-                    { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
-                    DotcmsConfigService,
-                    DotLicenseService,
-                    FormatDateService
-                ]
-            });
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [],
+            imports: [IFrameModule, RouterTestingModule],
+            providers: [
+                DotContentTypeService,
+                DotCustomEventHandlerService,
+                DotPushPublishDialogService,
+                DotMenuService,
+                { provide: LoginService, useClass: LoginServiceMock },
+                { provide: SiteService, useValue: siteServiceMock },
+                { provide: ActivatedRoute, useClass: ActivatedRouteMock },
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                Http,
+                { provide: ConnectionBackend, useClass: MockBackend },
+                { provide: RequestOptions, useClass: BaseRequestOptions },
+                { provide: DotRouterService, useClass: MockDotRouterService },
+                { provide: DotUiColorsService, useClass: MockDotUiColorsService },
+                ApiRoot,
+                DotContentletEditorService,
+                DotIframeService,
+                DotDownloadBundleDialogService,
+                LoggerService,
+                StringUtils,
+                DotcmsEventsService,
+                DotEventsSocket,
+                { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
+                DotcmsConfigService,
+                DotLicenseService,
+                FormatDateService
+            ]
+        });
 
-            fixture = TestBed.createComponent(IframePortletLegacyComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            dotMenuService = TestBed.get(DotMenuService);
-            dotCustomEventHandlerService = TestBed.get(DotCustomEventHandlerService);
-            route = de.injector.get(ActivatedRoute);
-        })
-    );
+        fixture = TestBed.createComponent(IframePortletLegacyComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        dotMenuService = TestBed.get(DotMenuService);
+        dotCustomEventHandlerService = TestBed.get(DotCustomEventHandlerService);
+        route = de.injector.get(ActivatedRoute);
+    });
 
     it('should set query param url to the dot-iframe src', () => {
         route.queryParams = of({ url: 'hello/world' });
@@ -169,7 +167,7 @@ describe('IframePortletLegacyComponent', () => {
         expect(de.query(By.css('dot-not-licensed-component'))).toBeTruthy();
     });
 
-    it('should set current site and just call reloadIframePortlet once', () => {
+    it('should call reloadIframePortlet once', () => {
         fixture.detectChanges();
         comp.url.next('test');
         spyOn(comp, 'reloadIframePortlet');
