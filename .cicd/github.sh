@@ -59,7 +59,7 @@ function persistResults {
   
   existsOrCreateAndSwitch ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
   
-  git fetch --all
+  git pull origin master
   addResults ./${GITHUB_SHA::8}
   git add .
   git commit -m "Adding tests results for ${GITHUB_SHA::8} from ${_CURRENT_BRANCH}"
