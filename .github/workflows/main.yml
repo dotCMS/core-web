@@ -34,12 +34,12 @@ jobs:
         run: npm run build:libs
       - name: Building for production
         run: npm run build:prod
-      - name: Running tests
-        id: test-run 
+      - id: test-run 
+        name: Running tests
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
   
-        name: Push Tests to GitHub
+      - name: Push Tests to GitHub
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
