@@ -11,9 +11,6 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
     runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      fail-fast: false
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -40,7 +37,8 @@ jobs:
         id: test-run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
-      - name: Prepare and Push to GitHub
+      - name: Push Tests to GitHub
+        if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
@@ -52,6 +50,7 @@ jobs:
       #     SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
       #     SLACK_COLOR: '#3278BD'          
       - name: Printing Logs
+        if: always()
         run: |
           source .cicd/github.sh
           logResults
