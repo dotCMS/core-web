@@ -40,9 +40,11 @@ jobs:
         run: |
           if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress) then
             echo "::set-output name=status::failure";
+            echo "::set-output name=color::#ff2400";
             exit 1;  
           else 
             echo "::set-output name=status::success";  
+            echo "::set-output name=color::#3278BD";
           fi
       - name: Push Tests to GitHub
         if: success() || failure()
@@ -50,13 +52,15 @@ jobs:
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
           echo ${{ steps.test_run.outputs.status }}
-      # - name: Slack Notification
-      #   uses: rtCamp/action-slack-notify@master
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      #     SLACK_USERNAME: core-web
-      #     SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
-      #     SLACK_COLOR: '#3278BD'          
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: core-web
+          SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
+          SLACK_COLOR: ${{ steps.test_run.outputs.color }}
+          SLACK_TITLE: ${{ steps.test_run.outputs.status }}
+          SLACK_MESSAGE: "testing"
       - name: Printing Logs
         if: always() && ! cancelled()
         run: |
