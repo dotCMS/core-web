@@ -38,6 +38,7 @@ jobs:
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
       - name: Prepare and Push to GitHub
+        continue-on-error: true
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
