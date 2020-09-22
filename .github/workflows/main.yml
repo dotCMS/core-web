@@ -48,7 +48,7 @@ jobs:
           fi
       - name: Push Tests to GitHub
         id: persist_results
-        if: ${{ env.STATUS == failure }}
+        if: ${{ env.STATUS == 'failure' }}
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
