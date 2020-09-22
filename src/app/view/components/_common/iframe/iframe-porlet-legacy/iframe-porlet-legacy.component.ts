@@ -41,8 +41,11 @@ export class IframePortletLegacyComponent implements OnInit, OnDestroy {
                 this.reloadIframePortlet(portletId);
             }
         });
-        // skip first - to avoid subscription when page loads.
-        this.siteService.switchSite$.pipe(skip(1)).subscribe(() => {
+        /**
+         *  skip first - to avoid subscription when page loads due login user subscription:
+         *  https://github.com/dotCMS/core-web/blob/master/projects/dotcms-js/src/lib/core/site.service.ts#L58
+        */
+        this.siteService.switchSite$.pipe(takeUntil(this.destroy$), skip(1)).subscribe(() => {
             if (this.url.getValue() !== '') {
                 this.reloadIframePortlet();
             }
