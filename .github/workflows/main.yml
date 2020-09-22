@@ -10,7 +10,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
-      GITHUB_CONTEXT: toJson(github)
+      GITHUB_CONTEXT: ${{ toJson(github) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,13 +38,13 @@ jobs:
         id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
-          echo ""
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-           echo ${{ toJson(steps) }}
+          echo ${{ toJson(steps) }}
+          echo "$GITHUB_CONTEXT"
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
@@ -57,4 +57,5 @@ jobs:
         run: |
           source .cicd/github.sh
           logResults
+          echo "$GITHUB_CONTEXT"
           echo ${{ toJson(steps) }}
