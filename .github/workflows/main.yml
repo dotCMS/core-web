@@ -39,7 +39,7 @@ jobs:
         id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
-          echo '::set-env name=SELECTED_COLOR::green'
+          echo "::set-output name=action_fruit::strawberry"
 
       - name: Push Tests to GitHub
         if: success() || failure()
