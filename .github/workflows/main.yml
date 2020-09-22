@@ -34,8 +34,8 @@ jobs:
         run: npm run build:libs
       - name: Building for production
         run: npm run build:prod
-      - id: test-run  
-        name: Running tests
+      - name: Running tests
+        id: test-run 
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
   
