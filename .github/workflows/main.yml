@@ -39,14 +39,14 @@ jobs:
         id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress;
-          echo "::set-output name=action_fruit::strawberry";
+          echo "::set-output name=action_fruit::strawberry\n";
 
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          echo ${{ toJson(steps.test_run) }}
+          echo ${{ toJson(steps.test_run.outputs) }}
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
