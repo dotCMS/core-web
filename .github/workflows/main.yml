@@ -48,19 +48,18 @@ jobs:
           fi
       - name: Push Tests to GitHub
         id: persist_results
-        if: ${{ env.STATUS == 'failure' }}
+        if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
           echo "::set-output name=message::$(logResults)";
-          echo '::set-env name=STUFF::value'
-      # - name: Slack Notification
-      #   if: always() && ! cancelled()
-      #   uses: rtCamp/action-slack-notify@master
-      #   env:
-      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      #     SLACK_USERNAME: core-web
-      #     SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
-      #     SLACK_COLOR: ${{ env.COLOR }}
-      #     SLACK_TITLE: ${{ env.STATUS }}
-      #     SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}
+      - name: Slack Notification
+        if: ${{ env.STATUS == 'success' || env.STATUS == 'failure'}}
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: core-web
+          SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
+          SLACK_COLOR: ${{ env.COLOR }}
+          SLACK_TITLE: ${{ env.STATUS }}
+          SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}
