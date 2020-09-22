@@ -50,7 +50,7 @@ jobs:
       #     SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
       #     SLACK_COLOR: '#3278BD'          
       - name: Printing Logs
-        if: ${{ steps.test-run.outcome == 'success' || steps.test-run.outcome == 'failure' }}
+        if: always()
         run: |
           source .cicd/github.sh
           logResults
