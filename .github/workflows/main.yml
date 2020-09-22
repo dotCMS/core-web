@@ -37,10 +37,8 @@ jobs:
       - name: Building for production
         run: npm run build:prod
       - name: Running tests
-        id: tests
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
-          echo "::set-output name=test::hello"
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
