@@ -39,12 +39,12 @@ jobs:
         id: test_run
         run: |
           if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress) then
-            echo "::set-env name=STATUS::failure";
-            echo "::set-env name=COLOR::#ff2400";
+            echo "::set-output name=status::failure";
+            echo "::set-output name=color::#ff2400";
             exit 1;  
           else 
-            echo "::set-env name=STATUS::success";
-            echo "::set-env name=COLOR::#3278BD";
+            echo "::set-output name=status::success";
+            echo "::set-output name=color::#3278BD";
           fi
       - name: Push Tests to GitHub
         id: persist_results
@@ -54,7 +54,7 @@ jobs:
           persistResults
           echo "::set-output name=message::$(logResults)";
       - name: Slack Notification
-        if: always()
+        if: ${{ steps.test_run.status.status == "failure" }}
         # uses: rtCamp/action-slack-notify@master
         run: |
           echo "hello world $STATUS"
