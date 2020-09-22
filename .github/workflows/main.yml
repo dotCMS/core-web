@@ -10,6 +10,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
+      GITHUB_CONTEXT: toJson(github)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,11 +35,10 @@ jobs:
       - name: Building for production
         run: npm run build:prod
       - name: Running tests
-        env:
-          GITHUB_CONTEXT: toJson(github)
         id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
+          echo ""
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
