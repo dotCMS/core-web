@@ -35,10 +35,10 @@ jobs:
         run: npm run build:prod
       - name: Running tests
         id: test-run
-        continue-on-error: true
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
       - name: Prepare and Push to GitHub
+        if: ${{ steps.test-run.outcome == "success" || steps.test-run.outcome == "failure" }}
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
