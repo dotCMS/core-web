@@ -38,7 +38,7 @@ jobs:
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
       - name: Prepare and Push to GitHub
-        if: ${{ jobs.test-run == success() || jobs.test-run == failure() }}
+        if: ${{ steps.test-run.outcome == 'success' || steps.test-run.outcome == 'failure' }}
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
@@ -50,7 +50,7 @@ jobs:
       #     SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
       #     SLACK_COLOR: '#3278BD'          
       - name: Printing Logs
-        if: ${{ jobs.test-run == success() || jobs.test-run == failure() }}
+        if: ${{ steps.test-run.outcome == 'success' || steps.test-run.outcome == 'failure' }}
         run: |
           source .cicd/github.sh
           logResults
