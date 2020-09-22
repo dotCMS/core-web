@@ -34,7 +34,6 @@ jobs:
         run: npm run build:libs
       - name: Building for production
         run: npm run build:prod
-
       - name: Running tests
         id: test_run
         run: |
@@ -44,7 +43,7 @@ jobs:
             exit 1;  
           else 
             echo "::set-output name=status::success";
-            echo "::set-output name=color::#3278BD";
+            echo "::set-output name=color::#5E7D00";
           fi
       - name: Push Tests to GitHub
         id: persist_results
