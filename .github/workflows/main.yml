@@ -12,12 +12,14 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
       GITHUB_CONTEXT: ${{ toJson(github) }}
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.tests.outputs.test }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-          fetch-depth: 0
+          fetch-depth: 1
       - uses: actions/cache@v2
         with:
           path: |
@@ -35,9 +37,10 @@ jobs:
       - name: Building for production
         run: npm run build:prod
       - name: Running tests
-        id: test_run
+        id: tests
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
+          echo "::set-output name=test::hello"
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
