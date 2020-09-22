@@ -34,9 +34,10 @@ jobs:
       - name: Building for production
         run: npm run build:prod
       - name: Running tests
-        id: test-run
+        id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
+          echo ::set-output name=exit_code::$?
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
@@ -50,7 +51,7 @@ jobs:
       #     SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
       #     SLACK_COLOR: '#3278BD'          
       - name: Printing Logs
-        if: always()
+        if: ${{ success() || steps.test_run.outputs.exit_code == 1 }}
         run: |
           source .cicd/github.sh
           logResults
