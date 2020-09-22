@@ -39,7 +39,8 @@ jobs:
         id: test_run
         run: |
           if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress) then
-            echo "::set-output name=status::failure";  
+            echo "::set-output name=status::failure";
+            exit 1;  
           else 
             echo "::set-output name=status::success";  
           fi
