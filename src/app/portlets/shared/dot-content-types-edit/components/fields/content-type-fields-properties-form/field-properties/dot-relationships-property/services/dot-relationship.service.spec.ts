@@ -44,4 +44,8 @@ describe('DotRelationshipService', () => {
         expect(req.request.method).toBe('GET');
         req.flush({ entity: cardinalities });
     });
+
+    afterEach(() => {
+        httpMock.verify();
+    });
 });

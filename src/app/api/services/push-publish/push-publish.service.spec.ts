@@ -127,4 +127,8 @@ describe('PushPublishService', () => {
         );
         req.flush(mockResponse);
     });
+
+    afterEach(() => {
+        httpMock.verify();
+    });
 });

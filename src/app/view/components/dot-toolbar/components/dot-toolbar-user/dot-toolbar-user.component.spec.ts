@@ -34,79 +34,81 @@ describe('DotToolbarUserComponent', () => {
     let locationService: Location;
     let dotNavigationService: DotNavigationService;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [
-                    DotDropdownComponent,
-                    DotLoginAsComponent,
-                    DotMyAccountComponent,
-                    DotToolbarUserComponent
-                ],
-                providers: [
-                    {
-                        provide: LOCATION_TOKEN,
-                        useValue: {
-                            reload() {}
-                        }
-                    },
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    IframeOverlayService,
-                    Jsonp,
-                    DotNavigationService,
-                    DotMenuService
-                ],
-                imports: [
-                    BrowserAnimationsModule,
-                    DotDialogModule,
-                    DotGravatarModule,
-                    DotIconButtonModule,
-                    DotIconModule,
-                    SearchableDropDownModule,
-                    RouterTestingModule,
-                    MdInputTextModule
-                ]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [
+                DotDropdownComponent,
+                DotLoginAsComponent,
+                DotMyAccountComponent,
+                DotToolbarUserComponent
+            ],
+            providers: [
+                {
+                    provide: LOCATION_TOKEN,
+                    useValue: {
+                        reload() {}
+                    }
+                },
+                { provide: LoginService, useClass: LoginServiceMock },
+                IframeOverlayService,
+                Jsonp,
+                DotNavigationService,
+                DotMenuService
+            ],
+            imports: [
+                BrowserAnimationsModule,
+                DotDialogModule,
+                DotGravatarModule,
+                DotIconButtonModule,
+                DotIconModule,
+                SearchableDropDownModule,
+                RouterTestingModule,
+                MdInputTextModule
+            ]
+        });
 
-            fixture = DOTTestBed.createComponent(DotToolbarUserComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
+        fixture = DOTTestBed.createComponent(DotToolbarUserComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
 
-            loginService = de.injector.get(LoginService);
-            locationService = de.injector.get(LOCATION_TOKEN);
-            dotNavigationService = de.injector.get(DotNavigationService);
+        loginService = de.injector.get(LoginService);
+        locationService = de.injector.get(LOCATION_TOKEN);
+        dotNavigationService = de.injector.get(DotNavigationService);
 
-            comp.auth = mockAuth;
-        })
-    );
+        comp.auth = mockAuth;
+    }));
 
-    it(
-        'should call "logoutAs" in "LoginService" on logout click',
-        async(() => {
-            spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(
-                new Promise(resolve => {
-                    resolve(true);
-                })
-            );
-            spyOn(locationService, 'reload');
-            spyOn(loginService, 'logoutAs').and.callThrough();
+    it('should call "logoutAs" in "LoginService" on logout click', async(() => {
+        spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(
+            new Promise((resolve) => {
+                resolve(true);
+            })
+        );
+        spyOn(locationService, 'reload');
+        spyOn(loginService, 'logoutAs').and.callThrough();
 
-            fixture.detectChanges();
+        fixture.detectChanges();
 
-            dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
-            dotDropdownComponent.onToggle();
-            fixture.detectChanges();
+        dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
+        dotDropdownComponent.onToggle();
+        fixture.detectChanges();
 
-            const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
-            logoutAsLink.triggerEventHandler('click', {
-                preventDefault: () => {}
-            });
+        const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
+        logoutAsLink.triggerEventHandler('click', {
+            preventDefault: () => {}
+        });
 
-            fixture.whenStable().then(() => {
-                expect(loginService.logoutAs).toHaveBeenCalledTimes(1);
-                expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-                expect(locationService.reload).toHaveBeenCalledTimes(1);
-            });
-        })
-    );
+        fixture.whenStable().then(() => {
+            expect(loginService.logoutAs).toHaveBeenCalledTimes(1);
+            expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+            expect(locationService.reload).toHaveBeenCalledTimes(1);
+        });
+    }));
+
+    afterEach(() => {
+        // Removes dirty DOM after tests have finished
+        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
+            (fixture.nativeElement as HTMLElement).remove();
+        }
+    });
 });

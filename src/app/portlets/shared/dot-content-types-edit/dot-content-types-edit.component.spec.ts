@@ -106,78 +106,78 @@ const messageServiceMock = new MockDotMessageService({
     'contenttypes.dropzone.rows.tab_divider': 'Add tab'
 });
 
-const getConfig = (route) => {
-    return {
-        declarations: [
-            DotContentTypesEditComponent,
-            TestContentTypeFieldsDropZoneComponent,
-            TestContentTypesFormComponent,
-            TestContentTypeLayoutComponent,
-            TestDotMenuComponent
-        ],
-        imports: [
-            RouterTestingModule.withRoutes([
-                {
-                    path: 'content-types-angular',
-                    component: DotContentTypesEditComponent
-                }
-            ]),
-            BrowserAnimationsModule,
-            DotIconModule,
-            DotIconButtonModule,
-            DotDialogModule,
-            HttpClientTestingModule
-        ],
-        providers: [
-            {
-                provide: LoginService,
-                useClass: LoginServiceMock
-            },
-            {
-                provide: SiteService,
-                useClass: SiteServiceMock
-            },
-            {
-                provide: DotMessageService,
-                useValue: messageServiceMock
-            },
-            {
-                provide: ActivatedRoute,
-                useValue: { data: of(route) }
-            },
-            {
-                provide: HotkeysService,
-                useValue: testHotKeysMock
-            },
-            { provide: ConnectionBackend, useClass: MockBackend },
-            { provide: RequestOptions, useClass: BaseRequestOptions },
-            { provide: DotRouterService, useClass: MockDotRouterService },
-            { provide: CoreWebService, useClass: CoreWebServiceMock },
-            ConfirmationService,
-            DotAlertConfirmService,
-            DotContentTypesInfoService,
-            DotCrudService,
-            DotEditContentTypeCacheService,
-            DotHttpErrorManagerService,
-            DotMenuService,
-            DotEventsService,
-            FieldService,
-            Location
-        ]
-    };
-};
-
-let comp: DotContentTypesEditComponent;
-let fixture: ComponentFixture<DotContentTypesEditComponent>;
-let de: DebugElement;
-let crudService: DotCrudService;
-let location: Location;
-let dotRouterService: DotRouterService;
-let dotHttpErrorManagerService: DotHttpErrorManagerService;
-let testHotKeysMock: TestHotkeysMock;
-let dialog: DebugElement;
-
 describe('DotContentTypesEditComponent', () => {
+    let comp: DotContentTypesEditComponent;
+    let fixture: ComponentFixture<DotContentTypesEditComponent>;
+    let de: DebugElement;
+    let crudService: DotCrudService;
+    let location: Location;
+    let dotRouterService: DotRouterService;
+    let dotHttpErrorManagerService: DotHttpErrorManagerService;
+    let testHotKeysMock: TestHotkeysMock;
+    let dialog: DebugElement;
+
+    const getConfig = (route) => {
+        return {
+            declarations: [
+                DotContentTypesEditComponent,
+                TestContentTypeFieldsDropZoneComponent,
+                TestContentTypesFormComponent,
+                TestContentTypeLayoutComponent,
+                TestDotMenuComponent
+            ],
+            imports: [
+                RouterTestingModule.withRoutes([
+                    {
+                        path: 'content-types-angular',
+                        component: DotContentTypesEditComponent
+                    }
+                ]),
+                BrowserAnimationsModule,
+                DotIconModule,
+                DotIconButtonModule,
+                DotDialogModule,
+                HttpClientTestingModule
+            ],
+            providers: [
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                },
+                {
+                    provide: SiteService,
+                    useClass: SiteServiceMock
+                },
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                },
+                {
+                    provide: ActivatedRoute,
+                    useValue: { data: of(route) }
+                },
+                {
+                    provide: HotkeysService,
+                    useValue: testHotKeysMock
+                },
+                { provide: ConnectionBackend, useClass: MockBackend },
+                { provide: RequestOptions, useClass: BaseRequestOptions },
+                { provide: DotRouterService, useClass: MockDotRouterService },
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                ConfirmationService,
+                DotAlertConfirmService,
+                DotContentTypesInfoService,
+                DotCrudService,
+                DotEditContentTypeCacheService,
+                DotHttpErrorManagerService,
+                DotMenuService,
+                DotEventsService,
+                FieldService,
+                Location
+            ]
+        };
+    };
+
     describe('create mode', () => {
         beforeEach(async(() => {
             testHotKeysMock = new TestHotkeysMock();
@@ -667,7 +667,7 @@ describe('DotContentTypesEditComponent', () => {
             expect(comp.layout).toEqual(layout);
         });
 
-        it("should handle 403 when user doesn't have permission to save feld", () => {
+        it('should handle 403 when user does not have permission to save feld', () => {
             const dropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
             spyOn(dropZone.componentInstance, 'cancelLastDragAndDrop').and.callThrough();
 
@@ -785,5 +785,12 @@ describe('DotContentTypesEditComponent', () => {
                 expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
             });
         });
+    });
+
+    afterEach(() => {
+        // Removes dirty DOM after tests have finished
+        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
+            (fixture.nativeElement as HTMLElement).remove();
+        }
     });
 });
