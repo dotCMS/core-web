@@ -39,6 +39,7 @@ jobs:
         id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress;
+          echo "::set-output name=exit_code::$?";
           trap 'echo "EXIT detected with exit status $?"' EXIT
           echo "This is checkpoint 1"
           # exit shell script with 0 signal
@@ -49,7 +50,7 @@ jobs:
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          
+          echo ${{ steps.test_run.outputs.exit_code }}
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
