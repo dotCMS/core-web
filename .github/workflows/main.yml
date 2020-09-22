@@ -39,14 +39,12 @@ jobs:
         id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
-          echo ${{ toJson(steps) }}
 
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          echo ${{ toJson(steps) }}
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
@@ -59,4 +57,3 @@ jobs:
         run: |
           source .cicd/github.sh
           logResults
-          echo ${{ toJson(steps) }}
