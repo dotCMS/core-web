@@ -450,7 +450,7 @@ describe('DotEditContentComponent', () => {
                     fixture.detectChanges();
                 });
 
-                fit('should add "deviced" class to main wrapper', () => {
+                it('should add "deviced" class to main wrapper', () => {
                     const wrapper = de.query(By.css('.dot-edit__page-wrapper'));
                     expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
                 });
