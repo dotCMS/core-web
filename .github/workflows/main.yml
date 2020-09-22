@@ -36,16 +36,20 @@ jobs:
         run: npm run build:prod
 
       - name: Running tests
-        id: step_one
+        id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress;
-          echo "::set-output name=finished::true";
+          trap 'echo "EXIT detected with exit status $?"' EXIT
+          echo "This is checkpoint 1"
+          # exit shell script with 0 signal
+          exit "$1"
+          echo "This is checkpoint 2"
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          echo ${{ steps.step_one.outputs.finished }}
+          
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
