@@ -38,16 +38,14 @@ jobs:
       - name: Running tests
         id: step_one
         run: |
-          echo "::set-output name=stuff::value";
           npm run test -- dotcms-ui --watch=false --reporters=html,progress;
-         
-
+          echo "::set-output name=finished::true";
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          echo ${{ steps.step_one.outputs.stuff }}
+          echo ${{ steps.step_one.outputs.finished }}
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
