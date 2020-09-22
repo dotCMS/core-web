@@ -54,12 +54,13 @@ jobs:
           persistResults
           echo "::set-output name=message::$(logResults)";
       - name: Slack Notification
-        if: ${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}
+        if: always() && ${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}
         # uses: rtCamp/action-slack-notify@master
         run: |
           echo "${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}"
           echo ${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}
           echo ${{ steps.test_run.outputs.status }}
+          echo ${{ always() }}
         # env:
         #   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         #   SLACK_USERNAME: core-web
