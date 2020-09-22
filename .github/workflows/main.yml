@@ -39,11 +39,11 @@ jobs:
         id: test_run
         run: |
           if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress) then
-            echo "::set-output name=status::failure";
+            echo "::set-output name=status::'failure'";
             echo "::set-output name=color::#ff2400";
             exit 1;  
           else 
-            echo "::set-output name=status::success";
+            echo "::set-output name=status::'success'";
             echo "::set-output name=color::#3278BD";
           fi
       - name: Push Tests to GitHub
@@ -54,7 +54,7 @@ jobs:
           persistResults
           echo "::set-output name=message::$(logResults)";
       - name: Slack Notification
-        if: true
+        if: ${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}
         # uses: rtCamp/action-slack-notify@master
         run: |
           echo "${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}"
@@ -65,5 +65,5 @@ jobs:
         #   SLACK_USERNAME: core-web
         #   SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
         #   SLACK_COLOR: ${{ steps.test_run.outputs.color }}
-        #   SLACK_TITLE: ${{ steps.test_run.outputs.status }}
+        #   SLACK_TITLE: "Report (${{ steps.test_run.outputs.status }})"
         #   SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}
