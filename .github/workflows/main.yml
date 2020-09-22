@@ -54,17 +54,16 @@ jobs:
           persistResults
           echo "::set-output name=message::$(logResults)";
       - name: Slack Notification
-        if: always() && ${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}
+        if: always()
         # uses: rtCamp/action-slack-notify@master
         run: |
           echo "${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}"
           echo ${{ steps.test_run.outputs.status == 'failure' || steps.test_run.outputs.status == 'success' }}
           echo ${{ steps.test_run.outputs.status }}
-          echo ${{ always() }}
         # env:
         #   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         #   SLACK_USERNAME: core-web
         #   SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
         #   SLACK_COLOR: ${{ steps.test_run.outputs.color }}
-        #   SLACK_TITLE: "Report (${{ steps.test_run.outputs.status }})"
+        #   SLACK_TITLE: ${{ steps.test_run.outputs.status }}
         #   SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}
