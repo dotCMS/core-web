@@ -12,8 +12,6 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
       GITHUB_CONTEXT: ${{ toJson(github) }}
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.tests.outputs.test }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -44,8 +42,9 @@ jobs:
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          echo ${{ toJson(steps) }}
           echo "$GITHUB_CONTEXT"
+          echo "1 ================================"
+          echo ${{ toJson(steps) }}
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
@@ -59,4 +58,5 @@ jobs:
           source .cicd/github.sh
           logResults
           echo "$GITHUB_CONTEXT"
+          echo "2 ================================"
           echo ${{ toJson(steps) }}
