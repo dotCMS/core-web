@@ -47,11 +47,12 @@ jobs:
             echo "::set-output name=color::#3278BD";
           fi
       - name: Push Tests to GitHub
+        id: persist_results
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          echo ${{ steps.test_run.outputs.status }}
+          echo "::set-output name=message::$(logResults)";
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@master
         env:
@@ -60,7 +61,7 @@ jobs:
           SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
           SLACK_COLOR: ${{ steps.test_run.outputs.color }}
           SLACK_TITLE: ${{ steps.test_run.outputs.status }}
-          SLACK_MESSAGE: "testing"
+          SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}
       - name: Printing Logs
         if: always() && ! cancelled()
         run: |
