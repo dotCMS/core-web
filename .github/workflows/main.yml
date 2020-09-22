@@ -39,17 +39,16 @@ jobs:
         id: test_run
         run: |
           if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress) then
-            echo "::set-output name=exit_code::$?";
+            echo "::set-output name=status::failure";  
           else 
-            echo "::set-output name=exit_code::passed";  
+            echo "::set-output name=status::success";  
           fi
-
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          echo ${{ steps.test_run.outputs.exit_code }}
+          echo ${{ steps.test_run.outputs.status }}
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
