@@ -7,6 +7,8 @@ on:
       - release-*     
 jobs:
   build:
+    strategy:
+      fail-fast: false
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
@@ -38,8 +40,6 @@ jobs:
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
       - name: Prepare and Push to GitHub
-        continue-on-error: true
-        if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
@@ -51,7 +51,6 @@ jobs:
       #     SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
       #     SLACK_COLOR: '#3278BD'          
       - name: Printing Logs
-        if: always()
         run: |
           source .cicd/github.sh
           logResults
