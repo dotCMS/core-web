@@ -54,7 +54,7 @@ jobs:
           persistResults
           echo "::set-output name=message::$(logResults)";
       - name: Slack Notification
-        if: ${{ steps.test_run.status.status == "failure" }}
+        if: ${{ steps.test_run.outputs.status == "failure" }}
         # uses: rtCamp/action-slack-notify@master
         run: |
           echo "hello world $STATUS"
