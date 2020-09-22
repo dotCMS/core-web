@@ -39,6 +39,7 @@ jobs:
         id: test_run
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
+          echo ${{ toJson(steps.test_run) }}
 
       - name: Push Tests to GitHub
         if: success() || failure()
