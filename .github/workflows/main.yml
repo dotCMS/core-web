@@ -22,7 +22,6 @@ jobs:
         with:
           path: |
             **/node_modules
-            ./dotcicd/test-results
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
       - name: Setting Node.js 10.x
         uses: actions/setup-node@v2-beta
