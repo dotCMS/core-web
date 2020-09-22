@@ -38,8 +38,8 @@ jobs:
       - name: Running tests
         id: test_run
         run: |
+          echo "::set-output name=exit_code::$?";
           npm run test -- dotcms-ui --watch=false --reporters=html,progress;
-          trap echo "::set-output name=exit_code::$?";
           trap 'echo "EXIT detected with exit status $?"' EXIT
           echo "This is checkpoint 1"
           # exit shell script with 0 signal
