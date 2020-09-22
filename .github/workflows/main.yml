@@ -38,13 +38,12 @@ jobs:
       - name: Running tests
         id: test_run
         run: |
-          echo "::set-output name=exit_code::$?";
-          npm run test -- dotcms-ui --watch=false --reporters=html,progress;
-          trap 'echo "EXIT detected with exit status $?"' EXIT
-          echo "This is checkpoint 1"
-          # exit shell script with 0 signal
-          exit "$1"
-          echo "This is checkpoint 2"
+          if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress) then
+            echo "::set-output name=exit_code::$?";
+          else 
+            echo "::set-output name=exit_code::passed";  
+          fi
+
       - name: Push Tests to GitHub
         if: success() || failure()
         run: |
