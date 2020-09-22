@@ -39,32 +39,28 @@ jobs:
         id: test_run
         run: |
           if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress) then
-            echo "::set-output name=status::failure";
-            echo "::set-output name=color::#ff2400";
+            echo "::set-env name=STATUS::failure";
+            echo "::set-env name=COLOR::#ff2400";
             exit 1;  
           else 
-            echo "::set-output name=status::success";  
-            echo "::set-output name=color::#3278BD";
+            echo "::set-env name=STATUS::success";
+            echo "::set-env name=COLOR::#3278BD";
           fi
       - name: Push Tests to GitHub
         id: persist_results
-        if: success() || failure()
+        if: ${{ env.STATUS == failure }}
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
           echo "::set-output name=message::$(logResults)";
-      - name: Slack Notification
-        if: always() && ! cancelled()
-        uses: rtCamp/action-slack-notify@master
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_USERNAME: core-web
-          SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
-          SLACK_COLOR: ${{ steps.test_run.outputs.color }}
-          SLACK_TITLE: ${{ steps.test_run.outputs.status }}
-          SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}
-      - name: Printing Logs
-        if: always() && ! cancelled()
-        run: |
-          source .cicd/github.sh
-          logResults
+          echo '::set-env name=STUFF::value'
+      # - name: Slack Notification
+      #   if: always() && ! cancelled()
+      #   uses: rtCamp/action-slack-notify@master
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      #     SLACK_USERNAME: core-web
+      #     SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
+      #     SLACK_COLOR: ${{ env.COLOR }}
+      #     SLACK_TITLE: ${{ env.STATUS }}
+      #     SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}

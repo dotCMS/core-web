@@ -40,4 +40,4 @@ install:
 # https://docs.travis-ci.com/user/notifications/#configuring-slack-notifications
 # https://docs.travis-ci.com/user/encryption-keys/#usage
 notifications:
-  slack: dotcms:oKpntVOdtRymXMrB2Soax5So
+  # slack: dotcms:oKpntVOdtRymXMrB2Soax5So
