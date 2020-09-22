@@ -58,11 +58,11 @@ function persistResults {
   
   existsOrCreateAndSwitch ${TEST_RESULTS_PATH}/projects/${DOT_CICD_TARGET}
   
-  git pull origin master
+  git pull origin master --allow-unrelated-histories
   addResults ./${GITHUB_SHA::8}
   git add .
   git commit -m "Adding tests results for ${GITHUB_SHA::8} from ${_CURRENT_BRANCH}"
-  git push ${GITHUB_TEST_RESULTS_REMOTE}
+  git push ${GITHUB_TEST_RESULTS_REMOTE} 
   git status
 }
 
