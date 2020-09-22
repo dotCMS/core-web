@@ -34,17 +34,17 @@ jobs:
         run: npm run build:libs
       - name: Building for production
         run: npm run build:prod
-      - name: Running tests
+      - id: test-run  
+        name: Running tests
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
-      - name: Push Tests to GitHub
+  
+        name: Push Tests to GitHub
         if: success() || failure()
         run: |
           chmod +x .cicd/github.sh && source .cicd/github.sh
           persistResults
-          echo "$GITHUB_CONTEXT"
-          echo "1 ================================"
-          echo ${{ toJson(steps) }}
+          ${{ toJson(steps.test-run) }}
       # - name: Slack Notification
       #   uses: rtCamp/action-slack-notify@master
       #   env:
@@ -57,6 +57,4 @@ jobs:
         run: |
           source .cicd/github.sh
           logResults
-          echo "$GITHUB_CONTEXT"
-          echo "2 ================================"
-          echo ${{ toJson(steps) }}
+          echo ${{ toJson(steps.test-run) }}
