@@ -452,7 +452,7 @@ describe('DotEditContentComponent', () => {
 
                 fit('should add "deviced" class to main wrapper', () => {
                     const wrapper = de.query(By.css('.dot-edit__page-wrapper'));
-                    expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(false);
+                    expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(false   );
                 });
 
                 it('should add inline styles to iframe', async () => {

@@ -34,6 +34,8 @@ jobs:
       - name: Building for production
         run: npm run build:prod
       - name: Running tests
+        id: test-run
+        continue-on-error: true
         run: |
           npm run test -- dotcms-ui --watch=false --reporters=html,progress
       - name: Prepare and Push to GitHub
