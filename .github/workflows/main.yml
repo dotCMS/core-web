@@ -63,3 +63,4 @@ jobs:
           SLACK_COLOR: ${{ steps.test_run.outputs.color }}
           SLACK_TITLE: 'Report: (${{ steps.test_run.outputs.status }})'
           SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}
+          SLACK_FOOTER: false
