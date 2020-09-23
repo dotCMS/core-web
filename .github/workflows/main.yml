@@ -36,7 +36,7 @@ jobs:
       - name: Running tests
         id: test_run
         run: |
-          if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress) then
+          if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress --source-map=false) then
             echo "::set-output name=status::failure";
             echo "::set-output name=color::#ff2400";
             exit 1;  
