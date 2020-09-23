@@ -91,5 +91,4 @@ function persistResults {
 
 function logResults {
   echo "${GITHUB_TEST_RESULTS_BROWSE_URL}/report.html"
-  echo "${CURRENT_BRANCH}"
 }
