@@ -403,6 +403,17 @@ describe('DotEditContentHtmlService', () => {
         expect(this.dotEditContentHtmlService.renderRelocatedContentlet).not.toHaveBeenCalled();
     });
 
+    it('should emit save when edit a piece of content outside a contentlet div', (done) => {
+        this.dotEditContentHtmlService.iframeActions$.subscribe((res) => {
+            expect(res).toEqual({
+                name: 'save'
+            });
+            done();
+        });
+
+        this.dotEditContentHtmlService.renderEditedContentlet(null);
+    });
+
     it('should render added contentlet', () => {
         const modelExpected = [
             {

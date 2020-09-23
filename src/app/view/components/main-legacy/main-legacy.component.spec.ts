@@ -3,6 +3,7 @@ import { DebugElement, Component, Input } from '@angular/core';
 import { MainComponentLegacyComponent } from './main-legacy.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
+    ApiRoot,
     CoreWebService,
     DotcmsConfigService,
     DotcmsEventsService,
@@ -10,7 +11,8 @@ import {
     DotEventsSocketURL,
     LoggerService,
     LoginService,
-    StringUtils
+    StringUtils,
+    UserModel
 } from 'dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
@@ -26,11 +28,15 @@ import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.servic
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { FormatDateService } from '@services/format-date-service';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
+import { DotMessageDisplayService } from '@components/dot-message-display/services';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 @Component({
     selector: 'dot-alert-confirm',
@@ -72,7 +78,7 @@ class MockDotLargeMessageDisplayComponent {}
 })
 class MockDotPushPublishDialogComponent {}
 
-describe('MainComponentLegacyComponent', () => {
+describe('MainLegacyComponent', () => {
     let fixture: ComponentFixture<MainComponentLegacyComponent>;
     let de: DebugElement;
     let dotIframeService: DotIframeService;
@@ -93,9 +99,6 @@ describe('MainComponentLegacyComponent', () => {
                 { provide: DotRouterService, useClass: MockDotRouterService },
                 { provide: DotUiColorsService, useClass: MockDotUiColorsService },
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-                { provide: ConnectionBackend, useClass: MockBackend },
-                { provide: RequestOptions, useClass: BaseRequestOptions },
-                Http,
                 DotMenuService,
                 DotCustomEventHandlerService,
                 DotIframeService,
@@ -107,7 +110,17 @@ describe('MainComponentLegacyComponent', () => {
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 DotcmsConfigService,
                 LoggerService,
-                StringUtils
+                StringUtils,
+
+
+                DotWorkflowEventHandlerService,
+                    ApiRoot,
+                    UserModel,
+                    DotMessageDisplayService,
+                    DotHttpErrorManagerService,
+                    DotWorkflowActionsFireService,
+                    DotGlobalMessageService,
+                    DotEventsService
             ],
             declarations: [
                 MainComponentLegacyComponent,
@@ -130,7 +143,6 @@ describe('MainComponentLegacyComponent', () => {
         spyOn(dotIframeService, 'reloadData');
         fixture.detectChanges();
     });
-
     it('should have basic layout elements', () => {
         expect(de.query(By.css('dot-alert-confirm')) !== null).toBe(true);
         expect(de.query(By.css('dot-toolbar')) !== null).toBe(true);

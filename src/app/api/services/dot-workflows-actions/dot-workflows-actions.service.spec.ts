@@ -6,10 +6,6 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { mockWorkflows } from '@tests/dot-workflow-service.mock';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 import { DotCMSWorkflowAction } from 'dotcms-models';
-import { DotWizardInput } from '@shared/models/dot-wizard-input/dot-wizard-input.model';
-import { DotWizardStep } from '@shared/models/dot-wizard-step/dot-wizard-step.model';
-import { DotCommentAndAssignFormComponent } from '@components/_common/forms/dot-comment-and-assign-form/dot-comment-and-assign-form.component';
-import { DotPushPublishFormComponent } from '@components/_common/forms/dot-push-publish-form/dot-push-publish-form.component';
 
 describe('DotWorkflowsActionsService', () => {
     let injector: TestBed;
@@ -93,64 +89,5 @@ describe('DotWorkflowsActionsService', () => {
                 }
             ]
         });
-    });
-
-    describe('wizard steps', () => {
-        const mockWorkflowActions: DotCMSWorkflowAction = {
-            ...mockWorkflowsActions[0]
-        };
-        let wizardInput: DotWizardInput;
-
-        it('should merge comment and assign steps', () => {
-            const mockWizardSteps: DotWizardStep<any>[] = [
-                {
-                    component: DotCommentAndAssignFormComponent,
-                    data: {
-                        assignable: true,
-                        commentable: true,
-                        roleId: mockWorkflowsActions[0].nextAssign,
-                        roleHierarchy: mockWorkflowsActions[0].roleHierarchyForAssign
-                    }
-                },
-                {
-                    component: DotPushPublishFormComponent,
-                    data: {}
-                }
-            ];
-
-            const mockWizardInput: DotWizardInput = {
-                title: 'Title Test',
-                steps: mockWizardSteps
-            };
-
-            wizardInput = dotWorkflowsActionsService.setWizardInput(
-                mockWorkflowActions,
-                'Title Test'
-            );
-
-            expect(wizardInput).toEqual(mockWizardInput);
-        });
-
-        it('should return only valid Components ', () => {
-            mockWorkflowActions.actionInputs = [
-                {
-                    body: {},
-                    id: 'invalidID'
-                },
-                {
-                    body: {},
-                    id: 'invalidID2'
-                }
-            ];
-            wizardInput = dotWorkflowsActionsService.setWizardInput(
-                mockWorkflowActions,
-                'Title Test'
-            );
-            expect(wizardInput).toEqual(null);
-        });
-    });
-
-    afterEach(() => {
-        httpMock.verify();
     });
 });

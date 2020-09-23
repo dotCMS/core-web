@@ -245,4 +245,11 @@ describe('DotPersonaSelectorComponent', () => {
             expect(iframeOverlayService.show).toHaveBeenCalled();
         });
     });
+
+    afterEach(() => {
+        // Removes dirty DOM after tests have finished
+        if (hostFixture.nativeElement && 'remove' in hostFixture.nativeElement) {
+            (hostFixture.nativeElement as HTMLElement).remove();
+        }
+    });
 });

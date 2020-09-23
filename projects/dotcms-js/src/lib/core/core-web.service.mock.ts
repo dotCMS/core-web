@@ -11,21 +11,43 @@ import {
     HttpParams,
     HttpHeaders
 } from '@angular/common/http';
-import { RequestMethod } from '@angular/http';
+// <<<<<<< HEAD
+// import { RequestMethod } from '@angular/http';
+// =======
+import { RequestMethod, RequestOptionsArgs } from '@angular/http';
+// >>>>>>> issue-18885-update-core-web-service
 import { RequestOptionsParams } from 'dotcms-js';
 
 @Injectable()
 export class CoreWebServiceMock {
     constructor(private _http: HttpClient) {}
 
-    request(options: any): Observable<any> {
+// <<<<<<< HEAD
+//     request(options: any): Observable<any> {
+// =======
+    request(options: RequestOptionsArgs): Observable<any> {
+        const optionsArgs: RequestOptionsParams = {
+            params: new HttpParams()
+        };
+
+        if (options.params) {
+            Object.keys(options.params).forEach((key) => {
+                optionsArgs.params = optionsArgs.params.set(key, options.params[key]);
+            });
+        }
+
+// >>>>>>> issue-18885-update-core-web-service
         return this._http
             .request(
                 new HttpRequest(
                     RequestMethod[options.method],
                     options.url,
                     options.body,
-                    options.params
+// <<<<<<< HEAD
+//                     options.params
+// =======
+                    { params: optionsArgs.params }
+// >>>>>>> issue-18885-update-core-web-service
                 )
             )
             .pipe(
@@ -40,7 +62,11 @@ export class CoreWebServiceMock {
             );
     }
 
-    public requestView(options: any): Observable<ResponseView> {
+// <<<<<<< HEAD
+//     public requestView(options: any): Observable<ResponseView> {
+// =======
+    requestView(options: RequestOptionsArgs): Observable<ResponseView> {
+// >>>>>>> issue-18885-update-core-web-service
         const optionsArgs: RequestOptionsParams = {
             headers: new HttpHeaders(),
             params: new HttpParams()
@@ -53,10 +79,14 @@ export class CoreWebServiceMock {
         }
 
         if (options.search) {
-            optionsArgs.params = this.setHttpParams(
-                <URLSearchParams>options.search,
-                optionsArgs.params
-            );
+// <<<<<<< HEAD
+//             optionsArgs.params = this.setHttpParams(
+//                 <URLSearchParams>options.search,
+//                 optionsArgs.params
+//             );
+// =======
+            optionsArgs.params = this.setHttpParams(options.search, optionsArgs.params);
+// >>>>>>> issue-18885-update-core-web-service
         }
 
         return this._http
@@ -73,7 +103,7 @@ export class CoreWebServiceMock {
             );
     }
 
-    public subscribeTo(httpErrorCode: number): Observable<any> {
+    subscribeTo(httpErrorCode: number): Observable<any> {
         return of({
             error: httpErrorCode
         });
