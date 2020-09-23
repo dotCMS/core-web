@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - master
-      - release-*
-      - issue-*   
+      - release-*     
 jobs:
   build:
     env:
@@ -57,7 +56,7 @@ jobs:
         if: success() || failure()
         uses: rtCamp/action-slack-notify@master
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_TEST }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: core-web
           SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
           SLACK_COLOR: ${{ steps.test_run.outputs.color }}
