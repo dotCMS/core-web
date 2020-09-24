@@ -33,8 +33,6 @@ import { DotEditContentTypeCacheService } from './components/fields/content-type
 import { SiteServiceMock } from 'src/app/test/site-service.mock';
 import * as _ from 'lodash';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { ConnectionBackend, RequestOptions, BaseRequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
@@ -160,8 +158,6 @@ describe('DotContentTypesEditComponent', () => {
                     provide: HotkeysService,
                     useValue: testHotKeysMock
                 },
-                { provide: ConnectionBackend, useClass: MockBackend },
-                { provide: RequestOptions, useClass: BaseRequestOptions },
                 { provide: DotRouterService, useClass: MockDotRouterService },
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 ConfirmationService,
