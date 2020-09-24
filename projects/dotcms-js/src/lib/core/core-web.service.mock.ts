@@ -31,12 +31,9 @@ export class CoreWebServiceMock {
 
         return this._http
             .request(
-                new HttpRequest(
-                    RequestMethod[options.method],
-                    options.url,
-                    options.body,
-                    { params: optionsArgs.params }
-                )
+                new HttpRequest(RequestMethod[options.method], options.url, options.body, {
+                    params: optionsArgs.params
+                })
             )
             .pipe(
                 filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
@@ -57,7 +54,7 @@ export class CoreWebServiceMock {
         };
 
         if (options.params) {
-            Object.keys(options.params).forEach((key) => {
+            Object.keys(options.params).forEach((key: string) => {
                 optionsArgs.params = optionsArgs.params.set(key, options.params[key]);
             });
         }
@@ -74,7 +71,7 @@ export class CoreWebServiceMock {
             )
             .pipe(
                 filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
-                map((resp: HttpResponse<any>) => {
+                map(<T>(resp: HttpResponse<T>) => {
                     return new ResponseView(resp);
                 })
             );
