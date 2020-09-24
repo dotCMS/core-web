@@ -54,7 +54,7 @@ export class CoreWebServiceMock {
         };
 
         if (options.params) {
-            Object.keys(options.params).forEach((key) => {
+            Object.keys(options.params).forEach((key: string) => {
                 optionsArgs.params = optionsArgs.params.set(key, options.params[key]);
             });
         }
@@ -71,7 +71,7 @@ export class CoreWebServiceMock {
             )
             .pipe(
                 filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
-                map((resp: HttpResponse<any>) => {
+                map(<T>(resp: HttpResponse<T>) => {
                     return new ResponseView(resp);
                 })
             );

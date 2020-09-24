@@ -23,7 +23,7 @@ import {
     HttpParams,
     HttpResponse,
     HttpEventType,
-    HttpEvent
+    HttpEvent, HttpErrorResponse
 } from '@angular/common/http';
 
 export const RULE_CREATE = 'RULE_CREATE';
@@ -70,13 +70,13 @@ export class CoreWebService {
         private http: HttpClient
     ) {}
 
-    request(options: RequestOptionsArgs): Observable<any> {
+    request<F>(options: RequestOptionsArgs): Observable<F | any> {
         const request = this.getRequestOpts(options);
         const source = options.body;
 
         return this.http.request(request).pipe(
             filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
-            map((resp: HttpResponse<any>) => {
+            map(<S>(resp: HttpResponse<S>) => {
                 // some endpoints have empty body.
                 try {
                     return resp.body;
@@ -85,8 +85,7 @@ export class CoreWebService {
                 }
             }),
             catchError(
-                // tslint:disable-next-line:cyclomatic-complexity
-                (response: HttpResponse<any>, _original: Observable<any>): Observable<any> => {
+                <V, W>(response: HttpErrorResponse, _original: Observable<V>): Observable<W> => {
                     if (response) {
                         this.handleHttpError(response);
                         if (
@@ -107,7 +106,7 @@ export class CoreWebService {
                             } else {
                                 throw new CwError(
                                     SERVER_RESPONSE_ERROR,
-                                    response.body.message,
+                                    response.error.message,
                                     request,
                                     response,
                                     source
@@ -181,7 +180,7 @@ export class CoreWebService {
         return new ResponseView(resp);
     }
 
-    private handleHttpError<T>(response: HttpResponse<T>): void {
+    private handleHttpError(response: HttpErrorResponse): void {
         if (!this.httpErrosSubjects[response.status]) {
             this.httpErrosSubjects[response.status] = new Subject();
         }
@@ -189,7 +188,7 @@ export class CoreWebService {
         this.httpErrosSubjects[response.status].next(response);
     }
 
-    private getRequestOpts(options: RequestOptionsArgs): HttpRequest<any> {
+    private getRequestOpts<T>(options: RequestOptionsArgs): HttpRequest<T> {
         const optionsArgs: RequestOptionsParams = {
             headers: new HttpHeaders(),
             params: new HttpParams()
