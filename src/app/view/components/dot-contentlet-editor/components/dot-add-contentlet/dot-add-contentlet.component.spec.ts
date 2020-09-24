@@ -25,8 +25,6 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
 import { FormatDateService } from '@services/format-date-service';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
@@ -57,9 +55,6 @@ describe('DotAddContentletComponent', () => {
                     ConfirmationService,
                     FormatDateService,
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
-                    Http,
-                    { provide: ConnectionBackend, useClass: MockBackend },
-                    { provide: RequestOptions, useClass: BaseRequestOptions },
                     { provide: DotRouterService, useClass: MockDotRouterService },
                     ApiRoot,
                     DotIframeService,

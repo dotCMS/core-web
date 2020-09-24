@@ -26,8 +26,6 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { CoreWebServiceMock } from '../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { FormatDateService } from '@services/format-date-service';
@@ -87,11 +85,8 @@ describe('DotContentletsComponent', () => {
                 DotWorkflowEventHandlerService,
                 PushPublishService,
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-                { provide: ConnectionBackend, useClass: MockBackend },
-                { provide: RequestOptions, useClass: BaseRequestOptions },
                 { provide: DotRouterService, useClass: MockDotRouterService },
                 { provide: DotUiColorsService, useClass: MockDotUiColorsService },
-                Http,
                 PushPublishService,
                 ApiRoot,
                 FormatDateService,

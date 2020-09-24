@@ -29,8 +29,6 @@ import {
     StringUtils
 } from 'dotcms-js';
 import { dotEventSocketURLFactory } from '@tests/dot-test-bed';
-import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -135,10 +133,7 @@ describe('DotWorkflowEventHandlerService', () => {
                 DotEventsSocket,
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 DotcmsConfigService,
-                { provide: ConnectionBackend, useClass: MockBackend },
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-                { provide: RequestOptions, useClass: BaseRequestOptions },
-                Http,
                 LoggerService,
                 StringUtils,
                 DotRouterService,

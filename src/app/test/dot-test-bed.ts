@@ -2,7 +2,7 @@ import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { NotLicensedService } from './../api/services/not-licensed-service';
 import { DotHttpErrorManagerService } from './../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotIframeService } from './../view/components/_common/iframe/service/dot-iframe/dot-iframe.service';
-import { ConnectionBackend, RequestOptions, BaseRequestOptions, Http } from '@angular/http';
+import { ConnectionBackend, RequestOptions, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { TestBed, TestModuleMetadata, ComponentFixture } from '@angular/core/testing';
 import { Type, Provider, Injector, ReflectiveInjector, LOCALE_ID } from '@angular/core';
@@ -82,7 +82,6 @@ export class DOTTestBed {
             DotcmsConfigService,
             DotcmsEventsService,
             FormatDateService,
-            Http,
             LoggerService,
             StringUtils,
             UserModel,

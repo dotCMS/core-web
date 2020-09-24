@@ -33,8 +33,6 @@ import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-di
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { CoreWebServiceMock } from '../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import {DotWizardService} from '@services/dot-wizard/dot-wizard.service';
@@ -105,9 +103,6 @@ describe('DotWorkflowTaskComponent', () => {
                 LoggerService,
                 StringUtils,
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-                { provide: ConnectionBackend, useClass: MockBackend },
-                { provide: RequestOptions, useClass: BaseRequestOptions },
-                Http,
                 DotCurrentUserService,
                 DotMessageDisplayService,
                 DotcmsEventsService,
