@@ -64,8 +64,6 @@ jobs:
           SLACK_MESSAGE: ${{ steps.persist_results.outputs.message }}
           SLACK_FOOTER: ${{ env.PULL_REQUEST_URL }}
       - name: Publish to NPM    
-        uses: JS-DevTools/npm-publish@v1
-        with:
-            token: ${{ secrets.NPM_TOKEN }}
-            dry-run: false
-            check-version: false    
+        run: |
+          npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+          npm run publish:dev
