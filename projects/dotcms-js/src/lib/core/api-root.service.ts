@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions } from '@angular/http';
+import { Headers } from '@angular/http';
 import { UserModel } from './shared/user.model';
 import { LoggerService } from './logger.service';
 import { HttpHeaders } from '@angular/common/http';
+import { RequestOptionsArgs } from '@angular/http/src/interfaces';
 
 @Injectable()
 export class ApiRoot {
@@ -85,7 +86,7 @@ export class ApiRoot {
         return headers;
     }
 
-    getDefaultRequestOptions(): RequestOptions {
+    getDefaultRequestOptions(): RequestOptionsArgs {
         const headers = new Headers();
         headers.append('com.dotmarketing.session_host', this.siteId);
         if (this.authToken) {
@@ -93,9 +94,7 @@ export class ApiRoot {
         }
         headers.append('Content-Type', 'application/json');
 
-        return new RequestOptions({
-            headers: headers
-        });
+        return { headers: headers };
     }
 
     setBaseUrl(url = null): void {
