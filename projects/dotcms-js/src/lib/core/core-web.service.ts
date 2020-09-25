@@ -196,7 +196,7 @@ export class CoreWebService {
 
         optionsArgs.headers = this._apiRoot.getDefaultRequestHeaders();
         const tempHeaders = options.headers
-            ? options.headers
+            ? options.headers.toJSON()
             : { 'Content-Type': 'application/json' };
 
         Object.keys(tempHeaders).forEach((key) => {
