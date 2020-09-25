@@ -26,7 +26,6 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
       - name: Setting Node.js 10.x
         uses: actions/setup-node@v2-beta
-        registry-url: 'https://registry.npmjs.org'
         with:
           node-version: '10.15.3'
       - name: Installing dependencies
