@@ -23,7 +23,8 @@ import {
     HttpParams,
     HttpResponse,
     HttpEventType,
-    HttpEvent, HttpErrorResponse
+    HttpEvent,
+    HttpErrorResponse
 } from '@angular/common/http';
 
 export const RULE_CREATE = 'RULE_CREATE';
@@ -50,6 +51,14 @@ export const RULE_CONDITION_UPDATE_TYPE = 'RULE_CONDITION_UPDATE_TYPE';
 export const RULE_CONDITION_UPDATE_PARAMETER = 'RULE_CONDITION_UPDATE_PARAMETER';
 export const RULE_CONDITION_UPDATE_OPERATOR = 'RULE_CONDITION_UPDATE_OPERATOR';
 
+export interface DotCMSResponse<T> {
+    entity: T;
+    errors: string[];
+    i18nMessagesMap: { [key: string]: string };
+    messages: string[];
+    permissions: string[];
+}
+
 export interface RequestOptionsParams {
     headers?: HttpHeaders;
     reportProgress?: boolean;
@@ -70,13 +79,16 @@ export class CoreWebService {
         private http: HttpClient
     ) {}
 
-    request<F>(options: RequestOptionsArgs): Observable<F | any> {
-        const request = this.getRequestOpts(options);
+    request<T>(options: RequestOptionsArgs): Observable<any> {
+        const request = this.getRequestOpts<T>(options);
         const source = options.body;
 
         return this.http.request(request).pipe(
-            filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
-            map(<S>(resp: HttpResponse<S>) => {
+            filter(
+                (event: HttpEvent<HttpResponse<DotCMSResponse<T>> | any>) =>
+                    event.type === HttpEventType.Response
+            ),
+            map((resp: HttpResponse<DotCMSResponse<T>>) => {
                 // some endpoints have empty body.
                 try {
                     return resp.body;
@@ -85,7 +97,7 @@ export class CoreWebService {
                 }
             }),
             catchError(
-                <V, W>(response: HttpErrorResponse, _original: Observable<V>): Observable<W> => {
+                (response: HttpErrorResponse, _original: Observable<any>): Observable<any> => {
                     if (response) {
                         this.handleHttpError(response);
                         if (
@@ -144,27 +156,30 @@ export class CoreWebService {
      * }
      * </code>
      *
-     * @param options
-     * @returns DotCMSHttpResponse
+     * @RequestOptionsArgs options
+     * @returns Observable<ResponseView>
      */
-    public requestView(options: RequestOptionsArgs): Observable<ResponseView> {
-        const request = this.getRequestOpts(options);
+    public requestView<T>(options: RequestOptionsArgs): Observable<ResponseView> {
+        const request = this.getRequestOpts<T>(options);
         return this.http.request(request).pipe(
-            filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
-            map((resp: HttpResponse<any>) => {
+            filter(
+                (event: HttpEvent<HttpResponse<DotCMSResponse<T>> | any>) =>
+                    event.type === HttpEventType.Response
+            ),
+            map((resp: HttpResponse<DotCMSResponse<T>>) => {
                 if (resp.body && resp.body.errors && resp.body.errors.length > 0) {
                     return this.handleRequestViewErrors(resp);
                 } else {
                     return new ResponseView(resp);
                 }
             }),
-            catchError(<T>(err: HttpResponse<T>) => {
+            catchError((err: HttpResponse<DotCMSResponse<T> | any>) => {
                 return throwError(this.handleRequestViewErrors(err));
             })
         );
     }
 
-    public subscribeTo(httpErrorCode: number): Observable<any> {
+    public subscribeTo<T>(httpErrorCode: number): Observable<T> {
         if (!this.httpErrosSubjects[httpErrorCode]) {
             this.httpErrosSubjects[httpErrorCode] = new Subject();
         }
@@ -172,7 +187,7 @@ export class CoreWebService {
         return this.httpErrosSubjects[httpErrorCode].asObservable();
     }
 
-    private handleRequestViewErrors<T>(resp: HttpResponse<T>): ResponseView {
+    private handleRequestViewErrors<T>(resp: HttpResponse<DotCMSResponse<T>>): ResponseView {
         if (resp.status === 401) {
             this.router.navigate(['/public/login']);
         }

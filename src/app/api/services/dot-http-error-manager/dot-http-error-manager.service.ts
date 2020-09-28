@@ -1,4 +1,4 @@
-import {Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotMessageService } from '../dot-message/dot-messages.service';
 import { Injectable } from '@angular/core';
@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { ResponseView, LoginService, HttpCode } from 'dotcms-js';
 
 import { DotAlertConfirmService } from '../dot-alert-confirm';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 export interface DotHttpErrorHandled {
     redirected: boolean;
@@ -62,7 +62,7 @@ export class DotHttpErrorManagerService {
         return of(result);
     }
 
-    private callErrorHandler<T>(response: HttpResponse<T>): boolean {
+    private callErrorHandler(response: HttpErrorResponse | any): boolean {
         const code = response.status;
 
         return code === HttpCode.FORBIDDEN
@@ -79,7 +79,7 @@ export class DotHttpErrorManagerService {
         );
     }
 
-    private isLicenseError<T>(response: HttpResponse<T>): boolean {
+    private isLicenseError(response: HttpErrorResponse): boolean {
         return (
             response.headers &&
             response.headers.get('error-key') === 'dotcms.api.error.license.required'
