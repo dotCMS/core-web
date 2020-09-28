@@ -108,7 +108,7 @@ export class CoreWebService {
                                 response.statusText &&
                                 response.statusText.indexOf('ECONNREFUSED') >= 0
                             ) {
-                                throw new CwError<T>(
+                                throw new CwError(
                                     NETWORK_CONNECTION_ERROR,
                                     CLIENTS_ONLY_MESSAGES[NETWORK_CONNECTION_ERROR],
                                     request,
@@ -116,7 +116,7 @@ export class CoreWebService {
                                     source
                                 );
                             } else {
-                                throw new CwError<T>(
+                                throw new CwError(
                                     SERVER_RESPONSE_ERROR,
                                     response.error.message,
                                     request,
@@ -129,7 +129,7 @@ export class CoreWebService {
                                 'Could not execute request: 404 path not valid.',
                                 options.url
                             );
-                            throw new CwError<T>(
+                            throw new CwError(
                                 UNKNOWN_RESPONSE_ERROR,
                                 response.headers.get('error-message'),
                                 request,
@@ -247,7 +247,7 @@ export class CoreWebService {
             );
         }
 
-        return new HttpRequest(RequestMethod[options.method], options.url, body, optionsArgs);
+        return new HttpRequest<T>(RequestMethod[options.method], options.url, body, optionsArgs);
     }
 
     private setHttpParams(urlParams: URLSearchParams, httpParams: HttpParams): HttpParams {

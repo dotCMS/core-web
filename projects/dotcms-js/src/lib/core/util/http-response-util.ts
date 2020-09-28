@@ -9,11 +9,11 @@ export const CLIENTS_ONLY_MESSAGES = {
     1: 'Could not connect to server.'
 };
 
-export class CwError<T> {
+export class CwError {
     constructor(
         public code: number,
         public message: string,
-        public request?: HttpRequest<T>,
+        public request?: HttpRequest<any>,
         public response?: HttpErrorResponse,
         public source?: any
     ) {}
