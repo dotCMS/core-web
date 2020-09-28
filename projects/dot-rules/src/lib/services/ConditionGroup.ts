@@ -1,6 +1,6 @@
 import { from as observableFrom, empty as observableEmpty, Subject } from 'rxjs';
 
-import { reduce, mergeMap, catchError, map } from 'rxjs/operators';
+import { reduce, mergeMap, catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { RequestMethod, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
@@ -163,7 +163,7 @@ export class ConditionGroupService {
                     ...opts
                 })
                 .pipe(
-                    map((res: Response) => {
+                    tap(() => {
                         return model;
                     })
                 );
@@ -180,7 +180,7 @@ export class ConditionGroupService {
                 ...opts
             })
             .pipe(
-                map((res: Response) => {
+                tap(() => {
                     return model;
                 })
             );

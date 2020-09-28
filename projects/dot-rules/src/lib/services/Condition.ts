@@ -70,9 +70,6 @@ export class ConditionService {
                 ...opts
             })
             .pipe(
-                map((res: Response) => {
-                    return res;
-                }),
                 catchError((err: any, _source: Observable<any>) => {
                     if (err && err.status === HttpCode.NOT_FOUND) {
                         this.loggerService.info(

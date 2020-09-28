@@ -66,36 +66,31 @@ export class ActionService {
         if (childPath) {
             path = `${path}${childPath}`;
         }
-        return (
-            this.coreWebService
-                .request({
-                    method: RequestMethod.Get,
-                    url: path,
-                    ...opts
+        return this.coreWebService
+            .request({
+                method: RequestMethod.Get,
+                url: path,
+                ...opts
+            })
+            .pipe(
+                catchError((err: any, source: Observable<any>) => {
+                    if (err && err.status === HttpCode.NOT_FOUND) {
+                        this.loggerService.error(
+                            'Could not retrieve ' + this._typeName + ' : 404 path not valid.',
+                            path
+                        );
+                    } else if (err) {
+                        this.loggerService.debug(
+                            'Could not retrieve' + this._typeName + ': Response status code: ',
+                            err.status,
+                            'error:',
+                            err,
+                            path
+                        );
+                    }
+                    return observableEmpty();
                 })
-                .pipe(
-                    map((res: Response) => {
-                        return res;
-                    }),
-                    catchError((err: any, source: Observable<any>) => {
-                        if (err && err.status === HttpCode.NOT_FOUND) {
-                            this.loggerService.error(
-                                'Could not retrieve ' + this._typeName + ' : 404 path not valid.',
-                                path
-                            );
-                        } else if (err) {
-                            this.loggerService.debug(
-                                'Could not retrieve' + this._typeName + ': Response status code: ',
-                                err.status,
-                                'error:',
-                                err,
-                                path
-                            );
-                        }
-                        return observableEmpty();
-                    })
-                )
-        );
+            );
     }
 
     allAsArray(
