@@ -63,13 +63,12 @@ function persistResults {
   remoteBranch=$(git ls-remote --heads ${GITHUB_TEST_RESULTS_REMOTE_REPO} ${CURRENT_BRANCH} | wc -l | tr -d '[:space:]')
 
   # echo "remote: $(remoteBranch)"
-  echo "current branch: $GITHUB_REF"
+  echo "github context: $GITHUB_CONTEXT"
 
   if [[ ${remoteBranch} == 1 ]]; then
     echo "git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}"
     git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}
   else
-    echo "git checkout -b ${CURRENT_BRANCH}"
     git checkout -b ${CURRENT_BRANCH}
   fi
   
