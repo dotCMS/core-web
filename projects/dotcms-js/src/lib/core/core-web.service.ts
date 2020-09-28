@@ -247,7 +247,7 @@ export class CoreWebService {
             );
         }
 
-        return new HttpRequest(RequestMethod[options.method], options.url, body, optionsArgs);
+        return new HttpRequest<T>(RequestMethod[options.method], options.url, body, optionsArgs);
     }
 
     private setHttpParams(urlParams: URLSearchParams, httpParams: HttpParams): HttpParams {
