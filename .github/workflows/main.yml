@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - master
-      - release-*     
+      - release-*
+      - fix-*     
 jobs:
   build:
     env:
