@@ -4,7 +4,7 @@
     (close)="editForm = false"
 ></dot-form-selector>
 
-<dot-add-contentlet></dot-add-contentlet>
+<dot-add-contentlet (custom)="onCustomEvent($event)" ></dot-add-contentlet>
 <dot-edit-contentlet (custom)="onCustomEvent($event)"></dot-edit-contentlet>
 <dot-reorder-menu [url]="reorderMenuUrl" (close)="onCloseReorderDialog()"></dot-reorder-menu>
 
@@ -22,7 +22,13 @@
         class="dot-edit__page-wrapper"
         [class.dot-edit__page-wrapper--deviced]="pageState.viewAs.device"
     >
-        <div class="dot-edit__device-wrapper">
+        <div 
+            class="dot-edit__device-wrapper"
+            [ngStyle]="{
+                width: pageState.viewAs.device ? pageState.viewAs.device.cssWidth + 'px' : '100%',
+                height: pageState.viewAs.device ? pageState.viewAs.device.cssHeight + 'px' : '100%'
+            }"
+        >
             <div class="dot-edit__iframe-wrapper">
                 <dot-overlay-mask
                     *ngIf="showOverlay"
@@ -42,15 +48,9 @@
                     class="dot-edit__iframe"
                     (load)="onLoad($event)"
                     [ngStyle]="{
-                        width: pageState.viewAs.device
-                            ? pageState.viewAs.device.cssWidth + 'px'
-                            : '',
-                        height: pageState.viewAs.device
-                            ? pageState.viewAs.device.cssHeight + 'px'
-                            : '',
                         visibility: showWhatsChanged ? 'hidden' : '',
                         position: showWhatsChanged ? 'absolute' : ''
-                    }"
+                     }"
                 ></iframe>
             </div>
         </div>
