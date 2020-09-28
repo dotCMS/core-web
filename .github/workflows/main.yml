@@ -12,6 +12,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
       GITHUB_CONTEXT: ${{ toJson(github) }}
       PULL_REQUEST_URL: ${{ github.event.pull_request._links.html.href }}
+      GH_CURRENT_BRANCH: ${{ github.head_ref }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
