@@ -19,43 +19,39 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 1
-      - name: Print
+      - uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
+      - name: Setting Node.js 10.x
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '10.15.3'
+      - name: Installing dependencies
+        run: npm install
+      - name: Building Libs
+        run: npm run build:libs
+      - name: Building for production
+        run: npm run build:prod
+      - name: Running tests
+        id: test_run
         run: |
-          echo "$GITHUB_REF"    
-          echo "$GITHUB_REF##*/"    
-      # - uses: actions/cache@v2
-      #   with:
-      #     path: |
-      #       **/node_modules
-      #     key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}      
-      # - name: Setting Node.js 10.x
-      #   uses: actions/setup-node@v2-beta
-      #   with:
-      #     node-version: '10.15.3'
-      # - name: Installing dependencies
-      #   run: npm install
-      # - name: Building Libs
-      #   run: npm run build:libs
-      # - name: Building for production
-      #   run: npm run build:prod
-      # - name: Running tests
-      #   id: test_run
-      #   run: |
-      #     if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress --source-map=false) then
-      #       echo "::set-output name=status::failure";
-      #       echo "::set-output name=color::#ff2400";
-      #       exit 1;  
-      #     else 
-      #       echo "::set-output name=status::success";
-      #       echo "::set-output name=color::#5E7D00";
-      #     fi
-      # - name: Push Tests to GitHub
-      #   id: persist_results
-      #   if: success() || failure()
-      #   run: |
-      #     chmod +x .cicd/github.sh && source .cicd/github.sh
-      #     persistResults
-      #     echo "::set-output name=message::$(logResults)";
+          if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress --source-map=false) then
+            echo "::set-output name=status::failure";
+            echo "::set-output name=color::#ff2400";
+            exit 1;  
+          else 
+            echo "::set-output name=status::success";
+            echo "::set-output name=color::#5E7D00";
+          fi
+      - name: Push Tests to GitHub
+        id: persist_results
+        if: success() || failure()
+        run: |
+          chmod +x .cicd/github.sh && source .cicd/github.sh
+          persistResults
+          echo "::set-output name=message::$(logResults)";
       - name: Slack Notification
         if: success() || failure()
         uses: rtCamp/action-slack-notify@master
