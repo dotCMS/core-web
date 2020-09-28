@@ -62,7 +62,7 @@ function persistResults {
 
   remoteBranch=$(git ls-remote --heads ${GITHUB_TEST_RESULTS_REMOTE_REPO} ${CURRENT_BRANCH} | wc -l | tr -d '[:space:]')
 
-  echo "remote: $(remoteBranch)"
+  # echo "remote: $(remoteBranch)"
   echo "current branch: $GITHUB_REF"
 
   if [[ ${remoteBranch} == 1 ]]; then
