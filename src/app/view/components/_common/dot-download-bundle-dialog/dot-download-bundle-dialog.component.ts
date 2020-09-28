@@ -18,8 +18,7 @@ enum DownloadType {
     PUBLISH = 'publish'
 }
 
-const DOWNLOAD_URL =
-    '/api/bundle/_generate';
+const DOWNLOAD_URL = '/api/bundle/_generate';
 
 @Component({
     selector: 'dot-download-bundle-dialog',
@@ -85,11 +84,10 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
             this.errorMessage = '';
             const value = this.form.value;
             const bundleForm = {};
-            bundleForm["bundleId"]=value.bundleId;
-            bundleForm["operation"]=value.downloadOptionSelected === DownloadType.PUBLISH ? "0" : "1";
-            bundleForm["filterKey"]=value.filterKey;
-
-
+            bundleForm['bundleId'] = value.bundleId;
+            bundleForm['operation'] =
+                value.downloadOptionSelected === DownloadType.PUBLISH ? '0' : '1';
+            bundleForm['filterKey'] = value.filterKey;
 
             this.dialogActions.accept.disabled = true;
             this.dialogActions.accept.label = this.dotMessageService.get(
@@ -197,20 +195,19 @@ export class DotDownloadBundleDialogComponent implements OnInit, OnDestroy {
         }
     }
 
-    private downloadFile(bundleForm:{}) {
-        console.log("bundleForm", bundleForm);
+    private downloadFile(bundleForm: {}) {
         let fileName = '';
-        let url = `${DOWNLOAD_URL}`
-        fetch(url, {
-            method: 'POST', 
-            mode: 'cors', 
-            cache: 'no-cache', 
+
+        fetch(DOWNLOAD_URL, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
-            
+
             body: JSON.stringify(bundleForm) // body data type must match "Content-Type" header
-          })
+        })
             .then((res: Response) => {
                 const contentDisposition = res.headers.get('content-disposition');
                 fileName = this.getFilenameFromContentDisposition(contentDisposition);
