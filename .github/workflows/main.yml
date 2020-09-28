@@ -14,7 +14,6 @@ jobs:
       PULL_REQUEST_URL: ${{ github.event.pull_request._links.html.href }}
       IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
       HEAD_REF: ${{ github.head_ref }}
-      MASTER_BRANCH: ${{ github.event.repository.master_branch }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
