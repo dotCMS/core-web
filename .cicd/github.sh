@@ -23,7 +23,6 @@ export GITHUB_TEST_RESULTS_BROWSE_URL="${GITHACK_TEST_RESULTS_URL}/${CURRENT_BRA
 export GITHUB_TEST_RESULTS_REMOTE="https://${GH_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}"
 export GITHUB_TEST_RESULTS_REMOTE_REPO="https://${GH_TOKEN}@${GITHUB_TEST_RESULTS_HOST_PATH}.git"
 
-
 function existsOrCreateAndSwitch {
   local results=${1}
   if [[ ! -d $results ]]; then
@@ -71,8 +70,8 @@ function persistResults {
   remoteBranch=$(git ls-remote --heads ${GITHUB_TEST_RESULTS_REMOTE_REPO} ${CURRENT_BRANCH} | wc -l | tr -d '[:space:]')
 
   if [[ ${remoteBranch} == 1 ]]; then
-    echo "git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}"
-    git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}
+    echo "git pull origin ${CURRENT_BRANCH}"
+    git pull origin ${CURRENT_BRANCH}
   else
     git checkout -b ${CURRENT_BRANCH}
   fi
@@ -80,12 +79,6 @@ function persistResults {
   if [[ $? != 0 ]]; then
     echo "Error checking out branch '${CURRENT_BRANCH}', continuing with master"
     git pull origin master
-  else
-    git branch
-    if [[ ${remoteBranch} == 1 ]]; then
-      echo "git pull origin ${CURRENT_BRANCH}"
-      git pull origin ${CURRENT_BRANCH}
-    fi
   fi
 
   addResults ./${GITHUB_SHA::8}
