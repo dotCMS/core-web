@@ -29,7 +29,7 @@ export class DotAppsService {
     get(filter?: string): Observable<DotApps[]> {
         const url = filter ? `${appsUrl}?filter=${filter}` : appsUrl;
         return this.coreWebService
-            .requestView({
+            .requestView<DotApps[]>({
                 method: RequestMethod.Get,
                 url
             })
