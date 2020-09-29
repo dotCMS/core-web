@@ -52,7 +52,8 @@ export const RULE_CONDITION_UPDATE_PARAMETER = 'RULE_CONDITION_UPDATE_PARAMETER'
 export const RULE_CONDITION_UPDATE_OPERATOR = 'RULE_CONDITION_UPDATE_OPERATOR';
 
 export interface DotCMSResponse<T> {
-    entity: T;
+    contentlets?: T;
+    entity?: T;
     errors: string[];
     i18nMessagesMap: { [key: string]: string };
     messages: string[];
@@ -159,7 +160,7 @@ export class CoreWebService {
      * @RequestOptionsArgs options
      * @returns Observable<ResponseView>
      */
-    public requestView<T>(options: RequestOptionsArgs): Observable<ResponseView> {
+    public requestView<T = any>(options: RequestOptionsArgs): Observable<ResponseView<T>> {
         const request = this.getRequestOpts<T>(options);
         return this.http.request(request).pipe(
             filter(
@@ -170,11 +171,11 @@ export class CoreWebService {
                 if (resp.body && resp.body.errors && resp.body.errors.length > 0) {
                     return this.handleRequestViewErrors(resp);
                 } else {
-                    return new ResponseView(resp);
+                    return new ResponseView<T>(resp);
                 }
             }),
-            catchError((err: HttpResponse<DotCMSResponse<T> | any>) => {
-                return throwError(this.handleRequestViewErrors(err));
+            catchError((err: HttpErrorResponse) => {
+                return throwError(this.handleResponseHttpErrors(err));
             })
         );
     }
@@ -187,12 +188,20 @@ export class CoreWebService {
         return this.httpErrosSubjects[httpErrorCode].asObservable();
     }
 
-    private handleRequestViewErrors<T>(resp: HttpResponse<DotCMSResponse<T>>): ResponseView {
+    private handleRequestViewErrors<T>(resp: HttpResponse<DotCMSResponse<T>>): ResponseView<T> {
         if (resp.status === 401) {
             this.router.navigate(['/public/login']);
         }
 
-        return new ResponseView(resp);
+        return new ResponseView<T>(resp);
+    }
+
+    private handleResponseHttpErrors(resp: HttpErrorResponse): any {
+        if (resp.status === 401) {
+            this.router.navigate(['/public/login']);
+        }
+
+        return resp;
     }
 
     private handleHttpError(response: HttpErrorResponse): void {

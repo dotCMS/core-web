@@ -12,13 +12,13 @@ import {
     HttpHeaders
 } from '@angular/common/http';
 import { RequestMethod, RequestOptionsArgs } from '@angular/http';
-import { RequestOptionsParams } from 'dotcms-js';
+import { DotCMSResponse, RequestOptionsParams } from 'dotcms-js';
 
 @Injectable()
 export class CoreWebServiceMock {
     constructor(private _http: HttpClient) {}
 
-    request(options: RequestOptionsArgs): Observable<any> {
+    request<T = any>(options: RequestOptionsArgs): Observable<any> {
         const optionsArgs: RequestOptionsParams = {
             params: new HttpParams()
         };
@@ -36,8 +36,11 @@ export class CoreWebServiceMock {
                 })
             )
             .pipe(
-                filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
-                map((resp: HttpResponse<any>) => {
+                filter(
+                    (event: HttpEvent<HttpResponse<DotCMSResponse<T>> | any>) =>
+                        event.type === HttpEventType.Response
+                ),
+                map((resp: HttpResponse<DotCMSResponse<T>>) => {
                     try {
                         return resp.body;
                     } catch (error) {
@@ -47,7 +50,7 @@ export class CoreWebServiceMock {
             );
     }
 
-    requestView(options: RequestOptionsArgs): Observable<ResponseView> {
+    requestView<T = any>(options: RequestOptionsArgs): Observable<ResponseView<T>> {
         const optionsArgs: RequestOptionsParams = {
             headers: new HttpHeaders(),
             params: new HttpParams()
@@ -70,9 +73,12 @@ export class CoreWebServiceMock {
                 })
             )
             .pipe(
-                filter(<T>(event: HttpEvent<T>) => event.type === HttpEventType.Response),
-                map(<T>(resp: HttpResponse<T>) => {
-                    return new ResponseView(resp);
+                filter(
+                    (event: HttpEvent<HttpResponse<DotCMSResponse<T>> | any>) =>
+                        event.type === HttpEventType.Response
+                ),
+                map((resp: HttpResponse<DotCMSResponse<T>>) => {
+                    return new ResponseView<T>(resp);
                 })
             );
     }

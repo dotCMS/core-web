@@ -3,7 +3,7 @@ import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotMessageService } from '../dot-message/dot-messages.service';
 import { Injectable } from '@angular/core';
 
-import { ResponseView, LoginService, HttpCode } from 'dotcms-js';
+import { LoginService, HttpCode } from 'dotcms-js';
 
 import { DotAlertConfirmService } from '../dot-alert-confirm';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
@@ -47,15 +47,15 @@ export class DotHttpErrorManagerService {
      * @returns Observable<boolean>
      * @memberof DotHttpErrorManagerService
      */
-    handle(err: ResponseView): Observable<DotHttpErrorHandled> {
+    handle(err: HttpErrorResponse): Observable<DotHttpErrorHandled> {
         const result: DotHttpErrorHandled = {
-            redirected: this.callErrorHandler(err.response),
+            redirected: this.callErrorHandler(err),
             status: err.status
         };
 
         if (
-            err['bodyJsonObject'].error &&
-            this.contentletIsForbidden(err['bodyJsonObject'].error)
+            err['error'] &&
+            this.contentletIsForbidden(err['error'].message)
         ) {
             result.status = HttpCode.FORBIDDEN;
         }
