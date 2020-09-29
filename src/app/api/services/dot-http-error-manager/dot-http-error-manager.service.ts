@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { LoginService, HttpCode } from 'dotcms-js';
 
 import { DotAlertConfirmService } from '../dot-alert-confirm';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface DotHttpErrorHandled {
     redirected: boolean;
@@ -55,6 +55,7 @@ export class DotHttpErrorManagerService {
 
         if (
             err['error'] &&
+            !Array.isArray(err['error']) &&
             this.contentletIsForbidden(err['error'].message)
         ) {
             result.status = HttpCode.FORBIDDEN;
@@ -118,12 +119,12 @@ export class DotHttpErrorManagerService {
         return false;
     }
 
-    private handleBadRequestError<T>(response: HttpResponse<T>): boolean {
+    private handleBadRequestError(response: HttpErrorResponse): boolean {
+        const msg =
+            this.getErrorMessage(response) ||
+            this.dotMessageService.get('dot.common.http.error.400.message');
         this.dotDialogService.alert({
-            message:
-                this.getErrorMessage(response) ||
-                response.body['message'] ||
-                this.dotMessageService.get('dot.common.http.error.400.message'),
+            message: msg,
             header: this.dotMessageService.get('dot.common.http.error.400.header')
         });
         return false;
@@ -147,7 +148,13 @@ export class DotHttpErrorManagerService {
         return false;
     }
 
-    private getErrorMessage<T>(response: HttpResponse<T>): string {
-        return response.body['errors'] ? response.body['errors'][0].message : null;
+    private getErrorMessage(response: HttpErrorResponse): string {
+        let msg: string;
+        if (Array.isArray(response['error'])) {
+            msg = response.error[0].message;
+        } else {
+            msg = response['error'] ? response['error']['message'] : null;
+        }
+        return msg;
     }
 }

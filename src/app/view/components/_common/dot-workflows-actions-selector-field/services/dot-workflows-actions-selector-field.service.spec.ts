@@ -84,7 +84,7 @@ describe('DotWorkflowsActionsSelectorFieldService', () => {
     it('should handle error', () => {
         const mock = new ResponseView(
             new HttpResponse({
-                body: {},
+                body: null,
                 status: HttpCode.BAD_REQUEST,
                 headers: null,
                 url: ''

@@ -1,5 +1,5 @@
 import { DotAlertConfirmService } from '../dot-alert-confirm/dot-alert-confirm.service';
-import { LoginService, ResponseView } from 'dotcms-js';
+import { LoginService } from 'dotcms-js';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotMessageService } from '../dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
@@ -8,7 +8,7 @@ import { mockResponseView } from '../../../test/response-view.mock';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { ConfirmationService } from 'primeng/primeng';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 describe('DotHttpErrorManagerService', () => {
     let service: DotHttpErrorManagerService;
@@ -138,7 +138,7 @@ describe('DotHttpErrorManagerService', () => {
             'error-key': 'dotcms.api.error.license.required'
         });
 
-        const responseView: ResponseView = mockResponseView(403, null, headers);
+        const responseView: HttpErrorResponse = mockResponseView(403, null, headers);
 
         service.handle(responseView).subscribe((res) => {
             result = res;
@@ -157,7 +157,7 @@ describe('DotHttpErrorManagerService', () => {
     it('should handle 400 error on message', () => {
         spyOn(dotDialogService, 'alert');
 
-        const responseView: ResponseView = mockResponseView(400, null, null, {
+        const responseView: HttpErrorResponse = mockResponseView(400, null, null, {
             message: 'Error'
         });
 
@@ -178,9 +178,9 @@ describe('DotHttpErrorManagerService', () => {
     it('should handle 400 error on errors[0]', () => {
         spyOn(dotDialogService, 'alert');
 
-        const responseView: ResponseView = mockResponseView(400, null, null, {
-            errors: [{ message: 'Server Error' }]
-        });
+        const responseView: HttpErrorResponse = mockResponseView(400, null, null, [
+            { message: 'Server Error' }
+        ]);
 
         service.handle(responseView).subscribe((res) => {
             result = res;

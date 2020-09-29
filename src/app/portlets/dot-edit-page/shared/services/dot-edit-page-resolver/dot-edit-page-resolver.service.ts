@@ -2,7 +2,7 @@ import { throwError, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
-import { ResponseView, HttpCode, DotCMSResponse } from 'dotcms-js';
+import { HttpCode, DotCMSResponse } from 'dotcms-js';
 import { tap, switchMap, filter, catchError, map } from 'rxjs/operators';
 
 import { DotPageRenderState } from '../../models/dot-rendered-page-state.model';
@@ -72,8 +72,8 @@ export class DotEditPageResolver implements Resolve<DotPageRenderState> {
     ): Observable<DotPageRenderState> {
         if (!dotRenderedPageState.page.canEdit) {
             return throwError(
-                new ResponseView<DotCMSResponse<any>>(
-                    new HttpResponse({
+                new HttpErrorResponse(
+                    new HttpResponse<DotCMSResponse<any>>({
                         body: null,
                         status: HttpCode.FORBIDDEN,
                         headers: null,
@@ -83,7 +83,7 @@ export class DotEditPageResolver implements Resolve<DotPageRenderState> {
             );
         } else if (!dotRenderedPageState.layout) {
             return throwError(
-                new ResponseView(
+                new HttpErrorResponse(
                     new HttpResponse<DotCMSResponse<any>>({
                         body: null,
                         status: HttpCode.FORBIDDEN,

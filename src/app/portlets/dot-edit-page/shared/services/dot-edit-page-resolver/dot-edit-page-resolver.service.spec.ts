@@ -7,7 +7,7 @@ import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.
 import { DotPageRenderState } from '../../models/dot-rendered-page-state.model';
 import { DotPageStateService } from '../../../content/services/dot-page-state/dot-page-state.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { LoginService, CoreWebService, HttpCode, ResponseView } from 'dotcms-js';
+import { LoginService, CoreWebService, HttpCode } from 'dotcms-js';
 import { LoginServiceMock, mockUser } from './../../../../../test/login-service.mock';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { mockDotRenderedPage } from '../../../../../test/dot-page-render.mock';
@@ -19,7 +19,7 @@ import { ConfirmationService } from 'primeng/api';
 import { FormatDateService } from '@services/format-date-service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { mockResponseView } from '@tests/response-view.mock';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 const route: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
     'toString'
@@ -161,9 +161,9 @@ describe('DotEditPageResolver', () => {
             });
             expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(
-                new ResponseView(
+                new HttpErrorResponse(
                     new HttpResponse({
-                        body: {},
+                        body: null,
                         status: HttpCode.FORBIDDEN,
                         headers: null,
                         url: ''
