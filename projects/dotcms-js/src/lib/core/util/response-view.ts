@@ -1,5 +1,5 @@
 import { HttpResponse, HttpHeaders } from '@angular/common/http';
-import { DotCMSResponse } from 'dotcms-js/lib/core/core-web.service';
+import { DotCMSResponse } from '../core-web.service';
 
 /**
  *
