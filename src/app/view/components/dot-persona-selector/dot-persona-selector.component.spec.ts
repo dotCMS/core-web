@@ -140,7 +140,7 @@ describe('DotPersonaSelectorComponent', () => {
         expect(personaSelectedItemDe.attributes['ng-reflect-tooltip-position']).toBe('bottom');
     });
 
-    it('should call toggle when selected dot-persona-selected-item', () => {
+    xit('should call toggle when selected dot-persona-selected-item', () => {
         hostFixture.whenStable().then(() => {
             spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
             const selectedItem = hostFixture.debugElement.query(
