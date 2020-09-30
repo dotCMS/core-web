@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { ActivatedRoute } from '@angular/router';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
+import { DotAppsListResolverData } from './dot-apps-list-resolver.service';
 
 @Component({
     selector: 'dot-apps-list',
@@ -29,12 +30,12 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.route.data
-            .pipe(pluck('canAccessPortlet'), takeUntil(this.destroy$))
-            .subscribe((canAccessPortlet: boolean) => {
-                if (canAccessPortlet) {
-                    this.getApps();
+            .pipe(pluck('dotAppsListResolverData'), takeUntil(this.destroy$))
+            .subscribe((resolverData: DotAppsListResolverData) => {
+                if (resolverData.isEnterpriseLicense) {
+                    this.getApps(resolverData.apps);
                 }
-                this.canAccessPortlet = canAccessPortlet;
+                this.canAccessPortlet = resolverData.isEnterpriseLicense;
             });
     }
 
@@ -53,17 +54,12 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
         this.dotRouterService.goToAppsConfiguration(key);
     }
 
-    private getApps(): void {
-        this.dotAppsService
-            .get()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((apps: DotApps[]) => {
-                this.apps = apps;
-                this.appsCopy = _.cloneDeep(apps);
-                setTimeout(() => {
-                    this.attachFilterEvents();
-                }, 0);
-            });
+    private getApps(apps: DotApps[]): void {
+        this.apps = apps;
+        this.appsCopy = _.cloneDeep(apps);
+        setTimeout(() => {
+            this.attachFilterEvents();
+        }, 0);
     }
 
     private attachFilterEvents(): void {
