@@ -127,7 +127,7 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
                 this.close.emit();
 
                 if (response.entity.reauthenticate) {
-                    this.loginService.logOutUser().subscribe(() => {});
+                    window.location.href = '/dotAdmin/logout';
                 } else {
                     this.loginService.setAuth({
                         loginAsUser: null,

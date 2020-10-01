@@ -39,12 +39,7 @@ export class DotToolbarUserComponent implements OnInit {
      * @memberof ToolbarUserComponent
      */
     logout(): boolean {
-        this.loginService.logOutUser().subscribe(
-            () => {},
-            (error) => {
-                this.loggerService.error(error);
-            }
-        );
+        window.location.href = '/dotAdmin/logout';
         return false;
     }
 
