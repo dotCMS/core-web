@@ -5,7 +5,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotTextareaContentComponent } from './dot-textarea-content.component';
 // import { AceEditorModule } from 'ng2-ace-editor';
-import { TinymceModule } from 'angular2-tinymce';
 import { FormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -26,7 +25,6 @@ describe('DotTextareaContentComponent', () => {
                 // AceEditorModule,
                 SelectButtonModule,
                 InputTextareaModule,
-                TinymceModule.withConfig({}),
                 FormsModule
             ]
         }).compileComponents();
@@ -218,11 +216,6 @@ describe('DotTextareaContentComponent', () => {
 
         component.show = ['wysiwyg', 'plain', 'code'];
         fixture.detectChanges();
-
-        const tinymce = de.query(By.css('app-tinymce'));
-        tinymce.triggerEventHandler('keydown.enter', {
-            stopPropagation: spy
-        });
 
         component.selected = 'plain';
         fixture.detectChanges();

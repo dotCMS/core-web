@@ -27,11 +27,3 @@
     class="textarea-content__code-field"
     theme="textmate">
 </ace-editor> -->
-<app-tinymce
-    #wysiwyg
-    *ngIf="selected === 'wysiwyg'"
-    (keydown.enter)="onKeyEnter($event)"
-    (ngModelChange)="onModelChange($event)"
-    [ngModel]="value"
-    class="textarea-content__wysiwyg-field">
-</app-tinymce>

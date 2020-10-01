@@ -4,20 +4,13 @@ import { DotTextareaContentComponent } from './dot-textarea-content.component';
 import { SelectButtonModule } from 'primeng/selectbutton'
 import { FormsModule } from '@angular/forms';
 // import { AceEditorModule } from 'ng2-ace-editor';
-import { TinymceModule } from 'angular2-tinymce';
 
 @NgModule({
     imports: [
         // AceEditorModule,
         CommonModule,
         SelectButtonModule,
-        FormsModule,
-        TinymceModule.withConfig({
-            skin_url: '/dotadmin/assets/tinymce/skins/lightgray',
-            menubar: false,
-            resize: false,
-            auto_focus: false
-        })
+        FormsModule
     ],
     declarations: [DotTextareaContentComponent],
     exports: [DotTextareaContentComponent]
