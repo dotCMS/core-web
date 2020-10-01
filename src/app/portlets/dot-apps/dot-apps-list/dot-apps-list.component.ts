@@ -13,7 +13,7 @@ import { DotAppsService } from '@services/dot-apps/dot-apps.service';
     styleUrls: ['./dot-apps-list.component.scss']
 })
 export class DotAppsListComponent implements OnInit, OnDestroy {
-    @ViewChild('searchInput', { static: false })
+    @ViewChild('searchInput')
     searchInput: ElementRef;
     apps: DotApps[];
     appsCopy: DotApps[];

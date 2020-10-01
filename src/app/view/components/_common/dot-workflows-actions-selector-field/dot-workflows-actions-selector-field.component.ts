@@ -35,7 +35,7 @@ interface DropdownEvent {
 })
 export class DotWorkflowsActionsSelectorFieldComponent
     implements ControlValueAccessor, OnChanges, OnInit {
-    @ViewChild('dropdown', { static: false }) dropdown: Dropdown;
+    @ViewChild('dropdown') dropdown: Dropdown;
     @Input() workflows: DotCMSWorkflow[];
 
     actions$: Observable<SelectItemGroup[]>;

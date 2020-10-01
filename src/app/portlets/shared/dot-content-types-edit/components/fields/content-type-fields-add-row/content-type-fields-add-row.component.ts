@@ -41,7 +41,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
         'contenttypes.content.add_column_title'
     ];
     @Output() selectColums: EventEmitter<number> = new EventEmitter<number>();
-    @ViewChild('colContainer', { static: false }) colContainerElem: ElementRef;
+    @ViewChild('colContainer') colContainerElem: ElementRef;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(

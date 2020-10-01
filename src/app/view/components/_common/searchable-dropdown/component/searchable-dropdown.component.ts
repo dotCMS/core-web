@@ -104,7 +104,7 @@ export class SearchableDropdownComponent
     @ViewChild('searchPanel', { static: true })
     searchPanelRef: OverlayPanel;
 
-    @ViewChild('button', { static: false })
+    @ViewChild('button')
     button: ElementRef;
 
     @ContentChildren(PrimeTemplate) templates: QueryList<any>;
