@@ -35,10 +35,10 @@ import { HttpErrorResponse } from '@angular/common/http';
     styleUrls: ['./dot-content-types-edit.component.scss']
 })
 export class DotContentTypesEditComponent implements OnInit, OnDestroy {
-    @ViewChild('form')
+    @ViewChild('form', { static: false })
     contentTypesForm: ContentTypesFormComponent;
 
-    @ViewChild('fieldsDropZone')
+    @ViewChild('fieldsDropZone', { static: false })
     fieldsDropZone: ContentTypeFieldsDropZoneComponent;
 
     contentTypeActions: MenuItem[];

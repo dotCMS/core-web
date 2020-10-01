@@ -14,7 +14,7 @@ import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
     styleUrls: ['./dot-edit-page-lock-info.component.scss']
 })
 export class DotEditPageLockInfoComponent {
-    @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
+    @ViewChild('lockedPageMessage', { static: false }) lockedPageMessage: ElementRef;
 
     show = false;
 

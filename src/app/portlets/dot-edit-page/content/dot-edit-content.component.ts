@@ -47,7 +47,7 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
     styleUrls: ['./dot-edit-content.component.scss']
 })
 export class DotEditContentComponent implements OnInit, OnDestroy {
-    @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('iframe', { static: false }) iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
     pageState$: Observable<DotPageRenderState>;

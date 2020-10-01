@@ -9,7 +9,7 @@ import { LazyLoadEvent } from 'primeng/primeng';
     styleUrls: ['./dot-apps-configuration-list.component.scss']
 })
 export class DotAppsConfigurationListComponent {
-    @ViewChild('searchInput') searchInput: ElementRef;
+    @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
 
     @Input() hideLoadDataButton: boolean;
     @Input() itemsPerPage: number;

@@ -17,7 +17,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
     styleUrls: ['./dot-apps-configuration.component.scss']
 })
 export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
-    @ViewChild('searchInput') searchInput: ElementRef;
+    @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
     apps: DotApps;
 
     hideLoadDataButton: boolean;

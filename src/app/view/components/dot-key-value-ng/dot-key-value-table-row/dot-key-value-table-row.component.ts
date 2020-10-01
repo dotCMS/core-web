@@ -19,8 +19,8 @@ import { DotKeyValueUtil } from '../util/dot-key-value-util';
     templateUrl: './dot-key-value-table-row.component.html'
 })
 export class DotKeyValueTableRowComponent implements OnInit, OnChanges {
-    @ViewChild('saveButton') saveButton: ElementRef;
-    @ViewChild('valueCell') valueCell: ElementRef;
+    @ViewChild('saveButton', { static: false }) saveButton: ElementRef;
+    @ViewChild('valueCell', { static: false }) valueCell: ElementRef;
 
     @Input() showHiddenField: boolean;
     @Input() isHiddenField: boolean;

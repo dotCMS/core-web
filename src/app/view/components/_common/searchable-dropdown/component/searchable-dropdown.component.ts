@@ -97,13 +97,13 @@ export class SearchableDropdownComponent
     @Output()
     show: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('searchInput')
+    @ViewChild('searchInput', { static: true })
     searchInput: ElementRef;
 
-    @ViewChild('searchPanel')
+    @ViewChild('searchPanel', { static: true })
     searchPanelRef: OverlayPanel;
 
-    @ViewChild('button')
+    @ViewChild('button', { static: false })
     button: ElementRef;
 
     @ContentChildren(PrimeTemplate) templates: QueryList<any>;

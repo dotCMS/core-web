@@ -19,13 +19,13 @@ const PORTLETS_ANGULAR = [
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'content-types-angular',
-        loadChildren: '@portlets/dot-content-types/dot-content-types.module#DotContentTypesModule'
+        loadChildren: () => import('@portlets/dot-content-types/dot-content-types.module').then(m => m.DotContentTypesModule)
     },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'forms',
-        loadChildren: '@portlets/dot-form-builder/dot-form-builder.module#DotFormBuilderModule',
+        loadChildren: () => import('@portlets/dot-form-builder/dot-form-builder.module').then(m => m.DotFormBuilderModule),
         data: {
             filterBy: 'FORM'
         }
@@ -34,32 +34,32 @@ const PORTLETS_ANGULAR = [
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'rules',
-        loadChildren: '@portlets/dot-rules/dot-rules.module#DotRulesModule'
+        loadChildren: () => import('@portlets/dot-rules/dot-rules.module').then(m => m.DotRulesModule)
     },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'dot-browser',
-        loadChildren: '@portlets/dot-site-browser/dot-site-browser.module#DotSiteBrowserModule'
+        loadChildren: () => import('@portlets/dot-site-browser/dot-site-browser.module').then(m => m.DotSiteBrowserModule)
     },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'apps',
-        loadChildren: '@portlets/dot-apps/dot-apps.module#DotAppsModule'
+        loadChildren: () => import('@portlets/dot-apps/dot-apps.module').then(m => m.DotAppsModule)
     },
     {
         path: 'pl',
         loadChildren:
-            '@components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
+            () => import('@components/_common/pattern-library/pattern-library.module').then(m => m.PatternLibraryModule)
     },
     {
         path: 'notLicensed',
-        loadChildren: '@components/not-licensed/not-licensed.module#NotLicensedModule'
+        loadChildren: () => import('@components/not-licensed/not-licensed.module').then(m => m.NotLicensedModule)
     },
     {
         path: 'edit-page',
-        loadChildren: '@portlets/dot-edit-page/dot-edit-page.module#DotEditPageModule'
+        loadChildren: () => import('@portlets/dot-edit-page/dot-edit-page.module').then(m => m.DotEditPageModule)
     },
     {
         canActivate: [MenuGuardService],
@@ -78,7 +78,7 @@ const PORTLETS_IFRAME = [
                 children: [
                     {
                         loadChildren:
-                            '@portlets/dot-porlet-detail/dot-portlet-detail.module#DotPortletDetailModule',
+                            () => import('@portlets/dot-porlet-detail/dot-portlet-detail.module').then(m => m.DotPortletDetailModule),
                         path: ':asset'
                     }
                 ],
@@ -116,14 +116,14 @@ const appRoutes: Routes = [
         resolve: {
             loginFormInfo: DotLoginPageResolver
         },
-        loadChildren: '@components/login/dot-login-page.module#DotLoginPageModule'
+        loadChildren: () => import('@components/login/dot-login-page.module').then(m => m.DotLoginPageModule)
     },
     {
         canActivate: [AuthGuardService],
         children: [
             {
                 path: 'rules',
-                loadChildren: '@portlets/dot-rules/dot-rules.module#DotRulesModule',
+                loadChildren: () => import('@portlets/dot-rules/dot-rules.module').then(m => m.DotRulesModule),
                 canActivate: [AuthGuardService]
             }
         ],

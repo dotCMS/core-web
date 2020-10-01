@@ -43,7 +43,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     @Output() hide: EventEmitter<any> = new EventEmitter();
     @Output() show: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
+    @ViewChild('searchableDropdown', { static: false }) searchableDropdown: SearchableDropdownComponent;
 
     currentSite: Observable<Site>;
     sitesCurrentPage: Site[];

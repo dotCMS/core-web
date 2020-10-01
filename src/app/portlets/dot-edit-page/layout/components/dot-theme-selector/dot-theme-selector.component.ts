@@ -41,10 +41,10 @@ export class DotThemeSelectorComponent implements OnInit {
     @Output()
     close = new EventEmitter<boolean>();
 
-    @ViewChild('searchInput')
+    @ViewChild('searchInput', { static: true })
     searchInput: ElementRef;
 
-    @ViewChild('dataGrid')
+    @ViewChild('dataGrid', { static: true })
     datagrid: DataGrid;
 
     current: DotTheme;

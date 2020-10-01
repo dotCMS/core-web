@@ -34,7 +34,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     styleUrls: ['./dot-edit-layout-designer.component.scss']
 })
 export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
-    @ViewChild('templateName')
+    @ViewChild('templateName', { static: false })
     templateName: ElementRef;
     @Input()
     editTemplate = false;

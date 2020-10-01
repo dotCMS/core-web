@@ -10,8 +10,8 @@ import { Subject } from 'rxjs';
     styleUrls: ['./dot-alert-confirm.scss']
 })
 export class DotAlertConfirmComponent implements OnInit, OnDestroy {
-    @ViewChild('cd') cd: ConfirmDialog;
-    @ViewChild('confirmBtn') confirmBtn: ElementRef;
+    @ViewChild('cd', { static: false }) cd: ConfirmDialog;
+    @ViewChild('confirmBtn', { static: false }) confirmBtn: ElementRef;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(

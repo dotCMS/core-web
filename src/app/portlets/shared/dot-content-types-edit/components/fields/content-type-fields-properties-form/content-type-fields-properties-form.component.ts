@@ -28,7 +28,7 @@ export class ContentTypeFieldsPropertiesFormComponent implements OnChanges, OnIn
 
     @Input() formFieldData: DotCMSContentTypeField;
 
-    @ViewChild('properties') propertiesContainer;
+    @ViewChild('properties', { static: false }) propertiesContainer;
 
     form: FormGroup;
     fieldProperties: string[] = [];

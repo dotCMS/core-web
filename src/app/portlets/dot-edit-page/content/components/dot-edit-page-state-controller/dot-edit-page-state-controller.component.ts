@@ -33,7 +33,7 @@ enum DotConfirmationType {
     styleUrls: ['./dot-edit-page-state-controller.component.scss']
 })
 export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
-    @ViewChild('pageLockInfo') pageLockInfo: DotEditPageLockInfoComponent;
+    @ViewChild('pageLockInfo', { static: true }) pageLockInfo: DotEditPageLockInfoComponent;
 
     @Input() pageState: DotPageRenderState;
     @Output() modeChange = new EventEmitter<DotPageMode>();
