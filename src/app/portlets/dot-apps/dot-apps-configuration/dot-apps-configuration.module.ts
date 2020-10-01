@@ -8,7 +8,7 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/dot-apps-configuration-list.module';
-import { NgxMdModule } from 'ngx-md';
+// import { NgxMdModule } from 'ngx-md';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 
@@ -25,7 +25,7 @@ import { ButtonModule } from 'primeng/button';
         DotCopyButtonModule,
         DotAppsConfigurationHeaderModule,
         DotAppsConfigurationListModule,
-        NgxMdModule,
+        // NgxMdModule,
         DotPipesModule
     ],
     declarations: [DotAppsConfigurationComponent],

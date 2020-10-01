@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { DotAppsConfigurationHeaderComponent } from './dot-apps-configuration-header.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
-import { NgxMdModule } from 'ngx-md';
+// import { NgxMdModule } from 'ngx-md';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DebugElement } from '@angular/core';
@@ -48,7 +48,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
                     CommonModule,
                     DotAvatarModule,
                     DotCopyButtonModule,
-                    NgxMdModule,
+                    // NgxMdModule,
                     DotPipesModule
                 ],
                 declarations: [DotAppsConfigurationHeaderComponent],
