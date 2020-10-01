@@ -45,7 +45,6 @@
         "lodash": "^4.17.11",
         "md5": "^2.2.1",
         "moment": "^2.19.4",
-        "ng2-ace-editor": "^0.3.8",
         "ng2-dragula": "^2.1.0",
         "ngx-md": "^8.1.6",
         "node-fetch": "^2.6.0",

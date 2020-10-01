@@ -12,7 +12,7 @@
     [ngStyle]="styles"
     class="textarea-content__plain-field">
 </textarea>
-<ace-editor
+<!-- <ace-editor
     #ace
     *ngIf="selected === 'code'"
     (keydown.enter)="onKeyEnter($event)"
@@ -26,7 +26,7 @@
     [text]="value"
     class="textarea-content__code-field"
     theme="textmate">
-</ace-editor>
+</ace-editor> -->
 <app-tinymce
     #wysiwyg
     *ngIf="selected === 'wysiwyg'"
