@@ -205,7 +205,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
 
     private showConfirmation(): Observable<DotConfirmationType> {
         return from(
-            new Promise((resolve, reject) => {
+            new Promise<DotConfirmationType>((resolve, reject) => {
                 if (this.shouldAskToLock()) {
                     this.showLockConfirmDialog()
                         .then(() => {

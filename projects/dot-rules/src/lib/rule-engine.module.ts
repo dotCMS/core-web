@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http'
 
 
 import { ActionService } from './services/Action';
@@ -66,7 +66,7 @@ import { DotUnlicenseModule } from './components/dot-unlicense/dot-unlicense.mod
         MessageModule,
         CalendarModule,
         DotAutocompleteTagsModule,
-        HttpModule,
+        HttpClientModule,
         DotAutofocusModule,
         DotUnlicenseModule
     ],

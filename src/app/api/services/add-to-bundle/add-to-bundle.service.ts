@@ -28,7 +28,7 @@ export class AddToBundleService {
      * @memberof AddToBundleService
      */
     getBundles(): Observable<any[]> {
-        return this.currentUser.getCurrentUser().pipe(
+        return <any>this.currentUser.getCurrentUser().pipe(
             mergeMap((user: DotCurrentUser) => {
                 return this.coreWebService
                     .requestView({
