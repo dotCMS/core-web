@@ -9,7 +9,8 @@ import {
     SimpleChanges
 } from '@angular/core';
 import { DotCMSContentType } from 'dotcms-models';
-import { LazyLoadEvent, DataTable } from 'primeng/primeng';
+import { LazyLoadEvent } from 'primeng/api';
+import { Table } from 'primeng/table';
 import { take } from 'rxjs/operators';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 import { PaginatorService } from '@services/paginator';
@@ -27,7 +28,7 @@ export class DotFormSelectorComponent implements OnInit, OnChanges {
 
     @Output() close = new EventEmitter<any>();
 
-    @ViewChild('datatable', { static: true }) datatable: DataTable;
+    @ViewChild('datatable', { static: true }) datatable: Table;
 
     @ViewChild('dialog', { static: true }) dotDialog: DotDialogComponent;
 

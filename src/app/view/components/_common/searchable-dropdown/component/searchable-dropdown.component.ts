@@ -18,8 +18,9 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent } from 'rxjs';
-import { OverlayPanel, PrimeTemplate } from 'primeng/primeng';
 import * as _ from 'lodash';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { PrimeTemplate } from 'primeng/shared';
 
 /**
  * Dropdown with pagination and global search

@@ -6,7 +6,7 @@
     (hide)="close.emit($event)"
     [header]="'modes.Add-Form' | dm"
 >
-    <p-dataTable
+    <p-table
         #datatable
         (onLazyLoad)="loadData($event)"
         [lazy]="true"
@@ -29,5 +29,5 @@
                 ></button>
             </ng-template>
         </p-column>
-    </p-dataTable>
+    </p-table>
 </dot-dialog>

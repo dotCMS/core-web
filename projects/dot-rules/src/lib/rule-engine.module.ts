@@ -38,16 +38,24 @@ import {
     UserModel,
     BrowserUtil
 } from 'dotcms-js';
-import {
-  DropdownModule, MultiSelectModule, InputTextModule, InputSwitchModule,
-  AutoCompleteModule, ButtonModule, DialogModule, MessagesModule, MessageModule, CalendarModule
-} from 'primeng/primeng';
+
 
 import { DotAutocompleteTagsModule } from './components/dot-autocomplete-tags/dot-autocomplete-tags.module';
 import { AppRulesComponent } from './app.component';
 import { DotAutofocusModule } from './directives/dot-autofocus/dot-autofocus.module';
 import { RuleViewService } from './services/dot-view-rule-service';
 import { DotUnlicenseModule } from './components/dot-unlicense/dot-unlicense.module';
+
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 @NgModule({

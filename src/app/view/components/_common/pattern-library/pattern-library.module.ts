@@ -5,12 +5,13 @@ import { PatternLibraryComponent } from './pattern-library.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DotIconButtonModule } from '../dot-icon-button/dot-icon-button.module';
-import { MultiSelectModule, InputSwitchModule } from 'primeng/primeng';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotListingDataTableModule } from '@components/dot-listing-data-table/dot-listing-data-table.module';
 import { TableModule } from 'primeng/table';
 import { DotPersonaSelectorOptionModule } from '@components/dot-persona-selector-option/dot-persona-selector-option.module';
 import { DotPersonaSelectorModule } from '@components/dot-persona-selector/dot-persona.selector.module';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 const routes: Routes = [
     {

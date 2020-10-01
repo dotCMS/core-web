@@ -1,4 +1,4 @@
-import { ButtonModule } from 'primeng/primeng';
+import { ButtonModule } from 'primeng/button';
 import { SearchableDropDownModule } from '../_common/searchable-dropdown/searchable-dropdown.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

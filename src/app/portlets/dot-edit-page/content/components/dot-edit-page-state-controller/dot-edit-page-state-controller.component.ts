@@ -12,7 +12,7 @@ import {
 import { take, switchMap } from 'rxjs/operators';
 import { Observable, of, from } from 'rxjs';
 
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem } from 'primeng/api';
 
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';

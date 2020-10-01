@@ -1,7 +1,7 @@
 @import "variables";
 
 :host {
-    /deep/ {
+    ::ng-deep {
         .ui-toast-message-content {
             display: flex;
 
@@ -35,7 +35,7 @@
             color: $success;
         }
 
-        /deep/ i {
+        ::ng-deep i {
             font-size: 2.5rem;
         }
     }

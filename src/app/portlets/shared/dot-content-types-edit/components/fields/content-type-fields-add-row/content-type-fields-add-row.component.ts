@@ -13,7 +13,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
-import { MenuItem } from 'primeng/primeng';
+import { MenuItem } from 'primeng/api';
 
 /**
  * Display select columns row

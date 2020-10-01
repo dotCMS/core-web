@@ -14,7 +14,7 @@ import { Observable, Subject } from 'rxjs';
 import { take, takeUntil, filter } from 'rxjs/operators';
 
 import * as _ from 'lodash';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem } from 'primeng/api';
 
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';

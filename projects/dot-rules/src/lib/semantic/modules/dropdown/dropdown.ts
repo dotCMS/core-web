@@ -1,5 +1,3 @@
-import { MenuItem, Dropdown as PDropdown } from 'primeng/primeng';
-
 import {
     Component,
     EventEmitter,
@@ -13,6 +11,9 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { of, Observable, from } from 'rxjs';
 import * as _ from 'lodash';
 import { map, mergeMap, toArray } from 'rxjs/operators';
+
+import { Dropdown as PDropdown } from 'primeng/dropdown';
+import { SelectItem } from 'primeng/api';
 
 /**
  * Angular wrapper around OLD Semantic UI Dropdown Module.
@@ -69,7 +70,7 @@ export class Dropdown implements ControlValueAccessor, OnChanges {
     @ViewChild('inputDropdown', { static: false }) inputDropdown: PDropdown;
 
     modelValue: string;
-    dropdownOptions: Observable<MenuItem[]>;
+    dropdownOptions: Observable<SelectItem[]>;
 
     constructor(@Optional() control: NgControl) {
         if (control && !control.valueAccessor) {
@@ -83,7 +84,7 @@ export class Dropdown implements ControlValueAccessor, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.options && changes.options.currentValue) {
-            this.dropdownOptions = from(this.options).pipe(
+            this.dropdownOptions = <Observable<SelectItem[]>>from(this.options).pipe(
                 mergeMap((item: { [key: string]: any }) => {
                     if (item.label.pipe) {
                         return item.label.pipe(

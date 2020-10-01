@@ -17,7 +17,7 @@ import {
     DotEventsSocket,
     DotPushPublishDialogService
 } from 'dotcms-js';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/api';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NGFACES_MODULES } from '../modules';
 import { CommonModule } from '@angular/common';
