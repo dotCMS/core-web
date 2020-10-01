@@ -18,8 +18,14 @@ const DOTCMS_PAGINATOR_ROWS = 'dotcms.paginator.rows';
 const DOTCMS_PAGINATOR_LINKS = 'dotcms.paginator.links';
 const EMAIL_REGEX = 'emailRegex';
 
+export interface DotUiColors {
+    primary: string;
+    secondary: string;
+    background: string;
+}
+
 export interface ConfigParams {
-    colors: { [key: string]: string };
+    colors: DotUiColors;
     emailRegex: string;
     license: object;
     menu: Menu[];

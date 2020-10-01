@@ -1,7 +1,6 @@
 import { Observable, Subject } from 'rxjs';
-import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { OnInit, OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { LoggerService } from 'dotcms-js';
 import { AddToBundleService } from '@services/add-to-bundle/add-to-bundle.service';
