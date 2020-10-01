@@ -1,0 +1,20 @@
+@import "mixins";
+@import "variables";
+
+:host {
+    @include login-container;
+}
+
+.logout__container {
+    img {
+        width: 102px;
+    }
+
+    h3 {
+        margin: $basic-padding * 9 0 $basic-padding * 3 0;
+    }
+
+    p {
+        margin: 0 0 $basic-padding * 7 0;
+    }
+}

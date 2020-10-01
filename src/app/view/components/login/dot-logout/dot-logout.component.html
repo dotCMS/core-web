@@ -1,0 +1,11 @@
+<div class="logout__container" *ngIf="(loginInfo$ | async)  as loginInfo">
+    <img src="{{loginInfo.entity.logo}}" />
+    <h3>{{loginInfo?.i18nMessagesMap['Logout']}}</h3>
+    <p>{{loginInfo?.i18nMessagesMap['message.successfully.logout']}}</p>
+    <button
+        pButton
+        [label]="loginInfo?.i18nMessagesMap['sign-in']"
+        (click)="goToDotAdmin()"
+        class="logout__button">
+    </button>
+</div>

@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { PortletNav } from '@models/navigation';
 import { Subject } from 'rxjs';
 import { DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
+import { NavigationExtras } from '@angular/router/src/router';
 
 @Injectable()
 export class DotRouterService {
@@ -86,7 +87,12 @@ export class DotRouterService {
             : this.redirectMain();
     }
 
-    goToLogin(parameters?: any): void {
+    goToLogin(parameters?: NavigationExtras): void {
+        if (parameters) {
+            parameters.queryParams['r'] = new Date().getTime();
+        } else {
+            parameters = { queryParams: { r: new Date().getTime() } };
+        }
         this.router.navigate(['/public/login'], parameters);
     }
 
@@ -178,7 +184,7 @@ export class DotRouterService {
 
         const urlSegments = url
             .split('/')
-            .filter((item) => item !== '' && item !== '#' && item !== 'c');
+            .filter(item => item !== '' && item !== '#' && item !== 'c');
         return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
     }
 
