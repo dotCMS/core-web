@@ -2,12 +2,9 @@
     "extends": ["tslint-angular"],
     "rules": {
         "no-output-on-prefix": [false],
-        "cyclomatic-complexity": [
-          true,
-          3
-        ],
+        "cyclomatic-complexity": [true, 3],
         "deprecation": {
-          "severity": "warning"
+            "severity": "warning"
         },
         "directive-selector": [true, "attribute", "dot", "camelCase"],
         "component-selector": [true, "element", "dot", "kebab-case"],
