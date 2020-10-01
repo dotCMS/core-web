@@ -1,5 +1,5 @@
 import { of as observableOf, Observable } from 'rxjs';
-import { DebugElement } from '@angular/core/src/debug/debug_node';
+import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';

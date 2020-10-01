@@ -84,19 +84,4 @@ export class CoreWebServiceMock {
             error: httpErrorCode
         });
     }
-
-    private setHttpParams(urlParams: any, httpParams: HttpParams): HttpParams {
-        if (urlParams.paramsMap) {
-            const searchParams = urlParams.toString().split('&');
-            searchParams.forEach((paramString: string) => {
-                const [key, value] = paramString.split('=');
-                httpParams = httpParams.set(key, value);
-            });
-        } else {
-            Object.keys(urlParams).forEach((key: string) => {
-                httpParams = httpParams.set(key, urlParams[key]);
-            });
-        }
-        return httpParams;
-    }
 }
