@@ -25,7 +25,7 @@ import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 import { DotPageRender, DotPageContainer } from '@portlets/dot-edit-page/shared/models';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/api';
 
 @Injectable()
 class MockDotLicenseService {

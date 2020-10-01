@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DotDialogComponent, DotDialogActions } from './dot-dialog.component';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 import { DotIconButtonComponent } from '@components/_common/dot-icon-button/dot-icon-button.component';
-import { ButtonModule } from 'primeng/primeng';
+import { ButtonModule } from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const dispatchKeydownEvent = (key: string) => {

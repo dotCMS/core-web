@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, tick, fakeAsync, TestBed } from '@angular/core/testing';
 import { Component, DebugElement, EventEmitter, Input, Output, ElementRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DialogModule, ButtonModule, ConfirmationService } from 'primeng/primeng';
 import {
     ApiRoot,
     CoreWebService,
@@ -67,6 +66,9 @@ import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
     selector: 'dot-global-message',

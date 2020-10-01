@@ -6,7 +6,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ActivatedRoute } from '@angular/router';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotAppsListComponent } from './dot-apps-list.component';
-import { InputTextModule } from 'primeng/primeng';
+import { InputTextModule } from 'primeng/inputtext';
 import { DotAppsListResolver } from './dot-apps-list-resolver.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';

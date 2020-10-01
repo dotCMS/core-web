@@ -2,7 +2,6 @@ import { of as observableOf, Observable, of } from 'rxjs';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
-import { MenuItem, TabViewModule, SplitButtonModule } from 'primeng/primeng';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { By } from '@angular/platform-browser';
@@ -21,6 +20,8 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { CoreWebService } from 'dotcms-js';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TabViewModule } from 'primeng/tabview';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 @Component({
     selector: 'dot-content-types-fields-list',

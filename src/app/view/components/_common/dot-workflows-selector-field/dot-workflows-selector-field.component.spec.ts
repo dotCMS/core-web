@@ -6,7 +6,7 @@ import { async } from '@angular/core/testing';
 import { DotWorkflowsSelectorFieldComponent } from './dot-workflows-selector-field.component';
 
 import { DotWorkflowService } from './../../../../api/services/dot-workflow/dot-workflow.service';
-import { MultiSelect } from 'primeng/primeng';
+import { MultiSelect } from 'primeng/multiselect';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

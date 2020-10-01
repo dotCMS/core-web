@@ -32,7 +32,7 @@ import { DotPageStateService } from '../../services/dot-page-state/dot-page-stat
 import { DotPageStateServiceMock } from '@tests/dot-page-state.service.mock';
 import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
 import { DotPersonalizeServiceMock } from '@tests/dot-personalize-service.mock';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @Component({

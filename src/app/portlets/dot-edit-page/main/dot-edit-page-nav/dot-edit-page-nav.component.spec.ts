@@ -7,7 +7,7 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
 import { mockUser } from './../../../../test/login-service.mock';

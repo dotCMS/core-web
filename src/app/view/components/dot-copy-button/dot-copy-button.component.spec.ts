@@ -7,7 +7,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
 import { DotClipboardUtil } from 'src/app/api/util/clipboard/ClipboardUtil';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 
 const messageServiceMock = new MockDotMessageService({
     Copy: 'Copy',

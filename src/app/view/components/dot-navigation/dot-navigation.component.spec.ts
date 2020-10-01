@@ -18,7 +18,7 @@ import { DotMenu } from '@models/navigation';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { dotMenuMock, dotMenuMock1 } from './services/dot-navigation.service.spec';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 
 class FakeNavigationService {

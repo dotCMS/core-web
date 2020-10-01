@@ -20,7 +20,7 @@ import { LoginService, SiteService } from 'dotcms-js';
 import { DotAddPersonaDialogComponent } from '@components/dot-add-persona-dialog/dot-add-persona-dialog.component';
 import { SiteServiceMock } from '@tests/site-service.mock';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'dot-host-component',

@@ -17,7 +17,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/api';
 import { FormatDateService } from '@services/format-date-service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotDevice } from '@shared/models/dot-device/dot-device.model';

@@ -33,7 +33,7 @@ import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.ser
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/api';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotCMSWorkflowAction, DotCMSWorkflowActionEvent } from 'dotcms-models';

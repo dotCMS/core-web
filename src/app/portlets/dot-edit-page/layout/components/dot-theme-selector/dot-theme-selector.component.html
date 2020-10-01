@@ -12,7 +12,7 @@
         />
     </div>
     <div class="dot-theme-container">
-        <p-dataGrid
+        <p-dataView
             #dataGrid
             [value]="themes | async"
             [paginator]="paginatorService.totalRecords > paginatorService.paginationPerPage"
@@ -33,6 +33,6 @@
                     <h5 class="dot-theme-item__name">{{ theme.name }}</h5>
                 </div>
             </ng-template>
-        </p-dataGrid>
+        </p-dataView>
     </div>
 </dot-dialog>

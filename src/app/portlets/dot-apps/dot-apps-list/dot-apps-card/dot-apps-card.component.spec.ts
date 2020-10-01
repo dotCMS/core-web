@@ -4,10 +4,11 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { By } from '@angular/platform-browser';
 import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
-import { CardModule, TooltipModule } from 'primeng/primeng';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { NgxMdModule } from 'ngx-md';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { CardModule } from 'primeng/card';
+import { TooltipModule } from 'primeng/tooltip';
 
 describe('DotAppsCardComponent', () => {
     let component: DotAppsCardComponent;

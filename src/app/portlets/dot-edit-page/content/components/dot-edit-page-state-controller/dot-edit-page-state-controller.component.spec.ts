@@ -7,8 +7,6 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotPageStateServiceMock } from '@tests/dot-page-state.service.mock';
 import { DotPersonalizeServiceMock } from '@tests/dot-personalize-service.mock';
 
-import { InputSwitchModule, SelectButtonModule, TooltipModule } from 'primeng/primeng';
-
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
 import { DotEditPageStateControllerComponent } from './dot-edit-page-state-controller.component';
@@ -26,6 +24,9 @@ import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { dotcmsContentletMock } from '@tests/dotcms-contentlet.mock';
 import { of } from 'rxjs';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TooltipModule } from 'primeng/tooltip';
 
 const mockDotMessageService = new MockDotMessageService({
     'editpage.toolbar.edit.page': 'Edit',

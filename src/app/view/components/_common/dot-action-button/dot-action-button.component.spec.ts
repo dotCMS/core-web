@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MenuModule } from 'primeng/primeng';
+import { MenuModule } from 'primeng/menu';
 import { DotActionButtonComponent } from './dot-action-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotIconButtonModule } from '../dot-icon-button/dot-icon-button.module';

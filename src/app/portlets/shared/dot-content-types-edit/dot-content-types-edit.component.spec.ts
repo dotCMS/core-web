@@ -27,7 +27,7 @@ import { HotkeysService } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../test/hotkeys-service.mock';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { MenuItem, ConfirmationService } from 'primeng/primeng';
+import { MenuItem, ConfirmationService } from 'primeng/api';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotEditContentTypeCacheService } from './components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { SiteServiceMock } from 'src/app/test/site-service.mock';

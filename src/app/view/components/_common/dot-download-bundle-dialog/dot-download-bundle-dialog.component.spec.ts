@@ -12,9 +12,10 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
-import { Dropdown, DropdownModule, SelectButton, SelectButtonModule } from 'primeng/primeng';
 import { DebugElement } from '@angular/core';
 import * as dotUtils from '@shared/dot-utils';
+import { SelectButton, SelectButtonModule } from 'primeng/selectbutton';
+import { Dropdown, DropdownModule } from 'primeng/dropdown';
 
 const mockFilters: DotPushPublishFilter[] = [
     {

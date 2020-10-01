@@ -15,7 +15,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { LoginService, User } from 'dotcms-js';
 import { PaginatorService } from '@services/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { InputTextModule } from 'primeng/primeng';
+import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
