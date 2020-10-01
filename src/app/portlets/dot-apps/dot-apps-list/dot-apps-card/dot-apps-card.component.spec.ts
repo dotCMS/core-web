@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-import { NgxMdModule } from 'ngx-md';
+// import { NgxMdModule } from 'ngx-md';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
@@ -22,7 +22,14 @@ describe('DotAppsCardComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [CardModule, DotAvatarModule, DotIconModule, NgxMdModule, TooltipModule, DotPipesModule],
+            imports: [
+                CardModule,
+                DotAvatarModule,
+                DotIconModule,
+                // NgxMdModule,
+                TooltipModule,
+                DotPipesModule
+            ],
             declarations: [DotAppsCardComponent],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
         }).compileComponents();
@@ -75,7 +82,9 @@ describe('DotAppsCardComponent', () => {
                 fixture.debugElement.query(By.css('.dot-apps-card__configurations')).nativeElement
                     .textContent
             ).toContain(
-                `${component.app.configurationsCount} ${messageServiceMock.get('apps.configurations')}`
+                `${component.app.configurationsCount} ${messageServiceMock.get(
+                    'apps.configurations'
+                )}`
             );
 
             expect(
@@ -104,7 +113,9 @@ describe('DotAppsCardComponent', () => {
             expect(warningIcon.attributes['name']).toBe('warning');
             expect(warningIcon.attributes['size']).toBe('18');
             expect(warningIcon.attributes['ng-reflect-text']).toBe(
-                `${component.app.sitesWithWarnings} ${messageServiceMock.get('apps.invalid.configurations')}`
+                `${component.app.sitesWithWarnings} ${messageServiceMock.get(
+                    'apps.invalid.configurations'
+                )}`
             );
         });
 

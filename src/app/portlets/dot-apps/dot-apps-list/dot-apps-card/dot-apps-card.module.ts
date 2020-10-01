@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
-import { NgxMdModule } from 'ngx-md';
+// import { NgxMdModule } from 'ngx-md';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 
@@ -16,7 +16,7 @@ import { TooltipModule } from 'primeng/tooltip';
         CardModule,
         DotAvatarModule,
         DotIconModule,
-        NgxMdModule,
+        // NgxMdModule,
         TooltipModule,
         DotPipesModule
     ],
