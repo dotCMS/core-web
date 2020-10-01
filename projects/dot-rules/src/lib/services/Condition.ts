@@ -17,7 +17,6 @@ export class ConditionService {
     public get error(): Observable<string> {
         return this._error.asObservable();
     }
-    private _apiRoot: ApiRoot;
     private _baseUrl: string;
 
     private _error: Subject<string> = new Subject<string>();
@@ -27,7 +26,6 @@ export class ConditionService {
         private coreWebService: CoreWebService,
         private loggerService: LoggerService
     ) {
-        this._apiRoot = apiRoot;
         this._baseUrl = `${apiRoot.baseUrl}api/v1/sites/${apiRoot.siteId}/ruleengine/conditions`;
     }
 

@@ -4,19 +4,6 @@ import { FormControl } from '@angular/forms';
 import { LoggerService } from 'dotcms-js';
 import { GCircle } from '../../models/gcircle.model';
 
-interface Param<T> {
-    key: string;
-    priority?: number;
-    value: T;
-}
-
-interface VisitorsLocationParams {
-    comparison: Param<string>;
-    latitude: Param<number>;
-    longitude: Param<number>;
-    radius: Param<number>;
-    preferredDisplayUnits: Param<string>;
-}
 
 const UNITS = {
     km: {
@@ -35,8 +22,7 @@ const UNITS = {
         mi: len => len
     }
 };
-// tslint:disable-next-line:no-unused-variable
-const I8N_BASE = 'api.sites.ruleengine';
+
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [DecimalPipe],

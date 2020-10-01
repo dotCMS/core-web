@@ -4,7 +4,6 @@ import { AfterViewInit, Output, Input, ChangeDetectionStrategy } from '@angular/
 import { NgControl, ControlValueAccessor } from '@angular/forms';
 import { CoreWebService } from 'dotcms-js';
 import { Verify } from '../../../services/validation/Verify';
-import { ApiRoot } from 'dotcms-js';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 
@@ -43,7 +42,6 @@ export class RestDropdown implements AfterViewInit, OnChanges, ControlValueAcces
 
     constructor(
         private coreWebService: CoreWebService,
-        private _apiRoot: ApiRoot,
         @Optional() public control: NgControl
     ) {
         if (control) {

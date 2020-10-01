@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, Output, AfterViewInit, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 
-import { I18nService } from './services/system/locale/I18n';
 import { ServerSideTypeModel } from './services/ServerSideFieldModel';
 import {
     RULE_RULE_ACTION_UPDATE_TYPE,
@@ -61,7 +60,7 @@ export class RuleActionComponent implements OnInit {
 
     typeDropdown: any;
 
-    constructor(private _resources: I18nService, private loggerService: LoggerService) {}
+    constructor(private loggerService: LoggerService) {}
 
     ngOnChanges(change): void {
         if (change.action) {

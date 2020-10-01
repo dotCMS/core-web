@@ -46,16 +46,16 @@
         "src/app/portlets/*"
       ],
       "dot-layout-grid": [
-        "dist-lib/dot-layout-grid"
+        "projects/dot-layout-grid/src/public_api.ts"
       ],
       "dot-layout-grid/*": [
-        "dist-lib/dot-layout-grid/*"
+        "projects/dot-layout-grid/src/public_api.ts"
       ],
       "dot-rules": [
-        "dist-lib/dot-rules"
+        "projects/dot-rules/src/public_api.ts"
       ],
       "dot-rules/*": [
-        "dist-lib/dot-rules/*"
+        "projects/dot-rules/src/public_api.ts"
       ],
       "dotcms-js": [
         "projects/dotcms-js/src/public_api.ts"
@@ -64,10 +64,10 @@
         "projects/dotcms-js/src/public_api.ts"
       ],
       "dotcms": [
-        "dist-lib/dotcms"
+        "projects/dotcms/src/public_api.ts"
       ],
       "dotcms/*": [
-        "dist-lib/dotcms/*"
+        "projects/dotcms/src/public_api.ts"
       ]
     }
   }

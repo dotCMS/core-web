@@ -44,15 +44,6 @@ import { IPublishEnvironment } from './services/bundle-service';
 import { LoggerService } from 'dotcms-js';
 
 const I8N_BASE = 'api.sites.ruleengine';
-// tslint:disable-next-line:no-unused-variable
-const rsrc = {
-    fireOn: {
-        EVERY_PAGE: 'Every Page',
-        EVERY_REQUEST: 'Every Request',
-        ONCE_PER_VISIT: 'Once per visit',
-        ONCE_PER_VISITOR: 'Once per visitor'
-    }
-};
 
 @Component({
     changeDetection: ChangeDetectionStrategy.Default,

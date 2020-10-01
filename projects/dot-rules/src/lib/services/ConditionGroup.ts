@@ -16,7 +16,6 @@ export class ConditionGroupService {
     }
     private _typeName = 'Condition Group';
 
-    private _apiRoot: ApiRoot;
     private _baseUrl: string;
 
     private _error: Subject<string> = new Subject<string>();
@@ -26,7 +25,6 @@ export class ConditionGroupService {
         private coreWebService: CoreWebService,
         private loggerService: LoggerService
     ) {
-        this._apiRoot = apiRoot;
         this._baseUrl = apiRoot.baseUrl + 'api/v1/sites/' + apiRoot.siteId + '/ruleengine/rules';
     }
 
@@ -58,7 +56,7 @@ export class ConditionGroupService {
                     this.loggerService.info('ConditionGroupService', 'makeRequest-Response', json);
                     return json;
                 }),
-                catchError((err: any, source: Observable<any>) => {
+                catchError((err: any, _source: Observable<any>) => {
                     if (err && err.status === HttpCode.NOT_FOUND) {
                         this.loggerService.error(
                             'Could not retrieve ' + this._typeName + ' : 404 path not valid.',

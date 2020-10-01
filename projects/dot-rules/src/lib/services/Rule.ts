@@ -12,6 +12,7 @@ import { CoreWebService } from 'dotcms-js';
 import { SiteService } from 'dotcms-js';
 import { CwError } from 'dotcms-js';
 import { I18nService } from './system/locale/I18n';
+import { HttpResponse } from '@angular/common/http';
 
 export const RULE_CREATE = 'RULE_CREATE';
 export const RULE_DELETE = 'RULE_DELETE';
@@ -365,9 +366,9 @@ export class RuleService {
         method: 'POST',
         url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}`
       }).pipe(
-      map((result: RuleModel) => {
+      map((result: HttpResponse<any>) => {
         body.key = result['id']; // @todo:ggranum type the POST result correctly.
-        return Object.assign({}, DEFAULT_RULE, body, result);
+        return <RuleModel | CwError><unknown>Object.assign({}, DEFAULT_RULE, body, result);
       }));
   }
 
@@ -378,7 +379,7 @@ export class RuleService {
         method: 'DELETE',
         url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${ruleId}`
       }).pipe(
-      map(result => {
+      map(_result => {
         return { success: true };
       }));
   }
@@ -406,7 +407,7 @@ export class RuleService {
         url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
       }).pipe(
       map(result => {
-        return Object.assign({ key: id }, DEFAULT_RULE, result);
+        return <RuleModel | CwError><unknown>Object.assign({ key: id }, DEFAULT_RULE, result);
       }));
   }
 
@@ -473,9 +474,9 @@ export class RuleService {
   }
 
   private _preCacheCommonResources(resources: I18nService): void {
-    resources.get('api.sites.ruleengine').subscribe(rsrc => {});
-    resources.get('api.ruleengine.system').subscribe(rsrc => {});
-    resources.get('api.system.ruleengine').subscribe(rsrc => {});
+    resources.get('api.sites.ruleengine').subscribe(_rsrc => {});
+    resources.get('api.ruleengine.system').subscribe(_rsrc => {});
+    resources.get('api.system.ruleengine').subscribe(_rsrc => {});
   }
 
   private sendLoadRulesRequest(siteId: string): void {
