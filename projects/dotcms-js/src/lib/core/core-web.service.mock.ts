@@ -11,15 +11,14 @@ import {
     HttpParams,
     HttpHeaders
 } from '@angular/common/http';
-import { RequestMethod, RequestOptionsArgs } from '@angular/http';
-import { DotCMSResponse, RequestOptionsParams } from 'dotcms-js';
+import { DotCMSResponse, DotRequestOptionsArgs } from 'dotcms-js';
 
 @Injectable()
 export class CoreWebServiceMock {
     constructor(private _http: HttpClient) {}
 
-    request<T = any>(options: RequestOptionsArgs): Observable<any> {
-        const optionsArgs: RequestOptionsParams = {
+    request<T = any>(options: DotRequestOptionsArgs): Observable<any> {
+        const optionsArgs = {
             params: new HttpParams()
         };
 
@@ -31,7 +30,7 @@ export class CoreWebServiceMock {
 
         return this._http
             .request(
-                new HttpRequest(RequestMethod[options.method], options.url, options.body, {
+                new HttpRequest(options.method, options.url, options.body, {
                     params: optionsArgs.params
                 })
             )
@@ -50,8 +49,8 @@ export class CoreWebServiceMock {
             );
     }
 
-    requestView<T = any>(options: RequestOptionsArgs): Observable<ResponseView<T>> {
-        const optionsArgs: RequestOptionsParams = {
+    requestView<T = any>(options: DotRequestOptionsArgs): Observable<ResponseView<T>> {
+        const optionsArgs = {
             headers: new HttpHeaders(),
             params: new HttpParams()
         };
@@ -62,13 +61,10 @@ export class CoreWebServiceMock {
             });
         }
 
-        if (options.search) {
-            optionsArgs.params = this.setHttpParams(options.search, optionsArgs.params);
-        }
 
         return this._http
             .request(
-                new HttpRequest(RequestMethod[options.method], options.url, options.body, {
+                new HttpRequest(options.method, options.url, options.body, {
                     params: optionsArgs.params
                 })
             )

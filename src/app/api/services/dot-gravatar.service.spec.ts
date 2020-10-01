@@ -2,7 +2,6 @@ import { Observable, of, throwError } from 'rxjs';
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotGravatarService } from './dot-gravatar-service';
-import { Jsonp } from '@angular/http';
 
 const mockProfile = {
     displayName: 'admindotcms',
@@ -40,13 +39,13 @@ describe('DotGravatarService', () => {
         const testbed = TestBed.configureTestingModule({
             providers: [
                 DotGravatarService,
-                { provide: Jsonp, useClass: MockJsonp },
             ],
             imports: [RouterTestingModule]
         });
 
         dotGravatarService = testbed.get(DotGravatarService);
-        mockJsonp = testbed.get(Jsonp);
+        mockJsonp = {};
+        // mockJsonp = testbed.get();
     }));
 
     it('Should return the photos url', (done) => {

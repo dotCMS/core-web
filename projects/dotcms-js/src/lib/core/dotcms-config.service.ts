@@ -1,5 +1,4 @@
 import { CoreWebService } from './core-web.service';
-import { RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { pluck, filter } from 'rxjs/operators';
@@ -59,7 +58,6 @@ export class DotcmsConfigService {
 
         this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
                 url: this.configUrl
             })
             .pipe(pluck('entity'))
