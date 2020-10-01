@@ -67,7 +67,7 @@ export class Dropdown implements ControlValueAccessor, OnChanges {
     @Output() touch: EventEmitter<any> = new EventEmitter();
     @Output() enter: EventEmitter<boolean> = new EventEmitter(false);
 
-    @ViewChild('inputDropdown', { static: false }) inputDropdown: PDropdown;
+    @ViewChild('inputDropdown') inputDropdown: PDropdown;
 
     modelValue: string;
     dropdownOptions: Observable<SelectItem[]>;

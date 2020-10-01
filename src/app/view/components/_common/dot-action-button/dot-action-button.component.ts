@@ -25,7 +25,7 @@ import { MenuItem } from 'primeng/api';
     templateUrl: 'dot-action-button.component.html'
 })
 export class DotActionButtonComponent implements OnInit, OnChanges {
-    @ViewChild('menu', { static: false })
+    @ViewChild('menu')
     menu: Menu;
 
     @Input()

@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, forwardRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
-import { AceEditorComponent } from 'ng2-ace-editor';
+// import { AceEditorComponent } from 'ng2-ace-editor';
 
 @Component({
     selector: 'dot-textarea-content',
@@ -16,8 +16,8 @@ import { AceEditorComponent } from 'ng2-ace-editor';
     ]
 })
 export class DotTextareaContentComponent implements OnInit, ControlValueAccessor {
-    @ViewChild('ace', { static: false })
-    ace: AceEditorComponent;
+    // @ViewChild('ace')
+    // ace: AceEditorComponent;
 
     @Input()
     code: any = {

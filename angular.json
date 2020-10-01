@@ -11,6 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "baseHref": "./",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -34,12 +35,24 @@
           "configurations": {
             "development": {
               "baseHref": "./",
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "poll": 1000,
               "sourceMap": true,
               "watch": true
             },
             "production": {
               "aot": true,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "buildOptimizer": true,
               "deleteOutputPath": true,
               "extractCss": true,
@@ -150,7 +163,8 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/dot-layout-grid/ng-package.prod.json"
+              "project": "projects/dot-layout-grid/ng-package.prod.json",
+              "tsConfig": "projects/dot-layout-grid/tsconfig.lib.prod.json"
             }
           }
         },
@@ -190,7 +204,8 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/dotcms-js/ng-package.prod.json"
+              "project": "projects/dotcms-js/ng-package.prod.json",
+              "tsConfig": "projects/dotcms-js/tsconfig.lib.prod.json"
             }
           }
         },
@@ -227,6 +242,11 @@
           "options": {
             "tsConfig": "projects/dot-rules/tsconfig.lib.json",
             "project": "projects/dot-rules/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dot-rules/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -262,6 +282,11 @@
           "options": {
             "tsConfig": "projects/dotcms/tsconfig.lib.json",
             "project": "projects/dotcms/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dotcms/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -297,6 +322,11 @@
           "options": {
             "tsConfig": "projects/dotcms-models/tsconfig.lib.json",
             "project": "projects/dotcms-models/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dotcms-models/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -326,10 +356,13 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "dot",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "dot"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

@@ -18,7 +18,7 @@ export class DotAddPersonaDialogComponent implements OnInit {
     @Input() visible = false;
     @Input() personaName: string;
     @Output() createdPersona: EventEmitter<DotPersona> = new EventEmitter();
-    @ViewChild('personaForm', { static: false }) personaForm: DotCreatePersonaFormComponent;
+    @ViewChild('personaForm') personaForm: DotCreatePersonaFormComponent;
 
     dialogActions: DotDialogActions;
 

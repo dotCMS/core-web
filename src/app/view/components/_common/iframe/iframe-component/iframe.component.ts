@@ -28,7 +28,7 @@ import { DotFunctionInfo } from '@models/dot-function-info/dot-function-info.mod
     templateUrl: 'iframe.component.html'
 })
 export class IframeComponent implements OnInit, OnDestroy {
-    @ViewChild('iframeElement', { static: false }) iframeElement: ElementRef;
+    @ViewChild('iframeElement') iframeElement: ElementRef;
 
     @Input() src: string;
 
