@@ -33,17 +33,6 @@ export class DotToolbarUserComponent implements OnInit {
     }
 
     /**
-     * Call the logout service and clear the user session
-     *
-     * @returns boolean
-     * @memberof ToolbarUserComponent
-     */
-    logout(): boolean {
-        window.location.href = '/dotAdmin/logout';
-        return false;
-    }
-
-    /**
      * Call the logout as service and clear the user login as
      *
      * @param any $event

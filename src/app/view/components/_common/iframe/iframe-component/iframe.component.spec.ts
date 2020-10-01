@@ -1,13 +1,12 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { IframeOverlayService } from './../service/iframe-overlay.service';
 import { DotLoadingIndicatorService } from './../dot-loading-indicator/dot-loading-indicator.service';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DOTTestBed, MockDotUiColorsService } from '../../../../../test/dot-test-bed';
 import { IframeComponent } from './iframe.component';
-import { LoginService, DotcmsEventsService, LoggerService, StringUtils } from 'dotcms-js';
-import { LoginServiceMock } from '../../../../../test/login-service.mock';
+import { DotcmsEventsService, LoggerService, StringUtils } from 'dotcms-js';
 import { DotIframeService } from '../service/dot-iframe/dot-iframe.service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { DotOverlayMaskModule } from '@components/_common/dot-overlay-mask/dot-overlay-mask.module';
@@ -35,29 +34,25 @@ describe('IframeComponent', () => {
     let dotIframeService: DotIframeService;
     let dotUiColorsService: DotUiColorsService;
     let dotcmsEventsService: DotcmsEventsServiceMock;
-    let loginService: LoginService;
 
     dotcmsEventsService = new DotcmsEventsServiceMock();
 
-    beforeEach(
-        async(() => {
-            TestBed.configureTestingModule({
-                declarations: [IframeComponent, MockDotLoadingIndicatorComponent],
-                imports: [RouterTestingModule, DotOverlayMaskModule, DotPipesModule],
-                providers: [
-                    DotLoadingIndicatorService,
-                    IframeOverlayService,
-                    DotIframeService,
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    { provide: DotcmsEventsService, useValue: dotcmsEventsService },
-                    { provide: DotRouterService, useClass: MockDotRouterService },
-                    { provide: DotUiColorsService, useClass: MockDotUiColorsService },
-                    LoggerService,
-                    StringUtils
-                ]
-            });
-        })
-    );
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [IframeComponent, MockDotLoadingIndicatorComponent],
+            imports: [RouterTestingModule, DotOverlayMaskModule, DotPipesModule],
+            providers: [
+                DotLoadingIndicatorService,
+                IframeOverlayService,
+                DotIframeService,
+                { provide: DotcmsEventsService, useValue: dotcmsEventsService },
+                { provide: DotRouterService, useClass: MockDotRouterService },
+                { provide: DotUiColorsService, useClass: MockDotUiColorsService },
+                LoggerService,
+                StringUtils
+            ]
+        });
+    });
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(IframeComponent);
@@ -66,7 +61,6 @@ describe('IframeComponent', () => {
 
         dotIframeService = de.injector.get(DotIframeService);
         dotUiColorsService = de.injector.get(DotUiColorsService);
-        loginService = de.injector.get(LoginService);
 
         spyOn(dotUiColorsService, 'setColors');
 
@@ -181,7 +175,6 @@ describe('IframeComponent', () => {
     });
 
     describe('bind iframe events', () => {
-
         beforeEach(() => {
             comp.iframeElement.nativeElement = {
                 contentWindow: {
@@ -236,21 +229,20 @@ describe('IframeComponent', () => {
         });
     });
 
-    describe('iframe errors', () => {
-        it('should logout on 401', () => {
-            spyOn(loginService, 'logOutUser').and.callThrough();
-
-            iframeEl.triggerEventHandler('load', {
-                target: {
-                    contentDocument: {
-                        title: '401'
-                    }
-                }
-            });
-
-            expect(loginService.logOutUser).toHaveBeenCalledTimes(1);
-        });
-    });
+    // describe('iframe errors', () => {
+    //     it('should logout on 401', () => {
+    //         spyOnProperty(window.location, 'href');
+    //         iframeEl.triggerEventHandler('load', {
+    //             target: {
+    //                 contentDocument: {
+    //                     title: '401'
+    //                 }
+    //             }
+    //         });
+    //
+    //         expect(window.location.href).toHaveBeenCalledWith('/dotAdmin/logout');
+    //     });
+    // });
 
     describe('dot-overlay-mask', () => {
         let iframeOverlayService: IframeOverlayService;

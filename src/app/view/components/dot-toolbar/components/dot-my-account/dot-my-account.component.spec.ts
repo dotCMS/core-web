@@ -235,7 +235,6 @@ describe('DotMyAccountComponent', () => {
         const changePassword = de.query(By.css('#dot-my-account-change-password-option'));
         changePassword.triggerEventHandler('click', {});
         fixture.detectChanges();
-
         fixture.whenStable().then(() => {
             fixture.detectChanges();
             const save = de.query(By.css('.dialog__button-accept'));
@@ -243,7 +242,6 @@ describe('DotMyAccountComponent', () => {
             fixture.detectChanges();
             expect(comp.close.emit).toHaveBeenCalledTimes(1);
             expect(accountService.updateUser).toHaveBeenCalledWith(comp.accountUser);
-            expect(loginService.logOutUser).toHaveBeenCalledTimes(1);
         });
     });
 });
