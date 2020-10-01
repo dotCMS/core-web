@@ -1,4 +1,4 @@
-import { Observable, of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotGravatarService } from './dot-gravatar-service';
@@ -21,19 +21,10 @@ const mockProfile = {
     urls: []
 };
 
-class MockJsonp {
-    get(): Observable<any> {
-        return of({
-                _body: {
-                    entry: [mockProfile]
-                }
-            });
-    }
-}
 
 describe('DotGravatarService', () => {
     let dotGravatarService: DotGravatarService;
-    let mockJsonp: Jsonp;
+    let mockJsonp;
 
     beforeEach(async(() => {
         const testbed = TestBed.configureTestingModule({

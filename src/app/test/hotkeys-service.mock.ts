@@ -13,7 +13,7 @@ import { of as observableOf, Observable } from 'rxjs';
  */
 
 export class TestHotkeysMock {
-    private hotkeys = [];
+    // private _hotkeys = [];
 
     /**
      * Add hotkey items to hotkeys array and then be able go through them to get combo keys
@@ -48,7 +48,7 @@ export class TestHotkeysMock {
 
     //     return hotKeyCombo.length === 1 ? hotKeyCombo[0] : hotKeyCombo;
     // }
-    get(combo: string[]): [] {
+    get(_combo: string[]): [] {
         return [];
     }
 
