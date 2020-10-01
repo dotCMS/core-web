@@ -1,7 +1,6 @@
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
-import { PasswordModule, InputTextModule, CheckboxModule } from 'primeng/primeng';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotMyAccountComponent } from './dot-my-account.component';
@@ -15,6 +14,9 @@ import { DebugElement } from '@angular/core';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
 
 describe('DotMyAccountComponent', () => {
     let fixture: ComponentFixture<DotMyAccountComponent>;

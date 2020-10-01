@@ -1,7 +1,7 @@
 import { ContentTypeFieldsAddRowComponent } from './content-type-fields-add-row.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';

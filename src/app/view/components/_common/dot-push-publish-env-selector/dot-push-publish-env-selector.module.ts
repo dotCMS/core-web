@@ -6,7 +6,7 @@ import { PushPublishEnvSelectorComponent } from './dot-push-publish-env-selector
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { DataListModule } from 'primeng/datalist';
+// import { DataListModule } from 'primeng/datalist';
 import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
@@ -14,7 +14,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     exports: [PushPublishEnvSelectorComponent],
     imports: [
         CommonModule,
-        DataListModule,
+        // DataListModule,
         ButtonModule,
         FormsModule,
         MultiSelectModule,

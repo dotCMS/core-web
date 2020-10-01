@@ -23,7 +23,7 @@ import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-e
 import { mockDotThemes } from '../../../../test/dot-themes.mock';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { DotThemesServiceMock } from '../../../../test/dot-themes-service.mock';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 import * as _ from 'lodash';
 import { SiteServiceMock } from '../../../../test/site-service.mock';
 import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model';

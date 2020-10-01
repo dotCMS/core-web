@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { dotMenuMock } from '../../services/dot-navigation.service.spec';
 import { DotMenu } from '@models/navigation';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'dot-test-host-component',

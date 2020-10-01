@@ -6,14 +6,6 @@ import { PushPublishServiceMock } from '@components/_common/dot-push-publish-env
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-    CalendarModule,
-    ConfirmationService,
-    Dropdown,
-    DropdownModule,
-    SelectButton,
-    SelectButtonModule
-} from 'primeng/primeng';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { PushPublishEnvSelectorModule } from '@components/_common/dot-push-publish-env-selector/dot-push-publish-env-selector.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
@@ -32,10 +24,13 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { By } from '@angular/platform-browser';
 import { DotPushPublishDialogData } from 'dotcms-models';
-import { SelectItem } from 'primeng/api';
+import { ConfirmationService, SelectItem } from 'primeng/api';
 import { PushPublishEnvSelectorComponent } from '@components/_common/dot-push-publish-env-selector/dot-push-publish-env-selector.component';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SelectButton, SelectButtonModule } from 'primeng/selectbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { Dropdown, DropdownModule } from 'primeng/dropdown';
 
 const messageServiceMock = new MockDotMessageService({
     'contenttypes.content.push_publish.action.push': 'Push',

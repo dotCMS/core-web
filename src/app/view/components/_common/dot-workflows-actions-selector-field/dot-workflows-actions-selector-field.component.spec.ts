@@ -8,10 +8,11 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { By } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Dropdown, DropdownModule, SelectItemGroup } from 'primeng/primeng';
 import { DotWorkflowsActionsSelectorFieldService } from './services/dot-workflows-actions-selector-field.service';
 import { DotCMSWorkflow } from 'dotcms-models';
 import { mockWorkflows } from '@tests/dot-workflow-service.mock';
+import { SelectItemGroup } from 'primeng/api';
+import { Dropdown, DropdownModule } from 'primeng/dropdown';
 
 @Component({
     selector: 'dot-fake-form',

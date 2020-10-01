@@ -13,7 +13,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { DataGridModule } from 'primeng/datagrid';
+import { DataViewModule } from 'primeng/dataview';
 
 @NgModule({
     declarations: [DotThemeSelectorComponent],
@@ -25,7 +25,7 @@ import { DataGridModule } from 'primeng/datagrid';
         DialogModule,
         DotSiteSelectorModule,
         InputTextModule,
-        DataGridModule,
+        DataViewModule,
         DotDialogModule,
         DotIconModule,
         DotPipesModule

@@ -15,7 +15,7 @@ import { IframeOverlayService } from '@components/_common/iframe/service/iframe-
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { SharedModule } from 'primeng/components/common/shared';
+import { SharedModule } from 'primeng/api';
 
 @NgModule({
     declarations: [DotPersonaSelectorComponent],

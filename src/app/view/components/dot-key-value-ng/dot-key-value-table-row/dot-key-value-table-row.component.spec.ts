@@ -15,9 +15,10 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { PrimeTemplate, InputSwitchModule } from 'primeng/primeng';
 import { DotKeyValue } from '@shared/models/dot-key-value-ng/dot-key-value-ng.model';
 import { mockKeyValue } from '../dot-key-value-ng.component.spec';
+import { PrimeTemplate } from 'primeng/api';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @Component({
     selector: 'dot-test-host-component',

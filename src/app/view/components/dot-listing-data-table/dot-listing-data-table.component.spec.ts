@@ -7,7 +7,6 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { SharedModule, MenuModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { FormatDateService } from '@services/format-date-service';
@@ -22,6 +21,8 @@ import { DotMenuModule } from '../_common/dot-menu/dot-menu.module';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 import { DotStringFormatPipe } from '@pipes/dot-string-format/dot-string-format.pipe';
+import { SharedModule } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
 
 describe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;

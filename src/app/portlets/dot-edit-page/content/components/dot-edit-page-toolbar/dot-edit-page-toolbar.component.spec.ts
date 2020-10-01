@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { CheckboxModule, ToolbarModule, ButtonModule, ConfirmationService } from 'primeng/primeng';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { mockDotRenderedPageState } from '@tests/dot-rendered-page-state.mock';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
@@ -48,6 +47,10 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotWizardModule } from '@components/_common/dot-wizard/dot-wizard.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
     selector: 'dot-test-host-component',

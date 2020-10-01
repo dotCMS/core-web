@@ -7,7 +7,7 @@ import { DotPageSelectorComponent } from './dot-page-selector.component';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageSelectorService } from './service/dot-page-selector.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { AutoComplete } from 'primeng/primeng';
+import { AutoComplete } from 'primeng/autocomplete';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import {

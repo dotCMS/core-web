@@ -8,13 +8,7 @@ import { LoginServiceMock, mockUser } from '@tests/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import {
-    Checkbox,
-    CheckboxModule,
-    Dropdown,
-    DropdownModule,
-    InputTextModule
-} from 'primeng/primeng';
+
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotLoadingIndicatorModule } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
@@ -24,6 +18,8 @@ import { DotLoginPageStateService } from '@components/login/shared/services/dot-
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { MockDotLoginPageStateService } from '@components/login/dot-login-page-resolver.service.spec';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { Checkbox, CheckboxModule } from 'primeng/checkbox';
+import { Dropdown, DropdownModule } from 'primeng/dropdown';
 
 describe('DotLoginComponent', () => {
     let component: DotLoginComponent;
@@ -52,7 +48,7 @@ describe('DotLoginComponent', () => {
                 CheckboxModule,
                 DropdownModule,
                 MdInputTextModule,
-                InputTextModule,
+                MdInputTextModule,
                 DotLoadingIndicatorModule,
                 DotFieldValidationMessageModule,
                 RouterTestingModule

@@ -4,7 +4,6 @@ import { DebugElement, Component, Input } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { MenuModule, Menu, ConfirmationService } from 'primeng/primeng';
 import {
     CoreWebService,
     DotcmsConfigService,
@@ -42,6 +41,8 @@ import { dotEventSocketURLFactory } from '@tests/dot-test-bed';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
+import { Menu, MenuModule } from 'primeng/menu';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
     selector: 'dot-test-host-component',

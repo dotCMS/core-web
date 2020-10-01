@@ -11,14 +11,6 @@ import {
 } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import {
-    DropdownModule,
-    OverlayPanelModule,
-    ButtonModule,
-    InputTextModule,
-    TabViewModule
-} from 'primeng/primeng';
-
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
@@ -51,6 +43,11 @@ import {
 import { DotWorkflowsActionsSelectorFieldModule } from '@components/_common/dot-workflows-actions-selector-field/dot-workflows-actions-selector-field.module';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TabViewModule } from 'primeng/tabview';
 
 @Component({
     selector: 'dot-site-selector-field',

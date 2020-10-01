@@ -3,7 +3,7 @@ import { of, throwError } from 'rxjs';
 
 import { ResponseView, HttpCode } from 'dotcms-js';
 
-import { SelectItemGroup } from 'primeng/primeng';
+import { SelectItemGroup } from 'primeng/api';
 
 import { DotWorkflowsActionsSelectorFieldService } from './dot-workflows-actions-selector-field.service';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';

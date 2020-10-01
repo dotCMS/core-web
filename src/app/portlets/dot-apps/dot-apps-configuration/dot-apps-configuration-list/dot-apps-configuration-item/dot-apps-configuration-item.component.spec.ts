@@ -8,7 +8,7 @@ import { DotAppsConfigurationItemComponent } from './dot-apps-configuration-item
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { By } from '@angular/platform-browser';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-import { TooltipModule } from 'primeng/primeng';
+import { TooltipModule } from 'primeng/tooltip';
 
 const messages = {
     'apps.key': 'Key',

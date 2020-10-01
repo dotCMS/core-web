@@ -16,7 +16,7 @@ import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { Site, SiteService } from 'dotcms-js';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { PaginatorService } from '@services/paginator';
-import { DataGrid } from 'primeng/datagrid';
+import { DataView } from 'primeng/dataview';
 import { LazyLoadEvent } from 'primeng/api';
 
 /**
@@ -46,7 +46,7 @@ export class DotThemeSelectorComponent implements OnInit {
     searchInput: ElementRef;
 
     @ViewChild('dataGrid', { static: true })
-    datagrid: DataGrid;
+    datagrid: DataView;
 
     current: DotTheme;
     visible = true;
