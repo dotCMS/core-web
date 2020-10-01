@@ -69,7 +69,13 @@
       ],
       "dotcms/*": [
         "projects/dotcms/src/public_api.ts"
-      ]
+      ],
+      "dotcms-models": [
+        "projects/dotcms-models/src/public_api.ts"
+      ],
+      "dotcms-models/*": [
+        "projects/dotcms-models/src/public_api.ts"
+      ],
     }
   }
 }
