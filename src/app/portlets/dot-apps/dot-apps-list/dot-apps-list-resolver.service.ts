@@ -3,13 +3,8 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { map, mergeMap, take } from 'rxjs/operators';
-import { DotApps } from '@shared/models/dot-apps/dot-apps.model';
+import { DotApps, DotAppsListResolverData } from '@shared/models/dot-apps/dot-apps.model';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
-
-export interface DotAppsListResolverData {
-    apps: DotApps[];
-    isEnterpriseLicense: boolean;
-}
 
 /**
  * Returns apps list from the system
