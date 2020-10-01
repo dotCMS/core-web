@@ -75,7 +75,7 @@
       ],
       "dotcms-models/*": [
         "projects/dotcms-models/src/public_api.ts"
-      ],
+      ]
     }
   }
 }
