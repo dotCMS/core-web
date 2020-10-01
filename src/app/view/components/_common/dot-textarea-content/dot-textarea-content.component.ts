@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, forwardRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem } from 'primeng/api';
 import { AceEditorComponent } from 'ng2-ace-editor';
 
 @Component({

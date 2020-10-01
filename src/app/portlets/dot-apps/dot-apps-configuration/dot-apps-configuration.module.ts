@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InputTextModule, ButtonModule } from 'primeng/primeng';
 
 import { DotAppsConfigurationComponent } from './dot-apps-configuration.component';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
@@ -12,6 +11,9 @@ import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/do
 import { NgxMdModule } from 'ngx-md';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     imports: [

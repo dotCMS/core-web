@@ -12,11 +12,12 @@ import {
 } from '@angular/core';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotTheme } from '../../../shared/models/dot-theme.model';
-import { DataGrid, LazyLoadEvent } from 'primeng/primeng';
 
 import { Site, SiteService } from 'dotcms-js';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { PaginatorService } from '@services/paginator';
+import { DataGrid } from 'primeng/datagrid';
+import { LazyLoadEvent } from 'primeng/api';
 
 /**
  * The DotThemeSelectorComponent is modal that

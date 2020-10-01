@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-    CheckboxModule,
-    InputTextareaModule,
-    InputTextModule,
-    TooltipModule,
-    DropdownModule
-} from 'primeng/primeng';
 
 import { DotAppsConfigurationDetailFormComponent } from './dot-apps-configuration-detail-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { NgxMdModule } from 'ngx-md';
+
+import { CheckboxModule } from 'primeng/checkbox';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
     imports: [

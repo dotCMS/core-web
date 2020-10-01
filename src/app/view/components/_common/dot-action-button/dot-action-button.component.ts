@@ -10,7 +10,8 @@ import {
     HostListener,
     OnChanges
 } from '@angular/core';
-import { MenuItem, Menu } from 'primeng/primeng';
+import { Menu } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 
 /**
  * The ActionButtonComponent is a configurable button with

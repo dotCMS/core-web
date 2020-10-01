@@ -5,7 +5,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { LoggerService } from 'dotcms-js';
 import { AddToBundleService } from '@services/add-to-bundle/add-to-bundle.service';
 import { DotBundle } from '@models/dot-bundle/dot-bundle';
-import { Dropdown } from 'primeng/primeng';
+import { Dropdown } from 'primeng/dropdown';
 import { map, tap, take, takeUntil } from 'rxjs/operators';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 

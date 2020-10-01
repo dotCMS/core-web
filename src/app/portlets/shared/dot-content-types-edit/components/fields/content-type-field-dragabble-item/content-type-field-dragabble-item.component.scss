@@ -19,7 +19,7 @@
     }
 }
 
-dot-icon-button-tooltip /deep/ .material-icons,
+dot-icon-button-tooltip ::ng-deep .material-icons,
 dot-icon {
     color: $gray;
 }
