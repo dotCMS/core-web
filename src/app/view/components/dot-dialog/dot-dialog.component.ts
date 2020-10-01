@@ -18,7 +18,7 @@ import { filter } from 'rxjs/operators';
     styleUrls: ['./dot-dialog.component.scss']
 })
 export class DotDialogComponent implements OnChanges {
-    @ViewChild('dialog') dialog: ElementRef;
+    @ViewChild('dialog', { static: false }) dialog: ElementRef;
 
     @Input()
     @HostBinding('class.active')

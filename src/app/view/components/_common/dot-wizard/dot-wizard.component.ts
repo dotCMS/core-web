@@ -35,7 +35,7 @@ export class DotWizardComponent implements OnInit, OnDestroy {
     @Input() data: DotWizardInput;
     @ViewChildren(DotContainerReferenceDirective)
     formHosts: QueryList<DotContainerReferenceDirective>;
-    @ViewChild('dialog') dialog: DotDialogComponent;
+    @ViewChild('dialog', { static: true }) dialog: DotDialogComponent;
 
     private currentStep = 0;
     private componentsHost: DotContainerReferenceDirective[];

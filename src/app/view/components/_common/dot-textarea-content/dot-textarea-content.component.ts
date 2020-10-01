@@ -16,7 +16,7 @@ import { AceEditorComponent } from 'ng2-ace-editor';
     ]
 })
 export class DotTextareaContentComponent implements OnInit, ControlValueAccessor {
-    @ViewChild('ace')
+    @ViewChild('ace', { static: false })
     ace: AceEditorComponent;
 
     @Input()

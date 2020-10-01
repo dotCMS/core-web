@@ -10,7 +10,7 @@ import { DotTextareaContentComponent } from '@components/_common/dot-textarea-co
     styleUrls: ['./values-property.component.scss']
 })
 export class ValuesPropertyComponent {
-    @ViewChild('value') value: DotTextareaContentComponent;
+    @ViewChild('value', { static: true }) value: DotTextareaContentComponent;
     property: FieldProperty;
     group: FormGroup;
     helpText: string;

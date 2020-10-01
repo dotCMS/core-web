@@ -36,8 +36,8 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
 
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('gf') globalSearch: ElementRef;
-    @ViewChild('dataTable') dataTable: Table;
+    @ViewChild('gf', { static: true }) globalSearch: ElementRef;
+    @ViewChild('dataTable', { static: true }) dataTable: Table;
 
     readonly DATE_FORMAT = 'date';
 

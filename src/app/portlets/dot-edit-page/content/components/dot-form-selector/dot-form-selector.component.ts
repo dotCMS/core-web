@@ -27,9 +27,9 @@ export class DotFormSelectorComponent implements OnInit, OnChanges {
 
     @Output() close = new EventEmitter<any>();
 
-    @ViewChild('datatable') datatable: DataTable;
+    @ViewChild('datatable', { static: true }) datatable: DataTable;
 
-    @ViewChild('dialog') dotDialog: DotDialogComponent;
+    @ViewChild('dialog', { static: true }) dotDialog: DotDialogComponent;
 
     items: DotCMSContentType[];
     contentMinHeight: string;

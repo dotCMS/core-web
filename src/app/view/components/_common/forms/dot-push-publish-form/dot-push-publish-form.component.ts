@@ -42,7 +42,7 @@ export class DotPushPublishFormComponent
     @Output() value = new EventEmitter<DotPushPublishData>();
     @Output() valid = new EventEmitter<boolean>();
 
-    @ViewChild('customCode') customCodeContainer: ElementRef;
+    @ViewChild('customCode', { static: true }) customCodeContainer: ElementRef;
 
     private defaultFilterKey: string;
     private _filterOptions: SelectItem[] = null;

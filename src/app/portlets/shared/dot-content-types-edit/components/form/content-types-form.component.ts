@@ -44,7 +44,7 @@ import { FieldUtil } from '../fields/util/field-util';
     templateUrl: 'content-types-form.component.html'
 })
 export class ContentTypesFormComponent implements OnInit, OnDestroy {
-    @ViewChild('name') name: ElementRef;
+    @ViewChild('name', { static: true }) name: ElementRef;
 
     @Input() data: DotCMSContentType;
 

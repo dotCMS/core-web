@@ -24,7 +24,7 @@ import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
     templateUrl: 'dot-action-button.component.html'
 })
 export class DotActionButtonComponent implements OnInit, OnChanges {
-    @ViewChild('menu')
+    @ViewChild('menu', { static: false })
     menu: Menu;
 
     @Input()

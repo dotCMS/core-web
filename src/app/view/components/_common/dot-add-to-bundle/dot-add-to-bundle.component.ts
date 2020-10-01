@@ -28,9 +28,9 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit, OnDestroy
 
     @Output() cancel = new EventEmitter<boolean>();
 
-    @ViewChild('formEl') formEl: HTMLFormElement;
+    @ViewChild('formEl', { static: true }) formEl: HTMLFormElement;
 
-    @ViewChild('addBundleDropdown') addBundleDropdown: Dropdown;
+    @ViewChild('addBundleDropdown', { static: true }) addBundleDropdown: Dropdown;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 

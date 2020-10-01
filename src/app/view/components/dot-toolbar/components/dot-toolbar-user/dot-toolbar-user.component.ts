@@ -11,7 +11,7 @@ import { DotNavigationService } from '@components/dot-navigation/services/dot-na
     templateUrl: 'dot-toolbar-user.component.html'
 })
 export class DotToolbarUserComponent implements OnInit {
-    @ViewChild(DotDropdownComponent)
+    @ViewChild(DotDropdownComponent, { static: false })
     dropdown: DotDropdownComponent;
     auth: Auth;
 

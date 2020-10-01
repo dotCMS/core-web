@@ -22,7 +22,7 @@ import { LOCATION_TOKEN } from 'src/app/providers';
 export class DotEditPageInfoComponent implements OnInit {
     @Input() pageState: DotPageRenderState;
 
-    @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
+    @ViewChild('lockedPageMessage', { static: false }) lockedPageMessage: ElementRef;
 
     url$: Observable<string>;
     apiLink: string;
