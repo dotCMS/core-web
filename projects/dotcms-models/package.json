@@ -1,8 +1,4 @@
 {
   "name": "dotcms-models",
-  "version": "0.0.11",
-  "peerDependencies": {
-    "@angular/common": "^7.1.0",
-    "@angular/core": "^7.1.0"
-  }
+  "version": "0.0.11"
 }
