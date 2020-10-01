@@ -4,7 +4,6 @@ import {from as observableFrom,  Subject } from 'rxjs';
 import {mergeMap, reduce, map, tap} from 'rxjs/operators';
 // tslint:disable-next-line:max-file-line-count
 import { Injectable } from '@angular/core';
-import { RequestMethod } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { ApiRoot } from 'dotcms-js';
@@ -363,7 +362,7 @@ export class RuleService {
     return this.coreWebService
       .request({
         body: RuleService.fromClientRuleTransformFn(body),
-        method: RequestMethod.Post,
+        method: 'POST',
         url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}`
       }).pipe(
       map((result: RuleModel) => {
@@ -376,7 +375,7 @@ export class RuleService {
     const siteId = this.loadRulesSiteId();
     return this.coreWebService
       .request({
-        method: RequestMethod.Delete,
+        method: 'DELETE',
         url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${ruleId}`
       }).pipe(
       map(result => {
@@ -404,7 +403,6 @@ export class RuleService {
     const siteId = this.loadRulesSiteId();
     return this.coreWebService
       .request({
-        method: RequestMethod.Get,
         url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
       }).pipe(
       map(result => {
@@ -421,7 +419,7 @@ export class RuleService {
       result = this.coreWebService
         .request({
           body: RuleService.fromClientRuleTransformFn(rule),
-          method: RequestMethod.Put,
+          method: 'PUT',
           url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
         }).pipe(
         map(res => {
@@ -436,7 +434,6 @@ export class RuleService {
   getConditionTypes(): Observable<ServerSideTypeModel[]> {
     return this.coreWebService
       .request({
-        method: RequestMethod.Get,
         url: this._conditionTypesEndpointUrl
       }).pipe(
       map(this.fromServerServersideTypesTransformFn));
@@ -445,7 +442,6 @@ export class RuleService {
   getRuleActionTypes(): Observable<ServerSideTypeModel[]> {
     return this.coreWebService
       .request({
-        method: RequestMethod.Get,
         url: this._ruleActionTypesEndpointUrl
       }).pipe(
       map(this.fromServerServersideTypesTransformFn));
@@ -454,7 +450,6 @@ export class RuleService {
   _doLoadRuleActionTypes(): Observable<ServerSideTypeModel[]> {
     return this.coreWebService
       .request({
-        method: RequestMethod.Get,
         url: this._ruleActionTypesEndpointUrl
       }).pipe(
       map(this.fromServerServersideTypesTransformFn));
@@ -463,7 +458,6 @@ export class RuleService {
   _doLoadConditionTypes(): Observable<ServerSideTypeModel[]> {
     return this.coreWebService
       .request({
-        method: RequestMethod.Get,
         url: this._conditionTypesEndpointUrl
       }).pipe(
       map(this.fromServerServersideTypesTransformFn));
@@ -487,7 +481,6 @@ export class RuleService {
   private sendLoadRulesRequest(siteId: string): void {
     this.coreWebService
       .request({
-        method: RequestMethod.Get,
         url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}/ruleengine/rules`
       })
       .subscribe(

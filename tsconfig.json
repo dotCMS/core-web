@@ -58,10 +58,10 @@
         "dist-lib/dot-rules/*"
       ],
       "dotcms-js": [
-        "dist-lib/dotcms-js"
+        "projects/dotcms-js/src/public_api.ts"
       ],
       "dotcms-js/*": [
-        "dist-lib/dotcms-js/*"
+        "projects/dotcms-js/src/public_api.ts"
       ],
       "dotcms": [
         "dist-lib/dotcms"

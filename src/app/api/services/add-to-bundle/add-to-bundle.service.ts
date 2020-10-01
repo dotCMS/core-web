@@ -1,8 +1,7 @@
-import { pluck, mergeMap } from 'rxjs/operators';
+import { pluck, mergeMap, map } from 'rxjs/operators';
 import { CoreWebService, ApiRoot } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Headers, RequestMethod } from '@angular/http';
 import { DotCurrentUser } from '@models/dot-current-user/dot-current-user';
 import { DotBundle } from '@models/dot-bundle/dot-bundle';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
@@ -33,7 +32,6 @@ export class AddToBundleService {
             mergeMap((user: DotCurrentUser) => {
                 return this.coreWebService
                     .requestView({
-                        method: RequestMethod.Get,
                         url: `${this.bundleUrl}/${user.userId}`
                     })
                     .pipe(pluck('bodyJsonObject', 'items'));
@@ -52,13 +50,13 @@ export class AddToBundleService {
         assetIdentifier: string,
         bundleData: DotBundle
     ): Observable<DotAjaxActionResponseView> {
-        const headers = new Headers();
-        headers.set('Content-Type', 'application/x-www-form-urlencoded');
         return this.coreWebService.request({
             body: `assetIdentifier=${assetIdentifier}&bundleName=${bundleData.name}&bundleSelect=${bundleData.id}`,
-            headers,
-            method: RequestMethod.Post,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
             url: this.addToBundleUrl
-        });
+        }).pipe(map((res: any) => <DotAjaxActionResponseView>res));
     }
 }

@@ -2,9 +2,7 @@ import { map } from 'rxjs/operators';
 import { Component, EventEmitter, OnChanges, Optional } from '@angular/core';
 import { AfterViewInit, Output, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NgControl, ControlValueAccessor } from '@angular/forms';
-import { RequestMethod } from '@angular/http';
 import { CoreWebService } from 'dotcms-js';
-
 import { Verify } from '../../../services/validation/Verify';
 import { ApiRoot } from 'dotcms-js';
 import { Observable } from 'rxjs';
@@ -102,12 +100,9 @@ export class RestDropdown implements AfterViewInit, OnChanges, ControlValueAcces
 
     ngOnChanges(change): void {
         if (change.optionUrl) {
-            const requestOptionArgs = this._apiRoot.getDefaultRequestOptions();
             this._options = this.coreWebService
                 .request({
-                    method: RequestMethod.Get,
                     url: change.optionUrl.currentValue,
-                    ...requestOptionArgs
                 })
                 .pipe(map((res: any) => this.jsonEntriesToOptions(res)));
         }

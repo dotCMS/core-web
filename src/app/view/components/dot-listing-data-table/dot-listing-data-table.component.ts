@@ -6,7 +6,7 @@ import {
     OnChanges,
     ViewChild,
     ElementRef,
-    OnInit
+    OnInit, SimpleChanges
 } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Table } from 'primeng/table';
@@ -54,7 +54,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
         this.paginatorService.url = this.url;
     }
 
-    ngOnChanges(changes): void {
+    ngOnChanges(changes: SimpleChanges): void {
         if (changes.url && changes.url.currentValue) {
             this.paginatorService.url = changes.url.currentValue;
         }
@@ -66,6 +66,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
             this.loadData(0);
         }
         if (changes.paginationPerPage && changes.paginationPerPage.currentValue) {
+            console.log('here');
             this.paginatorService.paginationPerPage = this.paginationPerPage;
         }
     }

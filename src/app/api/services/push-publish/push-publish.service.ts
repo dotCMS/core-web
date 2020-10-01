@@ -1,8 +1,7 @@
-import { toArray, filter, pluck, mergeMap } from 'rxjs/operators';
+import { toArray, filter, pluck, mergeMap, map } from 'rxjs/operators';
 import { CoreWebService, ApiRoot } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Headers, RequestMethod } from '@angular/http';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
 import { DotAjaxActionResponseView } from '@models/ajax-action-response/dot-ajax-action-response';
 import * as moment from 'moment';
@@ -43,7 +42,6 @@ export class PushPublishService {
         return this.currentUser.getCurrentUser().pipe(
             mergeMap((user: DotCurrentUser) => {
                 return this.coreWebService.requestView({
-                    method: RequestMethod.Get,
                     url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
                 });
             }),
@@ -67,14 +65,15 @@ export class PushPublishService {
         isBundle: boolean
     ): Observable<DotAjaxActionResponseView> {
         this._lastEnvironmentPushed = pushPublishData.environment;
-        const headers = new Headers();
-        headers.set('Content-Type', 'application/x-www-form-urlencoded');
+
         return this.coreWebService.request({
             body: this.getPublishEnvironmentData(assetIdentifier, pushPublishData),
-            headers,
-            method: RequestMethod.Post,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
             url: isBundle ? this.publishBundleURL : this.publishUrl
-        });
+        }).pipe(map((res: any) => <DotAjaxActionResponseView>res));
     }
 
     private getPublishEnvironmentData(

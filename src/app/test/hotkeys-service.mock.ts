@@ -1,5 +1,5 @@
 import { of as observableOf, Observable } from 'rxjs';
-import { Hotkey } from 'angular2-hotkeys';
+// import { Hotkey } from 'angular2-hotkeys';
 
 /**
  * Mock of HotkeysService.
@@ -20,10 +20,14 @@ export class TestHotkeysMock {
      * @param hotkey
      * @param specificEvent
      */
-    add(hotkey: Hotkey | Hotkey[], _specificEvent?: string | string[]): Observable<Hotkey[]> {
-        this.hotkeys.push(hotkey);
+    add(): Observable<[]> {
+
         return observableOf([]);
     }
+    // add(hotkey: Hotkey | Hotkey[], _specificEvent?: string | string[]): Observable<Hotkey[]> {
+    //     this.hotkeys.push(hotkey);
+    //     return observableOf([]);
+    // }
 
     /**
      * Go through hotkeys items and push hotkey into hotKeyCombo if included in combo param
@@ -32,17 +36,20 @@ export class TestHotkeysMock {
      * @returns (Hotkey | Hotkey[])
      * @memberof TestHotkeysMock
      */
-    get(combo: string[]): Hotkey | Hotkey[] {
-        const hotKeyCombo: Hotkey[] = [];
-        this.hotkeys.forEach((hotkey) => {
-            hotkey.combo.forEach((hotkeyCombo) => {
-                if (combo.includes(hotkeyCombo)) {
-                    hotKeyCombo.push(hotkey);
-                }
-            });
-        });
+    // get(combo: string[]): Hotkey | Hotkey[] {
+    //     const hotKeyCombo: Hotkey[] = [];
+    //     this.hotkeys.forEach((hotkey) => {
+    //         hotkey.combo.forEach((hotkeyCombo) => {
+    //             if (combo.includes(hotkeyCombo)) {
+    //                 hotKeyCombo.push(hotkey);
+    //             }
+    //         });
+    //     });
 
-        return hotKeyCombo.length === 1 ? hotKeyCombo[0] : hotKeyCombo;
+    //     return hotKeyCombo.length === 1 ? hotKeyCombo[0] : hotKeyCombo;
+    // }
+    get(combo: string[]): [] {
+        return [];
     }
 
     /**
@@ -52,7 +59,10 @@ export class TestHotkeysMock {
      * @returns (Hotkey | Hotkey[])
      * @memberof TestHotkeysMock
      */
-    remove(_hotkey?: Hotkey | Hotkey[]): Hotkey | Hotkey[] {
+    // remove(_hotkey?: Hotkey | Hotkey[]): Hotkey | Hotkey[] {
+    //     return null;
+    // }
+    remove(): any {
         return null;
     }
 

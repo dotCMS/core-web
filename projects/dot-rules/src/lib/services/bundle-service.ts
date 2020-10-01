@@ -2,7 +2,6 @@ import { of as observableOf, Observable, Subject } from 'rxjs';
 
 import { map, mergeMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Headers, RequestMethod } from '@angular/http';
 
 import { ApiRoot } from 'dotcms-js';
 import { CoreWebService } from 'dotcms-js';
@@ -56,7 +55,6 @@ export class BundleService {
 
     getLoggedUser(): Observable<IUser> {
         return this.coreWebService.request({
-            method: RequestMethod.Get,
             url: this._loggedUserUrl
         });
     }
@@ -76,7 +74,6 @@ export class BundleService {
             mergeMap((user: IUser) => {
                 return this.coreWebService
                     .request({
-                        method: RequestMethod.Get,
                         url: `${this._bundleStoreUrl}/${user.userId}`
                     })
                     .pipe(map(BundleService.fromServerBundleTransformFn));
@@ -104,7 +101,6 @@ export class BundleService {
             mergeMap((user: IUser) => {
                 return this.coreWebService
                     .request({
-                        method: RequestMethod.Get,
                         url: `${this._pushEnvironementsUrl}/${user.roleId}/?name=0`
                     })
                     .pipe(map(BundleService.fromServerEnvironmentTransformFn));
@@ -116,12 +112,12 @@ export class BundleService {
         ruleId: string,
         bundle: IBundle
     ): Observable<{ errorMessages: string[]; total: number; errors: number }> {
-        const headers = new Headers();
-        headers.set('Content-Type', 'application/x-www-form-urlencoded');
         return this.coreWebService.request({
             body: `assetIdentifier=${ruleId}&bundleName=${bundle.name}&bundleSelect=${bundle.id}`,
-            headers,
-            method: RequestMethod.Post,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
             url: this._addToBundleUrl
         });
     }
@@ -130,12 +126,12 @@ export class BundleService {
         ruleId: string,
         environmentId: string
     ): Observable<{ errorMessages: string[]; total: number; bundleId: string; errors: number }> {
-        const headers = new Headers();
-        headers.set('Content-Type', 'application/x-www-form-urlencoded');
         return this.coreWebService.request({
             body: this.getPublishRuleData(ruleId, environmentId),
-            headers,
-            method: RequestMethod.Post,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
             url: this._pushRuleUrl
         });
     }

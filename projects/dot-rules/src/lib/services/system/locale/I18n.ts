@@ -2,7 +2,6 @@ import { defer as observableDefer, Observer } from 'rxjs';
 
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs';
 
 import { ApiRoot } from 'dotcms-js';
@@ -108,12 +107,9 @@ export class I18nService {
     }
 
     makeRequest(url): Observable<Response> {
-        const opts = this._apiRoot.getDefaultRequestOptions();
         return this.coreWebService
             .request({
-                method: RequestMethod.Get,
                 url: this._baseUrl + '/' + url,
-                ...opts
             })
             .pipe(
                 map((res) => {

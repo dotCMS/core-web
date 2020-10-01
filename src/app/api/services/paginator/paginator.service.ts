@@ -2,7 +2,6 @@ import { take, map } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RequestMethod, URLSearchParams } from '@angular/http';
 
 export enum OrderDirection {
     ASC = 1,
@@ -33,7 +32,7 @@ export class PaginatorService {
     private _filter: string;
     private _sortField: string;
     private _sortOrder: OrderDirection;
-    private _extraParams: URLSearchParams = new URLSearchParams();
+    private _extraParams: Map<string, any> = new Map();
 
     constructor(private coreWebService: CoreWebService) {}
 
@@ -83,7 +82,7 @@ export class PaginatorService {
         this.extraParams.delete(name);
     }
 
-    get extraParams(): URLSearchParams {
+    get extraParams(): Map<string, any> {
         return this._extraParams;
     }
 
@@ -119,9 +118,10 @@ export class PaginatorService {
      */
     // tslint:disable-next-line:cyclomatic-complexity
     public get(url?: string): Observable<any[]> {
-        const params: URLSearchParams = new URLSearchParams();
+        const params = new Map();
+
         if (this.filter) {
-            params.set('filter', `${this.filter}`);
+            params.set('filter', this.filter);
         }
 
         if (this.sortField) {
@@ -132,23 +132,23 @@ export class PaginatorService {
             params.set('direction', OrderDirection[this.sortOrder]);
         }
 
+        console.log('this.paginationPerPage', this.paginationPerPage);
         if (this.paginationPerPage) {
             params.set('per_page', String(this.paginationPerPage));
         }
 
-        if (this.extraParams) {
-            params.appendAll(this.extraParams);
-        }
-
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
-                search: params,
+                params: {
+                    ...params,
+                    ...this.extraParams
+                },
                 url: url || this.url
             })
             .pipe(
                 map((response) => {
                     this.setLinks(response.header(PaginatorService.LINK_HEADER_NAME));
+                    console.log('response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME)', response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME))
                     this.paginationPerPage = parseInt(
                         response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME),
                         10

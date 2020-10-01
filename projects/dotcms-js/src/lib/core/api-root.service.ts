@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Headers } from '@angular/http';
 import { UserModel } from './shared/user.model';
 import { LoggerService } from './logger.service';
 import { HttpHeaders } from '@angular/common/http';
-import { RequestOptionsArgs } from '@angular/http/src/interfaces';
 
 @Injectable()
 export class ApiRoot {
@@ -79,22 +77,13 @@ export class ApiRoot {
     getDefaultRequestHeaders(): HttpHeaders {
         let headers = new HttpHeaders()
             .set('com.dotmarketing.session_host', this.siteId)
-            .set('Accept', '*/*');
+            .set('Accept', '*/*')
+            .set('Content-Type', 'application/json');
+
         if (this.authToken) {
             headers = headers.set('Authorization', this.authToken);
         }
         return headers;
-    }
-
-    getDefaultRequestOptions(): RequestOptionsArgs {
-        const headers = new Headers();
-        headers.append('com.dotmarketing.session_host', this.siteId);
-        if (this.authToken) {
-            headers.append('Authorization', this.authToken);
-        }
-        headers.append('Content-Type', 'application/json');
-
-        return { headers: headers };
     }
 
     setBaseUrl(url = null): void {

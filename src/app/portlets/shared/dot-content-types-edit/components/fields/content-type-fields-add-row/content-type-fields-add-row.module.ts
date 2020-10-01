@@ -1,6 +1,6 @@
 import { ButtonModule, TooltipModule } from 'primeng/primeng';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { HotkeysService } from 'angular2-hotkeys';
+// import { HotkeysService } from 'angular2-hotkeys';
 import { ContentTypeFieldsAddRowComponent } from './content-type-fields-add-row.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -18,6 +18,6 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         SplitButtonModule,
         DotPipesModule
     ],
-    providers: [HotkeysService]
+    // providers: [HotkeysService]
 })
 export class ContentTypeFieldsAddRowModule {}

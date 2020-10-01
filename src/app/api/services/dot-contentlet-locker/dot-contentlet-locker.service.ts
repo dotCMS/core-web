@@ -2,7 +2,6 @@ import { pluck } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RequestMethod } from '@angular/http';
 
 @Injectable()
 export class DotContentletLockerService {
@@ -18,7 +17,7 @@ export class DotContentletLockerService {
     lock(inode: string): Observable<any> {
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Put,
+                method: 'PUT',
                 url: `content/lock/inode/${inode}`
             })
             .pipe(pluck('bodyJsonObject'));
@@ -34,7 +33,7 @@ export class DotContentletLockerService {
     unlock(inode: string): Observable<any> {
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Put,
+                method: 'PUT',
                 url: `content/unlock/inode/${inode}`
             })
             .pipe(pluck('bodyJsonObject'));

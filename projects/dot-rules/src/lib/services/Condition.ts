@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiRoot } from 'dotcms-js';
 import { ServerSideTypeModel } from './ServerSideFieldModel';
-import { RequestMethod, Response } from '@angular/http';
+import { HttpResponse } from '@angular/common/http';
 import { ConditionGroupModel, ConditionModel, ICondition } from './Rule';
 import { HttpCode } from 'dotcms-js';
 import { CoreWebService, LoggerService } from 'dotcms-js';
@@ -62,12 +62,9 @@ export class ConditionService {
     }
 
     makeRequest(childPath: string): Observable<any> {
-        const opts = this._apiRoot.getDefaultRequestOptions();
         return this.coreWebService
             .request({
-                method: RequestMethod.Get,
                 url: this._baseUrl + '/' + childPath,
-                ...opts
             })
             .pipe(
                 catchError((err: any, _source: Observable<any>) => {
@@ -128,16 +125,14 @@ export class ConditionService {
         }
         const json = ConditionService.toJson(model);
         json.owningGroup = groupId;
-        const opts = this._apiRoot.getDefaultRequestOptions();
         const add = this.coreWebService
             .request({
-                method: RequestMethod.Post,
-                body: JSON.stringify(json),
+                method: 'POST',
+                body: json,
                 url: this._baseUrl + '/',
-                ...opts
             })
             .pipe(
-                map((res: Response) => {
+                map((res: HttpResponse<any>) => {
                     const json: any = res;
                     model.key = json.id;
                     return model;
@@ -157,17 +152,15 @@ export class ConditionService {
         } else {
             const json = ConditionService.toJson(model);
             json.owningGroup = groupId;
-            const opts = this._apiRoot.getDefaultRequestOptions();
             const body = JSON.stringify(json);
             const save = this.coreWebService
                 .request({
-                    method: RequestMethod.Put,
+                    method: 'PUT',
                     body: body,
                     url: this._baseUrl + '/' + model.key,
-                    ...opts
                 })
                 .pipe(
-                    map((_res: Response) => {
+                    map((_res: HttpResponse<any>) => {
                         return model;
                     })
                 );
@@ -176,15 +169,13 @@ export class ConditionService {
     }
 
     remove(model: ConditionModel): Observable<ConditionModel> {
-        const opts = this._apiRoot.getDefaultRequestOptions();
         const remove = this.coreWebService
             .request({
-                method: RequestMethod.Delete,
+                method: 'DELETE',
                 url: this._baseUrl + '/' + model.key,
-                ...opts
             })
             .pipe(
-                map((_res: Response) => {
+                map((_res: HttpResponse<any>) => {
                     return model;
                 })
             );

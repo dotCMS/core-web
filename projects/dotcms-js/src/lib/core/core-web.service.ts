@@ -1,4 +1,3 @@
-import { RequestOptionsArgs, URLSearchParams, RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Subject, Observable, throwError } from 'rxjs';
 import { map, catchError, filter } from 'rxjs/operators';
@@ -13,7 +12,6 @@ import {
 import { ApiRoot } from './api-root.service';
 import { ResponseView } from './util/response-view';
 import { LoggerService } from './logger.service';
-import { BrowserUtil } from './browser-util.service';
 import { HttpCode } from './util/http-code';
 import { Router } from '@angular/router';
 import {
@@ -60,12 +58,20 @@ export interface DotCMSResponse<T> {
     permissions: string[];
 }
 
-export interface RequestOptionsParams {
-    headers?: HttpHeaders;
-    reportProgress?: boolean;
-    params?: HttpParams;
-    responseType?: 'arraybuffer' | 'blob' | 'text' | 'json';
-    withCredentials?: boolean;
+export interface DotRequestOptionsArgs {
+    url: string;
+    body?:
+        | {
+              [key: string]: any;
+          }
+        | string;
+    method?: string;
+    params?: {
+        [key: string]: any;
+    };
+    headers?: {
+        [key: string]: any;
+    };
 }
 
 @Injectable()
@@ -75,13 +81,16 @@ export class CoreWebService {
     constructor(
         private _apiRoot: ApiRoot,
         private loggerService: LoggerService,
-        private browserUtil: BrowserUtil,
         private router: Router,
         private http: HttpClient
     ) {}
 
-    request<T>(options: RequestOptionsArgs): Observable<any> {
-        const request = this.getRequestOpts<T>(options);
+    request<T>(options: DotRequestOptionsArgs): Observable<HttpResponse<any>> {
+        if (!options.method) {
+            options.method = 'GET';
+        }
+
+        const request = this.getRequestOpts(options);
         const source = options.body;
 
         return this.http.request(request).pipe(
@@ -160,8 +169,23 @@ export class CoreWebService {
      * @RequestOptionsArgs options
      * @returns Observable<ResponseView>
      */
-    public requestView<T = any>(options: RequestOptionsArgs): Observable<ResponseView<T>> {
-        const request = this.getRequestOpts<T>(options);
+    public requestView<T = any>(options: DotRequestOptionsArgs): Observable<ResponseView<T>> {
+        if (!options.method) {
+            options.method = 'GET';
+        }
+
+        let request;
+
+        if (options.body) {
+            if (typeof options.body === 'string') {
+                request = this.getRequestOpts<string>(options);
+            } else {
+                request = this.getRequestOpts<{ [key: string]: any }>(options);
+            }
+        } else {
+            request = this.getRequestOpts(options);
+        }
+
         return this.http.request(request).pipe(
             filter(
                 (event: HttpEvent<HttpResponse<DotCMSResponse<T>> | any>) =>
@@ -212,65 +236,59 @@ export class CoreWebService {
         this.httpErrosSubjects[response.status].next(response);
     }
 
-    private getRequestOpts<T>(options: RequestOptionsArgs): HttpRequest<T> {
-        const optionsArgs: RequestOptionsParams = {
-            headers: new HttpHeaders(),
-            params: new HttpParams()
-        };
+    private getRequestOpts<T>(options: DotRequestOptionsArgs): HttpRequest<T> {
+        const headers = this.getHttpHeaders(options.headers);
+        const params = this.getHttpParams(options.params);
+        const url = this.getAbsoluteUrl(options.url);
+        let body = <T>options.body || null;
 
-        optionsArgs.headers = this._apiRoot.getDefaultRequestHeaders();
-        const tempHeaders = options.headers
-            ? options.headers.toJSON()
-            : { 'Content-Type': 'application/json' };
+        if (body) {
+            const method = <'POST' | 'PUT' | 'PATCH'>options.method;
+            return new HttpRequest<T>(method, url, body, {
+                headers,
+                params
+            });
+        }
 
-        Object.keys(tempHeaders).forEach((key) => {
-            optionsArgs.headers = optionsArgs.headers.set(key, tempHeaders[key]);
+        const method = <'GET' | 'DELETE' | 'HEAD' | 'JSONP' | 'OPTIONS'>options.method;
+        return new HttpRequest<T>(method, url, {
+            headers,
+            params
         });
-
-        const body =
-            options.body && typeof options.body !== 'string'
-                ? JSON.stringify(options.body)
-                : options.body;
-
-        if (options.url.indexOf('://') === -1) {
-            options.url = options.url.startsWith('/api')
-                ? `${this._apiRoot.baseUrl}${options.url.substr(1)}`
-                : `${this._apiRoot.baseUrl}api/${options.url}`;
-        }
-
-        if (this.browserUtil.isIE11()) {
-            optionsArgs.params = optionsArgs.params.set('timestamp', String(new Date().getTime()));
-        }
-
-        if (options.params) {
-            optionsArgs.params = this.setHttpParams(
-                <URLSearchParams>options.params,
-                optionsArgs.params
-            );
-        }
-
-        if (options.search) {
-            optionsArgs.params = this.setHttpParams(
-                <URLSearchParams>options.search,
-                optionsArgs.params
-            );
-        }
-
-        return new HttpRequest<T>(RequestMethod[options.method], options.url, body, optionsArgs);
     }
 
-    private setHttpParams(urlParams: URLSearchParams, httpParams: HttpParams): HttpParams {
-        if (urlParams.paramsMap) {
-            const searchParams = urlParams.toString().split('&');
-            searchParams.forEach((paramString: string) => {
-                const [key, value] = paramString.split('=');
-                httpParams = httpParams.set(key, value);
-            });
-        } else {
-            Object.keys(urlParams).forEach((key: string) => {
-                httpParams = httpParams.set(key, urlParams[key]);
+    private getHttpHeaders(headers: { [key: string]: string }): HttpHeaders {
+        let httpHeaders = this._apiRoot.getDefaultRequestHeaders();
+
+        if (headers && Object.keys(headers).length) {
+            Object.keys(headers).forEach((key) => {
+                httpHeaders = httpHeaders.set(key, headers[key]);
             });
         }
-        return httpParams;
+
+        return httpHeaders;
+    }
+
+    private getAbsoluteUrl(url: string): string {
+        if (url.indexOf('://') === -1) {
+            return url.startsWith('/api')
+                ? `${this._apiRoot.baseUrl}${url.substr(1)}`
+                : `${this._apiRoot.baseUrl}api/${url}`;
+        }
+
+        return url;
+    }
+
+    private getHttpParams(params: { [key: string]: any }): HttpParams {
+        if (params && Object.keys(params).length) {
+            let httpParams = new HttpParams();
+
+            Object.keys(params).forEach((key: string) => {
+                httpParams = httpParams.set(key, params[key]);
+            });
+            return httpParams;
+        }
+
+        return null;
     }
 }
