@@ -8,6 +8,7 @@ import { ApiRoot } from 'dotcms-js';
 import { Verify } from '../../validation/Verify';
 import { LoggerService } from 'dotcms-js';
 import { CoreWebService, HttpCode } from 'dotcms-js';
+import { HttpResponse } from '@angular/common/http';
 
 export class TreeNode {
     [key: string]: TreeNode | any;
@@ -106,7 +107,7 @@ export class I18nService {
         this.root = new TreeNode(null, 'root');
     }
 
-    makeRequest(url): Observable<Response> {
+    makeRequest(url): Observable<HttpResponse<any>> {
         return this.coreWebService
             .request({
                 url: this._baseUrl + '/' + url,

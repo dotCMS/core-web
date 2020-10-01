@@ -19,8 +19,8 @@ import * as _ from 'lodash';
     changeDetection: ChangeDetectionStrategy.OnPush,
     // host: { role: 'text' },
     selector: 'cw-input-date',
-    template: `<p-calendar [(ngModel)]="modelValue" [showTime]="true" hourFormat="12" 
-                (onBlur)="onBlur($event)" 
+    template: `<p-calendar [(ngModel)]="modelValue" [showTime]="true" hourFormat="12"
+                (onBlur)="onBlur($event)"
                 (onSelect)="updateValue($event)"
                 showButtonBar="true"
                 [placeholder]="placeholder" [disabled]="disabled" [tabindex]="tabIndex || ''"></p-calendar>`
@@ -75,7 +75,7 @@ export class InputDate implements ControlValueAccessor {
         }
     }
 
-    onBlur(value): void {
+    onBlur(_value): void {
         // this.onTouched();
         // this.blur.emit(value);
     }

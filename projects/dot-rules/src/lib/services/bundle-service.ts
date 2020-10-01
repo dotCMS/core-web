@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 
 import { ApiRoot } from 'dotcms-js';
 import { CoreWebService } from 'dotcms-js';
+import { HttpResponse } from '@angular/common/http';
 
 export interface IUser {
     givenName?: string;
@@ -32,7 +33,6 @@ export class BundleService {
     private _addToBundleUrl: string;
     private _pushEnvironementsUrl: string;
     private _pushRuleUrl: string;
-    private _bundlesAry: IBundle[] = [];
     private _environmentsAry: IPublishEnvironment[] = [];
 
     static fromServerBundleTransformFn(data): IBundle[] {
@@ -54,15 +54,16 @@ export class BundleService {
     }
 
     getLoggedUser(): Observable<IUser> {
-        return this.coreWebService.request({
-            url: this._loggedUserUrl
-        });
+        return this.coreWebService
+            .request({
+                url: this._loggedUserUrl
+            })
+            .pipe(map((res: HttpResponse<any>) => <IUser>res));
     }
 
     loadBundleStores(): void {
         const obs = this._doLoadBundleStores().pipe(
             map((bundles: IBundle[]) => {
-                this._bundlesAry = bundles;
                 return bundles;
             })
         );
@@ -119,7 +120,7 @@ export class BundleService {
             },
             method: 'POST',
             url: this._addToBundleUrl
-        });
+        }).pipe(map((res: HttpResponse<any>) => <{ errorMessages: string[]; total: number; errors: number }><unknown>res));
     }
 
     pushPublishRule(
@@ -133,7 +134,7 @@ export class BundleService {
             },
             method: 'POST',
             url: this._pushRuleUrl
-        });
+        }).pipe(map((res: HttpResponse<any>) => <{ errorMessages: string[]; total: number; bundleId: string; errors: number }><unknown>res));
     }
 
     private getFormattedDate(date: Date): string {

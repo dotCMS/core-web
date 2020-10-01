@@ -18,14 +18,11 @@ import {
 import { LoggerService } from 'dotcms-js';
 import { HttpCode } from 'dotcms-js';
 
-// tslint:disable-next-line:no-unused-variable
-const noop = (...arg: any[]) => {};
 
 @Injectable()
 export class ActionService {
     private _typeName = 'Action';
 
-    private _apiRoot: ApiRoot;
     private _actionsEndpointUrl: string;
 
     private _error: Subject<string> = new Subject<string>();
@@ -56,7 +53,6 @@ export class ActionService {
         private coreWebService: CoreWebService,
         private loggerService: LoggerService
     ) {
-        this._apiRoot = apiRoot;
         this._actionsEndpointUrl = `${apiRoot.baseUrl}api/v1/sites/${apiRoot.siteId}/ruleengine/actions/`;
     }
 
@@ -70,7 +66,7 @@ export class ActionService {
                 url: path,
             })
             .pipe(
-                catchError((err: any, source: Observable<any>) => {
+                catchError((err: any, _source: Observable<any>) => {
                     if (err && err.status === HttpCode.NOT_FOUND) {
                         this.loggerService.error(
                             'Could not retrieve ' + this._typeName + ' : 404 path not valid.',
@@ -116,7 +112,7 @@ export class ActionService {
     }
 
     get(
-        ruleKey: string,
+        _ruleKey: string,
         key: string,
         ruleActionTypes?: { [key: string]: ServerSideTypeModel }
     ): Observable<ActionModel> {
@@ -195,7 +191,7 @@ and should provide the info needed to make the user aware of the fix.`);
         return remove.pipe(catchError(this._catchRequestError('remove')));
     }
 
-    private _getPath(ruleKey: string, key?: string): string {
+    private _getPath(_ruleKey: string, key?: string): string {
         let p = this._actionsEndpointUrl;
         if (key) {
             p = p + key;
@@ -204,7 +200,7 @@ and should provide the info needed to make the user aware of the fix.`);
     }
 
     private _catchRequestError(
-        operation
+        _operation
     ): (response: HttpResponse<any>, original: Observable<any>) => Observable<any> {
         return (response: HttpResponse<any>): Observable<any> => {
 

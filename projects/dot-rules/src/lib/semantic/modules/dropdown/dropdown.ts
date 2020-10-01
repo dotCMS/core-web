@@ -6,8 +6,7 @@ import {
     Optional,
     OnChanges,
     SimpleChanges,
-    ViewChild,
-    ElementRef
+    ViewChild
 } from '@angular/core';
 import { Output, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
