@@ -14,7 +14,7 @@ class RouterMock {
     };
 
     navigate = jasmine.createSpy('navigate').and.callFake(() => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             resolve(true);
         });
     });
@@ -38,29 +38,31 @@ describe('DotRouterService', () => {
     let service: DotRouterService;
     let router: Router;
 
-    beforeEach(async(() => {
-        const testbed = TestBed.configureTestingModule({
-            providers: [
-                DotRouterService,
-                {
-                    provide: LoginService,
-                    useValue: {}
-                },
-                {
-                    provide: Router,
-                    useClass: RouterMock
-                },
-                {
-                    provide: ActivatedRoute,
-                    useClass: ActivatedRouteMock
-                }
-            ],
-            imports: [RouterTestingModule]
-        });
+    beforeEach(
+        async(() => {
+            const testbed = TestBed.configureTestingModule({
+                providers: [
+                    DotRouterService,
+                    {
+                        provide: LoginService,
+                        useValue: {}
+                    },
+                    {
+                        provide: Router,
+                        useClass: RouterMock
+                    },
+                    {
+                        provide: ActivatedRoute,
+                        useClass: ActivatedRouteMock
+                    }
+                ],
+                imports: [RouterTestingModule]
+            });
 
-        service = testbed.get(DotRouterService);
-        router = testbed.get(Router);
-    }));
+            service = testbed.get(DotRouterService);
+            router = testbed.get(Router);
+        })
+    );
 
     it('should get queryParams from Router', () => {
         spyOn(router, 'getCurrentNavigation').and.returnValue({
@@ -99,7 +101,6 @@ describe('DotRouterService', () => {
 
         expect(router.navigate).toHaveBeenCalledWith(['/Form/edit/123']);
     });
-
     it('should go to previousSavedURL', () => {
         service.previousSavedURL = 'test/fake';
         service.goToMain();
@@ -178,12 +179,37 @@ describe('DotRouterService', () => {
     });
 
     it('should navigate replacing URL params', () => {
-        const params = {id: 'content'};
+        const params = { id: 'content' };
         service.replaceQueryParams(params);
-        expect(router.navigate).toHaveBeenCalledWith([],
-            {
-                queryParams: params,
-                queryParamsHandling: 'merge'
+        expect(router.navigate).toHaveBeenCalledWith([], {
+            queryParams: params,
+            queryParamsHandling: 'merge'
+        });
+    });
+
+    describe('go to login', () => {
+        beforeEach(() => {
+            const mockDate = new Date(1466424490000);
+            jasmine.clock().install();
+            jasmine.clock().mockDate(mockDate);
+        });
+
+        it('should add the cache busting', () => {
+            service.goToLogin();
+            expect(router.navigate).toHaveBeenCalledWith(['/public/login'], {
+                queryParams: { r: 1466424490000 }
             });
+            jasmine.clock().uninstall();
+        });
+
+        it('should go to login with cache busting', () => {
+            service.goToLogin({
+                queryParams: { test: 'test' }
+            });
+            expect(router.navigate).toHaveBeenCalledWith(['/public/login'], {
+                queryParams: { test: 'test', r: 1466424490000 }
+            });
+            jasmine.clock().uninstall();
+        });
     });
 });

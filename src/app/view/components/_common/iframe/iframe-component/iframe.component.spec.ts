@@ -229,21 +229,6 @@ describe('IframeComponent', () => {
         });
     });
 
-    // describe('iframe errors', () => {
-    //     it('should logout on 401', () => {
-    //         spyOnProperty(window.location, 'href');
-    //         iframeEl.triggerEventHandler('load', {
-    //             target: {
-    //                 contentDocument: {
-    //                     title: '401'
-    //                 }
-    //             }
-    //         });
-    //
-    //         expect(window.location.href).toHaveBeenCalledWith('/dotAdmin/logout');
-    //     });
-    // });
-
     describe('dot-overlay-mask', () => {
         let iframeOverlayService: IframeOverlayService;
         beforeEach(() => {

@@ -87,13 +87,8 @@ export class DotRouterService {
             : this.redirectMain();
     }
 
-    goToLogin(parameters?: NavigationExtras): void {
-        if (parameters) {
-            parameters.queryParams['r'] = new Date().getTime();
-        } else {
-            parameters = { queryParams: { r: new Date().getTime() } };
-        }
-        this.router.navigate(['/public/login'], parameters);
+    goToLogin(navExtras?: NavigationExtras): void {
+        this.router.navigate(['/public/login'], this.addCacheBusting(navExtras));
     }
 
     goToSiteBrowser(): void {
@@ -244,5 +239,15 @@ export class DotRouterService {
         } else {
             return this.router.navigate(['/']);
         }
+    }
+
+    private addCacheBusting(navExtras: NavigationExtras): NavigationExtras {
+        if (navExtras) {
+            navExtras.queryParams['r'] = new Date().getTime();
+        } else {
+            navExtras = { queryParams: { r: new Date().getTime() } };
+        }
+
+        return navExtras;
     }
 }
