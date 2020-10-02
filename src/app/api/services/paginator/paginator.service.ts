@@ -1,5 +1,5 @@
 import { take, map } from 'rxjs/operators';
-import { CoreWebService } from 'dotcms-js';
+import { CoreWebService, ResponseView } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -57,7 +57,6 @@ export class PaginatorService {
             this._filter = filter;
         }
     }
-
     /**
      * Set value of extra parameters of the eventual request.
      * @param string name
@@ -117,25 +116,8 @@ export class PaginatorService {
      * @param url base url
      */
     // tslint:disable-next-line:cyclomatic-complexity
-    public get(url?: string): Observable<any[]> {
-        const params = new Map();
-
-        if (this.filter) {
-            params.set('filter', this.filter);
-        }
-
-        if (this.sortField) {
-            params.set('orderby', this.sortField);
-        }
-
-        if (this.sortOrder) {
-            params.set('direction', OrderDirection[this.sortOrder]);
-        }
-
-        console.log('this.paginationPerPage', this.paginationPerPage);
-        if (this.paginationPerPage) {
-            params.set('per_page', String(this.paginationPerPage));
-        }
+    public get(url?: string): Observable<any> {
+        const params = this.getParams();
 
         return this.coreWebService
             .requestView({
@@ -146,9 +128,8 @@ export class PaginatorService {
                 url: url || this.url
             })
             .pipe(
-                map((response) => {
+                map((response: ResponseView<any>) => {
                     this.setLinks(response.header(PaginatorService.LINK_HEADER_NAME));
-                    console.log('response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME)', response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME))
                     this.paginationPerPage = parseInt(
                         response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME),
                         10
@@ -254,6 +235,33 @@ export class PaginatorService {
             const rel = relSplit[1].substring(1, relSplit[1].length - 1);
             this.links[rel] = url.trim();
         });
+    }
+
+    private getParams(): { [key: string]: any } {
+        const params = new Map();
+
+        if (this.filter) {
+            params.set('filter', this.filter);
+        }
+
+        if (this.sortField) {
+            params.set('orderby', this.sortField);
+        }
+
+        if (this.sortOrder) {
+            params.set('direction', OrderDirection[this.sortOrder]);
+        }
+
+        if (this.paginationPerPage) {
+            params.set('per_page', String(this.paginationPerPage));
+        }
+
+        let result = Array.from(params).reduce(
+            (obj, [key, value]) => Object.assign(obj, { [key]: value }),
+            {}
+        );
+
+        return result;
     }
 }
 
