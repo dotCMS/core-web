@@ -117,14 +117,14 @@ export class PaginatorService {
      */
     // tslint:disable-next-line:cyclomatic-complexity
     public get(url?: string): Observable<any> {
-        const params = this.getParams();
+        const params = {
+            ...this.getParams(),
+            ...this.getObjectFromMap(this.extraParams)
+        };
 
         return this.coreWebService
             .requestView({
-                params: {
-                    ...params,
-                    ...this.extraParams
-                },
+                params,
                 url: url || this.url
             })
             .pipe(
@@ -255,8 +255,11 @@ export class PaginatorService {
         if (this.paginationPerPage) {
             params.set('per_page', String(this.paginationPerPage));
         }
+        return this.getObjectFromMap(params);
+    }
 
-        let result = Array.from(params).reduce(
+    private getObjectFromMap(map: Map<string, any>): { [key: string]: any } {
+        let result = Array.from(map).reduce(
             (obj, [key, value]) => Object.assign(obj, { [key]: value }),
             {}
         );
