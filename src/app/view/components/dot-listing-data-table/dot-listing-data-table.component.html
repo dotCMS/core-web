@@ -7,9 +7,6 @@
     />
     <ng-content></ng-content>
 </dot-action-header>
-<p>{{paginatorService.maxLinksPage}}</p>
-<p>{{paginatorService.totalRecords}}</p>
-<p>{{paginatorService.paginationPerPage}} || {{paginationPerPage}}</p>
 <p-table #dataTable
         (onLazyLoad)="loadDataPaginationEvent($event)"
         (onRowSelect)="handleRowClick($event)"

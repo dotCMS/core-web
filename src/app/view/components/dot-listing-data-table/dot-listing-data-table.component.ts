@@ -66,7 +66,6 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
             this.loadData(0);
         }
         if (changes.paginationPerPage && changes.paginationPerPage.currentValue) {
-            console.log('here');
             this.paginatorService.paginationPerPage = this.paginationPerPage;
         }
     }
