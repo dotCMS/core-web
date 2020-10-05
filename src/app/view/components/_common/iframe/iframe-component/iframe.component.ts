@@ -209,7 +209,7 @@ export class IframeComponent implements OnInit, OnDestroy {
     private handleErrors(error: number): void {
         const errorMapHandler = {
             401: () => {
-               window.location.href = '/dotAdmin/logout';
+                this.dotRouterService.doLogOut();
             }
         };
 

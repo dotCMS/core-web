@@ -4,7 +4,7 @@ import { DotLoadingIndicatorService } from './../dot-loading-indicator/dot-loadi
 import { ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { DOTTestBed, MockDotUiColorsService } from '../../../../../test/dot-test-bed';
+import { MockDotUiColorsService } from '../../../../../test/dot-test-bed';
 import { IframeComponent } from './iframe.component';
 import { DotcmsEventsService, LoggerService, StringUtils } from 'dotcms-js';
 import { DotIframeService } from '../service/dot-iframe/dot-iframe.service';
@@ -34,6 +34,7 @@ describe('IframeComponent', () => {
     let dotIframeService: DotIframeService;
     let dotUiColorsService: DotUiColorsService;
     let dotcmsEventsService: DotcmsEventsServiceMock;
+    let dotRouterService: DotRouterService;
 
     dotcmsEventsService = new DotcmsEventsServiceMock();
 
@@ -55,13 +56,13 @@ describe('IframeComponent', () => {
     });
 
     beforeEach(() => {
-        fixture = DOTTestBed.createComponent(IframeComponent);
+        fixture = TestBed.createComponent(IframeComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
 
-        dotIframeService = de.injector.get(DotIframeService);
-        dotUiColorsService = de.injector.get(DotUiColorsService);
-
+        dotIframeService = TestBed.get(DotIframeService);
+        dotUiColorsService = TestBed.get(DotUiColorsService);
+        dotRouterService = TestBed.get(DotRouterService);
         spyOn(dotUiColorsService, 'setColors');
 
         comp.isLoading = false;
@@ -226,6 +227,20 @@ describe('IframeComponent', () => {
             });
 
             expect(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl);
+        });
+    });
+
+    describe('iframe errors', () => {
+        it('should logout on 401', () => {
+            iframeEl.triggerEventHandler('load', {
+                target: {
+                    contentDocument: {
+                        title: '401'
+                    }
+                }
+            });
+
+            expect(dotRouterService.doLogOut).toHaveBeenCalledTimes(1);
         });
     });
 

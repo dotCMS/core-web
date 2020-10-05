@@ -103,6 +103,10 @@ export class DotRouterService {
         this.router.navigate([url]);
     }
 
+    doLogOut(): void {
+        window.location.href = '/dotAdmin/logout';
+    }
+
     /**
      * Redirects to an App Configuration page
      *
