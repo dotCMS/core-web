@@ -76,6 +76,7 @@ export class ForgotPasswordComponent implements OnInit {
     /**
      * Executes the recover password service
      *
+     * @param NavigationExtras parameters
      * @memberof ForgotPasswordComponent
      */
     goToLogin(parameters?: NavigationExtras): void {

@@ -2,7 +2,7 @@ import { DotRouterService } from './dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoginService } from 'dotcms-js';
 import { Router, ActivatedRoute } from '@angular/router';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 class RouterMock {
     url = '/c/test';
@@ -38,31 +38,29 @@ describe('DotRouterService', () => {
     let service: DotRouterService;
     let router: Router;
 
-    beforeEach(
-        async(() => {
-            const testbed = TestBed.configureTestingModule({
-                providers: [
-                    DotRouterService,
-                    {
-                        provide: LoginService,
-                        useValue: {}
-                    },
-                    {
-                        provide: Router,
-                        useClass: RouterMock
-                    },
-                    {
-                        provide: ActivatedRoute,
-                        useClass: ActivatedRouteMock
-                    }
-                ],
-                imports: [RouterTestingModule]
-            });
+    beforeEach(() => {
+        const testbed = TestBed.configureTestingModule({
+            providers: [
+                DotRouterService,
+                {
+                    provide: LoginService,
+                    useValue: {}
+                },
+                {
+                    provide: Router,
+                    useClass: RouterMock
+                },
+                {
+                    provide: ActivatedRoute,
+                    useClass: ActivatedRouteMock
+                }
+            ],
+            imports: [RouterTestingModule]
+        });
 
-            service = testbed.get(DotRouterService);
-            router = testbed.get(Router);
-        })
-    );
+        service = testbed.get(DotRouterService);
+        router = testbed.get(Router);
+    });
 
     it('should get queryParams from Router', () => {
         spyOn(router, 'getCurrentNavigation').and.returnValue({

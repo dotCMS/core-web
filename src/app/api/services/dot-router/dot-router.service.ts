@@ -87,6 +87,12 @@ export class DotRouterService {
             : this.redirectMain();
     }
 
+    /**
+     * Redirects to the login page adding a busting cache parameter.
+     *
+     * * @param NavigationExtras navExtras
+     * @memberof DotRouterService
+     */
     goToLogin(navExtras?: NavigationExtras): void {
         this.router.navigate(['/public/login'], this.addCacheBusting(navExtras));
     }
@@ -103,6 +109,11 @@ export class DotRouterService {
         this.router.navigate([url]);
     }
 
+    /**
+     * Redirects to backend to handle the logout.
+     *
+     * @memberof DotRouterService
+     */
     doLogOut(): void {
         window.location.href = '/dotAdmin/logout';
     }
