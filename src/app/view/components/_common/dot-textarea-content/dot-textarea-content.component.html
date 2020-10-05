@@ -2,7 +2,8 @@
     *ngIf="selectOptions.length > 1"
     class="textarea-content__select-field"
     [options]="selectOptions"
-    [(ngModel)]="selected">
+    [(ngModel)]="selected"
+>
 </p-selectButton>
 <textarea
     *ngIf="selected === 'plain'"
@@ -10,20 +11,14 @@
     (ngModelChange)="onModelChange($event)"
     [ngModel]="value"
     [ngStyle]="styles"
-    class="textarea-content__plain-field">
-</textarea>
-<!-- <ace-editor
-    #ace
-    *ngIf="selected === 'code'"
-    (keydown.enter)="onKeyEnter($event)"
-    (textChanged)="onModelChange($event)"
-    [autoUpdateContent]="true"
-    [durationBeforeCallback]="500"
-    [mode]="code.mode"
-    [ngStyle]="styles"
-    [options]="code.options"
-    [readOnly]="false"
-    [text]="value"
+    class="textarea-content__plain-field"
+></textarea>
+{{ value }}
+
+<ngx-monaco-editor
     class="textarea-content__code-field"
-    theme="textmate">
-</ace-editor> -->
+    [options]="editorOptions"
+    [(ngModel)]="value"
+    (ngModelChange)="onModelChange($event)"
+    (keydown.enter)="onKeyEnter($event)"
+></ngx-monaco-editor>
