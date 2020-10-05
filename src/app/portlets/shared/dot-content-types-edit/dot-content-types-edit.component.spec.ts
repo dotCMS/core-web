@@ -23,8 +23,6 @@ import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotMenuService } from '@services/dot-menu.service';
 import { mockResponseView } from '../../../test/response-view.mock';
-import { HotkeysService } from 'angular2-hotkeys';
-import { TestHotkeysMock } from '../../../test/hotkeys-service.mock';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { MenuItem, ConfirmationService } from 'primeng/api';
@@ -112,7 +110,6 @@ describe('DotContentTypesEditComponent', () => {
     let location: Location;
     let dotRouterService: DotRouterService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
-    let testHotKeysMock: TestHotkeysMock;
     let dialog: DebugElement;
 
     const getConfig = (route) => {
@@ -154,10 +151,6 @@ describe('DotContentTypesEditComponent', () => {
                     provide: ActivatedRoute,
                     useValue: { data: of(route) }
                 },
-                {
-                    provide: HotkeysService,
-                    useValue: testHotKeysMock
-                },
                 { provide: DotRouterService, useClass: MockDotRouterService },
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 ConfirmationService,
@@ -176,7 +169,6 @@ describe('DotContentTypesEditComponent', () => {
 
     describe('create mode', () => {
         beforeEach(async(() => {
-            testHotKeysMock = new TestHotkeysMock();
             const configCreateMode = getConfig({
                 contentType: {
                     baseType: 'CONTENT'

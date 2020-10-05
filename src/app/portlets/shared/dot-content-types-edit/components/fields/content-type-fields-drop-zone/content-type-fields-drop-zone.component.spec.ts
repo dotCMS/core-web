@@ -21,8 +21,6 @@ import { FieldPropertyService } from '../service/field-properties.service';
 import { FieldService } from '../service/field.service';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-import { HotkeysService } from 'angular2-hotkeys';
-import { TestHotkeysMock } from '@tests/hotkeys-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import * as _ from 'lodash';
@@ -173,7 +171,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             ],
             providers: [
                 { provide: Router, useValue: mockRouter },
-                { provide: HotkeysService, useClass: TestHotkeysMock },
                 { provide: FieldDragDropService, useValue: dragDropService },
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: DotLoadingIndicatorService, useValue: dotLoadingIndicatorServiceMock },
@@ -402,7 +399,6 @@ describe('Load fields and drag and drop', () => {
                 DotEventsSocket,
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: FieldDragDropService, useValue: testFieldDragDropService },
-                { provide: HotkeysService, useClass: TestHotkeysMock },
                 { provide: Router, useValue: mockRouter },
                 { provide: DotLoadingIndicatorService, useValue: dotLoadingIndicatorServiceMock }
             ]
