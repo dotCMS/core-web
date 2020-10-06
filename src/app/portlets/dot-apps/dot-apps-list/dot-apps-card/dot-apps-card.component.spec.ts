@@ -5,10 +5,10 @@ import { By } from '@angular/platform-browser';
 import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-// import { NgxMdModule } from 'ngx-md';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
+import { MarkdownModule } from 'ngx-markdown';
 
 describe('DotAppsCardComponent', () => {
     let component: DotAppsCardComponent;
@@ -26,7 +26,7 @@ describe('DotAppsCardComponent', () => {
                 CardModule,
                 DotAvatarModule,
                 DotIconModule,
-                // NgxMdModule,
+                MarkdownModule,
                 TooltipModule,
                 DotPipesModule
             ],
