@@ -103,7 +103,7 @@ export class I18nService {
         private loggerService: LoggerService
     ) {
         this._apiRoot = apiRoot;
-        this._baseUrl = apiRoot.baseUrl + 'api/v1/system/i18n';
+        this._baseUrl = '/api/v1/system/i18n';
         this.root = new TreeNode(null, 'root');
     }
 

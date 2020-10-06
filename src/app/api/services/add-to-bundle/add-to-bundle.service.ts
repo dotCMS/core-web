@@ -1,5 +1,5 @@
 import { pluck, mergeMap, map } from 'rxjs/operators';
-import { CoreWebService, ApiRoot } from 'dotcms-js';
+import { CoreWebService } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DotCurrentUser } from '@models/dot-current-user/dot-current-user';
@@ -14,10 +14,9 @@ export class AddToBundleService {
         TODO: I had to do this because this line concat 'api/' into the URL
         https://github.com/dotCMS/dotcms-js/blob/master/src/core/core-web.service.ts#L169
     */
-    private addToBundleUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
+    private addToBundleUrl = `DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
 
     constructor(
-        public _apiRoot: ApiRoot,
         private coreWebService: CoreWebService,
         private currentUser: DotCurrentUserService
     ) {}
@@ -50,13 +49,15 @@ export class AddToBundleService {
         assetIdentifier: string,
         bundleData: DotBundle
     ): Observable<DotAjaxActionResponseView> {
-        return this.coreWebService.request({
-            body: `assetIdentifier=${assetIdentifier}&bundleName=${bundleData.name}&bundleSelect=${bundleData.id}`,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            method: 'POST',
-            url: this.addToBundleUrl
-        }).pipe(map((res: any) => <DotAjaxActionResponseView>res));
+        return this.coreWebService
+            .request({
+                body: `assetIdentifier=${assetIdentifier}&bundleName=${bundleData.name}&bundleSelect=${bundleData.id}`,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
+                url: this.addToBundleUrl
+            })
+            .pipe(map((res: any) => <DotAjaxActionResponseView>res));
     }
 }

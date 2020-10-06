@@ -1,26 +1,13 @@
 import { Injectable } from '@angular/core';
 import { UserModel } from './shared/user.model';
 import { LoggerService } from './logger.service';
-import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class ApiRoot {
-    // Points to {baseUrl}/api/v1
-    defaultSiteUrl: string;
-    baseUrl = 'http://localhost:8080/';
     siteId = '48190c8c-42c4-46af-8d1a-0cd5db894797';
     authUser: UserModel;
-    authToken: string;
     hideFireOn = false;
     hideRulePushOptions = false;
-
-    static createAuthToken(authUser: UserModel): string {
-        let token = null;
-        if (authUser && authUser.username && authUser.password) {
-            token = 'Basic ' + btoa(authUser.username + ':' + authUser.password);
-        }
-        return token;
-    }
 
     static parseQueryParam(query: string, token: string): string {
         let idx = -1;
@@ -34,12 +21,13 @@ export class ApiRoot {
             end = end !== -1 ? end : query.length;
             result = query.substring(idx + token.length, end);
         }
+
         return result;
     }
 
     constructor(authUser: UserModel, private loggerService: LoggerService) {
         this.authUser = authUser;
-        this.authToken = ApiRoot.createAuthToken(authUser);
+
         try {
             let query = document.location.search.substring(1);
             if (query === '') {
@@ -65,38 +53,10 @@ export class ApiRoot {
                 this.loggerService.debug('hideRulePushOptions set to ', this.hideRulePushOptions);
             }
 
-            const baseUrl = ApiRoot.parseQueryParam(query, 'baseUrl');
-            this.loggerService.debug('Proxy server Base URL set to ', baseUrl);
-            this.setBaseUrl(baseUrl); // if null, just uses the base of the current URL
             this.configureUser(query, authUser);
         } catch (e) {
             this.loggerService.error('Could not set baseUrl automatically.', e);
         }
-    }
-
-    getDefaultRequestHeaders(): HttpHeaders {
-        let headers = new HttpHeaders()
-            .set('com.dotmarketing.session_host', this.siteId)
-            .set('Accept', '*/*')
-            .set('Content-Type', 'application/json');
-
-        if (this.authToken) {
-            headers = headers.set('Authorization', this.authToken);
-        }
-        return headers;
-    }
-
-    setBaseUrl(url = null): void {
-        if (url === null) {
-            // set to same as current request
-            const loc = document.location;
-            this.baseUrl = loc.protocol + '//' + loc.host + '/';
-        } else if (url && url.startsWith('http://' || url.startsWith('https://'))) {
-            this.baseUrl = url.endsWith('/') ? url : url + '/';
-        } else {
-            throw new Error("Invalid proxy server base url: '" + url + "'");
-        }
-        this.defaultSiteUrl = this.baseUrl + 'api/v1/sites/' + this.siteId;
     }
 
     private configureUser(query: string, user: UserModel): void {

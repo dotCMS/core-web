@@ -26,7 +26,7 @@ export class ConditionService {
         private coreWebService: CoreWebService,
         private loggerService: LoggerService
     ) {
-        this._baseUrl = `${apiRoot.baseUrl}api/v1/sites/${apiRoot.siteId}/ruleengine/conditions`;
+        this._baseUrl = `/api/v1/sites/${apiRoot.siteId}/ruleengine/conditions`;
     }
 
     static toJson(condition: ConditionModel): any {

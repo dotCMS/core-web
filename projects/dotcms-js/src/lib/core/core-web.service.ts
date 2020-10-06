@@ -9,7 +9,6 @@ import {
     CLIENTS_ONLY_MESSAGES,
     SERVER_RESPONSE_ERROR
 } from './util/http-response-util';
-import { ApiRoot } from './api-root.service';
 import { ResponseView } from './util/response-view';
 import { LoggerService } from './logger.service';
 import { HttpCode } from './util/http-code';
@@ -79,7 +78,6 @@ export class CoreWebService {
     private httpErrosSubjects: Subject<any>[] = [];
 
     constructor(
-        private _apiRoot: ApiRoot,
         private loggerService: LoggerService,
         private router: Router,
         private http: HttpClient
@@ -239,7 +237,7 @@ export class CoreWebService {
     private getRequestOpts<T>(options: DotRequestOptionsArgs): HttpRequest<T> {
         const headers = this.getHttpHeaders(options.headers);
         const params = this.getHttpParams(options.params);
-        const url = this.getAbsoluteUrl(options.url);
+        const url = this.getFixedUrl(options.url);
         let body = <T>options.body || null;
 
         if (body) {
@@ -258,7 +256,7 @@ export class CoreWebService {
     }
 
     private getHttpHeaders(headers: { [key: string]: string }): HttpHeaders {
-        let httpHeaders = this._apiRoot.getDefaultRequestHeaders();
+        let httpHeaders = this.getDefaultRequestHeaders();
 
         if (headers && Object.keys(headers).length) {
             Object.keys(headers).forEach((key) => {
@@ -269,11 +267,14 @@ export class CoreWebService {
         return httpHeaders;
     }
 
-    private getAbsoluteUrl(url: string): string {
-        if (url.indexOf('://') === -1) {
-            return url.startsWith('/api')
-                ? `${this._apiRoot.baseUrl}${url.substr(1)}`
-                : `${this._apiRoot.baseUrl}api/${url}`;
+    private getFixedUrl(url: string): string {
+        if (url.startsWith('api')) {
+            return `/${url}`;
+        }
+
+        const [version] = url.split('/');
+        if (version.match(/v[1-9]/g)) {
+            return `/api/${url}`;
         }
 
         return url;
@@ -290,5 +291,12 @@ export class CoreWebService {
         }
 
         return null;
+    }
+
+    private getDefaultRequestHeaders(): HttpHeaders {
+        let headers = new HttpHeaders()
+            .set('Accept', '*/*')
+            .set('Content-Type', 'application/json');
+        return headers;
     }
 }

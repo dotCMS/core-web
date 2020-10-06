@@ -277,8 +277,8 @@ export class RuleService {
   ) {
     this._rulesEndpointUrl = `/ruleengine/rules`;
     this._actionsEndpointUrl = `/ruleengine/actions`;
-    this._conditionTypesEndpointUrl = `${this._apiRoot.baseUrl}api/v1/system/ruleengine/conditionlets`;
-    this._ruleActionTypesEndpointUrl = `${this._apiRoot.baseUrl}api/v1/system/ruleengine/actionlets`;
+    this._conditionTypesEndpointUrl = `/api/v1/system/ruleengine/conditionlets`;
+    this._ruleActionTypesEndpointUrl = `/api/v1/system/ruleengine/actionlets`;
 
     this._preCacheCommonResources(_resources);
     this.loadActionTypes().subscribe(
@@ -364,7 +364,7 @@ export class RuleService {
       .request({
         body: RuleService.fromClientRuleTransformFn(body),
         method: 'POST',
-        url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}`
+        url: `/api/v1/sites/${siteId}${this._rulesEndpointUrl}`
       }).pipe(
       map((result: HttpResponse<any>) => {
         body.key = result['id']; // @todo:ggranum type the POST result correctly.
@@ -377,7 +377,7 @@ export class RuleService {
     return this.coreWebService
       .request({
         method: 'DELETE',
-        url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${ruleId}`
+        url: `/api/v1/sites/${siteId}${this._rulesEndpointUrl}/${ruleId}`
       }).pipe(
       map(_result => {
         return { success: true };
@@ -404,7 +404,7 @@ export class RuleService {
     const siteId = this.loadRulesSiteId();
     return this.coreWebService
       .request({
-        url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
+        url: `/api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
       }).pipe(
       map(result => {
         return <RuleModel | CwError><unknown>Object.assign({ key: id }, DEFAULT_RULE, result);
@@ -421,7 +421,7 @@ export class RuleService {
         .request({
           body: RuleService.fromClientRuleTransformFn(rule),
           method: 'PUT',
-          url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
+          url: `/api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
         }).pipe(
         map(res => {
           const r = Object.assign({}, DEFAULT_RULE, res);
@@ -482,7 +482,7 @@ export class RuleService {
   private sendLoadRulesRequest(siteId: string): void {
     this.coreWebService
       .request({
-        url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}/ruleengine/rules`
+        url: `/api/v1/sites/${siteId}/ruleengine/rules`
       })
       .subscribe(
         ruleMap => {

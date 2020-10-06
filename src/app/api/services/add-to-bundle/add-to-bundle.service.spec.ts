@@ -1,11 +1,12 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 import { AddToBundleService } from './add-to-bundle.service';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 import { ApiRoot, UserModel, LoggerService, StringUtils, CoreWebService } from 'dotcms-js';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 import { DotAjaxActionResponseView } from '@shared/models/ajax-action-response/dot-ajax-action-response';
+import { DotCurrentUser } from '@shared/models/dot-current-user/dot-current-user';
 
 describe('AddToBundleService', () => {
     let injector: TestBed;
@@ -34,7 +35,7 @@ describe('AddToBundleService', () => {
 
     it('should get bundle list', () => {
         spyOn(dotCurrentUserService, 'getCurrentUser').and.returnValue(
-            observableOf({
+            of(<DotCurrentUser>{
                 userId: '1234'
             })
         );
