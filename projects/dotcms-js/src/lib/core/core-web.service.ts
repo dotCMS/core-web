@@ -83,7 +83,8 @@ export class CoreWebService {
             catchError(
                 (response: HttpErrorResponse, _original: Observable<any>): Observable<any> => {
                     if (response) {
-                        this.handleHttpError(response);
+                        this.emitHttpError(response.status);
+
                         if (
                             response.status === HttpCode.SERVER_ERROR ||
                             response.status === HttpCode.FORBIDDEN
@@ -143,7 +144,7 @@ export class CoreWebService {
      * @RequestOptionsArgs options
      * @returns Observable<ResponseView>
      */
-    public requestView<T = any>(options: DotRequestOptionsArgs): Observable<ResponseView<T>> {
+    requestView<T = any>(options: DotRequestOptionsArgs): Observable<ResponseView<T>> {
         if (!options.method) {
             options.method = 'GET';
         }
@@ -167,18 +168,26 @@ export class CoreWebService {
             ),
             map((resp: HttpResponse<DotCMSResponse<T>>) => {
                 if (resp.body && resp.body.errors && resp.body.errors.length > 0) {
-                    return this.handleRequestViewErrors(resp);
+                    return this.handleRequestViewErrors<T>(resp);
                 } else {
                     return new ResponseView<T>(resp);
                 }
             }),
             catchError((err: HttpErrorResponse) => {
+                this.emitHttpError(err.status);
                 return throwError(this.handleResponseHttpErrors(err));
             })
         );
     }
 
-    public subscribeTo<T>(httpErrorCode: number): Observable<T> {
+    /**
+     * Emit to the subscriber when the request fail
+     *
+     * @param {number} httpErrorCode
+     * @returns {Observable<number>}
+     * @memberof CoreWebService
+     */
+    subscribeToHttpError(httpErrorCode: number): Observable<void> {
         if (!this.httpErrosSubjects[httpErrorCode]) {
             this.httpErrosSubjects[httpErrorCode] = new Subject();
         }
@@ -202,12 +211,12 @@ export class CoreWebService {
         return resp;
     }
 
-    private handleHttpError(response: HttpErrorResponse): void {
-        if (!this.httpErrosSubjects[response.status]) {
-            this.httpErrosSubjects[response.status] = new Subject();
+    private emitHttpError(status: number): void {
+        if (!this.httpErrosSubjects[status]) {
+            this.httpErrosSubjects[status] = new Subject();
         }
 
-        this.httpErrosSubjects[response.status].next(response);
+        this.httpErrosSubjects[status].next();
     }
 
     private getRequestOpts<T>(options: DotRequestOptionsArgs): HttpRequest<T> {
