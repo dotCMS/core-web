@@ -24,6 +24,7 @@ describe('ResetPasswordComponent', () => {
     let loginService: LoginService;
     let activatedRoute: ActivatedRoute;
     let dotRouterService: DotRouterService;
+    let changePasswordButton;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -53,7 +54,7 @@ describe('ResetPasswordComponent', () => {
         spyOn(loginService, 'changePassword').and.callThrough();
         fixture.detectChanges();
 
-        this.changePasswordButton = de.query(By.css('button[type="submit"]'));
+        changePasswordButton = de.query(By.css('button[type="submit"]'));
     });
 
     it('should load form labels correctly', () => {
@@ -68,7 +69,7 @@ describe('ResetPasswordComponent', () => {
     });
 
     it('should keep change password button disabled until the form is valid', () => {
-        expect(this.changePasswordButton.nativeElement.disabled).toBe(true);
+        expect(changePasswordButton.nativeElement.disabled).toBe(true);
     });
 
     it('should display message if passwords do not match', () => {
@@ -76,7 +77,7 @@ describe('ResetPasswordComponent', () => {
             password: 'test',
             confirmPassword: 'test2'
         });
-        this.changePasswordButton.triggerEventHandler('click', {});
+        changePasswordButton.triggerEventHandler('click', {});
         fixture.detectChanges();
         const errorMessage = de.queryAll(By.css('.error-message'));
 
@@ -89,7 +90,7 @@ describe('ResetPasswordComponent', () => {
             password: 'test',
             confirmPassword: 'test'
         });
-        this.changePasswordButton.triggerEventHandler('click', {});
+        changePasswordButton.triggerEventHandler('click', {});
         expect(loginService.changePassword).toHaveBeenCalledWith('test', 'test@test.com');
         expect(dotRouterService.goToLogin).toHaveBeenCalledWith({ changedPassword: true });
     });

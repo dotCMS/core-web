@@ -4,7 +4,7 @@ import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-
 import { ActionMenuButtonComponent } from '../_common/action-menu-button/action-menu-button.component';
 import { DotActionButtonComponent } from '../_common/dot-action-button/dot-action-button.component';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { TableModule } from 'primeng/table';
@@ -29,13 +29,17 @@ describe('DotListingDataTableComponent', () => {
     let fixture: ComponentFixture<DotListingDataTableComponent>;
     let de: DebugElement;
     let el: HTMLElement;
+    let items;
+    let paginatorService: PaginatorService;
+    let columns;
+    let url;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
             'global-search': 'Global Serach'
         });
 
-        DOTTestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             declarations: [
                 ActionHeaderComponent,
                 DotActionButtonComponent,
@@ -68,7 +72,7 @@ describe('DotListingDataTableComponent', () => {
         de = fixture.debugElement.query(By.css('p-table'));
         el = de.nativeElement;
 
-        this.items = [
+        items = [
             {
                 field1: 'item1-value1',
                 field2: 'item1-value2',
@@ -120,19 +124,19 @@ describe('DotListingDataTableComponent', () => {
             }
         ];
 
-        this.paginatorService = fixture.debugElement.injector.get(PaginatorService);
-        this.paginatorService.paginationPerPage = 4;
-        this.paginatorService.maxLinksPage = 2;
-        this.paginatorService.totalRecords = this.items.length;
+        paginatorService = TestBed.inject(PaginatorService);
+        paginatorService.paginationPerPage = 4;
+        paginatorService.maxLinksPage = 2;
+        paginatorService.totalRecords = items.length;
 
-        this.columns = [
+        columns = [
             { fieldName: 'field1', header: 'Field 1', width: '45%', sortable: true },
             { fieldName: 'field2', header: 'Field 2', width: '10%' },
             { fieldName: 'field3', header: 'Field 3', width: '30%' },
             { fieldName: 'nEntries', header: 'Field 4', width: '5%', textContent: 'View ({0})' }
         ];
 
-        this.url = '/test/';
+        url = '/test/';
         comp.actions = [
             {
                 menuItem: {
@@ -154,18 +158,18 @@ describe('DotListingDataTableComponent', () => {
     });
 
     it('renderer basic datatable component', () => {
-        spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
+        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
             return Observable.create(observer => {
-                observer.next(Object.assign([], this.items));
+                observer.next(Object.assign([], items));
             });
         });
-        comp.columns = this.columns;
-        comp.url = this.url;
+        comp.columns = columns;
+        comp.url = url;
         comp.multipleSelection = true;
 
         comp.ngOnChanges({
             columns: new SimpleChange(null, comp.columns, true),
-            url: new SimpleChange(null, this.url, true)
+            url: new SimpleChange(null, url, true)
         });
 
         fixture.detectChanges();
@@ -184,7 +188,7 @@ describe('DotListingDataTableComponent', () => {
         rows.forEach((row, rowIndex) => {
             if (rowIndex) {
                 const cells = row.querySelectorAll('td');
-                const item = this.items[rowIndex - 1];
+                const item = items[rowIndex - 1];
                 cells.forEach((_cell, cellIndex) => {
                     if (cellIndex < 3) {
                         expect(cells[cellIndex].querySelector('span').textContent).toContain(
@@ -204,30 +208,30 @@ describe('DotListingDataTableComponent', () => {
             }
         });
 
-        expect(this.url).toEqual(this.paginatorService.url);
+        expect(url).toEqual(paginatorService.url);
     });
 
     it('renderer with format date column', () => {
         const dotStringFormatPipe = new DotStringFormatPipe();
-        const itemsWithFormat = this.items.map(item => {
+        const itemsWithFormat = items.map(item => {
             item.field3 = 1496178801000;
             return item;
         });
 
-        spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
+        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
             return Observable.create(observer => {
                 observer.next(Object.assign([], itemsWithFormat));
             });
         });
 
-        this.columns[2].format = 'date';
-        comp.columns = this.columns;
-        comp.url = this.url;
+        columns[2].format = 'date';
+        comp.columns = columns;
+        comp.url = url;
         comp.multipleSelection = true;
 
         comp.ngOnChanges({
             columns: new SimpleChange(null, comp.columns, true),
-            url: new SimpleChange(null, this.url, true)
+            url: new SimpleChange(null, url, true)
         });
 
         fixture.detectChanges();
@@ -245,7 +249,7 @@ describe('DotListingDataTableComponent', () => {
         rows.forEach((row, rowIndex) => {
             if (rowIndex) {
                 const cells = row.querySelectorAll('td');
-                const item = this.items[rowIndex - 1];
+                const item = items[rowIndex - 1];
 
                 cells.forEach((_cell, cellIndex) => {
                     if (cellIndex < 4) {
@@ -261,22 +265,22 @@ describe('DotListingDataTableComponent', () => {
             }
         });
 
-        expect(this.url).toEqual(this.paginatorService.url);
+        expect(url).toEqual(paginatorService.url);
     });
 
     it('should renderer table without checkbox', () => {
-        spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
+        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
             return Observable.create(observer => {
-                observer.next(Object.assign([], this.items));
+                observer.next(Object.assign([], items));
             });
         });
 
-        comp.columns = this.columns;
-        comp.url = this.url;
+        comp.columns = columns;
+        comp.url = url;
 
         comp.ngOnChanges({
             columns: new SimpleChange(null, comp.columns, true),
-            url: new SimpleChange(null, this.url, true)
+            url: new SimpleChange(null, url, true)
         });
 
         const dataList = fixture.debugElement.query(By.css('p-table'));
@@ -305,13 +309,13 @@ describe('DotListingDataTableComponent', () => {
                 }
             }
         ];
-        spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
+        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
             return Observable.create(observer => {
-                observer.next(Object.assign([], this.items));
+                observer.next(Object.assign([], items));
             });
         });
 
-        comp.columns = this.columns;
+        comp.columns = columns;
 
         comp.ngOnChanges({
             columns: new SimpleChange(null, comp.columns, true)
@@ -338,13 +342,13 @@ describe('DotListingDataTableComponent', () => {
                 }
             }
         ];
-        spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
+        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
             return Observable.create(observer => {
-                observer.next(Object.assign([], this.items));
+                observer.next(Object.assign([], items));
             });
         });
 
-        comp.columns = this.columns;
+        comp.columns = columns;
         comp.actions = fakeActions;
 
         comp.ngOnChanges({
@@ -363,15 +367,15 @@ describe('DotListingDataTableComponent', () => {
 
     it('should show the loading indicator while the data is received', () => {
         expect(comp.loading).toEqual(true);
-        spyOn(this.paginatorService, 'getCurrentPage').and.returnValue(observableOf(this.items));
-        comp.columns = this.columns;
+        spyOn(paginatorService, 'getCurrentPage').and.returnValue(observableOf(items));
+        comp.columns = columns;
         comp.loadCurrentPage();
         expect(comp.loading).toEqual(false);
     });
 
     it('should load first page of resutls and set pagination to 1', () => {
         comp.dataTable.first = 3;
-        spyOn(this.paginatorService, 'get').and.returnValue(observableOf(this.items));
+        spyOn(paginatorService, 'get').and.returnValue(observableOf(items));
 
         comp.loadFirstPage();
 
@@ -381,8 +385,8 @@ describe('DotListingDataTableComponent', () => {
 
     it('should focus first row on arrowDown in Global Search Input', () => {
         spyOn(comp, 'focusFirstRow').and.callThrough();
-        spyOn(this.paginatorService, 'get').and.returnValue(observableOf(this.items));
-        comp.columns = this.columns;
+        spyOn(paginatorService, 'get').and.returnValue(observableOf(items));
+        comp.columns = columns;
         comp.loadFirstPage();
         fixture.detectChanges();
         comp.globalSearch.nativeElement.dispatchEvent(
@@ -393,9 +397,9 @@ describe('DotListingDataTableComponent', () => {
     });
 
     it('should set the pagination size in the Table', () => {
-        spyOn(this.paginatorService, 'get').and.returnValue(observableOf(this.items));
+        spyOn(paginatorService, 'get').and.returnValue(observableOf(items));
         comp.paginationPerPage = 5;
-        comp.columns = this.columns;
+        comp.columns = columns;
         comp.loadFirstPage();
         fixture.detectChanges();
 

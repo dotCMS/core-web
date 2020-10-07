@@ -45,13 +45,23 @@ class TestViewContainerRef {
     ): any {}
 }
 
+let testComponent;
+let componentFactory;
+let getComponent;
+let getFieldType;
+let resolveComponentFactory;
+let createComponent;
+let propertyName;
+let group;
+let field;
+
 describe('Directive: DynamicFieldPropertyDirective', () => {
     beforeEach(() => {
-        this.component = new TestComponent();
+        testComponent = new TestComponent();
 
-        this.propertyName = 'name';
-        this.group = new FormGroup({});
-        this.field = {
+        propertyName = 'name';
+        group = new FormGroup({});
+        field = {
             name: 'FieldName',
             clazz: 'testClazz'
         };
@@ -59,19 +69,19 @@ describe('Directive: DynamicFieldPropertyDirective', () => {
         const viewContainerRef = new TestViewContainerRef();
         const resolver = new TestComponentFactoryResolver();
         const fieldPropertyService = new TestFieldPropertyService();
-        this.componentFactory = {};
+        componentFactory = {};
 
-        this.getComponent = spyOn(fieldPropertyService, 'getComponent').and.returnValue(
+        getComponent = spyOn(fieldPropertyService, 'getComponent').and.returnValue(
             TestComponent
         );
-        this.getFieldType = spyOn(fieldPropertyService, 'getFieldType').and.returnValue(
+        getFieldType = spyOn(fieldPropertyService, 'getFieldType').and.returnValue(
             mockFieldType
         );
-        this.resolveComponentFactory = spyOn(resolver, 'resolveComponentFactory').and.returnValue(
-            this.componentFactory
+        resolveComponentFactory = spyOn(resolver, 'resolveComponentFactory').and.returnValue(
+            componentFactory
         );
-        this.createComponent = spyOn(viewContainerRef, 'createComponent').and.returnValue({
-            instance: this.component
+        createComponent = spyOn(viewContainerRef, 'createComponent').and.returnValue({
+            instance: testComponent
         });
 
         const dynamicFieldPropertyDirective = new DynamicFieldPropertyDirective(
@@ -80,28 +90,28 @@ describe('Directive: DynamicFieldPropertyDirective', () => {
             <FieldPropertyService>fieldPropertyService
         );
 
-        dynamicFieldPropertyDirective.propertyName = this.propertyName;
-        dynamicFieldPropertyDirective.field = this.field;
-        dynamicFieldPropertyDirective.group = this.group;
+        dynamicFieldPropertyDirective.propertyName = propertyName;
+        dynamicFieldPropertyDirective.field = field;
+        dynamicFieldPropertyDirective.group = group;
 
         dynamicFieldPropertyDirective.ngOnChanges({
-            field: new SimpleChange(null, this.field, true)
+            field: new SimpleChange(null, field, true)
         });
     });
 
     it('Should create a element', () => {
-        expect(this.getComponent).toHaveBeenCalledWith(this.propertyName);
-        expect(this.resolveComponentFactory).toHaveBeenCalledWith(TestComponent);
-        expect(this.createComponent).toHaveBeenCalledWith(this.componentFactory);
+        expect(getComponent).toHaveBeenCalledWith(propertyName);
+        expect(resolveComponentFactory).toHaveBeenCalledWith(TestComponent);
+        expect(createComponent).toHaveBeenCalledWith(componentFactory);
     });
 
     it('Should set component properties', () => {
-        expect(this.component.property).toEqual({
-            field: this.field,
-            name: this.propertyName,
+        expect(testComponent.property).toEqual({
+            field: field,
+            name: propertyName,
             value: 'FieldName'
         });
-        expect(this.component.group).toEqual(this.group);
-        expect(this.component.helpText).toEqual('helpText');
+        expect(testComponent.group).toEqual(group);
+        expect(testComponent.helpText).toEqual('helpText');
     });
 });
