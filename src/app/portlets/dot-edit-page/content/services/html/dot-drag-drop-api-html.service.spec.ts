@@ -66,7 +66,7 @@ describe('DotDragDropAPIHtmlService', () => {
         spyOn(dotDOMHtmlUtilService, 'createLinkElement').and.returnValue(cssElement);
         spyOn(iframe.contentWindow.document.head, 'appendChild');
 
-        spyOn(dotDOMHtmlUtilService, 'creatExternalScriptElement').and.callFake(
+        spyOn<any>(dotDOMHtmlUtilService, 'creatExternalScriptElement').and.callFake(
             (_src, callback) => {
                 callbackFunc = callback;
             }
@@ -76,12 +76,12 @@ describe('DotDragDropAPIHtmlService', () => {
     it('should crate and set js and css draguls element', () => {
         dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
 
-        expect(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith(
+        expect<any>(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith(
             '/html/js/dragula-3.7.2/dragula.min.css'
         );
         expect(iframe.contentWindow.document.head.appendChild).toHaveBeenCalledWith(cssElement);
 
-        expect(dotDOMHtmlUtilService.creatExternalScriptElement).toHaveBeenCalledWith(
+        expect<any>(dotDOMHtmlUtilService.creatExternalScriptElement).toHaveBeenCalledWith(
             '/html/js/dragula-3.7.2/dragula.min.js',
             jasmine.any(Function)
         );

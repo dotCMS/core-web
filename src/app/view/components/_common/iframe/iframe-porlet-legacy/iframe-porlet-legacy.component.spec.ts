@@ -181,7 +181,7 @@ describe('IframePortletLegacyComponent', () => {
             }
         });
 
-        expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
+        expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
             this: {
                 is: 'a custom event'
             }

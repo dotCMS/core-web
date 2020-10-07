@@ -522,7 +522,7 @@ describe('Load fields and drag and drop', () => {
         const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
         const fieldRows = fieldsContainer.queryAll(By.css('dot-content-type-fields-row'));
         fieldRows[0].componentInstance.editField.emit(field);
-        expect(spy).toHaveBeenCalledWith(field);
+        expect<any>(spy).toHaveBeenCalledWith(field);
     });
 
     it('should save all updated fields', fakeAsync(() => {
@@ -719,7 +719,7 @@ describe('Load fields and drag and drop', () => {
         const fieldRows = fieldsContainer.queryAll(By.css('dot-content-type-fields-row'));
         fieldRows[0].componentInstance.removeField.emit(field);
 
-        expect(spy).toHaveBeenCalledWith(field);
+        expect<any>(spy).toHaveBeenCalledWith(field);
     });
 
     it('should disable field variable tab', () => {

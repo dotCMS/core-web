@@ -1,6 +1,6 @@
 import { DotContentTypesInfoService } from './dot-content-types-info.service';
 
-fdescribe('DotContentTypesInfoService', () => {
+describe('DotContentTypesInfoService', () => {
     let service: DotContentTypesInfoService;
     beforeEach(() => {
         service = new DotContentTypesInfoService();

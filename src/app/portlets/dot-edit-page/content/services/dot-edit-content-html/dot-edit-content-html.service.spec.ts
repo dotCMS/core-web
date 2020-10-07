@@ -923,7 +923,7 @@ describe('DotEditContentHtmlService', () => {
                 expect(model).toEqual(modelExpected, 'should tigger model change event');
             });
 
-            expect(dotEditContentToolbarHtmlService.getFormToContainer).toHaveBeenCalledWith(
+            expect<any>(dotEditContentToolbarHtmlService.getFormToContainer).toHaveBeenCalledWith(
                 currentContainer,
                 {
                     ...form,

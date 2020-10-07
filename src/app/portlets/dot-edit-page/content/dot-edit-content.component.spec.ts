@@ -259,7 +259,7 @@ describe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderAddedForm').and.returnValue(
             of([{ identifier: '123', uuid: 'uui-1' }])
         );
-        spyOn(dotEditPageService, 'save').and.returnValue(of({}));
+        spyOn<any>(dotEditPageService, 'save').and.returnValue(of({}));
     });
 
     describe('elements', () => {
@@ -286,7 +286,7 @@ describe('DotEditContentComponent', () => {
                     });
                     fixture.detectChanges();
 
-                    expect(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
+                    expect<any>(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
                         baseType: 'string',
                         clazz: 'string'
                     });
@@ -375,7 +375,7 @@ describe('DotEditContentComponent', () => {
                 spyOn(dotCustomEventHandlerService, 'handle');
                 dotEditContentlet.triggerEventHandler('custom', { data: 'test' });
 
-                expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
+                expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
             });
         });
 
@@ -998,12 +998,12 @@ describe('DotEditContentComponent', () => {
                 });
                 fixture.detectChanges();
 
-                expect(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
+                expect<any>(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
                     baseType: 'string',
                     clazz: 'string'
                 });
 
-                expect(dotEditPageService.save).toHaveBeenCalledWith('123', [
+                expect<any>(dotEditPageService.save).toHaveBeenCalledWith('123', [
                     { identifier: '123', uuid: 'uui-1', personaTag: 'SuperPersona' }
                 ]);
             });

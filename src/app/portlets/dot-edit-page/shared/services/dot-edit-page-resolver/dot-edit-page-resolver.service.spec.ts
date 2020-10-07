@@ -92,7 +92,7 @@ describe('DotEditPageResolver', () => {
             expect(state).toEqual(mock);
         });
 
-        expect(dotPageStateService.requestPage).toHaveBeenCalledWith({
+        expect<any>(dotPageStateService.requestPage).toHaveBeenCalledWith({
             url: 'edit-page/content',
             viewAs: {
                 language: '2'

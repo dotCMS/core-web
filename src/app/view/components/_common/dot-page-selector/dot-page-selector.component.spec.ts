@@ -197,7 +197,7 @@ describe('DotPageSelectorComponent', () => {
 
     it('should set current host on selection', () => {
         component.results = mockDotSiteSelectorResults;
-        spyOn(dotPageSelectorService, 'setCurrentHost').and.returnValue(observableOf(null));
+        spyOn<any>(dotPageSelectorService, 'setCurrentHost').and.returnValue(observableOf(null));
         autocomplete.triggerEventHandler('onSelect', mockDotSiteSelectorResults.data[0]);
         expect(dotPageSelectorService.setCurrentHost).toHaveBeenCalledWith(
             mockDotSiteSelectorResults.data[0].payload

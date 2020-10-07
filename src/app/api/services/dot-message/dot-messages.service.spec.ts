@@ -65,7 +65,7 @@ describe('DotMessageService', () => {
         formatDateService = injector.get(FormatDateService);
         dotLocalstorageService = injector.get(DotLocalstorageService);
 
-        spyOn(coreWebService, 'requestView').and.returnValue(
+        spyOn<any>(coreWebService, 'requestView').and.returnValue(
             of({
                 entity: messages
             })

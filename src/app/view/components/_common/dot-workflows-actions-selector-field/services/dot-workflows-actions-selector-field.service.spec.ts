@@ -93,7 +93,7 @@ describe('DotWorkflowsActionsSelectorFieldService', () => {
         spy.and.returnValue(throwError(mock));
         service.load(mockWorkflows);
 
-        expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(mock);
+        expect<any>(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(mock);
         expect(result).toEqual([]);
     });
 });

@@ -159,7 +159,7 @@ describe('DotWorkflowEventHandlerService', () => {
             expect(dotWizardService.open).toHaveBeenCalledWith(mockWizardInput);
         });
         it('should fire the workflow action with the correct data, execute the callback and send a message on output', () => {
-            spyOn(dotWorkflowActionsFireService, 'fireTo').and.returnValue(of({}));
+            spyOn<any>(dotWorkflowActionsFireService, 'fireTo').and.returnValue(of({}));
 
             spyOn(dotGlobalMessageService, 'display');
             spyOn(dotIframeService, 'run');

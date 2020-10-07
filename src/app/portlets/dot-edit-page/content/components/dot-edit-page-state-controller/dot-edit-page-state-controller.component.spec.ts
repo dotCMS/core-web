@@ -253,7 +253,7 @@ describe('DotEditPageStateControllerComponent', () => {
         });
 
         it('should update LOCK and MODE when confirmation dialog Canceled', () => {
-            spyOn(dialogService, 'confirm').and.callFake((conf) => {
+            spyOn<any>(dialogService, 'confirm').and.callFake((conf) => {
                 conf.cancel();
             });
 

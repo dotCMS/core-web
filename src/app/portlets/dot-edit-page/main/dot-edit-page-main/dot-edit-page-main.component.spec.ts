@@ -257,7 +257,7 @@ describe('DotEditPageMainComponent', () => {
                     name: 'random'
                 }
             });
-            expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
+            expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
                 detail: {
                     name: 'random'
                 }

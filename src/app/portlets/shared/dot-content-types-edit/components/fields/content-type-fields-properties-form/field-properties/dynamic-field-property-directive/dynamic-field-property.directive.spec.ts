@@ -9,7 +9,6 @@ import { DynamicFieldPropertyDirective } from './dynamic-field-property.directiv
 import { FieldPropertyService } from '../../../service';
 import { FieldProperty } from '../field-properties.model';
 import { FormGroup } from '@angular/forms';
-import { mockFieldType } from '@portlets/shared/dot-content-types-edit/components/fields/service/field.service.spec';
 import { FieldType } from '@portlets/shared/dot-content-types-edit/components/fields';
 
 @Component({
@@ -48,7 +47,6 @@ class TestViewContainerRef {
 let testComponent;
 let componentFactory;
 let getComponent;
-let getFieldType;
 let resolveComponentFactory;
 let createComponent;
 let propertyName;
@@ -73,9 +71,6 @@ describe('Directive: DynamicFieldPropertyDirective', () => {
 
         getComponent = spyOn(fieldPropertyService, 'getComponent').and.returnValue(
             TestComponent
-        );
-        getFieldType = spyOn(fieldPropertyService, 'getFieldType').and.returnValue(
-            mockFieldType
         );
         resolveComponentFactory = spyOn(resolver, 'resolveComponentFactory').and.returnValue(
             componentFactory

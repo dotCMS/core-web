@@ -49,7 +49,7 @@ describe('PushPublishService', () => {
     });
 
     it('should get push publish environments', () => {
-        spyOn(dotCurrentUserService, 'getCurrentUser').and.returnValue(
+        spyOn<any>(dotCurrentUserService, 'getCurrentUser').and.returnValue(
             observableOf({
                 roleId: '1234'
             })

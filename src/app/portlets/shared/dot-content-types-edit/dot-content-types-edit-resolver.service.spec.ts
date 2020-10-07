@@ -72,7 +72,7 @@ describe('DotContentTypeEditResolver', () => {
     it('should redirect to content-types if content type it\'s not found', () => {
         activatedRouteSnapshotMock.paramMap.get = () => 'invalid-id';
 
-        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
+        spyOn<any>(dotHttpErrorManagerService, 'handle').and.returnValue(
             observableOf({
                 redirected: false
             })
@@ -98,7 +98,7 @@ describe('DotContentTypeEditResolver', () => {
     it('should get and return null and go to home', () => {
         activatedRouteSnapshotMock.paramMap.get = () => '123';
 
-        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
+        spyOn<any>(dotHttpErrorManagerService, 'handle').and.returnValue(
             observableOf({
                 redirected: false
             })

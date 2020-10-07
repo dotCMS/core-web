@@ -178,7 +178,7 @@ describe('MainLegacyComponent', () => {
             spyOn(dotCustomEventHandlerService, 'handle');
             createContentlet.triggerEventHandler('custom', { data: 'test' });
 
-            expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
+            expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
         });
     });
 });

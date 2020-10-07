@@ -146,6 +146,6 @@ describe('DotContentletsComponent', () => {
         spyOn(dotCustomEventHandlerService, 'handle');
         const edit = de.query(By.css('dot-edit-contentlet'));
         edit.triggerEventHandler('custom', { data: 'test' });
-        expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
+        expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
     });
 });

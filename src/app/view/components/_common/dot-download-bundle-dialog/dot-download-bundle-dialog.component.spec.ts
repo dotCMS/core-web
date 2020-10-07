@@ -209,7 +209,7 @@ describe('DotDownloadBundleDialogComponent', () => {
                 let anchor: HTMLAnchorElement;
 
                 beforeEach(() => {
-                    spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+                    spyOn<any>(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
                     anchor = document.createElement('a');
                     spyOn(anchor, 'click');
                     spyOn(dotUtils, 'getDownloadLink').and.returnValue(anchor);
@@ -254,7 +254,7 @@ describe('DotDownloadBundleDialogComponent', () => {
 
             describe('on error', () => {
                 beforeEach(() => {
-                    spyOn(window, 'fetch').and.returnValue(Promise.resolve(throwError('error')));
+                    spyOn<any>(window, 'fetch').and.returnValue(Promise.resolve(throwError('error')));
                 });
 
                 it('should enable buttons and display error message', fakeAsync(() => {

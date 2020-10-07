@@ -172,7 +172,7 @@ describe('DotCustomEventHandlerService', () => {
     it('should set colors in the ui', () => {
         spyOn(dotUiColorsService, 'setColors');
         const fakeHtmlEl = { hello: 'html' };
-        spyOn(document, 'querySelector').and.returnValue(fakeHtmlEl);
+        spyOn<any>(document, 'querySelector').and.returnValue(fakeHtmlEl);
 
         service.handle(
             new CustomEvent('ng-event', {
@@ -188,7 +188,7 @@ describe('DotCustomEventHandlerService', () => {
                 }
             })
         );
-        expect(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl, {
+        expect<any>(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl, {
             primary: '#fff',
             secondary: '#000',
             background: '#ccc'
@@ -213,7 +213,7 @@ describe('DotCustomEventHandlerService', () => {
             })
         );
 
-        expect(dotPushPublishDialogService.open).toHaveBeenCalledWith(dataMock);
+        expect<any>(dotPushPublishDialogService.open).toHaveBeenCalledWith(dataMock);
     });
 
     it('should notify to open download bundle dialog', () => {
@@ -239,6 +239,6 @@ describe('DotCustomEventHandlerService', () => {
                 }
             })
         );
-        expect(dotWorkflowEventHandlerService.open).toHaveBeenCalledWith('testData');
+        expect<any>(dotWorkflowEventHandlerService.open).toHaveBeenCalledWith('testData');
     });
 });

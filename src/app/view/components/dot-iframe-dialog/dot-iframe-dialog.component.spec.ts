@@ -183,8 +183,8 @@ describe('DotIframeDialogComponent', () => {
                         });
 
                         expect(component.load.emit).toHaveBeenCalledWith(mockEvent);
-                        expect(component.keydown.emit).toHaveBeenCalledWith({ hello: 'world' });
-                        expect(component.custom.emit).toHaveBeenCalledWith({
+                        expect<any>(component.keydown.emit).toHaveBeenCalledWith({ hello: 'world' });
+                        expect<any>(component.custom.emit).toHaveBeenCalledWith({
                             detail: {
                                 name: 'Hello World'
                             }

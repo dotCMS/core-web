@@ -188,6 +188,6 @@ describe('DotWorkflowTaskComponent', () => {
                 }
             }
         });
-        expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith(mockEvent);
+        expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith(mockEvent);
     });
 });

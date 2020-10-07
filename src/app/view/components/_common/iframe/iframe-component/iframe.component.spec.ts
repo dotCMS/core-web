@@ -177,7 +177,7 @@ describe('IframeComponent', () => {
 
         dotIframeService.reloadColors();
 
-        expect(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl);
+        expect<any>(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl);
     });
 
     describe('bind iframe events', () => {
@@ -232,7 +232,7 @@ describe('IframeComponent', () => {
                 }
             });
 
-            expect(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl);
+            expect<any>(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl);
         });
     });
 

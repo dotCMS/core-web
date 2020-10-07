@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FieldService } from '.';
 import { FieldType } from '@portlets/shared/dot-content-types-edit/components/fields';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';

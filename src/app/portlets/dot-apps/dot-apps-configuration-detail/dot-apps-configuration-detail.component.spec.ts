@@ -163,7 +163,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
         component = fixture.debugElement.componentInstance;
         appsServices = fixture.debugElement.injector.get(DotAppsService);
         routerService = fixture.debugElement.injector.get(DotRouterService);
-        spyOn(appsServices, 'saveSiteConfiguration').and.returnValue(of({}));
+        spyOn<any>(appsServices, 'saveSiteConfiguration').and.returnValue(of({}));
     });
 
     describe('Without dynamic params', () => {
@@ -257,7 +257,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
             )[1];
 
             saveBtn.triggerEventHandler('click', {});
-            expect(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
+            expect<any>(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
                 component.apps.key,
                 component.apps.sites[0].id,
                 transformedData
@@ -338,7 +338,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
             )[1];
 
             saveBtn.triggerEventHandler('click', {});
-            expect(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
+            expect<any>(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
                 component.apps.key,
                 component.apps.sites[0].id,
                 transformedData

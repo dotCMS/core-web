@@ -1,5 +1,4 @@
 import { of as observableOf, Observable } from 'rxjs';
-import { DOTTestBed } from '@tests/dot-test-bed';
 import { FieldPropertyService } from './field-properties.service';
 import {
     CategoriesPropertyComponent,
