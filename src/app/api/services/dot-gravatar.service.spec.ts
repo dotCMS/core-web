@@ -1,7 +1,6 @@
-import { throwError } from 'rxjs';
-import { async, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { DotGravatarService } from './dot-gravatar-service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 const mockProfile = {
     displayName: 'admindotcms',
@@ -21,42 +20,51 @@ const mockProfile = {
     urls: []
 };
 
-
 describe('DotGravatarService', () => {
-    let dotGravatarService: DotGravatarService;
-    let mockJsonp;
+    let service: DotGravatarService;
+    // let httpClient: HttpClient;
+    let httpTestingController: HttpTestingController;
 
-    beforeEach(async(() => {
-        const testbed = TestBed.configureTestingModule({
-            providers: [
-                DotGravatarService,
-            ],
-            imports: [RouterTestingModule]
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                providers: [DotGravatarService],
+                imports: [HttpClientTestingModule]
+            });
+
+            service = TestBed.inject(DotGravatarService);
+            // httpClient = TestBed.inject(HttpClient);
+            httpTestingController = TestBed.inject(HttpTestingController);
+        })
+    );
+
+    it('Should return the photos url', () => {
+        service.getPhoto('1').subscribe((avatarUrl: string) => {
+            expect(avatarUrl).toEqual(
+                'https://secure.gravatar.com/avatar/314d3bbf9bf6e65ff8095fe7f928fe85'
+            );
         });
 
-        dotGravatarService = testbed.get(DotGravatarService);
-        mockJsonp = {};
-        // mockJsonp = testbed.get();
-    }));
-
-    it('Should return the photos url', (done) => {
-        spyOn(mockJsonp, 'get').and.callThrough();
-
-        dotGravatarService.getPhoto('1').subscribe((avatarUrl: string) => {
-            expect(mockJsonp.get).toHaveBeenCalledWith('//www.gravatar.com/1.json?callback=JSONP_CALLBACK');
-            expect(avatarUrl).toEqual(mockProfile.photos[0].value);
-            done();
+        const reqMock = httpTestingController.expectOne((req) => {
+            console.log(req.url);
+            return req.url === '//www.gravatar.com/1.json?';
+        });
+        expect(reqMock.request.method).toBe('JSONP');
+        reqMock.flush({
+            _body: {
+                entry: [mockProfile]
+            }
         });
     });
 
-
-    it('Should return null', (done) => {
-        spyOn(mockJsonp, 'get').and.returnValue(throwError('Error'));
-
-        dotGravatarService.getPhoto('1').subscribe((avatarUrl: string) => {
-            expect(mockJsonp.get).toHaveBeenCalledWith('//www.gravatar.com/1.json?callback=JSONP_CALLBACK');
-            expect(avatarUrl).toBeNull();
-            done();
+    it('Should return null', () => {
+        service.getPhoto('1').subscribe((avatarUrl: string) => {
+            expect(avatarUrl).toEqual(null);
         });
+
+        const reqMock = httpTestingController.expectOne((req) => {
+            return req.url === '//www.gravatar.com/1.json?';
+        });
+        reqMock.error(new ErrorEvent('Error'));
     });
 });
