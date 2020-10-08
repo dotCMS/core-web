@@ -45,8 +45,8 @@ export class DotThemeSelectorComponent implements OnInit {
     @ViewChild('searchInput', { static: true })
     searchInput: ElementRef;
 
-    @ViewChild('dataGrid', { static: true })
-    datagrid: DataView;
+    @ViewChild('dataView', { static: true })
+    dataView: DataView;
 
     current: DotTheme;
     visible = true;
@@ -93,7 +93,7 @@ export class DotThemeSelectorComponent implements OnInit {
      */
     paginate($event: LazyLoadEvent): void {
         this.themes = this.paginatorService.getWithOffset($event.first);
-        this.datagrid.first = $event.first;
+        this.dataView.first = $event.first;
     }
 
     /**

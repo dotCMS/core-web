@@ -26,6 +26,10 @@
 // // GOOGLE FONTS
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700");
 
+// PRIMEFLEX
+@import '../node_modules/primeflex/src/_variables.scss';
+@import '../node_modules/primeflex/src/_grid.scss';
+
 //DRAGULA
 /* in-flight clone */
 .gu-mirror {
