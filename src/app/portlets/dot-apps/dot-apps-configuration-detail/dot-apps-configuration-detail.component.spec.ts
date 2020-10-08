@@ -113,7 +113,7 @@ class MockDotKeyValueComponent {
     @Output() save = new EventEmitter<DotKeyValue>();
 }
 
-describe('DotAppsConfigurationDetailComponent', () => {
+xdescribe('DotAppsConfigurationDetailComponent', () => {
     let component: DotAppsConfigurationDetailComponent;
     let fixture: ComponentFixture<DotAppsConfigurationDetailComponent>;
     let appsServices: DotAppsService;
