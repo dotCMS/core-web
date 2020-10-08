@@ -9,7 +9,6 @@ import {
     CLIENTS_ONLY_MESSAGES,
     SERVER_RESPONSE_ERROR
 } from './util/http-response-util';
-import { ApiRoot } from './api-root.service';
 import { ResponseView } from './util/response-view';
 import { LoggerService } from './logger.service';
 import { HttpCode } from './util/http-code';
@@ -24,30 +23,6 @@ import {
     HttpEvent,
     HttpErrorResponse
 } from '@angular/common/http';
-
-export const RULE_CREATE = 'RULE_CREATE';
-export const RULE_DELETE = 'RULE_DELETE';
-export const RULE_UPDATE_NAME = 'RULE_UPDATE_NAME';
-export const RULE_UPDATE_ENABLED_STATE = 'RULE_UPDATE_ENABLED_STATE';
-
-export const V_RULE_UPDATE_EXPANDED_STATE = 'V_RULE_UPDATE_EXPANDED_STATE';
-
-export const RULE_UPDATE_FIRE_ON = 'RULE_UPDATE_FIRE_ON';
-
-export const RULE_RULE_ACTION_CREATE = 'RULE_RULE_ACTION_CREATE';
-export const RULE_RULE_ACTION_DELETE = 'RULE_RULE_ACTION_DELETE';
-export const RULE_RULE_ACTION_UPDATE_TYPE = 'RULE_RULE_ACTION_UPDATE_TYPE';
-export const RULE_RULE_ACTION_UPDATE_PARAMETER = 'RULE_RULE_ACTION_UPDATE_PARAMETER';
-
-export const RULE_CONDITION_GROUP_UPDATE_OPERATOR = 'RULE_CONDITION_GROUP_UPDATE_OPERATOR';
-export const RULE_CONDITION_GROUP_DELETE = 'RULE_CONDITION_GROUP_DELETE';
-export const RULE_CONDITION_GROUP_CREATE = 'RULE_CONDITION_GROUP_CREATE';
-
-export const RULE_CONDITION_CREATE = 'RULE_CONDITION_CREATE';
-export const RULE_CONDITION_DELETE = 'RULE_CONDITION_DELETE';
-export const RULE_CONDITION_UPDATE_TYPE = 'RULE_CONDITION_UPDATE_TYPE';
-export const RULE_CONDITION_UPDATE_PARAMETER = 'RULE_CONDITION_UPDATE_PARAMETER';
-export const RULE_CONDITION_UPDATE_OPERATOR = 'RULE_CONDITION_UPDATE_OPERATOR';
 
 export interface DotCMSResponse<T> {
     contentlets?: T;
@@ -79,7 +54,6 @@ export class CoreWebService {
     private httpErrosSubjects: Subject<any>[] = [];
 
     constructor(
-        private _apiRoot: ApiRoot,
         private loggerService: LoggerService,
         private router: Router,
         private http: HttpClient
@@ -109,7 +83,8 @@ export class CoreWebService {
             catchError(
                 (response: HttpErrorResponse, _original: Observable<any>): Observable<any> => {
                     if (response) {
-                        this.handleHttpError(response);
+                        this.emitHttpError(response.status);
+
                         if (
                             response.status === HttpCode.SERVER_ERROR ||
                             response.status === HttpCode.FORBIDDEN
@@ -169,7 +144,7 @@ export class CoreWebService {
      * @RequestOptionsArgs options
      * @returns Observable<ResponseView>
      */
-    public requestView<T = any>(options: DotRequestOptionsArgs): Observable<ResponseView<T>> {
+    requestView<T = any>(options: DotRequestOptionsArgs): Observable<ResponseView<T>> {
         if (!options.method) {
             options.method = 'GET';
         }
@@ -193,18 +168,26 @@ export class CoreWebService {
             ),
             map((resp: HttpResponse<DotCMSResponse<T>>) => {
                 if (resp.body && resp.body.errors && resp.body.errors.length > 0) {
-                    return this.handleRequestViewErrors(resp);
+                    return this.handleRequestViewErrors<T>(resp);
                 } else {
                     return new ResponseView<T>(resp);
                 }
             }),
             catchError((err: HttpErrorResponse) => {
+                this.emitHttpError(err.status);
                 return throwError(this.handleResponseHttpErrors(err));
             })
         );
     }
 
-    public subscribeTo<T>(httpErrorCode: number): Observable<T> {
+    /**
+     * Emit to the subscriber when the request fail
+     *
+     * @param {number} httpErrorCode
+     * @returns {Observable<number>}
+     * @memberof CoreWebService
+     */
+    subscribeToHttpError(httpErrorCode: number): Observable<void> {
         if (!this.httpErrosSubjects[httpErrorCode]) {
             this.httpErrosSubjects[httpErrorCode] = new Subject();
         }
@@ -228,18 +211,18 @@ export class CoreWebService {
         return resp;
     }
 
-    private handleHttpError(response: HttpErrorResponse): void {
-        if (!this.httpErrosSubjects[response.status]) {
-            this.httpErrosSubjects[response.status] = new Subject();
+    private emitHttpError(status: number): void {
+        if (!this.httpErrosSubjects[status]) {
+            this.httpErrosSubjects[status] = new Subject();
         }
 
-        this.httpErrosSubjects[response.status].next(response);
+        this.httpErrosSubjects[status].next();
     }
 
     private getRequestOpts<T>(options: DotRequestOptionsArgs): HttpRequest<T> {
         const headers = this.getHttpHeaders(options.headers);
         const params = this.getHttpParams(options.params);
-        const url = this.getAbsoluteUrl(options.url);
+        const url = this.getFixedUrl(options.url);
         let body = <T>options.body || null;
 
         if (body) {
@@ -258,7 +241,7 @@ export class CoreWebService {
     }
 
     private getHttpHeaders(headers: { [key: string]: string }): HttpHeaders {
-        let httpHeaders = this._apiRoot.getDefaultRequestHeaders();
+        let httpHeaders = this.getDefaultRequestHeaders();
 
         if (headers && Object.keys(headers).length) {
             Object.keys(headers).forEach((key) => {
@@ -269,11 +252,14 @@ export class CoreWebService {
         return httpHeaders;
     }
 
-    private getAbsoluteUrl(url: string): string {
-        if (url.indexOf('://') === -1) {
-            return url.startsWith('/api')
-                ? `${this._apiRoot.baseUrl}${url.substr(1)}`
-                : `${this._apiRoot.baseUrl}api/${url}`;
+    private getFixedUrl(url: string): string {
+        if (url.startsWith('api')) {
+            return `/${url}`;
+        }
+
+        const [version] = url.split('/');
+        if (version.match(/v[1-9]/g)) {
+            return `/api/${url}`;
         }
 
         return url;
@@ -290,5 +276,12 @@ export class CoreWebService {
         }
 
         return null;
+    }
+
+    private getDefaultRequestHeaders(): HttpHeaders {
+        let headers = new HttpHeaders()
+            .set('Accept', '*/*')
+            .set('Content-Type', 'application/json');
+        return headers;
     }
 }

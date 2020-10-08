@@ -5,7 +5,8 @@ import { FormatDateService } from '@services/format-date-service';
 import { DotLocalstorageService } from '@services/dot-localstorage/dot-localstorage.service';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+
 
 describe('DotMessageService', () => {
     let dotMessageService: DotMessageService;
@@ -65,7 +66,7 @@ describe('DotMessageService', () => {
         formatDateService = injector.get(FormatDateService);
         dotLocalstorageService = injector.get(DotLocalstorageService);
 
-        spyOn(coreWebService, 'requestView').and.returnValue(
+        spyOn<any>(coreWebService, 'requestView').and.returnValue(
             of({
                 entity: messages
             })

@@ -185,7 +185,7 @@ describe('DotMyAccountComponent', () => {
     });
 
     it(`should SAVE form and sethAuth when no reauthentication`, () => {
-        spyOn(accountService, 'updateUser').and.returnValue(of({ entity: { user: mockUser } }));
+        spyOn<any>(accountService, 'updateUser').and.returnValue(of({ entity: { user: mockUser } }));
         spyOn(loginService, 'setAuth');
         spyOn(comp.close, 'emit');
 
@@ -218,7 +218,7 @@ describe('DotMyAccountComponent', () => {
     });
 
     it(`should SAVE form and reauthenticate`, () => {
-        spyOn(accountService, 'updateUser').and.returnValue(
+        spyOn<any>(accountService, 'updateUser').and.returnValue(
             of({ entity: { reauthenticate: true } })
         );
         spyOn(loginService, 'logOutUser').and.returnValue(of({}));

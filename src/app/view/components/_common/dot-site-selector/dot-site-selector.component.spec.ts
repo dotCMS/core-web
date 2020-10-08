@@ -104,7 +104,7 @@ describe('SiteSelectorComponent', () => {
     });
 
     it('should call getSitesList', () => {
-        spyOn(siteService, 'switchSite$').and.returnValue(observableOf(sites[0]));
+        spyOn<any>(siteService, 'switchSite$').and.returnValue(observableOf(sites[0]));
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(sites));
 
         fixture.detectChanges();
@@ -113,7 +113,7 @@ describe('SiteSelectorComponent', () => {
     });
 
     it('should call refresh if a event happen', () => {
-        spyOn(siteService, 'refreshSites$').and.returnValue(observableOf(sites[0]));
+        spyOn<any>(siteService, 'refreshSites$').and.returnValue(observableOf(sites[0]));
         spyOn(comp, 'handleSitesRefresh').and.callThrough();
 
         fixture.detectChanges();
@@ -129,7 +129,7 @@ describe('SiteSelectorComponent', () => {
 
         paginatorService.totalRecords = 2;
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
-        spyOn(siteService, 'switchSite$').and.returnValue(observableOf({}));
+        spyOn<any>(siteService, 'switchSite$').and.returnValue(observableOf({}));
 
         fixture.detectChanges();
 
@@ -154,7 +154,7 @@ describe('SiteSelectorComponent', () => {
 
         paginatorService.totalRecords = 2;
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
-        spyOn(siteService, 'switchSite$').and.returnValue(observableOf({}));
+        spyOn<any>(siteService, 'switchSite$').and.returnValue(observableOf({}));
 
         fixture.detectChanges();
 
@@ -246,7 +246,7 @@ describe('SiteSelectorComponent', () => {
         }));
 
         it('should update until site is present after add', fakeAsync(() => {
-            spyOn(siteService, 'getSiteById').and.callFake(() =>
+            spyOn<any>(siteService, 'getSiteById').and.callFake(() =>
                 mockFunction(2, sites[1], undefined)
             );
             spyOn(paginatorService, 'getCurrentPage').and.returnValue(of(sites));

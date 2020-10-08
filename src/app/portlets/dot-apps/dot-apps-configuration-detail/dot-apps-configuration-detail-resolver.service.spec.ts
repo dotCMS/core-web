@@ -57,7 +57,7 @@ describe('DotAppsConfigurationDetailResolver', () => {
         activatedRouteSnapshotMock.paramMap.get = (param: string) => {
             return param === 'appKey' ? queryParams.appKey : queryParams.id;
         };
-        spyOn(dotAppsServices, 'getConfiguration').and.returnValue(observableOf(response));
+        spyOn<any>(dotAppsServices, 'getConfiguration').and.returnValue(observableOf(response));
 
         dotAppsConfigurationDetailResolver
             .resolve(activatedRouteSnapshotMock)

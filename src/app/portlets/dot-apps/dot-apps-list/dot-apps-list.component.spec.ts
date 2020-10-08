@@ -1,26 +1,26 @@
-import { of } from 'rxjs';
-import { async, ComponentFixture } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MockDotMessageService } from '@tests/dot-message-service.mock';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ActivatedRoute } from '@angular/router';
-import { DOTTestBed } from '@tests/dot-test-bed';
-import { DotAppsListComponent } from './dot-apps-list.component';
-import { InputTextModule } from 'primeng/inputtext';
-import { DotAppsListResolver } from './dot-apps-list-resolver.service';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { MockDotRouterService } from '@tests/dot-router-service.mock';
-import { DotAppsCardModule } from './dot-apps-card/dot-apps-card.module';
 import { By } from '@angular/platform-browser';
-import { DotAppsCardComponent } from './dot-apps-card/dot-apps-card.component';
-import { DotAppsService } from '@services/dot-apps/dot-apps.service';
-import { NotLicensedModule } from '@components/not-licensed/not-licensed.module';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CoreWebService } from 'dotcms-js';
+import { of } from 'rxjs';
 
-class AppsServicesMock {
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+import { DotAppsCardComponent } from './dot-apps-card/dot-apps-card.component';
+import { DotAppsListComponent } from './dot-apps-list.component';
+import { DotAppsService } from '@services/dot-apps/dot-apps.service';
+import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { MockDotRouterService } from '@tests/dot-router-service.mock';
+import { MockDotNotLicensedComponent } from '@tests/dot-not-licensed.component.mock';
+
+export class AppsServicesMock {
     get() {}
 }
 
-const appsResponse = [
+export const appsResponse = [
     {
         allowExtraParams: true,
         configurationsCount: 0,
@@ -39,7 +39,12 @@ const appsResponse = [
     }
 ];
 
-let canAccessPortletResponse = { canAccessPortlet: true };
+let canAccessPortletResponse = {
+    dotAppsListResolverData: {
+        apps: appsResponse,
+        isEnterpriseLicense: true
+    }
+};
 
 class ActivatedRouteMock {
     get data() {
@@ -51,28 +56,22 @@ describe('DotAppsListComponent', () => {
     let component: DotAppsListComponent;
     let fixture: ComponentFixture<DotAppsListComponent>;
     let routerService: DotRouterService;
-    let dotAppsService: DotAppsService;
+    let route: ActivatedRoute;
 
     const messageServiceMock = new MockDotMessageService({
         'apps.search.placeholder': 'Search'
     });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule.withRoutes([
-                    {
-                        component: DotAppsListComponent,
-                        path: ''
-                    }
-                ]),
-                DotAppsCardModule,
-                InputTextModule,
-                NotLicensedModule
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                DotAppsListComponent,
+                DotAppsCardComponent,
+                MockDotNotLicensedComponent,
+                DotMessagePipe
             ],
-            declarations: [DotAppsListComponent],
             providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
                 {
                     provide: ActivatedRoute,
                     useClass: ActivatedRouteMock
@@ -82,21 +81,24 @@ describe('DotAppsListComponent', () => {
                     useClass: MockDotRouterService
                 },
                 { provide: DotAppsService, useClass: AppsServicesMock },
-                DotAppsListResolver
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                }
             ]
-        });
-    }));
+        }).compileComponents();
 
-    beforeEach(() => {
-        fixture = DOTTestBed.createComponent(DotAppsListComponent);
+        fixture = TestBed.createComponent(DotAppsListComponent);
         component = fixture.debugElement.componentInstance;
-        routerService = fixture.debugElement.injector.get(DotRouterService);
-        dotAppsService = fixture.debugElement.injector.get(DotAppsService);
+        routerService = TestBed.inject(DotRouterService);
+        route = TestBed.inject(ActivatedRoute);
     });
 
     describe('With access to portlet', () => {
         beforeEach(() => {
-            spyOn(dotAppsService, 'get').and.returnValue(of(appsResponse));
+            spyOnProperty(route, 'data').and.returnValue(
+                of({ dotAppsListResolverData: { apps: appsResponse, isEnterpriseLicense: true } })
+            );
             fixture.detectChanges();
         });
 
@@ -132,7 +134,12 @@ describe('DotAppsListComponent', () => {
 
     describe('Without access to portlet', () => {
         beforeEach(() => {
-            canAccessPortletResponse = { canAccessPortlet: false };
+            canAccessPortletResponse = {
+                dotAppsListResolverData: {
+                    apps: null,
+                    isEnterpriseLicense: false
+                }
+            };
             fixture.detectChanges();
         });
 

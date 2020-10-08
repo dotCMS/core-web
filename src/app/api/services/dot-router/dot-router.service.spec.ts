@@ -63,7 +63,7 @@ describe('DotRouterService', () => {
     }));
 
     it('should get queryParams from Router', () => {
-        spyOn(router, 'getCurrentNavigation').and.returnValue({
+        spyOn<any>(router, 'getCurrentNavigation').and.returnValue({
             finalUrl: {
                 queryParams: {
                     hola: 'mundo'

@@ -57,7 +57,7 @@ describe('DotAppsConfigurationListResolver', () => {
         };
 
         activatedRouteSnapshotMock.paramMap.get = () => '123';
-        spyOn(dotAppsServices, 'getConfigurationList').and.returnValue(observableOf(response));
+        spyOn<any>(dotAppsServices, 'getConfigurationList').and.returnValue(observableOf(response));
 
         dotAppsConfigurationListResolver
             .resolve(activatedRouteSnapshotMock)

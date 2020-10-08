@@ -23,6 +23,7 @@ describe('ForgotPasswordComponent', () => {
     let de: DebugElement;
     let dotRouterService: DotRouterService;
     let loginService: LoginService;
+    let requestPasswordButton;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -50,7 +51,7 @@ describe('ForgotPasswordComponent', () => {
         spyOn(loginService, 'recoverPassword').and.returnValue(of({}));
 
         fixture.detectChanges();
-        this.requestPasswordButton = de.query(By.css('button[type="submit"]'));
+        requestPasswordButton = de.query(By.css('button[type="submit"]'));
     });
 
     it('should load form labels correctly', () => {
@@ -66,7 +67,7 @@ describe('ForgotPasswordComponent', () => {
     });
 
     it('should keep recover password button disabled until the form is valid', () => {
-        expect(this.requestPasswordButton.nativeElement.disabled).toBe(true);
+        expect(requestPasswordButton.nativeElement.disabled).toBe(true);
     });
 
     it('should do the request password correctly and redirect to login', () => {
@@ -74,8 +75,8 @@ describe('ForgotPasswordComponent', () => {
         spyOn(window, 'confirm').and.returnValue(true);
         fixture.detectChanges();
 
-        expect(this.requestPasswordButton.nativeElement.disabled).toBeFalsy();
-        this.requestPasswordButton.triggerEventHandler('click', {});
+        expect(requestPasswordButton.nativeElement.disabled).toBeFalsy();
+        requestPasswordButton.triggerEventHandler('click', {});
 
         expect(loginService.recoverPassword).toHaveBeenCalledWith('test');
         expect(dotRouterService.goToLogin).toHaveBeenCalledWith({

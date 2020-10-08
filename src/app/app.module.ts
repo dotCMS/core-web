@@ -21,6 +21,7 @@ import { DotDirectivesModule } from './shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { MarkdownModule } from 'ngx-markdown';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -42,7 +43,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
         DotDirectivesModule,
         DotPipesModule,
         SharedModule.forRoot(),
-        MonacoEditorModule.forRoot()
+        MonacoEditorModule.forRoot(),
+        MarkdownModule.forRoot()
     ],
     providers: [ENV_PROVIDERS],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

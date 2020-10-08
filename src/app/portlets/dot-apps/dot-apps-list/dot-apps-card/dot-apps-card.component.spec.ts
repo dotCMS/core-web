@@ -1,14 +1,21 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { By } from '@angular/platform-browser';
 import { DotAppsCardComponent } from './dot-apps-card.component';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-// import { NgxMdModule } from 'ngx-md';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
+import { Component } from '@angular/core';
+
+
+@Component({
+    selector: 'markdown',
+    template: `<ng-content></ng-content>`
+})
+class MockMarkdownComponent {}
 
 describe('DotAppsCardComponent', () => {
     let component: DotAppsCardComponent;
@@ -20,20 +27,23 @@ describe('DotAppsCardComponent', () => {
         'apps.invalid.configurations': 'Invalid Configurations'
     });
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                CardModule,
-                DotAvatarModule,
-                DotIconModule,
-                // NgxMdModule,
-                TooltipModule,
-                DotPipesModule
-            ],
-            declarations: [DotAppsCardComponent],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        }).compileComponents();
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                imports: [
+                    CardModule,
+                    DotAvatarModule,
+                    DotIconModule,
+                    TooltipModule,
+                    DotPipesModule
+                ],
+                declarations: [DotAppsCardComponent, MockMarkdownComponent],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                ]
+            }).compileComponents();
+        })
+    );
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DotAppsCardComponent);
@@ -88,7 +98,7 @@ describe('DotAppsCardComponent', () => {
             );
 
             expect(
-                fixture.debugElement.query(By.css('.ui-card-content')).nativeElement.textContent
+                fixture.debugElement.query(By.css('.p-card-content')).nativeElement.textContent
             ).toContain(component.app.description);
         });
     });

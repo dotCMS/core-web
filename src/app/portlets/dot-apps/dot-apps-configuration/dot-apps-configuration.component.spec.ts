@@ -137,7 +137,7 @@ describe('DotAppsConfigurationComponent', () => {
     describe('With integrations count', () => {
         beforeEach(() => {
             spyOn(paginationService, 'setExtraParams');
-            spyOn(paginationService, 'getWithOffset').and.returnValue(of(appData));
+            spyOn<any>(paginationService, 'getWithOffset').and.returnValue(of(appData));
             spyOn(component.searchInput.nativeElement, 'focus');
             fixture.detectChanges();
         });

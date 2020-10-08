@@ -160,7 +160,7 @@ describe('DotContentletWrapperComponent', () => {
                         }
                     });
 
-                    expect(dotAlertConfirmService.confirm).toHaveBeenCalledWith({
+                    expect<any>(dotAlertConfirmService.confirm).toHaveBeenCalledWith({
                         accept: jasmine.any(Function),
                         reject: jasmine.any(Function),
                         header: 'Header',
@@ -190,7 +190,7 @@ describe('DotContentletWrapperComponent', () => {
                         close: () => {}
                     });
 
-                    expect(dotAlertConfirmService.confirm).toHaveBeenCalledWith({
+                    expect<any>(dotAlertConfirmService.confirm).toHaveBeenCalledWith({
                         accept: jasmine.any(Function),
                         reject: jasmine.any(Function),
                         header: 'Header',

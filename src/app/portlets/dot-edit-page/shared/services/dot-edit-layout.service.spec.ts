@@ -6,7 +6,7 @@ import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-
 import { DotLayoutGridBox } from '@portlets/dot-edit-page/shared/models/dot-layout-grid-box.model';
 import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
 import { DotLayoutGrid } from '../models/dot-layout-grid.model';
-import { ReflectiveInjector } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
 describe('DotEditLayoutService', () => {
     const containers = {
@@ -90,12 +90,11 @@ describe('DotEditLayoutService', () => {
     let templateContainersCacheService: TemplateContainersCacheService;
 
     beforeEach(() => {
-        this.injector = ReflectiveInjector.resolveAndCreate([
-            DotEditLayoutService,
-            TemplateContainersCacheService
-        ]);
-        dotEditLayoutService = this.injector.get(DotEditLayoutService);
-        templateContainersCacheService = this.injector.get(TemplateContainersCacheService);
+        TestBed.configureTestingModule({
+            providers: [DotEditLayoutService, TemplateContainersCacheService]
+        });
+        dotEditLayoutService = TestBed.inject(DotEditLayoutService);
+        templateContainersCacheService = TestBed.inject(TemplateContainersCacheService);
 
         templateContainersCacheService.set(containers);
     });

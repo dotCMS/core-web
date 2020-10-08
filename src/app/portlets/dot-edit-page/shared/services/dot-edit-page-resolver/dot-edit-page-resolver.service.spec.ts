@@ -13,7 +13,7 @@ import { getTestBed, TestBed } from '@angular/core/testing';
 import { mockDotRenderedPage } from '../../../../../test/dot-page-render.mock';
 import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
 import { FormatDateService } from '@services/format-date-service';
@@ -92,7 +92,7 @@ describe('DotEditPageResolver', () => {
             expect(state).toEqual(mock);
         });
 
-        expect(dotPageStateService.requestPage).toHaveBeenCalledWith({
+        expect<any>(dotPageStateService.requestPage).toHaveBeenCalledWith({
             url: 'edit-page/content',
             viewAs: {
                 language: '2'

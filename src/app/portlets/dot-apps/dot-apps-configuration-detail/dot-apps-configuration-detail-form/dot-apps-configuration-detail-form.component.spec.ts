@@ -5,13 +5,13 @@ import { DotAppsConfigurationDetailFormComponent } from './dot-apps-configuratio
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-// import { NgxMdModule } from 'ngx-md';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CheckboxModule } from 'primeng/checkbox/checkbox';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
+import { MarkdownModule } from 'ngx-markdown';
 
 const secrets = [
     {
@@ -87,7 +87,7 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
                 DotIconModule,
                 InputTextareaModule,
                 InputTextModule,
-                // NgxMdModule,
+                MarkdownModule,
                 ReactiveFormsModule,
                 TooltipModule
             ],
@@ -133,7 +133,7 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
             const row = fixture.debugElement.queryAll(
                 By.css('.dot-apps-configuration-detail__form-row')
             )[0];
-            expect(row.query(By.css('ngx-md'))).toBeTruthy();
+            expect(row.query(By.css('markdown'))).toBeTruthy();
             expect(row.query(By.css('label')).nativeElement.textContent).toBe(secrets[0].label);
             expect(
                 row.query(By.css('label')).nativeElement.classList.contains('form__label')
@@ -157,7 +157,7 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
             const row = fixture.debugElement.queryAll(
                 By.css('.dot-apps-configuration-detail__form-row')
             )[2];
-            expect(row.query(By.css('ngx-md'))).toBeTruthy();
+            expect(row.query(By.css('markdown'))).toBeTruthy();
             expect(row.query(By.css('p-checkbox')).nativeElement.attributes.id.value).toBe(
                 secrets[2].name
             );
@@ -172,7 +172,7 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
             const row = fixture.debugElement.queryAll(
                 By.css('.dot-apps-configuration-detail__form-row')
             )[3];
-            expect(row.query(By.css('ngx-md'))).toBeTruthy();
+            expect(row.query(By.css('markdown'))).toBeTruthy();
             expect(row.query(By.css('label')).nativeElement.textContent).toBe(secrets[3].label);
             expect(
                 row.query(By.css('label')).nativeElement.classList.contains('form__label')

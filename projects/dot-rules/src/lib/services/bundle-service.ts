@@ -46,11 +46,11 @@ export class BundleService {
     }
 
     constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService) {
-        this._bundleStoreUrl = `${this._apiRoot.baseUrl}api/bundle/getunsendbundles/userid`;
-        this._loggedUserUrl = `${this._apiRoot.baseUrl}api/v1/users/current/`;
-        this._addToBundleUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
-        this._pushEnvironementsUrl = `${this._apiRoot.baseUrl}api/environment/loadenvironments/roleId`;
-        this._pushRuleUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
+        this._bundleStoreUrl = `/api/bundle/getunsendbundles/userid`;
+        this._loggedUserUrl = `/api/v1/users/current/`;
+        this._addToBundleUrl = `/DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
+        this._pushEnvironementsUrl = `/api/environment/loadenvironments/roleId`;
+        this._pushRuleUrl = `/DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
     }
 
     getLoggedUser(): Observable<IUser> {

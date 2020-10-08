@@ -29,7 +29,7 @@ import {
     StringUtils
 } from 'dotcms-js';
 import { dotEventSocketURLFactory } from '@tests/dot-test-bed';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
@@ -159,7 +159,7 @@ describe('DotWorkflowEventHandlerService', () => {
             expect(dotWizardService.open).toHaveBeenCalledWith(mockWizardInput);
         });
         it('should fire the workflow action with the correct data, execute the callback and send a message on output', () => {
-            spyOn(dotWorkflowActionsFireService, 'fireTo').and.returnValue(of({}));
+            spyOn<any>(dotWorkflowActionsFireService, 'fireTo').and.returnValue(of({}));
 
             spyOn(dotGlobalMessageService, 'display');
             spyOn(dotIframeService, 'run');

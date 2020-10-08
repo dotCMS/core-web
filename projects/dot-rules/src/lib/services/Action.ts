@@ -53,7 +53,7 @@ export class ActionService {
         private coreWebService: CoreWebService,
         private loggerService: LoggerService
     ) {
-        this._actionsEndpointUrl = `${apiRoot.baseUrl}api/v1/sites/${apiRoot.siteId}/ruleengine/actions/`;
+        this._actionsEndpointUrl = `/api/v1/sites/${apiRoot.siteId}/ruleengine/actions/`;
     }
 
     makeRequest(childPath?: string): Observable<any> {

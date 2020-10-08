@@ -128,7 +128,7 @@ describe('DotToolbarComponent', () => {
         fixture.detectChanges();
         siteSelector.triggerEventHandler('change', { value: siteMock });
         expect(dotRouterService.goToSiteBrowser).not.toHaveBeenCalled();
-        expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
+        expect<any>(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
 
     it(`should go to site-browser when site change on edit page url`, () => {
@@ -141,7 +141,7 @@ describe('DotToolbarComponent', () => {
         siteSelector.triggerEventHandler('change', { value: siteMock });
 
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
-        expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
+        expect<any>(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
 
     it('should toggle menu and update icon on click', () => {

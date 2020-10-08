@@ -370,7 +370,7 @@ describe('DotContentTypesPortletComponent', () => {
 
         fixture.detectChanges();
 
-        expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(forbiddenError);
+        expect<any>(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(forbiddenError);
     });
 
     it('should show remove option', () => {

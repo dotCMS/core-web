@@ -214,7 +214,7 @@ export class LoginService {
 
                     this.setAuth(auth);
                     this.coreWebService
-                        .subscribeTo(HttpCode.UNAUTHORIZED)
+                        .subscribeToHttpError(HttpCode.UNAUTHORIZED)
                         .subscribe(() => this.logOutUser().subscribe(() => {}));
                     return response.entity;
                 })

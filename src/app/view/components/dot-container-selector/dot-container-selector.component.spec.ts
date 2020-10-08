@@ -24,7 +24,7 @@ import {
     StringUtils,
     BrowserUtil
 } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ContainerSelectorComponent', () => {

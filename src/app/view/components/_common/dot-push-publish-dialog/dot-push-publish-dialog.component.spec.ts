@@ -177,7 +177,7 @@ describe('DotPushPublishDialogComponent', () => {
             it('should submit on accept and hide dialog', () => {
                 acceptButton.triggerEventHandler('click', null);
 
-                expect(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith(
+                expect<any>(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith(
                     publishData.assetIdentifier,
                     mockFormValue,
                     false
@@ -190,7 +190,7 @@ describe('DotPushPublishDialogComponent', () => {
             it('should submit on accept with assetIdentifier and bundle', () => {
                 comp.eventData.isBundle = true;
                 acceptButton.triggerEventHandler('click', null);
-                expect(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith(
+                expect<any>(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith(
                     publishData.assetIdentifier,
                     mockFormValue,
                     true

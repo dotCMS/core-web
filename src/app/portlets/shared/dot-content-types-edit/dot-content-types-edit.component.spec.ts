@@ -30,7 +30,7 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotEditContentTypeCacheService } from './components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { SiteServiceMock } from 'src/app/test/site-service.mock';
 import * as _ from 'lodash';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
@@ -295,7 +295,7 @@ describe('DotContentTypesEditComponent', () => {
                 };
 
                 spyOn(crudService, 'postData').and.returnValue(of([responseContentType]));
-                spyOn(location, 'replaceState').and.returnValue(of([responseContentType]));
+                spyOn<any>(location, 'replaceState').and.returnValue(of([responseContentType]));
 
                 contentTypeForm.triggerEventHandler('onSubmit', mockContentType);
 
@@ -517,7 +517,7 @@ describe('DotContentTypesEditComponent', () => {
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
             contentTypeFieldsDropZone.componentInstance.saveFields.emit([fieldToUpdate]);
 
-            expect(fieldService.saveFields).toHaveBeenCalledWith('1234567890', [fieldToUpdate]);
+            expect<any>(fieldService.saveFields).toHaveBeenCalledWith('1234567890', [fieldToUpdate]);
             expect(comp.layout).toEqual(layout);
         });
 
@@ -541,7 +541,7 @@ describe('DotContentTypesEditComponent', () => {
                 currentFieldsInServer
             );
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'saveFields').and.returnValue(of(fieldsReturnByServer));
+            spyOn<any>(fieldService, 'saveFields').and.returnValue(of(fieldsReturnByServer));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -549,7 +549,7 @@ describe('DotContentTypesEditComponent', () => {
             contentTypeFieldsDropZone.componentInstance.saveFields.emit(newFieldsAdded);
 
             // then: the saveFields method has to be called in FileService ...
-            expect(fieldService.saveFields).toHaveBeenCalledWith('1234567890', newFieldsAdded);
+            expect<any>(fieldService.saveFields).toHaveBeenCalledWith('1234567890', newFieldsAdded);
         });
 
         it('should show loading when saving fields on dropzone', () => {
@@ -575,7 +575,7 @@ describe('DotContentTypesEditComponent', () => {
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
-            spyOn(fieldService, 'saveFields').and.callFake(() => {
+            spyOn<any>(fieldService, 'saveFields').and.callFake(() => {
                 fixture.detectChanges();
                 expect(contentTypeFieldsDropZone.componentInstance.loading).toBe(true);
                 return of(fieldsReturnByServer);
@@ -693,7 +693,7 @@ describe('DotContentTypesEditComponent', () => {
             layout[0].columns[0].fields = layout[0].columns[0].fields.slice(-1);
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'deleteFields').and.returnValue(of({ fields: layout }));
+            spyOn<any>(fieldService, 'deleteFields').and.returnValue(of({ fields: layout }));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -708,7 +708,7 @@ describe('DotContentTypesEditComponent', () => {
             contentTypeFieldsDropZone.componentInstance.removeFields.emit(fieldToRemove);
 
             // then: the saveFields method has to be called in FileService ...
-            expect(fieldService.deleteFields).toHaveBeenCalledWith('1234567890', fieldToRemove);
+            expect<any>(fieldService.deleteFields).toHaveBeenCalledWith('1234567890', fieldToRemove);
             // ...and the comp.data.fields has to be set to the fields return by the service
             expect(comp.layout).toEqual(layout);
         });
