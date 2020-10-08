@@ -177,7 +177,7 @@ describe('SearchableDropdownComponent', () => {
         hostFixture.detectChanges();
 
         const dataviewDataEl = de.query(
-            By.css('p-dataview .ui-dataview-content .searchable-dropdown__data-list-item')
+            By.css('p-dataview .p-dataview-content .searchable-dropdown__data-list-item')
         );
         expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0');
     });
@@ -187,8 +187,8 @@ describe('SearchableDropdownComponent', () => {
         hostFixture.componentInstance.cssClass = 'testClass';
         hostFixture.componentInstance.optionsWidth = '650';
         hostFixture.detectChanges();
-        const overlay = de.query(By.css('.ui-overlaypanel'));
-        const pdataview = de.query(By.css('.ui-dataview')).componentInstance;
+        const overlay = de.query(By.css('.p-overlaypanel'));
+        const pdataview = de.query(By.css('.p-dataview')).componentInstance;
         tick(100);
         expect(comp.cssClass).toContain('searchable-dropdown paginator');
         expect(overlay.componentInstance.styleClass).toBe('testClass');
@@ -222,7 +222,7 @@ describe('SearchableDropdownComponent', () => {
         hostFixture.detectChanges();
 
         const dataviewDataEl = de.query(
-            By.css('p-dataview .ui-dataview-content .searchable-dropdown__data-list-item')
+            By.css('p-dataview .p-dataview-content .searchable-dropdown__data-list-item')
         );
         expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0 - demo.dotcms.com');
     });

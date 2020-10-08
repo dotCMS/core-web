@@ -43,7 +43,7 @@ describe('DotTextareaContentComponent', () => {
     it('should have options: plain, code and wysiwyg in the select mode buttons by default', () => {
         fixture.detectChanges();
         const selectFieldWrapper = de.query(
-            By.css('.textarea-content__select-field .ui-selectbutton')
+            By.css('.textarea-content__select-field .p-selectbutton')
         );
 
         selectFieldWrapper.children.forEach((option) => {
@@ -67,7 +67,7 @@ describe('DotTextareaContentComponent', () => {
         fixture.whenStable().then(() => {
             fixture.detectChanges();
             const selectedOption = de.query(
-                By.css('.textarea-content__select-field .ui-state-active')
+                By.css('.textarea-content__select-field .p-state-active')
             );
             const defaultOptionText = cleanOptionText(selectedOption.nativeElement.textContent);
             expect(defaultOptionText).toBe('Plain');
@@ -94,7 +94,7 @@ describe('DotTextareaContentComponent', () => {
         component.show = ['wysiwyg', 'plain'];
         fixture.detectChanges();
         const selectFieldWrapper = de.query(
-            By.css('.textarea-content__select-field .ui-selectbutton')
+            By.css('.textarea-content__select-field .p-selectbutton')
         );
         selectFieldWrapper.children.forEach((option) => {
             const optionText = cleanOptionText(option.nativeElement.textContent);
@@ -109,7 +109,7 @@ describe('DotTextareaContentComponent', () => {
         component.show = ['code', 'plain', 'sadf', 'hello', 'world'];
         fixture.detectChanges();
         const selectFieldWrapper = de.query(
-            By.css('.textarea-content__select-field .ui-selectbutton')
+            By.css('.textarea-content__select-field .p-selectbutton')
         );
         selectFieldWrapper.children.forEach((option) => {
             const optionText = cleanOptionText(option.nativeElement.textContent);

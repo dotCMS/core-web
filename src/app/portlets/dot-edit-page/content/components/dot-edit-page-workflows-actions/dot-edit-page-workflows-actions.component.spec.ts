@@ -188,7 +188,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                     });
                     fixture.detectChanges();
 
-                    splitButtons = de.queryAll(By.css('.ui-menuitem-link'));
+                    splitButtons = de.queryAll(By.css('.p-menuitem-link'));
                     firstButton = splitButtons[0].nativeElement;
                     secondButton = splitButtons[1].nativeElement;
                     thirdButton = splitButtons[2].nativeElement;

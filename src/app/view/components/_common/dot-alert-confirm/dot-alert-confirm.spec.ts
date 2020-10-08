@@ -171,7 +171,7 @@ describe('DotAlertConfirmComponent', () => {
             });
 
             fixture.detectChanges();
-            const message = de.query(By.css('.ui-dialog-content'));
+            const message = de.query(By.css('.p-dialog-content'));
             expect(message.nativeElement.textContent.trim()).toEqual('Hello world message');
         });
 

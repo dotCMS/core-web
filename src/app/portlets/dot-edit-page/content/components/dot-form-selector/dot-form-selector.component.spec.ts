@@ -124,7 +124,7 @@ describe('DotFormSelectorComponent', () => {
                 it('should set height css to datatable container', (done) => {
                     fixture.whenStable().then(() => {
                         fixture.detectChanges();
-                        const pTableComponent = de.query(By.css('.ui-datatable'));
+                        const pTableComponent = de.query(By.css('.p-table'));
                         expect(pTableComponent.styles.height).toBeDefined();
                         done();
                     });

@@ -167,7 +167,7 @@ describe('DotLoginComponent', () => {
 
         fixture.detectChanges();
 
-        const erroresMessages = de.queryAll(By.css('.ui-messages-error'));
+        const erroresMessages = de.queryAll(By.css('.p-messages-error'));
         expect(erroresMessages.length).toBe(2);
     });
 

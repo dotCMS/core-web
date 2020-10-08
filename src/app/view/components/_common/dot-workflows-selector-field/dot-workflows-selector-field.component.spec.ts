@@ -104,13 +104,13 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
 
             describe('show options', () => {
                 beforeEach(() => {
-                    de.query(By.css('.ui-multiselect')).triggerEventHandler('click', {});
+                    de.query(By.css('.p-multiselect')).triggerEventHandler('click', {});
                     fixture.detectChanges();
                 });
 
                 it('should fill the workflows options', () => {
                     const itemsLabels = de
-                        .queryAll(By.css('.ui-multiselect-items .workflow__label'))
+                        .queryAll(By.css('.p-multiselect-items .workflow__label'))
                         .map(item => item.nativeElement.innerText);
                     expect(itemsLabels).toEqual(mockWorkflows.map(workflow => workflow.name));
                 });

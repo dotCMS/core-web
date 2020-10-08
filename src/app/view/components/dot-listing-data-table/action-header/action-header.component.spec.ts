@@ -114,7 +114,7 @@ xdescribe('ActionHeaderComponent', () => {
 
         fixture.detectChanges();
 
-        const splitButtons = de.query(By.all()).nativeElement.querySelectorAll('.ui-menuitem-link');
+        const splitButtons = de.query(By.all()).nativeElement.querySelectorAll('.p-menuitem-link');
         const primaryButton = splitButtons[0];
         const secondaryButton = splitButtons[1];
 

@@ -729,7 +729,7 @@ describe('Load fields and drag and drop', () => {
         comp.displayDialog = true;
         fixture.detectChanges();
 
-        const tabLinks = de.queryAll(By.css('.ui-tabview-nav li'));
+        const tabLinks = de.queryAll(By.css('.p-tabview-nav li'));
         expect(tabLinks[1].nativeElement.classList.contains('ui-state-disabled')).toBe(true);
     });
 
@@ -741,7 +741,7 @@ describe('Load fields and drag and drop', () => {
         comp.displayDialog = true;
         fixture.detectChanges();
 
-        const tabLinks = de.queryAll(By.css('.ui-tabview-nav li'));
+        const tabLinks = de.queryAll(By.css('.p-tabview-nav li'));
         expect(tabLinks[1].nativeElement.classList.contains('ui-state-disabled')).toBe(false);
     });
 

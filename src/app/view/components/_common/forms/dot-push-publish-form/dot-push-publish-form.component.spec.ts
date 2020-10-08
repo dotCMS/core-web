@@ -186,7 +186,7 @@ describe('DotPushPublishFormComponent', () => {
     describe('Push Action scenarios', () => {
         beforeEach(() => {
             selectActionButtons = fixture.debugElement.queryAll(
-                By.css('p-selectButton .ui-button')
+                By.css('p-selectButton .p-button')
             );
         });
 
@@ -267,7 +267,7 @@ describe('DotPushPublishFormComponent', () => {
     });
 
     it('should show error messages', () => {
-        selectActionButtons = fixture.debugElement.queryAll(By.css('p-selectButton .ui-button'));
+        selectActionButtons = fixture.debugElement.queryAll(By.css('p-selectButton .p-button'));
         selectActionButtons[2].triggerEventHandler('click', {});
         pushPublishForm.form.get('environment').setValue(null);
         pushPublishForm.form.get('environment').markAsDirty();
@@ -276,7 +276,7 @@ describe('DotPushPublishFormComponent', () => {
         pushPublishForm.form.get('expireDate').setValue(null);
         pushPublishForm.form.get('expireDate').markAsDirty();
         fixture.detectChanges();
-        const errorMessages = fixture.debugElement.queryAll(By.css('.ui-messages-error'));
+        const errorMessages = fixture.debugElement.queryAll(By.css('.p-messages-error'));
 
         expect(errorMessages[0].nativeElement.innerText).toEqual('Publish Date is required');
         expect(errorMessages[1].nativeElement.innerText).toEqual('Expire Date is required');

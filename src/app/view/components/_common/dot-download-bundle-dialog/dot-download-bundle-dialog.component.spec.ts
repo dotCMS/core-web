@@ -161,7 +161,7 @@ describe('DotDownloadBundleDialogComponent', () => {
 
             beforeEach(() => {
                 dropdown = fixture.debugElement.query(By.css('p-dropdown')).componentInstance;
-                buttons = fixture.debugElement.queryAll(By.css('.ui-selectbutton .ui-button'));
+                buttons = fixture.debugElement.queryAll(By.css('.p-selectbutton .p-button'));
                 unPublishButton = buttons[1].nativeElement;
                 cancelButton = fixture.debugElement.query(By.css('.dialog__button-cancel'))
                     .nativeElement;

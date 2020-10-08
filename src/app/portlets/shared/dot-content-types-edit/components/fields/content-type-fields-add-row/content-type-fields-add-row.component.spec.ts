@@ -95,7 +95,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
         fixture.detectChanges();
         de.queryAll(By.css('button'))[1].nativeElement.click();
         fixture.detectChanges();
-        de.queryAll(By.css('p-splitbutton .ui-menuitem-link'))[1].nativeElement.click();
+        de.queryAll(By.css('p-splitbutton .p-menuitem-link'))[1].nativeElement.click();
         fixture.detectChanges();
         expect(dotEventsService.notify).toHaveBeenCalledWith('add-tab-divider');
     });
