@@ -110,7 +110,7 @@ describe('DotDropdownComponent', () => {
 
         it(`should dot-icon button be displayed & emit`, () => {
             executeEnabled(button, hostFixture, de, comp);
-            expect(button.attributes.disabled).toBe(null);
+            expect(button.attributes.disabled).not.toBeDefined();
         });
 
         it(`should title button be displayed & emit`, () => {
