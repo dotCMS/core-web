@@ -1,5 +1,5 @@
 import { DebugElement, Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DotDialogComponent, DotDialogActions } from './dot-dialog.component';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
@@ -73,7 +73,7 @@ describe('DotDialogComponent', () => {
         let cancelAction: jasmine.Spy;
 
         beforeEach(
-            async(() => {
+            waitForAsync(() => {
                 TestBed.configureTestingModule({
                     imports: [DotIconButtonModule, ButtonModule, BrowserAnimationsModule],
                     providers: [],
@@ -170,9 +170,9 @@ describe('DotDialogComponent', () => {
                 expect(content.styles).toEqual({ padding: '0' });
             });
 
-            it('should set width and height', () => {
+            fit('should set width and height', () => {
                 const dialog: DebugElement = de.query(By.css('.dialog'));
-                expect(dialog.styles).toEqual({ height: '100px', width: '100px' });
+                expect(dialog.styles.cssText).toEqual('width: 100px; height: 100px;');
             });
 
             it('should show footer', () => {
@@ -440,7 +440,7 @@ describe('DotDialogComponent', () => {
         let hostFixture: ComponentFixture<TestHost2Component>;
 
         beforeEach(
-            async(() => {
+            waitForAsync(() => {
                 TestBed.configureTestingModule({
                     imports: [DotIconButtonModule, ButtonModule, BrowserAnimationsModule],
                     providers: [],
