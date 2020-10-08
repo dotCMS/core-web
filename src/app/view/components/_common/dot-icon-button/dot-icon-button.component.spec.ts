@@ -55,9 +55,6 @@ describe('DotIconButtonComponent', () => {
         comp.size = 32;
         fixture.detectChanges();
         const button = fixture.debugElement.query(By.css('button'));
-        expect(button.styles).toEqual({
-            width: '32px',
-            height: '32px'
-        });
+        expect(button.styles.cssText).toEqual('width: 32px; height: 32px;');
     });
 });
