@@ -1009,11 +1009,4 @@ describe('DotEditContentComponent', () => {
             });
         });
     });
-
-    afterAll(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
-    });
 });
