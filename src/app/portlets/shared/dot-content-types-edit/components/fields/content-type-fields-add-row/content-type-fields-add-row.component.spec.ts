@@ -72,7 +72,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
         expect(buttonsElement[0].nativeElement.textContent).toBe('Add Row');
         buttonsElement[1].nativeElement.click();
         fixture.detectChanges();
-        const splitOptionsBtn = de.queryAll(By.css('p-splitbutton .ui-menuitem-text'));
+        const splitOptionsBtn = de.queryAll(By.css('p-splitbutton .p-menuitem-text'));
         expect(splitOptionsBtn.length).toBe(2);
         expect(splitOptionsBtn[0].nativeElement.innerText).toBe('Add Row');
         expect(splitOptionsBtn[1].nativeElement.innerText).toBe('Add Tab');
