@@ -16,6 +16,11 @@
 @import "styles/primeng-theme/base";
 @import "../node_modules/primeng/resources/themes/mdc-light-indigo/theme.css"; // temporary
 
+
+.p-button-label {
+    text-transform: uppercase;
+}
+
 // MATERIAL DESIGN ICONS
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
