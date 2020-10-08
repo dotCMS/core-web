@@ -18,7 +18,7 @@ import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TabViewModule } from 'primeng/tabview';
 import { SplitButtonModule } from 'primeng/splitbutton';

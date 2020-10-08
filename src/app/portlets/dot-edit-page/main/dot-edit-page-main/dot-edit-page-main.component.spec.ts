@@ -35,7 +35,7 @@ import {
     StringUtils,
     UserModel
 } from 'dotcms-js';
-import { CoreWebServiceMock } from '../../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '../../../../test/core-web.service.mock';
 import { FormatDateService } from '@services/format-date-service';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';

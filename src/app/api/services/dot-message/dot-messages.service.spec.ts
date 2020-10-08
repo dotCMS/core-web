@@ -5,7 +5,8 @@ import { FormatDateService } from '@services/format-date-service';
 import { DotLocalstorageService } from '@services/dot-localstorage/dot-localstorage.service';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+
 
 describe('DotMessageService', () => {
     let dotMessageService: DotMessageService;

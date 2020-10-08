@@ -57,7 +57,7 @@ import { dotcmsContentletMock } from '@tests/dotcms-contentlet.mock';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotWizardModule } from '@components/_common/dot-wizard/dot-wizard.module';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';

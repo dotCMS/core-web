@@ -32,7 +32,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { dotEventSocketURLFactory } from '@tests/dot-test-bed';
 import { FormatDateService } from '@services/format-date-service';

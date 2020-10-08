@@ -3,7 +3,7 @@ import { DotPageRenderService } from './dot-page-render.service';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { DotPageRender, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 import { mockDotDevices } from '@tests/dot-device.mock';

@@ -21,7 +21,7 @@ import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-di
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
 import { TestBed } from '@angular/core/testing';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
-import { CoreWebServiceMock } from '../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '../../../test/core-web.service.mock';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { FormatDateService } from '@services/format-date-service';

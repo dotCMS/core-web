@@ -30,7 +30,7 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotEditContentTypeCacheService } from './components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { SiteServiceMock } from 'src/app/test/site-service.mock';
 import * as _ from 'lodash';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';

@@ -15,7 +15,7 @@ import {
     DotPushPublishFiltersService
 } from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
 import { CoreWebService, LoginService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';

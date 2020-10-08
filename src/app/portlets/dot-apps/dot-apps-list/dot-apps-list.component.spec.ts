@@ -1,34 +1,20 @@
-import { of } from 'rxjs';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { ActivatedRoute } from '@angular/router';
-import { DotAppsListComponent } from './dot-apps-list.component';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { By } from '@angular/platform-browser';
-import { DotAppsCardComponent } from './dot-apps-card/dot-apps-card.component';
-import { DotAppsService } from '@services/dot-apps/dot-apps.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { Component, Pipe } from '@angular/core';
+import { of } from 'rxjs';
 
-@Component({
-    selector: 'dot-not-licensed-component',
-    template: ``
-})
-class MockDotNotLicensedComponent {}
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+import { DotAppsCardComponent } from './dot-apps-card/dot-apps-card.component';
+import { DotAppsListComponent } from './dot-apps-list.component';
+import { DotAppsService } from '@services/dot-apps/dot-apps.service';
+import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
-@Pipe({
-    name: 'dm'
-})
-export class DotMessagePipeMock {
-    transform(value: string): string {
-        const map = {
-            'apps.search.placeholder': 'Search'
-        };
-        return map[value];
-    }
-}
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { MockDotRouterService } from '@tests/dot-router-service.mock';
+import { MockDotNotLicensedComponent } from '@tests/dot-not-licensed.component.mock';
 
 export class AppsServicesMock {
     get() {}
@@ -94,7 +80,11 @@ describe('DotAppsListComponent', () => {
                     provide: DotRouterService,
                     useClass: MockDotRouterService
                 },
-                { provide: DotAppsService, useClass: AppsServicesMock }
+                { provide: DotAppsService, useClass: AppsServicesMock },
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                }
             ]
         }).compileComponents();
 

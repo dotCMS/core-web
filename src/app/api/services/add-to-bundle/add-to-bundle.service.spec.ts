@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { AddToBundleService } from './add-to-bundle.service';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 import { ApiRoot, UserModel, LoggerService, StringUtils, CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotAjaxActionResponseView } from '@shared/models/ajax-action-response/dot-ajax-action-response';
 import { DotCurrentUser } from '@shared/models/dot-current-user/dot-current-user';
 

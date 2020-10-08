@@ -5,7 +5,7 @@ import { CoreWebService, LoginService } from 'dotcms-js';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
 import { FormatDateService } from '@services/format-date-service';
