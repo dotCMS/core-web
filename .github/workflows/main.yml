@@ -32,8 +32,6 @@ jobs:
           node-version: '10.15.3'
       - name: Installing dependencies
         run: npm install
-      - name: Building Libs
-        run: npm run build:libs
       - name: Building for production
         run: npm run build:prod
       - name: Running tests
