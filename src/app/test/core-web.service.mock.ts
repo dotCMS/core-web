@@ -18,6 +18,10 @@ export class CoreWebServiceMock {
     constructor(private _http: HttpClient) {}
 
     request<T = any>(options: DotRequestOptionsArgs): Observable<any> {
+        if (!options.method) {
+            options.method = 'GET';
+        }
+
         const optionsArgs = {
             params: new HttpParams()
         };
@@ -50,6 +54,10 @@ export class CoreWebServiceMock {
     }
 
     requestView<T = any>(options: DotRequestOptionsArgs): Observable<ResponseView<T>> {
+        if (!options.method) {
+            options.method = 'GET';
+        }
+
         const optionsArgs = {
             headers: new HttpHeaders(),
             params: new HttpParams()
