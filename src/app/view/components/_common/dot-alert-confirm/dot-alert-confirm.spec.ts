@@ -5,7 +5,7 @@ import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { LoginService } from 'dotcms-js';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotAlertConfirmComponent } from './dot-alert-confirm';
-import { async, ComponentFixture, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { tick } from '@angular/core/testing';
 
@@ -15,25 +15,27 @@ describe('DotAlertConfirmComponent', () => {
     let fixture: ComponentFixture<DotAlertConfirmComponent>;
     let de: DebugElement;
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [DotAlertConfirmComponent],
-            providers: [
-                {
-                    provide: LoginService,
-                    useClass: LoginServiceMock
-                },
-                DotAlertConfirmService
-            ],
-            imports: [BrowserAnimationsModule]
-        });
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [DotAlertConfirmComponent],
+                providers: [
+                    {
+                        provide: LoginService,
+                        useClass: LoginServiceMock
+                    },
+                    DotAlertConfirmService
+                ],
+                imports: [BrowserAnimationsModule]
+            });
 
-        fixture = DOTTestBed.createComponent(DotAlertConfirmComponent);
-        component = fixture.componentInstance;
-        de = fixture.debugElement;
-        dialogService = de.injector.get(DotAlertConfirmService);
-        fixture.detectChanges();
-    }));
+            fixture = DOTTestBed.createComponent(DotAlertConfirmComponent);
+            component = fixture.componentInstance;
+            de = fixture.debugElement;
+            dialogService = de.injector.get(DotAlertConfirmService);
+            fixture.detectChanges();
+        })
+    );
 
     it('should have confirm and dialog null by default', () => {
         const confirm = de.query(By.css('p-confirmDialog'));
@@ -43,7 +45,7 @@ describe('DotAlertConfirmComponent', () => {
     });
 
     describe('confirmation dialog', () => {
-        it('should show and focus on Confirm button', async(() => {
+        it('should show and focus on Confirm button', () => {
             dialogService.confirm({
                 header: '',
                 message: ''
@@ -56,7 +58,7 @@ describe('DotAlertConfirmComponent', () => {
             setTimeout(() => {
                 expect(component.confirmBtn.nativeElement.focus).toHaveBeenCalledTimes(1);
             }, 100);
-        }));
+        });
 
         it('should have right attrs', () => {
             dialogService.confirm({
@@ -66,8 +68,7 @@ describe('DotAlertConfirmComponent', () => {
 
             fixture.detectChanges();
             const confirm = de.query(By.css('p-confirmDialog')).componentInstance;
-            expect(confirm.responsive).toBe(true, 'responsive');
-            expect(confirm.width).toBe('400', 'width');
+            expect(confirm.style).toEqual({ width: '400px' }, 'width');
             expect(confirm.closable).toBe(false, 'closable');
         });
 
@@ -159,9 +160,8 @@ describe('DotAlertConfirmComponent', () => {
             expect(dialog.draggable).toBe(false, 'draggable');
             expect(dialog.header).toBe('Header Test', 'header');
             expect(dialog.modal).toBe('modal', 'modal');
-            expect(dialog.responsive).toBe(true, 'responsive');
             expect(dialog.visible).toBe(true, 'visible');
-            expect(dialog.width).toBe('400', 'width');
+            expect(dialog.style).toEqual({ width: '400px' }, 'width');
         });
 
         it('should add message', () => {
