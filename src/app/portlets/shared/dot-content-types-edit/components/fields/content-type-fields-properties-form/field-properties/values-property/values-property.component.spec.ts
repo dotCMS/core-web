@@ -9,6 +9,7 @@ import { DotTextareaContentModule } from '@components/_common/dot-textarea-conte
 import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @Component({
     selector: 'dot-field-validation-message',
@@ -27,11 +28,17 @@ describe('ValuesPropertyComponent', () => {
         'Validation-RegEx': 'Validation-RegEx'
     });
 
-   beforeEach(
-          waitForAsync(() => {
+    beforeEach(
+        waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [TestFieldValidationMessageComponent, ValuesPropertyComponent],
-                imports: [DotTextareaContentModule, DotFieldHelperModule, ReactiveFormsModule, DotPipesModule],
+                imports: [
+                    DotTextareaContentModule,
+                    DotFieldHelperModule,
+                    ReactiveFormsModule,
+                    DotPipesModule,
+                    MonacoEditorModule.forRoot()
+                ],
                 providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
             }).compileComponents();
 
