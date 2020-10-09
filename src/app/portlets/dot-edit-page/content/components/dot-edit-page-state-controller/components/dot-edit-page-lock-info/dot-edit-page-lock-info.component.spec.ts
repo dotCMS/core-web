@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
@@ -21,7 +21,7 @@ describe('DotEditPageLockInfoComponent', () => {
     let fixture: ComponentFixture<DotEditPageLockInfoComponent>;
     let de: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         TestBed.configureTestingModule({
             imports: [DotPipesModule],
             declarations: [DotEditPageLockInfoComponent],

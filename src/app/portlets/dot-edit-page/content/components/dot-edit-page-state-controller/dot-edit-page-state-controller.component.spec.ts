@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { Component, DebugElement } from '@angular/core';
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
@@ -65,7 +65,7 @@ describe('DotEditPageStateControllerComponent', () => {
     let dialogService: DotAlertConfirmService;
     let personalizeService: DotPersonalizeService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 TestHostComponent,

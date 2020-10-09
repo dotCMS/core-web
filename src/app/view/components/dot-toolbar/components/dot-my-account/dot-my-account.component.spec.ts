@@ -1,4 +1,4 @@
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
@@ -43,7 +43,7 @@ describe('DotMyAccountComponent', () => {
         'current-password': 'Current Password'
     });
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         DOTTestBed.configureTestingModule({
             declarations: [DotMyAccountComponent],
             imports: [

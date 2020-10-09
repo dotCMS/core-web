@@ -1,4 +1,4 @@
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { Component, Input, DebugElement } from '@angular/core';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotDropdownComponent } from './dot-dropdown.component';
@@ -75,7 +75,7 @@ describe('DotDropdownComponent', () => {
     let comp: DotDropdownComponent;
     let de: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 DotDropdownComponent,

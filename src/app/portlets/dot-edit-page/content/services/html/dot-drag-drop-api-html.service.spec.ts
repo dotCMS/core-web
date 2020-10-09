@@ -1,5 +1,5 @@
 import { DotDragDropAPIHtmlService } from './dot-drag-drop-api-html.service';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
@@ -51,7 +51,7 @@ describe('DotDragDropAPIHtmlService', () => {
         }
     };
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         TestBed.configureTestingModule({
             providers: [
                 DotDragDropAPIHtmlService,

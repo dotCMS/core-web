@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component } from '@angular/core';
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotIframeDialogComponent } from './dot-iframe-dialog.component';
@@ -77,7 +77,7 @@ describe('DotIframeDialogComponent', () => {
         let hostComponent: TestHostComponent;
         let hostFixture: ComponentFixture<TestHostComponent>;
 
-        beforeEach(async(() => {
+        beforeEach(waitForAsync( () => {
             DOTTestBed.configureTestingModule(getTestConfig(TestHostComponent));
         }));
 
@@ -228,7 +228,7 @@ describe('DotIframeDialogComponent', () => {
         let hostFixture: ComponentFixture<TestHost2Component>;
         let hostComponent: TestHostComponent;
 
-        beforeEach(async(() => {
+        beforeEach(waitForAsync( () => {
             DOTTestBed.configureTestingModule(
                 getTestConfig(TestHost2Component)
             );

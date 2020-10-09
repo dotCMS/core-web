@@ -1,7 +1,7 @@
 import { of as observableOf } from 'rxjs';
 import { DebugElement, Component } from '@angular/core';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
 import { PaginatorService } from '@services/paginator';
@@ -46,7 +46,7 @@ describe('DotFormSelectorComponent', () => {
     let de: DebugElement;
     let paginatorService: PaginatorService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         DOTTestBed.configureTestingModule({
             declarations: [DotFormSelectorComponent, TestHostComponent],
             providers: [

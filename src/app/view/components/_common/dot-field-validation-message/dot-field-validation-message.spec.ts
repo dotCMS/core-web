@@ -1,4 +1,4 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, waitForAsync, ComponentFixture } from '@angular/core/testing';
 import { DotFieldValidationMessageComponent } from './dot-field-validation-message';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
@@ -9,7 +9,7 @@ describe('FieldValidationComponent', () => {
     let fixture: ComponentFixture<DotFieldValidationMessageComponent>;
     let component: DotFieldValidationMessageComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         TestBed.configureTestingModule({
             declarations: [DotFieldValidationMessageComponent]
         }).compileComponents();

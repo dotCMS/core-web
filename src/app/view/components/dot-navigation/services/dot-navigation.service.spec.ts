@@ -1,4 +1,4 @@
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -140,8 +140,8 @@ describe('DotNavigationService', () => {
     let loginService: LoginServiceMock;
     let router;
 
-    beforeEach(
-        async(() => {
+   beforeEach(
+          waitForAsync(() => {
             const testbed = DOTTestBed.configureTestingModule({
                 providers: [
                     DotNavigationService,

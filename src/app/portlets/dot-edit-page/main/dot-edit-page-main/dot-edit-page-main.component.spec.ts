@@ -2,7 +2,7 @@ import { of as observableOf, Subject } from 'rxjs';
 import { mockUser } from './../../../../test/login-service.mock';
 import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotEditPageMainComponent } from './dot-edit-page-main.component';
 import { DotEditPageNavModule } from '../dot-edit-page-nav/dot-edit-page-nav.module';
@@ -97,8 +97,8 @@ describe('DotEditPageMainComponent', () => {
         new DotPageRender(mockDotRenderedPage)
     );
 
-    beforeEach(
-        async(() => {
+   beforeEach(
+          waitForAsync(() => {
             TestBed.configureTestingModule({
                 imports: [
                     RouterTestingModule.withRoutes([

@@ -5,7 +5,7 @@ import {
 } from 'rxjs';
 import { mockUser, LoginServiceMock } from '../../../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement, Component, Input, forwardRef, Output, EventEmitter } from '@angular/core';
 import { DotLoginAsComponent } from './dot-login-as.component';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
@@ -110,7 +110,7 @@ describe('DotLoginAsComponent', () => {
         }
     ];
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         const messageServiceMock = new MockDotMessageService({
             Change: 'Change',
             cancel: 'cancel',

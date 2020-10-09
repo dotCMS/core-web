@@ -1,7 +1,7 @@
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotContentTypeEditResolver } from './dot-content-types-edit-resolver.service';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotCrudService } from '@services/dot-crud';
 import { LoginService } from 'dotcms-js';
@@ -28,7 +28,7 @@ describe('DotContentTypeEditResolver', () => {
     let dotRouterService: DotRouterService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         const testbed = DOTTestBed.configureTestingModule({
             providers: [
                 DotContentTypeEditResolver,

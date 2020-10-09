@@ -1,7 +1,7 @@
 import { of as observableOf, Observable } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement, Injectable, Component, Input, forwardRef } from '@angular/core';
 import {
     ReactiveFormsModule,
@@ -117,7 +117,7 @@ describe('ContentTypesFormComponent', () => {
         }
     ];
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         const messageServiceMock = new MockDotMessageService({
             'contenttypes.form.field.detail.page': 'Detail Page',
             'contenttypes.form.field.expire.date.field': 'Expire Date Field',

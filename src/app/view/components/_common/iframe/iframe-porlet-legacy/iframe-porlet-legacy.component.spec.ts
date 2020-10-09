@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DotMenuService } from '@services/dot-menu.service';
 import { IFrameModule } from '../index';
@@ -78,8 +78,8 @@ describe('IframePortletLegacyComponent', () => {
     let route: ActivatedRoute;
     const siteServiceMock = new SiteServiceMock();
 
-    beforeEach(
-        async(() => {
+   beforeEach(
+          waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [],
                 imports: [IFrameModule, RouterTestingModule, DotDownloadBundleDialogModule, HttpClientTestingModule],

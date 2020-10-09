@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed, async} from '@angular/core/testing';
 
 import { DotCopyButtonComponent } from './dot-copy-button.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -22,7 +22,7 @@ describe('DotCopyButtonComponent', () => {
     let button: DebugElement;
     let label: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         TestBed.configureTestingModule({
             declarations: [DotCopyButtonComponent],
             providers: [

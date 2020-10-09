@@ -1,4 +1,4 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BehaviorSubject } from 'rxjs';
 import { DebugElement, Component, OnInit } from '@angular/core';
@@ -70,7 +70,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     const getDropdownDebugElement = () => de.query(By.css('p-dropdown'));
     const getDropdownComponent = () => getDropdownDebugElement().componentInstance;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         DOTTestBed.configureTestingModule({
             declarations: [DotWorkflowsActionsSelectorFieldComponent, FakeFormComponent],
             providers: [

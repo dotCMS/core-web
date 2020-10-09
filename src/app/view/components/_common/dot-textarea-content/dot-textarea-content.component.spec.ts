@@ -1,10 +1,9 @@
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 
 import { DotTextareaContentComponent } from './dot-textarea-content.component';
-// import { AceEditorModule } from 'ng2-ace-editor';
 import { FormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -18,7 +17,7 @@ describe('DotTextareaContentComponent', () => {
     let fixture: ComponentFixture<DotTextareaContentComponent>;
     let de: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         TestBed.configureTestingModule({
             declarations: [DotTextareaContentComponent],
             imports: [

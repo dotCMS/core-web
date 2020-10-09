@@ -1,5 +1,5 @@
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DotAvatarComponent } from './dot-avatar.component';
 import { CommonModule } from '@angular/common';
@@ -30,7 +30,7 @@ describe('DotAvatarComponent', () => {
     let fixture: ComponentFixture<HostTestComponent>;
     let de: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         TestBed.configureTestingModule({
             declarations: [HostTestComponent, DotAvatarComponent],
             imports: [CommonModule]

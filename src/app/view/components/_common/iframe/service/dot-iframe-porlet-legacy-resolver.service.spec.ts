@@ -1,7 +1,7 @@
 import { LoginService } from 'dotcms-js';
 import { LoginServiceMock, mockUser } from './../../../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { mockDotRenderedPage } from '../../../../../test/dot-page-render.mock';
 import { of } from 'rxjs';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
@@ -27,7 +27,7 @@ describe('DotIframePorletLegacyResolver', () => {
     let resolver: DotIframePortletLegacyResolver;
     let dotLicenseService: DotLicenseService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         const testbed = DOTTestBed.configureTestingModule({
             providers: [
                 DotPageStateService,

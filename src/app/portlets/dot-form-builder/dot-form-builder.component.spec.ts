@@ -1,4 +1,4 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -36,8 +36,8 @@ describe('DotFormBuilderComponent', () => {
     let fixture: ComponentFixture<DotFormBuilderComponent>;
     let de: DebugElement;
 
-    beforeEach(
-        async(() => {
+   beforeEach(
+          waitForAsync(() => {
             DOTTestBed.configureTestingModule({
                 declarations: [DotFormBuilderComponent],
                 imports: [

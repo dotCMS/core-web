@@ -1,5 +1,5 @@
 import { of as observableOf, Observable } from 'rxjs';
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Injectable } from '@angular/core';
 
@@ -143,8 +143,8 @@ describe('DotPageSelectorComponent', () => {
     const searchHostObj = { originalEvent: { target: { value: '//' } }, query: '//' };
     const specialSearchObj = { originalEvent: { target: { value: 'd#emo$%' } }, query: 'd#emo$%' };
 
-    beforeEach(
-        async(() => {
+   beforeEach(
+          waitForAsync(() => {
             DOTTestBed.configureTestingModule(config(FakeFormComponent));
         })
     );

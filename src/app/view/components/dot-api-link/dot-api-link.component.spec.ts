@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotApiLinkComponent } from './dot-api-link.component';
 import { DebugElement, Component } from '@angular/core';
@@ -22,7 +22,7 @@ describe('DotApiLinkComponent', () => {
     let de: DebugElement;
     let link: DebugElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         TestBed.configureTestingModule({
             declarations: [TestHostComponent, DotApiLinkComponent]
         }).compileComponents();

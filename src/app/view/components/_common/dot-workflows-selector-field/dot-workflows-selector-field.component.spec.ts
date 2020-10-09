@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 import { DotWorkflowsSelectorFieldComponent } from './dot-workflows-selector-field.component';
 
@@ -50,8 +50,8 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
     let multiselect: MultiSelect;
 
     describe('basic', () => {
-        beforeEach(
-            async(() => {
+       beforeEach(
+          waitForAsync(() => {
                 DOTTestBed.configureTestingModule({
                     declarations: [DotWorkflowsSelectorFieldComponent],
                     providers: [
@@ -132,8 +132,8 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
         let deHost: DebugElement;
         let innerMultiselect: DebugElement;
 
-        beforeEach(
-            async(() => {
+       beforeEach(
+          waitForAsync(() => {
                 DOTTestBed.configureTestingModule({
                     declarations: [FakeFormComponent, DotWorkflowsSelectorFieldComponent],
                     providers: [

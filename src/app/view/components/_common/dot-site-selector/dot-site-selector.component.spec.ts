@@ -1,5 +1,5 @@
 import { Observable, of as observableOf, of } from 'rxjs';
-import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DotSiteSelectorComponent } from './dot-site-selector.component';
 import { By } from '@angular/platform-browser';
@@ -45,7 +45,7 @@ describe('SiteSelectorComponent', () => {
     let siteService: SiteService;
     const siteServiceMock = new SiteServiceMock();
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         const messageServiceMock = new MockDotMessageService({
             search: 'Search'
         });

@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
 import { LoginService, SiteService, CoreWebService } from 'dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -168,7 +168,7 @@ describe('DotContentTypesEditComponent', () => {
     };
 
     describe('create mode', () => {
-        beforeEach(async(() => {
+        beforeEach(waitForAsync( () => {
             const configCreateMode = getConfig({
                 contentType: {
                     baseType: 'CONTENT'
@@ -426,7 +426,7 @@ describe('DotContentTypesEditComponent', () => {
     });
 
     describe('edit mode', () => {
-        beforeEach(async(() => {
+        beforeEach(waitForAsync( () => {
             TestBed.configureTestingModule(configEditMode);
 
             fixture = TestBed.createComponent(DotContentTypesEditComponent);

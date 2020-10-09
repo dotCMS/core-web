@@ -8,7 +8,7 @@ import { DotContentletEditorService } from '@components/dot-contentlet-editor/se
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TooltipModule } from 'primeng/tooltip';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
 import { mockUser } from './../../../../test/login-service.mock';
 import { Injectable, Component, Input } from '@angular/core';
@@ -59,7 +59,7 @@ describe('DotEditPageNavComponent', () => {
         'editpage.toolbar.nav.layout.advance.disabled': 'Can’t edit advanced template'
     });
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         testbed = TestBed.configureTestingModule({
             imports: [RouterTestingModule, TooltipModule, DotIconModule, DotPipesModule],
             declarations: [DotEditPageNavComponent, TestHostComponent],

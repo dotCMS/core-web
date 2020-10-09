@@ -1,7 +1,7 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { IframeOverlayService } from './../service/iframe-overlay.service';
 import { DotLoadingIndicatorService } from './../dot-loading-indicator/dot-loading-indicator.service';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DOTTestBed, MockDotUiColorsService } from '../../../../../test/dot-test-bed';
@@ -39,8 +39,8 @@ describe('IframeComponent', () => {
 
     dotcmsEventsService = new DotcmsEventsServiceMock();
 
-    beforeEach(
-        async(() => {
+   beforeEach(
+          waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [IframeComponent, MockDotLoadingIndicatorComponent],
                 imports: [RouterTestingModule, DotOverlayMaskModule, DotPipesModule],

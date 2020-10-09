@@ -1,4 +1,4 @@
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
 import { DotLanguagesService } from '@services/dot-languages/dot-languages.service';
 import { DotPersonasService } from '@services/dot-personas/dot-personas.service';
@@ -106,7 +106,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
     let personaSelector: DotPersonaSelectorComponent;
     let dotLicenseService: DotLicenseService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 DotTestHostComponent,

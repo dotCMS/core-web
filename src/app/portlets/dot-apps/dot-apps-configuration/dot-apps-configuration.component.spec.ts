@@ -1,5 +1,5 @@
 import { of, Observable } from 'rxjs';
-import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -86,8 +86,8 @@ describe('DotAppsConfigurationComponent', () => {
 
     const messageServiceMock = new MockDotMessageService(messages);
 
-    beforeEach(
-        async(() => {
+   beforeEach(
+          waitForAsync(() => {
             DOTTestBed.configureTestingModule({
                 imports: [
                     RouterTestingModule.withRoutes([

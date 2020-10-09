@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, fakeAsync, tick, async } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter, Injectable } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from '.';
@@ -139,7 +139,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
     let dragDropService: TestFieldDragDropService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         dragDropService = new TestFieldDragDropService();
 
         DOTTestBed.configureTestingModule({
@@ -359,7 +359,7 @@ describe('Load fields and drag and drop', () => {
 
     let testFieldDragDropService: TestFieldDragDropService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync( () => {
         testFieldDragDropService = new TestFieldDragDropService();
 
         DOTTestBed.configureTestingModule({
@@ -746,7 +746,7 @@ describe('Load fields and drag and drop', () => {
     });
 
     describe('Edit Field Dialog', () => {
-        beforeEach(async(() => {
+        beforeEach(waitForAsync( () => {
             fixture.detectChanges();
 
             const fieldToEdit: DotCMSContentTypeField = fakeFields[2].columns[0].fields[0];
