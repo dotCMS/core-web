@@ -9,7 +9,7 @@ import { DotAppsConfigurationItemModule } from './dot-apps-configuration-item/do
 import { DotAppsConfigurationListComponent } from './dot-apps-configuration-list.component';
 
 const messages = {
-    'apps.configurations.show.more': 'Show More'
+    'apps.configurations.show.more': 'SHOW MORE'
 };
 
 const sites = [
