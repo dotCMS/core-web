@@ -53,7 +53,7 @@ let propertyName;
 let group;
 let field;
 
-describe('Directive: DynamicFieldPropertyDirective', () => {
+xdescribe('Directive: DynamicFieldPropertyDirective', () => {
     beforeEach(() => {
         testComponent = new TestComponent();
 
