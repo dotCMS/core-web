@@ -201,12 +201,13 @@ describe('SiteSelectorComponent', () => {
         expect(result).toEqual({ fake: 'site' });
     });
 
-    it('should set current site correctly', () => {
+    it('should set current site correctly', async () => {
         paginatorService.filter = 'filter';
         paginatorService.totalRecords = 2;
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
         spyOn(comp, 'handleSitesRefresh');
         fixture.detectChanges();
+        await fixture.whenStable();
 
         let result: any;
         comp.currentSite.subscribe((res) => (result = res));
