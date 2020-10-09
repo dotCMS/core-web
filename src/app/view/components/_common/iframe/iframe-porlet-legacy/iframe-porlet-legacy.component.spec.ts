@@ -25,8 +25,6 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
-import { BaseRequestOptions, ConnectionBackend, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
@@ -47,6 +45,8 @@ import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fi
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SiteServiceMock } from '@tests/site-service.mock';
 
 const routeDatamock = {
     canAccessPortlet: true
@@ -76,12 +76,13 @@ describe('IframePortletLegacyComponent', () => {
     let dotMenuService: DotMenuService;
     let dotCustomEventHandlerService: DotCustomEventHandlerService;
     let route: ActivatedRoute;
+    const siteServiceMock = new SiteServiceMock();
 
     beforeEach(
         async(() => {
             TestBed.configureTestingModule({
                 declarations: [],
-                imports: [IFrameModule, RouterTestingModule, DotDownloadBundleDialogModule],
+                imports: [IFrameModule, RouterTestingModule, DotDownloadBundleDialogModule, HttpClientTestingModule],
                 providers: [
                     DotContentTypeService,
                     DotCustomEventHandlerService,
@@ -91,17 +92,14 @@ describe('IframePortletLegacyComponent', () => {
                         provide: LoginService,
                         useClass: LoginServiceMock
                     },
-                    SiteService,
+                    { provide: SiteService, useValue: siteServiceMock },
                     {
                         provide: ActivatedRoute,
                         useClass: ActivatedRouteMock
                     },
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
-                    { provide: ConnectionBackend, useClass: MockBackend },
-                    { provide: RequestOptions, useClass: BaseRequestOptions },
                     { provide: DotRouterService, useClass: MockDotRouterService },
                     { provide: DotUiColorsService, useClass: MockDotUiColorsService },
-                    Http,
                     DotContentletEditorService,
                     DotIframeService,
                     DotWorkflowEventHandlerService,
@@ -194,5 +192,24 @@ describe('IframePortletLegacyComponent', () => {
         routeDatamock.canAccessPortlet = false;
         fixture.detectChanges();
         expect(de.query(By.css('dot-not-licensed-component'))).toBeTruthy();
+    });
+
+    it('should call reloadIframePortlet once', () => {
+        fixture.detectChanges();
+        comp.url.next('test');
+        spyOn(comp, 'reloadIframePortlet');
+        siteServiceMock.setFakeCurrentSite({
+            identifier: '1',
+            hostname: 'Site 1',
+            archived: false,
+            type: 'host'
+        });
+        siteServiceMock.setFakeCurrentSite({
+            identifier: '2',
+            hostname: 'Site 2',
+            archived: false,
+            type: 'host'
+        });
+        expect(comp.reloadIframePortlet).toHaveBeenCalledTimes(1);
     });
 });
