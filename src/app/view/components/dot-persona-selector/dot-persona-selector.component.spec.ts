@@ -184,7 +184,10 @@ describe('DotPersonaSelectorComponent', () => {
                 By.css('dot-persona-selector-option')
             );
             personaOption.triggerEventHandler('delete', defaultPersona);
-            expect(component.delete.emit).toHaveBeenCalledWith(defaultPersona);
+            expect<any>(component.delete.emit).toHaveBeenCalledWith({
+                ...defaultPersona,
+                label: 'Global Investor'
+            });
         });
     });
 
