@@ -4,8 +4,7 @@ import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-
 import { ActionMenuButtonComponent } from '../_common/action-menu-button/action-menu-button.component';
 import { DotActionButtonComponent } from '../_common/dot-action-button/dot-action-button.component';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DotCrudService } from '@services/dot-crud/dot-crud.service';
+import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { TableModule } from 'primeng/table';
 import { DebugElement, SimpleChange } from '@angular/core';
@@ -23,6 +22,7 @@ import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.
 import { DotStringFormatPipe } from '@pipes/dot-string-format/dot-string-format.pipe';
 import { SharedModule } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
+import { LoggerService } from 'dotcms-js';
 
 describe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
@@ -39,7 +39,7 @@ describe('DotListingDataTableComponent', () => {
             'global-search': 'Global Serach'
         });
 
-        TestBed.configureTestingModule({
+        DOTTestBed.configureTestingModule({
             declarations: [
                 ActionHeaderComponent,
                 DotActionButtonComponent,
@@ -60,9 +60,9 @@ describe('DotListingDataTableComponent', () => {
             ],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
-                DotCrudService,
+                { provide: LoggerService, useValue: {} },
+                { provide: PaginatorService, useValue: {} },
                 FormatDateService,
-                PaginatorService,
                 DotAlertConfirmService
             ]
         });
@@ -124,7 +124,7 @@ describe('DotListingDataTableComponent', () => {
             }
         ];
 
-        paginatorService = TestBed.inject(PaginatorService);
+        paginatorService = fixture.debugElement.injector.get(PaginatorService);
         paginatorService.paginationPerPage = 4;
         paginatorService.maxLinksPage = 2;
         paginatorService.totalRecords = items.length;
@@ -159,7 +159,7 @@ describe('DotListingDataTableComponent', () => {
 
     it('renderer basic datatable component', () => {
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], items));
             });
         });
@@ -213,13 +213,13 @@ describe('DotListingDataTableComponent', () => {
 
     it('renderer with format date column', () => {
         const dotStringFormatPipe = new DotStringFormatPipe();
-        const itemsWithFormat = items.map(item => {
+        const itemsWithFormat = items.map((item) => {
             item.field3 = 1496178801000;
             return item;
         });
 
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], itemsWithFormat));
             });
         });
@@ -270,7 +270,7 @@ describe('DotListingDataTableComponent', () => {
 
     it('should renderer table without checkbox', () => {
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], items));
             });
         });
@@ -310,7 +310,7 @@ describe('DotListingDataTableComponent', () => {
             }
         ];
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], items));
             });
         });
@@ -343,7 +343,7 @@ describe('DotListingDataTableComponent', () => {
             }
         ];
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], items));
             });
         });
