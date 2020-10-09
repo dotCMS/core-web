@@ -17,10 +17,6 @@ const routes: Routes = [
             '@components/login/reset-password-component/reset-password.module#ResetPasswordModule'
     },
     {
-        path: 'logout',
-        loadChildren: '@components/login/dot-logout/dot-logout.module#DotLogoutModule'
-    },
-    {
         path: '',
         redirectTo: '/login'
     }
