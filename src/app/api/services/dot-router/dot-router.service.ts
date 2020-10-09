@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { PortletNav } from '@models/navigation';
 import { Subject } from 'rxjs';
 import { DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
-import { NavigationExtras } from '@angular/router/src/router';
+import { NavigationExtras } from '@angular/router';
 
 @Injectable()
 export class DotRouterService {
