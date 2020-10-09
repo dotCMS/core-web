@@ -209,10 +209,9 @@ describe('SiteSelectorComponent', () => {
         fixture.detectChanges();
         await fixture.whenStable();
 
-        let result: any;
-        comp.currentSite.subscribe((res) => (result = res));
-
-        expect(result).toEqual(mockSites[0]);
+        comp.currentSite.subscribe((res) => {
+            expect(res).toEqual(mockSites[0]);
+        });
     });
 
     it('should set current on switchSite$', () => {
