@@ -4,10 +4,9 @@ import { DotLoadingIndicatorService } from './../dot-loading-indicator/dot-loadi
 import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { DOTTestBed, MockDotUiColorsService } from '../../../../../test/dot-test-bed';
+import { MockDotUiColorsService } from '../../../../../test/dot-test-bed';
 import { IframeComponent } from './iframe.component';
-import { LoginService, DotcmsEventsService, LoggerService, StringUtils } from 'dotcms-js';
-import { LoginServiceMock } from '../../../../../test/login-service.mock';
+import { DotcmsEventsService, LoggerService, LoginService, StringUtils } from 'dotcms-js';
 import { DotIframeService } from '../service/dot-iframe/dot-iframe.service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { DotOverlayMaskModule } from '@components/_common/dot-overlay-mask/dot-overlay-mask.module';
@@ -16,6 +15,7 @@ import { TestBed } from '@angular/core/testing';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
+import { LoginServiceMock } from '@tests/login-service.mock';
 
 const fakeHtmlEl = {
     hello: 'html'
@@ -35,7 +35,7 @@ describe('IframeComponent', () => {
     let dotIframeService: DotIframeService;
     let dotUiColorsService: DotUiColorsService;
     let dotcmsEventsService: DotcmsEventsServiceMock;
-    let loginService: LoginService;
+    let dotRouterService: DotRouterService;
 
     dotcmsEventsService = new DotcmsEventsServiceMock();
 
@@ -60,14 +60,13 @@ describe('IframeComponent', () => {
     );
 
     beforeEach(() => {
-        fixture = DOTTestBed.createComponent(IframeComponent);
+        fixture = TestBed.createComponent(IframeComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
 
-        dotIframeService = de.injector.get(DotIframeService);
-        dotUiColorsService = de.injector.get(DotUiColorsService);
-        loginService = de.injector.get(LoginService);
-
+        dotIframeService = TestBed.get(DotIframeService);
+        dotUiColorsService = TestBed.get(DotUiColorsService);
+        dotRouterService = TestBed.get(DotRouterService);
         spyOn(dotUiColorsService, 'setColors');
 
         comp.isLoading = false;
@@ -181,7 +180,6 @@ describe('IframeComponent', () => {
     });
 
     describe('bind iframe events', () => {
-
         beforeEach(() => {
             comp.iframeElement.nativeElement = {
                 contentWindow: {
@@ -238,8 +236,6 @@ describe('IframeComponent', () => {
 
     describe('iframe errors', () => {
         it('should logout on 401', () => {
-            spyOn(loginService, 'logOutUser').and.callThrough();
-
             iframeEl.triggerEventHandler('load', {
                 target: {
                     contentDocument: {
@@ -248,7 +244,7 @@ describe('IframeComponent', () => {
                 }
             });
 
-            expect(loginService.logOutUser).toHaveBeenCalledTimes(1);
+            expect(dotRouterService.doLogOut).toHaveBeenCalledTimes(1);
         });
     });
 

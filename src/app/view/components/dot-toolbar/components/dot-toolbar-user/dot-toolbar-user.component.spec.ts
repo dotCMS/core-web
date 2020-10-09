@@ -1,10 +1,11 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IframeOverlayService } from '../../../_common/iframe/service/iframe-overlay.service';
 import { DotDropdownComponent } from '../../../_common/dot-dropdown-component/dot-dropdown.component';
+import { DotMyAccountComponent } from '../dot-my-account/dot-my-account.component';
+import { DotLoginAsComponent } from '../dot-login-as/dot-login-as.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
-import { async } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
 import {
     CoreWebService,
     DotcmsConfigService,
@@ -13,9 +14,10 @@ import {
     DotEventsSocketURL,
     LoggerService,
     LoginService,
-    StringUtils
+    StringUtils,
+    UserModel
 } from 'dotcms-js';
-import { LoginServiceMock, mockAuth } from '../../../../../test/login-service.mock';
+import { LoginServiceMock, mockAuth, mockUser } from '../../../../../test/login-service.mock';
 import { DotToolbarUserComponent } from './dot-toolbar-user.component';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
@@ -24,46 +26,22 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LOCATION_TOKEN } from 'src/app/providers';
 import { DotMenuService } from '@services/dot-menu.service';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
+import { DotGravatarModule } from '../dot-gravatar/dot-gravatar.module';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { ButtonModule } from 'primeng/button';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
-import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { dotEventSocketURLFactory } from '@tests/dot-test-bed';
+import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { FormatDateService } from '@services/format-date-service';
-
-@Component({
-    selector:
-        '<dot-login-as [visible]="showLoginAs" (cancel)="tooggleLoginAs($event)"></dot-login-as>',
-    template: ''
-})
-class MockLoginAsComponent {
-    @Input() visible: boolean;
-    @Output() cancel = new EventEmitter<any>();
-}
-
-@Component({
-    selector:
-        '<dot-my-account [visible]="showMyAccount" (cancel)="toggleMyAccount()"></dot-my-account>',
-    template: ''
-})
-class MockMyAccountComponent {
-    @Input() visible: boolean;
-    @Output() cancel = new EventEmitter<any>();
-}
-
-@Component({
-    selector: '<dot-gravatar [email]="test""></dot-gravatar>',
-    template: ''
-})
-class MockGravatarComponent {
-    @Input() email: string;
-}
+import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 
 describe('DotToolbarUserComponent', () => {
     let comp: DotToolbarUserComponent;
@@ -73,27 +51,15 @@ describe('DotToolbarUserComponent', () => {
     let loginService: LoginService;
     let locationService: Location;
     let dotNavigationService: DotNavigationService;
+    let dotRouterService: DotRouterService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                ButtonModule,
-                BrowserAnimationsModule,
-                DotDialogModule,
-                DotIconButtonModule,
-                DotIconModule,
-                SearchableDropDownModule,
-                RouterTestingModule,
-                MdInputTextModule,
-                DotPipesModule,
-                HttpClientTestingModule
-            ],
             declarations: [
                 DotDropdownComponent,
-                MockLoginAsComponent,
-                MockMyAccountComponent,
-                DotToolbarUserComponent,
-                MockGravatarComponent
+                DotLoginAsComponent,
+                DotMyAccountComponent,
+                DotToolbarUserComponent
             ],
             providers: [
                 {
@@ -102,9 +68,8 @@ describe('DotToolbarUserComponent', () => {
                         reload() {}
                     }
                 },
-                { provide: CoreWebService, useClass: CoreWebServiceMock },
                 { provide: LoginService, useClass: LoginServiceMock },
-                { provide: DotRouterService, useClass: MockDotRouterService },
+                DotRouterService,
                 IframeOverlayService,
                 DotcmsEventsService,
                 DotNavigationService,
@@ -113,12 +78,33 @@ describe('DotToolbarUserComponent', () => {
                 StringUtils,
                 DotEventsService,
                 DotIframeService,
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                { provide: DotUiColorsService, useClass: MockDotUiColorsService },
+                UserModel,
+                DotcmsEventsService,
                 DotEventsSocket,
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 DotcmsConfigService,
                 FormatDateService
+            ],
+            imports: [
+                BrowserAnimationsModule,
+                DotDialogModule,
+                DotGravatarModule,
+                DotIconButtonModule,
+                DotIconModule,
+                SearchableDropDownModule,
+                RouterTestingModule,
+                MdInputTextModule,
+                ButtonModule,
+                DotPipesModule,
+                FormsModule,
+                ReactiveFormsModule,
+                PasswordModule,
+                CheckboxModule,
+                HttpClientTestingModule
             ]
-        }).compileComponents();
+        });
 
         fixture = TestBed.createComponent(DotToolbarUserComponent);
         comp = fixture.componentInstance;
@@ -127,13 +113,28 @@ describe('DotToolbarUserComponent', () => {
         loginService = de.injector.get(LoginService);
         locationService = de.injector.get(LOCATION_TOKEN);
         dotNavigationService = de.injector.get(DotNavigationService);
-
-        comp.auth = mockAuth;
+        dotRouterService = de.injector.get(DotRouterService);
     });
 
-    it('should call "logoutAs" in "LoginService" on logout click', async(() => {
+    it('should call doLogOut on logout click', () => {
+        comp.auth = {
+            user: mockUser,
+            loginAsUser: null
+        };
+        fixture.detectChanges();
+        spyOn(dotRouterService, 'doLogOut');
+        dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
+        dotDropdownComponent.onToggle();
+        fixture.detectChanges();
+        const logoutLink = de.query(By.css('#dot-toolbar-user-link-logout'));
+        logoutLink.triggerEventHandler('click', {});
+        expect(dotRouterService.doLogOut).toHaveBeenCalled();
+    });
+
+    it('should call "logoutAs" in "LoginService" on logout click', () => {
+        comp.auth = mockAuth;
         spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(
-            new Promise((resolve) => {
+            new Promise(resolve => {
                 resolve(true);
             })
         );
@@ -156,12 +157,5 @@ describe('DotToolbarUserComponent', () => {
             expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
             expect(locationService.reload).toHaveBeenCalledTimes(1);
         });
-    }));
-
-    afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
     });
 });

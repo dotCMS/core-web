@@ -1,10 +1,9 @@
-import { ComponentFixture, waitForAsync } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotMyAccountComponent } from './dot-my-account.component';
-import { LoginService } from 'dotcms-js';
+import {CoreWebService, DotcmsConfigService, LoggerService, LoginService, StringUtils, UserModel} from 'dotcms-js';
 import { LoginServiceMock, mockUser } from '@tests/login-service.mock';
 import { AccountService } from '@services/account-service';
 import { StringFormat } from 'src/app/api/util/stringFormat';
@@ -17,6 +16,11 @@ import { of } from 'rxjs';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
+import {DotRouterService} from '@services/dot-router/dot-router.service';
+import {DotPipesModule} from '@pipes/dot-pipes.module';
+import {MockDotRouterService} from '@tests/dot-router-service.mock';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
 describe('DotMyAccountComponent', () => {
     let fixture: ComponentFixture<DotMyAccountComponent>;
@@ -24,6 +28,7 @@ describe('DotMyAccountComponent', () => {
     let de: DebugElement;
     let accountService: AccountService;
     let loginService: LoginService;
+    let dotRouterService: DotRouterService;
 
     const messageServiceMock = new MockDotMessageService({
         'my-account': 'My Account',
@@ -44,7 +49,7 @@ describe('DotMyAccountComponent', () => {
     });
 
     beforeEach(waitForAsync( () => {
-        DOTTestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             declarations: [DotMyAccountComponent],
             imports: [
                 PasswordModule,
@@ -53,7 +58,9 @@ describe('DotMyAccountComponent', () => {
                 FormsModule,
                 DotDialogModule,
                 CommonModule,
-                CheckboxModule
+                CheckboxModule,
+                DotPipesModule,
+                HttpClientTestingModule
             ],
             providers: [
                 {
@@ -62,15 +69,22 @@ describe('DotMyAccountComponent', () => {
                 },
                 { provide: DotMessageService, useValue: messageServiceMock },
                 AccountService,
-                StringFormat
+                StringFormat,
+                { provide: DotRouterService, useClass: MockDotRouterService },
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                DotcmsConfigService,
+                LoggerService,
+                StringUtils,
+                UserModel
             ]
         });
 
-        fixture = DOTTestBed.createComponent(DotMyAccountComponent);
+        fixture = TestBed.createComponent(DotMyAccountComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        accountService = fixture.debugElement.injector.get(AccountService);
-        loginService = fixture.debugElement.injector.get(LoginService);
+        accountService = TestBed.get(AccountService);
+        loginService = TestBed.get(LoginService);
+        dotRouterService = TestBed.get(DotRouterService);
 
         comp.visible = true;
         fixture.detectChanges();
@@ -237,7 +251,6 @@ describe('DotMyAccountComponent', () => {
         const changePassword = de.query(By.css('#dot-my-account-change-password-option'));
         changePassword.triggerEventHandler('click', {});
         fixture.detectChanges();
-
         fixture.whenStable().then(() => {
             fixture.detectChanges();
             const save = de.query(By.css('.dialog__button-accept'));
@@ -245,7 +258,7 @@ describe('DotMyAccountComponent', () => {
             fixture.detectChanges();
             expect(comp.close.emit).toHaveBeenCalledTimes(1);
             expect(accountService.updateUser).toHaveBeenCalledWith(comp.accountUser);
-            expect(loginService.logOutUser).toHaveBeenCalledTimes(1);
+            expect(dotRouterService.doLogOut).toHaveBeenCalledTimes(1);
         });
     });
 });
