@@ -5,7 +5,7 @@ import { CoreWebService } from 'dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpHeaders } from '@angular/common/http';
 
-describe('PaginatorService setting', () => {
+describe('PaginatorService', () => {
     let injector: TestBed;
     let paginatorService: PaginatorService;
     let httpMock: HttpTestingController;
@@ -48,7 +48,7 @@ describe('PaginatorService setting', () => {
         paginatorService.setExtraParams('name', 'John');
         paginatorService.deleteExtraParams('name');
 
-        expect(paginatorService.extraParams.get('name')).toBeNull();
+        expect(paginatorService.extraParams.get('name')).toBeUndefined();
     });
 
     afterEach(() => {
