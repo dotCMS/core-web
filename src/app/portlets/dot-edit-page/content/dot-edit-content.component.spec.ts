@@ -420,7 +420,6 @@ describe('DotEditContentComponent', () => {
                 const iframeWrapper = deviceWrapper.query(By.css('.dot-edit__iframe-wrapper'));
 
                 expect(wrapper).not.toBeNull();
-                console.log(wrapper);
                 expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBeUndefined();
 
                 expect(deviceWrapper).not.toBeNull();

@@ -46,7 +46,6 @@ describe('DotGravatarService', () => {
         });
 
         const reqMock = httpTestingController.expectOne((req) => {
-            console.log(req.url);
             return req.url === '//www.gravatar.com/1.json?';
         });
         expect(reqMock.request.method).toBe('JSONP');
