@@ -264,10 +264,9 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         describe('with license', () => {
-            it("should have what's change selector", async () => {
+            it("should have what's change selector", () => {
                 componentHost.pageState.state.mode = DotPageMode.PREVIEW;
                 fixtureHost.detectChanges();
-                await fixtureHost.whenStable();
 
                 const whatsChangedElem = de.query(By.css('p-checkbox'));
                 expect(whatsChangedElem).toBeDefined();
