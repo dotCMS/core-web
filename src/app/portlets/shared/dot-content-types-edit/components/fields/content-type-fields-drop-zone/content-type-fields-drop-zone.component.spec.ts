@@ -730,7 +730,8 @@ describe('Load fields and drag and drop', () => {
         fixture.detectChanges();
 
         const tabLinks = de.queryAll(By.css('.p-tabview-nav li'));
-        expect(tabLinks[1].nativeElement.classList.contains('ui-state-disabled')).toBe(true);
+        console.log(tabLinks[1].nativeElement.classList)
+        expect(tabLinks[1].nativeElement.classList.contains('p-disabled')).toBe(true);
     });
 
     it('should NOT disable field variable tab', () => {
@@ -742,7 +743,7 @@ describe('Load fields and drag and drop', () => {
         fixture.detectChanges();
 
         const tabLinks = de.queryAll(By.css('.p-tabview-nav li'));
-        expect(tabLinks[1].nativeElement.classList.contains('ui-state-disabled')).toBe(false);
+        expect(tabLinks[1].nativeElement.classList.contains('p-disabled')).toBe(false);
     });
 
     describe('Edit Field Dialog', () => {
