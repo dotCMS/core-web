@@ -4,11 +4,9 @@ import { DotTextareaContentComponent } from './dot-textarea-content.component';
 import { SelectButtonModule } from 'primeng/selectbutton'
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-// import { AceEditorModule } from 'ng2-ace-editor';
 
 @NgModule({
     imports: [
-        // AceEditorModule,
         CommonModule,
         SelectButtonModule,
         FormsModule,

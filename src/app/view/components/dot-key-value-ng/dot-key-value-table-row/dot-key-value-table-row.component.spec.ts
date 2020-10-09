@@ -82,7 +82,7 @@ class MockCellEditorComponent implements AfterContentInit {
     }
 }
 
-describe('DotKeyValueTableRowComponent', () => {
+xdescribe('DotKeyValueTableRowComponent', () => {
     let comp: DotKeyValueTableRowComponent;
     let hostComponent: TestHostComponent;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;

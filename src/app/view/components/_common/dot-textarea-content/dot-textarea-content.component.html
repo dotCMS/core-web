@@ -16,6 +16,8 @@
 {{ value }}
 
 <ngx-monaco-editor
+    [ngStyle]="styles"
+    *ngIf="selected === 'code'"
     class="textarea-content__code-field"
     [options]="editorOptions"
     [(ngModel)]="value"

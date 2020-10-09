@@ -58,7 +58,6 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
     private DEFAULT_OPTIONS: SelectItem[] = [
         { label: 'Plain', value: 'plain' },
         { label: 'Code', value: 'code' },
-        { label: 'WYSIWYG', value: 'wysiwyg' }
     ];
 
     constructor() {}
