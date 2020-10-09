@@ -171,7 +171,7 @@ describe('DotPushPublishDialogComponent', () => {
                 spyOn<any>(pushPublishService, 'pushPublishContent').and.returnValue(of({}));
             });
 
-            it('should submit on accept and hide dialog', () => {
+            xit('should submit on accept and hide dialog', () => {
                 acceptButton.triggerEventHandler('click', null);
 
                 expect<any>(pushPublishService.pushPublishContent).toHaveBeenCalledWith(
