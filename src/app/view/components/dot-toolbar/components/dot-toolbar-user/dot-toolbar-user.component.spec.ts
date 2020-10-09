@@ -43,6 +43,7 @@ import { MockBackend } from '@angular/http/testing';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { FormatDateService } from '@services/format-date-service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DotToolbarUserComponent', () => {
     let comp: DotToolbarUserComponent;
@@ -105,7 +106,8 @@ describe('DotToolbarUserComponent', () => {
                 FormsModule,
                 ReactiveFormsModule,
                 PasswordModule,
-                CheckboxModule
+                CheckboxModule,
+                HttpClientTestingModule
             ]
         });
 
