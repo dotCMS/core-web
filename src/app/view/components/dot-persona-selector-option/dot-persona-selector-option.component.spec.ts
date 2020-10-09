@@ -17,7 +17,7 @@ describe('DotPersonaSelectorOptionComponent', () => {
     let de: DebugElement;
 
     const messageServiceMock = new MockDotMessageService({
-        'modes.persona.personalized': 'Personalized'
+        'modes.persona.personalized': 'PERSONALIZED'
     });
 
     beforeEach(() => {
