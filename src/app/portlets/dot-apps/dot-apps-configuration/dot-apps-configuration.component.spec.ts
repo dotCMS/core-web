@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
 import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/dot-apps-configuration-list.module';
 import { PaginatorService } from '@services/paginator';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
+import { MarkdownService } from 'ngx-markdown';
 
 const messages = {
     'apps.key': 'Key',
@@ -86,8 +87,8 @@ describe('DotAppsConfigurationComponent', () => {
 
     const messageServiceMock = new MockDotMessageService(messages);
 
-   beforeEach(
-          waitForAsync(() => {
+    beforeEach(
+        waitForAsync(() => {
             DOTTestBed.configureTestingModule({
                 imports: [
                     RouterTestingModule.withRoutes([
@@ -117,6 +118,16 @@ describe('DotAppsConfigurationComponent', () => {
                     {
                         provide: DotRouterService,
                         useClass: MockDotRouterService
+                    },
+                    {
+                        provide: MarkdownService,
+                        useValue: {
+                            compile(text) {
+                                return text;
+                            },
+
+                            highlight() {}
+                        }
                     },
                     DotAppsConfigurationResolver,
                     PaginatorService
@@ -206,7 +217,7 @@ describe('DotAppsConfigurationComponent', () => {
                 By.css('.dot-apps-configuration__action_header button')
             );
 
-            spyOn(dialogService, 'confirm').and.callFake(conf => {
+            spyOn(dialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
             });
 
@@ -229,15 +240,12 @@ describe('DotAppsConfigurationComponent', () => {
             );
         });
 
-        it(
-            'should call App filter on search',
-            fakeAsync(() => {
-                component.searchInput.nativeElement.value = 'test';
-                component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
-                tick(550);
-                expect(paginationService.setExtraParams).toHaveBeenCalledWith('filter', 'test');
-                expect(paginationService.getWithOffset).toHaveBeenCalled();
-            })
-        );
+        it('should call App filter on search', fakeAsync(() => {
+            component.searchInput.nativeElement.value = 'test';
+            component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
+            tick(550);
+            expect(paginationService.setExtraParams).toHaveBeenCalledWith('filter', 'test');
+            expect(paginationService.getWithOffset).toHaveBeenCalled();
+        }));
     });
 });
