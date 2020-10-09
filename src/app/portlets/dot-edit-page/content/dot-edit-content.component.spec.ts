@@ -420,7 +420,8 @@ describe('DotEditContentComponent', () => {
                 const iframeWrapper = deviceWrapper.query(By.css('.dot-edit__iframe-wrapper'));
 
                 expect(wrapper).not.toBeNull();
-                expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(false);
+                console.log(wrapper);
+                expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBeUndefined();
 
                 expect(deviceWrapper).not.toBeNull();
                 expect(iframeWrapper).not.toBeNull();
@@ -509,7 +510,7 @@ describe('DotEditContentComponent', () => {
             it('should have attr setted', fakeAsync(() => {
                 detectChangesForIframeRender(fixture);
                 const iframeEl = getIframe();
-                expect(iframeEl.attributes.class).toBe('dot-edit__iframe');
+                expect(iframeEl.attributes.class).toContain('dot-edit__iframe');
                 expect(iframeEl.attributes.frameborder).toBe('0');
                 expect(iframeEl.attributes.height).toBe('100%');
                 expect(iframeEl.attributes.width).toBe('100%');
