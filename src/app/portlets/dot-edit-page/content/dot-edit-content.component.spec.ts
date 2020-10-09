@@ -390,12 +390,6 @@ describe('DotEditContentComponent', () => {
             it('should have', () => {
                 expect(dotReorderMenu).not.toBeNull();
             });
-
-            xdescribe('events', () => {
-                component.reorderMenuUrl = 'some/test';
-                dotReorderMenu.triggerEventHandler('close', {});
-                expect(component.reorderMenuUrl).toBe('xxx');
-            });
         });
 
         describe('dot-loading-indicator', () => {

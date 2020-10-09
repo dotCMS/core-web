@@ -23,7 +23,9 @@ const messageServiceMock = new MockDotMessageService({
     selector: 'dot-fake-form',
     template: `
         <form [formGroup]="form">
-            <dot-workflows-selector-field formControlName="workflows"></dot-workflows-selector-field>
+            <dot-workflows-selector-field
+                formControlName="workflows"
+            ></dot-workflows-selector-field>
             {{ form.value | json }}
         </form>
     `
@@ -50,8 +52,8 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
     let multiselect: MultiSelect;
 
     describe('basic', () => {
-       beforeEach(
-          waitForAsync(() => {
+        beforeEach(
+            waitForAsync(() => {
                 DOTTestBed.configureTestingModule({
                     declarations: [DotWorkflowsSelectorFieldComponent],
                     providers: [
@@ -104,23 +106,27 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
 
             describe('show options', () => {
                 beforeEach(() => {
-                    de.query(By.css('.p-multiselect')).triggerEventHandler('click', {});
+                    de.query(By.css('.p-multiselect')).triggerEventHandler('click', {
+                        target: {
+                            isSameNode: () => false
+                        }
+                    });
                     fixture.detectChanges();
                 });
 
                 it('should fill the workflows options', () => {
                     const itemsLabels = de
                         .queryAll(By.css('.p-multiselect-items .workflow__label'))
-                        .map(item => item.nativeElement.innerText);
-                    expect(itemsLabels).toEqual(mockWorkflows.map(workflow => workflow.name));
+                        .map((item) => item.nativeElement.innerText);
+                    expect(itemsLabels).toEqual(mockWorkflows.map((workflow) => workflow.name));
                 });
 
                 it('should have archived item and message', () => {
                     const archivedItems = de.queryAll(By.css('.workflow__archive-label'));
-                    expect(archivedItems.length).toBe(1);
+                    expect(archivedItems.length).toBe(1, 'archivedItems');
                     expect(archivedItems[0].nativeElement.innerText).toBe(mockWorkflows[1].name);
                     const archivedMessage = de.queryAll(By.css('.workflow__archive-message'));
-                    expect(archivedMessage.length).toBe(1);
+                    expect(archivedMessage.length).toBe(1, 'archivedMessage');
                     expect(archivedMessage[0].nativeElement.innerText).toBe('(Archivado)');
                 });
             });
@@ -132,8 +138,8 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
         let deHost: DebugElement;
         let innerMultiselect: DebugElement;
 
-       beforeEach(
-          waitForAsync(() => {
+        beforeEach(
+            waitForAsync(() => {
                 DOTTestBed.configureTestingModule({
                     declarations: [FakeFormComponent, DotWorkflowsSelectorFieldComponent],
                     providers: [
