@@ -33,18 +33,20 @@ describe('DotNavItemComponent', () => {
     let navItem: DebugElement;
     let subNav: DebugElement;
 
-    beforeEach(waitForAsync( () => {
-        TestBed.configureTestingModule({
-            declarations: [TestHostComponent, DotNavItemComponent, DotSubNavComponent],
-            imports: [
-                DotNavIconModule,
-                DotIconModule,
-                RouterTestingModule,
-                BrowserAnimationsModule,
-                TooltipModule
-            ]
-        }).compileComponents();
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [TestHostComponent, DotNavItemComponent, DotSubNavComponent],
+                imports: [
+                    DotNavIconModule,
+                    DotIconModule,
+                    RouterTestingModule,
+                    BrowserAnimationsModule,
+                    TooltipModule
+                ]
+            }).compileComponents();
+        })
+    );
 
     beforeEach(() => {
         fixtureHost = TestBed.createComponent(TestHostComponent);
@@ -120,19 +122,16 @@ describe('DotNavItemComponent', () => {
             navItem.triggerEventHandler('mouseenter', {});
             fixtureHost.detectChanges();
 
-            expect(subNav.styles).toEqual({
-                bottom: '0',
-                top: 'auto'
-            });
+            expect(subNav.styles.cssText).toEqual(
+                'height: 0px; overflow: hidden; position: absolute; top: auto; bottom: 0px;'
+            );
         });
 
         it('should reset menu position when mouseleave', () => {
             component.collapsed = true;
             de.triggerEventHandler('mouseleave', {});
             fixtureHost.detectChanges();
-            expect(subNav.styles).toEqual({
-                overflow: 'hidden'
-            });
+            expect(subNav.styles.cssText).toEqual('height: 0px; overflow: hidden;');
         });
 
         it('should set data correctly', () => {
