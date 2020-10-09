@@ -77,65 +77,67 @@ describe('DotEditPageToolbarComponent', () => {
     let dotEventsService: DotEventsService;
     let dotMessageDisplayService: DotMessageDisplayService;
 
-    beforeEach(waitForAsync( () => {
-        TestBed.configureTestingModule({
-            declarations: [TestHostComponent, DotEditPageToolbarComponent],
-            imports: [
-                HttpClientTestingModule,
-                ButtonModule,
-                CommonModule,
-                CheckboxModule,
-                DotSecondaryToolbarModule,
-                FormsModule,
-                ToolbarModule,
-                DotEditPageViewAsControllerModule,
-                DotEditPageStateControllerModule,
-                DotEditPageInfoModule,
-                DotEditPageWorkflowsActionsModule,
-                DotPipesModule,
-                DotWizardModule
-            ],
-            providers: [
-                { provide: DotLicenseService, useClass: MockDotLicenseService },
-                {
-                    provide: DotMessageService,
-                    useValue: new MockDotMessageService({
-                        'dot.common.whats.changed': 'Whats',
-                        'dot.common.cancel': 'Cancel'
-                    })
-                },
-                {
-                    provide: DotPageStateService,
-                    useValue: {}
-                },
-                {
-                    provide: SiteService,
-                    useClass: SiteServiceMock
-                },
-                {
-                    provide: LoginService,
-                    useClass: LoginServiceMock
-                },
-                DotMessageDisplayService,
-                DotEventsService,
-                DotcmsEventsService,
-                DotEventsSocket,
-                { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
-                DotcmsConfigService,
-                { provide: CoreWebService, useClass: CoreWebServiceMock },
-                LoggerService,
-                StringUtils,
-                { provide: DotRouterService, useClass: MockDotRouterService },
-                DotHttpErrorManagerService,
-                DotAlertConfirmService,
-                ConfirmationService,
-                DotGlobalMessageService,
-                ApiRoot,
-                UserModel,
-                DotIframeService
-            ]
-        });
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [TestHostComponent, DotEditPageToolbarComponent],
+                imports: [
+                    HttpClientTestingModule,
+                    ButtonModule,
+                    CommonModule,
+                    CheckboxModule,
+                    DotSecondaryToolbarModule,
+                    FormsModule,
+                    ToolbarModule,
+                    DotEditPageViewAsControllerModule,
+                    DotEditPageStateControllerModule,
+                    DotEditPageInfoModule,
+                    DotEditPageWorkflowsActionsModule,
+                    DotPipesModule,
+                    DotWizardModule
+                ],
+                providers: [
+                    { provide: DotLicenseService, useClass: MockDotLicenseService },
+                    {
+                        provide: DotMessageService,
+                        useValue: new MockDotMessageService({
+                            'dot.common.whats.changed': 'Whats',
+                            'dot.common.cancel': 'Cancel'
+                        })
+                    },
+                    {
+                        provide: DotPageStateService,
+                        useValue: {}
+                    },
+                    {
+                        provide: SiteService,
+                        useClass: SiteServiceMock
+                    },
+                    {
+                        provide: LoginService,
+                        useClass: LoginServiceMock
+                    },
+                    DotMessageDisplayService,
+                    DotEventsService,
+                    DotcmsEventsService,
+                    DotEventsSocket,
+                    { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
+                    DotcmsConfigService,
+                    { provide: CoreWebService, useClass: CoreWebServiceMock },
+                    LoggerService,
+                    StringUtils,
+                    { provide: DotRouterService, useClass: MockDotRouterService },
+                    DotHttpErrorManagerService,
+                    DotAlertConfirmService,
+                    ConfirmationService,
+                    DotGlobalMessageService,
+                    ApiRoot,
+                    UserModel,
+                    DotIframeService
+                ]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixtureHost = TestBed.createComponent(TestHostComponent);
@@ -199,7 +201,7 @@ describe('DotEditPageToolbarComponent', () => {
         it('should have right attr', () => {
             fixtureHost.detectChanges();
             const editPageCancelBtn = de.query(By.css('.edit-page-toolbar__cancel'));
-            expect(editPageCancelBtn.attributes.class).toBe('edit-page-toolbar__cancel');
+            expect(editPageCancelBtn.attributes.class).toContain('edit-page-toolbar__cancel');
             expect(editPageCancelBtn.attributes.secondary).toBeDefined();
             expect(editPageCancelBtn.attributes.tiny).toBeDefined();
             expect(editPageCancelBtn.nativeElement.innerText).toBe('CANCEL');
@@ -262,21 +264,22 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         describe('with license', () => {
+            it("should have what's change selector", async () => {
+                componentHost.pageState.state.mode = DotPageMode.PREVIEW;
+                fixtureHost.detectChanges();
+                await fixtureHost.whenStable();
+
+                const whatsChangedElem = de.query(By.css('p-checkbox'));
+                expect(whatsChangedElem).toBeDefined();
+                expect(whatsChangedElem.componentInstance.label).toBe('Whats');
+            });
+
             it("should hide what's change selector", () => {
                 componentHost.pageState.state.mode = DotPageMode.EDIT;
                 fixtureHost.detectChanges();
 
                 const whatsChangedElem = de.query(By.css('p-checkbox'));
                 expect(whatsChangedElem).toBeNull();
-            });
-
-            it("should have what's change selector", () => {
-                componentHost.pageState.state.mode = DotPageMode.PREVIEW;
-                fixtureHost.detectChanges();
-
-                const whatsChangedElem = de.query(By.css('p-checkbox'));
-                expect(whatsChangedElem).toBeDefined();
-                expect(whatsChangedElem.componentInstance.label).toBe('Whats');
             });
 
             it("should hide what's change selector when is not default user", () => {
