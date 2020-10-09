@@ -20,6 +20,7 @@ import {MockDotRouterService} from '@tests/dot-router-service.mock';
 import {CoreWebServiceMock} from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
 import {BaseRequestOptions, ConnectionBackend, Http, RequestOptions} from '@angular/http';
 import {MockBackend} from '@angular/http/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('DotMyAccountComponent', () => {
     let fixture: ComponentFixture<DotMyAccountComponent>;
@@ -58,7 +59,8 @@ describe('DotMyAccountComponent', () => {
                 DotDialogModule,
                 CommonModule,
                 CheckboxModule,
-                DotPipesModule
+                DotPipesModule,
+                HttpClientTestingModule
             ],
             providers: [
                 {
