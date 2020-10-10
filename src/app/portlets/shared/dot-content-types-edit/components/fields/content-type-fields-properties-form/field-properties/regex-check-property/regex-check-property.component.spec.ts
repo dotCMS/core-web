@@ -2,7 +2,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { RegexCheckPropertyComponent, RegexTemplate } from './index';
+import { RegexCheckPropertyComponent } from './index';
 import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
