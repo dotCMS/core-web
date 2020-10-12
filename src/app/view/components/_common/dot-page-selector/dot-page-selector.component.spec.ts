@@ -149,7 +149,7 @@ describe('DotPageSelectorComponent', () => {
         })
     );
 
-    beforeEach(() => {
+    beforeEach(async () => {
         hostFixture = DOTTestBed.createComponent(FakeFormComponent);
         hostDe = hostFixture.debugElement;
         de = hostDe.query(By.css('dot-page-selector'));
@@ -160,6 +160,7 @@ describe('DotPageSelectorComponent', () => {
         spyOn(component, 'writeValue').and.callThrough();
 
         hostFixture.detectChanges();
+        await hostFixture.whenStable();
         autocomplete = de.query(By.css('p-autoComplete'));
         autocompleteComp = autocomplete.componentInstance;
     });
