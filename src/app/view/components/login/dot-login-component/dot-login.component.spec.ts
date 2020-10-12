@@ -20,6 +20,7 @@ import { MockDotLoginPageStateService } from '@components/login/dot-login-page-r
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { Dropdown, DropdownModule } from 'primeng/dropdown';
+import { of } from 'rxjs';
 
 describe('DotLoginComponent', () => {
     let component: DotLoginComponent;
@@ -69,9 +70,12 @@ describe('DotLoginComponent', () => {
         dotRouterService = de.injector.get(DotRouterService);
         loginPageStateService = de.injector.get(DotLoginPageStateService);
         dotMessageService = de.injector.get(DotMessageService);
-        spyOn(dotMessageService, 'init');
         fixture.detectChanges();
         signInButton = de.query(By.css('button[pButton]'));
+
+        spyOn(dotMessageService, 'init');
+        spyOn(dotMessageService, 'setRelativeDateMessages').and.callFake(() => {});
+
     });
 
     it('should load form labels correctly', () => {
@@ -128,15 +132,21 @@ describe('DotLoginComponent', () => {
 
     it('should make a login request correctly and redirect after login', () => {
         component.loginForm.setValue(credentials);
-        spyOn(loginService, 'loginUser').and.callThrough();
-        spyOn(dotMessageService, 'setRelativeDateMessages');
+        spyOn<any>(loginService, 'loginUser').and.returnValue(
+            of({
+                ...mockUser(),
+                editModeUrl: 'redirect/to'
+            })
+        );
         fixture.detectChanges();
 
         expect(signInButton.nativeElement.disabled).toBeFalsy();
         signInButton.triggerEventHandler('click', {});
         expect(loginService.loginUser).toHaveBeenCalledWith(credentials);
         expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
-        expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(mockUser().languageId);
+        expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(
+            mockUser().languageId
+        );
     });
 
     it('should disable fields while waiting login response', () => {
