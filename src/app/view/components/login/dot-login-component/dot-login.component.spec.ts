@@ -70,12 +70,12 @@ describe('DotLoginComponent', () => {
         dotRouterService = de.injector.get(DotRouterService);
         loginPageStateService = de.injector.get(DotLoginPageStateService);
         dotMessageService = de.injector.get(DotMessageService);
-        fixture.detectChanges();
-        signInButton = de.query(By.css('button[pButton]'));
 
         spyOn(dotMessageService, 'init');
         spyOn(dotMessageService, 'setRelativeDateMessages').and.callFake(() => {});
+        fixture.detectChanges();
 
+        signInButton = de.query(By.css('button[pButton]'));
     });
 
     it('should load form labels correctly', () => {
