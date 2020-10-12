@@ -45,7 +45,7 @@ describe('DotAlertConfirmComponent', () => {
     });
 
     describe('confirmation dialog', () => {
-        it('should show and focus on Confirm button', () => {
+        it('should show and focus on Confirm button', (done) => {
             dialogService.confirm({
                 header: '',
                 message: ''
@@ -57,6 +57,7 @@ describe('DotAlertConfirmComponent', () => {
             expect(confirm === null).toBe(false);
             setTimeout(() => {
                 expect(component.confirmBtn.nativeElement.focus).toHaveBeenCalledTimes(1);
+                done();
             }, 100);
         });
 
