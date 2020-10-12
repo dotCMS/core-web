@@ -68,6 +68,11 @@ describe('DotAddPersonaDialogComponent', () => {
         dotDialog = fixture.debugElement.query(By.css('dot-dialog'));
     });
 
+    afterEach(() => {
+        component.visible = false;
+        fixture.detectChanges();
+    });
+
     it('should not be visible by default', () => {
         expect(dotDialog).toBeNull();
     });
