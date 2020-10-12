@@ -36,7 +36,7 @@ const getTestingModule = (dotRenderedPage?: DotPageRender) => {
                         parent: {
                             data: observableOf({
                                 content: {
-                                    ...(dotRenderedPage || mockDotRenderedPage),
+                                    ...(dotRenderedPage || mockDotRenderedPage()),
                                 }
                             })
                         }
@@ -79,7 +79,7 @@ describe('DotEditLayoutComponent with Layout Designer', () => {
             By.css('dot-edit-layout-designer')
         );
         expect(layoutDesigner.componentInstance.pageState).toEqual({
-            ...mockDotRenderedPage,
+            ...mockDotRenderedPage(),
         });
     });
 });

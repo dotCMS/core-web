@@ -34,12 +34,12 @@ describe('DotPageRenderService', () => {
 
     it('should return entity', () => {
         dotPageRenderService.get({ url }).subscribe((res: DotPageRender.Parameters) => {
-            expect(res).toEqual(mockDotRenderedPage);
+            expect(res).toEqual(mockDotRenderedPage());
         });
 
         const req = httpMock.expectOne(`v1/page/render/${url.replace(/^\//, '')}`);
         expect(req.request.method).toBe('GET');
-        req.flush({ entity: mockDotRenderedPage });
+        req.flush({ entity: mockDotRenderedPage() });
     });
 
     it('should get a page with just the url', () => {

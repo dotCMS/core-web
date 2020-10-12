@@ -26,7 +26,7 @@ import { PageModelChangeEventType } from '../dot-edit-content-html/models';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 
 const getDotPageRenderStateMock = () => {
-    return new DotPageRenderState(mockUser, mockDotRenderedPage);
+    return new DotPageRenderState(mockUser, mockDotRenderedPage());
 };
 
 describe('DotPageStateService', () => {
@@ -69,7 +69,7 @@ describe('DotPageStateService', () => {
         loginService = injector.get(LoginService);
 
         dotPageRenderServiceGetSpy = spyOn(dotPageRenderService, 'get').and.returnValue(
-            of(mockDotRenderedPage)
+            of(mockDotRenderedPage())
         );
 
         dotHttpErrorManagerServiceHandle = spyOn(
@@ -384,7 +384,7 @@ describe('DotPageStateService', () => {
 
             it('should trigger haceContent as false', () => {
                 const renderedPage = new DotPageRenderState(mockUser, {
-                    ...mockDotRenderedPage,
+                    ...mockDotRenderedPage(),
                     ...{
                         numberContents: 0
                     }
@@ -409,10 +409,10 @@ describe('DotPageStateService', () => {
         describe('selected persona is not default', () => {
             it('should trigger haveContent as false', () => {
                 const renderedPage = new DotPageRenderState(mockUser, {
-                    ...mockDotRenderedPage,
+                    ...mockDotRenderedPage(),
                     ...{
                         viewAs: {
-                            ...mockDotRenderedPage.viewAs,
+                            ...mockDotRenderedPage().viewAs,
                             persona: mockDotPersona
                         }
                     }
@@ -434,10 +434,10 @@ describe('DotPageStateService', () => {
 
             it('should trigger haceContent as true', () => {
                 const renderedPage = new DotPageRenderState(mockUser, {
-                    ...mockDotRenderedPage,
+                    ...mockDotRenderedPage(),
                     ...{
                         viewAs: {
-                            ...mockDotRenderedPage.viewAs,
+                            ...mockDotRenderedPage().viewAs,
                             persona: mockDotPersona
                         }
                     },

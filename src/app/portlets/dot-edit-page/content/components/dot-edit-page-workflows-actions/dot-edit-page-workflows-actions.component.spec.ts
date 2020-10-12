@@ -125,7 +125,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         component = fixture.componentInstance;
         component.page = {
-            ...mockDotPage,
+            ...mockDotPage(),
             ...{ workingInode: 'cc2cdf9c-a20d-4862-9454-2a76c1132123' }
         };
 
@@ -148,7 +148,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                     of(mockWorkflowsActions)
                 );
                 component.page = {
-                    ...mockDotPage,
+                    ...mockDotPage(),
                     ...{
                         workingInode: 'cc2cdf9c-a20d-4862-9454-2a76c1132123',
                         lockedOn: new Date(1517330117295)

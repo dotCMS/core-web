@@ -136,8 +136,8 @@ describe('DotEditLayoutDesignerComponent', () => {
             component.pageState = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
-                    ...mockDotRenderedPage,
-                    template: { ...mockDotTemplate, theme: '123' },
+                    ...mockDotRenderedPage(),
+                    template: { ...mockDotTemplate(), theme: '123' },
                     canCreateTemplate: false
                 })
             );
@@ -254,13 +254,13 @@ describe('DotEditLayoutDesignerComponent', () => {
                 title: null,
                 themeId: '123',
                 layout: {
-                    body: mockDotRenderedPage.layout.body,
-                    header: mockDotRenderedPage.layout.header,
-                    footer: mockDotRenderedPage.layout.footer,
+                    body: mockDotRenderedPage().layout.body,
+                    header: mockDotRenderedPage().layout.header,
+                    footer: mockDotRenderedPage().layout.footer,
                     sidebar: {
-                        location: mockDotRenderedPage.layout.sidebar.location,
-                        containers: mockDotRenderedPage.layout.sidebar.containers,
-                        width: mockDotRenderedPage.layout.sidebar.width
+                        location: mockDotRenderedPage().layout.sidebar.location,
+                        containers: mockDotRenderedPage().layout.sidebar.containers,
+                        width: mockDotRenderedPage().layout.sidebar.width
                     }
                 }
             });
@@ -271,7 +271,7 @@ describe('DotEditLayoutDesignerComponent', () => {
                 component.pageState = new DotPageRenderState(
                     mockUser,
                     new DotPageRender({
-                        ...mockDotRenderedPage,
+                        ...mockDotRenderedPage(),
                         template: null,
                         canCreateTemplate: true
                     })
@@ -324,8 +324,8 @@ describe('DotEditLayoutDesignerComponent', () => {
             component.pageState = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
-                    ...mockDotRenderedPage,
-                    template: { ...mockDotTemplate, theme: '123' },
+                    ...mockDotRenderedPage(),
+                    template: { ...mockDotTemplate(), theme: '123' },
                     canCreateTemplate: false
                 })
             );
@@ -379,7 +379,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
                 mockUser,
-                new DotPageRender(mockDotRenderedPage)
+                new DotPageRender(mockDotRenderedPage())
             );
             component.editTemplate = true;
             fixture.detectChanges();
@@ -392,22 +392,22 @@ describe('DotEditLayoutDesignerComponent', () => {
 
             expect(aditionalOptions).toBeTruthy();
             expect(aditionalOptions.componentInstance.inode).toEqual(
-                mockDotRenderedPage.template.inode
+                mockDotRenderedPage().template.inode
             );
         });
 
         it('should set form model correctly', () => {
             expect(component.form.value).toEqual({
-                title: mockDotRenderedPage.template.title,
+                title: mockDotRenderedPage().template.title,
                 themeId: '',
                 layout: {
-                    body: mockDotRenderedPage.layout.body,
-                    header: mockDotRenderedPage.layout.header,
-                    footer: mockDotRenderedPage.layout.footer,
+                    body: mockDotRenderedPage().layout.body,
+                    header: mockDotRenderedPage().layout.header,
+                    footer: mockDotRenderedPage().layout.footer,
                     sidebar: {
-                        location: mockDotRenderedPage.layout.sidebar.location,
-                        containers: mockDotRenderedPage.layout.sidebar.containers,
-                        width: mockDotRenderedPage.layout.sidebar.width
+                        location: mockDotRenderedPage().layout.sidebar.location,
+                        containers: mockDotRenderedPage().layout.sidebar.containers,
+                        width: mockDotRenderedPage().layout.sidebar.width
                     }
                 }
             });
@@ -418,7 +418,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
                 mockUser,
-                new DotPageRender(mockDotRenderedPage)
+                new DotPageRender(mockDotRenderedPage())
             );
         });
 
@@ -445,7 +445,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
                 mockUser,
-                new DotPageRender(mockDotRenderedPage)
+                new DotPageRender(mockDotRenderedPage())
             );
             fixture.detectChanges();
             saveButton = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-save'));
@@ -494,9 +494,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 component.pageState = new DotPageRenderState(
                     mockUser,
                     new DotPageRender({
-                        ...mockDotRenderedPage,
+                        ...mockDotRenderedPage(),
                         template: {
-                            ...mockDotRenderedPage.template,
+                            ...mockDotRenderedPage().template,
                             anonymous: false
                         }
                     })
@@ -527,9 +527,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 component.pageState = new DotPageRenderState(
                     mockUser,
                     new DotPageRender({
-                        ...mockDotRenderedPage,
+                        ...mockDotRenderedPage(),
                         template: {
-                            ...mockDotRenderedPage.template,
+                            ...mockDotRenderedPage().template,
                             canEdit: false
                         }
                     })
@@ -544,9 +544,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 component.pageState = new DotPageRenderState(
                     mockUser,
                     new DotPageRender({
-                        ...mockDotRenderedPage,
+                        ...mockDotRenderedPage(),
                         template: {
-                            ...mockDotRenderedPage.template,
+                            ...mockDotRenderedPage().template,
                             anonymous: true
                         }
                     })
@@ -560,9 +560,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 component.pageState = new DotPageRenderState(
                     mockUser,
                     new DotPageRender({
-                        ...mockDotRenderedPage,
+                        ...mockDotRenderedPage(),
                         template: {
-                            ...mockDotRenderedPage.template,
+                            ...mockDotRenderedPage().template,
                             canEdit: true
                         }
                     })
@@ -580,8 +580,8 @@ describe('DotEditLayoutDesignerComponent', () => {
             component.pageState = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
-                    ...mockDotRenderedPage,
-                    template: { ...mockDotTemplate, theme: '123' },
+                    ...mockDotRenderedPage(),
+                    template: { ...mockDotTemplate(), theme: '123' },
                     canCreateTemplate: false
                 })
             );
@@ -594,9 +594,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 title: null,
                 themeId: '123',
                 layout: {
-                    body: mockDotRenderedPage.layout.body,
-                    header: mockDotRenderedPage.layout.header,
-                    footer: mockDotRenderedPage.layout.footer,
+                    body: mockDotRenderedPage().layout.body,
+                    header: mockDotRenderedPage().layout.header,
+                    footer: mockDotRenderedPage().layout.footer,
                     sidebar: {
                         location: '',
                         containers: [],

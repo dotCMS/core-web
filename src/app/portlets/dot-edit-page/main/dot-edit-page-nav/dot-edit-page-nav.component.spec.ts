@@ -32,9 +32,7 @@ class MockDotLicenseService {
 
 @Component({
     selector: 'dot-test-host-component',
-    template: `
-        <dot-edit-page-nav [pageState]="pageState"></dot-edit-page-nav>
-    `
+    template: ` <dot-edit-page-nav [pageState]="pageState"></dot-edit-page-nav> `
 })
 class TestHostComponent {
     @Input()
@@ -59,44 +57,48 @@ describe('DotEditPageNavComponent', () => {
         'editpage.toolbar.nav.layout.advance.disabled': 'Can’t edit advanced template'
     });
 
-    beforeEach(waitForAsync( () => {
-        testbed = TestBed.configureTestingModule({
-            imports: [RouterTestingModule, TooltipModule, DotIconModule, DotPipesModule],
-            declarations: [DotEditPageNavComponent, TestHostComponent],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: DotLicenseService, useClass: MockDotLicenseService },
-                {
-                    provide: DotContentletEditorService,
-                    useClass: MockDotContentletEditorService
-                },
-                {
-                    provide: ActivatedRoute,
-                    useValue: {
-                        snapshot: {
-                            firstChild: {
-                                url: [
-                                    {
-                                        path: 'content'
-                                    }
-                                ]
+    beforeEach(
+        waitForAsync(() => {
+            testbed = TestBed.configureTestingModule({
+                imports: [RouterTestingModule, TooltipModule, DotIconModule, DotPipesModule],
+                declarations: [DotEditPageNavComponent, TestHostComponent],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    { provide: DotLicenseService, useClass: MockDotLicenseService },
+                    {
+                        provide: DotContentletEditorService,
+                        useClass: MockDotContentletEditorService
+                    },
+                    {
+                        provide: ActivatedRoute,
+                        useValue: {
+                            snapshot: {
+                                firstChild: {
+                                    url: [
+                                        {
+                                            path: 'content'
+                                        }
+                                    ]
+                                }
                             }
                         }
                     }
-                }
-            ]
-        });
+                ]
+            });
 
-        fixture = testbed.createComponent(TestHostComponent);
-        de = fixture.debugElement;
-        component = de.query(By.css('dot-edit-page-nav')).componentInstance;
-        fixture.componentInstance.pageState = new DotPageRenderState(
-            mockUser,
-            new DotPageRender(mockDotRenderedPage)
-        );
-        dotContentletEditorService = fixture.debugElement.injector.get(DotContentletEditorService);
-        fixture.detectChanges();
-    }));
+            fixture = testbed.createComponent(TestHostComponent);
+            de = fixture.debugElement;
+            component = de.query(By.css('dot-edit-page-nav')).componentInstance;
+            fixture.componentInstance.pageState = new DotPageRenderState(
+                mockUser,
+                new DotPageRender(mockDotRenderedPage())
+            );
+            dotContentletEditorService = fixture.debugElement.injector.get(
+                DotContentletEditorService
+            );
+            fixture.detectChanges();
+        })
+    );
 
     describe('basic setup', () => {
         it('should have menu list', () => {
@@ -133,8 +135,11 @@ describe('DotEditPageNavComponent', () => {
         it('should update menu items when new PageState', () => {
             dotLicenseService = de.injector.get(DotLicenseService);
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
-            const { layout, ...noLayoutPage } = mockDotRenderedPage;
-            fixture.componentInstance.pageState = new DotPageRenderState(mockUser, new DotPageRender(noLayoutPage));
+            const { layout, ...noLayoutPage } = mockDotRenderedPage();
+            fixture.componentInstance.pageState = new DotPageRenderState(
+                mockUser,
+                new DotPageRender(noLayoutPage)
+            );
             component.model = undefined;
             spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
             fixture.detectChanges();
@@ -152,9 +157,9 @@ describe('DotEditPageNavComponent', () => {
 
     describe('advanced template', () => {
         const mockDotRenderedPageAdvanceTemplate = {
-            ...mockDotRenderedPage,
+            ...mockDotRenderedPage(),
             template: {
-                ...mockDotRenderedPage.template,
+                ...mockDotRenderedPage().template,
                 drawed: false
             },
             layout: null
@@ -224,7 +229,8 @@ describe('DotEditPageNavComponent', () => {
             });
 
             it('should have code option disabled because user can not edit the page thus the layout or template', () => {
-                fixture.componentInstance.pageState = new DotPageRenderState(mockUser,
+                fixture.componentInstance.pageState = new DotPageRenderState(
+                    mockUser,
                     new DotPageRender({
                         ...mockDotRenderedPageAdvanceTemplate,
                         page: {

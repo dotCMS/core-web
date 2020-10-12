@@ -290,11 +290,11 @@ describe('DotEditLayoutService', () => {
     it('should transform the Sidebar data to ContainerColumnBox (ignore UNKNOWN ids) to export the data', () => {
         const rawContainers = [
             {
-                identifier: mockDotContainers[0].container.identifier,
+                identifier: mockDotContainers()[0].container.identifier,
                 uuid: '1234567890'
             },
             {
-                identifier: mockDotContainers[1].container.path,
+                identifier: mockDotContainers()[1].container.path,
                 uuid: '1234567891'
             },
             {
@@ -309,7 +309,7 @@ describe('DotEditLayoutService', () => {
         delete containerColumnBox[0].uuid;
         delete containerColumnBox[1].uuid;
 
-        expect(containerColumnBox).toEqual(mockDotContainers);
+        expect(containerColumnBox).toEqual(mockDotContainers());
     });
 
     it('should emit add box event', (done) => {

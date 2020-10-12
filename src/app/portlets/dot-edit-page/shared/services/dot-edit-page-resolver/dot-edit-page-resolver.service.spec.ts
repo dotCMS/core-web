@@ -85,7 +85,7 @@ describe('DotEditPageResolver', () => {
     });
 
     it('should return a DotRenderedPageState', () => {
-        const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage));
+        const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage()));
         dotPageStateServiceRequestPageSpy.and.returnValue(of(mock));
 
         dotEditPageResolver.resolve(route).subscribe((state: DotPageRenderState) => {
@@ -110,7 +110,7 @@ describe('DotEditPageResolver', () => {
     });
 
     it('should return DotPageRenderState from local state', () => {
-        const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage));
+        const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage()));
         dotPageStateService.setInternalNavigationState(mock);
 
         dotEditPageResolver.resolve(route).subscribe((state: DotPageRenderState) => {
@@ -134,7 +134,7 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should return a DotRenderedPageState', () => {
-            const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage));
+            const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage()));
             dotPageStateServiceRequestPageSpy.and.returnValue(of(mock));
 
             dotEditPageResolver.resolve(route).subscribe((state: DotPageRenderState) => {
@@ -147,9 +147,9 @@ describe('DotEditPageResolver', () => {
             const mock = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
-                    ...mockDotRenderedPage,
+                    ...mockDotRenderedPage(),
                     page: {
-                        ...mockDotRenderedPage.page,
+                        ...mockDotRenderedPage().page,
                         canEdit: false
                     }
                 })
@@ -176,7 +176,7 @@ describe('DotEditPageResolver', () => {
             const mock = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
-                    ...mockDotRenderedPage,
+                    ...mockDotRenderedPage(),
                     layout: null
                 })
             );

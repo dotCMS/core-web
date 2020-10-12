@@ -65,7 +65,7 @@ class MockDotPageStateService {
     state$ = new Subject();
     get(): void {}
     reload(): void {
-        this.reload$.next(new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage)));
+        this.reload$.next(new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage())));
     }
 }
 
@@ -94,7 +94,7 @@ describe('DotEditPageMainComponent', () => {
 
     const mockDotRenderedPageState: DotPageRenderState = new DotPageRenderState(
         mockUser,
-        new DotPageRender(mockDotRenderedPage)
+        new DotPageRender(mockDotRenderedPage())
     );
 
    beforeEach(
@@ -203,7 +203,7 @@ describe('DotEditPageMainComponent', () => {
 
         component.pageState$.subscribe(res => {
             expect(res).toEqual(
-                new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage))
+                new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage()))
             );
         });
 
@@ -211,7 +211,7 @@ describe('DotEditPageMainComponent', () => {
         expect(dotPageStateService.get).toHaveBeenCalledWith({
             url: '/about-us/index',
             viewAs: {
-                language: mockDotRenderedPage.page.languageId
+                language: mockDotRenderedPage().page.languageId
             }
         });
     });
@@ -237,7 +237,7 @@ describe('DotEditPageMainComponent', () => {
             dotContentletEditorService.close$.next(true);
             expect(dotRouterService.goToEditPage).toHaveBeenCalledWith({
                 url: '/about-us/index2',
-                language_id: mockDotRenderedPage.page.languageId.toString()
+                language_id: mockDotRenderedPage().page.languageId.toString()
             });
         });
 

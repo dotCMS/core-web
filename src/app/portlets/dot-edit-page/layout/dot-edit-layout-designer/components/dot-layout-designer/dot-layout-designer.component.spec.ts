@@ -57,7 +57,7 @@ describe('DotLayoutDesignerComponent', () => {
     describe('default', () => {
         beforeEach(() => {
             component.group = new FormBuilder().group({
-                ...mockDotRenderedPage.layout,
+                ...mockDotRenderedPage().layout,
                 sidebar: new FormBuilder().group({
                     location: '',
                     containers: [],
@@ -111,7 +111,7 @@ describe('DotLayoutDesignerComponent', () => {
                 component.group = new FormBuilder().group({
                     header: true,
                     footer: true,
-                    body: mockDotRenderedPage.layout.body,
+                    body: mockDotRenderedPage().layout.body,
                     sidebar: {
                         location: '',
                         containers: [],
@@ -152,7 +152,7 @@ describe('DotLayoutDesignerComponent', () => {
             describe('sidebar size and position', () => {
                 beforeEach(() => {
                     component.group = new FormBuilder().group({
-                        ...mockDotRenderedPage.layout,
+                        ...mockDotRenderedPage().layout,
                         sidebar: {
                             location: 'left',
                             containers: [],

@@ -165,7 +165,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
 
             componentHost.pageState = new DotPageRenderState(
                 mockUser,
-                JSON.parse(JSON.stringify(mockDotRenderedPage))
+                mockDotRenderedPage()
             );
 
             fixtureHost.detectChanges();
@@ -188,7 +188,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
 
             componentHost.pageState = new DotPageRenderState(
                 mockUser,
-                JSON.parse(JSON.stringify(mockDotRenderedPage))
+                mockDotRenderedPage()
             );
 
             fixtureHost.detectChanges();
@@ -282,7 +282,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
             componentHost.pageState = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
-                    ...mockDotRenderedPage,
+                    ...mockDotRenderedPage(),
                     viewAs: mockDotEditPageViewAs
                 })
             );

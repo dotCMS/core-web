@@ -103,7 +103,7 @@ export class MockDotFormSelectorComponent {
 
 const mockRenderedPageState = new DotPageRenderState(
     mockUser,
-    new DotPageRender(mockDotRenderedPage)
+    new DotPageRender(mockDotRenderedPage())
 );
 
 describe('DotEditContentComponent', () => {
@@ -426,9 +426,9 @@ describe('DotEditContentComponent', () => {
                         content: new DotPageRenderState(
                             mockUser,
                             new DotPageRender({
-                                ...mockDotRenderedPage,
+                                ...mockDotRenderedPage(),
                                 viewAs: {
-                                    ...mockDotRenderedPage.viewAs,
+                                    ...mockDotRenderedPage().viewAs,
                                     device: {
                                         cssHeight: '100',
                                         cssWidth: '100',
@@ -529,9 +529,9 @@ describe('DotEditContentComponent', () => {
                     const state = new DotPageRenderState(
                         mockUser,
                         new DotPageRender({
-                            ...mockDotRenderedPage,
+                            ...mockDotRenderedPage(),
                             page: {
-                                ...mockDotRenderedPage.page,
+                                ...mockDotRenderedPage().page,
                                 lockedBy: null
                             },
                             viewAs: {
@@ -558,7 +558,7 @@ describe('DotEditContentComponent', () => {
                         content: new DotPageRenderState(
                             mockUser,
                             new DotPageRender({
-                                ...mockDotRenderedPage,
+                                ...mockDotRenderedPage(),
                                 viewAs: {
                                     mode: DotPageMode.EDIT
                                 }
@@ -577,7 +577,7 @@ describe('DotEditContentComponent', () => {
                     expect(dotUiColorsService.setColors).toHaveBeenCalled();
                     expect(
                         dotEditContentHtmlService.setContaintersChangeHeightListener
-                    ).toHaveBeenCalledWith(jasmine.objectContaining(mockDotLayout));
+                    ).toHaveBeenCalledWith(jasmine.objectContaining(mockDotLayout()));
                 }));
 
                 describe('custom', () => {
@@ -626,14 +626,14 @@ describe('DotEditContentComponent', () => {
 
                         triggerIframeCustomEvent({
                             name: 'load-edit-mode-page',
-                            data: mockDotRenderedPage
+                            data: mockDotRenderedPage()
                         });
 
                         fixture.detectChanges();
 
                         const dotRenderedPageStateExpected = new DotPageRenderState(
                             mockUser,
-                            mockDotRenderedPage
+                            mockDotRenderedPage()
                         );
 
                         expect(dotPageStateService.setLocalState).toHaveBeenCalledWith(
@@ -649,7 +649,7 @@ describe('DotEditContentComponent', () => {
 
                         detectChangesForIframeRender(fixture);
 
-                        const mockDotRenderedPageCopy = _.cloneDeep(mockDotRenderedPage);
+                        const mockDotRenderedPageCopy = mockDotRenderedPage();
                         mockDotRenderedPageCopy.page.pageURI = '/another/url/test';
 
                         triggerIframeCustomEvent({
@@ -968,9 +968,9 @@ describe('DotEditContentComponent', () => {
                     content: new DotPageRenderState(
                         mockUser,
                         new DotPageRender({
-                            ...mockDotRenderedPage,
+                            ...mockDotRenderedPage(),
                             viewAs: {
-                                ...mockDotRenderedPage.viewAs,
+                                ...mockDotRenderedPage().viewAs,
                                 persona: {
                                     ...dotcmsContentletMock,
                                     name: 'Super Persona',

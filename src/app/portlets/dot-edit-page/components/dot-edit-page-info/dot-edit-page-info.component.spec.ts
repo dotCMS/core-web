@@ -67,7 +67,7 @@ describe('DotEditPageInfoComponent', () => {
             });
             component.pageState = new DotPageRenderState(
                 mockUser,
-                JSON.parse(JSON.stringify(mockDotRenderedPage))
+                mockDotRenderedPage()
             );
             fixture.detectChanges();
         });

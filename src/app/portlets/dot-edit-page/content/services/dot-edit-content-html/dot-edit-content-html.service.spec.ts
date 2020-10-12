@@ -174,9 +174,9 @@ describe('DotEditContentHtmlService', () => {
             const pageState: DotPageRenderState = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
-                    ...mockDotRenderedPage,
+                    ...mockDotRenderedPage(),
                     page: {
-                        ...mockDotPage,
+                        ...mockDotPage(),
                         rendered: fakeHTML
                     }
                 })
@@ -206,7 +206,7 @@ describe('DotEditContentHtmlService', () => {
         ].join('');
 
         beforeEach(() => {
-            mockLayout = JSON.parse(JSON.stringify(mockDotLayout));
+            mockLayout = mockDotLayout();
             mockLayout.body.rows = [
                 {
                     columns: [
@@ -386,9 +386,9 @@ describe('DotEditContentHtmlService', () => {
         const pageState: DotPageRenderState = new DotPageRenderState(
             mockUser,
             new DotPageRender({
-                ...mockDotRenderedPage,
+                ...mockDotRenderedPage(),
                 page: {
-                    ...mockDotPage,
+                    ...mockDotPage(),
                     rendered: fakeHTML,
                     remoteRendered: true
                 }

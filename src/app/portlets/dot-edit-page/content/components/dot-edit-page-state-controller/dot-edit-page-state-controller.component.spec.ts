@@ -42,7 +42,7 @@ const mockDotMessageService = new MockDotMessageService({
 
 const pageRenderStateMock: DotPageRenderState = new DotPageRenderState(
     mockUser,
-    new DotPageRender(mockDotRenderedPage)
+    new DotPageRender(mockDotRenderedPage())
 );
 
 @Component({
@@ -125,7 +125,7 @@ describe('DotEditPageStateControllerComponent', () => {
             it('should have locker with right attributes', () => {
                 const pageRenderStateMocked: DotPageRenderState = new DotPageRenderState(
                     { ...mockUser, userId: '456' },
-                    new DotPageRender(mockDotRenderedPage)
+                    new DotPageRender(mockDotRenderedPage())
                 );
                 fixtureHost.componentInstance.pageState = _.cloneDeep(pageRenderStateMocked);
                 fixtureHost.detectChanges();
@@ -223,7 +223,7 @@ describe('DotEditPageStateControllerComponent', () => {
         beforeEach(() => {
             const pageRenderStateMocked: DotPageRenderState = new DotPageRenderState(
                 { ...mockUser, userId: '456' },
-                new DotPageRender(mockDotRenderedPage)
+                new DotPageRender(mockDotRenderedPage())
             );
 
             fixtureHost.componentInstance.pageState = _.cloneDeep(pageRenderStateMocked);
@@ -278,9 +278,9 @@ describe('DotEditPageStateControllerComponent', () => {
             const pageRenderStateMocked: DotPageRenderState = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
-                    ...mockDotRenderedPage,
+                    ...mockDotRenderedPage(),
                     viewAs: {
-                        ...mockDotRenderedPage.viewAs,
+                        ...mockDotRenderedPage().viewAs,
                         persona: {
                             ...dotcmsContentletMock,
                             name: 'John',
@@ -307,7 +307,7 @@ describe('DotEditPageStateControllerComponent', () => {
                 expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
                 expect(dialogService.confirm).toHaveBeenCalledTimes(1);
                 expect(personalizeService.personalized).toHaveBeenCalledWith(
-                    mockDotRenderedPage.page.identifier,
+                    mockDotRenderedPage().page.identifier,
                     pageRenderStateMocked.viewAs.persona.keyTag
                 );
                 expect(dotPageStateService.setLock).toHaveBeenCalledWith(
