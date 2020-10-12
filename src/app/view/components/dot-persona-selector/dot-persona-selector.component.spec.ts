@@ -21,6 +21,7 @@ import { DotAddPersonaDialogComponent } from '@components/dot-add-persona-dialog
 import { SiteServiceMock } from '@tests/site-service.mock';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { TooltipModule } from 'primeng/tooltip';
+import cleanUpDialog from '@tests/clean-up-dialog';
 
 @Component({
     selector: 'dot-host-component',
@@ -244,9 +245,6 @@ describe('DotPersonaSelectorComponent', () => {
     });
 
     afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (hostFixture.nativeElement && 'remove' in hostFixture.nativeElement) {
-            (hostFixture.nativeElement as HTMLElement).remove();
-        }
+        cleanUpDialog(hostFixture);
     });
 });

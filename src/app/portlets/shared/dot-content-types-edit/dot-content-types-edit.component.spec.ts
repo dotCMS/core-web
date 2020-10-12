@@ -41,6 +41,9 @@ import {
 } from '@tests/dot-content-types.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import cleanUpDialog from '@tests/clean-up-dialog';
+
+
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
     template: ''
@@ -776,9 +779,6 @@ describe('DotContentTypesEditComponent', () => {
     });
 
     afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
+        cleanUpDialog(fixture);
     });
 });

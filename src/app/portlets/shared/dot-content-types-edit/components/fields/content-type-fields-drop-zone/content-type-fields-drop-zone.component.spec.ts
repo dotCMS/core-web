@@ -37,6 +37,8 @@ import {
     fieldsBrokenWithColumns
 } from '@tests/dot-content-types.mock';
 
+import cleanUpDialog from '@tests/clean-up-dialog';
+
 const COLUMN_BREAK_FIELD = FieldUtil.createColumnBreak();
 
 @Component({
@@ -139,54 +141,59 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
     let dragDropService: TestFieldDragDropService;
 
-    beforeEach(waitForAsync( () => {
-        dragDropService = new TestFieldDragDropService();
+    beforeEach(
+        waitForAsync(() => {
+            dragDropService = new TestFieldDragDropService();
 
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                ContentTypeFieldsDropZoneComponent,
-                TestContentTypeFieldsPropertiesFormComponent,
-                TestContentTypeFieldsRowComponent,
-                TestDotContentTypeFieldsTabComponent,
-                TestDotLoadingIndicatorComponent
-            ],
-            imports: [
-                RouterTestingModule.withRoutes([
+            DOTTestBed.configureTestingModule({
+                declarations: [
+                    ContentTypeFieldsDropZoneComponent,
+                    TestContentTypeFieldsPropertiesFormComponent,
+                    TestContentTypeFieldsRowComponent,
+                    TestDotContentTypeFieldsTabComponent,
+                    TestDotLoadingIndicatorComponent
+                ],
+                imports: [
+                    RouterTestingModule.withRoutes([
+                        {
+                            component: ContentTypeFieldsDropZoneComponent,
+                            path: 'test'
+                        }
+                    ]),
+                    BrowserAnimationsModule,
+                    ContentTypeFieldsAddRowModule,
+                    DotContentTypeFieldsVariablesModule,
+                    DotDialogModule,
+                    DotActionButtonModule,
+                    DotIconButtonModule,
+                    DotIconModule,
+                    DragulaModule,
+                    TableModule,
+                    DotFieldValidationMessageModule,
+                    ReactiveFormsModule
+                ],
+                providers: [
+                    { provide: Router, useValue: mockRouter },
+                    { provide: FieldDragDropService, useValue: dragDropService },
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     {
-                        component: ContentTypeFieldsDropZoneComponent,
-                        path: 'test'
-                    }
-                ]),
-                BrowserAnimationsModule,
-                ContentTypeFieldsAddRowModule,
-                DotContentTypeFieldsVariablesModule,
-                DotDialogModule,
-                DotActionButtonModule,
-                DotIconButtonModule,
-                DotIconModule,
-                DragulaModule,
-                TableModule,
-                DotFieldValidationMessageModule,
-                ReactiveFormsModule
-            ],
-            providers: [
-                { provide: Router, useValue: mockRouter },
-                { provide: FieldDragDropService, useValue: dragDropService },
-                { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: DotLoadingIndicatorService, useValue: dotLoadingIndicatorServiceMock },
-                DotEventsSocket,
-                LoginService,
-                FormatDateService,
-                FieldService,
-                FieldPropertyService,
-                DragulaService
-            ]
-        });
+                        provide: DotLoadingIndicatorService,
+                        useValue: dotLoadingIndicatorServiceMock
+                    },
+                    DotEventsSocket,
+                    LoginService,
+                    FormatDateService,
+                    FieldService,
+                    FieldPropertyService,
+                    DragulaService
+                ]
+            });
 
-        fixture = DOTTestBed.createComponent(ContentTypeFieldsDropZoneComponent);
-        comp = fixture.componentInstance;
-        de = fixture.debugElement;
-    }));
+            fixture = DOTTestBed.createComponent(ContentTypeFieldsDropZoneComponent);
+            comp = fixture.componentInstance;
+            de = fixture.debugElement;
+        })
+    );
 
     it('should have fieldsContainer', () => {
         const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
@@ -315,10 +322,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
+        cleanUpDialog(fixture);
     });
 });
 
@@ -359,156 +363,161 @@ describe('Load fields and drag and drop', () => {
 
     let testFieldDragDropService: TestFieldDragDropService;
 
-    beforeEach(waitForAsync( () => {
-        testFieldDragDropService = new TestFieldDragDropService();
+    beforeEach(
+        waitForAsync(() => {
+            testFieldDragDropService = new TestFieldDragDropService();
 
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                ContentTypeFieldsDropZoneComponent,
-                TestContentTypeFieldsRowComponent,
-                TestContentTypeFieldsPropertiesFormComponent,
-                TestDotContentTypeFieldsTabComponent,
-                TestHostComponent,
-                TestDotLoadingIndicatorComponent
-            ],
-            imports: [
-                RouterTestingModule.withRoutes([
+            DOTTestBed.configureTestingModule({
+                declarations: [
+                    ContentTypeFieldsDropZoneComponent,
+                    TestContentTypeFieldsRowComponent,
+                    TestContentTypeFieldsPropertiesFormComponent,
+                    TestDotContentTypeFieldsTabComponent,
+                    TestHostComponent,
+                    TestDotLoadingIndicatorComponent
+                ],
+                imports: [
+                    RouterTestingModule.withRoutes([
+                        {
+                            component: ContentTypeFieldsDropZoneComponent,
+                            path: 'test'
+                        }
+                    ]),
+                    DragulaModule,
+                    DotFieldValidationMessageModule,
+                    DotContentTypeFieldsVariablesModule,
+                    ReactiveFormsModule,
+                    BrowserAnimationsModule,
+                    DotActionButtonModule,
+                    DotIconModule,
+                    DotIconButtonModule,
+                    TableModule,
+                    ContentTypeFieldsAddRowModule,
+                    DotDialogModule
+                ],
+                providers: [
+                    DragulaService,
+                    FieldPropertyService,
+                    FieldService,
+                    FormatDateService,
+                    LoginService,
+                    DotEventsSocket,
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    { provide: FieldDragDropService, useValue: testFieldDragDropService },
+                    { provide: Router, useValue: mockRouter },
                     {
-                        component: ContentTypeFieldsDropZoneComponent,
-                        path: 'test'
+                        provide: DotLoadingIndicatorService,
+                        useValue: dotLoadingIndicatorServiceMock
                     }
-                ]),
-                DragulaModule,
-                DotFieldValidationMessageModule,
-                DotContentTypeFieldsVariablesModule,
-                ReactiveFormsModule,
-                BrowserAnimationsModule,
-                DotActionButtonModule,
-                DotIconModule,
-                DotIconButtonModule,
-                TableModule,
-                ContentTypeFieldsAddRowModule,
-                DotDialogModule
-            ],
-            providers: [
-                DragulaService,
-                FieldPropertyService,
-                FieldService,
-                FormatDateService,
-                LoginService,
-                DotEventsSocket,
-                { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: FieldDragDropService, useValue: testFieldDragDropService },
-                { provide: Router, useValue: mockRouter },
-                { provide: DotLoadingIndicatorService, useValue: dotLoadingIndicatorServiceMock }
-            ]
-        });
+                ]
+            });
 
-        fixture = DOTTestBed.createComponent(TestHostComponent);
-        hostComp = fixture.componentInstance;
-        hostDe = fixture.debugElement;
-        de = hostDe.query(By.css('dot-content-type-fields-drop-zone'));
-        comp = de.componentInstance;
+            fixture = DOTTestBed.createComponent(TestHostComponent);
+            hostComp = fixture.componentInstance;
+            hostDe = fixture.debugElement;
+            de = hostDe.query(By.css('dot-content-type-fields-drop-zone'));
+            comp = de.componentInstance;
 
-        fakeFields = [
-            {
-                divider: {
-                    ...dotcmsContentTypeFieldBasicMock,
-                    name: 'field 1',
-                    id: '1',
-                    clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                    sortOrder: 0,
-                    contentTypeId: '1b'
-                },
-                columns: [
-                    {
-                        columnDivider: {
-                            ...dotcmsContentTypeFieldBasicMock,
-                            name: 'field 2',
-                            id: '2',
-                            clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                            sortOrder: 1,
-                            contentTypeId: '2b'
-                        },
-                        fields: [
-                            {
-                                ...dotcmsContentTypeFieldBasicMock,
-                                clazz: 'text',
-                                id: '3',
-                                name: 'field 3',
-                                sortOrder: 2,
-                                contentTypeId: '3b'
-                            }
-                        ]
+            fakeFields = [
+                {
+                    divider: {
+                        ...dotcmsContentTypeFieldBasicMock,
+                        name: 'field 1',
+                        id: '1',
+                        clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
+                        sortOrder: 0,
+                        contentTypeId: '1b'
                     },
-                    {
-                        columnDivider: {
-                            ...dotcmsContentTypeFieldBasicMock,
-                            clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                            id: '4',
-                            name: 'field 4',
-                            sortOrder: 3,
-                            contentTypeId: '4b'
-                        },
-                        fields: [
-                            {
+                    columns: [
+                        {
+                            columnDivider: {
                                 ...dotcmsContentTypeFieldBasicMock,
-                                clazz: 'text',
-                                id: '5',
-                                name: 'field 5',
-                                sortOrder: 4,
-                                contentTypeId: '5b'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                divider: {
-                    ...dotcmsContentTypeFieldBasicMock,
-                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
-                    id: '6',
-                    name: 'field 6',
-                    sortOrder: 5,
-                    contentTypeId: '6b'
-                }
-            },
-            {
-                divider: {
-                    ...dotcmsContentTypeFieldBasicMock,
-                    clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                    id: '7',
-                    name: 'field 7',
-                    sortOrder: 6,
-                    contentTypeId: '7b'
+                                name: 'field 2',
+                                id: '2',
+                                clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
+                                sortOrder: 1,
+                                contentTypeId: '2b'
+                            },
+                            fields: [
+                                {
+                                    ...dotcmsContentTypeFieldBasicMock,
+                                    clazz: 'text',
+                                    id: '3',
+                                    name: 'field 3',
+                                    sortOrder: 2,
+                                    contentTypeId: '3b'
+                                }
+                            ]
+                        },
+                        {
+                            columnDivider: {
+                                ...dotcmsContentTypeFieldBasicMock,
+                                clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
+                                id: '4',
+                                name: 'field 4',
+                                sortOrder: 3,
+                                contentTypeId: '4b'
+                            },
+                            fields: [
+                                {
+                                    ...dotcmsContentTypeFieldBasicMock,
+                                    clazz: 'text',
+                                    id: '5',
+                                    name: 'field 5',
+                                    sortOrder: 4,
+                                    contentTypeId: '5b'
+                                }
+                            ]
+                        }
+                    ]
                 },
-                columns: [
-                    {
-                        columnDivider: {
-                            ...dotcmsContentTypeFieldBasicMock,
-                            clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                            id: '8',
-                            name: 'field 8',
-                            sortOrder: 7,
-                            contentTypeId: '8b'
-                        },
-                        fields: [
-                            {
-                                ...dotcmsContentTypeFieldBasicMock,
-                                clazz: 'text',
-                                id: '9',
-                                name: 'field 9',
-                                sortOrder: 8,
-                                contentTypeId: '9b'
-                            }
-                        ]
+                {
+                    divider: {
+                        ...dotcmsContentTypeFieldBasicMock,
+                        clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
+                        id: '6',
+                        name: 'field 6',
+                        sortOrder: 5,
+                        contentTypeId: '6b'
                     }
-                ]
-            }
-        ];
+                },
+                {
+                    divider: {
+                        ...dotcmsContentTypeFieldBasicMock,
+                        clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
+                        id: '7',
+                        name: 'field 7',
+                        sortOrder: 6,
+                        contentTypeId: '7b'
+                    },
+                    columns: [
+                        {
+                            columnDivider: {
+                                ...dotcmsContentTypeFieldBasicMock,
+                                clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
+                                id: '8',
+                                name: 'field 8',
+                                sortOrder: 7,
+                                contentTypeId: '8b'
+                            },
+                            fields: [
+                                {
+                                    ...dotcmsContentTypeFieldBasicMock,
+                                    clazz: 'text',
+                                    id: '9',
+                                    name: 'field 9',
+                                    sortOrder: 8,
+                                    contentTypeId: '9b'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ];
 
-        hostComp.layout = fakeFields;
-    }));
+            hostComp.layout = fakeFields;
+        })
+    );
 
     it('should handler editField event', () => {
         const field = {
@@ -730,7 +739,7 @@ describe('Load fields and drag and drop', () => {
         fixture.detectChanges();
 
         const tabLinks = de.queryAll(By.css('.p-tabview-nav li'));
-        console.log(tabLinks[1].nativeElement.classList)
+        console.log(tabLinks[1].nativeElement.classList);
         expect(tabLinks[1].nativeElement.classList.contains('p-disabled')).toBe(true);
     });
 
@@ -747,20 +756,22 @@ describe('Load fields and drag and drop', () => {
     });
 
     describe('Edit Field Dialog', () => {
-        beforeEach(waitForAsync( () => {
-            fixture.detectChanges();
+        beforeEach(
+            waitForAsync(() => {
+                fixture.detectChanges();
 
-            const fieldToEdit: DotCMSContentTypeField = fakeFields[2].columns[0].fields[0];
-            testFieldDragDropService._fieldDropFromSource.next({
-                item: fieldToEdit,
-                target: {
-                    columnId: '8',
-                    model: [fieldToEdit]
-                }
-            });
+                const fieldToEdit: DotCMSContentTypeField = fakeFields[2].columns[0].fields[0];
+                testFieldDragDropService._fieldDropFromSource.next({
+                    item: fieldToEdit,
+                    target: {
+                        columnId: '8',
+                        model: [fieldToEdit]
+                    }
+                });
 
-            fixture.detectChanges();
-        }));
+                fixture.detectChanges();
+            })
+        );
 
         it('should display dialog if a drop event happen from source', () => {
             expect(comp.displayDialog).toBe(true);
@@ -804,9 +815,6 @@ describe('Load fields and drag and drop', () => {
     });
 
     afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
+        cleanUpDialog(fixture);
     });
 });
