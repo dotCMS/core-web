@@ -45,7 +45,6 @@ describe('DotEditPageNavComponent', () => {
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
-    let testbed;
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
@@ -59,7 +58,7 @@ describe('DotEditPageNavComponent', () => {
 
     beforeEach(
         waitForAsync(() => {
-            testbed = TestBed.configureTestingModule({
+            TestBed.configureTestingModule({
                 imports: [RouterTestingModule, TooltipModule, DotIconModule, DotPipesModule],
                 declarations: [DotEditPageNavComponent, TestHostComponent],
                 providers: [
@@ -86,16 +85,14 @@ describe('DotEditPageNavComponent', () => {
                 ]
             });
 
-            fixture = testbed.createComponent(TestHostComponent);
+            fixture = TestBed.createComponent(TestHostComponent);
             de = fixture.debugElement;
             component = de.query(By.css('dot-edit-page-nav')).componentInstance;
             fixture.componentInstance.pageState = new DotPageRenderState(
                 mockUser,
                 new DotPageRender(mockDotRenderedPage())
             );
-            dotContentletEditorService = fixture.debugElement.injector.get(
-                DotContentletEditorService
-            );
+            dotContentletEditorService = TestBed.inject(DotContentletEditorService);
             fixture.detectChanges();
         })
     );

@@ -38,11 +38,12 @@ describe('DotGravatarService', () => {
         })
     );
 
-    it('Should return the photos url', () => {
+    it('Should return the photos url', (done) => {
         service.getPhoto('1').subscribe((avatarUrl: string) => {
             expect(avatarUrl).toEqual(
                 'https://secure.gravatar.com/avatar/314d3bbf9bf6e65ff8095fe7f928fe85'
             );
+            done();
         });
 
         const reqMock = httpTestingController.expectOne((req) => {
@@ -56,9 +57,10 @@ describe('DotGravatarService', () => {
         });
     });
 
-    it('Should return null', () => {
+    it('Should return null', (done) => {
         service.getPhoto('1').subscribe((avatarUrl: string) => {
             expect(avatarUrl).toEqual(null);
+            done();
         });
 
         const reqMock = httpTestingController.expectOne((req) => {
