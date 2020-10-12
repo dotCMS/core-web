@@ -264,11 +264,12 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         describe('with license', () => {
-            it("should have what's change selector", () => {
+            it("should have what's change selector", async () => {
                 componentHost.pageState.state.mode = DotPageMode.PREVIEW;
                 fixtureHost.detectChanges();
+                await fixtureHost.whenStable();
 
-                const whatsChangedElem = de.query(By.css('p-checkbox'));
+                const whatsChangedElem = de.query(By.css('.dot-edit__what-changed-button'));
                 expect(whatsChangedElem).toBeDefined();
                 expect(whatsChangedElem.componentInstance.label).toBe('Whats');
             });
@@ -277,7 +278,7 @@ describe('DotEditPageToolbarComponent', () => {
                 componentHost.pageState.state.mode = DotPageMode.EDIT;
                 fixtureHost.detectChanges();
 
-                const whatsChangedElem = de.query(By.css('p-checkbox'));
+                const whatsChangedElem = de.query(By.css('.dot-edit__what-changed-button'));
                 expect(whatsChangedElem).toBeNull();
             });
 
@@ -286,7 +287,7 @@ describe('DotEditPageToolbarComponent', () => {
                 componentHost.pageState.viewAs.persona = mockDotPersona;
                 fixtureHost.detectChanges();
 
-                const whatsChangedElem = de.query(By.css('p-checkbox'));
+                const whatsChangedElem = de.query(By.css('.dot-edit__what-changed-button'));
                 expect(whatsChangedElem).toBeNull();
             });
         });
@@ -302,7 +303,7 @@ describe('DotEditPageToolbarComponent', () => {
             componentHost.pageState.state.mode = DotPageMode.PREVIEW;
             delete componentHost.pageState.viewAs.persona;
             fixtureHost.detectChanges();
-            whatsChangedElem = de.query(By.css('p-checkbox'));
+            whatsChangedElem = de.query(By.css('.dot-edit__what-changed-button'));
         });
 
         it("should emit what's change in true", () => {
