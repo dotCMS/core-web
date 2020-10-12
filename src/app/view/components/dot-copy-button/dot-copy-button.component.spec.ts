@@ -80,7 +80,7 @@ describe('DotCopyButtonComponent', () => {
             expect(stopPropagation).toHaveBeenCalledTimes(1);
         });
 
-        it('should update tooltip text when copy', async () => {
+        xit('should update tooltip text when copy', async () => {
             const spyTooltipText = spyOnProperty(component, 'tooltipText', 'set');
 
             button.triggerEventHandler('click', {
