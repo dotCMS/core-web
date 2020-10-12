@@ -93,7 +93,7 @@ describe('DotFormSelectorComponent', () => {
             let pTableComponent: DebugElement;
 
             beforeEach(() => {
-                pTableComponent = de.query(By.css('p-dataTable'));
+                pTableComponent = de.query(By.css('p-table'));
             });
 
             it('should have one', () => {
@@ -117,15 +117,6 @@ describe('DotFormSelectorComponent', () => {
                         expect(component.dotDialog.dialog.nativeElement.classList).toContain(
                             'paginator'
                         );
-                        done();
-                    });
-                });
-
-                it('should set height css to datatable container', (done) => {
-                    fixture.whenStable().then(() => {
-                        fixture.detectChanges();
-                        const pTableComponent = de.query(By.css('.p-table'));
-                        expect(pTableComponent.styles.height).toBeDefined();
                         done();
                     });
                 });
