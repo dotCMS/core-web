@@ -99,6 +99,11 @@ describe('DotMyAccountComponent', () => {
         })
     );
 
+    afterEach(() => {
+        comp.visible = false;
+        fixture.detectChanges();
+    });
+
     it(`should have right labels`, async () => {
         await fixture.whenStable();
         comp.form.setValue({
@@ -206,7 +211,7 @@ describe('DotMyAccountComponent', () => {
 
     it(`should SAVE form and sethAuth when no reauthentication`, async () => {
         spyOn<any>(accountService, 'updateUser').and.returnValue(
-            of({ entity: { user: mockUser } })
+            of({ entity: { user: mockUser() } })
         );
         spyOn(loginService, 'setAuth');
         spyOn(comp.close, 'emit');
