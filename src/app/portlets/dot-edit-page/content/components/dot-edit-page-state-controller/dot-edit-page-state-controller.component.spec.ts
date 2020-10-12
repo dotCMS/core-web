@@ -65,31 +65,33 @@ describe('DotEditPageStateControllerComponent', () => {
     let dialogService: DotAlertConfirmService;
     let personalizeService: DotPersonalizeService;
 
-    beforeEach(waitForAsync( () => {
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                TestHostComponent,
-                DotEditPageStateControllerComponent,
-                DotEditPageLockInfoComponent
-            ],
-            providers: [
-                {
-                    provide: DotMessageService,
-                    useValue: mockDotMessageService
-                },
-                {
-                    provide: DotPageStateService,
-                    useClass: DotPageStateServiceMock
-                },
-                {
-                    provide: DotPersonalizeService,
-                    useClass: DotPersonalizeServiceMock
-                },
-                DotAlertConfirmService
-            ],
-            imports: [InputSwitchModule, SelectButtonModule, TooltipModule, DotPipesModule]
-        });
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [
+                    TestHostComponent,
+                    DotEditPageStateControllerComponent,
+                    DotEditPageLockInfoComponent
+                ],
+                providers: [
+                    {
+                        provide: DotMessageService,
+                        useValue: mockDotMessageService
+                    },
+                    {
+                        provide: DotPageStateService,
+                        useClass: DotPageStateServiceMock
+                    },
+                    {
+                        provide: DotPersonalizeService,
+                        useClass: DotPersonalizeServiceMock
+                    },
+                    DotAlertConfirmService
+                ],
+                imports: [InputSwitchModule, SelectButtonModule, TooltipModule, DotPipesModule]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixtureHost = DOTTestBed.createComponent(TestHostComponent);
@@ -108,21 +110,21 @@ describe('DotEditPageStateControllerComponent', () => {
 
     describe('elements', () => {
         describe('default', () => {
-            it('should have mode selector', () => {
+            it('should have mode selector', async () => {
                 fixtureHost.detectChanges();
                 const selectButton = de.query(By.css('p-selectButton')).componentInstance;
-                fixtureHost.whenRenderingDone().then(() => {
-                    expect(selectButton).toBeDefined();
-                    expect(selectButton.options).toEqual([
-                        { label: 'Edit', value: 'EDIT_MODE', disabled: false },
-                        { label: 'Preview', value: 'PREVIEW_MODE', disabled: false },
-                        { label: 'Live', value: 'ADMIN_MODE', disabled: false }
-                    ]);
-                    expect(selectButton.value).toBe(DotPageMode.PREVIEW);
-                });
+                await fixtureHost.whenRenderingDone();
+
+                expect(selectButton).toBeDefined();
+                expect(selectButton.options).toEqual([
+                    { label: 'Edit', value: 'EDIT_MODE', disabled: false },
+                    { label: 'Preview', value: 'PREVIEW_MODE', disabled: false },
+                    { label: 'Live', value: 'ADMIN_MODE', disabled: false }
+                ]);
+                expect(selectButton.value).toBe(DotPageMode.PREVIEW);
             });
 
-            it('should have locker with right attributes', () => {
+            it('should have locker with right attributes', async () => {
                 const pageRenderStateMocked: DotPageRenderState = new DotPageRenderState(
                     { ...mockUser, userId: '456' },
                     new DotPageRender(mockDotRenderedPage())
@@ -131,14 +133,15 @@ describe('DotEditPageStateControllerComponent', () => {
                 fixtureHost.detectChanges();
                 const lockerDe = de.query(By.css('p-inputSwitch'));
                 const locker = lockerDe.componentInstance;
-                fixtureHost.whenRenderingDone().then(() => {
-                    expect(lockerDe.classes.warn).toBe(true, 'warn class');
-                    expect(lockerDe.attributes.appendTo).toBe('target');
-                    expect(lockerDe.attributes['ng-reflect-text']).toBe('Page locked by Some One');
-                    expect(lockerDe.attributes['ng-reflect-tooltip-position']).toBe('top');
-                    expect(locker.checked).toBe(false, 'checked');
-                    expect(locker.disabled).toBe(false, 'disabled');
-                });
+
+                await fixtureHost.whenRenderingDone();
+
+                expect(lockerDe.classes.warn).toBe(true, 'warn class');
+                expect(lockerDe.attributes.appendTo).toBe('target');
+                expect(lockerDe.attributes['ng-reflect-text']).toBe('Page locked by Some One');
+                expect(lockerDe.attributes['ng-reflect-tooltip-position']).toBe('top');
+                expect(locker.checked).toBe(false, 'checked');
+                expect(locker.disabled).toBe(false, 'disabled');
             });
 
             it('should have lock info', () => {
@@ -149,59 +152,59 @@ describe('DotEditPageStateControllerComponent', () => {
         });
 
         describe('disable mode selector option', () => {
-            it('should disable preview', () => {
+            it('should disable preview', async () => {
                 componentHost.pageState.page.canRead = false;
                 fixtureHost.detectChanges();
                 const selectButton = de.query(By.css('p-selectButton')).componentInstance;
 
-                fixtureHost.whenRenderingDone().then(() => {
-                    expect(selectButton).toBeDefined();
-                    expect(selectButton.options[1]).toEqual({
-                        label: 'Preview',
-                        value: 'PREVIEW_MODE',
-                        disabled: true
-                    });
-                    expect(selectButton.value).toBe(DotPageMode.PREVIEW);
+                fixtureHost.whenRenderingDone();
+
+                await expect(selectButton).toBeDefined();
+                expect(selectButton.options[1]).toEqual({
+                    label: 'Preview',
+                    value: 'PREVIEW_MODE',
+                    disabled: true
                 });
+                expect(selectButton.value).toBe(DotPageMode.PREVIEW);
             });
 
-            it('should disable edit', () => {
+            it('should disable edit', async () => {
                 componentHost.pageState.page.canEdit = false;
                 componentHost.pageState.page.canLock = false;
                 fixtureHost.detectChanges();
                 const selectButton = de.query(By.css('p-selectButton')).componentInstance;
 
-                fixtureHost.whenRenderingDone().then(() => {
-                    expect(selectButton).toBeDefined();
-                    expect(selectButton.options[0]).toEqual({
-                        label: 'Edit',
-                        value: 'EDIT_MODE',
-                        disabled: true
-                    });
-                    expect(selectButton.value).toBe(DotPageMode.PREVIEW);
+                await fixtureHost.whenRenderingDone();
+
+                expect(selectButton).toBeDefined();
+                expect(selectButton.options[0]).toEqual({
+                    label: 'Edit',
+                    value: 'EDIT_MODE',
+                    disabled: true
                 });
+                expect(selectButton.value).toBe(DotPageMode.PREVIEW);
             });
 
-            it('should disable live', () => {
+            it('should disable live', async () => {
                 componentHost.pageState.page.liveInode = null;
                 fixtureHost.detectChanges();
                 const selectButton = de.query(By.css('p-selectButton')).componentInstance;
 
-                fixtureHost.whenRenderingDone().then(() => {
-                    expect(selectButton).toBeDefined();
-                    expect(selectButton.options[2]).toEqual({
-                        label: 'Live',
-                        value: 'ADMIN_MODE',
-                        disabled: true
-                    });
-                    expect(selectButton.value).toBe(DotPageMode.PREVIEW);
+                await fixtureHost.whenRenderingDone();
+
+                expect(selectButton).toBeDefined();
+                expect(selectButton.options[2]).toEqual({
+                    label: 'Live',
+                    value: 'ADMIN_MODE',
+                    disabled: true
                 });
+                expect(selectButton.value).toBe(DotPageMode.PREVIEW);
             });
         });
     });
 
     describe('events', () => {
-        it('should without confirmation dialog emit modeChange and update pageState service', () => {
+        it('should without confirmation dialog emit modeChange and update pageState service', async () => {
             fixtureHost.detectChanges();
 
             const selectButton = de.query(By.css('p-selectButton'));
@@ -209,13 +212,12 @@ describe('DotEditPageStateControllerComponent', () => {
                 value: DotPageMode.EDIT
             });
 
-            fixtureHost.whenStable().then(() => {
-                expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
-                expect(dotPageStateService.setLock).toHaveBeenCalledWith(
-                    { mode: DotPageMode.EDIT },
-                    true
-                );
-            });
+            await fixtureHost.whenStable();
+            expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
+            expect(dotPageStateService.setLock).toHaveBeenCalledWith(
+                { mode: DotPageMode.EDIT },
+                true
+            );
         });
     });
 
@@ -229,7 +231,7 @@ describe('DotEditPageStateControllerComponent', () => {
             fixtureHost.componentInstance.pageState = _.cloneDeep(pageRenderStateMocked);
         });
 
-        it('should update pageState service when confirmation dialog Success', () => {
+        it('should update pageState service when confirmation dialog Success', async () => {
             spyOn(dialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
             });
@@ -241,18 +243,18 @@ describe('DotEditPageStateControllerComponent', () => {
                 value: DotPageMode.EDIT
             });
 
-            fixtureHost.whenStable().then(() => {
-                expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
-                expect(dialogService.confirm).toHaveBeenCalledTimes(1);
-                expect(personalizeService.personalized).not.toHaveBeenCalled();
-                expect(dotPageStateService.setLock).toHaveBeenCalledWith(
-                    { mode: DotPageMode.EDIT },
-                    true
-                );
-            });
+            await fixtureHost.whenStable();
+
+            expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
+            expect(dialogService.confirm).toHaveBeenCalledTimes(1);
+            expect(personalizeService.personalized).not.toHaveBeenCalled();
+            expect(dotPageStateService.setLock).toHaveBeenCalledWith(
+                { mode: DotPageMode.EDIT },
+                true
+            );
         });
 
-        it('should update LOCK and MODE when confirmation dialog Canceled', () => {
+        it('should update LOCK and MODE when confirmation dialog Canceled', async () => {
             spyOn<any>(dialogService, 'confirm').and.callFake((conf) => {
                 conf.cancel();
             });
@@ -264,17 +266,17 @@ describe('DotEditPageStateControllerComponent', () => {
                 value: DotPageMode.EDIT
             });
 
-            fixtureHost.whenStable().then(() => {
-                expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
-                expect(dialogService.confirm).toHaveBeenCalledTimes(1);
-                expect(component.lock).toBe(true);
-                expect(component.mode).toBe(DotPageMode.PREVIEW);
-            });
+            await fixtureHost.whenStable();
+
+            expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
+            expect(dialogService.confirm).toHaveBeenCalledTimes(1);
+            expect(component.lock).toBe(true);
+            expect(component.mode).toBe(DotPageMode.PREVIEW);
         });
     });
 
     describe('should emit modeChange when ask to PERSONALIZE confirmation', () => {
-        it('should update pageState service when confirmation dialog Success', () => {
+        it('should update pageState service when confirmation dialog Success', async () => {
             const pageRenderStateMocked: DotPageRenderState = new DotPageRenderState(
                 mockUser,
                 new DotPageRender({
@@ -303,18 +305,17 @@ describe('DotEditPageStateControllerComponent', () => {
                 value: DotPageMode.EDIT
             });
 
-            fixtureHost.whenStable().then(() => {
-                expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
-                expect(dialogService.confirm).toHaveBeenCalledTimes(1);
-                expect(personalizeService.personalized).toHaveBeenCalledWith(
-                    mockDotRenderedPage().page.identifier,
-                    pageRenderStateMocked.viewAs.persona.keyTag
-                );
-                expect(dotPageStateService.setLock).toHaveBeenCalledWith(
-                    { mode: DotPageMode.EDIT },
-                    true
-                );
-            });
+            await fixtureHost.whenStable();
+            expect(component.modeChange.emit).toHaveBeenCalledWith(DotPageMode.EDIT);
+            expect(dialogService.confirm).toHaveBeenCalledTimes(1);
+            expect(personalizeService.personalized).toHaveBeenCalledWith(
+                mockDotRenderedPage().page.identifier,
+                pageRenderStateMocked.viewAs.persona.keyTag
+            );
+            expect(dotPageStateService.setLock).toHaveBeenCalledWith(
+                { mode: DotPageMode.EDIT },
+                true
+            );
         });
     });
 });
