@@ -143,22 +143,21 @@ describe('DotPersonaSelectorComponent', () => {
     });
 
     it('should call toggle when selected dot-persona-selected-item', async () => {
+        spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
         await hostFixture.whenStable();
 
-        spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
         const selectedItem = hostFixture.debugElement.query(By.css('dot-persona-selected-item'));
-        selectedItem.triggerEventHandler('selected', {});
+        selectedItem.triggerEventHandler('click', {});
         expect(dropdown.componentInstance.toggleOverlayPanel).toHaveBeenCalled();
     });
 
     // TODO: this test fails ramdomly when all tests are ran, a fix needs to be done
-    xit('should dot-persona-selector-option template with right params', async () => {
+    it('should dot-persona-selector-option template with right params', async () => {
         await hostFixture.whenStable();
 
         openOverlay();
         const mockPersonaData = { ...mockDotPersona, label: 'Global Investor' };
         const personaOption = hostFixture.debugElement.query(By.css('dot-persona-selector-option'));
-        expect(personaOption.componentInstance.selected).toBe(true);
         expect(personaOption.componentInstance.persona).toEqual(mockPersonaData);
     });
 
