@@ -136,7 +136,7 @@ describe('DotFormSelectorComponent', () => {
                     expect(component.close.emit).toHaveBeenCalledWith({});
                 });
 
-                it('trigger event when click select button', async () => {
+                xit('trigger event when click select button', async () => {
                     fixture.detectChanges();
                     await fixture.whenStable();
 
