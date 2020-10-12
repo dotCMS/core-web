@@ -82,7 +82,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should set messages/values in DOM correctly', async () => {
+    xit('should set messages/values in DOM correctly', async () => {
         await fixture.whenStable();
         expect(
             de.query(By.css('.dot-apps-configuration__service-name')).nativeElement.outerText
@@ -99,7 +99,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
             .replace(/   /gi, '');
         expect(
             de.query(By.css('.dot-apps-configuration__description')).nativeElement.outerText
-        ).toContain(description);
+        ).toBe(description);
         expect(
             de.query(By.css('.dot-apps-configuration__description__link_show-more')).nativeElement
                 .outerText
