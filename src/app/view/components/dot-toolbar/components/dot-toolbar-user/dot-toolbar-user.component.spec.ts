@@ -118,7 +118,7 @@ describe('DotToolbarUserComponent', () => {
 
     it('should call doLogOut on logout click', () => {
         comp.auth = {
-            user: mockUser,
+            user: mockUser(),
             loginAsUser: null
         };
         fixture.detectChanges();

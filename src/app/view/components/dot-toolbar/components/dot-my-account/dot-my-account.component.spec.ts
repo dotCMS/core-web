@@ -235,7 +235,7 @@ describe('DotMyAccountComponent', () => {
         expect(accountService.updateUser).toHaveBeenCalledWith(comp.accountUser);
         expect(loginService.setAuth).toHaveBeenCalledWith({
             loginAsUser: null,
-            user: mockUser
+            user: mockUser()
         });
     });
 

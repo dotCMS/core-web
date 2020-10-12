@@ -26,7 +26,7 @@ import { PageModelChangeEventType } from '../dot-edit-content-html/models';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 
 const getDotPageRenderStateMock = () => {
-    return new DotPageRenderState(mockUser, mockDotRenderedPage());
+    return new DotPageRenderState(mockUser(), mockDotRenderedPage());
 };
 
 describe('DotPageStateService', () => {
@@ -383,7 +383,7 @@ describe('DotPageStateService', () => {
             });
 
             it('should trigger haceContent as false', () => {
-                const renderedPage = new DotPageRenderState(mockUser, {
+                const renderedPage = new DotPageRenderState(mockUser(), {
                     ...mockDotRenderedPage(),
                     ...{
                         numberContents: 0
@@ -408,7 +408,7 @@ describe('DotPageStateService', () => {
 
         describe('selected persona is not default', () => {
             it('should trigger haveContent as false', () => {
-                const renderedPage = new DotPageRenderState(mockUser, {
+                const renderedPage = new DotPageRenderState(mockUser(), {
                     ...mockDotRenderedPage(),
                     ...{
                         viewAs: {
@@ -433,7 +433,7 @@ describe('DotPageStateService', () => {
             });
 
             it('should trigger haceContent as true', () => {
-                const renderedPage = new DotPageRenderState(mockUser, {
+                const renderedPage = new DotPageRenderState(mockUser(), {
                     ...mockDotRenderedPage(),
                     ...{
                         viewAs: {

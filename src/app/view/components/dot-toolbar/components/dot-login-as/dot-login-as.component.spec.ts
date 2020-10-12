@@ -205,7 +205,7 @@ describe('DotLoginAsComponent', () => {
         comp.visible = true;
         fixture.detectChanges();
 
-        comp.form.get('loginAsUser').setValue(mockUser);
+        comp.form.get('loginAsUser').setValue(mockUser());
         comp.dialogActions.accept.action();
 
         expect(loginService.loginAs).toHaveBeenCalledTimes(1);
@@ -217,7 +217,7 @@ describe('DotLoginAsComponent', () => {
         comp.needPassword = true;
         fixture.detectChanges();
 
-        comp.form.get('loginAsUser').setValue(mockUser);
+        comp.form.get('loginAsUser').setValue(mockUser());
         comp.form.get('password').setValue('password');
         fixture.detectChanges();
 
@@ -241,7 +241,7 @@ describe('DotLoginAsComponent', () => {
         comp.visible = true;
         fixture.detectChanges();
 
-        comp.form.get('loginAsUser').setValue(mockUser);
+        comp.form.get('loginAsUser').setValue(mockUser());
         fixture.detectChanges();
 
         comp.dialogActions.accept.action();

@@ -41,7 +41,7 @@ const mockDotMessageService = new MockDotMessageService({
 });
 
 const pageRenderStateMock: DotPageRenderState = new DotPageRenderState(
-    mockUser,
+    mockUser(),
     new DotPageRender(mockDotRenderedPage())
 );
 
@@ -126,7 +126,7 @@ describe('DotEditPageStateControllerComponent', () => {
 
             it('should have locker with right attributes', async () => {
                 const pageRenderStateMocked: DotPageRenderState = new DotPageRenderState(
-                    { ...mockUser, userId: '456' },
+                    { ...mockUser(), userId: '456' },
                     new DotPageRender(mockDotRenderedPage())
                 );
                 fixtureHost.componentInstance.pageState = _.cloneDeep(pageRenderStateMocked);
@@ -224,7 +224,7 @@ describe('DotEditPageStateControllerComponent', () => {
     describe('should emit modeChange when ask to LOCK confirmation', () => {
         beforeEach(() => {
             const pageRenderStateMocked: DotPageRenderState = new DotPageRenderState(
-                { ...mockUser, userId: '456' },
+                { ...mockUser(), userId: '456' },
                 new DotPageRender(mockDotRenderedPage())
             );
 
@@ -278,7 +278,7 @@ describe('DotEditPageStateControllerComponent', () => {
     describe('should emit modeChange when ask to PERSONALIZE confirmation', () => {
         it('should update pageState service when confirmation dialog Success', async () => {
             const pageRenderStateMocked: DotPageRenderState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender({
                     ...mockDotRenderedPage(),
                     viewAs: {

@@ -65,7 +65,7 @@ class MockDotPageStateService {
     state$ = new Subject();
     get(): void {}
     reload(): void {
-        this.reload$.next(new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage())));
+        this.reload$.next(new DotPageRenderState(mockUser(), new DotPageRender(mockDotRenderedPage())));
     }
 }
 
@@ -93,7 +93,7 @@ describe('DotEditPageMainComponent', () => {
     });
 
     const mockDotRenderedPageState: DotPageRenderState = new DotPageRenderState(
-        mockUser,
+        mockUser(),
         new DotPageRender(mockDotRenderedPage())
     );
 
@@ -203,7 +203,7 @@ describe('DotEditPageMainComponent', () => {
 
         component.pageState$.subscribe(res => {
             expect(res).toEqual(
-                new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage()))
+                new DotPageRenderState(mockUser(), new DotPageRender(mockDotRenderedPage()))
             );
         });
 

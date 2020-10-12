@@ -136,7 +136,7 @@ describe('DotLoginComponent', () => {
         signInButton.triggerEventHandler('click', {});
         expect(loginService.loginUser).toHaveBeenCalledWith(credentials);
         expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
-        expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(mockUser.languageId);
+        expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(mockUser().languageId);
     });
 
     it('should disable fields while waiting login response', () => {

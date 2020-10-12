@@ -66,7 +66,7 @@ describe('DotEditPageInfoComponent', () => {
                 name: 'demo.dotcms.com'
             });
             component.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 mockDotRenderedPage()
             );
             fixture.detectChanges();

@@ -89,7 +89,7 @@ describe('DotEditPageNavComponent', () => {
             de = fixture.debugElement;
             component = de.query(By.css('dot-edit-page-nav')).componentInstance;
             fixture.componentInstance.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(mockDotRenderedPage())
             );
             dotContentletEditorService = TestBed.inject(DotContentletEditorService);
@@ -134,7 +134,7 @@ describe('DotEditPageNavComponent', () => {
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
             const { layout, ...noLayoutPage } = mockDotRenderedPage();
             fixture.componentInstance.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(noLayoutPage)
             );
             component.model = undefined;
@@ -168,7 +168,7 @@ describe('DotEditPageNavComponent', () => {
         // Disable advance template commit https://github.com/dotCMS/core-web/pull/589
         it('should have menu items: Content and Layout', () => {
             fixture.componentInstance.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(mockDotRenderedPageAdvanceTemplate)
             );
 
@@ -190,7 +190,7 @@ describe('DotEditPageNavComponent', () => {
 
                 component.model = undefined;
                 fixture.componentInstance.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender(mockDotRenderedPageAdvanceTemplate)
                 );
                 fixture.detectChanges();
@@ -206,7 +206,7 @@ describe('DotEditPageNavComponent', () => {
 
             it('should have layout and rules option disabled and enterprise only message when template is advance and license is comunity', () => {
                 fixture.componentInstance.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender(mockDotRenderedPageAdvanceTemplate)
                 );
                 fixture.detectChanges();
@@ -227,7 +227,7 @@ describe('DotEditPageNavComponent', () => {
 
             it('should have code option disabled because user can not edit the page thus the layout or template', () => {
                 fixture.componentInstance.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender({
                         ...mockDotRenderedPageAdvanceTemplate,
                         page: {

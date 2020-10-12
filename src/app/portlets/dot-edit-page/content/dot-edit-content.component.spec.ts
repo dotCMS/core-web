@@ -102,7 +102,7 @@ export class MockDotFormSelectorComponent {
 }
 
 const mockRenderedPageState = new DotPageRenderState(
-    mockUser,
+    mockUser(),
     new DotPageRender(mockDotRenderedPage())
 );
 
@@ -426,7 +426,7 @@ describe('DotEditContentComponent', () => {
                 beforeEach(() => {
                     route.parent.parent.data = of({
                         content: new DotPageRenderState(
-                            mockUser,
+                            mockUser(),
                             new DotPageRender({
                                 ...mockDotRenderedPage(),
                                 viewAs: {
@@ -526,7 +526,7 @@ describe('DotEditContentComponent', () => {
 
                 it('should render in edit mode', fakeAsync(() => {
                     const state = new DotPageRenderState(
-                        mockUser,
+                        mockUser(),
                         new DotPageRender({
                             ...mockDotRenderedPage(),
                             page: {
@@ -555,7 +555,7 @@ describe('DotEditContentComponent', () => {
                 beforeEach(() => {
                     route.parent.parent.data = of({
                         content: new DotPageRenderState(
-                            mockUser,
+                            mockUser(),
                             new DotPageRender({
                                 ...mockDotRenderedPage(),
                                 viewAs: {
@@ -631,7 +631,7 @@ describe('DotEditContentComponent', () => {
                         fixture.detectChanges();
 
                         const dotRenderedPageStateExpected = new DotPageRenderState(
-                            mockUser,
+                            mockUser(),
                             mockDotRenderedPage()
                         );
 
@@ -659,7 +659,7 @@ describe('DotEditContentComponent', () => {
                         fixture.detectChanges();
 
                         const dotRenderedPageStateExpected = new DotPageRenderState(
-                            mockUser,
+                            mockUser(),
                             mockDotRenderedPageCopy
                         );
 
@@ -965,7 +965,7 @@ describe('DotEditContentComponent', () => {
             beforeEach(() => {
                 route.parent.parent.data = of({
                     content: new DotPageRenderState(
-                        mockUser,
+                        mockUser(),
                         new DotPageRender({
                             ...mockDotRenderedPage(),
                             viewAs: {

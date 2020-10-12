@@ -134,7 +134,7 @@ describe('DotEditLayoutDesignerComponent', () => {
     describe('edit layout', () => {
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender({
                     ...mockDotRenderedPage(),
                     template: { ...mockDotTemplate(), theme: '123' },
@@ -269,7 +269,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         describe('can save as template', () => {
             beforeEach(() => {
                 component.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender({
                         ...mockDotRenderedPage(),
                         template: null,
@@ -322,7 +322,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         let themeButton;
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender({
                     ...mockDotRenderedPage(),
                     template: { ...mockDotTemplate(), theme: '123' },
@@ -378,7 +378,7 @@ describe('DotEditLayoutDesignerComponent', () => {
     describe('edit template', () => {
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(mockDotRenderedPage())
             );
             component.editTemplate = true;
@@ -417,7 +417,7 @@ describe('DotEditLayoutDesignerComponent', () => {
     describe('containers model', () => {
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(mockDotRenderedPage())
             );
         });
@@ -444,7 +444,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(mockDotRenderedPage())
             );
             fixture.detectChanges();
@@ -492,7 +492,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         describe('should show', () => {
             beforeEach(() => {
                 component.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender({
                         ...mockDotRenderedPage(),
                         template: {
@@ -525,7 +525,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         describe('not show', () => {
             it("when user can't edit the template and set layout mode", () => {
                 component.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender({
                         ...mockDotRenderedPage(),
                         template: {
@@ -542,7 +542,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
             it('when page have a layout and set layout mode', () => {
                 component.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender({
                         ...mockDotRenderedPage(),
                         template: {
@@ -558,7 +558,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
             it('when editTemplate is false by default', () => {
                 component.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender({
                         ...mockDotRenderedPage(),
                         template: {
@@ -578,7 +578,7 @@ describe('DotEditLayoutDesignerComponent', () => {
     describe('edit layout No sidebars', () => {
         beforeEach(() => {
             component.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender({
                     ...mockDotRenderedPage(),
                     template: { ...mockDotTemplate(), theme: '123' },

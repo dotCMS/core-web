@@ -172,7 +172,7 @@ describe('DotEditContentHtmlService', () => {
             */
 
             const pageState: DotPageRenderState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender({
                     ...mockDotRenderedPage(),
                     page: {
@@ -384,7 +384,7 @@ describe('DotEditContentHtmlService', () => {
         };
 
         const pageState: DotPageRenderState = new DotPageRenderState(
-            mockUser,
+            mockUser(),
             new DotPageRender({
                 ...mockDotRenderedPage(),
                 page: {

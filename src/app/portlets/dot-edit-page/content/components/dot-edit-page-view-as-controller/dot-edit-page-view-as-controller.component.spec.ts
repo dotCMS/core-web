@@ -164,7 +164,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
             // spyOn(component.changeViewAs, 'emit');
 
             componentHost.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 mockDotRenderedPage()
             );
 
@@ -187,7 +187,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
             spyOn(component, 'changeLanguageHandler').and.callThrough();
 
             componentHost.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 mockDotRenderedPage()
             );
 
@@ -280,7 +280,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
 
         it('should propagate the values to the selector components on init', () => {
             componentHost.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender({
                     ...mockDotRenderedPage(),
                     viewAs: mockDotEditPageViewAs
