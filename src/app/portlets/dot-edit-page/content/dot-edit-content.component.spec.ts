@@ -375,7 +375,9 @@ describe('DotEditContentComponent', () => {
                 spyOn(dotCustomEventHandlerService, 'handle');
                 dotEditContentlet.triggerEventHandler('custom', { data: 'test' });
 
-                expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
+                expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
+                    data: 'test'
+                });
             });
         });
 
@@ -449,23 +451,21 @@ describe('DotEditContentComponent', () => {
 
                 it('should add inline styles to iframe', async () => {
                     fixture.detectChanges();
-                    fixture.whenStable().then(() => {
-                        const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
-                        expect(iframeEl.styles).toEqual({
-                            position: '',
-                            visibility: ''
-                        });
+                    await fixture.whenStable();
+                    const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
+                    expect(iframeEl.styles).toEqual({
+                        position: '',
+                        visibility: ''
                     });
                 });
 
                 it('should add inline styles to device wrapper', async () => {
                     fixture.detectChanges();
-                    fixture.whenStable().then(() => {
-                        const deviceWraper = de.query(By.css('.dot-edit__device-wrapper'));
-                        expect(deviceWraper.styles).toEqual({
-                            width: '100px',
-                            height: '100px'
-                        });
+                    await fixture.whenStable();
+                    const deviceWraper = de.query(By.css('.dot-edit__device-wrapper'));
+                    expect(deviceWraper.styles).toEqual({
+                        width: '100px',
+                        height: '100px'
                     });
                 });
             });

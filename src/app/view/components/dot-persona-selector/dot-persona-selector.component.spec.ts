@@ -75,30 +75,32 @@ describe('DotPersonaSelectorComponent', () => {
 
     const siteServiceMock = new SiteServiceMock();
 
-    beforeEach(waitForAsync( () => {
-        DOTTestBed.configureTestingModule({
-            declarations: [DotPersonaSelectorComponent, HostTestComponent],
-            imports: [
-                BrowserAnimationsModule,
-                SearchableDropDownModule,
-                DotPersonaSelectedItemModule,
-                DotPersonaSelectorOptionModule,
-                DotAddPersonaDialogModule,
-                TooltipModule,
-                DotPipesModule
-            ],
-            providers: [
-                IframeOverlayService,
-                {
-                    provide: DotMessageService,
-                    useValue: messageServiceMock
-                },
-                { provide: PaginatorService, useClass: TestPaginatorService },
-                { provide: LoginService, useClass: LoginServiceMock },
-                { provide: SiteService, useValue: siteServiceMock }
-            ]
-        });
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [DotPersonaSelectorComponent, HostTestComponent],
+                imports: [
+                    BrowserAnimationsModule,
+                    SearchableDropDownModule,
+                    DotPersonaSelectedItemModule,
+                    DotPersonaSelectorOptionModule,
+                    DotAddPersonaDialogModule,
+                    TooltipModule,
+                    DotPipesModule
+                ],
+                providers: [
+                    IframeOverlayService,
+                    {
+                        provide: DotMessageService,
+                        useValue: messageServiceMock
+                    },
+                    { provide: PaginatorService, useClass: TestPaginatorService },
+                    { provide: LoginService, useClass: LoginServiceMock },
+                    { provide: SiteService, useValue: siteServiceMock }
+                ]
+            });
+        })
+    );
 
     beforeEach(() => {
         hostFixture = DOTTestBed.createComponent(HostTestComponent);
@@ -140,54 +142,46 @@ describe('DotPersonaSelectorComponent', () => {
         expect(personaSelectedItemDe.attributes['ng-reflect-tooltip-position']).toBe('bottom');
     });
 
-    xit('should call toggle when selected dot-persona-selected-item', () => {
-        hostFixture.whenStable().then(() => {
-            spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
-            const selectedItem = hostFixture.debugElement.query(
-                By.css('dot-persona-selected-item')
-            );
-            selectedItem.triggerEventHandler('selected', {});
-            expect(dropdown.componentInstance.toggleOverlayPanel).toHaveBeenCalled();
-        });
+    it('should call toggle when selected dot-persona-selected-item', async () => {
+        await hostFixture.whenStable();
+
+        spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
+        const selectedItem = hostFixture.debugElement.query(By.css('dot-persona-selected-item'));
+        selectedItem.triggerEventHandler('selected', {});
+        expect(dropdown.componentInstance.toggleOverlayPanel).toHaveBeenCalled();
     });
 
     // TODO: this test fails ramdomly when all tests are ran, a fix needs to be done
-    xit('should dot-persona-selector-option template with right params', () => {
-        hostFixture.whenStable().then(() => {
-            openOverlay();
-            const mockPersonaData = { ...mockDotPersona, label: 'Global Investor' };
-            const personaOption = hostFixture.debugElement.query(
-                By.css('dot-persona-selector-option')
-            );
-            expect(personaOption.componentInstance.selected).toBe(true);
-            expect(personaOption.componentInstance.persona).toEqual(mockPersonaData);
-        });
+    xit('should dot-persona-selector-option template with right params', async () => {
+        await hostFixture.whenStable();
+
+        openOverlay();
+        const mockPersonaData = { ...mockDotPersona, label: 'Global Investor' };
+        const personaOption = hostFixture.debugElement.query(By.css('dot-persona-selector-option'));
+        expect(personaOption.componentInstance.selected).toBe(true);
+        expect(personaOption.componentInstance.persona).toEqual(mockPersonaData);
     });
 
-    it('should execute "change" event from dot-persona-selector-option', () => {
-        hostFixture.whenStable().then(() => {
-            spyOn(component.selected, 'emit');
-            openOverlay();
-            const personaOption = hostFixture.debugElement.query(
-                By.css('dot-persona-selector-option')
-            );
-            personaOption.triggerEventHandler('change', defaultPersona);
-            expect(component.selected.emit).toHaveBeenCalledWith(defaultPersona);
-        });
+    it('should execute "change" event from dot-persona-selector-option', async () => {
+        await hostFixture.whenStable();
+
+        spyOn(component.selected, 'emit');
+        openOverlay();
+        const personaOption = hostFixture.debugElement.query(By.css('dot-persona-selector-option'));
+        personaOption.triggerEventHandler('change', defaultPersona);
+        expect(component.selected.emit).toHaveBeenCalledWith(defaultPersona);
     });
 
-    it('should execute "delete" event from dot-persona-selector-option', () => {
-        hostFixture.whenStable().then(() => {
-            spyOn(component.delete, 'emit');
-            openOverlay();
-            const personaOption = hostFixture.debugElement.query(
-                By.css('dot-persona-selector-option')
-            );
-            personaOption.triggerEventHandler('delete', defaultPersona);
-            expect<any>(component.delete.emit).toHaveBeenCalledWith({
-                ...defaultPersona,
-                label: 'Global Investor'
-            });
+    it('should execute "delete" event from dot-persona-selector-option', async () => {
+        await hostFixture.whenStable();
+
+        spyOn(component.delete, 'emit');
+        openOverlay();
+        const personaOption = hostFixture.debugElement.query(By.css('dot-persona-selector-option'));
+        personaOption.triggerEventHandler('delete', defaultPersona);
+        expect<any>(component.delete.emit).toHaveBeenCalledWith({
+            ...defaultPersona,
+            label: 'Global Investor'
         });
     });
 
