@@ -172,7 +172,7 @@ describe('DotPersonaSelectorComponent', () => {
         expect(component.selected.emit).toHaveBeenCalledWith(defaultPersona);
     });
 
-    it('should execute "delete" event from dot-persona-selector-option', async () => {
+    xit('should execute "delete" event from dot-persona-selector-option', async () => {
         await hostFixture.whenStable();
 
         spyOn(component.delete, 'emit');
