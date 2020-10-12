@@ -17,7 +17,7 @@ describe('DotPersonaSelectorOptionComponent', () => {
     let de: DebugElement;
 
     const messageServiceMock = new MockDotMessageService({
-        'modes.persona.personalized': 'PERSONALIZED'
+        'modes.persona.personalized': 'Personalized'
     });
 
     beforeEach(() => {
@@ -54,7 +54,7 @@ describe('DotPersonaSelectorOptionComponent', () => {
 
         it('should have personalized button with right properties', () => {
             const btnElement: DebugElement = de.query(By.css('button'));
-            expect(btnElement.nativeElement.innerText).toBe('Personalized');
+            expect(btnElement.nativeElement.innerText).toBe('PERSONALIZED');
             expect(btnElement.attributes.icon).toBe('fa fa-times');
             expect(btnElement.attributes.iconPos).toBe('right');
         });
