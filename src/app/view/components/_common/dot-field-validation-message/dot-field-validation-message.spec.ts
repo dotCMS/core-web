@@ -24,7 +24,7 @@ describe('FieldValidationComponent', () => {
         const fakeInput: any = {};
         component.field = fakeInput;
         fixture.detectChanges();
-        de = fixture.debugElement.query(By.css('div'));
+        de = fixture.debugElement.query(By.css('small'));
         expect(de).toBeNull();
     });
 
@@ -33,7 +33,7 @@ describe('FieldValidationComponent', () => {
         fakeInput.valid = true;
         component.field = fakeInput;
         fixture.detectChanges();
-        de = fixture.debugElement.query(By.css('div'));
+        de = fixture.debugElement.query(By.css('small'));
         expect(de).toBeNull();
     });
 
@@ -45,7 +45,7 @@ describe('FieldValidationComponent', () => {
         component.field = fakeInput;
         component.message = 'Error message';
         fixture.detectChanges();
-        de = fixture.debugElement.query(By.css('div'));
+        de = fixture.debugElement.query(By.css('small'));
         el = de.nativeElement;
         expect(el).toBeDefined();
         expect(el.textContent).toBe('Error message');

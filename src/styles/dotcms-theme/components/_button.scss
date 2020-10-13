@@ -123,9 +123,6 @@
   font-size: $spacing-5;
 }
 
-.p-fluid .p-button {
-  width: 100%;
-}
 .p-fluid .p-button-icon-only {
   width: $spacing-9;
 }
@@ -157,7 +154,7 @@
   border-left: 1px solid $brand-primary;
   border-bottom: 1px solid $brand-primary;
   color: $brand-primary;
-  
+
   ~ .p-splitbutton-menubutton {
     border-left: 1px solid $brand-primary;;
   }
