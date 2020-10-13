@@ -1,11 +1,9 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { ButtonModule } from 'primeng/button';
 
 export default {
     title: 'PrimeNG/Button/Button',
-
     decorators: [
         moduleMetadata({
             imports: [ButtonModule]
@@ -23,18 +21,24 @@ export default {
 } as Meta;
 
 const BasicTemplate = `
-  <p-button label="Submit"></p-button>
+    <p><button pButton label="Submit"></button></p>
+    <p><button pButton label="Submit" icon="pi pi-check"></button></p>
+    <p><button pButton label="Submit" icon="pi pi-check" iconPos="right"></button></p>
+    <p><button pButton label="Disabled" disabled="true"></button></p>
 `;
 
 const SecondaryTemplate = `
-  <button pButton type="button" label="Cancel" class="p-button-outlined"></button>
-  <button pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded p-button-text"></button>
+    <p><button pButton label="Submit" class="p-button-outlined"></button></p>
+    <p><button pButton label="Submit" icon="pi pi-check" class="p-button-outlined"></button></p>
+    <p><button pButton label="Submit" icon="pi pi-check" iconPos="right" class="p-button-outlined"></button></p>
+    <p><button pButton label="Disabled" disabled="true" class="p-button-outlined"></button></p>
 `;
+
 const TextTemplate = `
-  <button pButton type="button" label="Refresh" class="p-button-text"></button>
-`;
-const DisabledTemplate = `
- <p-button label="Disabled" disabled="true"></p-button>
+    <p><button pButton label="Submit" class="p-button-text"></button></p>
+    <p><button pButton label="Submit" icon="pi pi-check" class="p-button-text"></button></p>
+    <p><button pButton label="Submit" icon="pi pi-check" iconPos="right" class="p-button-text"></button></p>
+    <p><button pButton label="Disabled" disabled="true" class="p-button-text"></button></p>
 `;
 
 export const Basic: Story = () => {
@@ -65,8 +69,9 @@ Secondary.parameters = {
 };
 
 const IconsTemplate = `
-  <p><p-button label="Submit" icon="pi pi-check"></p-button></p>
-  <p><p-button label="Submit" icon="pi pi-check" iconPos="right"></p-button></p>
+    <p><button pButton type="button" icon="pi pi-check" class="p-button-rounded p-button-text"></button></p>
+    <p><button pButton type="button" icon="pi pi-sitemap" class="p-button-rounded p-button-text"></button></p>
+    <p><button pButton type="button" disabled="true" icon="pi pi-shopping-cart" class="p-button-rounded p-button-text"></button></p>
 `;
 export const Icons: Story = () => {
     return {
@@ -91,20 +96,6 @@ Text.parameters = {
     docs: {
         source: {
             code: TextTemplate
-        }
-    }
-};
-
-export const Disabled: Story = () => {
-    return {
-        template: DisabledTemplate
-    };
-};
-
-Disabled.parameters = {
-    docs: {
-        source: {
-            code: DisabledTemplate
         }
     }
 };
