@@ -1,10 +1,10 @@
 @use "variables" as *;
 .p-inputtext {
   font-family: $body-text;
-  font-size: $spacing-4;
+  font-size: $spacing-3;
   color: #000001;
   background: #ffffff;
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-2 $spacing-2;
   border: 1px solid rgba(0, 0, 0, 0.38);
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   appearance: none;
@@ -25,12 +25,12 @@
   padding: 0.65625rem 0.65625rem;
 }
 .p-inputtext.p-inputtext-lg {
-  font-size: $spacing-5;
+  font-size: $spacing-4;
   padding: 0.9375rem 0.9375rem;
 }
 
 .p-input-icon-left > i:first-of-type {
-  left: $spacing-3;
+  left: $spacing-2;
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -39,7 +39,7 @@
 }
 
 .p-input-icon-right > i:last-of-type {
-  right: $spacing-3;
+  right: $spacing-2;
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -79,7 +79,7 @@
 }
 
 .p-inputtext-lg .p-inputtext {
-  font-size: $spacing-5;
+  font-size: $spacing-4;
   padding: 0.9375rem 0.9375rem;
 }
 
@@ -292,8 +292,8 @@
 }
 
 .p-input-filled .p-float-label .p-inputtext {
-  padding-top: $spacing-5;
-  padding-bottom: $spacing-1;
+  padding-top: $spacing-4;
+  padding-bottom: 0.25rem;
 }
 .p-input-filled .p-float-label input:focus ~ label,
 .p-input-filled .p-float-label input.p-filled ~ label,
@@ -301,7 +301,7 @@
 .p-input-filled .p-float-label textarea.p-filled ~ label,
 .p-input-filled .p-float-label .p-inputwrapper-focus ~ label,
 .p-input-filled .p-float-label .p-inputwrapper-filled ~ label {
-  top: $spacing-1 !important;
+  top: 0.25rem !important;
   margin-top: 0;
   background: transparent;
 }

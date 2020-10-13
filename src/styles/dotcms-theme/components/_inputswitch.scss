@@ -1,24 +1,24 @@
 @use "variables" as *;
 .p-inputswitch {
   width: 2.75rem;
-  height: $spacing-4;
+  height: $spacing-3;
 }
 .p-inputswitch .p-inputswitch-slider {
   background: rgba(0, 0, 0, 0.38);
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
-  border-radius: $spacing-2;
+  border-radius: $spacing-1;
 }
 .p-inputswitch .p-inputswitch-slider:before {
   background: #ffffff;
-  width: $spacing-6;
-  height: $spacing-6;
+  width: $spacing-4;
+  height: $spacing-4;
   left: -1px;
-  margin-top: -$spacing-3;
+  margin-top: -$spacing-2;
   border-radius: 50%;
   transition-duration: 0.2s;
 }
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
-  transform: translateX($spacing-6);
+  transform: translateX($spacing-4);
 }
 .p-inputswitch.p-focus .p-inputswitch-slider {
   outline: 0 none;
@@ -29,13 +29,13 @@
   background: rgba(0, 0, 0, 0.38);
 }
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
-  background: $color-hightlight;
+  background: $bg-color-secondary;
 }
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
   background:  $brand-primary;
 }
 .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
-  background: $color-hightlight;
+  background: $bg-color-secondary;
 }
 
 .p-inputswitch .p-inputswitch-slider:before {

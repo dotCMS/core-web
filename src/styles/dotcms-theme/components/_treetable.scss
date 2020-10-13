@@ -12,7 +12,7 @@
   color: #000001;
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-2 $spacing-2;
   font-weight: 500;
 }
 .p-treetable .p-treetable-footer {
@@ -20,12 +20,12 @@
   color: #000001;
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-2 $spacing-2;
   font-weight: 500;
 }
 .p-treetable .p-treetable-thead > tr > th {
   text-align: left;
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-2 $spacing-2;
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
   font-weight: 500;
@@ -35,7 +35,7 @@
 }
 .p-treetable .p-treetable-tfoot > tr > td {
   text-align: left;
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-2 $spacing-2;
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
   font-weight: 500;
@@ -47,7 +47,7 @@
 }
 .p-treetable .p-sortable-column .p-sortable-column-icon {
   color: rgba(0, 0, 0, 0.6);
-  margin-left: $spacing-2;
+  margin-left: $spacing-1;
 }
 .p-treetable .p-sortable-column .p-sortable-column-badge {
   border-radius: 50%;
@@ -56,7 +56,7 @@
   line-height: 1.143rem;
   color:  $brand-primary;
   background: rgba(63, 81, 181, 0.12);
-  margin-left: $spacing-2;
+  margin-left: $spacing-1;
 }
 .p-treetable .p-sortable-column:not(.p-highlight):hover {
   background: rgba(0, 0, 0, 0.04);
@@ -82,17 +82,17 @@
   text-align: left;
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-2 $spacing-2;
 }
 .p-treetable .p-treetable-tbody > tr > td .p-treetable-toggler {
-  width: $spacing-8;
-  height: $spacing-8;
+  width: $spacing-5;
+  height: $spacing-5;
   color: rgba(0, 0, 0, 0.6);
   border: 0 none;
   background: transparent;
   border-radius: 50%;
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-  margin-right: $spacing-2;
+  margin-right: $spacing-1;
 }
 .p-treetable .p-treetable-tbody > tr > td .p-treetable-toggler:enabled:hover {
   color: rgba(0, 0, 0, 0.6);
@@ -105,7 +105,7 @@
   box-shadow: none;
 }
 .p-treetable .p-treetable-tbody > tr > td p-treetablecheckbox .p-checkbox {
-  margin-right: $spacing-2;
+  margin-right: $spacing-1;
 }
 .p-treetable .p-treetable-tbody > tr > td p-treetablecheckbox .p-checkbox .p-indeterminate .p-checkbox-icon {
   color: #000001;
@@ -135,7 +135,7 @@
   background: #ffffff;
 }
 .p-treetable .p-treetable-loading-icon {
-  font-size: $spacing-8;
+  font-size: $spacing-7;
 }
 .p-treetable.p-treetable-gridlines .p-datatable-header {
   border-width: 1px 1px 0 1px;

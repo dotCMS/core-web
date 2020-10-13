@@ -5,20 +5,18 @@
   color: #ffffff;
   background:  $brand-primary;
   border: 0 none;
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-1 $spacing-3;
   line-height: 1.5;
-  font-size: $spacing-4;
+  font-size: $spacing-3;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   border-radius: 2px;
 }
 .p-button:enabled:hover, .p-button:enabled:active, .p-button:enabled:focus   {
   background: rgba($brand-primary_rgb, .72);
-  color: #ffffff;
   border-color: transparent;
 }
 
 .p-button-outlined.p-button:enabled:hover, .p-button-outlined.p-button:enabled:active, .p-button-outlined.p-button:enabled:focus   {
-  background: rgba($brand-primary_rgb, .72);
   border-color: $brand-secondary;
   color: $brand-secondary;
 }
@@ -30,7 +28,7 @@
   line-height: 1.4;
 }
 .p-button.p-button-outlined:enabled:hover {
-  background: rgba(63, 81, 181, 0.04);
+  background: none;
   color:  $brand-primary;
   border: 1px solid;
 }
@@ -45,12 +43,12 @@
   border-color: transparent;
 }
 .p-button.p-button-text:enabled:hover {
-  background: rgba(63, 81, 181, 0.04);
+  background: $bg-color-secondary;
   color:  $brand-primary;
   border-color: transparent;
 }
 .p-button.p-button-text:enabled:active {
-  background: rgba(63, 81, 181, 0.16);
+  background: $bg-color-secondary;
   color:  $brand-primary;
   border-color: transparent;
 }
@@ -71,22 +69,22 @@
   box-shadow: none;
 }
 .p-button .p-button-icon-left {
-  margin-right: $spacing-2;
+  margin-right: $spacing-1;
 }
 .p-button .p-button-icon-right {
-  margin-left: $spacing-2;
+  margin-left: $spacing-1;
 }
 .p-button .p-button-icon-bottom {
-  margin-top: $spacing-2;
+  margin-top: $spacing-1;
 }
 .p-button .p-button-icon-top {
-  margin-bottom: $spacing-2;
+  margin-bottom: $spacing-1;
 }
 .p-button .p-badge {
-  margin-left: $spacing-2;
-  min-width: $spacing-4;
-  height: $spacing-4;
-  line-height: $spacing-4;
+  margin-left: $spacing-1;
+  min-width: $spacing-3;
+  height: $spacing-3;
+  line-height: $spacing-3;
   color:  $brand-primary;
   background-color: #ffffff;
 }
@@ -94,11 +92,23 @@
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 .p-button.p-button-rounded {
-  border-radius: $spacing-8;
+  border-radius: $spacing-5;
 }
-.p-button.p-button-icon-only {
-  width: $spacing-9;
+.p-button-rounded.p-button.p-button-icon-only {
+  color: $gray-dark;
   padding: 0.571rem;
+  min-width: auto;
+  &:enabled {
+    &:hover {
+      color: $gray-dark;
+    }
+  }
+  &:enabled {
+    &:active, &:focus {
+      color: $brand-primary;
+      background: $bg-color-primary;
+    }
+  }
 }
 .p-button.p-button-icon-only .p-button-icon-left,
 .p-button.p-button-icon-only .p-button-icon-right {
@@ -106,7 +116,8 @@
 }
 .p-button.p-button-icon-only.p-button-rounded {
   border-radius: 50%;
-  height: $spacing-9;
+  height: $spacing-7;
+  width: $spacing-7;
 }
 .p-button.p-button-sm {
   font-size: 0.875rem;
@@ -116,18 +127,18 @@
   font-size: 0.875rem;
 }
 .p-button.p-button-lg {
-  font-size: $spacing-5;
+  font-size: $spacing-4;
   padding: 0.71375rem 0.9375rem;
 }
 .p-button.p-button-lg .p-button-icon {
-  font-size: $spacing-5;
+  font-size: $spacing-4;
 }
 
 .p-fluid .p-button {
   width: 100%;
 }
 .p-fluid .p-button-icon-only {
-  width: $spacing-9;
+  width: $spacing-8;
 }
 .p-fluid .p-buttonset {
   display: flex;
@@ -468,7 +479,7 @@
 .p-button-label {
   text-transform: uppercase;
   font-weight: normal;
-  font-size: 0.86rem;
+  font-size: 0.90rem;
 }
 
 .p-button.p-button-link:enabled:hover {
@@ -494,18 +505,16 @@
   font-weight: 500;
   min-width: 4rem;
 }
-.p-button.p-button-icon-only {
-  min-width: auto;
-}
+
 
 .p-button .p-ink {
   background-color: rgba(255, 255, 255, 0.32);
 }
 .p-button.p-button-text:enabled:focus, .p-button.p-button-outlined:enabled:focus {
-  background: rgba(63, 81, 181, 0.12);
+  background: none;
 }
 .p-button.p-button-text:enabled:active, .p-button.p-button-outlined:enabled:active {
-  background: rgba(63, 81, 181, 0.16);
+  background: none;
 }
 .p-button.p-button-text .p-ink, .p-button.p-button-outlined .p-ink {
   background-color: rgba(63, 81, 181, 0.16);

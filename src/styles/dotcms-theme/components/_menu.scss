@@ -1,6 +1,6 @@
 @use "variables" as *;
 .p-menu {
-  padding: $spacing-2 0;
+  padding: $spacing-1 0;
   background: #ffffff;
   color: #000001;
   border: 1px solid #e5e5e5;
@@ -8,7 +8,7 @@
   width: 12.5rem;
 }
 .p-menu .p-menuitem-link {
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-2 $spacing-2;
   color: #000001;
   border-radius: 0;
   transition: none;
@@ -19,13 +19,13 @@
 }
 .p-menu .p-menuitem-link .p-menuitem-icon {
   color: rgba(0, 0, 0, 0.6);
-  margin-right: $spacing-2;
+  margin-right: $spacing-1;
 }
 .p-menu .p-menuitem-link .p-submenu-icon {
   color: rgba(0, 0, 0, 0.6);
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover {
-  background: $color-hightlight;
+  background: $bg-color-secondary;
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text {
   color: #000001;
@@ -48,7 +48,7 @@
 }
 .p-menu .p-submenu-header {
   margin: 0;
-  padding: $spacing-3;
+  padding: $spacing-2;
   color: rgba(0, 0, 0, 0.6);
   background: #ffffff;
   font-weight: 400;
@@ -57,5 +57,5 @@
 }
 .p-menu .p-menu-separator {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
-  margin: $spacing-2 0;
+  margin: $spacing-1 0;
 }
