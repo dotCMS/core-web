@@ -27,7 +27,7 @@ export default {
       { name: 'Venezuela', code: 'VE' },
     ],
     // tslint:disable-next-line: typedef
-    search(event) {
+    search() {
       this.results = [
         { name: 'Afghanistan', code: 'AF' },
         { name: 'Albania', code: 'AL' },

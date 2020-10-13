@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-p-toast',
@@ -15,7 +14,6 @@ import { PrimeNGConfig } from 'primeng/api';
 export class ToastComponent {
   constructor(
     private messageService: MessageService,
-    private primengConfig: PrimeNGConfig
   ) {}
 
   ngOnInit() {

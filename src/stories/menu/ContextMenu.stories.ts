@@ -2,7 +2,6 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContextMenuModule } from 'primeng/contextmenu';
-import { MenuItem } from 'primeng/api';
 
 export default {
   title: 'PrimeNG/Menu/ContextMenu',
@@ -26,7 +25,7 @@ const ContextMenuTemplate = `
   <p-contextMenu [target]="img" [model]="items"></p-contextMenu>
 `;
 
-const Template: Story<any> = (props: any) => {
+const Template: Story<any> = () => {
   const template = ContextMenuTemplate;
   return {
     props: {

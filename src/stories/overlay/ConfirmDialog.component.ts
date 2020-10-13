@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 
 export const ConfirmDialogTemplate = `

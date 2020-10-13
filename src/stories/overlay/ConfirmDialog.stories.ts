@@ -12,7 +12,6 @@ import {
 } from './ConfirmDialog.component';
 import { ToastComponent } from '../messages/Toast.component';
 
-const confirmation = new ConfirmationService();
 
 export default {
   title: 'PrimeNG/Overlay/ConfirmDialog',

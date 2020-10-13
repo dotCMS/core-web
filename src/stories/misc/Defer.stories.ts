@@ -1,8 +1,7 @@
-import { Story, Meta } from '@storybook/angular/types-6-0';
+import { Meta } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
-import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { DeferComponent } from './Defer.component';
 import { BrowserModule } from '@angular/platform-browser';

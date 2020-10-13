@@ -13,7 +13,6 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
-import { EditorModule } from 'primeng/editor';
 import { moduleMetadata } from '@storybook/angular';
 
 export default {
@@ -42,7 +41,6 @@ export default {
         CalendarModule,
         MultiSelectModule,
         DropdownModule,
-        EditorModule,
         HttpClientModule,
       ],
     }),
@@ -61,11 +59,11 @@ export default {
 const FocusTrapTemplate = `
   <div pFocusTrap class="card">
     <h5>Input</h5>
-    <input id="input" type="text" size="30" pInputText> 
-    
+    <input id="input" type="text" size="30" pInputText>
+
     <h5>Float Label</h5>
     <span class="p-float-label">
-        <input id="float-input" type="text" size="30" pInputText> 
+        <input id="float-input" type="text" size="30" pInputText>
         <label for="float-input">Username</label>
     </span>
 
@@ -83,7 +81,7 @@ const FocusTrapTemplate = `
 
     <h5>Button with tabindex -1</h5>
     <button pButton type="button" icon="pi pi-check" tabindex="-1"  label="Check"></button>
-    
+
     <h5>Dropdown</h5>
     <p-dropdown [options]="cities" [(ngModel)]="selectedCity" placeholder="Select a City" optionLabel="name" [showClear]="true"></p-dropdown>
 </div>

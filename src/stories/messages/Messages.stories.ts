@@ -31,7 +31,7 @@ export default {
 
 const MessageTemplate = `<p-messages [(value)]="messages"></p-messages>`;
 
-const Template: Story<any> = (props: any) => {
+const Template: Story<any> = () => {
   const template = MessageTemplate;
   return {
     props: {

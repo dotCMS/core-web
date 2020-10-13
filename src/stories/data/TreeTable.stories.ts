@@ -1,6 +1,4 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
 import { Meta } from '@storybook/angular/types-6-0';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TreeTableModule } from 'primeng/treetable';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -363,7 +361,7 @@ const BasicTemplate = `
                   <p-button icon="pi pi-search" styleClass="p-button-success" [style]="{'margin-right': '.5em'}"></p-button>
                   <p-button icon="pi pi-pencil" styleClass="p-button-warning"></p-button>
               </td>
-          </tr>            
+          </tr>
       </ng-template>
       <ng-template pTemplate="summary">
               <div style="text-align:left">
