@@ -58,7 +58,7 @@ const I8N_BASE = 'api.sites.ruleengine';
     [class.cw-saving]="saving" [class.cw-saved]="saved" [class.cw-out-of-sync]="!saved && !saving">
   <div flex layout="row" class="cw-header" *ngIf="!hidden" (click)="setRuleExpandedState(!rule._expanded)">
     <div flex="70" layout="row" layout-align="start center" class="cw-header-info" >
-      <i flex="none" class="cw-header-info-arrow pi" [class.pi-angle-right]="!rule._expanded" [class.pi-angle-down]="rule._expanded" aria-hidden="true"></i>
+      <i class="cw-header-info-arrow pi" [class.pi-angle-right]="!rule._expanded" [class.pi-angle-down]="rule._expanded" aria-hidden="true"></i>
       <div flex="70" layout="column">
           <input  pInputText
                   class="cw-rule-name-input"

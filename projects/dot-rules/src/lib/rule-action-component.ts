@@ -37,9 +37,7 @@ import { LoggerService } from 'dotcms-js';
                     <button
                         pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"
                         (click)="onDeleteRuleActionClicked()"
-                        [disabled]="!action.isPersisted()"
-                    >
-                        <i class="trash icon"></i>
+                        [disabled]="!action.isPersisted()">
                     </button>
                 </div>
             </div>

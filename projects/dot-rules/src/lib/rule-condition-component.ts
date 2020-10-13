@@ -14,9 +14,7 @@ import { LoggerService } from 'dotcms-js';
     selector: 'rule-condition',
     template: `<div *ngIf="typeDropdown != null" flex layout="row" class="cw-condition cw-entry">
   <div class="cw-btn-group cw-condition-toggle">
-    <button pButton class="p-button-outlined" aria-label="Swap And/Or" (click)="toggleOperator()" *ngIf="index !== 0">
-      {{condition.operator}}
-    </button>
+    <button pButton class="p-button-outlined" aria-label="Swap And/Or" (click)="toggleOperator()" [label]="condition.operator" *ngIf="index !== 0"></button>
   </div>
 
   <cw-input-dropdown
