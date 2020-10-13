@@ -5,7 +5,7 @@ p-chips.ng-dirty.ng-invalid > .p-chips > .p-inputtext {
 }
 
 .p-chips .p-chips-multiple-container {
-  padding: 0.375rem $spacing-3;
+  padding: 0.375rem $spacing-2;
 }
 .p-chips .p-chips-multiple-container:not(.p-disabled):hover {
   border-color: #000001;
@@ -17,21 +17,21 @@ p-chips.ng-dirty.ng-invalid > .p-chips > .p-inputtext {
   border-color:  $brand-primary;
 }
 .p-chips .p-chips-multiple-container .p-chips-token {
-  padding: 0.375rem $spacing-3;
-  margin-right: $spacing-2;
-  background: $color-hightlight;
+  padding: 0.375rem $spacing-2;
+  margin-right: $spacing-1;
+  background: $bg-color-secondary;
   color:  $brand-primary;
   border-radius: 2px;
 }
 .p-chips .p-chips-multiple-container .p-chips-token .p-chips-token-icon {
-  margin-left: $spacing-2;
+  margin-left: $spacing-1;
 }
 .p-chips .p-chips-multiple-container .p-chips-input-token {
   padding: 0.375rem 0;
 }
 .p-chips .p-chips-multiple-container .p-chips-input-token input {
   font-family: $body-text;
-  font-size: $spacing-4;
+  font-size: $spacing-3;
   color: #000001;
   padding: 0;
   margin: 0;

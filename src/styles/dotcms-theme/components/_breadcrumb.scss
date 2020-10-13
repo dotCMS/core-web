@@ -3,7 +3,7 @@
   background: #ffffff;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
-  padding: $spacing-3;
+  padding: $spacing-2;
 }
 .p-breadcrumb ul li .p-menuitem-link {
   transition: none;
@@ -21,7 +21,7 @@
   color: rgba(0, 0, 0, 0.6);
 }
 .p-breadcrumb ul li.p-breadcrumb-chevron {
-  margin: 0 $spacing-2 0 $spacing-2;
+  margin: 0 $spacing-1 0 $spacing-1;
   color: rgba(0, 0, 0, 0.6);
 }
 .p-breadcrumb ul li:last-child .p-menuitem-text {

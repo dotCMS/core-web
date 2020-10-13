@@ -26,7 +26,7 @@ export default {
   },
 } as Meta;
 
-const DropdownTemplate = `<p-dropdown [options]="options"></p-dropdown>`;
+const DropdownTemplate = `<p-dropdown [options]="options" showClear="true"></p-dropdown>`;
 const Template: Story<Dropdown> = (args: Dropdown) => {
   return {
     props: args,

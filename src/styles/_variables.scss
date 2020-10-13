@@ -23,26 +23,29 @@ $brand-primary_rgb: var(--color-main_rgb);
 $brand-secondary: var(--color-sec);
 $brand-secondary_rgb: var(--color-sec_rgb);
 $brand-background: var(--color-background);
-$color-hightlight: rgba($brand-secondary_rgb, 0.12);
+$bg-color-primary: rgba($brand-primary_rgb, 0.12);
+$bg-color-secondary: rgba($brand-secondary_rgb, 0.12);
 
 // Paginator
 $paginator-text-color: rgba(0, 0, 0, 0.6);
 $paginator-border-color: rgba($brand-secondary_rgb, 0.12);
 
+// TODO: Search replace font-size: $spacing-4 (font-size: 1.25rem)
+
 // Spacing
 $spacing-0: 0;
-$spacing-1: 0.25rem;
-$spacing-2: 0.5rem;
-$spacing-3: 0.75rem;
-$spacing-4: 1rem;
-$spacing-5: 1.25rem;
-$spacing-6: 1.5rem;
-$spacing-7: 1.75rem;
-$spacing-8: 2rem;
-$spacing-9: 2.25rem;
-$spacing-10: 2.5rem;
-$spacing-11: 2.75rem;
-$spacing-12: 3rem;
+$spacing-1: 0.5rem; 
+$spacing-2: 0.75rem;
+$spacing-3: 1rem;
+$spacing-4: 1.5rem;
+$spacing-5: 2rem;
+$spacing-6: 2.5rem;
+$spacing-7: 3rem;
+// TODO: Search and replace
+$spacing-8: 2.25rem;
+$spacing-9: 2.5rem;
+$spacing-10: 2.75rem;
+$spacing-11: 3rem;
 
 $orange: #f3762a;
 $white: #fff;
@@ -64,8 +67,8 @@ $icon-button-size: 32px;
 $line-height: 1.5em;
 
 // TYPOGRAPHY
-$font-size-xx-large: 24px;
-$font-size-x-large: 18px;
+$font-size-xx-large: 24px; //1.75rem
+$font-size-x-large: 18px; // 1.25rem
 $font-size-large: 16px;
 $font-size-medium: 14px;
 $font-size-small: 12px;

@@ -80,11 +80,12 @@ describe('DotLoginComponent', () => {
 
     it('should load form labels correctly', () => {
         const header: DebugElement = de.query(By.css('h3'));
-        const inputLabels: DebugElement[] = de.queryAll(By.css('span[dotmdinputtext] label'));
+        const inputLabels: DebugElement[] = de.queryAll(By.css('label'));
         const recoverPasswordLink: DebugElement = de.query(By.css('a[actionlink]'));
         const rememberMe: DebugElement = de.query(By.css('p-checkbox label'));
         const submitButton: DebugElement = de.query(By.css('.login__button'));
         const productInformation: DebugElement[] = de.queryAll(By.css('.login__footer span'));
+
         expect(header.nativeElement.innerHTML).toEqual('Welcome!');
         expect(inputLabels[0].nativeElement.innerHTML).toEqual('Email Address');
         expect(inputLabels[1].nativeElement.innerHTML).toEqual('Password');
@@ -177,7 +178,7 @@ describe('DotLoginComponent', () => {
 
         fixture.detectChanges();
 
-        const erroresMessages = de.queryAll(By.css('.ui-messages-error'));
+        const erroresMessages = de.queryAll(By.css('.p-invalid'));
         expect(erroresMessages.length).toBe(2);
     });
 

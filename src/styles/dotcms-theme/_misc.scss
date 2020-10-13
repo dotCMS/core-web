@@ -9,7 +9,7 @@
 
 .p-component {
     font-family: $body-text;
-  font-size: $spacing-4;
+  font-size: $spacing-3;
   font-weight: normal;
 }
 
@@ -28,11 +28,11 @@
 }
 
 .pi {
-  font-size: $spacing-4;
+  font-size: $spacing-3;
 }
 
 .p-link {
-  font-size: $spacing-4;
+  font-size: $spacing-3;
   font-family: $body-text;
   border-radius: 4px;
 }
@@ -46,7 +46,7 @@
   width: auto;
 }
 .p-fluid .p-inputgroup .p-button.p-button-icon-only {
-  width: $spacing-9;
+  width: $spacing-8;
 }
 
 .p-blockui.p-component-overlay {
@@ -60,6 +60,6 @@
 
   &> label {
      display: inline-block;
-    margin-bottom: $spacing-2;
+    margin-bottom: $spacing-1;
   }
 }

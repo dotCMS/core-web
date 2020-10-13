@@ -68,7 +68,7 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
 }
 
 .p-checkbox-label {
-  margin-left: $spacing-2;
+  margin-left: $spacing-1;
 }
 
 .p-checkbox {
@@ -92,8 +92,8 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
 .p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon:before {
   content: "";
   position: absolute;
-  top: 6px;
-  left: 1px;
+  top: 8px;
+  left: 2px;
   border-right: 2px solid transparent;
   border-bottom: 2px solid transparent;
   transform: rotate(45deg);
@@ -104,11 +104,11 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
   box-shadow: 0 0 1px 10px rgba($brand-secondary_rgb, 0.04);
 }
 .p-checkbox:not(.p-checkbox-disabled).p-checkbox-focused {
-  box-shadow: 0 0 1px 10px $color-hightlight;
+  box-shadow: 0 0 1px 10px $bg-color-secondary;
 }
 .p-checkbox.p-checkbox-checked:not(.p-checkbox-disabled):hover {
   box-shadow: 0 0 1px 10px rgba(63, 81, 181, 0.04);
 }
 .p-checkbox.p-checkbox-checked:not(.p-checkbox-disabled).p-checkbox-focused {
-  box-shadow: 0 0 1px 10px $color-hightlight;
+  box-shadow: 0 0 1px 10px $bg-color-secondary;
 }
