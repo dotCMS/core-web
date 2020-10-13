@@ -1,0 +1,64 @@
+@use "variables" as *;
+
+* { box-sizing: border-box; }
+
+:root {
+  font-size: 14px;''
+  font-family: $body-text;
+}
+
+.p-component {
+  font-size: $spacing-4;
+  font-weight: normal;
+}
+
+.p-component-overlay {
+  background-color: rgba(0, 0, 0, 0.32);
+  transition-duration: 0.2s;
+}
+
+.p-disabled, .p-component:disabled {
+  opacity: 0.38;
+}
+
+
+.p-text-secondary {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.pi {
+  font-size: $spacing-4;
+}
+
+.p-link {
+  font-size: $spacing-4;
+  font-family: $body-text;
+  border-radius: 4px;
+}
+.p-link:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+.p-fluid .p-inputgroup .p-button {
+  width: auto;
+}
+.p-fluid .p-inputgroup .p-button.p-button-icon-only {
+  width: $spacing-9;
+}
+
+.p-blockui.p-component-overlay {
+  background: rgba(0, 0, 0, 0.32);
+}
+
+/* Kitchen sink styles */
+.form__group {
+  width: 100%;
+  margin: 16px 0;
+
+  &> label {
+     display: inline-block;
+    margin-bottom: $spacing-2;
+  }
+}

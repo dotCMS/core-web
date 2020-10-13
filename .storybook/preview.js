@@ -3,5 +3,8 @@ import docJson from '../documentation.json';
 setCompodocJson(docJson);
 
 export const parameters = {
-    actions: { argTypesRegex: '^on[A-Z].*' }
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    docs: {
+        iframeHeight: 200
+    }
 };

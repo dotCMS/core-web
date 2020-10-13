@@ -1,20 +1,15 @@
-@import "styles/variables";
-@import "styles/mixins";
-@import "styles/forms";
-@import "styles/typography";
+@import "variables";
+@import "forms";
+@import "mixins";
+@import "typography";
+@import "primeng-theme/utils/_theme-variables.scss"; /* temporary */
+@import "dotcms-theme/theme"; /* prime-ng */
 
 /*
     FONT AWESOME
     Legacy code, this is to support font awesome icons in the main navigation
 */
 @import "../node_modules/font-awesome/css/font-awesome.css";
-
-// PRIME NG
-@import "../node_modules/primeicons/primeicons.css";
-@import "../node_modules/primeng/resources/primeng.css";
-@import "../node_modules/primeng/resources/primeng.css";
-@import "styles/primeng-theme/base";
-@import "../node_modules/primeng/resources/themes/mdc-light-indigo/theme.css"; // temporary
 
 
 .p-button-label {
@@ -25,15 +20,15 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 // DIRECTIVES
-@import "app/view/directives/ripple/ripple-effect.directive.scss";
-@import "app/view/directives/md-inputtext/md-input-text.directive.scss";
+// @import "app/view/directives/ripple/ripple-effect.directive.scss";
+// @import "app/view/directives/md-inputtext/md-input-text.directive.scss";
 
 // // GOOGLE FONTS
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700");
 
 // PRIMEFLEX
-@import '../node_modules/primeflex/src/_variables.scss';
-@import '../node_modules/primeflex/src/_grid.scss';
+// @import '../node_modules/primeflex/src/_variables.scss';
+// @import '../node_modules/primeflex/src/_grid.scss';
 
 //DRAGULA
 /* in-flight clone */

@@ -1,5 +1,5 @@
-@import "mixins";
 @import "variables";
+@import "mixins";
 
 :host {
     background-color: $gray-bg;
@@ -57,7 +57,7 @@ dot-whats-changed,
         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f0f0f0', GradientType=1);
         margin: 0 auto;
         padding: 0 10px;
-        
+
         &:before {
             content: "";
             display: block;

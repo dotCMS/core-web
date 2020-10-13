@@ -1,0 +1,32 @@
+@use "variables" as *;
+.p-breadcrumb {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: $spacing-3;
+}
+.p-breadcrumb ul li .p-menuitem-link {
+  transition: none;
+  border-radius: 4px;
+}
+.p-breadcrumb ul li .p-menuitem-link:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+}
+.p-breadcrumb ul li .p-menuitem-link .p-menuitem-text {
+  color: #000001;
+}
+.p-breadcrumb ul li .p-menuitem-link .p-menuitem-icon {
+  color: rgba(0, 0, 0, 0.6);
+}
+.p-breadcrumb ul li.p-breadcrumb-chevron {
+  margin: 0 $spacing-2 0 $spacing-2;
+  color: rgba(0, 0, 0, 0.6);
+}
+.p-breadcrumb ul li:last-child .p-menuitem-text {
+  color: #000001;
+}
+.p-breadcrumb ul li:last-child .p-menuitem-icon {
+  color: rgba(0, 0, 0, 0.6);
+}

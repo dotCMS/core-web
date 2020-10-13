@@ -1,0 +1,59 @@
+
+@use "variables" as *;
+
+.p-listbox {
+  background: #ffffff;
+  color: #000001;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+.p-listbox .p-listbox-header {
+  padding: $spacing-3;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: #000001;
+  background: #ffffff;
+  margin: 0;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+.p-listbox .p-listbox-header .p-listbox-filter {
+  padding-right: $spacing-7;
+}
+.p-listbox .p-listbox-header .p-listbox-filter-icon {
+  right: $spacing-3;
+  color: rgba(0, 0, 0, 0.6);
+}
+.p-listbox .p-listbox-header .p-checkbox {
+  margin-right: $spacing-2;
+}
+.p-listbox .p-listbox-list {
+  padding: 0;
+}
+.p-listbox .p-listbox-list .p-listbox-item {
+  margin: 0;
+  padding: $spacing-3 $spacing-3;
+  border: 0 none;
+  color: #000001;
+  transition: none;
+  border-radius: 0;
+}
+.p-listbox .p-listbox-list .p-listbox-item.p-highlight {
+  color:  $brand-primary;
+  background: rgba(63, 81, 181, 0.12);
+}
+.p-listbox .p-listbox-list .p-listbox-item:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+}
+.p-listbox .p-listbox-list .p-listbox-item .p-checkbox {
+  margin-right: $spacing-2;
+}
+.p-listbox:not(.p-disabled) .p-listbox-item:not(.p-highlight):not(.p-disabled):hover {
+  color: #000001;
+  background: $color-hightlight;  
+}
+
+.p-listbox-item .p-ink {
+  background-color: rgba(63, 81, 181, 0.16);
+}
