@@ -3,11 +3,11 @@
 .p-badge {
   background:  $brand-primary;
   color: #ffffff;
-  font-size: $spacing-3;
+  font-size: $spacing-2;
   font-weight: 700;
-  min-width: $spacing-6;
-  height: $spacing-6;
-  line-height: $spacing-6;
+  min-width: $spacing-4;
+  height: $spacing-4;
+  line-height: $spacing-4;
 }
 .p-badge.p-badge-secondary {
   background-color: #ff4081;
@@ -31,23 +31,23 @@
 }
 .p-badge.p-badge-lg {
   font-size: 1.125rem;
-  min-width: $spacing-9;
-  height: $spacing-9;
-  line-height: $spacing-9;
+  min-width: $spacing-8;
+  height: $spacing-8;
+  line-height: $spacing-8;
 }
 .p-badge.p-badge-xl {
-  font-size: $spacing-6;
-  min-width: $spacing-12;
-  height: $spacing-12;
-  line-height: $spacing-12;
+  font-size: 1.5rem;
+  min-width: $spacing-7;
+  height: $spacing-7;
+  line-height: $spacing-7;
 }
 
 .p-tag {
   background:  $brand-primary;
   color: #ffffff;
-  font-size: $spacing-3;
+  font-size: $spacing-2;
   font-weight: 700;
-  padding: $spacing-1 0.4rem;
+  padding: 0.25rem 0.4rem;
   border-radius: 4px;
 }
 .p-tag.p-tag-success {

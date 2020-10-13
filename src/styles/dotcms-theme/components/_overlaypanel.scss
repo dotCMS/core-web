@@ -8,18 +8,18 @@
   box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
 }
 .p-overlaypanel .p-overlaypanel-content {
-  padding: $spacing-3;
+  padding: $spacing-2;
 }
 .p-overlaypanel .p-overlaypanel-close {
   background:  $brand-primary;
   color: #ffffff;
-  width: $spacing-8;
-  height: $spacing-8;
+  width: $spacing-5;
+  height: $spacing-5;
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
   border-radius: 50%;
   position: absolute;
-  top: -$spacing-4;
-  right: -$spacing-4;
+  top: -$spacing-3;
+  right: -$spacing-3;
 }
 .p-overlaypanel .p-overlaypanel-close:enabled:hover {
   background: var(--color-main_mod);
@@ -43,5 +43,5 @@
 }
 
 .p-overlaypanel .p-overlaypanel-content {
-  padding: $spacing-6;
+  padding: $spacing-4;
 }

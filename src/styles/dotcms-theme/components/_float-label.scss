@@ -1,16 +1,16 @@
 @use "variables" as *;
 .p-float-label > label {
-  left: $spacing-3;
+  left: $spacing-2;
   color: rgba(0, 0, 0, 0.6);
   transition-duration: 0.2s;
 }
 
 .p-float-label .p-autocomplete-multiple-container .p-autocomplete-token {
-  padding: $spacing-1 $spacing-4;
+  padding: 0.25rem $spacing-3;
 }
 
 .p-float-label .p-chips-multiple-container .p-chips-token {
-  padding: $spacing-1 $spacing-4;
+  padding: 0.25rem $spacing-3;
 }
 
 .p-float-label input:focus ~ label,
@@ -19,7 +19,7 @@
 .p-float-label textarea.p-filled ~ label,
 .p-float-label .p-inputwrapper-focus ~ label,
 .p-float-label .p-inputwrapper-filled ~ label {
-  top: -$spacing-2 !important;
+  top: -$spacing-1 !important;
   background-color: #ffffff;
   padding: 2px 4px;
   margin-left: -4px;

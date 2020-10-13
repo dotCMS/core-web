@@ -8,7 +8,7 @@
   border-radius: 4px;
 }
 .p-listbox .p-listbox-header {
-  padding: $spacing-3;
+  padding: $spacing-2;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   color: #000001;
   background: #ffffff;
@@ -17,21 +17,21 @@
   border-top-left-radius: 4px;
 }
 .p-listbox .p-listbox-header .p-listbox-filter {
-  padding-right: $spacing-7;
+  padding-right: $spacing-6;
 }
 .p-listbox .p-listbox-header .p-listbox-filter-icon {
-  right: $spacing-3;
+  right: $spacing-2;
   color: rgba(0, 0, 0, 0.6);
 }
 .p-listbox .p-listbox-header .p-checkbox {
-  margin-right: $spacing-2;
+  margin-right: $spacing-1;
 }
 .p-listbox .p-listbox-list {
   padding: 0;
 }
 .p-listbox .p-listbox-list .p-listbox-item {
   margin: 0;
-  padding: $spacing-3 $spacing-3;
+  padding: $spacing-2 $spacing-2;
   border: 0 none;
   color: #000001;
   transition: none;
@@ -47,11 +47,11 @@
   box-shadow: none;
 }
 .p-listbox .p-listbox-list .p-listbox-item .p-checkbox {
-  margin-right: $spacing-2;
+  margin-right: $spacing-1;
 }
 .p-listbox:not(.p-disabled) .p-listbox-item:not(.p-highlight):not(.p-disabled):hover {
   color: #000001;
-  background: $color-hightlight;  
+  background: $bg-color-secondary;  
 }
 
 .p-listbox-item .p-ink {
