@@ -93,7 +93,7 @@ const I8N_BASE = 'api.sites.ruleengine';
                         (click)="onCreateConditionGroupClicked(); setRuleExpandedState(true); $event.stopPropagation()" [disabled]="!rule.isPersisted()">
                 </button>
             </span>
-          <p-slideMenu #ruleOptions appendTo="body" popup="true" [model]="ruleActionOptions"></p-slideMenu>
+          <p-menu #ruleOptions appendTo="body" popup="true" [model]="ruleActionOptions"></p-menu>
         </div>
       </div>
     </div>

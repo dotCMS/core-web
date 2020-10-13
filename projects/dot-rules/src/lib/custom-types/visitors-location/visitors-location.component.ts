@@ -4,7 +4,6 @@ import { FormControl } from '@angular/forms';
 import { LoggerService } from 'dotcms-js';
 import { GCircle } from '../../models/gcircle.model';
 
-
 const UNITS = {
     km: {
         km: len => len,
@@ -54,8 +53,9 @@ const UNITS = {
       />
   </div>
   <div flex layout="column" class="cw-input cw-last">
-    <button class="ui button cw-button-add" aria-label="Show Map" (click)="toggleMap()">
-      <i class="plus icon" aria-hidden="true"></i>Show Map
+    <button pButton
+            class="p-button-outlined secondary" icon="pi pi-plus"
+            label="Show Map" aria-label="Show Map" (click)="toggleMap()">
     </button>
   </div>
 </div>

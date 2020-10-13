@@ -56,7 +56,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { SlideMenuModule } from 'primeng/slidemenu';
+import { MenuModule } from 'primeng/menu';
 
 
 @NgModule({
@@ -71,14 +71,14 @@ import { SlideMenuModule } from 'primeng/slidemenu';
         AutoCompleteModule,
         DialogModule,
         ButtonModule,
-        SlideMenuModule,
         MessagesModule,
         MessageModule,
         CalendarModule,
         DotAutocompleteTagsModule,
         HttpClientModule,
         DotAutofocusModule,
-        DotUnlicenseModule
+        DotUnlicenseModule,
+        MenuModule
     ],
     declarations: [
         AddToBundleDialogComponent,

@@ -19,7 +19,7 @@ import { LoggerService } from 'dotcms-js';
     {{rsrc('inputs.group.whenConditions.label') | async}}
   </div>
   <div class="cw-condition-group-separator" *ngIf="groupIndex !== 0">
-    <button pButton tiny class="p-button-outlined" (click)="toggleGroupOperator()" [label]="group.operator"></button>
+    <button pButton tiny class="p-button-outlined p-button-sm" (click)="toggleGroupOperator()" [label]="group.operator"></button>
     <span flex class="cw-header-text">
         {{rsrc('inputs.group.whenFurtherConditions.label') | async}}
     </span>
