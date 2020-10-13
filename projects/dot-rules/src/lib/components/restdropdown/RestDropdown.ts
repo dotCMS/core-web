@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnChanges, Optional } from '@angular/core';
 import { AfterViewInit, Output, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NgControl, ControlValueAccessor } from '@angular/forms';
 import { CoreWebService } from 'dotcms-js';
-import { Verify } from '../../../services/validation/Verify';
+import { Verify } from '../../services/validation/Verify';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 

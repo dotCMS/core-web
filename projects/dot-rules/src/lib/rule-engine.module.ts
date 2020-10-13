@@ -13,12 +13,12 @@ import { ConditionComponent } from './rule-condition-component';
 import { ConditionGroupComponent } from './rule-condition-group-component';
 import { ConditionGroupService } from './services/ConditionGroup';
 import { ConditionService } from './services/Condition';
-import { Dropdown } from './semantic/modules/dropdown/dropdown';
+import { Dropdown } from './components/dropdown/dropdown';
 import { GoogleMapService } from './services/GoogleMapService';
 import { I18nService } from './services/system/locale/I18n';
-import { InputDate } from './semantic/elements/input-date/input-date';
+import { InputDate } from './components/input-date/input-date';
 import { ModalDialogComponent } from './modal-dialog/dialog-component';
-import { RestDropdown } from './semantic/modules/restdropdown/RestDropdown';
+import { RestDropdown } from './components/restdropdown/RestDropdown';
 import { RuleActionComponent } from './rule-action-component';
 import { RuleComponent } from './rule-component';
 import { RuleEngineComponent } from './rule-engine';
@@ -56,6 +56,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { SlideMenuModule } from 'primeng/slidemenu';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
         AutoCompleteModule,
         DialogModule,
         ButtonModule,
+        SlideMenuModule,
         MessagesModule,
         MessageModule,
         CalendarModule,

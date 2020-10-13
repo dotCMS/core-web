@@ -10,10 +10,7 @@ import {
 import { NgControl, ControlValueAccessor } from '@angular/forms';
 import * as _ from 'lodash';
 
-/**
- * Angular 2 wrapper around Semantic UI Input Element.
- * @see http://semantic-ui.com/elements/input.html
- */
+
 // @dynamic
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,

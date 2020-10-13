@@ -82,8 +82,7 @@ export interface ConditionActionEvent extends RuleActionEvent {
   selector: 'cw-rule-engine-container',
   styleUrls: [
     './styles/rule-engine.scss',
-    './styles/angular-material.layouts.scss',
-    './semantic/assets/semantic.css'
+    './styles/angular-material.layouts.scss'
   ],
   template: `
     <cw-rule-engine

@@ -35,8 +35,7 @@ import { LoggerService } from 'dotcms-js';
             <div class="cw-btn-group cw-delete-btn">
                 <div class="ui basic icon buttons">
                     <button
-                        class="ui button"
-                        aria-label="Delete Action"
+                        pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"
                         (click)="onDeleteRuleActionClicked()"
                         [disabled]="!action.isPersisted()"
                     >

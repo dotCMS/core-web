@@ -378,6 +378,12 @@ $finder-s-input: '.ui.input input';
 
     }
 
+    .cw-header-info-arrow {
+        font-size: 16px;
+        font-weight: bold;
+        padding: .5em;
+    }
+
     .cw-condition-group-separator, .cw-action-separator {
         padding: .5em 1em;
         background-color: $background-secondary;
