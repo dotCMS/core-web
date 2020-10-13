@@ -264,7 +264,7 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         describe('with license', () => {
-            it("should have what's change selector", async () => {
+            xit("should have what's change selector", async () => {
                 componentHost.pageState.state.mode = DotPageMode.PREVIEW;
                 fixtureHost.detectChanges();
                 await fixtureHost.whenStable();

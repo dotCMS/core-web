@@ -31,6 +31,7 @@ import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import cleanUpDialog from '@tests/clean-up-dialog';
 
 describe('DotAddContentletComponent', () => {
     let component: DotAddContentletComponent;
@@ -130,9 +131,6 @@ describe('DotAddContentletComponent', () => {
     });
 
     afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
+        cleanUpDialog(fixture);
     });
 });

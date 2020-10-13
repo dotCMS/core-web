@@ -45,7 +45,6 @@ describe('DotEditPageNavComponent', () => {
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
-    let testbed;
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
@@ -59,7 +58,7 @@ describe('DotEditPageNavComponent', () => {
 
     beforeEach(
         waitForAsync(() => {
-            testbed = TestBed.configureTestingModule({
+            TestBed.configureTestingModule({
                 imports: [RouterTestingModule, TooltipModule, DotIconModule, DotPipesModule],
                 declarations: [DotEditPageNavComponent, TestHostComponent],
                 providers: [
@@ -86,16 +85,14 @@ describe('DotEditPageNavComponent', () => {
                 ]
             });
 
-            fixture = testbed.createComponent(TestHostComponent);
+            fixture = TestBed.createComponent(TestHostComponent);
             de = fixture.debugElement;
             component = de.query(By.css('dot-edit-page-nav')).componentInstance;
             fixture.componentInstance.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(mockDotRenderedPage())
             );
-            dotContentletEditorService = fixture.debugElement.injector.get(
-                DotContentletEditorService
-            );
+            dotContentletEditorService = TestBed.inject(DotContentletEditorService);
             fixture.detectChanges();
         })
     );
@@ -137,7 +134,7 @@ describe('DotEditPageNavComponent', () => {
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
             const { layout, ...noLayoutPage } = mockDotRenderedPage();
             fixture.componentInstance.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(noLayoutPage)
             );
             component.model = undefined;
@@ -171,7 +168,7 @@ describe('DotEditPageNavComponent', () => {
         // Disable advance template commit https://github.com/dotCMS/core-web/pull/589
         it('should have menu items: Content and Layout', () => {
             fixture.componentInstance.pageState = new DotPageRenderState(
-                mockUser,
+                mockUser(),
                 new DotPageRender(mockDotRenderedPageAdvanceTemplate)
             );
 
@@ -193,7 +190,7 @@ describe('DotEditPageNavComponent', () => {
 
                 component.model = undefined;
                 fixture.componentInstance.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender(mockDotRenderedPageAdvanceTemplate)
                 );
                 fixture.detectChanges();
@@ -209,7 +206,7 @@ describe('DotEditPageNavComponent', () => {
 
             it('should have layout and rules option disabled and enterprise only message when template is advance and license is comunity', () => {
                 fixture.componentInstance.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender(mockDotRenderedPageAdvanceTemplate)
                 );
                 fixture.detectChanges();
@@ -230,7 +227,7 @@ describe('DotEditPageNavComponent', () => {
 
             it('should have code option disabled because user can not edit the page thus the layout or template', () => {
                 fixture.componentInstance.pageState = new DotPageRenderState(
-                    mockUser,
+                    mockUser(),
                     new DotPageRender({
                         ...mockDotRenderedPageAdvanceTemplate,
                         page: {

@@ -124,15 +124,14 @@ describe('DotContentletsComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should call contentlet modal', () => {
+    it('should call contentlet modal', async () => {
         const params = {
             data: {
                 inode: '5cd3b647-e465-4a6d-a78b-e834a7a7331a'
             }
         };
-        fixture.whenStable().then(() => {
-            expect(dotContentletEditorService.edit).toHaveBeenCalledWith(params);
-        });
+        await fixture.whenStable();
+        expect(dotContentletEditorService.edit).toHaveBeenCalledWith(params);
     });
 
     it('should go current portlet and reload data when modal closed', () => {

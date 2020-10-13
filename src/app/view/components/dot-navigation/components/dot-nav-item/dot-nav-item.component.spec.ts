@@ -89,7 +89,7 @@ describe('DotNavItemComponent', () => {
     });
 
     describe('dot-sub-nav', () => {
-        it('should set position correctly if there is not enough space at the bottom', () => {
+        it('should set position correctly if there is not enough space at the bottom', async () => {
             deHost.componentInstance.collapsed = true;
 
             subNav.nativeElement.style.position = 'absolute';
@@ -100,13 +100,13 @@ describe('DotNavItemComponent', () => {
             navItem.triggerEventHandler('mouseenter', {});
             fixtureHost.detectChanges();
 
-            fixtureHost.whenStable().then(() => {
-                expect(subNav.styles).not.toEqual({});
-                spyOnProperty(window, 'innerHeight').and.returnValue(1760);
-                navItem.triggerEventHandler('mouseenter', {});
-                fixtureHost.detectChanges();
-                expect(subNav.styles).toBeDefined();
-            });
+            await fixtureHost.whenStable();
+
+            expect(subNav.styles).not.toEqual({});
+            spyOnProperty(window, 'innerHeight').and.returnValue(1760);
+            navItem.triggerEventHandler('mouseenter', {});
+            fixtureHost.detectChanges();
+            expect(subNav.styles).toBeDefined();
         });
 
         it('should set position correctly if there is enough space at the bottom', () => {

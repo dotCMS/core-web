@@ -59,7 +59,7 @@ describe('DotIframePorletLegacyResolver', () => {
     }));
 
     it('should return if user can access url to be rendered with current license', () => {
-        const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage()));
+        const mock = new DotPageRenderState(mockUser(), new DotPageRender(mockDotRenderedPage()));
         dotPageStateServiceRequestPageSpy.and.returnValue(of(mock));
         spyOn(dotLicenseService, 'canAccessEnterprisePortlet').and.returnValue(of(true));
 

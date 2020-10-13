@@ -11,7 +11,7 @@ class TestHostComponent {}
 describe('DotParseHtmlService', () => {
     let dotParseHtmlService: DotParseHtmlService;
     let fixture: ComponentFixture<TestHostComponent>;
-    const target = document.createElement('div');
+    let target;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -19,6 +19,8 @@ describe('DotParseHtmlService', () => {
             declarations: [TestHostComponent],
             providers: [DotParseHtmlService]
         }).compileComponents();
+
+        target = document.createElement('div');
 
         fixture = TestBed.createComponent(TestHostComponent);
         dotParseHtmlService = fixture.debugElement.injector.get(DotParseHtmlService);

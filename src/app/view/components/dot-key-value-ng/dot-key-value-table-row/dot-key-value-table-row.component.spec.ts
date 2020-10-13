@@ -171,21 +171,21 @@ xdescribe('DotKeyValueTableRowComponent', () => {
             expect(comp.showEditMenu).toBe(false);
         });
 
-        it('should emit save event when button clicked', () => {
+        it('should emit save event when button clicked', async () => {
             hostComponent.variable = { key: 'Key1', value: 'Value1' };
             hostComponentfixture.detectChanges();
             spyOn(comp.save, 'emit');
             de.query(By.css('.field-value-input')).triggerEventHandler('focus', {});
             hostComponentfixture.detectChanges();
-            hostComponentfixture.whenStable().then(() => {
-                de.query(
-                    By.css('.dot-key-value-table-row__variables-actions-edit-save')
-                ).triggerEventHandler('click', {});
-                hostComponent.variablesList = [];
-                hostComponentfixture.detectChanges();
-                expect(comp.save.emit).toHaveBeenCalledWith(comp.variable);
-                expect(comp.showEditMenu).toBe(false);
-            });
+
+            await hostComponentfixture.whenStable();
+            de.query(
+                By.css('.dot-key-value-table-row__variables-actions-edit-save')
+            ).triggerEventHandler('click', {});
+            hostComponent.variablesList = [];
+            hostComponentfixture.detectChanges();
+            expect(comp.save.emit).toHaveBeenCalledWith(comp.variable);
+            expect(comp.showEditMenu).toBe(false);
         });
 
         it('should emit cancel event when button clicked', () => {
@@ -233,18 +233,19 @@ xdescribe('DotKeyValueTableRowComponent', () => {
             expect(valueLabel.nativeElement.innerText).toContain('*');
         });
 
-        it('should switch to hidden mode when clicked on the hidden switch button', () => {
+        it('should switch to hidden mode when clicked on the hidden switch button', async () => {
             hostComponent.isHiddenField = false;
             hostComponent.variable = { key: 'TestKey', hidden: true, value: 'TestValue' };
             hostComponentfixture.detectChanges();
             const valueInput = de.query(By.css('.field-value-input'));
             const switchButton = de.query(By.css('p-inputSwitch')).nativeElement;
             switchButton.dispatchEvent(new Event('onChange'));
+
             hostComponentfixture.detectChanges();
-            hostComponentfixture.whenStable().then(() => {
-                expect(comp.showEditMenu).toBe(true);
-                expect(valueInput.nativeElement.type).toBe('password');
-            });
+            await hostComponentfixture.whenStable();
+
+            expect(comp.showEditMenu).toBe(true);
+            expect(valueInput.nativeElement.type).toBe('password');
         });
     });
 });

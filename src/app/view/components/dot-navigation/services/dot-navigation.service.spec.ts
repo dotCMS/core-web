@@ -119,7 +119,7 @@ export const dotMenuMock1 = () => {
     };
 };
 
-const baseMockUser = {
+const basemockUser = {
     emailAddress: 'admin@dotcms.com',
     firstName: 'Admin',
     lastName: 'Admin',
@@ -128,7 +128,7 @@ const baseMockUser = {
 };
 const baseMockAuth: Auth = {
     loginAsUser: null,
-    user: baseMockUser
+    user: basemockUser
 };
 
 describe('DotNavigationService', () => {

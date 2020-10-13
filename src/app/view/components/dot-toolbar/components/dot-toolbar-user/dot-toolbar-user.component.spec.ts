@@ -118,7 +118,7 @@ describe('DotToolbarUserComponent', () => {
 
     it('should call doLogOut on logout click', () => {
         comp.auth = {
-            user: mockUser,
+            user: mockUser(),
             loginAsUser: null
         };
         fixture.detectChanges();
@@ -131,10 +131,10 @@ describe('DotToolbarUserComponent', () => {
         expect(dotRouterService.doLogOut).toHaveBeenCalled();
     });
 
-    it('should call "logoutAs" in "LoginService" on logout click', () => {
+    it('should call "logoutAs" in "LoginService" on logout click', async () => {
         comp.auth = mockAuth;
         spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(
-            new Promise(resolve => {
+            new Promise((resolve) => {
                 resolve(true);
             })
         );
@@ -152,10 +152,9 @@ describe('DotToolbarUserComponent', () => {
             preventDefault: () => {}
         });
 
-        fixture.whenStable().then(() => {
-            expect(loginService.logoutAs).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(locationService.reload).toHaveBeenCalledTimes(1);
-        });
+        await fixture.whenStable();
+        expect(loginService.logoutAs).toHaveBeenCalledTimes(1);
+        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+        expect(locationService.reload).toHaveBeenCalledTimes(1);
     });
 });

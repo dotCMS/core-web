@@ -44,7 +44,7 @@ describe('DotEditPageLockInfoComponent', () => {
 
     describe('default', () => {
         beforeEach(() => {
-            component.pageState = new DotPageRenderState(mockUser, {
+            component.pageState = new DotPageRenderState(mockUser(), {
                 ...mockDotRenderedPage(),
                 page: {
                     ...mockDotRenderedPage().page,
@@ -68,7 +68,7 @@ describe('DotEditPageLockInfoComponent', () => {
             let lockedMessage: DebugElement;
 
             beforeEach(() => {
-                component.pageState = new DotPageRenderState(mockUser, {
+                component.pageState = new DotPageRenderState(mockUser(), {
                     ...mockDotRenderedPage(),
                     page: {
                         ...mockDotRenderedPage().page,
@@ -103,7 +103,7 @@ describe('DotEditPageLockInfoComponent', () => {
 
         describe('permissions', () => {
             beforeEach(() => {
-                component.pageState = new DotPageRenderState(mockUser, {
+                component.pageState = new DotPageRenderState(mockUser(), {
                     ...mockDotRenderedPage(),
                     page: {
                         ...mockDotRenderedPage().page,
