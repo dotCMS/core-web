@@ -20,7 +20,7 @@ export default {
     }
 } as Meta;
 
-const BasicTemplate = `
+const PrimaryTemplate = `
     <p><button pButton label="Submit"></button></p>
     <p><button pButton label="Submit" icon="pi pi-check"></button></p>
     <p><button pButton label="Submit" icon="pi pi-check" iconPos="right"></button></p>
@@ -41,16 +41,16 @@ const TextTemplate = `
     <p><button pButton label="Disabled" disabled="true" class="p-button-text"></button></p>
 `;
 
-export const Basic: Story = () => {
+export const Primary: Story = () => {
     return {
-        template: BasicTemplate
+        template: PrimaryTemplate
     };
 };
 
-Basic.parameters = {
+Primary.parameters = {
     docs: {
         source: {
-            code: BasicTemplate
+            code: PrimaryTemplate
         }
     }
 };
