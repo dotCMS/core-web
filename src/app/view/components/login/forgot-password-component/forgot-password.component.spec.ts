@@ -93,7 +93,7 @@ describe('ForgotPasswordComponent', () => {
         component.forgotPasswordForm.get('login').markAsDirty();
         fixture.detectChanges();
 
-        const errorMessages = de.queryAll(By.css('.p-messages-error'));
+        const errorMessages = de.queryAll(By.css('.error-message'));
         expect(errorMessages.length).toBe(1);
     });
 

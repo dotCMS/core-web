@@ -276,11 +276,11 @@ describe('DotPushPublishFormComponent', () => {
         pushPublishForm.form.get('expireDate').setValue(null);
         pushPublishForm.form.get('expireDate').markAsDirty();
         fixture.detectChanges();
-        const errorMessages = fixture.debugElement.queryAll(By.css('.p-messages-error'));
+        const errorMessages = fixture.debugElement.queryAll(By.css('.p-invalid'));
 
         expect(errorMessages[0].nativeElement.innerText).toEqual('Publish Date is required');
         expect(errorMessages[1].nativeElement.innerText).toEqual('Expire Date is required');
-        expect(errorMessages[2].nativeElement.innerText).toEqual(
+        expect(errorMessages[2].nativeElement.innerText).toContain(
             'Must add at least one Environment'
         );
     });

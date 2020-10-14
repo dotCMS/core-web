@@ -106,7 +106,7 @@ describe('ResetPasswordComponent', () => {
         component.resetPasswordForm.get('confirmPassword').markAsDirty();
         fixture.detectChanges();
 
-        const errorMessages = de.queryAll(By.css('.p-messages-error'));
+        const errorMessages = de.queryAll(By.css('.p-invalid'));
         expect(errorMessages.length).toBe(2);
     });
 });
