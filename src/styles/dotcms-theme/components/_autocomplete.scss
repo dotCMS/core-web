@@ -1,5 +1,10 @@
 @use "variables" as *;
 
+.p-button.p-autocomplete-dropdown {
+  padding-left: $spacing-3;
+  padding-right: $spacing-3;
+}
+
 .p-autocomplete .p-autocomplete-loader {
   right: $spacing-2;
 }
