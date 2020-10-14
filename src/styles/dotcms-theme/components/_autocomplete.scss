@@ -85,6 +85,8 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     border-left: none;
+    padding: 0;
+    min-width: $spacing-7;
 
     &:enabled:hover, &:enabled:focus {
       background: #f1f1f1;

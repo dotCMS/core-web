@@ -1,5 +1,5 @@
 <form [formGroup]="form" >
-    <div class="form__group">
+    <div class="p-field">
         <label for="content-type-form-host" class="form__label">{{'modes.persona.host' | dm}}</label>
         <dot-site-selector-field
             id="content-type-form-host"
@@ -8,7 +8,7 @@
         ></dot-site-selector-field>
     </div>
 
-    <div class="form__group">
+    <div class="p-field">
         <label for="persona-name" class="form__label">{{'modes.persona.name' | dm}}</label>
         <input id="persona-name" dotAutofocus type="text" (keyup)="setKeyTag()" formControlName="name" name="name" pInputText />
         <dot-field-validation-message
@@ -17,12 +17,12 @@
         </dot-field-validation-message>
     </div>
 
-    <div class="form__group">
+    <div class="p-field">
         <label for="persona-keyTag" class="form__label">{{'modes.persona.key.tag' | dm}}</label>
         <input id="persona-keyTag" type="text" formControlName="keyTag" name="keyTag" pInputText />
     </div>
 
-    <div class="form__group">
+    <div class="p-field">
         <label for="persona-image" class="form__label">{{'modes.persona.upload.file' | dm}}</label>
         <p-fileUpload  *ngIf="!tempUploadedFile"
                        id="persona-image"
@@ -40,7 +40,7 @@
             <button tiny pButton class="p-button-secondary" [label]="'dot.common.remove' | dm" (click)="removeImage()"></button>
         </div>
     </div>
-    <div class="form__group">
+    <div class="p-field">
         <label for="persona-other-tags" class="form__label">{{'modes.persona.other.tags' | dm}}</label>
         <dot-autocomplete-tags id="persona-other-tags" formControlName="tags"
             [placeholder]="'modes.persona.select.tags.placeholder' | dm"
