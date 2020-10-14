@@ -49,11 +49,6 @@ const PORTLETS_ANGULAR = [
         loadChildren: () => import('@portlets/dot-apps/dot-apps.module').then(m => m.DotAppsModule)
     },
     {
-        path: 'pl',
-        loadChildren:
-            () => import('@components/_common/pattern-library/pattern-library.module').then(m => m.PatternLibraryModule)
-    },
-    {
         path: 'notLicensed',
         loadChildren: () => import('@components/not-licensed/not-licensed.module').then(m => m.NotLicensedModule)
     },
