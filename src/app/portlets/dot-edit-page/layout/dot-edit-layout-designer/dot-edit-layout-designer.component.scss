@@ -35,7 +35,7 @@ dot-layout-designer {
     z-index: 1;
 
     ::ng-deep {
-        .ui-toolbar {
+        .p-toolbar {
             border-bottom: solid 1px $gray-light;
             padding: $basic-padding * 2;
         }

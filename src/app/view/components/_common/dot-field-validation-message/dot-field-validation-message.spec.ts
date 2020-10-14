@@ -48,6 +48,6 @@ describe('FieldValidationComponent', () => {
         de = fixture.debugElement.query(By.css('small'));
         el = de.nativeElement;
         expect(el).toBeDefined();
-        expect(el.textContent).toBe('Error message');
+        expect(el.textContent).toContain('Error message');
     });
 });

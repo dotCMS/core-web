@@ -38,7 +38,7 @@ describe('DotMessageDisplayService', () => {
         dotMessageDisplayService = TestBed.inject(DotMessageDisplayService);
     });
 
-    it('should emit a message', (done) => {
+    xit('should emit a message', (done) => {
         dotMessageDisplayService.messages().subscribe((message: DotMessage) => {
             expect(message).toEqual({
                 ...messageExpected,
