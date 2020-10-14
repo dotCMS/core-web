@@ -1,5 +1,5 @@
 <form [formGroup]="form" class="content-type__form" id="content-type-form" novalidate>
-    <div class="form__group">
+    <div class="p-field">
         <span dotMdInputtext [label]="nameFieldLabel">
             <input
                 pInputText
@@ -17,7 +17,7 @@
             [field]="form.get('name')"
         ></dot-field-validation-message>
     </div>
-    <div class="form__group">
+    <div class="p-field">
         <span dotMdInputtext [label]="'contenttypes.form.label.description' | dm">
             <input
                 pInputText
@@ -29,7 +29,7 @@
             />
         </span>
     </div>
-    <div class="form__group">
+    <div class="p-field">
         <label for="content-type-form-host" class="form__label">{{
             'contenttypes.form.field.host_folder.label' | dm
         }}</label>
@@ -40,7 +40,7 @@
             tabindex="3"
         ></dot-site-selector-field>
     </div>
-    <div class="form__group">
+    <div class="p-field">
         <label for="content-type-form-workflow" class="form__label">{{
             'contenttypes.form.label.workflow' | dm
         }}</label>
@@ -49,7 +49,7 @@
             formControlName="workflows"
         ></dot-workflows-selector-field>
     </div>
-    <div class="form__group" formGroupName="systemActionMappings">
+    <div class="p-field" formGroupName="systemActionMappings">
         <label for="content-type-form-workflow" class="form__label">{{
             'contenttypes.form.label.workflow.actions' | dm
         }}</label>
@@ -66,7 +66,7 @@
             'contenttypes.form.hint.error.only.default.scheme.available.in.Community' | dm
         }}</span
     >
-    <div class="form__group">
+    <div class="p-field">
         <div class="ui-g-6">
             <label for="content-type-form-publish-date-field" class="form__label">{{
                 'contenttypes.form.label.publish.date.field' | dm
@@ -98,10 +98,10 @@
             ></p-dropdown>
         </div>
     </div>
-    <span class="form__group-hint" *ngIf="!dateVarOptions.length" id="field-dates-hint">{{
+    <span class="p-field-hint" *ngIf="!dateVarOptions.length" id="field-dates-hint">{{
         'contenttypes.form.message.no.date.fields.defined' | dm
     }}</span>
-    <div class="form__group" *ngIf="form.get('detailPage')">
+    <div class="p-field" *ngIf="form.get('detailPage')">
         <dot-page-selector
             id="content-type-form-detail-page"
             formControlName="detailPage"
@@ -111,7 +111,7 @@
             [label]="'contenttypes.form.field.detail.page' | dm"
         ></dot-page-selector>
     </div>
-    <div class="form__group form__group--helper" *ngIf="form.get('urlMapPattern')">
+    <div class="p-field form__group--helper" *ngIf="form.get('urlMapPattern')">
         <dot-field-helper
             [message]="'contenttypes.hint.URL.map.pattern.hint1' | dm"
         ></dot-field-helper>

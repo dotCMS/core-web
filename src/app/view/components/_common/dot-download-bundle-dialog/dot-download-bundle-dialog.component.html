@@ -9,7 +9,7 @@
         *ngIf="showDialog"
         (ngSubmit)="handleSubmit()"
         (keyup.enter)="handleSubmit()">
-        <div class="form__group">
+        <div class="p-field">
             <label class="form__label"
             >{{ 'download.bundle.i.want' | dm }}:
             </label>
@@ -17,7 +17,7 @@
                             formControlName="downloadOptionSelected">
             </p-selectButton>
         </div>
-        <div class="form__group">
+        <div class="p-field">
             <label class="form__label"
             >{{ 'download.bundle.filter' | dm }}:
             </label>

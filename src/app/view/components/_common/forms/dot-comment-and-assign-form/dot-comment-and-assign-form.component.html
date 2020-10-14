@@ -5,7 +5,7 @@
     (keyup.enter)="emitValues()"
     novalidate
 >
-    <div class="form__group" *ngIf="data['assignable']">
+    <div class="p-field" *ngIf="data['assignable']">
         <label class="form__label">{{ 'assignee.form.assignee' | dm }}:</label>
         <p-dropdown
             [options]="dotRoles"
@@ -14,7 +14,7 @@
             appendTo="body">
         </p-dropdown>
     </div>
-    <div class="form__group" *ngIf="data['commentable']">
+    <div class="p-field" *ngIf="data['commentable']">
         <label class="form__label">{{ 'comment.form.comments' | dm }}:</label>
         <textarea
             pInputTextarea

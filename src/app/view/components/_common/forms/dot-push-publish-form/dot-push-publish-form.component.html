@@ -6,7 +6,7 @@
     novalidate
     #formEl="ngForm"
 >
-    <div class="form__group">
+    <div class="p-field">
         <label class="form__label"
         >{{ 'contenttypes.content.push_publish.I_want_To' | dm }}:
         </label>
@@ -17,7 +17,7 @@
         </p-selectButton>
     </div>
 
-    <div class="form__group">
+    <div class="p-field">
         <label class="form__label"
         >{{ 'contenttypes.content.push_publish.filters' | dm }}:
         </label>
@@ -29,8 +29,8 @@
         ></p-dropdown>
     </div>
 
-    <div class="form__group form-group__two-cols">
-        <div class="form__group push-publish-dialog__publish-date">
+    <div class="p-field form-group__two-cols">
+        <div class="p-field push-publish-dialog__publish-date">
             <label class="form__label"
             >{{ 'contenttypes.content.push_publish.publish_date' | dm }}:
             </label>
@@ -51,7 +51,7 @@
                 [field]="form.get('publishDate')"
             ></dot-field-validation-message>
         </div>
-        <div class="form__group push-publish-dialog__expire-date">
+        <div class="p-field push-publish-dialog__expire-date">
             <label class="form__label"
             >{{ 'contenttypes.content.push_publish.expire_date' | dm }}:
             </label>
@@ -73,7 +73,7 @@
             ></dot-field-validation-message>
         </div>
     </div>
-    <div class="form__group">
+    <div class="p-field">
         <label class="form__label"
         >{{ 'contenttypes.content.push_publish.push_to' | dm }}:
         </label>

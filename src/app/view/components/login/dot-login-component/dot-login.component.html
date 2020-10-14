@@ -18,7 +18,7 @@
         <h3 class="login__title">{{ loginInfo.i18nMessagesMap['welcome-login'] }}</h3>
 
         <div class="error-message" [innerHTML]="message"></div>
-        <div class="form__group form__group--validation">
+        <div class="p-field form__group--validation">
             <span class="p-float-label">
                 <input
                     type="text"
@@ -43,7 +43,7 @@
             >
             </dot-field-validation-message>
         </div>
-        <div class="form__group form__group--validation">
+        <div class="p-field form__group--validation">
             <span class="p-float-label">
                 <input
                     pInputText
@@ -65,7 +65,7 @@
             >
             </dot-field-validation-message>
         </div>
-        <div class="login__password-settings">
+        <div class="login__password-settings p-field">
             <p-checkbox
                 formControlName="rememberMe"
                 binary="true"
@@ -75,7 +75,7 @@
                 loginInfo.i18nMessagesMap['get-new-password']
             }}</a>
         </div>
-        <div class="form__group">
+        <div class="p-field">
             <dot-loading-indicator></dot-loading-indicator>
             <button
                 [disabled]="!loginForm.valid"

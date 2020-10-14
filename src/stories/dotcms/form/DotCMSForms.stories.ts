@@ -227,6 +227,7 @@ Vertical.parameters = {
 };
 
 const HorizontalTemplate = `
+<h3>Inline</h3>
 <div class="p-formgroup-inline">
     <div class="p-field">
         <label for="firstname" class="p-sr-only">Firstname</label>
@@ -261,6 +262,19 @@ const HorizontalTemplate = `
         ></p-multiSelect>
     </div>
     <button pButton type="button" label="Submit"></button>
+</div>
+
+
+<h3>Grid</h3>
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <label for="firstname1">Firstname</label>
+        <input id="firstname1" type="text" pInputText>
+    </div>
+    <div class="p-field p-col">
+        <label for="lastname1">Lastname</label>
+        <input id="lastname1" type="text" pInputText>
+    </div>
 </div>
 
 `;
