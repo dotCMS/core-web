@@ -41,8 +41,8 @@ const items = [
 
 const PrimaryTemplate = `
     <p><p-splitButton label="Save" [model]="items"></p-splitButton></p>
-    <p><p-splitButton label="Save" icon="pi pi-check"></p-splitButton></p>
-    <p><p-splitButton label="Save" icon="pi pi-check" iconPos="right"></p-splitButton></p>
+    <p><p-splitButton label="Save" icon="pi pi-check" [model]="items"></p-splitButton></p>
+    <p><p-splitButton label="Save" icon="pi pi-check" iconPos="right" [model]="items"></p-splitButton></p>
     <p><p-splitButton label="Disabled" disabled="true"></p-splitButton></p>
 `;
 export const Primary: Story = () => {
@@ -64,8 +64,8 @@ Primary.parameters = {
 
 const SecondaryTemplate = `
     <p><p-splitButton label="Save" [model]="items" styleClass="p-button-secondary"></p-splitButton></p>
-    <p><p-splitButton label="Save" icon="pi pi-check" styleClass="p-button-secondary"></p-splitButton></p>
-    <p><p-splitButton label="Save" icon="pi pi-check" iconPos="right" styleClass="p-button-secondary"></p-splitButton></p>
+    <p><p-splitButton label="Save" icon="pi pi-check" styleClass="p-button-secondary" [model]="items"></p-splitButton></p>
+    <p><p-splitButton label="Save" icon="pi pi-check" iconPos="right" styleClass="p-button-secondary" [model]="items"></p-splitButton></p>
     <p><p-splitButton label="Disabled" disabled="true" styleClass="p-button-secondary"></p-splitButton></p>
 `;
 export const Secondary: Story = () => {
@@ -84,27 +84,3 @@ Secondary.parameters = {
         }
     }
 };
-
-const TextTemplate = `
-    <p><p-splitButton label="Save" [model]="items" styleClass="p-button-text"></p-splitButton></p>
-    <p><p-splitButton label="Save" icon="pi pi-check" styleClass="p-button-text"></p-splitButton></p>
-    <p><p-splitButton label="Save" icon="pi pi-check" iconPos="right" styleClass="p-button-text"></p-splitButton></p>
-    <p><p-splitButton label="Disabled" disabled="true" styleClass="p-button-text"></p-splitButton></p>
-`;
-export const Text: Story = () => {
-    return {
-        template: TextTemplate,
-        props: {
-            items
-        }
-    };
-};
-
-Text.parameters = {
-    docs: {
-        source: {
-            code: TextTemplate
-        }
-    }
-};
-
