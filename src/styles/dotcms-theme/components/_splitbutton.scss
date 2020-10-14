@@ -35,6 +35,10 @@
    color: $brand-primary;
 }
 
+.p-splitbutton > .p-splitbutton-menubutton {
+  padding: 0 $spacing-3;
+}
+
 .p-splitbutton > .p-splitbutton-menubutton:disabled {
   border-left: 1px solid $gray-light;
 }
