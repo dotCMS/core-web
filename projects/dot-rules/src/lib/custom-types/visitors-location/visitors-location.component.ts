@@ -54,7 +54,7 @@ const UNITS = {
   </div>
   <div flex layout="column" class="cw-input cw-last">
     <button pButton
-            class="p-button-outlined secondary" icon="pi pi-plus"
+            class="p-button-secondary" icon="pi pi-plus"
             label="Show Map" aria-label="Show Map" (click)="toggleMap()">
     </button>
   </div>
