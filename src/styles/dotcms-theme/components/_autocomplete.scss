@@ -1,5 +1,10 @@
 @use "variables" as *;
 
+.p-button.p-autocomplete-dropdown {
+  padding-left: $spacing-3;
+  padding-right: $spacing-3;
+}
+
 .p-autocomplete .p-autocomplete-loader {
   right: $spacing-2;
 }
@@ -67,7 +72,7 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
 }
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item:hover {
   color: #000001;
-  background: rgba($brand-secondary_rgb, 0.04);
+  background: $bg-color-secondary;
 }
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
   color:  $brand-primary;

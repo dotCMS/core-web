@@ -2,6 +2,7 @@ import { Story, Meta } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from 'primeng/button';
 
 export default {
   title: 'PrimeNG/Overlay/Tooltip',
@@ -15,13 +16,13 @@ export default {
   },
   decorators: [
     moduleMetadata({
-      imports: [TooltipModule, BrowserAnimationsModule],
+      imports: [TooltipModule, ButtonModule, BrowserAnimationsModule],
     }),
   ],
   args: {},
 } as Meta;
 
-const TooltipTemplate = `<input type="text" pTooltip="Enter your username">`;
+const TooltipTemplate = `<button pButton label="Submit" icon="pi pi-check" pTooltip="Edit" tooltipPosition="bottom"></button>`;
 
 const Template: Story<any> = (props: any) => {
   const template = TooltipTemplate;

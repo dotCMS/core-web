@@ -11,7 +11,7 @@
   border-radius: 2px;
 }
 .p-inputtext:enabled:hover {
-  border-color: #000001;
+  border-color: $brand-primary;
 }
 .p-inputtext:enabled:focus {
   outline: 0 none;
