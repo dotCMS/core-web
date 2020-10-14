@@ -19,71 +19,45 @@ export default {
   ],
 } as Meta;
 
-const TooltipTemplate = `
-  <h5>Numbers</h5>
-<div class="badges">
-    <span class="p-badge">2</span>
-    <span class="p-badge p-badge-success">8</span>
-    <span class="p-badge p-badge-info">4</span>
-    <span class="p-badge p-badge-warning">12</span>
-    <span class="p-badge p-badge-danger">3</span>
-</div>
-
-<h5>Tags</h5>
-<div class="badges">
-    <span class="p-tag">Primary</span>
-    <span class="p-tag p-tag-success">Success</span>
-    <span class="p-tag p-tag-info">Info</span>
-    <span class="p-tag p-tag-warning">Warning</span>
-    <span class="p-tag p-tag-danger">Danger</span>
-</div>
-
-<h5>Pills</h5>
-<div class="badges">
-    <span class="p-tag p-tag-rounded">Primary</span>
-    <span class="p-tag p-tag-rounded p-tag-success">Success</span>
-    <span class="p-tag p-tag-rounded p-tag-info">Info</span>
-    <span class="p-tag p-tag-rounded p-tag-warning">Warning</span>
-    <span class="p-tag p-tag-rounded p-tag-danger">Danger</span>
-</div>
-
-<h5>Positioned Badge</h5>
-<span class="p-overlay-badge p-mr-5">
-    <i class="pi pi-bell" style="font-size: 2em"></i>
-    <span class="p-badge">2</span>
-</span>
-
-<span class="p-overlay-badge">
-    <p-button label="New"></p-button>
-    <span class="p-badge p-badge-warning">5</span>
-</span>
-
-<h5>Inline Button Badge</h5>
-<p-button label="Emails" badge="8" styleClass="p-mr-2" ></p-button>
-<p-button label="Messages" icon="pi pi-users" styleClass="p-button-warning" badge="8" badgeClass="p-badge-danger" ></p-button>
-
-<h5>Sizes</h5>
-<div class="badges">
-    <span class="p-badge">2</span>
-    <span class="p-badge p-badge-lg p-badge-sucess">4</span>
-    <span class="p-badge p-badge-xl p-badge-warning">6</span>
-</div>
+const TooltipPrimaryTemplate = `
+  <p><span class="p-badge">2</span></p>
+  <p><span class="p-badge p-badge-lg">4</span></p>
+  <p><span class="p-badge p-badge-xl">6</span></p>
 `;
 
-const Template: Story<any> = (props: any) => {
-  const template = TooltipTemplate;
+const TooltipSecondaryTemplate = `
+  <p><span class="p-badge p-badge-secondary p-badge-secondary">2</span></p>
+  <p><span class="p-badge p-badge-secondary p-badge-lg p-badge-sucess">4</span></p>
+  <p><span class="p-badge p-badge-secondary p-badge-xl">6</span></p>
+`;
+
+
+export const Primary: Story = (props: any) => {
   return {
-    props,
-    template,
-  };
-};
+      props,
+      template: TooltipPrimaryTemplate
+  }
+}
 
-export const Basic: Story = Template.bind({});
-
-Basic.parameters = {
+Primary.parameters = {
   docs: {
     source: {
-      code: TooltipTemplate,
+      code: TooltipPrimaryTemplate,
+    },
+  },
+};
+
+export const Secondary: Story = (props: any) => {
+  return {
+      props,
+      template: TooltipSecondaryTemplate
+  }
+}
+
+Secondary.parameters = {
+  docs: {
+    source: {
+      code: TooltipSecondaryTemplate,
     },
   },
 };
