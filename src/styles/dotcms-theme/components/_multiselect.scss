@@ -70,7 +70,7 @@
 .p-multiselect-panel .p-multiselect-header .p-multiselect-close:enabled:hover {
   color: rgba(0, 0, 0, 0.6);
   border-color: transparent;
-  background: $highlight-bg;
+  background: $bg-color-secondary;
 }
 .p-multiselect-panel .p-multiselect-header .p-multiselect-close:focus {
   outline: 0 none;
@@ -95,7 +95,7 @@
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
   color: $black;
-  background: $highlight-bg;
+  background: $bg-color-secondary;
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
   outline: 0 none;
