@@ -165,7 +165,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                 const attr = button.attributes;
                 expect(attr.icon).toEqual('fa fa-ellipsis-v');
                 expect(attr.pButton).toBeDefined();
-                expect(attr.secondary).toBeDefined();
+                expect(button.classes).toEqual({ 'p-button-secondary': true });
             });
 
             it('should get workflow actions when page changes"', () => {

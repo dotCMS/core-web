@@ -213,6 +213,7 @@ describe('DotWizardComponent', () => {
             fixture.detectChanges();
             expect(formsContainer.nativeElement.style['transform']).toEqual('translateX(-400px)');
         });
+
         it('should update transform property on previous', () => {
             form1.valid.emit(true);
             form2.valid.emit(true);

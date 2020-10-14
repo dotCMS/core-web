@@ -52,7 +52,7 @@ describe('AddToBundleService', () => {
         ];
 
         const mockResponse = {
-            idenfitier: 'id',
+            idenitier: 'id',
             items: mockBundleItems,
             label: 'name',
             numRows: 2
