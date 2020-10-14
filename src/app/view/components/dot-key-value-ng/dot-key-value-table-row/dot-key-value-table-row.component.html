@@ -49,9 +49,8 @@
         <ng-template [ngIf]="showEditMenu" [ngIfElse]="formButtons">
             <button
                 pButton
-                secondary
                 tiny
-                class="dot-key-value-table-row__variables-actions-edit-cancel"
+                class="dot-key-value-table-row__variables-actions-edit-cancel -button-secondary"
                 [label]="'Cancel' | dm"
                 (click)="onCancel($event)"
             ></button>

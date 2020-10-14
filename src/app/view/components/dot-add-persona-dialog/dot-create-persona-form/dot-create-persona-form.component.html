@@ -37,7 +37,7 @@
         <div class="form__file-detail" *ngIf="tempUploadedFile" >
             <img [src]="tempUploadedFile.thumbnailUrl">
             <span>{{tempUploadedFile.fileName}}</span>
-            <button tiny pButton secondary [label]="'dot.common.remove' | dm" (click)="removeImage()"></button>
+            <button tiny pButton class="p-button-secondary" [label]="'dot.common.remove' | dm" (click)="removeImage()"></button>
         </div>
     </div>
     <div class="form__group">

@@ -30,7 +30,7 @@
             *ngIf="actions.cancel"
             class="dialog__button-cancel"
             pButton
-            secondary
+            class="p-button-secondary"
             (click)="cancelAction()"
             [disabled]="actions.cancel.disabled"
             [label]="actions.cancel.label"
