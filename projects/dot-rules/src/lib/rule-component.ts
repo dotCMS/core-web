@@ -88,8 +88,8 @@ const I8N_BASE = 'api.sites.ruleengine';
       <div class="cw-btn-group">
         <div class="ui basic icon buttons">
             <span class="p-buttonset">
-                <button pButton class="p-button-outlined secondary" icon="pi pi-ellipsis-v" (click)="ruleOptions.toggle($event); $event.stopPropagation()"></button>
-                <button pButton class="p-button-outlined secondary" icon="pi pi-plus" arial-label="Add Group"
+                <button pButton class="p-button-secondary" icon="pi pi-ellipsis-v" (click)="ruleOptions.toggle($event); $event.stopPropagation()"></button>
+                <button pButton class="p-button-secondary" icon="pi pi-plus" arial-label="Add Group"
                         (click)="onCreateConditionGroupClicked(); setRuleExpandedState(true); $event.stopPropagation()" [disabled]="!rule.isPersisted()">
                 </button>
             </span>
