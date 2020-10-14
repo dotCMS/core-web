@@ -68,7 +68,7 @@
 }
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background: $highlight-bg;
-  color:  $brand-primary;
+  color:  $highlight-text-color;
 }
 .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
   background: $gray-bg;
