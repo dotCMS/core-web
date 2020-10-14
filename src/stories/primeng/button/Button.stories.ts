@@ -28,10 +28,10 @@ const PrimaryTemplate = `
 `;
 
 const SecondaryTemplate = `
-    <p><button pButton label="Submit" class="p-button-outlined"></button></p>
-    <p><button pButton label="Submit" icon="pi pi-check" class="p-button-outlined"></button></p>
-    <p><button pButton label="Submit" icon="pi pi-check" iconPos="right" class="p-button-outlined"></button></p>
-    <p><button pButton label="Disabled" disabled="true" class="p-button-outlined"></button></p>
+    <p><button pButton label="Submit" class="p-button-secondary"></button></p>
+    <p><button pButton label="Submit" icon="pi pi-check" class="p-button-secondary"></button></p>
+    <p><button pButton label="Submit" icon="pi pi-check" iconPos="right" class="p-button-secondary"></button></p>
+    <p><button pButton label="Disabled" disabled="true" class="p-button-secondary"></button></p>
 `;
 
 const TextTemplate = `

@@ -5,38 +5,18 @@
   color: #ffffff;
   background:  $brand-primary;
   border: 0 none;
-  padding: $spacing-2 $spacing-3;
+  padding: $spacing-2 $spacing-5;
   line-height: 1.5;
   font-size: $spacing-3;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   border-radius: 2px;
 }
+
 .p-button:enabled:hover, .p-button:enabled:active, .p-button:enabled:focus   {
   background: rgba($brand-primary_rgb, .72);
   border-color: transparent;
 }
 
-.p-button-outlined.p-button:enabled:hover, .p-button-outlined.p-button:enabled:active, .p-button-outlined.p-button:enabled:focus   {
-  border-color: $brand-secondary;
-  color: $brand-secondary;
-}
-
-.p-button.p-button-outlined {
-  background-color: transparent;
-  color:  $brand-secondary;
-  border: 1px solid;
-  line-height: 1.4;
-}
-.p-button.p-button-outlined:enabled:hover {
-  background: none;
-  color:  $brand-primary;
-  border: 1px solid;
-}
-.p-button.p-button-outlined:enabled:active {
-  background: rgba(63, 81, 181, 0.16);
-  color:  $brand-primary;
-  border: 1px solid;
-}
 .p-button.p-button-text {
   background-color: transparent;
   color:  $brand-primary;
@@ -157,9 +137,20 @@
   border-bottom: 1px solid $brand-secondary;
   background: none;
 }
-.p-splitbutton.p-button-secondary > .p-splitbutton-menubutton  {
+
+.p-button.p-button-secondary {
   border-right: 1px solid $brand-secondary;
+
+  &:hover {
+    background: none;
+    border-right: 1px solid;
+  }
+
+  &:disabled {
+      border: none;
+  }
 }
+
 .p-button.p-button-secondary:enabled:hover, .p-buttonset.p-button-secondary > .p-button:enabled:hover, .p-splitbutton.p-button-secondary > .p-button:enabled:hover {
  border-top: 1px solid $brand-primary;
   border-left: 1px solid $brand-primary;
@@ -179,34 +170,15 @@
   }
 }
 
-.p-splitbutton.p-button-secondary > .p-splitbutton-menubutton:hover  {
-  border-right: 1px solid $brand-primary;
-}
-
-
 .p-button.p-button-secondary:enabled:focus, .p-buttonset.p-button-secondary > .p-button:enabled:focus, .p-splitbutton.p-button-secondary > .p-button:enabled:focus {
   box-shadow: none;
 }
-.p-button.p-button-secondary:enabled:active, .p-buttonset.p-button-secondary > .p-button:enabled:active, .p-splitbutton.p-button-secondary > .p-button:enabled:active {
-  background: rgba(255, 64, 129, 0.68);
-  color: #ffffff;
+.p-button.p-button-secondary:enabled:active, .p-buttonset.p-button-secondary > .p-button:enabled:active, .p-splitbutton.p-button-secondary > .p-button:enabled:active, .p-button.p-button-secondary:enabled:focus {
+  background: none;
   border-color: transparent;
+  color: $brand-secondary;
 }
-.p-button.p-button-secondary.p-button-outlined, .p-buttonset.p-button-secondary > .p-button.p-button-outlined, .p-splitbutton.p-button-secondary > .p-button.p-button-outlined {
-  background-color: transparent;
-  color: #ff4081;
-  border: 1px solid;
-}
-.p-button.p-button-secondary.p-button-outlined:enabled:hover, .p-buttonset.p-button-secondary > .p-button.p-button-outlined:enabled:hover, .p-splitbutton.p-button-secondary > .p-button.p-button-outlined:enabled:hover {
-  background: rgba(255, 64, 129, 0.04);
-  color: #ff4081;
-  border: 1px solid;
-}
-.p-button.p-button-secondary.p-button-outlined:enabled:active, .p-buttonset.p-button-secondary > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-secondary > .p-button.p-button-outlined:enabled:active {
-  background: rgba(255, 64, 129, 0.16);
-  color: #ff4081;
-  border: 1px solid;
-}
+
 .p-button.p-button-secondary.p-button-text, .p-buttonset.p-button-secondary > .p-button.p-button-text, .p-splitbutton.p-button-secondary > .p-button.p-button-text {
   background-color: transparent;
   color: #ff4081;
@@ -240,21 +212,6 @@
   background: rgba(33, 150, 243, 0.68);
   color: #ffffff;
   border-color: transparent;
-}
-.p-button.p-button-info.p-button-outlined, .p-buttonset.p-button-info > .p-button.p-button-outlined, .p-splitbutton.p-button-info > .p-button.p-button-outlined {
-  background-color: transparent;
-  color: #2196F3;
-  border: 1px solid;
-}
-.p-button.p-button-info.p-button-outlined:enabled:hover, .p-buttonset.p-button-info > .p-button.p-button-outlined:enabled:hover, .p-splitbutton.p-button-info > .p-button.p-button-outlined:enabled:hover {
-  background: rgba(33, 150, 243, 0.04);
-  color: #2196F3;
-  border: 1px solid;
-}
-.p-button.p-button-info.p-button-outlined:enabled:active, .p-buttonset.p-button-info > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-info > .p-button.p-button-outlined:enabled:active {
-  background: rgba(33, 150, 243, 0.16);
-  color: #2196F3;
-  border: 1px solid;
 }
 .p-button.p-button-info.p-button-text, .p-buttonset.p-button-info > .p-button.p-button-text, .p-splitbutton.p-button-info > .p-button.p-button-text {
   background-color: transparent;
@@ -290,21 +247,6 @@
   color: #ffffff;
   border-color: transparent;
 }
-.p-button.p-button-success.p-button-outlined, .p-buttonset.p-button-success > .p-button.p-button-outlined, .p-splitbutton.p-button-success > .p-button.p-button-outlined {
-  background-color: transparent;
-  color: #689F38;
-  border: 1px solid;
-}
-.p-button.p-button-success.p-button-outlined:enabled:hover, .p-buttonset.p-button-success > .p-button.p-button-outlined:enabled:hover, .p-splitbutton.p-button-success > .p-button.p-button-outlined:enabled:hover {
-  background: rgba(104, 159, 56, 0.04);
-  color: #689F38;
-  border: 1px solid;
-}
-.p-button.p-button-success.p-button-outlined:enabled:active, .p-buttonset.p-button-success > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-success > .p-button.p-button-outlined:enabled:active {
-  background: rgba(104, 159, 56, 0.16);
-  color: #689F38;
-  border: 1px solid;
-}
 .p-button.p-button-success.p-button-text, .p-buttonset.p-button-success > .p-button.p-button-text, .p-splitbutton.p-button-success > .p-button.p-button-text {
   background-color: transparent;
   color: #689F38;
@@ -338,21 +280,6 @@
   background: rgba(251, 192, 45, 0.68);
   color: #212529;
   border-color: transparent;
-}
-.p-button.p-button-warning.p-button-outlined, .p-buttonset.p-button-warning > .p-button.p-button-outlined, .p-splitbutton.p-button-warning > .p-button.p-button-outlined {
-  background-color: transparent;
-  color: #FBC02D;
-  border: 1px solid;
-}
-.p-button.p-button-warning.p-button-outlined:enabled:hover, .p-buttonset.p-button-warning > .p-button.p-button-outlined:enabled:hover, .p-splitbutton.p-button-warning > .p-button.p-button-outlined:enabled:hover {
-  background: rgba(251, 192, 45, 0.04);
-  color: #FBC02D;
-  border: 1px solid;
-}
-.p-button.p-button-warning.p-button-outlined:enabled:active, .p-buttonset.p-button-warning > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-warning > .p-button.p-button-outlined:enabled:active {
-  background: rgba(251, 192, 45, 0.16);
-  color: #FBC02D;
-  border: 1px solid;
 }
 .p-button.p-button-warning.p-button-text, .p-buttonset.p-button-warning > .p-button.p-button-text, .p-splitbutton.p-button-warning > .p-button.p-button-text {
   background-color: transparent;
@@ -388,21 +315,6 @@
   color: #ffffff;
   border-color: transparent;
 }
-.p-button.p-button-help.p-button-outlined, .p-buttonset.p-button-help > .p-button.p-button-outlined, .p-splitbutton.p-button-help > .p-button.p-button-outlined {
-  background-color: transparent;
-  color: #9C27B0;
-  border: 1px solid;
-}
-.p-button.p-button-help.p-button-outlined:enabled:hover, .p-buttonset.p-button-help > .p-button.p-button-outlined:enabled:hover, .p-splitbutton.p-button-help > .p-button.p-button-outlined:enabled:hover {
-  background: rgba(156, 39, 176, 0.04);
-  color: #9C27B0;
-  border: 1px solid;
-}
-.p-button.p-button-help.p-button-outlined:enabled:active, .p-buttonset.p-button-help > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-help > .p-button.p-button-outlined:enabled:active {
-  background: rgba(156, 39, 176, 0.16);
-  color: #9C27B0;
-  border: 1px solid;
-}
 .p-button.p-button-help.p-button-text, .p-buttonset.p-button-help > .p-button.p-button-text, .p-splitbutton.p-button-help > .p-button.p-button-text {
   background-color: transparent;
   color: #9C27B0;
@@ -437,21 +349,8 @@
   color: #ffffff;
   border-color: transparent;
 }
-.p-button.p-button-danger.p-button-outlined, .p-buttonset.p-button-danger > .p-button.p-button-outlined, .p-splitbutton.p-button-danger > .p-button.p-button-outlined {
-  background-color: transparent;
-  color: #D32F2F;
-  border: 1px solid;
-}
-.p-button.p-button-danger.p-button-outlined:enabled:hover, .p-buttonset.p-button-danger > .p-button.p-button-outlined:enabled:hover, .p-splitbutton.p-button-danger > .p-button.p-button-outlined:enabled:hover {
-  background: rgba(211, 47, 47, 0.04);
-  color: #D32F2F;
-  border: 1px solid;
-}
-.p-button.p-button-danger.p-button-outlined:enabled:active, .p-buttonset.p-button-danger > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-danger > .p-button.p-button-outlined:enabled:active {
-  background: rgba(211, 47, 47, 0.16);
-  color: #D32F2F;
-  border: 1px solid;
-}
+
+
 .p-button.p-button-danger.p-button-text, .p-buttonset.p-button-danger > .p-button.p-button-text, .p-splitbutton.p-button-danger > .p-button.p-button-text {
   background-color: transparent;
   color: #D32F2F;
@@ -475,8 +374,7 @@
 }
 .p-button-label {
   text-transform: uppercase;
-  font-weight: normal;
-  font-size: 0.90rem;
+  font-weight: 500;
 }
 
 .p-button.p-button-link:enabled:hover {
@@ -507,15 +405,7 @@
 .p-button .p-ink {
   background-color: rgba(255, 255, 255, 0.32);
 }
-.p-button.p-button-text:enabled:focus, .p-button.p-button-outlined:enabled:focus {
-  background: none;
-}
-.p-button.p-button-text:enabled:active, .p-button.p-button-outlined:enabled:active {
-  background: none;
-}
-.p-button.p-button-text .p-ink, .p-button.p-button-outlined .p-ink {
-  background-color: rgba(63, 81, 181, 0.16);
-}
+
 .p-button:disabled {
   background-color: rgba(0, 0, 0, 0.12) !important;
   color: rgba(0, 0, 0, 0.38) !important;
@@ -525,11 +415,7 @@
   background-color: transparent !important;
   color: rgba(0, 0, 0, 0.38) !important;
 }
-.p-button:disabled.p-button-outlined {
-  background-color: transparent !important;
-  color: rgba(0, 0, 0, 0.38) !important;
-  border-color: rgba(0, 0, 0, 0.38) !important;
-}
+
 .p-button.p-button-raised:enabled:focus {
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
@@ -540,13 +426,13 @@
 .p-button.p-button-secondary:enabled:active, .p-buttonset.p-button-secondary > .p-button:enabled:active, .p-splitbutton.p-button-secondary > .p-button:enabled:active {
   border: 1px solid $brand-secondary;
 }
-.p-button.p-button-secondary.p-button-text:enabled:focus, .p-button.p-button-secondary.p-button-outlined:enabled:focus, .p-buttonset.p-button-secondary > .p-button.p-button-text:enabled:focus, .p-buttonset.p-button-secondary > .p-button.p-button-outlined:enabled:focus, .p-splitbutton.p-button-secondary > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-secondary > .p-button.p-button-outlined:enabled:focus {
+.p-button.p-button-secondary.p-button-text:enabled:focus, .p-buttonset.p-button-secondary > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-secondary > .p-button.p-button-text:enabled:focus {
   background: rgba(255, 64, 129, 0.12);
 }
-.p-button.p-button-secondary.p-button-text:enabled:active, .p-button.p-button-secondary.p-button-outlined:enabled:active, .p-buttonset.p-button-secondary > .p-button.p-button-text:enabled:active, .p-buttonset.p-button-secondary > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-secondary > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-secondary > .p-button.p-button-outlined:enabled:active {
+.p-button.p-button-secondary.p-button-text:enabled:active, .p-buttonset.p-button-secondary > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-secondary > .p-button.p-button-text:enabled:active {
   background: rgba(255, 64, 129, 0.16);
 }
-.p-button.p-button-secondary.p-button-text .p-ink, .p-button.p-button-secondary.p-button-outlined .p-ink, .p-buttonset.p-button-secondary > .p-button.p-button-text .p-ink, .p-buttonset.p-button-secondary > .p-button.p-button-outlined .p-ink, .p-splitbutton.p-button-secondary > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-secondary > .p-button.p-button-outlined .p-ink {
+.p-button.p-button-secondary.p-button-text .p-ink, .p-buttonset.p-button-secondary > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-secondary > .p-button.p-button-text .p-ink {
   background-color: rgba(255, 64, 129, 0.16);
 }
 
@@ -556,13 +442,13 @@
 .p-button.p-button-info:enabled:active, .p-buttonset.p-button-info > .p-button:enabled:active, .p-splitbutton.p-button-info > .p-button:enabled:active {
   background: rgba(33, 150, 243, 0.68);
 }
-.p-button.p-button-info.p-button-text:enabled:focus, .p-button.p-button-info.p-button-outlined:enabled:focus, .p-buttonset.p-button-info > .p-button.p-button-text:enabled:focus, .p-buttonset.p-button-info > .p-button.p-button-outlined:enabled:focus, .p-splitbutton.p-button-info > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-info > .p-button.p-button-outlined:enabled:focus {
+.p-button.p-button-info.p-button-text:enabled:focus, .p-buttonset.p-button-info > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-info > .p-button.p-button-text:enabled:focus {
   background: rgba(33, 150, 243, 0.12);
 }
-.p-button.p-button-info.p-button-text:enabled:active, .p-button.p-button-info.p-button-outlined:enabled:active, .p-buttonset.p-button-info > .p-button.p-button-text:enabled:active, .p-buttonset.p-button-info > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-info > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-info > .p-button.p-button-outlined:enabled:active {
+.p-button.p-button-info.p-button-text:enabled:active, .p-buttonset.p-button-info > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-info > .p-button.p-button-text:enabled:active {
   background: rgba(33, 150, 243, 0.16);
 }
-.p-button.p-button-info.p-button-text .p-ink, .p-button.p-button-info.p-button-outlined .p-ink, .p-buttonset.p-button-info > .p-button.p-button-text .p-ink, .p-buttonset.p-button-info > .p-button.p-button-outlined .p-ink, .p-splitbutton.p-button-info > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-info > .p-button.p-button-outlined .p-ink {
+.p-button.p-button-info.p-button-text .p-ink, .p-buttonset.p-button-info > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-info > .p-button.p-button-text .p-ink {
   background-color: rgba(33, 150, 243, 0.16);
 }
 
@@ -572,13 +458,13 @@
 .p-button.p-button-success:enabled:active, .p-buttonset.p-button-success > .p-button:enabled:active, .p-splitbutton.p-button-success > .p-button:enabled:active {
   background: rgba(104, 159, 56, 0.68);
 }
-.p-button.p-button-success.p-button-text:enabled:focus, .p-button.p-button-success.p-button-outlined:enabled:focus, .p-buttonset.p-button-success > .p-button.p-button-text:enabled:focus, .p-buttonset.p-button-success > .p-button.p-button-outlined:enabled:focus, .p-splitbutton.p-button-success > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-success > .p-button.p-button-outlined:enabled:focus {
+.p-button.p-button-success.p-button-text:enabled:focus, .p-buttonset.p-button-success > .p-button.p-button-text:enabled:focus,  .p-splitbutton.p-button-success > .p-button.p-button-text:enabled:focus {
   background: rgba(104, 159, 56, 0.12);
 }
-.p-button.p-button-success.p-button-text:enabled:active, .p-button.p-button-success.p-button-outlined:enabled:active, .p-buttonset.p-button-success > .p-button.p-button-text:enabled:active, .p-buttonset.p-button-success > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-success > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-success > .p-button.p-button-outlined:enabled:active {
+.p-button.p-button-success.p-button-text:enabled:active, .p-buttonset.p-button-success > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-success > .p-button.p-button-text:enabled:active {
   background: rgba(104, 159, 56, 0.16);
 }
-.p-button.p-button-success.p-button-text .p-ink, .p-button.p-button-success.p-button-outlined .p-ink, .p-buttonset.p-button-success > .p-button.p-button-text .p-ink, .p-buttonset.p-button-success > .p-button.p-button-outlined .p-ink, .p-splitbutton.p-button-success > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-success > .p-button.p-button-outlined .p-ink {
+.p-button.p-button-success.p-button-text .p-ink, .p-buttonset.p-button-success > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-success > .p-button.p-button-text .p-ink {
   background-color: rgba(104, 159, 56, 0.16);
 }
 
@@ -588,13 +474,13 @@
 .p-button.p-button-warning:enabled:active, .p-buttonset.p-button-warning > .p-button:enabled:active, .p-splitbutton.p-button-warning > .p-button:enabled:active {
   background: rgba(251, 192, 45, 0.68);
 }
-.p-button.p-button-warning.p-button-text:enabled:focus, .p-button.p-button-warning.p-button-outlined:enabled:focus, .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:focus, .p-buttonset.p-button-warning > .p-button.p-button-outlined:enabled:focus, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-warning > .p-button.p-button-outlined:enabled:focus {
+.p-button.p-button-warning.p-button-text:enabled:focus, .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:focus {
   background: rgba(251, 192, 45, 0.12);
 }
-.p-button.p-button-warning.p-button-text:enabled:active, .p-button.p-button-warning.p-button-outlined:enabled:active, .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:active, .p-buttonset.p-button-warning > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-warning > .p-button.p-button-outlined:enabled:active {
+.p-button.p-button-warning.p-button-text:enabled:active,  .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:active {
   background: rgba(251, 192, 45, 0.16);
 }
-.p-button.p-button-warning.p-button-text .p-ink, .p-button.p-button-warning.p-button-outlined .p-ink, .p-buttonset.p-button-warning > .p-button.p-button-text .p-ink, .p-buttonset.p-button-warning > .p-button.p-button-outlined .p-ink, .p-splitbutton.p-button-warning > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-warning > .p-button.p-button-outlined .p-ink {
+.p-button.p-button-warning.p-button-text .p-ink, .p-buttonset.p-button-warning > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-warning > .p-button.p-button-text .p-ink {
   background-color: rgba(251, 192, 45, 0.16);
 }
 
@@ -604,13 +490,13 @@
 .p-button.p-button-help:enabled:active, .p-buttonset.p-button-help > .p-button:enabled:active, .p-splitbutton.p-button-help > .p-button:enabled:active {
   background: rgba(156, 39, 176, 0.68);
 }
-.p-button.p-button-help.p-button-text:enabled:focus, .p-button.p-button-help.p-button-outlined:enabled:focus, .p-buttonset.p-button-help > .p-button.p-button-text:enabled:focus, .p-buttonset.p-button-help > .p-button.p-button-outlined:enabled:focus, .p-splitbutton.p-button-help > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-help > .p-button.p-button-outlined:enabled:focus {
+.p-button.p-button-help.p-button-text:enabled:focus, .p-buttonset.p-button-help > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-help > .p-button.p-button-text:enabled:focus {
   background: rgba(156, 39, 176, 0.12);
 }
-.p-button.p-button-help.p-button-text:enabled:active, .p-button.p-button-help.p-button-outlined:enabled:active, .p-buttonset.p-button-help > .p-button.p-button-text:enabled:active, .p-buttonset.p-button-help > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-help > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-help > .p-button.p-button-outlined:enabled:active {
+.p-button.p-button-help.p-button-text:enabled:active, .p-buttonset.p-button-help > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-help > .p-button.p-button-text:enabled:active {
   background: rgba(156, 39, 176, 0.16);
 }
-.p-button.p-button-help.p-button-text .p-ink, .p-button.p-button-help.p-button-outlined .p-ink, .p-buttonset.p-button-help > .p-button.p-button-text .p-ink, .p-buttonset.p-button-help > .p-button.p-button-outlined .p-ink, .p-splitbutton.p-button-help > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-help > .p-button.p-button-outlined .p-ink {
+.p-button.p-button-help.p-button-text .p-ink, .p-buttonset.p-button-help > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-help > .p-button.p-button-text .p-ink  {
   background-color: rgba(156, 39, 176, 0.16);
 }
 
@@ -620,12 +506,12 @@
 .p-button.p-button-danger:enabled:active, .p-buttonset.p-button-danger > .p-button:enabled:active, .p-splitbutton.p-button-danger > .p-button:enabled:active {
   background: rgba(211, 47, 47, 0.68);
 }
-.p-button.p-button-danger.p-button-text:enabled:focus, .p-button.p-button-danger.p-button-outlined:enabled:focus, .p-buttonset.p-button-danger > .p-button.p-button-text:enabled:focus, .p-buttonset.p-button-danger > .p-button.p-button-outlined:enabled:focus, .p-splitbutton.p-button-danger > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-danger > .p-button.p-button-outlined:enabled:focus {
+.p-button.p-button-danger.p-button-text:enabled:focus, .p-buttonset.p-button-danger > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-danger > .p-button.p-button-text:enabled:focus {
   background: rgba(211, 47, 47, 0.12);
 }
-.p-button.p-button-danger.p-button-text:enabled:active, .p-button.p-button-danger.p-button-outlined:enabled:active, .p-buttonset.p-button-danger > .p-button.p-button-text:enabled:active, .p-buttonset.p-button-danger > .p-button.p-button-outlined:enabled:active, .p-splitbutton.p-button-danger > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-danger > .p-button.p-button-outlined:enabled:active {
+.p-button.p-button-danger.p-button-text:enabled:active, .p-buttonset.p-button-danger > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-danger > .p-button.p-button-text:enabled:active {
   background: rgba(211, 47, 47, 0.16);
 }
-.p-button.p-button-danger.p-button-text .p-ink, .p-button.p-button-danger.p-button-outlined .p-ink, .p-buttonset.p-button-danger > .p-button.p-button-text .p-ink, .p-buttonset.p-button-danger > .p-button.p-button-outlined .p-ink, .p-splitbutton.p-button-danger > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-danger > .p-button.p-button-outlined .p-ink {
+.p-button.p-button-danger.p-button-text .p-ink, .p-buttonset.p-button-danger > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-danger > .p-button.p-button-text .p-ink {
   background-color: rgba(211, 47, 47, 0.16);
 }
