@@ -39,7 +39,7 @@
     flex-grow: 1;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 0 $dialog-padding 0;
+    padding: 0.25rem $dialog-padding 0;
 
     &::-webkit-scrollbar {
         width: $basic-padding;

@@ -1,7 +1,7 @@
 <form
     [formGroup]="form"
     (ngSubmit)="saveFieldProperties()"
-    class="content-type-fields__properties-form"
+    class="content-type-fields__properties-form p-fluid"
     novalidate
 >
     <div
@@ -9,7 +9,8 @@
             'p-field': checkboxFields.indexOf(property) == -1 && property !== 'relationships'
         }"
         *ngFor="let property of fieldProperties"
-        #properties>
+        #properties
+    >
         <ng-container
             dotDynamicFieldProperty
             [propertyName]="property"

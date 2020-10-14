@@ -201,8 +201,7 @@ describe('DotEditPageToolbarComponent', () => {
         it('should have right attr', () => {
             fixtureHost.detectChanges();
             const editPageCancelBtn = de.query(By.css('.edit-page-toolbar__cancel'));
-            expect(editPageCancelBtn.attributes.class).toContain('edit-page-toolbar__cancel');
-            expect(editPageCancelBtn.attributes.secondary).toBeDefined();
+            expect(editPageCancelBtn.attributes.class).toContain('p-button-secondary');
             expect(editPageCancelBtn.attributes.tiny).toBeDefined();
             expect(editPageCancelBtn.nativeElement.innerText).toBe('CANCEL');
         });
