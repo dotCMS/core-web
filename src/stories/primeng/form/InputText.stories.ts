@@ -26,9 +26,9 @@ export default {
 
 const InputTextTemplate = `
   <div class="form-control">
-    <input type="text" class="p-inputtext-sm" placeholder="Small" pInputText /> <br />
-    <input type="text" placeholder="Normal" pInputText /> <br />
-    <input type="text" class="p-inputtext-lg" placeholder="Large"  pInputText />
+    <p><input type="text" class="p-inputtext-sm" placeholder="Small" pInputText /> <br /></p>
+    <p><input type="text" placeholder="Normal" pInputText /> <br /></p>
+    <p><input type="text" class="p-inputtext-lg" placeholder="Large"  pInputText /></p>
   </div>
 `;
 

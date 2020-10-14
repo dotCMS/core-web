@@ -27,7 +27,7 @@
   box-shadow: none;
 }
 .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
-  background: $bg-color-secondary;
+  background: $highlight-bg;
   border-color: transparent;
   color: rgba(0, 0, 0, 0.6);
 }
@@ -63,7 +63,7 @@
   background-color: rgba(63, 81, 181, 0.16);
 }
 .p-tabview .p-tabview-nav li .p-tabview-nav-link:focus {
-  background-color: $bg-color-secondary;
+  background-color: $highlight-bg;
 }
 .p-tabview .p-tabview-nav .p-tabview-ink-bar {
   z-index: 1;

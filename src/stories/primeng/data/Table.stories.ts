@@ -92,7 +92,7 @@ const cars = [
 ];
 
 const BasicTemplate = `
-<p-table [value]="cars">
+<p-table [value]="cars" rowHover="true">
     <ng-template pTemplate="header">
         <tr>
             <th>Vin</th>

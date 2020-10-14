@@ -67,12 +67,11 @@
   border-radius: 50%;
 }
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-  background: $bg-color-secondary;
-  border-color: $paginator-border-color;
+  background: $highlight-bg;
   color:  $brand-primary;
 }
 .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
-  background: rgba($brand-secondary_rgb, .07);
+  background: $gray-bg;
   border-color: transparent;
   color: $paginator-text-color;
 }

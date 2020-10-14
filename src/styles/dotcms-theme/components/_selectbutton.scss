@@ -1,4 +1,4 @@
-
+@use "variables" as *;
 .p-selectbutton .p-button {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -42,6 +42,6 @@
   border-color: #e0e0e1;
 }
 .p-selectbutton .p-button:focus.p-highlight {
-  background: #d9d8d9;
+  background: $highlight-bg;
   border-color: #d9d8d9;
 }

@@ -72,13 +72,12 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
 }
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item:hover {
   color: #000001;
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
   color:  $brand-primary;
-  background: rgba(63, 81, 181, 0.12);
+  background: $highlight-bg;
 }
-
 
 .p-autocomplete.p-autocomplete-multiple .p-autocomplete-multiple-container:not(.p-disabled).p-focus {
   box-shadow: inset 0 0 0 1px  $brand-primary, inset 0 0 0 1px  $brand-primary, inset 0 0 0 1px  $brand-primary, inset 0 0 0 1px  $brand-primary;

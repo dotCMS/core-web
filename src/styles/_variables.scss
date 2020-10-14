@@ -24,11 +24,22 @@ $brand-secondary: var(--color-sec);
 $brand-secondary_rgb: var(--color-sec_rgb);
 $brand-background: var(--color-background);
 $bg-color-primary: rgba($brand-primary_rgb, 0.12);
+
+// TODO: A few borders and box-shadows are using this class, remove and create variables for these.
 $bg-color-secondary: rgba($brand-secondary_rgb, 0.12);
 
+$highlight-bg: rgba($brand-secondary_rgb, 0.12);
+$highlight-text-color: $black;
+$highlight-border-color: $brand-primary;
+$focus-bg: rgba($brand-secondary_rgb, 0.12);
+$focus-text-color: $black;
+$hover-bg: rgba($brand-secondary_rgb, 0.12);
+$hover-text-color: $black;
+$hover-border-color: $brand-primary;
+
 // Paginator
-$paginator-text-color: rgba(0, 0, 0, 0.6);
-$paginator-border-color: rgba($brand-secondary_rgb, 0.12);
+$paginator-text-color: $black;
+$paginator-border-color: red;
 
 // TODO: Search replace font-size: $spacing-4 (font-size: 1.25rem)
 

@@ -76,11 +76,11 @@
   border-radius: 0;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
   color: #000001;
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
   padding: $spacing-2 $spacing-2;

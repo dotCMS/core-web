@@ -29,10 +29,10 @@
   color: rgba(0, 0, 0, 0.6);
 }
 .p-calendar-w-btn .p-datepicker-trigger.p-button:enabled:hover {
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-calendar-w-btn .p-datepicker-trigger.p-button:enabled:active, .p-calendar-w-btn .p-datepicker-trigger.p-button:focus {
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-calendar-w-btn:not(.p-disabled):hover {
   border-color: #000001;
@@ -53,7 +53,7 @@
 .p-datepicker:not(.p-datepicker-inline) {
   background: #ffffff;
   border: 0 none;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px $bg-color-secondary;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px $highlight-bg;
 }
 .p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
   background: #ffffff;
@@ -82,7 +82,7 @@
 .p-datepicker .p-datepicker-header .p-datepicker-next:enabled:hover {
   color: rgba(0, 0, 0, 0.6);
   border-color: transparent;
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-datepicker .p-datepicker-header .p-datepicker-prev:focus,
 .p-datepicker .p-datepicker-header .p-datepicker-next:focus {
@@ -128,7 +128,7 @@
 }
 .p-datepicker table td > span.p-highlight {
   color:  $brand-primary;
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-datepicker table td > span:focus {
   outline: 0 none;
@@ -142,7 +142,7 @@
 }
 .p-datepicker table td.p-datepicker-today > span.p-highlight {
   color:  $brand-primary;
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-datepicker .p-datepicker-buttonbar {
   padding: $spacing-2 0;
@@ -167,7 +167,7 @@
 .p-datepicker .p-timepicker button:enabled:hover {
   color: rgba(0, 0, 0, 0.6);
   border-color: transparent;
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-datepicker .p-timepicker button:focus {
   outline: 0 none;
@@ -196,7 +196,7 @@
 }
 .p-datepicker .p-monthpicker .p-monthpicker-month.p-highlight {
   color:  $brand-primary;
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-datepicker.p-datepicker-multiple-month .p-datepicker-group {
   border-right: 1px solid $bg-color-secondary;
@@ -221,7 +221,7 @@
   box-shadow: none;
 }
 .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-highlight):not(.p-disabled):hover {
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-highlight):not(.p-disabled):focus {
   outline: 0 none;
@@ -257,5 +257,5 @@
 }
 
 .p-datepicker table td.p-datepicker-today.p-highlight {
-  box-shadow: 0 0 0 1px $bg-color-secondary;
+  box-shadow: 0 0 0 1px $highlight-bg;
 }

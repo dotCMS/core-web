@@ -39,7 +39,7 @@
 }
 .p-listbox .p-listbox-list .p-listbox-item.p-highlight {
   color:  $brand-primary;
-  background: rgba(63, 81, 181, 0.12);
+  background: $highlight-bg;
 }
 .p-listbox .p-listbox-list .p-listbox-item:focus {
   outline: 0 none;
@@ -51,9 +51,9 @@
 }
 .p-listbox:not(.p-disabled) .p-listbox-item:not(.p-highlight):not(.p-disabled):hover {
   color: #000001;
-  background: $bg-color-secondary;  
+  background: $highlight-bg;  
 }
 
 .p-listbox-item .p-ink {
-  background-color: rgba(63, 81, 181, 0.16);
+  background-color: $highlight-bg;
 }

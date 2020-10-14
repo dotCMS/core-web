@@ -111,7 +111,7 @@
   color: #000001;
 }
 .p-treetable .p-treetable-tbody > tr.p-highlight {
-  background: rgba(63, 81, 181, 0.12);
+  background: $highlight-bg;
   color:  $brand-primary;
 }
 .p-treetable .p-treetable-tbody > tr.p-highlight .p-treetable-toggler {

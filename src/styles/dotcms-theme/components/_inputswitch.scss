@@ -29,13 +29,13 @@
   background: rgba(0, 0, 0, 0.38);
 }
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
   background:  $brand-primary;
 }
 .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
-  background: $bg-color-secondary;
+  background: $highlight-bg;
 }
 
 .p-inputswitch .p-inputswitch-slider:before {
