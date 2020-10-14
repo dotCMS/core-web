@@ -7,7 +7,7 @@
     align-items: center;
 
     &::ng-deep {
-        .ui-dropdown {
+        .p-dropdown {
             box-shadow: none;
             width: 120px !important;
         }
@@ -22,7 +22,7 @@
 
     @media only screen and (max-width: $screen-device-container-max) {
         ::ng-deep {
-            p-dropdown .ui-dropdown {
+            p-dropdown .p-dropdown {
                 width: 10px !important;
 
                 label {

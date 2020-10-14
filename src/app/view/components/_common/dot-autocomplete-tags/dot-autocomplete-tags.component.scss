@@ -29,11 +29,11 @@
             width: 100%;
         }
 
-        .ui-autocomplete {
+        .p-autocomplete {
             display: flex;
         }
 
-        .ui-autocomplete-multiple-container {
+        .p-autocomplete-multiple-container {
             position: absolute;
             top: $basic-padding * 5;
             left: 0;
@@ -44,19 +44,19 @@
             width: 100%;
         }
 
-        .ui-autocomplete-dropdown {
+        .p-autocomplete-dropdown {
             margin-left: auto;
             width: $basic-padding * 2;
             border: 0;
 
-            .ui-button-icon-left {
+            .p-button-icon-left {
                 right: 0;
                 left: auto;
                 width: 12px;
             }
         }
 
-        .ui-autocomplete-input-token {
+        .p-autocomplete-input-token {
             display: flex;
             height: $field-height;
             left: 0;
@@ -86,7 +86,7 @@
             }
         }
 
-        .ui-autocomplete-token {
+        .p-autocomplete-token {
             border-radius: $border-radius;
             border: solid 1px $gray-light;
             margin: $basic-padding $basic-padding 0 0;
@@ -104,7 +104,7 @@
             }
         }
 
-        .ui-autocomplete-loader {
+        .p-autocomplete-loader {
             display: none;
         }
     }
