@@ -157,9 +157,20 @@
   border-bottom: 1px solid $brand-secondary;
   background: none;
 }
-.p-splitbutton.p-button-secondary > .p-splitbutton-menubutton  {
+
+.p-button.p-button-secondary {
   border-right: 1px solid $brand-secondary;
+
+  &:hover {
+    background: none;
+    border-right: 1px solid;
+  }
+
+  &:disabled {
+      border: none;
+  }
 }
+
 .p-button.p-button-secondary:enabled:hover, .p-buttonset.p-button-secondary > .p-button:enabled:hover, .p-splitbutton.p-button-secondary > .p-button:enabled:hover {
  border-top: 1px solid $brand-primary;
   border-left: 1px solid $brand-primary;
@@ -179,18 +190,13 @@
   }
 }
 
-.p-splitbutton.p-button-secondary > .p-splitbutton-menubutton:hover  {
-  border-right: 1px solid $brand-primary;
-}
-
-
 .p-button.p-button-secondary:enabled:focus, .p-buttonset.p-button-secondary > .p-button:enabled:focus, .p-splitbutton.p-button-secondary > .p-button:enabled:focus {
   box-shadow: none;
 }
-.p-button.p-button-secondary:enabled:active, .p-buttonset.p-button-secondary > .p-button:enabled:active, .p-splitbutton.p-button-secondary > .p-button:enabled:active {
-  background: rgba(255, 64, 129, 0.68);
-  color: #ffffff;
+.p-button.p-button-secondary:enabled:active, .p-buttonset.p-button-secondary > .p-button:enabled:active, .p-splitbutton.p-button-secondary > .p-button:enabled:active, .p-button.p-button-secondary:enabled:focus {
+  background: none;
   border-color: transparent;
+  color: $brand-secondary;
 }
 .p-button.p-button-secondary.p-button-outlined, .p-buttonset.p-button-secondary > .p-button.p-button-outlined, .p-splitbutton.p-button-secondary > .p-button.p-button-outlined {
   background-color: transparent;
