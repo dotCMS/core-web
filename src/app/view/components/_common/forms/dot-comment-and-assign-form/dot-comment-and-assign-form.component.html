@@ -4,6 +4,7 @@
     (ngSubmit)="emitValues()"
     (keyup.enter)="emitValues()"
     novalidate
+    class="p-fluid"
 >
     <div class="p-field" *ngIf="data['assignable']">
         <label class="form__label">{{ 'assignee.form.assignee' | dm }}:</label>
@@ -11,7 +12,8 @@
             [options]="dotRoles"
             [style]="{ width: '100%' }"
             formControlName="assign"
-            appendTo="body">
+            appendTo="body"
+        >
         </p-dropdown>
     </div>
     <div class="p-field" *ngIf="data['commentable']">
@@ -20,7 +22,8 @@
             pInputTextarea
             (keydown.enter)="$event.stopPropagation()"
             [style]="{ width: '100%' }"
-            formControlName="comments" >
+            formControlName="comments"
+        >
         </textarea>
     </div>
 </form>
