@@ -2,21 +2,21 @@
 @import "mixins";
 
 ::ng-deep {
-    .ui-overlaypanel.paginator {
-        .ui-dataview-content {
+    .p-overlaypanel.paginator {
+        .p-dataview-content {
             margin-bottom: $basic-padding * 4;
         }
-        .ui-paginator-bottom {
+        .p-paginator-bottom {
             @include paginator-bottom-absolute;
         }
     }
-    
-    .searchable-dropdown .ui-overlaypanel-content {
+
+    .searchable-dropdown .p-overlaypanel-content {
         padding: $basic-padding * 2 0;
     }
-    
+
     dot-searchable-dropdown {
-        .ui-button {
+        .p-button {
             @extend #inputtext-normal-border;
             background: none;
             border: 0;
@@ -25,7 +25,7 @@
             text-align: left;
             text-transform: none;
             width: auto;
-    
+
             &:not([disabled]) {
                 &:hover,
                 &:active,
@@ -33,20 +33,20 @@
                     @extend #field-hover-state;
                     @extend #inputtext-normal-border;
                     border: 0;
-    
-                    .ui-button-text,
+
+                    .p-button-text,
                     [class^="ui-button-icon"] {
                         color: $body-font-color;
                     }
                 }
             }
-    
-            .ui-button-text,
+
+            .p-button-text,
             [class^="ui-button-icon"] {
                 color: $body-font-color;
             }
-    
-            .ui-button-text {
+
+            .p-button-text {
                 font-size: $font-size-large;
                 font-weight: normal;
                 padding: 0;
@@ -57,14 +57,14 @@
 }
 
 .searchable-dropdown__data-list ::ng-deep  {
-    .ui-dataview {
+    .p-dataview {
         position: unset;
     }
 
-    .ui-dataview-content {
+    .p-dataview-content {
         width: 100%;
 
-        .ui-g {
+        .p-g {
             margin: 0;
 
             .searchable-dropdown__data-list-item {
@@ -87,7 +87,7 @@
         }
     }
 
-    .ui-dataview-emptymessage {
+    .p-dataview-emptymessage {
         padding: 1em;
     }
 }
