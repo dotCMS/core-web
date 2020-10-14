@@ -8,7 +8,7 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
   0% {
     width: 0;
     height: 0;
-    border-color: #ffffff;
+    border-color: $white;
     transform: translate3d(0, 0, 0) rotate(45deg);
   }
   33% {
@@ -19,7 +19,7 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
   100% {
     width: 4px;
     height: 10px;
-    border-color: #ffffff;
+    border-color: $white;
     transform: translate3d(0, -10px, 0) rotate(45deg);
   }
 }
@@ -33,20 +33,20 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
 }
 .p-checkbox .p-checkbox-box {
   border: 2px solid #757575;
-  background: #ffffff;
+  background: $white;
   width: 18px;
   height: 18px;
-  color: #000001;
+  color: $black;
   border-radius: 4px;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
 }
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
   transition-duration: 0.2s;
-  color: #ffffff;
+  color: $white;
   font-size: 14px;
 }
 .p-checkbox .p-checkbox-box:not(.p-disabled):hover {
-  border-color: #000001;
+  border-color: $black;
 }
 .p-checkbox .p-checkbox-box:not(.p-disabled).p-focus {
   outline: 0 none;
@@ -56,12 +56,12 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
 }
 .p-checkbox .p-checkbox-box.p-highlight {
   border-color:  $brand-primary;
-  background:  $brand-primary;
+  background:  $highlight-bg;
 }
 .p-checkbox .p-checkbox-box.p-highlight:not(.p-disabled):hover {
   border-color:  $brand-primary;
-  background:  $brand-primary;
-  color: #ffffff;
+  background:  $highlight-bg;
+  color: $white;
 }
 .p-checkbox.p-error > .p-checkbox-box, .p-checkbox.p-invalid > .p-checkbox-box {
   border-color: $error;

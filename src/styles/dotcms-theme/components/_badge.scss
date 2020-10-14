@@ -2,7 +2,7 @@
 
 .p-badge {
   background:  $brand-primary;
-  color: #ffffff;
+  color: $white;
   font-size: $spacing-2;
   font-weight: 700;
   min-width: $spacing-4;
@@ -19,11 +19,11 @@
 }
 .p-badge.p-badge-success {
   background-color: #689F38;
-  color: #ffffff;
+  color: $white;
 }
 .p-badge.p-badge-info {
   background-color: #2196F3;
-  color: #ffffff;
+  color: $white;
 }
 .p-badge.p-badge-warning {
   background-color: #FBC02D;
@@ -31,7 +31,7 @@
 }
 .p-badge.p-badge-danger {
   background-color: #D32F2F;
-  color: #ffffff;
+  color: $white;
 }
 .p-badge.p-badge-lg {
   font-size: 1.125rem;
@@ -46,7 +46,7 @@
 
 .p-tag {
   background:  $brand-primary;
-  color: #ffffff;
+  color: $white;
   font-size: $spacing-2;
   font-weight: 700;
   padding: 0.25rem 0.4rem;
@@ -54,11 +54,11 @@
 }
 .p-tag.p-tag-success {
   background-color: #689F38;
-  color: #ffffff;
+  color: $white;
 }
 .p-tag.p-tag-info {
   background-color: #2196F3;
-  color: #ffffff;
+  color: $white;
 }
 .p-tag.p-tag-warning {
   background-color: #FBC02D;
@@ -66,5 +66,5 @@
 }
 .p-tag.p-tag-danger {
   background-color: #D32F2F;
-  color: #ffffff;
+  color: $white;
 }

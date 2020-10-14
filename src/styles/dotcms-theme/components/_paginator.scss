@@ -2,8 +2,8 @@
 @use "variables" as *;
 
 .p-paginator {
-  background: #ffffff;
-  color: $paginator-text-color;
+  background: $white;
+  color: $black;
   border: solid #e4e4e4;
   border-width: 0;
   padding: 0.375rem $spacing-2;
@@ -17,7 +17,7 @@
 .p-paginator .p-paginator-last {
   background-color: transparent;
   border: 0 none;
-  color: $paginator-text-color;
+  color: $black;
   min-width: $spacing-7;
   height: $spacing-7;
   margin: 0.143rem;
@@ -30,7 +30,7 @@
 .p-paginator .p-paginator-last:not(.p-disabled):not(.p-highlight):hover {
   background: rgba(0, 0, 0, 0.04);
   border-color: transparent;
-  color: $paginator-text-color;
+  color: $black;
 }
 .p-paginator .p-paginator-first {
   border-top-left-radius: 4px;
@@ -50,7 +50,7 @@
 .p-paginator .p-paginator-current {
   background-color: transparent;
   border: 0 none;
-  color: $paginator-text-color;
+  color: $black;
   min-width: $spacing-7;
   height: $spacing-7;
   margin: 0.143rem;
@@ -59,7 +59,7 @@
 .p-paginator .p-paginator-pages .p-paginator-page {
   background-color: transparent;
   border: 0 none;
-  color: $paginator-text-color;
+  color: $black;
   min-width: $spacing-7;
   height: $spacing-7;
   margin: 0.143rem;
@@ -73,5 +73,5 @@
 .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
   background: $gray-bg;
   border-color: transparent;
-  color: $paginator-text-color;
+  color: $black;
 }

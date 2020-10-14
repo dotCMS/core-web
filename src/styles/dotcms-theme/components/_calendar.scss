@@ -10,7 +10,7 @@
 
 .p-calendar-w-btn {
   border: 1px solid rgba(0, 0, 0, 0.38);
-  background: #ffffff;
+  background: $white;
   border-radius: 4px;
 }
 .p-calendar-w-btn .p-inputtext {
@@ -35,7 +35,7 @@
   background: $highlight-bg;
 }
 .p-calendar-w-btn:not(.p-disabled):hover {
-  border-color: #000001;
+  border-color: $black;
 }
 .p-calendar-w-btn:not(.p-disabled).p-inputwrapper-focus {
   border-color:  $brand-primary;
@@ -45,23 +45,23 @@
 
 .p-datepicker {
   padding: $spacing-1;
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
 }
 .p-datepicker:not(.p-datepicker-inline) {
-  background: #ffffff;
+  background: $white;
   border: 0 none;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px $highlight-bg;
 }
 .p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
-  background: #ffffff;
+  background: $white;
 }
 .p-datepicker .p-datepicker-header {
   padding: $spacing-1;
-  color: #000001;
-  background: #ffffff;
+  color: $black;
+  background: $white;
   font-weight: 500;
   margin: 0;
   border-bottom: 1px solid $bg-color-secondary;
@@ -136,8 +136,8 @@
   box-shadow: none;
 }
 .p-datepicker table td.p-datepicker-today > span {
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
   border-color: $gray-light;
 }
 .p-datepicker table td.p-datepicker-today > span.p-highlight {

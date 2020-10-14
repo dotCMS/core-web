@@ -1,6 +1,6 @@
 @use "variables" as *;
 .p-breadcrumb {
-  background: #ffffff;
+  background: $white;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
   padding: $spacing-2;
@@ -15,7 +15,7 @@
   box-shadow: none;
 }
 .p-breadcrumb ul li .p-menuitem-link .p-menuitem-text {
-  color: #000001;
+  color: $black;
 }
 .p-breadcrumb ul li .p-menuitem-link .p-menuitem-icon {
   color: rgba(0, 0, 0, 0.6);
@@ -25,7 +25,7 @@
   color: rgba(0, 0, 0, 0.6);
 }
 .p-breadcrumb ul li:last-child .p-menuitem-text {
-  color: #000001;
+  color: $black;
 }
 .p-breadcrumb ul li:last-child .p-menuitem-icon {
   color: rgba(0, 0, 0, 0.6);

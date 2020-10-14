@@ -1,8 +1,8 @@
 @use "variables" as *;
 .p-tree {
   border: 1px solid #e0e0e0;
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
   padding: $spacing-2;
   border-radius: 4px;
 }
@@ -42,7 +42,7 @@
   margin-right: $spacing-1;
 }
 .p-tree .p-tree-container .p-treenode .p-treenode-content .p-checkbox .p-indeterminate .p-checkbox-icon {
-  color: #000001;
+  color: $black;
 }
 .p-tree .p-tree-container .p-treenode .p-treenode-content:focus {
   outline: 0 none;
@@ -59,11 +59,11 @@
 }
 .p-tree .p-tree-container .p-treenode .p-treenode-content.p-treenode-selectable:not(.p-highlight):hover {
   background: rgba(0, 0, 0, 0.04);
-  color: #000001;
+  color: $black;
 }
 .p-tree .p-tree-container .p-treenode .p-treenode-content.p-treenode-dragover {
   background: rgba(0, 0, 0, 0.04);
-  color: #000001;
+  color: $black;
 }
 .p-tree .p-tree-filter-container {
   margin-bottom: $spacing-1;
@@ -88,8 +88,8 @@
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content {
   border-radius: 4px;
   border: 1px solid #e0e0e0;
-  background-color: #ffffff;
-  color: #000001;
+  background-color: $white;
+  color: $black;
   padding: 0.571rem;
   transition: none;
 }
@@ -119,7 +119,7 @@
 }
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content.p-treenode-selectable:not(.p-highlight):hover {
   background: rgba(0, 0, 0, 0.04);
-  color: #000001;
+  color: $black;
 }
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content:focus {
   outline: 0 none;

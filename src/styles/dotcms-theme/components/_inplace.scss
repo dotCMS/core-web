@@ -6,7 +6,7 @@
 }
 .p-inplace .p-inplace-display:not(.p-disabled):hover {
   background: rgba(0, 0, 0, 0.04);
-  color: #000001;
+  color: $black;
 }
 .p-inplace .p-inplace-display:focus {
   outline: 0 none;

@@ -20,7 +20,7 @@
 .p-float-label .p-inputwrapper-focus ~ label,
 .p-float-label .p-inputwrapper-filled ~ label {
   top: -$spacing-1 !important;
-  background-color: #ffffff;
+  background-color: $white;
   padding: 2px 4px;
   margin-left: -4px;
   margin-top: 0;

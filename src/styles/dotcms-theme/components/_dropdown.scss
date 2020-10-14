@@ -1,12 +1,12 @@
 @use "variables" as *;
 .p-dropdown {
-  background: #ffffff;
+  background: $white;
   border: 1px solid rgba(0, 0, 0, 0.38);
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   border-radius: 2px;
 }
 .p-dropdown:not(.p-disabled):hover {
-  border-color: #000001;
+  border-color: $black;
 }
 .p-dropdown:not(.p-disabled).p-focus {
   outline: 0 none;
@@ -41,8 +41,8 @@
 }
 
 .p-dropdown-panel {
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
   border: 0 none;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
@@ -50,8 +50,8 @@
 .p-dropdown-panel .p-dropdown-header {
   padding: $spacing-2;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-  color: #000001;
-  background: #ffffff;
+  color: $black;
+  background: $white;
   margin: 0;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
@@ -70,7 +70,7 @@
   margin: 0;
   padding: $spacing-2 $spacing-2;
   border: 0 none;
-  color: #000001;
+  color: $black;
   background: transparent;
   transition: none;
   border-radius: 0;
@@ -79,19 +79,19 @@
   background: $highlight-bg;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
-  color: #000001;
+  color: $black;
   background: $highlight-bg;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
   padding: $spacing-2 $spacing-2;
-  color: #000001;
+  color: $black;
   background: transparent;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item-group {
   margin: 0;
   padding: $spacing-2;
   color: rgba(0, 0, 0, 0.6);
-  background: #ffffff;
+  background: $white;
   font-weight: 400;
 }
 .p-dropdown-panel.p-error, .p-dropdown-panel.p-invalid {

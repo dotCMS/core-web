@@ -1,21 +1,21 @@
 @use "variables" as *;
 .p-menu {
   padding: $spacing-1 0;
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
   width: 12.5rem;
 }
 .p-menu .p-menuitem-link {
   padding: $spacing-2 $spacing-2;
-  color: #000001;
+  color: $black;
   border-radius: 0;
   transition: none;
   user-select: none;
 }
 .p-menu .p-menuitem-link .p-menuitem-text {
-  color: #000001;
+  color: $black;
 }
 .p-menu .p-menuitem-link .p-menuitem-icon {
   color: rgba(0, 0, 0, 0.6);
@@ -28,7 +28,7 @@
   background: $highlight-bg;
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text {
-  color: #000001;
+  color: $black;
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover .p-menuitem-icon {
   color: rgba(0, 0, 0, 0.6);
@@ -42,7 +42,7 @@
   box-shadow: none;
 }
 .p-menu.p-menu-overlay {
-  background: #ffffff;
+  background: $white;
   border: 0 none;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 }
@@ -50,7 +50,7 @@
   margin: 0;
   padding: $spacing-2;
   color: rgba(0, 0, 0, 0.6);
-  background: #ffffff;
+  background: $white;
   font-weight: 400;
   border-top-right-radius: 0;
   border-top-left-radius: 0;

@@ -8,16 +8,16 @@
   border-radius: 0;
 }
 .p-treetable .p-treetable-header {
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
   padding: $spacing-2 $spacing-2;
   font-weight: 500;
 }
 .p-treetable .p-treetable-footer {
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
   padding: $spacing-2 $spacing-2;
@@ -29,8 +29,8 @@
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
   font-weight: 500;
-  color: #000001;
-  background: #ffffff;
+  color: $black;
+  background: $white;
   transition: none;
 }
 .p-treetable .p-treetable-tfoot > tr > td {
@@ -39,8 +39,8 @@
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
   font-weight: 500;
-  color: #000001;
-  background: #ffffff;
+  color: $black;
+  background: $white;
 }
 .p-treetable .p-sortable-column {
   outline-color: transparent;
@@ -60,21 +60,21 @@
 }
 .p-treetable .p-sortable-column:not(.p-highlight):hover {
   background: rgba(0, 0, 0, 0.04);
-  color: #000001;
+  color: $black;
 }
 .p-treetable .p-sortable-column:not(.p-highlight):hover .p-sortable-column-icon {
   color: rgba(0, 0, 0, 0.6);
 }
 .p-treetable .p-sortable-column.p-highlight {
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
 }
 .p-treetable .p-sortable-column.p-highlight .p-sortable-column-icon {
-  color: #000001;
+  color: $black;
 }
 .p-treetable .p-treetable-tbody > tr {
-  background: #ffffff;
-  color: #000001;
+  background: $white;
+  color: $black;
   transition: none;
   outline-color: transparent;
 }
@@ -108,7 +108,7 @@
   margin-right: $spacing-1;
 }
 .p-treetable .p-treetable-tbody > tr > td p-treetablecheckbox .p-checkbox .p-indeterminate .p-checkbox-icon {
-  color: #000001;
+  color: $black;
 }
 .p-treetable .p-treetable-tbody > tr.p-highlight {
   background: $highlight-bg;
@@ -122,17 +122,17 @@
 }
 .p-treetable.p-treetable-hoverable-rows .p-treetable-tbody > tr:not(.p-highlight):hover {
   background: rgba(0, 0, 0, 0.04);
-  color: #000001;
+  color: $black;
 }
 .p-treetable.p-treetable-hoverable-rows .p-treetable-tbody > tr:not(.p-highlight):hover .p-treetable-toggler {
-  color: #000001;
+  color: $black;
 }
 .p-treetable .p-column-resizer-helper {
   background:  $brand-primary;
 }
 .p-treetable .p-treetable-scrollable-header,
 .p-treetable .p-treetable-scrollable-footer {
-  background: #ffffff;
+  background: $white;
 }
 .p-treetable .p-treetable-loading-icon {
   font-size: $spacing-7;
