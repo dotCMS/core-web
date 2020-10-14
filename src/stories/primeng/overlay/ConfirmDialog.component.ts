@@ -3,9 +3,14 @@ import { ConfirmationService } from 'primeng/api';
 
 export const ConfirmDialogTemplate = `
 <p-confirmDialog
-    [style]="{ width: '50vw' }"
+    [style]="{ width: '400px' }"
     [baseZIndex]="10000"
-  ></p-confirmDialog>
+  >
+    <p-footer>
+        <button class="p-button-secondary" type="button" pButton icon="pi pi-times" label="Cancel"></button>
+        <button type="button" pButton icon="pi pi-check" label="Delete"></button>
+    </p-footer>
+  </p-confirmDialog>
   <button
     type="text"
     (click)="confirm()"
@@ -25,13 +30,12 @@ export class ConfirmDialogComponent {
 
   confirm(): void {
     this.confirmationService.confirm({
-      message:
-        'You will lose any unsaved changes you have made to this content.',
-      header: 'Are you sure you want to close the editor?',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Close',
-      rejectLabel: 'Cancel',
-      rejectButtonStyleClass: 'p-button-secondary',
+        message:
+            'Are you sure you want to delete the Content Type Contact and all the content associated with it? (This operation can not be undone)',
+        header: 'Delete Content Type',
+        acceptLabel: 'Close',
+        rejectLabel: 'Cancel',
+        rejectButtonStyleClass: 'p-button-secondary'
     });
   }
 }
