@@ -127,7 +127,7 @@
   border: 1px solid transparent;
 }
 .p-datepicker table td > span.p-highlight {
-  color:  $brand-primary;
+  color:  $highlight-text-color;
   background: $highlight-bg;
 }
 .p-datepicker table td > span:focus {
@@ -141,7 +141,7 @@
   border-color: $gray-light;
 }
 .p-datepicker table td.p-datepicker-today > span.p-highlight {
-  color:  $brand-primary;
+  color:  $highlight-text-color;
   background: $highlight-bg;
 }
 .p-datepicker .p-datepicker-buttonbar {

@@ -90,8 +90,8 @@
   border-radius: 0;
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
-  color:  $brand-primary;
-  background: rgba(63, 81, 181, 0.12);
+  color:  $highlight-text-color;
+  background: $highlight-bg;
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
   color: $black;

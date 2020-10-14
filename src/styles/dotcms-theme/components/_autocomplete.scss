@@ -75,8 +75,8 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
   background: $bg-color-secondary;
 }
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
-  color:  $brand-primary;
-  background: $bg-color-secondary;
+  color:  $highlight-text-color;
+  background: $highlight-bg;
 }
 
 .p-autocomplete.p-autocomplete-multiple .p-autocomplete-multiple-container:not(.p-disabled).p-focus {

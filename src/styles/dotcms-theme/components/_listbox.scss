@@ -38,7 +38,7 @@
   border-radius: 0;
 }
 .p-listbox .p-listbox-list .p-listbox-item.p-highlight {
-  color:  $brand-primary;
+  color:  $highlight-text-color;
   background: $highlight-bg;
 }
 .p-listbox .p-listbox-list .p-listbox-item:focus {

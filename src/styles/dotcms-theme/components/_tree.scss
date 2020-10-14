@@ -50,12 +50,12 @@
   box-shadow: none;
 }
 .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight {
-  background: rgba(63, 81, 181, 0.12);
-  color:  $brand-primary;
+  background: $highlight-bg;
+  color:  $highlight-text-color;
 }
 .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight .p-tree-toggler,
 .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight .p-treenode-icon {
-  color:  $brand-primary;
+  color:  $highlight-text-color;
 }
 .p-tree .p-tree-container .p-treenode .p-treenode-content.p-treenode-selectable:not(.p-highlight):hover {
   background: rgba(0, 0, 0, 0.04);
@@ -94,11 +94,11 @@
   transition: none;
 }
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content.p-highlight {
-  background-color: rgba(63, 81, 181, 0.12);
-  color:  $brand-primary;
+  background-color: $highlight-bg;
+  color:  $highlight-text-color;
 }
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content.p-highlight .p-treenode-icon {
-  color:  $brand-primary;
+  color:  $highlight-text-color;
 }
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content .p-tree-toggler {
   margin-right: $spacing-1;
