@@ -23,7 +23,7 @@ class DotMessagePipe implements PipeTransform {
 }
 
 export default {
-    title: 'DotCMS/SearchableDropdownComponent',
+    title: 'DotCMS/Searchable Dropdown',
     component: SearchableDropdownComponent,
     decorators: [
         moduleMetadata({
@@ -32,7 +32,6 @@ export default {
                 BrowserAnimationsModule,
                 ButtonModule,
                 CommonModule,
-                DataViewModule,
                 DataViewModule,
                 DotIconButtonModule,
                 DotIconModule,
@@ -103,4 +102,4 @@ const Template: Story<SearchableDropdownComponent> = (args: SearchableDropdownCo
     props: args
 });
 
-export const Primary = Template.bind({});
+export const Default = Template.bind({});

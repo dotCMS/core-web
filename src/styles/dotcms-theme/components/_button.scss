@@ -24,7 +24,7 @@
   color:  $brand-primary;
   border-color: transparent;
 }
-.p-button.p-button-text:enabled:hover {
+.p-button.p-button-text:enabled:hover, .p-button.p-button-text:enabled:focus {
   background: $hover-bg;
   color:  $brand-primary;
   border-color: transparent;

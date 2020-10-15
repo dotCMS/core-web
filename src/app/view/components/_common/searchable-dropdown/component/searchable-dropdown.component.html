@@ -8,6 +8,11 @@
 </ng-template>
 
 <ng-template let-item="item" #defaultSelectTemplate>
+    <!-- <div class="p-dropdown p-component">
+        <span class="p-dropdown-label p-inputtext">
+            {{label}}
+        </span>
+    </div> -->
     <button
         #button
         pButton
@@ -16,6 +21,7 @@
         [label]="label"
         icon="fa fa-caret-down"
         iconPos="right"
+        class="p-button-text"
         type="button"
         [ngStyle]="{ 'width': width }"
         [disabled]="disabled"
