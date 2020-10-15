@@ -25,16 +25,16 @@
   color: rgba(0, 0, 0, 0.6);
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover {
-  background: $bg-color-secondary;
+  background: $hover-bg;
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text {
-  color: $black;
+  color: $hover-text-color;
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover .p-menuitem-icon {
-  color: rgba(0, 0, 0, 0.6);
+  color:$hover-text-color;
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover .p-submenu-icon {
-  color: rgba(0, 0, 0, 0.6);
+  color: $hover-text-color;
 }
 .p-menu .p-menuitem-link:focus {
   outline: 0 none;

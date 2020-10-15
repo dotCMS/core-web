@@ -79,8 +79,8 @@
   background: $highlight-bg;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
-  color: $black;
-  background: $bg-color-secondary;
+  color: $hover-text-color;
+  background: $hover-bg;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
   padding: $spacing-2 $spacing-2;

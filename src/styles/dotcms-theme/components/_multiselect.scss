@@ -68,9 +68,9 @@
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .p-multiselect-panel .p-multiselect-header .p-multiselect-close:enabled:hover {
-  color: rgba(0, 0, 0, 0.6);
+  color: $hover-text-color;
   border-color: transparent;
-  background: $bg-color-secondary;
+  background: $hover-bg;
 }
 .p-multiselect-panel .p-multiselect-header .p-multiselect-close:focus {
   outline: 0 none;
@@ -94,8 +94,8 @@
   background: $highlight-bg;
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
-  color: $black;
-  background: $bg-color-secondary;
+  color: $hover-text-color;
+  background: $hover-bg;
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus {
   outline: 0 none;
