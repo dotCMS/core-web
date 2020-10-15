@@ -1,4 +1,3 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
 import { CommonModule } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { FormsModule } from '@angular/forms';
