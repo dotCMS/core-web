@@ -1,7 +1,7 @@
 
 @use "variables" as *;
 .p-inputgroup-addon {
-  background: #ffffff;
+  background: $white;
   color: rgba(0, 0, 0, 0.6);
   border-top: 1px solid rgba(0, 0, 0, 0.38);
   border-left: 1px solid rgba(0, 0, 0, 0.38);
