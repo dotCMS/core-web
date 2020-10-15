@@ -28,9 +28,6 @@ $brand-secondary: var(--color-sec);
 $brand-secondary_rgb: var(--color-sec_rgb);
 $brand-background: var(--color-background);
 $bg-color-primary: rgba($brand-primary_rgb, 0.12);
-
-// TODO: A few borders and box-shadows are using this class, remove and create variables for these.
-$bg-color-secondary: rgba($brand-secondary_rgb, 0.12);
 $highlight-bg: rgba($brand-secondary_rgb, 0.12);
 $highlight-text-color: $brand-primary;
 $focus-bg: rgba($brand-secondary_rgb, 0.12);
@@ -39,7 +36,6 @@ $focus-text-primary-color: $brand-primary;
 $hover-text-primary-color: $brand-primary;
 $hover-bg: rgba($brand-secondary_rgb, 0.12);
 $hover-text-color: $black;
-
 $highlight-border-color: rgba($brand-secondary_rgb, 0.12);
 $hover-border-color: $brand-primary;
 
