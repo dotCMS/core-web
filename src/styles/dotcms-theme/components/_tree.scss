@@ -22,7 +22,7 @@
     margin-right: $spacing-1;
     width: $spacing-5;
     height: $spacing-5;
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
     border: 0 none;
     background: transparent;
     border-radius: 50%;
@@ -43,7 +43,7 @@
 
 .p-tree .p-tree-container .p-treenode .p-treenode-content .p-treenode-icon {
     margin-right: $spacing-1;
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
 }
 
 .p-tree .p-tree-container .p-treenode .p-treenode-content .p-checkbox {
@@ -91,7 +91,7 @@
 
 .p-tree .p-tree-filter-container .p-tree-filter-icon {
     right: $spacing-2;
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
 }
 
 .p-tree .p-treenode-children {
@@ -99,7 +99,7 @@
 }
 
 .p-tree .p-tree-loading-icon {
-    font-size: $spacing-7;
+    font-size: $font-size-xxx-large;
 }
 
 .p-tree .p-treenode-droppoint.p-treenode-droppoint-active {
@@ -129,7 +129,7 @@
 }
 
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content .p-treenode-icon {
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
     margin-right: $spacing-1;
 }
 

@@ -28,19 +28,15 @@ $brand-secondary: var(--color-sec);
 $brand-secondary_rgb: var(--color-sec_rgb);
 $brand-background: var(--color-background);
 $bg-color-primary: rgba($brand-primary_rgb, 0.12);
-
-// TODO: A few borders and box-shadows are using this class, remove and create variables for these.
-$bg-color-secondary: rgba($brand-secondary_rgb, 0.12);
-
 $highlight-bg: rgba($brand-secondary_rgb, 0.12);
 $highlight-text-color: $brand-primary;
-$highlight-border-color: $brand-primary;
 $focus-bg: rgba($brand-secondary_rgb, 0.12);
 $focus-text-color: $black;
 $focus-text-primary-color: $brand-primary;
 $hover-text-primary-color: $brand-primary;
 $hover-bg: rgba($brand-secondary_rgb, 0.12);
 $hover-text-color: $black;
+$highlight-border-color: rgba($brand-secondary_rgb, 0.12);
 $hover-border-color: $brand-primary;
 
 // TODO: Search replace font-size: $spacing-4 (font-size: 1.25rem)
@@ -70,12 +66,13 @@ $icon-button-size: 32px;
 $line-height: 1.5em;
 
 // TYPOGRAPHY
-$font-size-xx-large: 24px; //1.75rem
-$font-size-x-large: 18px; // 1.25rem
-$font-size-large: 16px;
-$font-size-medium: 14px;
-$font-size-small: 12px;
-$font-size-x-small: 10px;
+$font-size-xxx-large: 3rem;
+$font-size-xx-large: 1.75rem;
+$font-size-x-large: 1.5rem;
+$font-size-large: 1.25rem;
+$font-size-medium: 1rem;
+$font-size-small: 0.85rem;
+$font-size-x-small: 0.75rem;
 $font-weight-semi-bold: 500;
 
 $code-text: "Menlo", "Monaco", "Consolas";
@@ -120,16 +117,16 @@ $screen-lg-min: $screen-lg;
 $screen-xl-min: $screen-xl;
 
 // Breakpoints max
-$screen-xs-max: ($screen-sm-min - 1);
-$screen-sm-max: ($screen-md-min - 1);
-$screen-md-max: ($screen-lg-min - 1);
-$screen-lg-max: ($screen-xl-min - 1);
+$screen-xs-max: $screen-sm-min - 1;
+$screen-sm-max: $screen-md-min - 1;
+$screen-md-max: $screen-lg-min - 1;
+$screen-lg-max: $screen-xl-min - 1;
 $screen-device-container-max: 1545px;
 
 // .container size
-$container-md: (680px + $gutter-width);
-$container-lg: (975px + $gutter-width);
-$container-xl: (1381px + $gutter-width);
+$container-md: 680px + $gutter-width;
+$container-lg: 975px + $gutter-width;
+$container-xl: 1381px + $gutter-width;
 
 // MATERIAL DESIGN
 $md-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);

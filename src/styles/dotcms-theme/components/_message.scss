@@ -42,11 +42,11 @@
   color: #B71C1C;
 }
 .p-inline-message .p-inline-message-icon {
-  font-size: $spacing-3;
+  font-size: $font-size-medium;
   margin-right: $spacing-1;
 }
 .p-inline-message .p-inline-message-text {
-  font-size: $spacing-3;
+  font-size: $font-size-medium;
 }
 .p-inline-message.p-inline-message-icon-only .p-inline-message-icon {
   margin-right: 0;
@@ -123,11 +123,11 @@
   color: #B71C1C;
 }
 .p-message .p-message-text {
-  font-size: $spacing-3;
+  font-size: $font-size-medium;
   font-weight: 500;
 }
 .p-message .p-message-icon {
-  font-size: $spacing-4;
+  font-size: $font-size-x-large;
   margin-right: $spacing-1;
 }
 .p-message .p-message-summary {

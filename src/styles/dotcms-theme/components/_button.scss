@@ -7,7 +7,7 @@
   border: 0 none;
   border: solid 1px transparent;
   color: $white;
-  font-size: $spacing-3;
+  font-size: $font-size-medium;
   font-weight: 500;
   line-height: normal;
   padding: $spacing-2 $spacing-5;
@@ -31,15 +31,15 @@
 }
 
 .p-button.p-button-text.p-button-plain {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 .p-button.p-button-text.p-button-plain:enabled:hover {
   background: rgba(0, 0, 0, 0.04);
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 .p-button.p-button-text.p-button-plain:enabled:active {
   background: rgba(0, 0, 0, 0.16);
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 .p-button:focus {
   outline: 0 none;
@@ -105,11 +105,11 @@
   font-size: 0.875rem;
 }
 .p-button.p-button-lg {
-  font-size: $spacing-4;
+  font-size: $font-size-x-large;
   padding: 0.71375rem 0.9375rem;
 }
 .p-button.p-button-lg .p-button-icon {
-  font-size: $spacing-4;
+  font-size: $font-size-x-large;
 }
 
 .p-fluid .p-button-icon-only {
@@ -177,22 +177,6 @@
   color: $brand-secondary;
 }
 
-.p-button.p-button-secondary.p-button-text, .p-buttonset.p-button-secondary > .p-button.p-button-text, .p-splitbutton.p-button-secondary > .p-button.p-button-text {
-  background-color: transparent;
-  color: #ff4081;
-  border-color: transparent;
-}
-.p-button.p-button-secondary.p-button-text:enabled:hover, .p-buttonset.p-button-secondary > .p-button.p-button-text:enabled:hover, .p-splitbutton.p-button-secondary > .p-button.p-button-text:enabled:hover {
-  background: rgba(255, 64, 129, 0.04);
-  border-color: transparent;
-  color: #ff4081;
-}
-.p-button.p-button-secondary.p-button-text:enabled:active, .p-buttonset.p-button-secondary > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-secondary > .p-button.p-button-text:enabled:active {
-  background: rgba(255, 64, 129, 0.16);
-  border-color: transparent;
-  color: #ff4081;
-}
-
 .p-button.p-button-info, .p-buttonset.p-button-info > .p-button, .p-splitbutton.p-button-info > .p-button {
   color: $white;
   background: #2196F3;
@@ -210,123 +194,6 @@
   background: rgba(33, 150, 243, 0.68);
   color: $white;
   border-color: transparent;
-}
-.p-button.p-button-info.p-button-text, .p-buttonset.p-button-info > .p-button.p-button-text, .p-splitbutton.p-button-info > .p-button.p-button-text {
-  background-color: transparent;
-  color: #2196F3;
-  border-color: transparent;
-}
-.p-button.p-button-info.p-button-text:enabled:hover, .p-buttonset.p-button-info > .p-button.p-button-text:enabled:hover, .p-splitbutton.p-button-info > .p-button.p-button-text:enabled:hover {
-  background: rgba(33, 150, 243, 0.04);
-  border-color: transparent;
-  color: #2196F3;
-}
-.p-button.p-button-info.p-button-text:enabled:active, .p-buttonset.p-button-info > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-info > .p-button.p-button-text:enabled:active {
-  background: rgba(33, 150, 243, 0.16);
-  border-color: transparent;
-  color: #2196F3;
-}
-
-.p-button.p-button-success, .p-buttonset.p-button-success > .p-button, .p-splitbutton.p-button-success > .p-button {
-  color: $white;
-  background: #689F38;
-  border: 0 none;
-}
-.p-button.p-button-success:enabled:hover, .p-buttonset.p-button-success > .p-button:enabled:hover, .p-splitbutton.p-button-success > .p-button:enabled:hover {
-  background: rgba(104, 159, 56, 0.92);
-  color: $white;
-  border-color: transparent;
-}
-.p-button.p-button-success:enabled:focus, .p-buttonset.p-button-success > .p-button:enabled:focus, .p-splitbutton.p-button-success > .p-button:enabled:focus {
-  box-shadow: none;
-}
-.p-button.p-button-success:enabled:active, .p-buttonset.p-button-success > .p-button:enabled:active, .p-splitbutton.p-button-success > .p-button:enabled:active {
-  background: rgba(104, 159, 56, 0.68);
-  color: $white;
-  border-color: transparent;
-}
-.p-button.p-button-success.p-button-text, .p-buttonset.p-button-success > .p-button.p-button-text, .p-splitbutton.p-button-success > .p-button.p-button-text {
-  background-color: transparent;
-  color: #689F38;
-  border-color: transparent;
-}
-.p-button.p-button-success.p-button-text:enabled:hover, .p-buttonset.p-button-success > .p-button.p-button-text:enabled:hover, .p-splitbutton.p-button-success > .p-button.p-button-text:enabled:hover {
-  background: rgba(104, 159, 56, 0.04);
-  border-color: transparent;
-  color: #689F38;
-}
-.p-button.p-button-success.p-button-text:enabled:active, .p-buttonset.p-button-success > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-success > .p-button.p-button-text:enabled:active {
-  background: rgba(104, 159, 56, 0.16);
-  border-color: transparent;
-  color: #689F38;
-}
-
-.p-button.p-button-warning, .p-buttonset.p-button-warning > .p-button, .p-splitbutton.p-button-warning > .p-button {
-  color: #212529;
-  background: #FBC02D;
-  border: 0 none;
-}
-.p-button.p-button-warning:enabled:hover, .p-buttonset.p-button-warning > .p-button:enabled:hover, .p-splitbutton.p-button-warning > .p-button:enabled:hover {
-  background: rgba(251, 192, 45, 0.92);
-  color: #212529;
-  border-color: transparent;
-}
-.p-button.p-button-warning:enabled:focus, .p-buttonset.p-button-warning > .p-button:enabled:focus, .p-splitbutton.p-button-warning > .p-button:enabled:focus {
-  box-shadow: none;
-}
-.p-button.p-button-warning:enabled:active, .p-buttonset.p-button-warning > .p-button:enabled:active, .p-splitbutton.p-button-warning > .p-button:enabled:active {
-  background: rgba(251, 192, 45, 0.68);
-  color: #212529;
-  border-color: transparent;
-}
-.p-button.p-button-warning.p-button-text, .p-buttonset.p-button-warning > .p-button.p-button-text, .p-splitbutton.p-button-warning > .p-button.p-button-text {
-  background-color: transparent;
-  color: #FBC02D;
-  border-color: transparent;
-}
-.p-button.p-button-warning.p-button-text:enabled:hover, .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:hover, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:hover {
-  background: rgba(251, 192, 45, 0.04);
-  border-color: transparent;
-  color: #FBC02D;
-}
-.p-button.p-button-warning.p-button-text:enabled:active, .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:active {
-  background: rgba(251, 192, 45, 0.16);
-  border-color: transparent;
-  color: #FBC02D;
-}
-
-.p-button.p-button-help, .p-buttonset.p-button-help > .p-button, .p-splitbutton.p-button-help > .p-button {
-  color: $white;
-  background: #9C27B0;
-  border: 0 none;
-}
-.p-button.p-button-help:enabled:hover, .p-buttonset.p-button-help > .p-button:enabled:hover, .p-splitbutton.p-button-help > .p-button:enabled:hover {
-  background: rgba(156, 39, 176, 0.92);
-  color: $white;
-  border-color: transparent;
-}
-.p-button.p-button-help:enabled:focus, .p-buttonset.p-button-help > .p-button:enabled:focus, .p-splitbutton.p-button-help > .p-button:enabled:focus {
-  box-shadow: none;
-}
-.p-button.p-button-help:enabled:active, .p-buttonset.p-button-help > .p-button:enabled:active, .p-splitbutton.p-button-help > .p-button:enabled:active {
-  background: rgba(156, 39, 176, 0.68);
-  color: $white;
-  border-color: transparent;
-}
-.p-button.p-button-help.p-button-text, .p-buttonset.p-button-help > .p-button.p-button-text, .p-splitbutton.p-button-help > .p-button.p-button-text {
-  background-color: transparent;
-  color: #9C27B0;
-  border-color: transparent;
-}
-.p-button.p-button-help.p-button-text:enabled:hover, .p-buttonset.p-button-help > .p-button.p-button-text:enabled:hover, .p-splitbutton.p-button-help > .p-button.p-button-text:enabled:hover {
-  background: rgba(156, 39, 176, 0.04);
-  border-color: transparent;
-  color: #9C27B0;
-}
-.p-button.p-button-help.p-button-text:enabled:active, .p-buttonset.p-button-help > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-help > .p-button.p-button-text:enabled:active {
-  background: rgba(156, 39, 176, 0.16);
-  border-color: transparent;
-  color: #9C27B0;
 }
 
 .p-button.p-button-danger, .p-buttonset.p-button-danger > .p-button, .p-splitbutton.p-button-danger > .p-button {
@@ -347,7 +214,6 @@
   color: $white;
   border-color: transparent;
 }
-
 
 .p-button.p-button-danger.p-button-text, .p-buttonset.p-button-danger > .p-button.p-button-text, .p-splitbutton.p-button-danger > .p-button.p-button-text {
   background-color: transparent;
@@ -394,8 +260,6 @@
   border-color: transparent;
 }
 
-
-
 .p-button .p-ink {
   background-color: rgba(255, 255, 255, 0.32);
 }
@@ -428,70 +292,6 @@
 }
 .p-button.p-button-secondary.p-button-text .p-ink, .p-buttonset.p-button-secondary > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-secondary > .p-button.p-button-text .p-ink {
   background-color: rgba(255, 64, 129, 0.16);
-}
-
-.p-button.p-button-info:enabled:focus, .p-buttonset.p-button-info > .p-button:enabled:focus, .p-splitbutton.p-button-info > .p-button:enabled:focus {
-  background: rgba(33, 150, 243, 0.76);
-}
-.p-button.p-button-info:enabled:active, .p-buttonset.p-button-info > .p-button:enabled:active, .p-splitbutton.p-button-info > .p-button:enabled:active {
-  background: rgba(33, 150, 243, 0.68);
-}
-.p-button.p-button-info.p-button-text:enabled:focus, .p-buttonset.p-button-info > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-info > .p-button.p-button-text:enabled:focus {
-  background: rgba(33, 150, 243, 0.12);
-}
-.p-button.p-button-info.p-button-text:enabled:active, .p-buttonset.p-button-info > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-info > .p-button.p-button-text:enabled:active {
-  background: rgba(33, 150, 243, 0.16);
-}
-.p-button.p-button-info.p-button-text .p-ink, .p-buttonset.p-button-info > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-info > .p-button.p-button-text .p-ink {
-  background-color: rgba(33, 150, 243, 0.16);
-}
-
-.p-button.p-button-success:enabled:focus, .p-buttonset.p-button-success > .p-button:enabled:focus, .p-splitbutton.p-button-success > .p-button:enabled:focus {
-  background: rgba(104, 159, 56, 0.76);
-}
-.p-button.p-button-success:enabled:active, .p-buttonset.p-button-success > .p-button:enabled:active, .p-splitbutton.p-button-success > .p-button:enabled:active {
-  background: rgba(104, 159, 56, 0.68);
-}
-.p-button.p-button-success.p-button-text:enabled:focus, .p-buttonset.p-button-success > .p-button.p-button-text:enabled:focus,  .p-splitbutton.p-button-success > .p-button.p-button-text:enabled:focus {
-  background: rgba(104, 159, 56, 0.12);
-}
-.p-button.p-button-success.p-button-text:enabled:active, .p-buttonset.p-button-success > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-success > .p-button.p-button-text:enabled:active {
-  background: rgba(104, 159, 56, 0.16);
-}
-.p-button.p-button-success.p-button-text .p-ink, .p-buttonset.p-button-success > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-success > .p-button.p-button-text .p-ink {
-  background-color: rgba(104, 159, 56, 0.16);
-}
-
-.p-button.p-button-warning:enabled:focus, .p-buttonset.p-button-warning > .p-button:enabled:focus, .p-splitbutton.p-button-warning > .p-button:enabled:focus {
-  background: rgba(251, 192, 45, 0.76);
-}
-.p-button.p-button-warning:enabled:active, .p-buttonset.p-button-warning > .p-button:enabled:active, .p-splitbutton.p-button-warning > .p-button:enabled:active {
-  background: rgba(251, 192, 45, 0.68);
-}
-.p-button.p-button-warning.p-button-text:enabled:focus, .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:focus {
-  background: rgba(251, 192, 45, 0.12);
-}
-.p-button.p-button-warning.p-button-text:enabled:active,  .p-buttonset.p-button-warning > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-warning > .p-button.p-button-text:enabled:active {
-  background: rgba(251, 192, 45, 0.16);
-}
-.p-button.p-button-warning.p-button-text .p-ink, .p-buttonset.p-button-warning > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-warning > .p-button.p-button-text .p-ink {
-  background-color: rgba(251, 192, 45, 0.16);
-}
-
-.p-button.p-button-help:enabled:focus, .p-buttonset.p-button-help > .p-button:enabled:focus, .p-splitbutton.p-button-help > .p-button:enabled:focus {
-  background: rgba(156, 39, 176, 0.76);
-}
-.p-button.p-button-help:enabled:active, .p-buttonset.p-button-help > .p-button:enabled:active, .p-splitbutton.p-button-help > .p-button:enabled:active {
-  background: rgba(156, 39, 176, 0.68);
-}
-.p-button.p-button-help.p-button-text:enabled:focus, .p-buttonset.p-button-help > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-help > .p-button.p-button-text:enabled:focus {
-  background: rgba(156, 39, 176, 0.12);
-}
-.p-button.p-button-help.p-button-text:enabled:active, .p-buttonset.p-button-help > .p-button.p-button-text:enabled:active, .p-splitbutton.p-button-help > .p-button.p-button-text:enabled:active {
-  background: rgba(156, 39, 176, 0.16);
-}
-.p-button.p-button-help.p-button-text .p-ink, .p-buttonset.p-button-help > .p-button.p-button-text .p-ink, .p-splitbutton.p-button-help > .p-button.p-button-text .p-ink  {
-  background-color: rgba(156, 39, 176, 0.16);
 }
 
 .p-button.p-button-danger:enabled:focus, .p-buttonset.p-button-danger > .p-button:enabled:focus, .p-splitbutton.p-button-danger > .p-button:enabled:focus {

@@ -9,13 +9,13 @@
 
 .p-selectbutton .p-button .p-button-icon-left,
 .p-selectbutton .p-button .p-button-icon-right {
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
 }
 
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
     background: #f6f6f6;
     border-color: rgba(0, 0, 0, 0.12);
-    color: $black;
+    color: $hover-text-color;
 }
 
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover .p-button-icon-left,
@@ -24,19 +24,19 @@
 }
 
 .p-selectbutton .p-button.p-highlight {
-    background: #e0e0e1;
-    border-color: #e0e0e1;
+    background: $highlight-bg;
+    border-color: $gray-light;
     color: $black;
 }
 
 .p-selectbutton .p-button.p-highlight .p-button-icon-left,
 .p-selectbutton .p-button.p-highlight .p-button-icon-right {
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
 }
 
 .p-selectbutton .p-button.p-highlight:hover {
-    background: #d9d8d9;
-    border-color: #d9d8d9;
+    background: $highlight-bg;
+    border-color: $highlight-border-color;
     color: $hover-text-color;
 }
 
@@ -46,11 +46,11 @@
 }
 
 .p-selectbutton .p-button:focus {
-    background: #e0e0e1;
-    border-color: #e0e0e1;
+    background: $focus-bg;
+    border-color: $highlight-border-color;
 }
 
 .p-selectbutton .p-button:focus.p-highlight {
     background: $focus-bg;
-    border-color: #d9d8d9;
+    border-color: $highlight-border-color;
 }

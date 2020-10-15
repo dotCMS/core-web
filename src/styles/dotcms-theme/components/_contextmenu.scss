@@ -22,12 +22,12 @@
 }
 
 .p-contextmenu .p-menuitem-link .p-menuitem-icon {
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
     margin-right: $spacing-1;
 }
 
 .p-contextmenu .p-menuitem-link .p-submenu-icon {
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
 }
 
 .p-contextmenu .p-menuitem-link:not(.p-disabled):hover {
@@ -68,7 +68,7 @@
 }
 
 .p-contextmenu .p-menuitem.p-menuitem-active > .p-menuitem-link .p-menuitem-icon, .p-contextmenu .p-menuitem.p-menuitem-active > .p-menuitem-link .p-submenu-icon {
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
 }
 
 .p-contextmenu .p-menu-separator {

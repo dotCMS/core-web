@@ -1,7 +1,7 @@
 @use "variables" as *;
 .p-inputtext {
   font-family: $body-text;
-  font-size: $spacing-3;
+  font-size: $font-size-medium;
   color: $black;
   background: $white;
   padding: $spacing-2 $spacing-2;
@@ -25,13 +25,13 @@
   padding: 0.65625rem 0.65625rem;
 }
 .p-inputtext.p-inputtext-lg {
-  font-size: $spacing-4;
+  font-size: $font-size-x-large;
   padding: 0.9375rem 0.9375rem;
 }
 
 .p-input-icon-left > i:first-of-type {
   left: $spacing-2;
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 .p-input-icon-left > .p-inputtext {
@@ -40,7 +40,7 @@
 
 .p-input-icon-right > i:last-of-type {
   right: $spacing-2;
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 .p-input-icon-right > .p-inputtext {
@@ -48,19 +48,19 @@
 }
 
 ::-webkit-input-placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 :-moz-placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 ::-moz-placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 :-ms-input-placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 .p-input-filled .p-inputtext {
@@ -79,7 +79,7 @@
 }
 
 .p-inputtext-lg .p-inputtext {
-  font-size: $spacing-4;
+  font-size: $font-size-x-large;
   padding: 0.9375rem 0.9375rem;
 }
 
