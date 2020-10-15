@@ -15,7 +15,7 @@
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
     background: #f6f6f6;
     border-color: rgba(0, 0, 0, 0.12);
-    color: $black;
+    color: $hover-text-color;
 }
 
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover .p-button-icon-left,
@@ -24,7 +24,7 @@
 }
 
 .p-selectbutton .p-button.p-highlight {
-    background: #e0e0e1;
+    background: $highlight-bg;
     border-color: #e0e0e1;
     color: $black;
 }
@@ -46,7 +46,7 @@
 }
 
 .p-selectbutton .p-button:focus {
-    background: #e0e0e1;
+    background: $focus-bg;
     border-color: #e0e0e1;
 }
 
