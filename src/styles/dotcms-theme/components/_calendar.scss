@@ -30,7 +30,7 @@
 }
 
 .p-calendar-w-btn .p-datepicker-trigger.p-button span {
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
 }
 
 .p-calendar-w-btn .p-datepicker-trigger.p-button:enabled:hover {
@@ -61,7 +61,7 @@
 .p-datepicker:not(.p-datepicker-inline) {
     background: $white;
     border: 0 none;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px $bg-color-secondary;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px $highlight-bg;
 }
 
 .p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
@@ -74,7 +74,7 @@
     background: $white;
     font-weight: 500;
     margin: 0;
-    border-bottom: 1px solid $bg-color-secondary;
+    border-bottom: 1px solid $highlight-border-color;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
 }
@@ -83,7 +83,7 @@
 .p-datepicker .p-datepicker-header .p-datepicker-next {
     width: $spacing-5;
     height: $spacing-5;
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
     border: 0 none;
     background: transparent;
     border-radius: 50%;
@@ -173,7 +173,7 @@
 
 .p-datepicker .p-datepicker-buttonbar {
     padding: $spacing-2 0;
-    border-top: 1px solid $bg-color-secondary;
+    border-top: 1px solid $highlight-border-color;
 }
 
 .p-datepicker .p-datepicker-buttonbar .p-button {
@@ -181,14 +181,14 @@
 }
 
 .p-datepicker .p-timepicker {
-    border-top: 1px solid $bg-color-secondary;
+    border-top: 1px solid $highlight-border-color;
     padding: $spacing-1;
 }
 
 .p-datepicker .p-timepicker button {
     width: $spacing-5;
     height: $spacing-5;
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
     border: 0 none;
     background: transparent;
     border-radius: 50%;
@@ -239,7 +239,7 @@
 }
 
 .p-datepicker.p-datepicker-multiple-month .p-datepicker-group {
-    border-right: 1px solid $bg-color-secondary;
+    border-right: 1px solid $highlight-border-color;
     padding-right: $spacing-1;
     padding-left: $spacing-1;
     padding-top: 0;
@@ -299,7 +299,7 @@
 }
 
 .p-datepicker table th {
-    border-bottom: 1px solid $bg-color-secondary;
+    border-bottom: 1px solid $highlight-border-color;
     color: rgba(0, 0, 0, 0.38);
     font-weight: 400;
     font-size: 0.875rem;

@@ -44,7 +44,7 @@
 }
 
 .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
-    background: $bg-color-secondary;
+    background: $hover-bg;
 }
 
 .p-inputswitch .p-inputswitch-slider:before {

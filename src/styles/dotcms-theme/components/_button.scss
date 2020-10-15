@@ -31,15 +31,15 @@
 }
 
 .p-button.p-button-text.p-button-plain {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 .p-button.p-button-text.p-button-plain:enabled:hover {
   background: rgba(0, 0, 0, 0.04);
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 .p-button.p-button-text.p-button-plain:enabled:active {
   background: rgba(0, 0, 0, 0.16);
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 .p-button:focus {
   outline: 0 none;

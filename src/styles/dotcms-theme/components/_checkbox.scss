@@ -121,7 +121,7 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
 }
 
 .p-checkbox:not(.p-checkbox-disabled).p-checkbox-focused {
-    box-shadow: 0 0 1px 10px $bg-color-secondary;
+    box-shadow: 0 0 1px 10px $highlight-bg;
 }
 
 .p-checkbox.p-checkbox-checked:not(.p-checkbox-disabled):hover {
@@ -129,5 +129,5 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
 }
 
 .p-checkbox.p-checkbox-checked:not(.p-checkbox-disabled).p-checkbox-focused {
-    box-shadow: 0 0 1px 10px $bg-color-secondary;
+    box-shadow: 0 0 1px 10px $highlight-bg;
 }

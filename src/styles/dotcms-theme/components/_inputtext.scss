@@ -31,7 +31,7 @@
 
 .p-input-icon-left > i:first-of-type {
   left: $spacing-2;
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 .p-input-icon-left > .p-inputtext {
@@ -40,7 +40,7 @@
 
 .p-input-icon-right > i:last-of-type {
   right: $spacing-2;
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 .p-input-icon-right > .p-inputtext {
@@ -48,19 +48,19 @@
 }
 
 ::-webkit-input-placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 :-moz-placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 ::-moz-placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 :-ms-input-placeholder {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 
 .p-input-filled .p-inputtext {

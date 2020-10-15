@@ -54,7 +54,7 @@
 }
 
 .p-datatable .p-sortable-column .p-sortable-column-icon {
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
     margin-left: $spacing-1;
 }
 
@@ -106,7 +106,7 @@
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-cancel {
     width: $spacing-5;
     height: $spacing-5;
-    color: rgba(0, 0, 0, 0.6);
+    color: $black;
     border: 0 none;
     background: transparent;
     border-radius: 50%;

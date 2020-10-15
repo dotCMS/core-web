@@ -18,11 +18,11 @@
   color: $black;
 }
 .p-menu .p-menuitem-link .p-menuitem-icon {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
   margin-right: $spacing-1;
 }
 .p-menu .p-menuitem-link .p-submenu-icon {
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
 }
 .p-menu .p-menuitem-link:not(.p-disabled):hover {
   background: $hover-bg;
@@ -49,7 +49,7 @@
 .p-menu .p-submenu-header {
   margin: 0;
   padding: $spacing-2;
-  color: rgba(0, 0, 0, 0.6);
+  color: $black;
   background: $white;
   font-weight: 400;
   border-top-right-radius: 0;
