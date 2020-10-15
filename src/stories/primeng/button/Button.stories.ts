@@ -25,6 +25,9 @@ const PrimaryTemplate = `
     <p><button pButton label="Submit" icon="pi pi-check"></button></p>
     <p><button pButton label="Submit" icon="pi pi-check" iconPos="right"></button></p>
     <p><button pButton label="Disabled" disabled="true"></button></p>
+    <hr />
+    <p><button pButton label="Small Button" class="p-button-sm"></button></p>
+    <p><button pButton label="Big Button" class="p-button-lg"></button></p>
 `;
 
 const SecondaryTemplate = `
@@ -32,6 +35,9 @@ const SecondaryTemplate = `
     <p><button pButton label="Submit" icon="pi pi-check" class="p-button-secondary"></button></p>
     <p><button pButton label="Submit" icon="pi pi-check" iconPos="right" class="p-button-secondary"></button></p>
     <p><button pButton label="Disabled" disabled="true" class="p-button-secondary"></button></p>
+    <hr />
+    <p><button pButton label="Small Button" class="p-button-secondary p-button-sm"></button></p>
+    <p><button pButton label="Big Button" class="p-button-secondary p-button-lg"></button></p>
 `;
 
 const TextTemplate = `
@@ -39,6 +45,9 @@ const TextTemplate = `
     <p><button pButton label="Submit" icon="pi pi-check" class="p-button-text"></button></p>
     <p><button pButton label="Submit" icon="pi pi-check" iconPos="right" class="p-button-text"></button></p>
     <p><button pButton label="Disabled" disabled="true" class="p-button-text"></button></p>
+    <hr />
+    <p><button pButton label="Small Button" class="p-button-text p-button-sm"></button></p>
+    <p><button pButton label="Big Button" class="p-button-text p-button-lg"></button></p>
 `;
 
 export const Primary: Story = () => {
