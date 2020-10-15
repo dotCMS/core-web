@@ -1,5 +1,25 @@
+@use "variables" as *;
+
 @import "primeng-theme/utils/extends";
 @import "mixins";
+
+:host {
+    position: relative;
+
+    .p-button-text {
+        padding-left: $spacing-2;
+        padding-right: $spacing-2;
+
+        &::ng-deep {
+            .p-button-label,
+            .p-button-icon {
+                color: $black;
+                text-transform: none;
+            }
+        }
+    }
+
+}
 
 ::ng-deep {
     .p-overlaypanel.paginator {
@@ -14,49 +34,10 @@
     .searchable-dropdown .p-overlaypanel-content {
         padding: $basic-padding * 2 0;
     }
-
-    dot-searchable-dropdown {
-        .p-button {
-            @extend #inputtext-normal-border;
-            background: none;
-            border: 0;
-            border-radius: 0;
-            padding-right: $basic-padding * 2;
-            text-align: left;
-            text-transform: none;
-            width: auto;
-
-            &:not([disabled]) {
-                &:hover,
-                &:active,
-                &:focus {
-                    @extend #field-hover-state;
-                    @extend #inputtext-normal-border;
-                    border: 0;
-
-                    .p-button-text,
-                    [class^="ui-button-icon"] {
-                        color: $body-font-color;
-                    }
-                }
-            }
-
-            .p-button-text,
-            [class^="ui-button-icon"] {
-                color: $body-font-color;
-            }
-
-            .p-button-text {
-                font-size: $font-size-large;
-                font-weight: normal;
-                padding: 0;
-                text-transform: none;
-            }
-        }
-    }
 }
 
-.searchable-dropdown__data-list ::ng-deep  {
+
+.searchable-dropdown__data-list ::ng-deep {
     .p-dataview {
         position: unset;
     }
@@ -64,25 +45,21 @@
     .p-dataview-content {
         width: 100%;
 
-        .p-g {
-            margin: 0;
+        .searchable-dropdown__data-list-item {
+            cursor: pointer;
+            display: block;
+            line-height: normal;
+            padding: $basic-padding $basic-padding * 2;
+            transition: background-color $basic-speed ease-in;
+            width: 100%;
+            @include truncate-text;
 
-            .searchable-dropdown__data-list-item {
-                cursor: pointer;
-                display: block;
-                line-height: normal;
-                padding: $basic-padding $basic-padding * 2;
-                transition: background-color $basic-speed ease-in;
-                width: 100%;
-                @include truncate-text;
+            &.selected {
+                font-weight: bold;
+            }
 
-                &.selected {
-                    font-weight: bold;
-                }
-
-                &:hover {
-                    background-color: $gray-bg;
-                }
+            &:hover {
+                background-color: $gray-bg;
             }
         }
     }
@@ -97,8 +74,6 @@
     position: relative;
 
     input.searchable-dropdown__search-inputfield {
-        @include form-field-secondary;
-        padding: 0 $basic-padding * 4 0 $basic-padding * 2;
         width: 100%;
     }
 }
