@@ -1,47 +1,56 @@
+@use "variables" as *;
 
 .p-selectbutton .p-button {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  color: #000001;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+    background: $white;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: $black;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
 }
+
 .p-selectbutton .p-button .p-button-icon-left,
 .p-selectbutton .p-button .p-button-icon-right {
-  color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.6);
 }
+
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
-  background: #f6f6f6;
-  border-color: rgba(0, 0, 0, 0.12);
-  color: #000001;
+    background: #f6f6f6;
+    border-color: rgba(0, 0, 0, 0.12);
+    color: $black;
 }
+
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover .p-button-icon-left,
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover .p-button-icon-right {
-  color: rgba(0, 0, 0, 0.6);
+    color: $hover-text-color;
 }
+
 .p-selectbutton .p-button.p-highlight {
-  background: #e0e0e1;
-  border-color: #e0e0e1;
-  color: #000001;
+    background: #e0e0e1;
+    border-color: #e0e0e1;
+    color: $black;
 }
+
 .p-selectbutton .p-button.p-highlight .p-button-icon-left,
 .p-selectbutton .p-button.p-highlight .p-button-icon-right {
-  color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.6);
 }
+
 .p-selectbutton .p-button.p-highlight:hover {
-  background: #d9d8d9;
-  border-color: #d9d8d9;
-  color: #000001;
+    background: #d9d8d9;
+    border-color: #d9d8d9;
+    color: $hover-text-color;
 }
+
 .p-selectbutton .p-button.p-highlight:hover .p-button-icon-left,
 .p-selectbutton .p-button.p-highlight:hover .p-button-icon-right {
-  color: rgba(0, 0, 0, 0.6);
+    color: $hover-text-color;
 }
 
 .p-selectbutton .p-button:focus {
-  background: #e0e0e1;
-  border-color: #e0e0e1;
+    background: #e0e0e1;
+    border-color: #e0e0e1;
 }
+
 .p-selectbutton .p-button:focus.p-highlight {
-  background: #d9d8d9;
-  border-color: #d9d8d9;
+    background: $focus-bg;
+    border-color: #d9d8d9;
 }
