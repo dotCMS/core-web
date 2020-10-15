@@ -21,7 +21,7 @@ export default {
   }
 } as Meta;
 
-const CalendarTemplate = `<p-calendar [showTime]="true" inputId="time"></p-calendar>`
+const CalendarTemplate = `<p-calendar [showTime]="true" inputId="time" showButtonBar="true"></p-calendar>`;
 const Template: Story<Calendar> = (props: Calendar) => {
   const template = CalendarTemplate;
   return {

@@ -173,7 +173,7 @@
 
 .p-datepicker .p-datepicker-buttonbar {
     padding: $spacing-2 0;
-    border-top: 1px solid $highlight-border-color;
+    border-top: 1px solid $gray-lighter;
 }
 
 .p-datepicker .p-datepicker-buttonbar .p-button {
@@ -181,7 +181,7 @@
 }
 
 .p-datepicker .p-timepicker {
-    border-top: 1px solid $highlight-border-color;
+    border-top: 1px solid $gray-lighter;
     padding: $spacing-1;
 }
 
@@ -212,7 +212,7 @@
 }
 
 .p-datepicker .p-timepicker span {
-    font-size: $font-size-x-large;
+    font-size: $spacing-3;
 }
 
 .p-datepicker .p-timepicker > div {
@@ -239,7 +239,7 @@
 }
 
 .p-datepicker.p-datepicker-multiple-month .p-datepicker-group {
-    border-right: 1px solid $highlight-border-color;
+    border-right: 1px solid $gray-lighter;
     padding-right: $spacing-1;
     padding-left: $spacing-1;
     padding-top: 0;
@@ -299,7 +299,7 @@
 }
 
 .p-datepicker table th {
-    border-bottom: 1px solid $highlight-border-color;
+    border-bottom: 1px solid $gray-lighter;
     color: rgba(0, 0, 0, 0.38);
     font-weight: 400;
     font-size: 0.875rem;
