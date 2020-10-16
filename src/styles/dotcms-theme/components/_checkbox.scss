@@ -86,19 +86,6 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
     transition: box-shadow 0.2s;
 }
 
-.p-checkbox .p-checkbox-box {
-    border-color: #757575;
-    border-radius: 2px;
-    position: relative;
-}
-
-.p-checkbox .p-checkbox-box:not(.p-disabled):hover {
-    border-color: #757575;
-}
-
-.p-checkbox .p-checkbox-box:not(.p-disabled).p-focus {
-    border-color: #757575;
-}
 
 .p-checkbox .p-checkbox-box.p-highlight:not(.p-disabled).p-focus {
     border-color: $brand-primary;
