@@ -98,15 +98,15 @@
   width: $spacing-7;
 }
 .p-button.p-button-sm {
-  font-size: 0.875rem;
-  padding: 0.499625rem 0.65625rem;
+  font-size: $font-size-small;
+  padding: $spacing-1 $spacing-2;
 }
 .p-button.p-button-sm .p-button-icon {
-  font-size: 0.875rem;
+  font-size: $font-size-small;
 }
 .p-button.p-button-lg {
   font-size: $font-size-x-large;
-  padding: 0.71375rem 0.9375rem;
+  padding: $spacing-2 $spacing-5;
 }
 .p-button.p-button-lg .p-button-icon {
   font-size: $font-size-x-large;
