@@ -17,22 +17,7 @@
   color: $brand-secondary;
   border: 1px solid $brand-secondary;
 }
-.p-badge.p-badge-success {
-  background-color: #689F38;
-  color: $white;
-}
-.p-badge.p-badge-info {
-  background-color: #2196F3;
-  color: $white;
-}
-.p-badge.p-badge-warning {
-  background-color: #FBC02D;
-  color: #212529;
-}
-.p-badge.p-badge-danger {
-  background-color: #D32F2F;
-  color: $white;
-}
+
 .p-badge.p-badge-lg {
   font-size: 1.125rem;
   min-width: $spacing-6;
@@ -44,27 +29,3 @@
   height: $spacing-7;
 }
 
-.p-tag {
-  background:  $brand-primary;
-  color: $white;
-  font-size: $font-size-x-small;
-  font-weight: 700;
-  padding: 0.25rem 0.4rem;
-  border-radius: 4px;
-}
-.p-tag.p-tag-success {
-  background-color: #689F38;
-  color: $white;
-}
-.p-tag.p-tag-info {
-  background-color: #2196F3;
-  color: $white;
-}
-.p-tag.p-tag-warning {
-  background-color: #FBC02D;
-  color: #212529;
-}
-.p-tag.p-tag-danger {
-  background-color: #D32F2F;
-  color: $white;
-}
