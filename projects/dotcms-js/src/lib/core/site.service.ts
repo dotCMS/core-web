@@ -136,7 +136,7 @@ export class SiteService {
     getSiteById(id: string): Observable<Site> {
         return this.coreWebService
             .requestView({
-                url: `content/render/false/query/+contentType:host%20+identifier:${id}`
+                url: `/api/content/render/false/query/+contentType:host%20+identifier:${id}`
             })
             .pipe(pluck('contentlets'), map((sites: Site[]) => sites[0]));
     }
