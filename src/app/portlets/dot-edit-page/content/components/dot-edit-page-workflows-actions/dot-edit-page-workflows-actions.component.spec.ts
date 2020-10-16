@@ -132,7 +132,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         workflowActionDebugEl = de.query(By.css('dot-edit-page-workflows-actions'));
         workflowActionComponent = workflowActionDebugEl.componentInstance;
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
-        button = workflowActionDebugEl.query(By.css('button'));
+        button = workflowActionDebugEl.query(By.css('dot-icon-button'));
 
         dotWorkflowActionsFireService = workflowActionDebugEl.injector.get(
             DotWorkflowActionsFireService
@@ -141,7 +141,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         spyOn(dotWorkflowActionsFireService, 'fireTo').and.returnValue(of(dotcmsContentletMock));
     });
 
-    describe('button', () => {
+    describe('dot-icon-button', () => {
         describe('enabled', () => {
             beforeEach(() => {
                 spyOn(dotWorkflowsActionsService, 'getByInode').and.returnValue(
@@ -163,9 +163,8 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
             it('should have right attr in button', () => {
                 const attr = button.attributes;
-                expect(attr.icon).toEqual('fa fa-ellipsis-v');
-                expect(attr.pButton).toBeDefined();
-                expect(button.classes).toEqual({ 'p-button-secondary': true });
+                expect(attr.icon).toEqual('more_vert');
+                expect(attr.float).toBeDefined();
             });
 
             it('should get workflow actions when page changes"', () => {
@@ -182,7 +181,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                 let thirdButton;
 
                 beforeEach(() => {
-                    const mainButton: DebugElement = de.query(By.css('button'));
+                    const mainButton: DebugElement = de.query(By.css('dot-icon-button'));
                     mainButton.triggerEventHandler('click', {
                         currentTarget: mainButton.nativeElement
                     });
@@ -311,7 +310,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
             });
 
             it('should be disabled', () => {
-                expect(button.nativeElement.disabled).toBe(true);
+                expect(button.attributes.disabled).toBe('true');
             });
         });
     });
