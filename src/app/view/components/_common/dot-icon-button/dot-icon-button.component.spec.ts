@@ -25,30 +25,10 @@ describe('DotIconButtonComponent', () => {
         expect(icon.componentInstance.name).toBe('test');
     });
 
-    it('should call buttonOnClick on button click', () => {
-        spyOn(comp, 'buttonOnClick').and.callThrough();
-        fixture.detectChanges();
-
-        const button = fixture.debugElement.query(By.css('button'));
-        button.nativeElement.click();
-
-        expect(comp.buttonOnClick).toHaveBeenCalled();
-    });
 
     it('should have type button', () => {
         const button = fixture.debugElement.query(By.css('button'));
         expect(button.attributes.type).toBe('button');
-    });
-
-    it('should stop propagation if disabled', () => {
-        comp.icon = 'test';
-        comp.element.nativeElement.setAttribute('disabled', '');
-        const event = {
-            stopPropagation: jasmine.createSpy('stopPropagation')
-        };
-
-        comp.buttonOnClick(event);
-        expect(event.stopPropagation).toHaveBeenCalled();
     });
 
     it('should set size', () => {
