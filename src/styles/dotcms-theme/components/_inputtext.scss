@@ -21,8 +21,8 @@
 }
 
 .p-inputtext.p-inputtext-sm {
-  font-size: 0.875rem;
-  padding: 0.65625rem 0.65625rem;
+    font-size: $font-size-small;
+    padding: $spacing-1 $spacing-2;
 }
 .p-inputtext.p-inputtext-lg {
   font-size: $font-size-x-large;

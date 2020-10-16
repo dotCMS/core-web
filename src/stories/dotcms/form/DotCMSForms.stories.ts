@@ -277,6 +277,24 @@ const HorizontalTemplate = `
     </div>
 </div>
 
+<h3>Small</h3>
+<div class="p-formgroup-inline">
+    <div class="p-field">
+        <label for="firstname" class="p-sr-only">Firstname</label>
+        <input id="firstname" type="text" pInputText placeholder="Firstname" class="p-inputtext-sm" />
+    </div>
+    <div class="p-field">
+        <label for="dropdown" class="p-sr-only">Dropdown</label>
+        <p-dropdown
+            class="p-dropdown-sm"
+            id="dropdown"
+            inputId="dropdown"
+            selectId="dropdown"
+            [options]="options"
+        ></p-dropdown>
+    </div>
+    <button pButton type="button" class="p-button-sm" label="Submit"></button>
+</div>
 `;
 
 export const Horizontal: Story = (props) => {

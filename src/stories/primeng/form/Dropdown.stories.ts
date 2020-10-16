@@ -7,6 +7,7 @@ export default {
   title: 'PrimeNG/Form/Dropdown',
   component: Dropdown,
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
         component:
@@ -26,7 +27,12 @@ export default {
   },
 } as Meta;
 
-const DropdownTemplate = `<p-dropdown [options]="options" showClear="true"></p-dropdown>`;
+const DropdownTemplate = `
+    <p><p-dropdown [options]="options" showClear="true"></p-dropdown></p>
+    <p><p-dropdown [options]="options" disabled="true"></p-dropdown></p>
+    <hr />
+    <p><p-dropdown class="p-dropdown-sm" [options]="options"></p-dropdown></p>
+`;
 const Template: Story<Dropdown> = (args: Dropdown) => {
   return {
     props: args,
