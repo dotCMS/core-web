@@ -23,6 +23,7 @@ export class DotRouterService {
 
     get queryParams(): Params {
         const nav = this.router.getCurrentNavigation();
+
         return nav ? nav.finalUrl.queryParams : this.route.snapshot.queryParams;
     }
 

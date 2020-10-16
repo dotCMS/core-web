@@ -18,7 +18,7 @@ export class DotContentletLockerService {
         return this.coreWebService
             .requestView({
                 method: 'PUT',
-                url: `content/lock/inode/${inode}`
+                url: `/api/content/lock/inode/${inode}`
             })
             .pipe(pluck('bodyJsonObject'));
     }
@@ -34,7 +34,7 @@ export class DotContentletLockerService {
         return this.coreWebService
             .requestView({
                 method: 'PUT',
-                url: `content/unlock/inode/${inode}`
+                url: `/api/content/unlock/inode/${inode}`
             })
             .pipe(pluck('bodyJsonObject'));
     }

@@ -31,10 +31,10 @@ p-inputSwitch {
             color: $brand-primary;
             content: "lock_open";
             font-size: 13px;
-            left: 4px;
+            left: 3px;
             position: absolute;
             text-rendering: auto;
-            top: 5px;
+            top: 0;
             transition: transform $basic-speed ease-in, color $basic-speed ease-in;
         }
 
