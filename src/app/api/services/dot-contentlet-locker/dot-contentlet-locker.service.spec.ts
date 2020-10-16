@@ -28,7 +28,7 @@ describe('DotContentletLockerService', () => {
             expect(lockInfo).toEqual({ message: 'locked' });
         });
 
-        const req = httpMock.expectOne(`content/lock/inode/${inode}`);
+        const req = httpMock.expectOne(`/api/content/lock/inode/${inode}`);
         expect(req.request.method).toBe('PUT');
         req.flush({
             message: 'locked'
@@ -41,7 +41,7 @@ describe('DotContentletLockerService', () => {
             expect(lockInfo).toEqual({ message: 'locked' });
         });
 
-        const req = httpMock.expectOne(`content/unlock/inode/${inode}`);
+        const req = httpMock.expectOne(`/api/content/unlock/inode/${inode}`);
         expect(req.request.method).toBe('PUT');
         req.flush({
             message: 'locked'

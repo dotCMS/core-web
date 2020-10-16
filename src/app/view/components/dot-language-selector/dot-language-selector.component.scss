@@ -8,8 +8,17 @@
 
     &::ng-deep {
         .p-dropdown {
-            box-shadow: none;
+            border: 0;
+            background: none;
             width: 120px !important;
+        }
+
+        .p-dropdown-sm .p-dropdown .p-dropdown-label {
+            padding-left: 0;
+        }
+
+        .p-dropdown:not(.p-disabled).p-focus {
+            box-shadow: none;
         }
     }
 
