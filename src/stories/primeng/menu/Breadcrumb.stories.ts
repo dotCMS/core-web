@@ -20,17 +20,9 @@ export default {
   ],
   args: {
     items: [
-      { label: 'Categories' },
-      { label: 'Sports' },
-      { label: 'Football' },
-      { label: 'Countries' },
-      { label: 'Spain' },
-      { label: 'F.C. Barcelona' },
-      { label: 'Squad' },
-      {
-        label: 'Lionel Messi',
-        url: 'https://en.wikipedia.org/wiki/Lionel_Messi',
-      },
+      { label: 'Content Model', url: '#' },
+      { label: 'Content Types' },
+      { label: 'Store Product List', url: '#' },
     ],
   },
 } as Meta;
