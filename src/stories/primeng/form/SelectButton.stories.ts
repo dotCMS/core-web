@@ -1,49 +1,89 @@
+import { moduleMetadata } from '@storybook/angular';
 // also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
 import { Story, Meta } from '@storybook/angular/types-6-0';
-import { SelectButton } from 'primeng/selectbutton';
+import { SelectButtonModule, SelectButton } from 'primeng/selectbutton';
 
 export default {
-  title: 'PrimeNG/Form/SelectButton',
-  component: SelectButton,
-  args: {
-    options: [
-      { label: 'Off', value: 'off' },
-      { label: 'On', value: 'on' },
+    title: 'PrimeNG/Form/SelectButton',
+    decorators: [
+        moduleMetadata({
+            imports: [SelectButtonModule]
+        })
     ],
-  },
-  parameters: {
-    docs: {
-      description: {
-        component:
-          'SelectButton is a form component to choose a value from a list of options using button elements: https://primefaces.org/primeng/showcase/#/selectbutton',
-      },
+    args: {
+        options: [
+            { label: 'Push', value: 'push' },
+            { label: 'Remove', value: 'remove' },
+            { label: 'Push Publish', value: 'push-publish' }
+        ]
     },
-  }
+    parameters: {
+        docs: {
+            description: {
+                component:
+                    'SelectButton is a form component to choose a value from a list of options using button elements: https://primefaces.org/primeng/showcase/#/selectbutton'
+            }
+        }
+    }
 } as Meta;
 
-const Template: Story<SelectButton> = (args: SelectButton) => ({
-  component: SelectButton,
-  props: args,
-});
+const TabbedTemplate = `
+  <p-selectButton [options]="options" [(ngModel)]="selectedOption" class="p-button-tabbed">
+    <ng-template let-item>
+        <span>{{item.label}}</span>
+    </ng-template>
+</p-selectButton>
+`;
 
-export const Primary = Template.bind({});
-Primary.parameters = {
-  docs: {
-    source: {
-      code: `<p-multiSelect [options]="cities1"></p-multiSelect>`,
-    },
-  },
+const DisabledTemplate = `
+  <p-selectButton [options]="options" disabled="true" class="p-button-tabbed">
+    <ng-template let-item>
+        <span>{{item.label}}</span>
+    </ng-template>
+</p-selectButton>
+`;
+
+export const Tabbed: Story<SelectButton> = () => {
+  return {
+      template: TabbedTemplate,
+      props: {
+          options: [
+              { label: 'Push', value: 'push' },
+              { label: 'Remove', value: 'remove' },
+              { label: 'Push Publish', value: 'push-publish' }
+          ],
+          selectedOption: 'push'
+      }
+  };
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  disabled: true,
+
+Tabbed.parameters = {
+    docs: {
+        source: {
+            code: TabbedTemplate
+        }
+    }
 };
+
+export const Disabled: Story<SelectButton> = () => {
+  return {
+      template: DisabledTemplate,
+      props: {
+          options: [
+              { label: 'Push', value: 'push' },
+              { label: 'Remove', value: 'remove' },
+              { label: 'Push Publish', value: 'push-publish' }
+          ]
+      }
+  };
+};
+
+
 Disabled.parameters = {
   docs: {
     source: {
-      code: `<p-multiSelect disabled="true" [options]="cities1"></p-multiSelect>`,
+      code: DisabledTemplate,
     },
   },
 };
-
