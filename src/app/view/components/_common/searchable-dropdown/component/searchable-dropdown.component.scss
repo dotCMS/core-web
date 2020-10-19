@@ -1,5 +1,4 @@
 @use "variables" as *;
-@import "dotcms-theme/extends/inputtext.extends";
 
 @import "primeng-theme/utils/extends";
 @import "mixins";
@@ -9,24 +8,11 @@
     position: relative;
 
     .p-button-text {
-        width: 100%;
-        text-align: left;
-        @extend #p-inputtext-extend;
-
-        &:hover, &:focus {
-            background: none;
-        }
         padding-left: $spacing-2;
         padding-right: $spacing-2;
+        text-align: left;
 
         &::ng-deep {
-            .p-button-label {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-
             .p-button-label,
             .p-button-icon {
                 color: $black;
