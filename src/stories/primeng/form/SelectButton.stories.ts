@@ -18,6 +18,7 @@ export default {
         ]
     },
     parameters: {
+        layout: 'centered',
         docs: {
             description: {
                 component:
@@ -28,20 +29,59 @@ export default {
 } as Meta;
 
 const TabbedTemplate = `
-  <p-selectButton [options]="options" [(ngModel)]="selectedOption" class="p-button-tabbed">
-    <ng-template let-item>
-        <span>{{item.label}}</span>
-    </ng-template>
-</p-selectButton>
+<p>
+    <p-selectButton [options]="options" [(ngModel)]="selectedOption" class="p-button-tabbed">
+        <ng-template let-item>
+            <span>{{item.label}}</span>
+        </ng-template>
+    </p-selectButton>
+</p>
+<p>
+    <p-selectButton [options]="options" disabled="true" class="p-button-tabbed">
+        <ng-template let-item>
+            <span>{{item.label}}</span>
+        </ng-template>
+    </p-selectButton>
+</p>
 `;
 
-const DisabledTemplate = `
-  <p-selectButton [options]="options" disabled="true" class="p-button-tabbed">
-    <ng-template let-item>
-        <span>{{item.label}}</span>
-    </ng-template>
-</p-selectButton>
+const PrimaryTemplate = `
+<p>
+    <p-selectButton [options]="options" [(ngModel)]="selectedOption">
+        <ng-template let-item>
+            <span>{{item.label}}</span>
+        </ng-template>
+    </p-selectButton>
+</p>
+<p>
+    <p-selectButton [options]="options" disabled="true">
+        <ng-template let-item>
+            <span>{{item.label}}</span>
+        </ng-template>
+    </p-selectButton>
+</p>
 `;
+
+export const Primary: Story<SelectButton> = () => {
+    return {
+        template: PrimaryTemplate,
+        props: {
+            options: [
+                { label: 'Push', value: 'push' },
+                { label: 'Remove', value: 'remove' },
+                { label: 'Push Publish', value: 'push-publish' }
+            ]
+        }
+    };
+  };
+
+Primary.parameters = {
+    docs: {
+        source: {
+        code: PrimaryTemplate,
+        },
+    },
+};
 
 export const Tabbed: Story<SelectButton> = () => {
   return {
@@ -57,33 +97,10 @@ export const Tabbed: Story<SelectButton> = () => {
   };
 };
 
-
 Tabbed.parameters = {
     docs: {
         source: {
             code: TabbedTemplate
         }
     }
-};
-
-export const Disabled: Story<SelectButton> = () => {
-  return {
-      template: DisabledTemplate,
-      props: {
-          options: [
-              { label: 'Push', value: 'push' },
-              { label: 'Remove', value: 'remove' },
-              { label: 'Push Publish', value: 'push-publish' }
-          ]
-      }
-  };
-};
-
-
-Disabled.parameters = {
-  docs: {
-    source: {
-      code: DisabledTemplate,
-    },
-  },
 };

@@ -9,12 +9,12 @@ import { DotAjaxActionResponseView } from '@shared/models/ajax-action-response/d
 
 @Injectable()
 export class AddToBundleService {
-    private bundleUrl = `bundle/getunsendbundles/userid`;
+    private bundleUrl = `api/bundle/getunsendbundles/userid`;
     /*
         TODO: I had to do this because this line concat 'api/' into the URL
         https://github.com/dotCMS/dotcms-js/blob/master/src/core/core-web.service.ts#L169
     */
-    private addToBundleUrl = `DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
+    private addToBundleUrl = `/DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
 
     constructor(
         private coreWebService: CoreWebService,

@@ -12,7 +12,7 @@
             >{{ 'contenttypes.content.push_publish.I_want_To' | dm }}:
         </label>
         <p-selectButton
-            class="push-publish-dialog__action-select"
+            class="push-publish-dialog__action-select p-button-tabbed"
             [options]="pushActions"
             formControlName="pushActionSelected"
         >
@@ -22,7 +22,7 @@
     <div class="p-field">
         <label class="form__label">{{ 'contenttypes.content.push_publish.filters' | dm }}: </label>
         <p-dropdown
-            [options]="filterOptions"
+        [options]="filterOptions"
             formControlName="filterKey"
             appendTo="body"
         ></p-dropdown>

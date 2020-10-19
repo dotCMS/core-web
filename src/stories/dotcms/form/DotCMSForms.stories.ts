@@ -13,6 +13,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule } from 'primeng/calendar';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 export default {
     title: 'DotCMS/Forms    ',
@@ -40,7 +41,8 @@ export default {
                 ChipsModule,
                 AutoCompleteModule,
                 CalendarModule,
-                MultiSelectModule
+                MultiSelectModule,
+                SelectButtonModule
             ]
         })
     ],
@@ -69,6 +71,11 @@ export default {
             { name: 'Paris', code: 'PRS' }
         ],
         selectedCities: [{ name: 'Paris', code: 'PRS' }],
+        paymentOptions: [
+            { name: 'Option 1', value: 1 },
+            { name: 'Option 2', value: 2 },
+            { name: 'Option 3', value: 3 }
+        ],
         search() {
             this.results = [
                 { name: 'Blogs', id: 1 },
@@ -144,6 +151,11 @@ const InputTemplate = (input) => {
             defaultLabel="Select a City"
             optionLabel="name"
         ></p-multiSelect>
+    </div>
+
+    <div class="p-field">
+        <label for="buttonselect">Button Select</label>
+        <p-selectButton [options]="paymentOptions" [(ngModel)]="value2" multiple="multiple" optionLabel="name"></p-selectButton>
     </div>
 
     <div class="p-field">

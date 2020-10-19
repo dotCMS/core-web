@@ -13,7 +13,11 @@
     >
         <div class="p-field">
             <label class="form__label">{{ 'download.bundle.i.want' | dm }}: </label>
-            <p-selectButton [options]="downloadOptions" formControlName="downloadOptionSelected">
+            <p-selectButton
+                class="p-button-tabbed"
+                [options]="downloadOptions"
+                formControlName="downloadOptionSelected"
+            >
             </p-selectButton>
         </div>
         <div class="p-field">
