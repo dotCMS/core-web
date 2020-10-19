@@ -37,6 +37,7 @@
 .p-selectbutton .p-button:focus.p-highlight {
     background: $focus-bg;
     border-color: $highlight-border-color;
+    color: $gray-dark;
 }
 
 .p-button-tabbed {
