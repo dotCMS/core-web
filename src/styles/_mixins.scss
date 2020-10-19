@@ -100,7 +100,7 @@
 @mixin dot-field-helper-on-input {
     position: absolute;
     right: 0;
-    top: 19px;
+    top: $basic-padding /2;
     z-index: 1;
 }
 

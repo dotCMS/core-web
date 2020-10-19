@@ -9,7 +9,6 @@ import { DotPageSelectorService } from './service/dot-page-selector.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AutoComplete } from 'primeng/autocomplete';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
-import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import {
     DotPageSelectorResults,
     DotPageSeletorItem
@@ -121,7 +120,7 @@ const messageServiceMock = new MockDotMessageService({
 const config = host => {
     return {
         declarations: [host, DotPageSelectorComponent],
-        imports: [DotDirectivesModule, MdInputTextModule, DotFieldHelperModule],
+        imports: [DotDirectivesModule, DotFieldHelperModule],
         providers: [
             { provide: DotPageSelectorService, useClass: MockDotPageSelectorService },
             { provide: LoginService, useClass: LoginServiceMock },
