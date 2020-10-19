@@ -644,7 +644,6 @@ describe('ContentTypesFormComponent', () => {
         expect(pageSelector !== null).toBe(true);
         expect(pageSelector.componentInstance.label).toEqual('Detail Page');
         expect(pageSelector.componentInstance.floatingLabel).toBe(true);
-        expect(pageSelector.componentInstance.style).toEqual({ width: '100%' });
     });
 
     describe('send data with valid form', () => {
