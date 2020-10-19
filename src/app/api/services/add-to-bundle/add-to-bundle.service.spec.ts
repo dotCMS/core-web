@@ -62,7 +62,7 @@ describe('AddToBundleService', () => {
             expect(items).toBe(mockResponse.items);
         });
 
-        const req = httpMock.expectOne('bundle/getunsendbundles/userid/1234');
+        const req = httpMock.expectOne('api/bundle/getunsendbundles/userid/1234');
         expect(req.request.method).toBe('GET');
         req.flush(mockResponse);
     });
