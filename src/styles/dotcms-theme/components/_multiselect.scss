@@ -69,7 +69,7 @@
 
 .p-multiselect.p-multiselect-open {
     border-color: $input-border-hover;
-    box-shadow: inset 0 0 0 1px var(--color-main), inset 0 0 0 1px var(--color-main), inset 0 0 0 1px var(--color-main), inset 0 0 0 1px var(--color-main);
+    box-shadow: inset 0 0 0 1px $input-border-focus, inset 0 0 0 1px $input-border-focus, inset 0 0 0 1px $input-border-focus, inset 0 0 0 1px $input-border-focus;
 }
 
 .p-multiselect-panel .p-multiselect-header .p-multiselect-close {
@@ -145,7 +145,7 @@
 }
 
 .p-multiselect:not(.p-disabled).p-focus {
-    box-shadow: inset 0 0 0 1px $brand-primary, inset 0 0 0 1px $brand-primary, inset 0 0 0 1px $brand-primary, inset 0 0 0 1px $brand-primary;
+    box-shadow: inset 0 0 0 1px $input-border-focus, inset 0 0 0 1px $input-border-focus, inset 0 0 0 1px $input-border-focus, inset 0 0 0 1px $input-border-focus;
 }
 
 .p-multiselect-item .p-ink {
