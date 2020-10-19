@@ -52,9 +52,6 @@ p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
     font-size: 14px;
 }
 
-.p-checkbox .p-checkbox-box:not(.p-disabled):hover {
-    border-color: $black;
-}
 
 .p-checkbox .p-checkbox-box:not(.p-disabled).p-focus {
     outline: 0 none;
