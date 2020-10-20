@@ -3,7 +3,7 @@
 
 .p-button {
   background:  $brand-primary;
-  border-radius: 2px;
+  border-radius: $border-radius;
   border: 0 none;
   border: solid 1px transparent;
   color: $white;

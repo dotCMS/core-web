@@ -4,7 +4,7 @@
   border: 0 none;
   height: 4px;
   background: $highlight-bg;
-  border-radius: 4px;
+  border-radius: $border-radius;
 }
 .p-progressbar .p-progressbar-value {
   border: 0 none;

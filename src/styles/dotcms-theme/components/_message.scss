@@ -3,7 +3,7 @@
 .p-inline-message {
   padding: $spacing-2 $spacing-2;
   margin: 0;
-  border-radius: 4px;
+  border-radius: $border-radius;
 }
 .p-inline-message.p-inline-message-info {
   background: #B3E5FC;
@@ -54,7 +54,7 @@
 
 .p-message {
   margin: $spacing-2 0;
-  border-radius: 4px;
+  border-radius: $border-radius;
 }
 .p-message .p-message-wrapper {
   padding: $spacing-3 $spacing-4;
