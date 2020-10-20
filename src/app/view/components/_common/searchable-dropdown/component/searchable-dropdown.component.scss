@@ -1,26 +1,70 @@
 @use "variables" as *;
 
-@import "dotcms-theme/utils/theme-variables";;
+@import "dotcms-theme/utils/theme-variables";
 @import "mixins";
 
 :host {
     display: block;
     position: relative;
 
-    .p-button-text {
+    &.d-plain-searchable-dropdown {
+        .p-button {
+            background: none;
+            padding-left: $spacing-2;
+            padding-right: $spacing-2;
+            text-align: left;
+            border: none;
+
+            &:hover, &:active, &:focus {
+                border: none;
+                box-shadow: none;
+                background: $hover-bg;
+            }
+
+            &::ng-deep {
+                .p-button-label {
+                    margin-right: 0;
+                }
+                .p-button-label,
+                .p-button-icon {
+                    color: $black;
+                    text-transform: none;
+                }
+            }
+        }
+    }
+
+    .p-button {
+        border: 1px solid rgba(0, 0, 0, 0.38); // TODO: Move to variable (?)
         padding-left: $spacing-2;
         padding-right: $spacing-2;
+        border-radius: 2px;
+        background: none;
         text-align: left;
 
+        &:hover, &:focus, &:active {
+            border-color: $input-border-hover;
+            background: none;
+        }
+
+        &:focus, &:active {
+            box-shadow: $input-inset-shadow;
+        }
+
         &::ng-deep {
+            .p-button-label {
+                display: block;
+                margin-right: 2rem;
+            }
+
             .p-button-label,
             .p-button-icon {
+                font-weight: normal;
                 color: $black;
                 text-transform: none;
             }
         }
     }
-
 }
 
 ::ng-deep {
@@ -28,16 +72,16 @@
         .p-dataview-content {
             margin-bottom: $basic-padding * 4;
         }
+
         .p-paginator-bottom {
             @include paginator-bottom-absolute;
         }
     }
 
     .searchable-dropdown .p-overlaypanel-content {
-        padding: $basic-padding * 2 0;
+        padding: ($basic-padding * 2) 0;
     }
 }
-
 
 .searchable-dropdown__data-list ::ng-deep {
     .p-dataview {
@@ -51,9 +95,10 @@
             cursor: pointer;
             display: block;
             line-height: normal;
-            padding: $basic-padding $basic-padding * 2;
+            padding: $basic-padding ($basic-padding * 2);
             transition: background-color $basic-speed ease-in;
             width: 100%;
+
             @include truncate-text;
 
             &.selected {
@@ -82,7 +127,7 @@
 
 .searchable-dropdown__search {
     display: flex;
-    margin: 0 $basic-padding * 2;
+    margin: 0 ($basic-padding * 2);
     position: relative;
 }
 
