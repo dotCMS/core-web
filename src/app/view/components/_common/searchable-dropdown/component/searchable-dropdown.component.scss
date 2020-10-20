@@ -10,7 +10,6 @@
     &.d-plain-searchable-dropdown {
         .p-button {
             border: none;
-
             &:hover, &:active, &:focus {
                 border: none;
                 box-shadow: none;
@@ -37,11 +36,9 @@
             border-color: $input-border-hover;
             background: none;
         }
-
         &:focus, &:active {
             box-shadow: $input-inset-shadow;
         }
-
         &::ng-deep {
             .p-button-label {
                 margin-right: 2rem;
