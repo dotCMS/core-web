@@ -9,10 +9,6 @@
 
     &.d-plain-searchable-dropdown {
         .p-button {
-            background: none;
-            padding-left: $spacing-2;
-            padding-right: $spacing-2;
-            text-align: left;
             border: none;
 
             &:hover, &:active, &:focus {
@@ -24,11 +20,6 @@
             &::ng-deep {
                 .p-button-label {
                     margin-right: 0;
-                }
-                .p-button-label,
-                .p-button-icon {
-                    color: $black;
-                    text-transform: none;
                 }
             }
         }
@@ -53,7 +44,6 @@
 
         &::ng-deep {
             .p-button-label {
-                display: block;
                 margin-right: 2rem;
             }
 
