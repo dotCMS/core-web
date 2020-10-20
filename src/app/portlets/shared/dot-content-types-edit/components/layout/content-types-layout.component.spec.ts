@@ -80,7 +80,7 @@ const fakeContentType: DotCMSContentType = {
     baseType: 'testBaseType'
 };
 
-describe('ContentTypesLayoutComponent', () => {
+fdescribe('ContentTypesLayoutComponent', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
 
