@@ -50,3 +50,10 @@
 .p-field > label {
     font-size: $font-size-small;
 }
+
+.p-formgroup-inline {
+    .p-field-radiobutton,
+    .p-field-checkbox {
+        margin-bottom: 0;
+    }
+}
