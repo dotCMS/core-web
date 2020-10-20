@@ -115,7 +115,7 @@ const getTemplate = (extraAttr = '') => {
     return template;
 };
 
-export const Default: Story<SearchableDropdownComponent> = (props: SearchableDropdownComponent) => {
+export const Primary: Story<SearchableDropdownComponent> = (props: SearchableDropdownComponent) => {
     return {
         moduleMetadata: {
             declarations: [SearchableDropdownComponent]
@@ -126,10 +126,10 @@ export const Default: Story<SearchableDropdownComponent> = (props: SearchableDro
     };
 };
 
-export const Plain = (props: SearchableDropdownComponent) => ({
+export const Secondary = (props: SearchableDropdownComponent) => ({
     component: SearchableDropdownComponent,
     props,
-    template: getTemplate(`class="d-plain-searchable-dropdown"`)
+    template: getTemplate(`class="d-secondary"`)
 });
 
 

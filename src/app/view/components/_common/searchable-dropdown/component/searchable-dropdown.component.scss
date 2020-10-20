@@ -7,7 +7,7 @@
     display: block;
     position: relative;
 
-    &.d-plain-searchable-dropdown {
+    &.d-secondary {
         .p-button {
             border: none;
             &:hover, &:active, &:focus {
@@ -25,7 +25,7 @@
     }
 
     .p-button {
-        border: 1px solid rgba(0, 0, 0, 0.38); // TODO: Move to variable (?)
+        border: 1px solid rgba(0, 0, 0, 0.38);
         padding-left: $spacing-2;
         padding-right: $spacing-2;
         border-radius: 2px;
