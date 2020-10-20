@@ -49,9 +49,9 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
             enabled: false
         },
         cursorBlinking: 'solid',
-        lineDecorationsWidth: 1,
         overviewRulerBorder: false,
         mouseWheelZoom: false,
+        LineNumbersType: 'on'
 
     };
 
