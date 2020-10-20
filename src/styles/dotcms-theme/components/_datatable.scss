@@ -1,5 +1,7 @@
 @use "variables" as *;
 
+$datatable-bg-hover: rgba($brand-secondary_rgb, 0.05);
+
 .p-datatable .p-paginator-top {
     border-width: 0 0 1px 0;
     border-radius: 0;
@@ -78,7 +80,7 @@
 }
 
 .p-datatable .p-sortable-column:not(.p-highlight):hover {
-    background: rgba(var(--color-sec_rgb), 0.05);
+    background: $datatable-bg-hover;
     color: $hover-text-color;
 }
 
@@ -135,7 +137,7 @@
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-save:enabled:hover,
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-cancel:enabled:hover {
     border-color: transparent;
-    background: $hover-bg;
+    background: $datatable-bg-hover;
 }
 
 .p-datatable .p-datatable-tbody > tr > td .p-row-toggler:focus,
@@ -157,15 +159,15 @@
 }
 
 .p-datatable .p-datatable-tbody > tr.p-datatable-dragpoint-top > td {
-    box-shadow: inset 0 2px 0 0 rgba($brand-secondary_rgb, 0.05);
+    box-shadow: inset 0 2px 0 0 $datatable-bg-hover;
 }
 
 .p-datatable .p-datatable-tbody > tr.p-datatable-dragpoint-bottom > td {
-    box-shadow: inset 0 -2px 0 0 rgba($brand-secondary_rgb, 0.05);
+    box-shadow: inset 0 -2px 0 0 $datatable-bg-hover;
 }
 
 .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover {
-    background: rgba(var(--color-sec_rgb), 0.05);
+    background: $datatable-bg-hover;
     color: $hover-text-color;
 }
 
@@ -216,15 +218,21 @@
 }
 
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even).p-highlight {
-    background: rgba($brand-secondary_rgb, 0.05);
+    background: $datatable-bg-hover;
     color: $highlight-text-color;
 }
 
-.p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even).p-highlight .p-row-toggler {
+.p-datatable.p-datatable-striped
+    .p-datatable-tbody
+    > tr:nth-child(even).p-highlight
+    .p-row-toggler {
     color: $highlight-text-color;
 }
 
-.p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even).p-highlight .p-row-toggler:hover {
+.p-datatable.p-datatable-striped
+    .p-datatable-tbody
+    > tr:nth-child(even).p-highlight
+    .p-row-toggler:hover {
     color: $hover-text-color;
 }
 
@@ -273,7 +281,7 @@
 }
 
 .p-datatable .p-sortable-column:focus {
-    background-color: rgba($brand-secondary_rgb, 0.05);
+    background-color: $datatable-bg-hover;
 }
 
 .p-datatable .p-datatable-tbody > tr {
@@ -281,5 +289,5 @@
 }
 
 .p-datatable .p-datatable-tbody > tr:not(.p-highlight):focus {
-    background-color: rgba($brand-secondary_rgb, 0.05);
+    background-color: $datatable-bg-hover;
 }

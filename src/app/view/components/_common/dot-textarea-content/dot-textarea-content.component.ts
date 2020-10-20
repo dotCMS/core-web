@@ -79,7 +79,7 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
 
         this.styles = {
             width: this.width || '100%',
-            height: this.height || '300px'
+            height: this.height || '21.42rem'
         };
     }
 
