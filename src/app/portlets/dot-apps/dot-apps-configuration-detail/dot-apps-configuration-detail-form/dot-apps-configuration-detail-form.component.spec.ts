@@ -155,7 +155,7 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
                 'autoResize'
             );
             expect(row.query(By.css('textarea')).nativeElement.value).toBe(secrets[0].value);
-            expect(row.query(By.css('..p-field-hint')).nativeElement.textContent).toBe(
+            expect(row.query(By.css('.p-field-hint')).nativeElement.textContent).toBe(
                 secrets[0].hint
             );
         });
@@ -168,7 +168,7 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
             );
             expect(row.query(By.css('p-checkbox')).componentInstance.label).toBe(secrets[2].label);
             expect(row.query(By.css('input')).nativeElement.value).toBe(secrets[2].value);
-            expect(row.query(By.css('..p-field-hint')).nativeElement.textContent).toBe(
+            expect(row.query(By.css('.p-field-hint')).nativeElement.textContent).toBe(
                 secrets[2].hint
             );
         });
@@ -190,7 +190,7 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
             expect(row.query(By.css('p-dropdown')).componentInstance.value).toBe(
                 secrets[3].options[0].value
             );
-            expect(row.query(By.css('..p-field-hint')).nativeElement.textContent).toBe(
+            expect(row.query(By.css('.p-field-hint')).nativeElement.textContent).toBe(
                 secrets[3].hint
             );
         });
