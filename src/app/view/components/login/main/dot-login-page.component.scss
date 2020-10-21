@@ -6,13 +6,6 @@
     width: 100%;
     display: flex;
     justify-content: center;
-
-    ::ng-deep {
-        .error-message {
-            min-height: $line-height;
-            @include truncate-text;
-        }
-    }
 }
 
 .login {
@@ -24,5 +17,5 @@
     width: 90%;
     display: flex;
     justify-content: center;
-    padding: $basic-padding * 10 0 $basic-padding * 8;
+    padding: 5.5rem 0 4rem;
 }
