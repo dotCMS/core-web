@@ -32,7 +32,7 @@ $datatable-bg-hover: rgba($brand-secondary_rgb, 0.05);
 
 .p-datatable .p-datatable-thead > tr > th {
     background: $white;
-    border: 1px solid $gray-lighter;
+    border: 1px solid $gray-light;
     border-width: 0 0 1px 0;
     color: $gray;
     font-size: $font-size-small;
@@ -81,7 +81,7 @@ $datatable-bg-hover: rgba($brand-secondary_rgb, 0.05);
 
 .p-datatable .p-sortable-column:not(.p-highlight):hover {
     background: $datatable-bg-hover;
-    color: $hover-text-color;
+    color: $text-color-hover;
 }
 
 .p-datatable .p-sortable-column:not(.p-highlight):hover .p-sortable-column-icon {
@@ -106,7 +106,7 @@ $datatable-bg-hover: rgba($brand-secondary_rgb, 0.05);
 
 .p-datatable .p-datatable-tbody > tr > td {
     text-align: left;
-    border: 1px solid $table-border-color;
+    border: 1px solid $gray-lighter;
     border-width: 0 0 1px 0;
     padding: $spacing-1 $spacing-2;
 
