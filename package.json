@@ -21,7 +21,7 @@
         "storybook": "npm run docs:json && start-storybook -p 6006",
         "build-storybook": "npm run docs:json && build-storybook",
         "deploy-storybook": "storybook-to-ghpages",
-        "format": "prettier --ignore-path .gitignore ."
+        "format": "prettier --write ."
     },
     "repository": {
         "type": "git",
