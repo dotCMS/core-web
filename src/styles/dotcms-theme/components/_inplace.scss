@@ -7,8 +7,8 @@
 }
 
 .p-inplace .p-inplace-display:not(.p-disabled):hover {
-    background: $hover-bg;
-    color: $hover-text-color;
+    background: $bg-hover;
+    color: $text-color-hover;
 }
 
 .p-inplace .p-inplace-display:focus {

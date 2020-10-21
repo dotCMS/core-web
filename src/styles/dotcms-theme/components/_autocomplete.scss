@@ -83,13 +83,13 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
 }
 
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item:hover {
-    color: $hover-text-color;
-    background: $hover-bg;
+    color: $text-color-hover;
+    background: $bg-hover;
 }
 
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
-    color: $highlight-text-color;
-    background: $highlight-bg;
+    color: $text-color-highlight;
+    background: $bg-highlight;
 }
 
 .p-autocomplete.p-autocomplete-multiple .p-autocomplete-multiple-container:not(.p-disabled).p-focus {
@@ -98,7 +98,7 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
 
 .p-autocomplete-dropdown {
     background: #fff;
-    border: 1px solid #aaa;
+    border: 1px solid $input-border-color;
     border-top-right-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
     border-left: none;
@@ -107,7 +107,7 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
 
     &:enabled:hover, &:enabled:focus {
         background: #f1f1f1;
-        border: 1px solid #aaa;
+        border: 1px solid $input-border-color-focus;
         border-left: none;
     }
 

@@ -13,27 +13,27 @@
 .p-datatable .p-datatable-header {
     background: $white;
     color: $black;
-    border: 1px solid #e4e4e4;
+    border: 1px solid $table-border-color;
     border-width: 0 0 1px 0;
     padding: $spacing-2 $spacing-2;
-    font-weight: 500;
+    font-weight: $font-weight-semi-bold;
 }
 
 .p-datatable .p-datatable-footer {
     background: $white;
     color: $black;
-    border: 1px solid #e4e4e4;
+    border: 1px solid $table-border-color;
     border-width: 0 0 1px 0;
     padding: $spacing-2 $spacing-2;
-    font-weight: 500;
+    font-weight: $font-weight-semi-bold;
 }
 
 .p-datatable .p-datatable-thead > tr > th {
     text-align: left;
     padding: $spacing-2 $spacing-2;
-    border: 1px solid #e4e4e4;
+    border: 1px solid $table-border-color;
     border-width: 0 0 1px 0;
-    font-weight: 500;
+    font-weight: $font-weight-semi-bold;
     color: $black;
     background: $white;
     transition: none;
@@ -42,9 +42,9 @@
 .p-datatable .p-datatable-tfoot > tr > td {
     text-align: left;
     padding: $spacing-2 $spacing-2;
-    border: 1px solid #e4e4e4;
+    border: 1px solid $table-border-color;
     border-width: 0 0 1px 0;
-    font-weight: 500;
+    font-weight: $font-weight-semi-bold;
     color: $black;
     background: $white;
 }
@@ -64,13 +64,13 @@
     min-width: 1.143rem;
     line-height: 1.143rem;
     color: $brand-primary;
-    background: $highlight-bg;
+    background: $bg-highlight;
     margin-left: $spacing-1;
 }
 
 .p-datatable .p-sortable-column:not(.p-highlight):hover {
-    background: $hover-bg;
-    color: $hover-text-color;
+    background: $bg-hover;
+    color: $text-color-hover;
 }
 
 .p-datatable .p-sortable-column:not(.p-highlight):hover .p-sortable-column-icon {
@@ -95,7 +95,7 @@
 
 .p-datatable .p-datatable-tbody > tr > td {
     text-align: left;
-    border: 1px solid #e4e4e4;
+    border: 1px solid $table-border-color;
     border-width: 0 0 1px 0;
     padding: $spacing-2 $spacing-2;
 }
@@ -117,9 +117,9 @@
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-init:enabled:hover,
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-save:enabled:hover,
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-cancel:enabled:hover {
-    color: $hover-text-color;
+    color: $text-color-hover;
     border-color: transparent;
-    background: $hover-bg;
+    background: $bg-hover;
 }
 
 .p-datatable .p-datatable-tbody > tr > td .p-row-toggler:focus,
@@ -136,8 +136,8 @@
 }
 
 .p-datatable .p-datatable-tbody > tr.p-highlight {
-    background: $highlight-bg;
-    color: $highlight-text-color;
+    background: $bg-highlight;
+    color: $text-color-highlight;
 }
 
 .p-datatable .p-datatable-tbody > tr.p-datatable-dragpoint-top > td {
@@ -149,8 +149,8 @@
 }
 
 .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover {
-    background: $hover-bg;
-    color: $hover-text-color;
+    background: $bg-hover;
+    color: $text-color-hover;
 }
 
 .p-datatable .p-column-resizer-helper {
@@ -200,15 +200,15 @@
 
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even).p-highlight {
     background: rgba($brand-secondary_rgb, 0.12);
-    color: $highlight-text-color;
+    color: $text-color-highlight;
 }
 
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even).p-highlight .p-row-toggler {
-    color: $highlight-text-color;
+    color: $text-color-highlight;
 }
 
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even).p-highlight .p-row-toggler:hover {
-    color: $hover-text-color;
+    color: $text-color-hover;
 }
 
 .p-datatable.p-datatable-sm .p-datatable-header {

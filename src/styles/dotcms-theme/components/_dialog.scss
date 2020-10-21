@@ -32,9 +32,9 @@
 }
 
 .p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
-    color: $hover-text-color;
+    color: $text-color-hover;
     border-color: transparent;
-    background: $hover-bg;
+    background: $bg-hover;
 }
 
 .p-dialog .p-dialog-header .p-dialog-header-icon:focus {
