@@ -33,6 +33,10 @@
         background: none;
         text-align: left;
 
+        .p-fluid & {
+            width: 100%;
+        }
+
         &:hover, &:focus, &:active {
             border-color: $input-border-color-hover;
             background: none;
