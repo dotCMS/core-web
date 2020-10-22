@@ -168,10 +168,10 @@ export class SearchableDropdownComponent
      * @memberof SearchableDropdownComponent
      */
     showOverlayHandler(): void {
-        this.cssClass +=
+        this.cssClass =
             this.totalRecords > this.rows
                 ? ' searchable-dropdown paginator'
-                : ' searchable-dropdown';
+                : ' a searchable-dropdown';
         setTimeout(() => {
             if (!this.overlayPanelMinHeight) {
                 this.overlayPanelMinHeight = this.searchPanelRef.container
