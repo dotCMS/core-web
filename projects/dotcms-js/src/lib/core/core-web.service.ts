@@ -212,8 +212,6 @@ export class CoreWebService {
     }
 
     private emitHttpError(status: number): void {
-        console.log(this.httpErrosSubjects);
-
         if (this.httpErrosSubjects[status]) {
             this.httpErrosSubjects[status].next();
         }
