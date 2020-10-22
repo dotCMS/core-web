@@ -42,5 +42,12 @@
                 flex-flow: row-reverse;
             }
         }
+
+        .toolbar__sep {
+            border-left: solid 1px $gray-bg;
+            margin: 0 $spacing-3 0 $spacing-2;
+            display: block;
+            height: 40px;
+        }
     }
 }

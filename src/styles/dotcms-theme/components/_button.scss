@@ -41,6 +41,21 @@
   background: rgba(0, 0, 0, 0.16);
   color: $black;
 }
+
+.p-button.p-button-vertical {
+
+    .p-button-icon{
+        margin: 0 0 $spacing-1 / 2;
+    }
+
+    &.p-button-sm {
+        .p-button-icon{
+            font-size: 1rem;
+        }
+    }
+}
+
+
 .p-button:focus {
   outline: 0 none;
   outline-offset: 0;

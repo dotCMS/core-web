@@ -3,18 +3,29 @@
 
 :host {
     min-width: 750px;
-}
 
-dot-layout-properties {
-    margin-right: $spacing-1;
+    dot-icon-button {
+        position: absolute;
+        top: 12rem;
+        right: 8rem;
+        z-index: 1;
+    }
+
+    ::ng-deep {
+        .p-button-vertical {
+            .p-button-label {
+                text-transform: capitalize !important;
+            }
+        }
+    }
 }
 
 dot-layout-designer {
     background-color: $white;
     box-shadow: $md-shadow-1;
     flex-grow: 1;
-    margin: 0 $spacing-3;
-    padding: $spacing-9;
+    margin: $spacing-4 $spacing-3 0;
+    padding: $spacing-5;
     // This canculating the space of the layout editor
     // based on the toolbars and required margin
     height: calc(100vh - 60px - 68px - 48px - 16px);
