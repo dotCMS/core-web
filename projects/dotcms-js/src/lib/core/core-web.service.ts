@@ -223,14 +223,19 @@ export class CoreWebService {
         const url = this.getFixedUrl(options.url);
         let body = <T>options.body || null;
 
-        if (options.method === 'POST' || options.method === 'PUT' || options.method === 'PATCH') {
+        if (
+            options.method === 'POST' ||
+            options.method === 'PUT' ||
+            options.method === 'PATCH' ||
+            options.method === 'DELETE'
+        ) {
             return new HttpRequest<T>(options.method, url, body, {
                 headers,
                 params
             });
         }
 
-        const method = <'GET' | 'DELETE' | 'HEAD' | 'JSONP' | 'OPTIONS'>options.method;
+        const method = <'GET' | 'HEAD' | 'JSONP' | 'OPTIONS'>options.method;
         return new HttpRequest<T>(method, url, {
             headers,
             params
