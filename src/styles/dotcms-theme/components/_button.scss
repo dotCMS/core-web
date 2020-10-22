@@ -43,16 +43,14 @@
 }
 
 .p-button.p-button-vertical {
+    font-size: $font-size-small;
+    padding: $spacing-1 $spacing-2;
 
     .p-button-icon{
         margin: 0 0 $spacing-1 / 2;
+        font-size: 1rem;
     }
 
-    &.p-button-sm {
-        .p-button-icon{
-            font-size: 1rem;
-        }
-    }
 }
 
 
