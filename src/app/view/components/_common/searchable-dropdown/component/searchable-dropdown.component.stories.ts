@@ -24,6 +24,14 @@ class DotMessagePipe implements PipeTransform {
 export default {
     title: 'DotCMS/Searchable Dropdown',
     component: SearchableDropdownComponent,
+    parameters: {
+        docs: {
+            description: {
+                component:
+                    'Dropdown with pagination and global search. Please be mindful that the <code>width</code> property is <strong>required</strong>.'
+            }
+        }
+    },
     decorators: [
         moduleMetadata({
             declarations: [DotMessagePipe, SearchableDropdownComponent],
