@@ -171,7 +171,7 @@ export class SearchableDropdownComponent
         this.cssClass =
             this.totalRecords > this.rows
                 ? ' searchable-dropdown paginator'
-                : ' a searchable-dropdown';
+                : ' searchable-dropdown';
         setTimeout(() => {
             if (!this.overlayPanelMinHeight) {
                 this.overlayPanelMinHeight = this.searchPanelRef.container
