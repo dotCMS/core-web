@@ -15,6 +15,18 @@ export default {
             }
         }
     },
+    argTypes: {
+        width: {
+            name: 'width',
+            type: { name: 'string', required: true },
+            defaultValue: '300',
+            description:
+                "Setting a width prevents the dropdown from jumping when an option is larger than the dropdown's width",
+            control: {
+                type: 'text'
+            }
+        }
+    },
     args: {
         options: [
             { label: 'Select City', value: null },
