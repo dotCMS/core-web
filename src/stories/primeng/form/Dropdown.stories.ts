@@ -24,7 +24,7 @@ export default {
             { label: 'Istanbul', value: { id: 4, name: 'Istanbul', code: 'IST' } },
             { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } }
         ],
-        width: '500'
+        width: '300'
     }
 } as Meta;
 
