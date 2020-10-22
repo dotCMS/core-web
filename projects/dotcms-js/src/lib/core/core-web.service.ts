@@ -212,11 +212,11 @@ export class CoreWebService {
     }
 
     private emitHttpError(status: number): void {
-        if (!this.httpErrosSubjects[status]) {
-            this.httpErrosSubjects[status] = new Subject();
-        }
+        console.log(this.httpErrosSubjects);
 
-        this.httpErrosSubjects[status].next();
+        if (this.httpErrosSubjects[status]) {
+            this.httpErrosSubjects[status].next();
+        }
     }
 
     private getRequestOpts<T>(options: DotRequestOptionsArgs): HttpRequest<T> {
