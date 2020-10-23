@@ -8,14 +8,18 @@ import { MessageService } from 'primeng/api';
         <p-toast position="top-left" key="tl"></p-toast>
         <p-toast position="top-center" key="tc"></p-toast>
         <p-toast position="bottom-center" key="bc"></p-toast>
-        <button
-            type="button"
-            pButton
-            pRipple
-            (click)="showWarn()"
-            label="showSuccess"
-            class="p-button-success"
-        ></button>
+        <p>
+            <button type="button" pButton pRipple (click)="showSuccess()" label="Success"></button>
+        </p>
+        <p>
+            <button type="button" pButton pRipple (click)="showError()" label="Error"></button>
+        </p>
+        <p>
+            <button type="button" pButton pRipple (click)="showInfo()" label="Info"></button>
+        </p>
+        <p>
+            <button type="button" pButton pRipple (click)="showWarn()" label="Warning"></button>
+        </p>
     `
 })
 export class ToastComponent {
