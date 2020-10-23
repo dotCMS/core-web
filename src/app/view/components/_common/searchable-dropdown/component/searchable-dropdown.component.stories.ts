@@ -21,10 +21,17 @@ class DotMessagePipe implements PipeTransform {
     }
 }
 
-
 export default {
     title: 'DotCMS/Searchable Dropdown',
     component: SearchableDropdownComponent,
+    parameters: {
+        docs: {
+            description: {
+                component:
+                    'Dropdown with pagination and global search. Please be mindful that the <code>width</code> property is <strong>required</strong>.'
+            }
+        }
+    },
     decorators: [
         moduleMetadata({
             declarations: [DotMessagePipe, SearchableDropdownComponent],
@@ -41,6 +48,18 @@ export default {
             ]
         })
     ],
+    argTypes: {
+        width: {
+            name: 'width',
+            type: { name: 'string', required: true },
+            defaultValue: '300',
+            description:
+                "Setting a width prevents the dropdown from jumping when an option is larger than the dropdown's width",
+            control: {
+                type: 'text'
+            }
+        }
+    },
     args: {
         rows: 4,
         pageLinkSize: 2,
@@ -96,7 +115,8 @@ export default {
             }
         ],
         placeholder: 'Select something',
-        labelPropertyName: 'label'
+        labelPropertyName: 'label',
+        width: '300'
     }
 } as Meta;
 
@@ -107,6 +127,7 @@ const getTemplate = (extraAttr = '') => {
             [rows]="rows"
             [pageLinkSize]="pageLinkSize"
             [data]="data"
+            [width]="width"
             [labelPropertyName]="labelPropertyName"
             [placeholder]="placeholder"
         >
@@ -131,7 +152,3 @@ export const Secondary = (props: SearchableDropdownComponent) => ({
     props,
     template: getTemplate(`class="d-secondary"`)
 });
-
-
-
-
