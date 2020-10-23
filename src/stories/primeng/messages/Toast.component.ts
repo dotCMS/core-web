@@ -32,8 +32,7 @@ export class ToastComponent {
     showSuccess() {
         this.messageService.add({
             severity: 'success',
-            detail: 'The action "Publish" was executed succesfully',
-            life: 30000000
+            detail: 'The action "Publish" was executed succesfully'
         });
     }
 
