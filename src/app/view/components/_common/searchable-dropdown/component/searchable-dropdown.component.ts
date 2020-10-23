@@ -75,9 +75,6 @@ export class SearchableDropdownComponent
     width = '300';
 
     @Input()
-    optionsWidth = '300';
-
-    @Input()
     multiple: boolean;
 
     @Input()
