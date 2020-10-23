@@ -108,6 +108,11 @@
     }
 }
 
+.p-button.p-button-icon-only {
+    padding-left: $spacing-2;
+    padding-right: $spacing-2;
+}
+
 .p-button.p-button-icon-only .p-button-icon-left,
 .p-button.p-button-icon-only .p-button-icon-right {
     margin: 0;
@@ -176,7 +181,7 @@
     }
 
     &:disabled {
-        border: none;
+        border-color: transparent;
     }
 }
 
