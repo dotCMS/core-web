@@ -12,8 +12,8 @@ import { MessageService } from 'primeng/api';
             type="button"
             pButton
             pRipple
-            (click)="showSuccess()"
-            label="Success"
+            (click)="showWarn()"
+            label="showSuccess"
             class="p-button-success"
         ></button>
     `
@@ -28,32 +28,29 @@ export class ToastComponent {
     showSuccess() {
         this.messageService.add({
             severity: 'success',
-            summary: 'Success',
-            detail: 'Message Content'
+            detail: 'The action "Publish" was executed succesfully',
+            life: 30000000
         });
     }
 
     showInfo() {
         this.messageService.add({
             severity: 'info',
-            summary: 'Info',
-            detail: 'Message Content'
+            detail: 'Make sure you add the width of the element'
         });
     }
 
     showWarn() {
         this.messageService.add({
             severity: 'warn',
-            summary: 'Warn',
-            detail: 'Message Content'
+            detail: 'Make sure you add the width of the element'
         });
     }
 
     showError() {
         this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: 'Message Content'
+            detail: 'Something went wrong, please try again.'
         });
     }
 
@@ -61,7 +58,6 @@ export class ToastComponent {
         this.messageService.add({
             key: 'tl',
             severity: 'info',
-            summary: 'Info',
             detail: 'Message Content'
         });
     }
@@ -70,7 +66,6 @@ export class ToastComponent {
         this.messageService.add({
             key: 'tc',
             severity: 'info',
-            summary: 'Info',
             detail: 'Message Content'
         });
     }
@@ -79,7 +74,6 @@ export class ToastComponent {
         this.messageService.add({
             key: 'bc',
             severity: 'info',
-            summary: 'Info',
             detail: 'Message Content'
         });
     }
