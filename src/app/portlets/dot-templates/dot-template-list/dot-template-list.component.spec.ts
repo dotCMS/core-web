@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotTemplateListComponent } from './dot-template-list.component';
 
-xdescribe('DotTemplateListComponent', () => {
+describe('DotTemplateListComponent', () => {
     let component: DotTemplateListComponent;
     let fixture: ComponentFixture<DotTemplateListComponent>;
 

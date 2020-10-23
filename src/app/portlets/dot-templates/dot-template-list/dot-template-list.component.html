@@ -1,4 +1,5 @@
 <dot-listing-data-table
+    #listing
     [actionHeaderOptions]=""
     [columns]="tableColumns"
     [paginationPerPage]="40"
@@ -6,24 +7,9 @@
     sortOrder="DESC"
     url="v1/templates"
     [actions]="[]"
-    [checkbox]="true"
-    dataKey="inode"
 >
-    <ng-template #rowTemplate let-rowData="rowData">
-        <td [ngStyle]="{ 'text-align': tableColumns[0].textAlign }">
-            {{rowData.name}}
-        </td>
-        <td [ngStyle]="{ 'text-align': tableColumns[1].textAlign }">
-            <span>Status TBD</span>
-        </td>
-        <td [ngStyle]="{ 'text-align': tableColumns[2].textAlign }">
-            {{rowData.friendlyName}}
-        </td>
-        <td [ngStyle]="{ 'text-align': tableColumns[3].textAlign }">
-            {{rowData.modDate}}
-        </td>
-        <td style="width: 5%">
-            <span>Actions TBD</span>
-        </td>
-    </ng-template>
+<!--    <dot-base-type-selector-->
+<!--        *ngIf="!filterBy"-->
+<!--        (selected)="changeBaseTypeSelector($event)"-->
+<!--    ></dot-base-type-selector>-->
 </dot-listing-data-table>

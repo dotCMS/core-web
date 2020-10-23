@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DotTemplateListResolver } from './dot-template-list-resolver.service';
 
-xdescribe('DotTemplateListResolverService', () => {
+describe('DotTemplateListResolverService', () => {
     let service: DotTemplateListResolver;
 
     beforeEach(() => {

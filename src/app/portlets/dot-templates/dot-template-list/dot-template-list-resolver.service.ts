@@ -12,7 +12,6 @@ export class DotTemplateListResolver implements Resolve<DotTemplate[]> {
     constructor(private dotTemplatesService: DotTemplatesService) {}
 
     resolve(): Observable<DotTemplate[]> {
-        // TODO: Need to update to get the fist page.
         return this.dotTemplatesService.get().pipe(take(1));
     }
 }
