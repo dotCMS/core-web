@@ -5,10 +5,7 @@
     min-width: 750px;
 
     dot-icon-button {
-        position: absolute;
-        top: 11rem;
-        right: 8.25rem;
-        z-index: 1;
+        margin-left: $spacing-2;
     }
 
     ::ng-deep {

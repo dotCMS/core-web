@@ -5,7 +5,6 @@
     (close)="closeThemeDialog()"
 >
 </dot-theme-selector>
-<dot-icon-button [size]="32" float icon="add" (click)="addGridBox()"></dot-icon-button>
 <dot-secondary-toolbar>
     <div class="main-toolbar-left">
         <dot-edit-page-info *ngIf="newPageState" [pageState]="newPageState"></dot-edit-page-info>
@@ -42,6 +41,7 @@
             </button>
         </ng-template>
         <dot-layout-properties [group]="form.get('layout')"></dot-layout-properties>
+        <dot-icon-button [size]="32" float icon="add" (click)="addGridBox()"></dot-icon-button>
         <span class="toolbar__sep"></span>
         <form [formGroup]="form" (ngSubmit)="saveLayout()" novalidate>
             <input
