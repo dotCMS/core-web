@@ -25,6 +25,14 @@
     }
 }
 
+.dot-apps-configuration__action_export_button {
+    margin-right: $spacing-1;
+
+    span {
+        font-size: 14px;
+    }
+}
+
 .dot-apps-configuration__add-configurations {
     margin-top: 10rem;
     text-align: center;

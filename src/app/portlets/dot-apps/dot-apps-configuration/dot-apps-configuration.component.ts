@@ -1,5 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { DotApps, DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
+import {
+    DotApps,
+    DotAppsExportConfiguration,
+    DotAppsSites
+} from '@shared/models/dot-apps/dot-apps.model';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, take, debounceTime, takeUntil } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
@@ -10,6 +14,8 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { PaginatorService } from '@services/paginator';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'dot-apps-configuration',
@@ -24,14 +30,20 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     paginationPerPage = 40;
     totalRecords: number;
 
+    form: FormGroup;
+    showExportDialog = false;
+    dialogExportActions: DotDialogActions;
+    exportErrorMessage: string;
+
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private dotAlertConfirmService: DotAlertConfirmService,
         private dotAppsService: DotAppsService,
-        private dotRouterService: DotRouterService,
-        private route: ActivatedRoute,
         private dotMessageService: DotMessageService,
+        private dotRouterService: DotRouterService,
+        private fb: FormBuilder,
+        private route: ActivatedRoute,
         public paginationService: PaginatorService
     ) {}
 
@@ -53,6 +65,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
         this.paginationService.setExtraParams('filter', '');
         this.paginationService.sortOrder = 1;
         this.loadData();
+        this.setExportDialog();
 
         this.searchInput.nativeElement.focus();
     }
@@ -60,6 +73,27 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
+    }
+
+    /**
+     * Set change events and initial configuration of form elements in Export dialog
+     *
+     * @memberof DotAppsConfigurationComponent
+     */
+    setExportDialog(): void {
+        this.form = this.fb.group({
+            password: new FormControl('', Validators.required)
+        });
+
+        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.dialogExportActions = {
+                ...this.dialogExportActions,
+                accept: {
+                    ...this.dialogExportActions.accept,
+                    disabled: !this.form.valid
+                }
+            };
+        });
     }
 
     /**
@@ -95,10 +129,32 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
      * Redirects to app configuration listing page
      *
      * @param string key
-     * @memberof DotAppsConfigurationDetailComponent
+     * @memberof DotAppsConfigurationComponent
      */
     goToApps(key: string): void {
         this.dotRouterService.gotoPortlet(`/apps/${key}`);
+    }
+
+    /**
+     * Opens the dialog and set Export actions based on a single/all sites
+     *
+     * @param DotAppsSites [site]
+     * @memberof DotAppsConfigurationComponent
+     */
+    confirmExport(site?: DotAppsSites): void {
+        this.setExportDialogActions(site);
+        this.showExportDialog = true;
+    }
+
+    /**
+     * Close the dialog and clear the form
+     *
+     * @memberof DotAppsConfigurationComponent
+     */
+    closeExportDialog(): void {
+        this.showExportDialog = false;
+        this.exportErrorMessage = '';
+        this.form.reset();
     }
 
     /**
@@ -140,6 +196,52 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
                 accept: this.dotMessageService.get('apps.confirmation.accept')
             }
         });
+    }
+
+    private setExportDialogActions(site?: DotAppsSites): void {
+        this.dialogExportActions = {
+            accept: {
+                action: () => {
+                    const requestConfiguration: DotAppsExportConfiguration = {
+                        password: this.form.value.password,
+                        exportAll: false,
+                        appKeysBySite: site
+                            ? { [site.id]: [this.apps.key] }
+                            : this.getAllKeySitesConfig()
+                    };
+
+                    this.dotAppsService
+                        .exportConfiguration(requestConfiguration)
+                        .then((errorMsg: string) => {
+                            if (errorMsg) {
+                                this.exportErrorMessage = this.dotMessageService.get(
+                                    'apps.confirmation.export.error'
+                                );
+                            } else {
+                                this.closeExportDialog();
+                            }
+                        });
+                },
+                label: this.dotMessageService.get('dot.common.dialog.accept'),
+                disabled: true
+            },
+            cancel: {
+                label: this.dotMessageService.get('dot.common.dialog.reject'),
+                action: () => {
+                    this.closeExportDialog();
+                }
+            }
+        };
+    }
+
+    private getAllKeySitesConfig(): { [key: string]: string[] } {
+        const keySitesConf = {};
+        this.apps.sites.forEach((site: DotAppsSites) => {
+            if (site.configured) {
+                keySitesConf[site.id] = [this.apps.key];
+            }
+        });
+        return keySitesConf;
     }
 
     private isThereMoreData(index: number): boolean {
