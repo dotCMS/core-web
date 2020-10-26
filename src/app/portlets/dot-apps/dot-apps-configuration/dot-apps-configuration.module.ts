@@ -15,8 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MarkdownModule } from 'ngx-markdown';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
-import { DotAutofocusModule } from 'projects/dot-rules/src/lib/directives/dot-autofocus/dot-autofocus.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { DotAppsExportDialogModule } from '../dot-apps-export-dialog/dot-apps-export-dialog.module';
 
 @NgModule({
     imports: [
@@ -28,10 +27,8 @@ import { ReactiveFormsModule } from '@angular/forms';
         DotCopyButtonModule,
         DotAppsConfigurationHeaderModule,
         DotAppsConfigurationListModule,
+        DotAppsExportDialogModule,
         DotDialogModule,
-        DotAutofocusModule,
-        ReactiveFormsModule,
-        // NgxMdModule,
         DotPipesModule,
         MarkdownModule.forChild()
     ],
