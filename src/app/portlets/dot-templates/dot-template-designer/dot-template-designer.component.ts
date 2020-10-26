@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'dot-dot-template-designer',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./dot-template-designer.component.scss']
 })
 export class DotTemplateDesignerComponent implements OnInit {
-    constructor() {}
+    constructor(private activatedRoute: ActivatedRoute) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.activatedRoute.data.subscribe((res) => {
+            console.log(res);
+        });
+    }
 }
