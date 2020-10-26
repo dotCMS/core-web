@@ -70,6 +70,13 @@ const PORTLETS_ANGULAR = [
             import('@portlets/dot-edit-page/dot-edit-page.module').then((m) => m.DotEditPageModule)
     },
     {
+        path: 'templates',
+        loadChildren: () =>
+            import('@portlets/dot-templates/dot-templates.module.ts').then(
+                (m) => m.DotTemplatesModule
+            )
+    },
+    {
         canActivate: [MenuGuardService],
         path: '',
         children: []
