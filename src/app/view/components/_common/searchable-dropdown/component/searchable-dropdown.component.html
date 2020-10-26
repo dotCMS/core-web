@@ -28,7 +28,7 @@
     (onShow)="showOverlayHandler()"
     [dismissable]="true"
     [styleClass]="cssClass"
-    [style]="{ 'min-height': overlayPanelMinHeight + 'px', width: width + 'px' }"
+    [style]="{ 'min-height': overlayPanelMinHeight + 'px', width: (overlayWidth || width) + 'px' }"
     appendTo="body"
 >
     <header class="searchable-dropdown__search">
