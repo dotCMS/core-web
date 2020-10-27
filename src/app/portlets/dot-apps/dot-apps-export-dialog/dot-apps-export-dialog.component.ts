@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './dot-apps-export-dialog.component.html'
 })
 export class DotAppsExportDialogComponent implements OnInit, OnDestroy {
-    @Input() app: DotApps;
+    @Input() app?: DotApps;
     @Input() site?: DotAppsSites;
 
     showExportDialog = false;
@@ -72,7 +72,7 @@ export class DotAppsExportDialogComponent implements OnInit, OnDestroy {
                 action: () => {
                     const requestConfiguration: DotAppsExportConfiguration = {
                         password: this.form.value.password,
-                        exportAll: false,
+                        exportAll: this.app ? false : true,
                         appKeysBySite: this.site
                             ? { [this.site.id]: [this.app.key] }
                             : this.getAllKeySitesConfig()
@@ -104,11 +104,13 @@ export class DotAppsExportDialogComponent implements OnInit, OnDestroy {
 
     private getAllKeySitesConfig(): { [key: string]: string[] } {
         const keySitesConf = {};
-        this.app.sites.forEach((site: DotAppsSites) => {
-            if (site.configured) {
-                keySitesConf[site.id] = [this.app.key];
-            }
-        });
+        if (this.app) {
+            this.app.sites.forEach((site: DotAppsSites) => {
+                if (site.configured) {
+                    keySitesConf[site.id] = [this.app.key];
+                }
+            });
+        }
         return keySitesConf;
     }
 }
