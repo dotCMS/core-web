@@ -13,6 +13,7 @@
                 link
                 class="dot-apps-configuration__action_export_button"
                 [label]="'apps.confirmation.export.all.button' | dm"
+                [disabled]="!isExportButtonDisabled()"
                 (click)="confirmExport()"
             >
                 <span class="p-button-icon material-icons">import_export</span>

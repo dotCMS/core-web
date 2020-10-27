@@ -10,13 +10,18 @@
 
 .dot-apps__header {
     border-bottom: 1px solid $gray-light;
-    padding-left: $spacing-4;
-    padding-bottom: $spacing-4;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 $spacing-4 $spacing-4;
     width: 100%;
 
     input {
         width: 31.42rem;
     }
+}
+
+.dot-apps-configuration__action_export_button span {
+    font-size: 14px;
 }
 
 .dot-apps__body {

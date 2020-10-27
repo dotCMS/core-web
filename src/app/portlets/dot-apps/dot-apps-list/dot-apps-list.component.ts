@@ -63,6 +63,16 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
         this.exportDialog.showExportDialog = true;
     }
 
+    /**
+     * Checks if export button is disabled based on existing configurations
+     *
+     * @returns {boolean}
+     * @memberof DotAppsListComponent
+     */
+    isExportButtonDisabled(): boolean {
+        return this.apps.filter((app: DotApps) => app.configurationsCount > 0).length > 0;
+    }
+
     private getApps(apps: DotApps[]): void {
         this.apps = apps;
         this.appsCopy = _.cloneDeep(apps);
