@@ -48,6 +48,22 @@
     color: $black;
 }
 
+.p-button.p-button-vertical {
+    font-size: $font-size-medium;
+    padding: $spacing-1 $spacing-2;
+    color: $brand-secondary;
+
+    &:enabled:hover, &:enabled:focus{
+        color: $brand-secondary;
+    }
+
+    .p-button-icon{
+        margin: 0 0 $spacing-1 / 2;
+        font-size: $font-size-x-large;
+    }
+
+}
+
 .p-button:focus {
     outline: 0 none;
     outline-offset: 0;
@@ -106,6 +122,11 @@
             background: $focus-bg;
         }
     }
+}
+
+.p-button.p-button-icon-only {
+    padding-left: $spacing-2;
+    padding-right: $spacing-2;
 }
 
 .p-button.p-button-icon-only .p-button-icon-left,
@@ -176,7 +197,7 @@
     }
 
     &:disabled {
-        border: none;
+        border-color: transparent;
     }
 }
 
