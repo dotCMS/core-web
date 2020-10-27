@@ -13,7 +13,6 @@ import { of } from 'rxjs';
 import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { MockDotLoginPageStateService } from '@components/login/dot-login-page-resolver.service.spec';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 
@@ -33,7 +32,6 @@ describe('ForgotPasswordComponent', () => {
                 FormsModule,
                 ReactiveFormsModule,
                 ButtonModule,
-                MdInputTextModule,
                 InputTextModule,
                 DotFieldValidationMessageModule,
                 RouterTestingModule
@@ -58,7 +56,7 @@ describe('ForgotPasswordComponent', () => {
 
     it('should load form labels correctly', () => {
         const header: DebugElement = de.query(By.css('h3'));
-        const inputLabel: DebugElement = de.query(By.css('span.p-float-label label'));
+        const inputLabel: DebugElement = de.query(By.css('.p-field label'));
         const cancelButton: DebugElement = de.query(By.css('button'));
         const submitButton: DebugElement = de.query(By.css('button[type="submit"]'));
 

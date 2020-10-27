@@ -99,8 +99,8 @@
 
 @mixin dot-field-helper-on-input {
     position: absolute;
+    top: $spacing-5;
     right: 0;
-    top: 19px;
     z-index: 1;
 }
 
@@ -118,7 +118,7 @@
 
 @mixin paginator-bottom-absolute {
     bottom: 0;
-    padding-bottom: $basic-padding * 2;
+    padding-bottom: $spacing-3;
     position: absolute;
     width: 100%;
 }

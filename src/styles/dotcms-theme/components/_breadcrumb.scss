@@ -1,6 +1,5 @@
 @use "variables" as *;
 
-
 .p-breadcrumb ul > .p-breadcrumb-chevron.pi {
     color: $gray;
 
@@ -23,7 +22,7 @@
 
 .p-breadcrumb ul li .p-menuitem-link {
     transition: none;
-    border-radius: 4px;
+    border-radius: $border-radius;
 }
 
 .p-breadcrumb ul li .p-menuitem-link:focus {

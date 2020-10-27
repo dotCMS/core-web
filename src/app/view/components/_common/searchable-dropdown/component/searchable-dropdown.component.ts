@@ -75,7 +75,7 @@ export class SearchableDropdownComponent
     width = '300';
 
     @Input()
-    optionsWidth = '300';
+    overlayWidth;
 
     @Input()
     multiple: boolean;
@@ -119,7 +119,6 @@ export class SearchableDropdownComponent
 
     constructor() {}
 
-    // tslint:disable-next-line:no-shadowed-variable
     propagateChange = (_: any) => {};
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -168,10 +167,15 @@ export class SearchableDropdownComponent
      * @memberof SearchableDropdownComponent
      */
     showOverlayHandler(): void {
-        this.cssClass +=
+        const cssClass =
             this.totalRecords > this.rows
                 ? ' searchable-dropdown paginator'
                 : ' searchable-dropdown';
+        if (typeof this.cssClass === 'undefined') {
+            this.cssClass = cssClass;
+        } else {
+            this.cssClass += cssClass;
+        }
         setTimeout(() => {
             if (!this.overlayPanelMinHeight) {
                 this.overlayPanelMinHeight = this.searchPanelRef.container

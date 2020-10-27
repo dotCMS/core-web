@@ -8,13 +8,12 @@ import { SearchableDropDownModule } from '../searchable-dropdown/searchable-drop
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { SiteServiceMock, mockSites } from '../../../../test/site-service.mock';
-import { SiteService } from 'dotcms-js';
+import { Site, SiteService } from 'dotcms-js';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component/searchable-dropdown.component';
 import { PaginatorService } from '@services/paginator';
 import { IframeOverlayService } from '../iframe/service/iframe-overlay.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { Site } from '../../../../../../projects/dotcms-js/src/lib/core/site.service';
 
 const sites: Site[] = [
     {
@@ -45,27 +44,29 @@ describe('SiteSelectorComponent', () => {
     let siteService: SiteService;
     const siteServiceMock = new SiteServiceMock();
 
-    beforeEach(waitForAsync( () => {
-        const messageServiceMock = new MockDotMessageService({
-            search: 'Search'
-        });
-        DOTTestBed.configureTestingModule({
-            declarations: [DotSiteSelectorComponent],
-            imports: [SearchableDropDownModule, BrowserAnimationsModule],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: SiteService, useValue: siteServiceMock },
-                IframeOverlayService,
-                PaginatorService
-            ]
-        });
+    beforeEach(
+        waitForAsync(() => {
+            const messageServiceMock = new MockDotMessageService({
+                search: 'Search'
+            });
+            DOTTestBed.configureTestingModule({
+                declarations: [DotSiteSelectorComponent],
+                imports: [SearchableDropDownModule, BrowserAnimationsModule],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    { provide: SiteService, useValue: siteServiceMock },
+                    IframeOverlayService,
+                    PaginatorService
+                ]
+            });
 
-        fixture = DOTTestBed.createComponent(DotSiteSelectorComponent);
-        comp = fixture.componentInstance;
-        de = fixture.debugElement;
-        paginatorService = de.injector.get(PaginatorService);
-        siteService = de.injector.get(SiteService);
-    }));
+            fixture = DOTTestBed.createComponent(DotSiteSelectorComponent);
+            comp = fixture.componentInstance;
+            de = fixture.debugElement;
+            paginatorService = de.injector.get(PaginatorService);
+            siteService = de.injector.get(SiteService);
+        })
+    );
 
     it('should send notification when login-as/logout-as', fakeAsync(() => {
         const dotEventsService = de.injector.get(DotEventsService);
@@ -167,6 +168,19 @@ describe('SiteSelectorComponent', () => {
 
         expect(paginatorService.getWithOffset).toHaveBeenCalledWith(0);
         expect(paginatorService.filter).toEqual(filter);
+    });
+
+    it('should pass class name to searchable dropdown', async () => {
+        paginatorService.filter = 'filter';
+        paginatorService.totalRecords = 2;
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
+
+        comp.cssClass = 'hello';
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        const dropdown = de.query(By.css('dot-searchable-dropdown'));
+        expect(dropdown.classes.hello).toBe(true);
     });
 
     it('should be assign to filter if empty', () => {

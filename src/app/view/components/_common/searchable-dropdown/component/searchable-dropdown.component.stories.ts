@@ -24,9 +24,17 @@ class DotMessagePipe implements PipeTransform {
 export default {
     title: 'DotCMS/Searchable Dropdown',
     component: SearchableDropdownComponent,
+    parameters: {
+        docs: {
+            description: {
+                component:
+                    'Dropdown with pagination and global search. Please be mindful that the <code>width</code> property is <strong>required</strong>.'
+            }
+        }
+    },
     decorators: [
         moduleMetadata({
-            declarations: [DotMessagePipe],
+            declarations: [DotMessagePipe, SearchableDropdownComponent],
             imports: [
                 BrowserAnimationsModule,
                 ButtonModule,
@@ -37,14 +45,29 @@ export default {
                 FormsModule,
                 InputTextModule,
                 OverlayPanelModule
-            ],
-            providers: []
+            ]
         })
     ],
+    argTypes: {
+        width: {
+            name: 'width',
+            type: { name: 'string', required: true },
+            defaultValue: '300',
+            description:
+                "Setting a width prevents the dropdown from jumping when an option is larger than the dropdown's width",
+            control: {
+                type: 'text'
+            }
+        }
+    },
     args: {
         rows: 4,
         pageLinkSize: 2,
         optionsWidth: '300',
+        paginate: () => {},
+        showOverlayHandler: () => {},
+        hideOverlayHandler: () => {},
+        handleClick: () => {},
         data: [
             {
                 label: 'This is an option',
@@ -91,14 +114,41 @@ export default {
                 value: 'lastone'
             }
         ],
-        label: 'Select something',
-        labelPropertyName: 'label'
-    },
+        placeholder: 'Select something',
+        labelPropertyName: 'label',
+        width: '300'
+    }
 } as Meta;
 
-const Template: Story<SearchableDropdownComponent> = (args: SearchableDropdownComponent) => ({
-    component: SearchableDropdownComponent,
-    props: args
-});
+const getTemplate = (extraAttr = '') => {
+    const template = `
+        <dot-searchable-dropdown
+            ${extraAttr}
+            [rows]="rows"
+            [pageLinkSize]="pageLinkSize"
+            [data]="data"
+            [width]="width"
+            [labelPropertyName]="labelPropertyName"
+            [placeholder]="placeholder"
+        >
+        </dot-searchable-dropdown>
+    `;
+    return template;
+};
 
-export const Default = Template.bind({});
+export const Primary: Story<SearchableDropdownComponent> = (props: SearchableDropdownComponent) => {
+    return {
+        moduleMetadata: {
+            declarations: [SearchableDropdownComponent]
+        },
+        component: SearchableDropdownComponent,
+        props,
+        template: getTemplate()
+    };
+};
+
+export const Secondary = (props: SearchableDropdownComponent) => ({
+    component: SearchableDropdownComponent,
+    props,
+    template: getTemplate(`class="d-secondary"`)
+});

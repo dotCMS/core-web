@@ -1,11 +1,12 @@
 @use "variables" as *;
 
-form, .custom-code {
+form,
+.custom-code {
     width: $form-width;
 }
 
 .custom-code {
-    margin-bottom: $basic-padding * 4;
+    margin-bottom: $spacing-9;
 
     &.hidden {
         display: none;

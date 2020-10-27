@@ -1,10 +1,4 @@
-import {
-    Component,
-    Input,
-    OnInit,
-    forwardRef,
-    ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, Input, OnInit, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 
@@ -49,15 +43,14 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
             enabled: false
         },
         cursorBlinking: 'solid',
-        lineDecorationsWidth: 1,
         overviewRulerBorder: false,
         mouseWheelZoom: false,
-
+        LineNumbersType: 'on'
     };
 
     private DEFAULT_OPTIONS: SelectItem[] = [
         { label: 'Plain', value: 'plain' },
-        { label: 'Code', value: 'code' },
+        { label: 'Code', value: 'code' }
     ];
 
     constructor() {}
@@ -79,7 +72,7 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
 
         this.styles = {
             width: this.width || '100%',
-            height: this.height || '300px'
+            height: this.height || '21.42rem'
         };
     }
 

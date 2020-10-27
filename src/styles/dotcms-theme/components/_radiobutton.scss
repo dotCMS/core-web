@@ -12,11 +12,8 @@
     height: 20px;
     color: $black;
     border-radius: 50%;
-    transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
-}
-
-.p-radiobutton .p-radiobutton-box:not(.p-disabled):not(.p-highlight):hover {
-    border-color: $black;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s,
+        background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
 }
 
 .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus {
@@ -53,12 +50,8 @@
     transition: box-shadow 0.2s;
 }
 
-.p-radiobutton .p-radiobutton-box:not(.p-disabled):not(.p-highlight):hover {
-    border: 2px solid $gray;
-}
-
 .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus {
-    border: 2px solid $highlight-border-color;
+    border: 2px solid $border-color-highlight;
 }
 
 .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled).p-focus {
@@ -66,17 +59,17 @@
 }
 
 .p-radiobutton:not(.p-radiobutton-disabled):hover {
-    box-shadow: 0 0 1px 10px $highlight-bg;
+    box-shadow: 0 0 1px 10px $bg-highlight;
 }
 
 .p-radiobutton:not(.p-radiobutton-disabled).p-radiobutton-focused {
-    box-shadow: 0 0 1px 10px $highlight-bg;
+    box-shadow: 0 0 1px 10px $bg-highlight;
 }
 
 .p-radiobutton.p-radiobutton-checked:not(.p-radiobutton-disabled):hover {
-    box-shadow: 0 0 1px 10px $highlight-bg;
+    box-shadow: 0 0 1px 10px $bg-highlight;
 }
 
 .p-radiobutton.p-radiobutton-checked:not(.p-radiobutton-disabled).p-radiobutton-focused {
-    box-shadow: 0 0 1px 10px $highlight-bg;
+    box-shadow: 0 0 1px 10px $bg-highlight;
 }

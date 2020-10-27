@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
-import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotMyAccountComponent } from './dot-my-account.component';
 import {
@@ -61,7 +60,6 @@ describe('DotMyAccountComponent', () => {
                 declarations: [DotMyAccountComponent],
                 imports: [
                     PasswordModule,
-                    MdInputTextModule,
                     InputTextModule,
                     FormsModule,
                     DotDialogModule,
@@ -135,15 +133,15 @@ describe('DotMyAccountComponent', () => {
         const cancel = de.nativeElement.querySelector('.dialog__button-cancel');
         const save = de.nativeElement.querySelector('.dialog__button-accept');
 
-        expect(firstName.innerText).toBe(messageServiceMock.get('First-Name'));
-        expect(lasttName.innerText).toBe(messageServiceMock.get('Last-Name'));
-        expect(email.innerText).toBe(messageServiceMock.get('email-address'));
-        expect(currentPassword.innerText).toBe(messageServiceMock.get('current-password'));
-        expect(changePassword.innerText).toBe(messageServiceMock.get('change-password'));
-        expect(newPassword.innerText).toBe(messageServiceMock.get('new-password'));
-        expect(confirmPassword.innerText).toBe(messageServiceMock.get('re-enter-new-password'));
-        expect(cancel.innerText).toBe(messageServiceMock.get('modes.Close').toUpperCase());
-        expect(save.innerText).toBe(messageServiceMock.get('save').toUpperCase());
+        expect(firstName.innerText).toEqual(messageServiceMock.get('First-Name'));
+        expect(lasttName.innerText).toEqual(messageServiceMock.get('Last-Name'));
+        expect(email.innerText).toEqual(messageServiceMock.get('email-address'));
+        expect(currentPassword.innerText).toEqual(messageServiceMock.get('current-password'));
+        expect(changePassword.innerText).toEqual(messageServiceMock.get('change-password'));
+        expect(newPassword.innerText).toEqual(messageServiceMock.get('new-password'));
+        expect(confirmPassword.innerText).toEqual(messageServiceMock.get('re-enter-new-password'));
+        expect(cancel.innerText).toEqual(messageServiceMock.get('modes.Close').toUpperCase());
+        expect(save.innerText).toEqual(messageServiceMock.get('save').toUpperCase());
     });
 
     it(`should form be valid`, async () => {

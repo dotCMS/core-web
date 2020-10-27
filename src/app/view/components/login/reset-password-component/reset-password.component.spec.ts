@@ -14,7 +14,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotLoginPageStateService } from '@components/login/dot-login-page-resolver.service.spec';
-import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 
 describe('ResetPasswordComponent', () => {
@@ -35,7 +34,6 @@ describe('ResetPasswordComponent', () => {
                 ReactiveFormsModule,
                 ButtonModule,
                 InputTextModule,
-                MdInputTextModule,
                 DotFieldValidationMessageModule,
                 RouterTestingModule
             ],
@@ -61,12 +59,12 @@ describe('ResetPasswordComponent', () => {
 
     it('should load form labels correctly', () => {
         const header: DebugElement = de.query(By.css('h3'));
-        const inputs: DebugElement[] = de.queryAll(By.css('span.p-float-label label'));
+        const labels: DebugElement[] = de.queryAll(By.css('.p-field label'));
         const button: DebugElement = de.query(By.css('button'));
 
         expect(header.nativeElement.innerHTML).toEqual('Password Reset');
-        expect(inputs[0].nativeElement.innerHTML).toContain('Enter Password');
-        expect(inputs[1].nativeElement.innerHTML).toContain('Confirm Password');
+        expect(labels[0].nativeElement.innerHTML).toContain('Enter Password');
+        expect(labels[1].nativeElement.innerHTML).toContain('Confirm Password');
         expect(button.nativeElement.innerHTML).toContain('Change Password');
     });
 

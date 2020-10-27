@@ -1,15 +1,14 @@
 import { Observable, of, Subject } from 'rxjs';
 import {
     Component,
-    ViewEncapsulation,
-    ViewChild,
-    Output,
     EventEmitter,
     Input,
-    OnInit,
-    SimpleChanges,
     OnChanges,
-    OnDestroy
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild
 } from '@angular/core';
 import { Site, SiteService } from 'dotcms-js';
 import { PaginatorService } from '@services/paginator';
@@ -28,7 +27,6 @@ import { delay, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
  */
 @Component({
     providers: [PaginatorService],
-    encapsulation: ViewEncapsulation.None,
     selector: 'dot-site-selector',
     styleUrls: ['./dot-site-selector.component.scss'],
     templateUrl: 'dot-site-selector.component.html'
@@ -38,6 +36,8 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     @Input() id: string;
     @Input() live: boolean;
     @Input() system: boolean;
+    @Input() cssClass: string;
+    @Input() width: string;
 
     @Output() change: EventEmitter<Site> = new EventEmitter();
     @Output() hide: EventEmitter<any> = new EventEmitter();
@@ -112,7 +112,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
                             throw new Error('Indexing... site still present');
                         }
                     }),
-                    retryWhen(error => error.pipe(delay(1000)))
+                    retryWhen((error) => error.pipe(delay(1000)))
                 )
                 .subscribe((items: Site[]) => {
                     this.updateValues(items);
@@ -127,7 +127,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
                             throw new Error('Indexing... site not present');
                         }
                     }),
-                    retryWhen(error => error.pipe(delay(1000)))
+                    retryWhen((error) => error.pipe(delay(1000)))
                 )
                 .subscribe(() => {
                     this.paginationService
@@ -167,7 +167,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     getSitesList(filter = '', offset = 0): void {
         // Set filter if undefined
         this.paginationService.filter = filter;
-        this.paginationService.getWithOffset(offset).subscribe(items => {
+        this.paginationService.getWithOffset(offset).subscribe((items) => {
             this.sitesCurrentPage = [...items];
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
 
@@ -189,7 +189,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     private getSiteByIdFromCurrentPage(siteId: string): Site {
         return (
             this.sitesCurrentPage &&
-            this.sitesCurrentPage.filter(site => site.identifier === siteId)[0]
+            this.sitesCurrentPage.filter((site) => site.identifier === siteId)[0]
         );
     }
 
