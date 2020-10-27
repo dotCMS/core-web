@@ -207,7 +207,7 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
         });
 
         it('should load Label, Button & Hint with right attributes', () => {
-            const row = de.queryAll(By.css('.dot-apps-configuration-detail__form-row'))[4];
+            const row = de.queryAll(By.css('.p-field'))[4];
             expect(row.query(By.css('label')).nativeElement.textContent).toBe(secrets[4].label);
             expect(
                 row.query(By.css('label')).nativeElement.classList.contains('form__label')
@@ -218,10 +218,10 @@ describe('DotAppsConfigurationDetailFormComponent', () => {
             );
         });
 
-        it('should load Label, Button & Hint with right attributes', () => {
+        it('should Button open link on new tab when clicked', () => {
             const openMock = jasmine.createSpy();
             window.open = openMock;
-            const row = de.queryAll(By.css('.dot-apps-configuration-detail__form-row'))[4];
+            const row = de.queryAll(By.css('.p-field'))[4];
             const button = row.query(By.css('button')).nativeElement;
 
             button.click();
