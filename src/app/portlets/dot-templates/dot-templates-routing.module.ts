@@ -13,8 +13,18 @@ const routes: Routes = [
         }
     },
     {
-        path: '/new',
-        component: DotTemplateComponent
+        path: 'new',
+        component: DotTemplateComponent,
+        children: [
+            {
+                path: 'advanced',
+                component: DotTemplateComponent,
+                loadChildren: () =>
+                    import('@portlets/dot-templates//dot-template/dot-template.module').then(
+                        (m) => m.DotTemplateModule
+                    )
+            }
+        ]
     }
 ];
 

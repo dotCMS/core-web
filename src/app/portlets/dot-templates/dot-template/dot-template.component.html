@@ -1,1 +1,27 @@
-<h1>Hello</h1>
+<div class="container">
+    <div class="form-control">
+        <input id="title" type="text" placeholder="Title" pInputText />
+    </div>
+    <!-- /.form-control -->
+    <div class="form-control">
+        <input type="text" placeholder="Description" pInputText />
+    </div>
+    <!-- /.text-control -->
+    <div class="form-control">
+        <input type="text" placeholder="Thumbnail" pInputText />
+    </div>
+    <!-- /.text-control -->
+    <div class="form-control">
+        <label for="add" class="form__label">Template</label>
+        <button pButton id="add" label="Add Container" class="p-button-secondary"></button>
+    </div>
+    <!-- /.text-control -->
+
+    <dot-textarea-content
+        #value
+        height="30rem"
+        width="70%"
+        [show]="['code']"
+    ></dot-textarea-content>
+</div>
+<!-- /.container -->

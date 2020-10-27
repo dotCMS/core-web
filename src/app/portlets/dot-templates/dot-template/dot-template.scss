@@ -1,0 +1,27 @@
+@use "variables" as *;
+
+.container {
+    margin: $spacing-4;
+    padding: $spacing-4;
+    background: $white;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+dot-textarea-content {
+    width: 20rem;
+}
+
+.form-control {
+    margin-bottom: $spacing-4;
+}
+
+.form__label {
+    display: block;
+    margin-bottom: $spacing-2;
+}
+
+.form-control {
+    input {
+        width: 25%;
+    }
+}
