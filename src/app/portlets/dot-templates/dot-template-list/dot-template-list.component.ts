@@ -12,7 +12,6 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
     styleUrls: ['./dot-template-list.component.scss']
 })
 export class DotTemplateListComponent implements OnInit, OnDestroy {
-
     tableColumns: DataTableColumn[];
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -23,7 +22,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.route.data
             .pipe(pluck('dotTemplateListResolverData'), takeUntil(this.destroy$))
             .subscribe((templates: DotTemplate[]) => {
-                console.log(templates);
+                console.log({ templates });
                 this.tableColumns = this.setTemplateColumns();
             });
     }
@@ -54,8 +53,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 fieldName: 'modDate',
                 header: this.dotMessageService.get('templates.fieldName.lastEdit'),
                 sortable: true
-            },
-
+            }
         ];
     }
 }
