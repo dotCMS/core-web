@@ -74,6 +74,15 @@ describe('DotAppsConfigurationListComponent', () => {
             expect(component.edit.emit).toHaveBeenCalledWith(sites[0]);
         });
 
+        it('should emit action for export --> Site Item', () => {
+            spyOn(component.export, 'emit');
+            const siteItem = fixture.debugElement.queryAll(By.css('dot-apps-configuration-item'))[0]
+                .componentInstance;
+
+            siteItem.export.emit(sites[0]);
+            expect(component.export.emit).toHaveBeenCalledWith(sites[0]);
+        });
+
         it('should emit action for delete --> Site Item', () => {
             spyOn(component.delete, 'emit');
             const siteItem = fixture.debugElement.queryAll(By.css('dot-apps-configuration-item'))[0]

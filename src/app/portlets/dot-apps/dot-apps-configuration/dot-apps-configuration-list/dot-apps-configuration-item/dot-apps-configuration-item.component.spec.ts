@@ -79,11 +79,12 @@ describe('DotAppsConfigurationItemComponent', () => {
             ).toContain(`${messageServiceMock.get('apps.key')} ${sites[0].id}`);
         });
 
-        it('should have 2 icon buttons for delete and edit', () => {
+        it('should have 3 icon buttons for export, delete and edit', () => {
             const buttons = fixture.debugElement.queryAll(By.css('dot-icon-button'));
-            expect(buttons.length).toBe(2);
-            expect(buttons[0].componentInstance.icon).toBe('delete_outline');
-            expect(buttons[1].componentInstance.icon).toBe('edit');
+            expect(buttons.length).toBe(3);
+            expect(buttons[0].componentInstance.icon).toBe('import_export');
+            expect(buttons[1].componentInstance.icon).toBe('delete_outline');
+            expect(buttons[2].componentInstance.icon).toBe('edit');
         });
 
         it('should have warning icon', () => {
@@ -98,9 +99,23 @@ describe('DotAppsConfigurationItemComponent', () => {
             );
         });
 
+        it('should emit export action with a site', () => {
+            const stopPropagationSpy = jasmine.createSpy('spy');
+            const exportBtn = fixture.debugElement.queryAll(By.css('dot-icon-button'))[0];
+
+            spyOn(component.export, 'emit');
+
+            exportBtn.triggerEventHandler('click', {
+                stopPropagation: stopPropagationSpy,
+                site: sites[0]
+            });
+            expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
+            expect(component.export.emit).toHaveBeenCalledWith(sites[0]);
+        });
+
         it('should emit delete action', () => {
             const stopPropagationSpy = jasmine.createSpy('spy');
-            const deleteBtn = fixture.debugElement.queryAll(By.css('dot-icon-button'))[0];
+            const deleteBtn = fixture.debugElement.queryAll(By.css('dot-icon-button'))[1];
 
             spyOn(dialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
@@ -119,7 +134,7 @@ describe('DotAppsConfigurationItemComponent', () => {
 
         it('should emit edit action with a site', () => {
             const stopPropagationSpy = jasmine.createSpy('spy');
-            const editBtn = fixture.debugElement.queryAll(By.css('dot-icon-button'))[1];
+            const editBtn = fixture.debugElement.queryAll(By.css('dot-icon-button'))[2];
 
             spyOn(component.edit, 'emit');
 

@@ -21,6 +21,7 @@ import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/do
 import { PaginatorService } from '@services/paginator';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
 import { MarkdownService } from 'ngx-markdown';
+import { DotAppsExportDialogModule } from '../dot-apps-export-dialog/dot-apps-export-dialog.module';
 
 const messages = {
     'apps.key': 'Key',
@@ -32,7 +33,8 @@ const messages = {
     'apps.confirmation.description.show.less': 'Show Less',
     'apps.confirmation.delete.all.message': 'Delete all?',
     'apps.confirmation.accept': 'Ok',
-    'apps.search.placeholder': 'Search by name'
+    'apps.search.placeholder': 'Search by name',
+    'apps.confirmation.export.all.button': 'Export All'
 };
 
 const sites = [
@@ -102,6 +104,7 @@ describe('DotAppsConfigurationComponent', () => {
                     CommonModule,
                     DotActionButtonModule,
                     DotAppsConfigurationHeaderModule,
+                    DotAppsExportDialogModule,
                     DotAppsConfigurationListModule
                 ],
                 declarations: [DotAppsConfigurationComponent],
@@ -157,6 +160,11 @@ describe('DotAppsConfigurationComponent', () => {
             expect(component.apps).toBe(appData);
         });
 
+        it('should set App in export dialog attribute', () => {
+            const exportDialog = fixture.debugElement.query(By.css('dot-apps-export-dialog'));
+            expect(exportDialog.componentInstance.app).toEqual(appData);
+        });
+
         it('should set onInit Pagination Service with right values', () => {
             expect(paginationService.url).toBe(`v1/apps/${component.apps.key}`);
             expect(paginationService.paginationPerPage).toBe(component.paginationPerPage);
@@ -180,8 +188,17 @@ describe('DotAppsConfigurationComponent', () => {
             ).toContain(messageServiceMock.get('apps.search.placeholder'));
 
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration__action_header button'))
-                    .nativeElement.innerText
+                fixture.debugElement.queryAll(
+                    By.css('.dot-apps-configuration__action_header button')
+                )[0].nativeElement.innerText
+            ).toContain(
+                messageServiceMock.get('apps.confirmation.export.all.button').toUpperCase()
+            );
+
+            expect(
+                fixture.debugElement.queryAll(
+                    By.css('.dot-apps-configuration__action_header button')
+                )[1].nativeElement.innerText
             ).toContain(
                 messageServiceMock.get('apps.confirmation.delete.all.button').toUpperCase()
             );
@@ -212,10 +229,19 @@ describe('DotAppsConfigurationComponent', () => {
             );
         });
 
-        it('should open confirm dialog and delete All configurations', () => {
-            const deleteAllBtn = fixture.debugElement.query(
-                By.css('.dot-apps-configuration__action_header button')
+        it('should open confirm dialog and export All configurations', () => {
+            const exportAllBtn = fixture.debugElement.query(
+                By.css('.dot-apps-configuration__action_export_button')
             );
+            exportAllBtn.triggerEventHandler('click', null);
+            expect(component.exportDialog.showExportDialog).toBe(true);
+            expect(component.exportDialog.site).toBe(undefined);
+        });
+
+        it('should open confirm dialog and delete All configurations', () => {
+            const deleteAllBtn = fixture.debugElement.queryAll(
+                By.css('.dot-apps-configuration__action_header button')
+            )[1];
 
             spyOn(dialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
@@ -226,6 +252,14 @@ describe('DotAppsConfigurationComponent', () => {
             deleteAllBtn.triggerEventHandler('click', null);
             expect(dialogService.confirm).toHaveBeenCalledTimes(1);
             expect(appsServices.deleteAllConfigurations).toHaveBeenCalledWith(component.apps.key);
+        });
+
+        it('should export a specific configuration', () => {
+            const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
+                .componentInstance;
+            listComp.export.emit(sites[0]);
+            expect(component.exportDialog.showExportDialog).toBe(true);
+            expect(component.exportDialog.site).toBe(sites[0]);
         });
 
         it('should delete a specific configuration', () => {
