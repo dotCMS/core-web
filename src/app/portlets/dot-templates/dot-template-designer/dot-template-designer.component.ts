@@ -8,6 +8,7 @@ import {
 } from '@portlets/dot-edit-page/shared/models';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 import { CONTAINER_SOURCE } from '@shared/models/container/dot-container.model';
+import { MenuItem } from 'primeng/api';
 
 const containers = {
     '//demo.dotcms.com/application/containers/default/': {
@@ -33,6 +34,12 @@ const containers = {
 })
 export class DotTemplateDesignerComponent implements OnInit {
     form: FormGroup;
+    title: string;
+
+    portletActions: {
+        primary: MenuItem[];
+        cancel: (event: MouseEvent) => void;
+    };
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -41,9 +48,30 @@ export class DotTemplateDesignerComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.portletActions = {
+            primary: [
+                {
+                    label: 'Save',
+                    command: (e) => {
+                        console.log(e);
+                    }
+                },
+                {
+                    label: 'Actions',
+                    command: (e) => {
+                        console.log(e);
+                    }
+                }
+            ],
+            cancel: () => {
+                console.log('cancel');
+            }
+        };
+
         this.templateContainersCacheService.set(containers);
         this.activatedRoute.data.subscribe((res) => {
-            console.log(res.template.layout);
+            console.log(res);
+            this.title = res.template.title;
 
             this.form = this.fb.group({
                 layout: this.fb.group({

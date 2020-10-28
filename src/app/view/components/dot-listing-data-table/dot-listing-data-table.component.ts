@@ -16,7 +16,7 @@ import { DataTableColumn } from '@models/data-table/data-table-column';
 import { LoggerService } from 'dotcms-js';
 import { FormatDateService } from '@services/format-date-service';
 import { PaginatorService, OrderDirection } from '@services/paginator';
-import { DotDataTableAction } from '@models/data-table/dot-data-table-action';
+import { DotActionMenuItem } from '@shared/models/dot-action-menu/dot-action-menu-item.model';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -34,7 +34,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
     @Input() sortField: string;
     @Input() multipleSelection = false;
     @Input() paginationPerPage = 40;
-    @Input() actions: DotDataTableAction[];
+    @Input() actions: DotActionMenuItem[];
 
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
 

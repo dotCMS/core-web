@@ -8,7 +8,7 @@ import { DotListingDataTableComponent } from './dot-listing-data-table.component
 import { NgModule } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
-import { ActionMenuButtonModule } from '../_common/action-menu-button/action-menu-button.module';
+import { DotActionMenuButtonModule } from '../_common/dot-action-menu-button/dot-action-menu-button.module';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { RouterModule } from '@angular/router';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
@@ -22,7 +22,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         TableModule,
         FormsModule,
         InputTextModule,
-        ActionMenuButtonModule,
+        DotActionMenuButtonModule,
         DotIconModule,
         RouterModule,
         DotPipesModule
