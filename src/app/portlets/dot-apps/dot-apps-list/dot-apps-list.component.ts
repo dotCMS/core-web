@@ -70,7 +70,7 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
      * @memberof DotAppsListComponent
      */
     isExportButtonDisabled(): boolean {
-        return this.apps.filter((app: DotApps) => app.configurationsCount > 0).length > 0;
+        return this.apps.filter((app: DotApps) => app.configurationsCount).length > 0;
     }
 
     private getApps(apps: DotApps[]): void {

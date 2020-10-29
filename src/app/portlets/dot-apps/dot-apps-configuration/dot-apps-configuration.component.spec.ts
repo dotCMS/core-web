@@ -242,7 +242,7 @@ describe('DotAppsConfigurationComponent', () => {
             );
             exportAllBtn.triggerEventHandler('click', null);
             expect(component.exportDialog.showExportDialog).toBe(true);
-            expect(component.exportDialog.site).toBe(undefined);
+            expect(component.exportDialog.site).toBeUndefined();
         });
 
         it('should open confirm dialog and delete All configurations', () => {
@@ -266,7 +266,7 @@ describe('DotAppsConfigurationComponent', () => {
                 .componentInstance;
             listComp.export.emit(sites[0]);
             expect(component.exportDialog.showExportDialog).toBe(true);
-            expect(component.exportDialog.site).toBe(sites[0]);
+            expect(component.siteSelected).toBe(sites[0]);
         });
 
         it('should delete a specific configuration', () => {

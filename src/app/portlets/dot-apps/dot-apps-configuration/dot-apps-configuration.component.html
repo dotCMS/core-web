@@ -23,11 +23,12 @@
                     <button
                         pButton
                         link
-                        icon="fa fa-trash-o"
                         [label]="'apps.confirmation.delete.all.button' | dm"
                         [disabled]="!apps.configurationsCount"
                         (click)="deleteAllConfigurations()"
-                    ></button>
+                    >
+                        <span class="p-button-icon material-icons">delete_outline</span>
+                    </button>
                 </div>
             </div>
             <dot-apps-configuration-list
@@ -43,7 +44,4 @@
     </div>
 </div>
 
-<dot-apps-export-dialog
-    #exportDialog
-    [app]="apps"
-></dot-apps-export-dialog>
+<dot-apps-export-dialog #exportDialog [app]="apps" [site]="siteSelected"></dot-apps-export-dialog>

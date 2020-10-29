@@ -23,13 +23,14 @@
     input {
         width: 31.5rem;
     }
-}
 
-.dot-apps-configuration__action_export_button {
-    margin-right: $spacing-1;
-
-    span {
-        font-size: 14px;
+    button {
+        &:first-child {
+            margin-right: $spacing-1;
+        }
+        span {
+            font-size: $font-size-medium;
+        }
     }
 }
 

@@ -156,7 +156,6 @@ describe('DotAppsService', () => {
 
         expect(window.fetch).toHaveBeenCalledWith(`/api/v1/apps/export`, {
             method: 'POST',
-            mode: 'cors',
             cache: 'no-cache',
             headers: {
                 'Content-Type': 'application/json'

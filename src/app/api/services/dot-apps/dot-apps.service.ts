@@ -132,7 +132,6 @@ export class DotAppsService {
 
         return fetch(`/api/${appsUrl}/export`, {
             method: 'POST',
-            mode: 'cors',
             cache: 'no-cache',
             headers: {
                 'Content-Type': 'application/json'

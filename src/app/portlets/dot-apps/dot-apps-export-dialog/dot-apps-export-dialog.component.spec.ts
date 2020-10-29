@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
-import { CoreWebService } from 'dotcms-js';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DebugElement } from '@angular/core';
@@ -9,7 +8,6 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotAppsExportDialogComponent } from './dot-apps-export-dialog.component';
 import { DotAutofocusModule } from 'projects/dot-rules/src/lib/directives/dot-autofocus/dot-autofocus.module';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
@@ -52,7 +50,6 @@ describe('DotAppsExportDialogComponent', () => {
                 providers: [
                     { provide: DotAppsService, useClass: DotAppsServiceMock },
                     { provide: DotMessageService, useValue: messageServiceMock },
-                    { provide: CoreWebService, useClass: CoreWebServiceMock }
                 ]
             });
 

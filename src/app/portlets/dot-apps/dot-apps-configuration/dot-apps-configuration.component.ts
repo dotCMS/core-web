@@ -21,6 +21,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
     @ViewChild('exportDialog') exportDialog: DotAppsExportDialogComponent;
     apps: DotApps;
+    siteSelected: DotAppsSites;
 
     hideLoadDataButton: boolean;
     paginationPerPage = 40;
@@ -111,7 +112,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
      */
     confirmExport(site?: DotAppsSites): void {
         this.exportDialog.showExportDialog = true;
-        this.exportDialog.site = site;
+        this.siteSelected = site;
     }
 
     /**
