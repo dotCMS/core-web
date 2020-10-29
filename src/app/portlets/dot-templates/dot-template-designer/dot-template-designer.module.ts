@@ -7,15 +7,17 @@ import { DotLayoutDesignerModule } from '@portlets/dot-edit-page/layout/dot-edit
 import { DotTemplateDesignerComponent } from './dot-template-designer.component';
 import { DotPortletBaseModule } from '@components/dot-portlet-base/dot-portlet-base.module';
 import { ButtonModule } from 'primeng/button';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 @NgModule({
     declarations: [DotTemplateDesignerComponent],
     imports: [
-        CommonModule,
         ButtonModule,
+        CommonModule,
         DotLayoutDesignerModule,
         DotPortletBaseModule,
         DotTemplateDesignerRoutingModule,
+        DynamicDialogModule,
         FormsModule,
         ReactiveFormsModule
     ]

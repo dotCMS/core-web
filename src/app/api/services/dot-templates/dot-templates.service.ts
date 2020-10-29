@@ -53,7 +53,7 @@ export class DotTemplatesService {
         console.log(values);
         const url = '/api/v1/templates';
 
-        return this.request<any>({ method: 'PUT', url, body: JSON.stringify(values) });
+        return this.request<any>({ method: 'PUT', url, body: values });
     }
 
     private request<T>(options: DotRequestOptionsArgs): Observable<T> {

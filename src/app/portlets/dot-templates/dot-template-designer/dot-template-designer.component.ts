@@ -9,7 +9,8 @@ import {
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { MenuItem } from 'primeng/api';
-import { take } from 'rxjs/operators';
+import { zip } from 'rxjs';
+import { pluck, take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-dot-template-designer',
@@ -48,20 +49,26 @@ export class DotTemplateDesignerComponent implements OnInit {
             }
         };
 
-        this.activatedRoute.data.pipe(take(1)).subscribe((res) => {
-            this.templateContainersCacheService.set(res.template.containers);
+        const inode$ = this.activatedRoute.params.pipe(pluck('inode'));
+        const data$ = this.activatedRoute.data.pipe(pluck('template'));
 
-            this.title = res.template.title;
+        zip(inode$, data$)
+            .pipe(take(1))
+            .subscribe(([inode, template]: [string, any]) => {
+                this.templateContainersCacheService.set(template.containers);
 
-            this.form = this.fb.group({
-                drawedBody: this.fb.group({
-                    body: this.cleanUpBody(res.template.layout.body) || {},
-                    header: res.template.layout.header,
-                    footer: res.template.layout.footer,
-                    sidebar: {}
-                })
+                this.title = template.title;
+
+                this.form = this.fb.group({
+                    inode,
+                    layout: this.fb.group({
+                        body: this.cleanUpBody(template.layout.body) || {},
+                        header: template.layout.header,
+                        footer: template.layout.footer,
+                        sidebar: { location: '', containers: [], width: 'small' }
+                    })
+                });
             });
-        });
     }
 
     private saveTemplate(): void {
