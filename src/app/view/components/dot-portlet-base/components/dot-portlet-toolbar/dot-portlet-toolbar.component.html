@@ -35,7 +35,12 @@
 </p-toolbar>
 
 <ng-template #elseBlock>
-    <ng-container *ngIf="actions?.primary?.length">
-        <button pButton label="Save"></button>
+    <ng-container *ngIf="actions?.primary[0]">
+        <button
+            pButton
+            label="Save"
+            (click)="onPrimaryClick($event)"
+            [disabled]="actions?.primary[0]?.disabled"
+        ></button>
     </ng-container>
 </ng-template>

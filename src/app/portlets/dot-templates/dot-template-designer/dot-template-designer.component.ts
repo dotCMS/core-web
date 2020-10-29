@@ -7,25 +7,9 @@ import {
     DotLayoutRow
 } from '@portlets/dot-edit-page/shared/models';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
-import { CONTAINER_SOURCE } from '@shared/models/container/dot-container.model';
+import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { MenuItem } from 'primeng/api';
-
-const containers = {
-    '//demo.dotcms.com/application/containers/default/': {
-        container: {
-            categoryId: 'f04b5078-1679-4965-bb12-446d3cb5948f',
-            deleted: false,
-            friendlyName: 'container',
-            identifier: '69b3d24d-7e80-4be6-b04a-d352d16493ee',
-            name: 'Default',
-            type: 'containers',
-            source: CONTAINER_SOURCE.FILE,
-            parentPermissionable: {
-                hostname: 'SYSTEM_HOST'
-            }
-        }
-    }
-};
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-dot-template-designer',
@@ -44,7 +28,8 @@ export class DotTemplateDesignerComponent implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
-        private templateContainersCacheService: TemplateContainersCacheService
+        private templateContainersCacheService: TemplateContainersCacheService,
+        private dotTemplateService: DotTemplatesService
     ) {}
 
     ngOnInit(): void {
@@ -54,12 +39,7 @@ export class DotTemplateDesignerComponent implements OnInit {
                     label: 'Save',
                     command: (e) => {
                         console.log(e);
-                    }
-                },
-                {
-                    label: 'Actions',
-                    command: (e) => {
-                        console.log(e);
+                        this.saveTemplate();
                     }
                 }
             ],
@@ -68,13 +48,13 @@ export class DotTemplateDesignerComponent implements OnInit {
             }
         };
 
-        this.templateContainersCacheService.set(containers);
-        this.activatedRoute.data.subscribe((res) => {
-            console.log(res);
+        this.activatedRoute.data.pipe(take(1)).subscribe((res) => {
+            this.templateContainersCacheService.set(res.template.containers);
+
             this.title = res.template.title;
 
             this.form = this.fb.group({
-                layout: this.fb.group({
+                drawedBody: this.fb.group({
                     body: this.cleanUpBody(res.template.layout.body) || {},
                     header: res.template.layout.header,
                     footer: res.template.layout.footer,
@@ -82,6 +62,20 @@ export class DotTemplateDesignerComponent implements OnInit {
                 })
             });
         });
+    }
+
+    private saveTemplate(): void {
+        this.dotTemplateService
+            .update(this.form.value)
+            .pipe(take(1))
+            .subscribe(
+                (res) => {
+                    console.log(res);
+                },
+                (err) => {
+                    console.log(err);
+                }
+            );
     }
 
     // this is dupe, need to extract

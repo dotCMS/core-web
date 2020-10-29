@@ -35,4 +35,18 @@ export class DotPortletToolbarComponent implements OnInit {
             console.error(error);
         }
     }
+
+    /**
+     * Hancdle primary button click
+     *
+     * @param {MouseEvent} $event
+     * @memberof DotPortletToolbarComponent
+     */
+    onPrimaryClick($event: MouseEvent): void {
+        try {
+            this.actions.primary[0].command($event);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }
