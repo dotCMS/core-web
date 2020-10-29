@@ -13,22 +13,20 @@
                     <button
                         pButton
                         link
+                        icon="pi pi-external-link"
                         class="dot-apps-configuration__action_export_button"
                         [label]="'apps.confirmation.export.all.button' | dm"
                         [disabled]="!apps.configurationsCount"
                         (click)="confirmExport()"
-                    >
-                        <span class="p-button-icon material-icons">import_export</span>
-                    </button>
+                    ></button>
                     <button
                         pButton
                         link
+                        icon="pi pi-trash"
                         [label]="'apps.confirmation.delete.all.button' | dm"
                         [disabled]="!apps.configurationsCount"
                         (click)="deleteAllConfigurations()"
-                    >
-                        <span class="p-button-icon material-icons">delete_outline</span>
-                    </button>
+                    ></button>
                 </div>
             </div>
             <dot-apps-configuration-list
