@@ -51,7 +51,7 @@ describe('DotAppsExportDialogComponent', () => {
                     { provide: DotAppsService, useClass: DotAppsServiceMock },
                     { provide: DotMessageService, useValue: messageServiceMock },
                 ]
-            });
+            }).compileComponents();
 
             fixture = TestBed.createComponent(DotAppsExportDialogComponent);
             comp = fixture.componentInstance;
@@ -64,16 +64,15 @@ describe('DotAppsExportDialogComponent', () => {
 
     afterEach(() => {
         comp.showExportDialog = false;
+        fixture.detectChanges();
     });
 
     it(`should have right labels and accept be disabled`, async () => {
         fixture.detectChanges();
-        await fixture.whenStable();
         comp.form.setValue({
             password: ''
         });
-
-        fixture.detectChanges();
+        await fixture.whenStable();
         const dialog = de.query(By.css('dot-dialog'));
         const inputPassword = de.query(By.css('input'));
         expect(dialog.componentInstance.header).toBe(
