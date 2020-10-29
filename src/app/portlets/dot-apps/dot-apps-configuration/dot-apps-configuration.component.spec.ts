@@ -1,10 +1,9 @@
 import { of, Observable } from 'rxjs';
-import { waitForAsync, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ActivatedRoute } from '@angular/router';
-import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotAppsConfigurationComponent } from './dot-apps-configuration.component';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { InputTextModule } from 'primeng/inputtext';
@@ -22,6 +21,11 @@ import { PaginatorService } from '@services/paginator';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
 import { MarkdownService } from 'ngx-markdown';
 import { DotAppsExportDialogModule } from '../dot-apps-export-dialog/dot-apps-export-dialog.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { ConfirmationService } from 'primeng/api';
+import { CoreWebService } from 'dotcms-js';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
 const messages = {
     'apps.key': 'Key',
@@ -91,7 +95,7 @@ describe('DotAppsConfigurationComponent', () => {
 
     beforeEach(
         waitForAsync(() => {
-            DOTTestBed.configureTestingModule({
+            TestBed.configureTestingModule({
                 imports: [
                     RouterTestingModule.withRoutes([
                         {
@@ -105,7 +109,9 @@ describe('DotAppsConfigurationComponent', () => {
                     DotActionButtonModule,
                     DotAppsConfigurationHeaderModule,
                     DotAppsExportDialogModule,
-                    DotAppsConfigurationListModule
+                    DotAppsConfigurationListModule,
+                    HttpClientTestingModule,
+                    DotPipesModule
                 ],
                 declarations: [DotAppsConfigurationComponent],
                 providers: [
@@ -132,21 +138,22 @@ describe('DotAppsConfigurationComponent', () => {
                             highlight() {}
                         }
                     },
+                    { provide: CoreWebService, useClass: CoreWebServiceMock },
                     DotAppsConfigurationResolver,
-                    PaginatorService
+                    PaginatorService,
+                    DotAlertConfirmService,
+                    ConfirmationService
                 ]
             });
+
+            fixture = TestBed.createComponent(DotAppsConfigurationComponent);
+            component = fixture.debugElement.componentInstance;
+            dialogService = TestBed.inject(DotAlertConfirmService);
+            paginationService = TestBed.inject(PaginatorService);
+            appsServices = TestBed.inject(DotAppsService);
+            routerService = TestBed.inject(DotRouterService);
         })
     );
-
-    beforeEach(() => {
-        fixture = DOTTestBed.createComponent(DotAppsConfigurationComponent);
-        component = fixture.debugElement.componentInstance;
-        dialogService = fixture.debugElement.injector.get(DotAlertConfirmService);
-        paginationService = fixture.debugElement.injector.get(PaginatorService);
-        appsServices = fixture.debugElement.injector.get(DotAppsService);
-        routerService = fixture.debugElement.injector.get(DotRouterService);
-    });
 
     describe('With integrations count', () => {
         beforeEach(() => {

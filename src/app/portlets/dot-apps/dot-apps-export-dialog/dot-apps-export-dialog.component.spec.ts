@@ -22,7 +22,7 @@ export class DotAppsServiceMock {
     }
 }
 
-fdescribe('DotAppsExportDialogComponent', () => {
+describe('DotAppsExportDialogComponent', () => {
     let fixture: ComponentFixture<DotAppsExportDialogComponent>;
     let comp: DotAppsExportDialogComponent;
     let de: DebugElement;
