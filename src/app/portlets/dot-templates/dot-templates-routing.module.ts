@@ -20,7 +20,7 @@ const routes: Routes = [
                 path: 'advanced',
                 component: DotTemplateComponent,
                 loadChildren: () =>
-                    import('@portlets/dot-templates//dot-template/dot-template.module').then(
+                    import('@portlets/dot-templates/dot-template/dot-template.module').then(
                         (m) => m.DotTemplateModule
                     )
             }

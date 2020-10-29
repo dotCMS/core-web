@@ -1,27 +1,37 @@
-<div class="container">
-    <div class="form-control">
-        <input id="title" type="text" placeholder="Title" pInputText />
+<form class="container p-fluid" [formGroup]="templateForm" (ngSubmit)="onSubmit($event)">
+    <div class="p-field">
+        <label for="title">Title</label>
+        <input id="title" formControlName="title" type="text" placeholder="Title" pInputText />
     </div>
-    <!-- /.form-control -->
-    <div class="form-control">
-        <input type="text" placeholder="Description" pInputText />
+    <!-- /.p-field -->
+    <div class="p-field">
+        <label for="description">Description</label>
+        <input
+            id="description"
+            formControlName="description"
+            type="text"
+            placeholder="Description"
+            pInputText
+        />
+    </div>
+    <!-- /.p-field -->
+    <div class="p-field">
+        <label for="button">Template</label>
+        <button
+            pButton
+            id="button"
+            type="submit"
+            label="Add Container"
+            class="p-button-secondary"
+        ></button>
+        <dot-textarea-content
+            #value
+            height="30rem"
+            width="70%"
+            formControlName="editorContent"
+            [show]="['code']"
+        ></dot-textarea-content>
     </div>
     <!-- /.text-control -->
-    <div class="form-control">
-        <input type="text" placeholder="Thumbnail" pInputText />
-    </div>
-    <!-- /.text-control -->
-    <div class="form-control">
-        <label for="add" class="form__label">Template</label>
-        <button pButton id="add" label="Add Container" class="p-button-secondary"></button>
-    </div>
-    <!-- /.text-control -->
-
-    <dot-textarea-content
-        #value
-        height="30rem"
-        width="70%"
-        [show]="['code']"
-    ></dot-textarea-content>
-</div>
+</form>
 <!-- /.container -->

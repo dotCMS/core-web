@@ -25,17 +25,35 @@ export class DotTemplatesService {
      */
     get(): Observable<DotTemplate[]> {
         const url = '/api/v1/templates';
-        return this.coreWebService
-            .requestView<DotTemplate[]>({
-                url
+        return this.request({ url });
+    }
+
+    /**
+     * Creates a template
+     * @returns Observable<DotTemplate[]>
+     * @memberof DotTemplatesService
+     */
+    create(values): Observable<DotTemplate[]> {
+        const url = '/api/v1/templates';
+
+        const body = {
+            title: values.title,
+            body: JSON.stringify(values)
+        };
+
+        return this.request({ method: 'POST', url, body });
+    }
+
+    private request(options) {
+        const response$ = this.coreWebService.requestView<DotTemplate[]>(options);
+        return response$.pipe(
+            pluck('entity'),
+            catchError((error: HttpErrorResponse) => {
+                return this.httpErrorManagerService.handle(error).pipe(
+                    take(1),
+                    map(() => null)
+                );
             })
-            .pipe(
-                pluck('entity'),
-                catchError((error: HttpErrorResponse) => {
-                    return this.httpErrorManagerService
-                        .handle(error)
-                        .pipe(take(1), map(() => null));
-                })
-            );
+        );
     }
 }
