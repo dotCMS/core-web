@@ -115,7 +115,6 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
      */
     handleRowClick(rowData: any): void {
         this.rowWasClicked.emit(rowData);
-
     }
 
     /**

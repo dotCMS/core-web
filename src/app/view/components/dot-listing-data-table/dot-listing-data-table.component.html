@@ -41,7 +41,7 @@
     </ng-template>
 
     <ng-template  pTemplate="body" let-rowData let-columns="columns">
-        <tr (click)="handleRowClick(rowData)" >
+        <tr>
             <td *ngIf="checkbox" >
                 <p-tableCheckbox (click)="$event.stopPropagation()" [value]="rowData"></p-tableCheckbox>
             </td>
@@ -69,7 +69,7 @@
     <td
         *ngFor="let col of columns"
         [ngStyle]="{ width: col.width, 'text-align': getAlign(col) }"
-        (click)="handleRowClick()"
+        (click)="handleRowClick(rowData)"
     >
         <div class="listing-datatable__column-icon" *ngIf="col.icon">
             <dot-icon name="{{ col.icon(rowData) }}"></dot-icon>

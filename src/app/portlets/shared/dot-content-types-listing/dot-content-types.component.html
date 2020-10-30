@@ -1,6 +1,6 @@
 <dot-listing-data-table
     #listing
-    (select)="editContentType($event)"
+    (rowWasClicked)="editContentType($event)"
     [actionHeaderOptions]="actionHeaderOptions"
     [columns]="contentTypeColumns"
     [paginationPerPage]="40"
