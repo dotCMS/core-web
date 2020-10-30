@@ -8,7 +8,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DotAppsExportDialogComponent } from './dot-apps-export-dialog.component';
+import { DotAppsImportExportDialogComponent } from './dot-apps-import-export-dialog.component';
 import { DotAutofocusModule } from 'projects/dot-rules/src/lib/directives/dot-autofocus/dot-autofocus.module';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { DotAppsExportConfiguration } from '@shared/models/dot-apps/dot-apps.model';
@@ -21,8 +21,8 @@ export class DotAppsServiceMock {
 }
 
 describe('DotAppsExportDialogComponent', () => {
-    let fixture: ComponentFixture<DotAppsExportDialogComponent>;
-    let comp: DotAppsExportDialogComponent;
+    let fixture: ComponentFixture<DotAppsImportExportDialogComponent>;
+    let comp: DotAppsImportExportDialogComponent;
     let de: DebugElement;
     let dotAppsService: DotAppsService;
 
@@ -37,7 +37,7 @@ describe('DotAppsExportDialogComponent', () => {
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
-                declarations: [DotAppsExportDialogComponent],
+                declarations: [DotAppsImportExportDialogComponent],
                 imports: [
                     InputTextModule,
                     DotAutofocusModule,
@@ -53,7 +53,7 @@ describe('DotAppsExportDialogComponent', () => {
                 ]
             }).compileComponents();
 
-            fixture = TestBed.createComponent(DotAppsExportDialogComponent);
+            fixture = TestBed.createComponent(DotAppsImportExportDialogComponent);
             comp = fixture.componentInstance;
             de = fixture.debugElement;
             dotAppsService = TestBed.inject(DotAppsService);
@@ -103,7 +103,7 @@ describe('DotAppsExportDialogComponent', () => {
         const cancelBtn = de.queryAll(By.css('button'))[0];
         cancelBtn.nativeElement.click();
 
-        expect(comp.exportErrorMessage).toBe('');
+        expect(comp.errorMessage).toBe('');
         expect(comp.site).toBe(null);
         expect(comp.showExportDialog).toBe(false);
         expect(comp.form.reset).toHaveBeenCalledTimes(1);

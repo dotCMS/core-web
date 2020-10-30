@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
@@ -12,17 +12,19 @@ import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector: 'dot-apps-export-dialog',
-    templateUrl: './dot-apps-export-dialog.component.html'
+    selector: 'dot-apps-import-export-dialog',
+    templateUrl: './dot-apps-import-export-dialog.component.html'
 })
-export class DotAppsExportDialogComponent implements OnInit, OnDestroy {
+export class DotAppsImportExportDialogComponent implements OnInit, OnChanges, OnDestroy {
+    @Input() action?: string;
     @Input() app?: DotApps;
     @Input() site?: DotAppsSites;
 
     showExportDialog = false;
     form: FormGroup;
-    dialogExportActions: DotDialogActions;
-    exportErrorMessage: string;
+    dialogActions: DotDialogActions;
+    errorMessage: string;
+    dialogHeaderKey = '';
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -33,20 +35,61 @@ export class DotAppsExportDialogComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.form = this.fb.group({
-            password: new FormControl('', Validators.required)
-        });
+        console.log('init action', this.action);
+        // this.form = this.fb.group({
+        //     password: new FormControl('', Validators.required)
+        // });
 
-        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dialogExportActions = {
-                ...this.dialogExportActions,
-                accept: {
-                    ...this.dialogExportActions.accept,
-                    disabled: !this.form.valid
-                }
-            };
-        });
-        this.setExportDialogActions();
+        // this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+        //     this.dialogExportActions = {
+        //         ...this.dialogExportActions,
+        //         accept: {
+        //             ...this.dialogExportActions.accept,
+        //             disabled: !this.form.valid
+        //         }
+        //     };
+        // });
+        // this.setExportDialogActions();
+    }
+
+    // tslint:disable-next-line:cyclomatic-complexity
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log('changes', changes);
+        if (changes.action && changes.action.currentValue && changes.action.currentValue === 'Export') {
+            this.dialogHeaderKey = 'apps.confirmation.export.header';
+            this.form = this.fb.group({
+                password: new FormControl('', Validators.required)
+            });
+
+            this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+                this.dialogActions = {
+                    ...this.dialogActions,
+                    accept: {
+                        ...this.dialogActions.accept,
+                        disabled: !this.form.valid
+                    }
+                };
+            });
+            this.setExportDialogActions();
+        } else if (changes.action && changes.action.currentValue && changes.action.currentValue === 'Import') {
+            this.dialogHeaderKey = 'apps.confirmation.import.header';
+            this.form = this.fb.group({
+                password: new FormControl('', Validators.required),
+                importFile: new FormControl('', Validators.required)
+            });
+
+            this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+                this.dialogActions = {
+                    ...this.dialogActions,
+                    accept: {
+                        ...this.dialogActions.accept,
+                        disabled: !this.form.valid
+                    }
+                };
+            });
+            this.setExportDialogActions();
+
+        }
     }
 
     ngOnDestroy(): void {
@@ -60,14 +103,14 @@ export class DotAppsExportDialogComponent implements OnInit, OnDestroy {
      * @memberof DotAppsConfigurationComponent
      */
     closeExportDialog(): void {
-        this.exportErrorMessage = '';
+        this.errorMessage = '';
         this.form.reset();
         this.site = null;
         this.showExportDialog = false;
     }
 
     private setExportDialogActions(): void {
-        this.dialogExportActions = {
+        this.dialogActions = {
             accept: {
                 action: () => {
                     const requestConfiguration: DotAppsExportConfiguration = {
@@ -82,7 +125,7 @@ export class DotAppsExportDialogComponent implements OnInit, OnDestroy {
                         .exportConfiguration(requestConfiguration)
                         .then((errorMsg: string) => {
                             if (errorMsg) {
-                                this.exportErrorMessage = this.dotMessageService.get(
+                                this.errorMessage = this.dotMessageService.get(
                                     'apps.confirmation.export.error'
                                 );
                             } else {

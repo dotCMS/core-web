@@ -11,11 +11,18 @@
             <button
                 pButton
                 link
-                icon="pi pi-external-link"
+                icon="pi pi-upload"
+                [label]="'apps.confirmation.import.button' | dm"
+                (click)="confirmImportExport('Import')"
+            ></button>
+            <button
+                pButton
+                link
+                icon="pi pi-download"
                 class="dot-apps-configuration__action_export_button"
                 [label]="'apps.confirmation.export.all.button' | dm"
                 [disabled]="!isExportButtonDisabled()"
-                (click)="confirmExport()"
+                (click)="confirmImportExport('Export')"
             ></button>
         </div>
         <div class="dot-apps__body">
@@ -28,4 +35,7 @@
     </div>
 </ng-template>
 
-<dot-apps-export-dialog #exportDialog></dot-apps-export-dialog>
+<dot-apps-import-export-dialog
+    #importExportDialog
+    [action]="importExportDialogAction"
+></dot-apps-import-export-dialog>

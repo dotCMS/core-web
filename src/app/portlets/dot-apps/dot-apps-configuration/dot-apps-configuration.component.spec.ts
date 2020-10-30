@@ -20,7 +20,7 @@ import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/do
 import { PaginatorService } from '@services/paginator';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
 import { MarkdownService } from 'ngx-markdown';
-import { DotAppsExportDialogModule } from '../dot-apps-export-dialog/dot-apps-export-dialog.module';
+import { DotAppsImportExportDialogModule } from '../dot-apps-import-export-dialog/dot-apps-import-export-dialog.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { ConfirmationService } from 'primeng/api';
@@ -108,7 +108,7 @@ describe('DotAppsConfigurationComponent', () => {
                     CommonModule,
                     DotActionButtonModule,
                     DotAppsConfigurationHeaderModule,
-                    DotAppsExportDialogModule,
+                    DotAppsImportExportDialogModule,
                     DotAppsConfigurationListModule,
                     HttpClientTestingModule,
                     DotPipesModule

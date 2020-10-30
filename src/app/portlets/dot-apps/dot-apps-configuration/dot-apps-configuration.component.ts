@@ -10,7 +10,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { PaginatorService } from '@services/paginator';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { DotAppsExportDialogComponent } from '../dot-apps-export-dialog/dot-apps-export-dialog.component';
+import { DotAppsImportExportDialogComponent } from '../dot-apps-import-export-dialog/dot-apps-import-export-dialog.component';
 
 @Component({
     selector: 'dot-apps-configuration',
@@ -19,9 +19,10 @@ import { DotAppsExportDialogComponent } from '../dot-apps-export-dialog/dot-apps
 })
 export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
-    @ViewChild('exportDialog') exportDialog: DotAppsExportDialogComponent;
+    @ViewChild('importExportDialog') importExportDialog: DotAppsImportExportDialogComponent;
     apps: DotApps;
     siteSelected: DotAppsSites;
+    importExportDialogAction = 'Export';
 
     hideLoadDataButton: boolean;
     paginationPerPage = 40;
@@ -111,7 +112,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
      * @memberof DotAppsConfigurationComponent
      */
     confirmExport(site?: DotAppsSites): void {
-        this.exportDialog.showExportDialog = true;
+        this.importExportDialog.showExportDialog = true;
         this.siteSelected = site;
     }
 
