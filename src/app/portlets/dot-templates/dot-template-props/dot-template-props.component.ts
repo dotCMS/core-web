@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'dot-dot-template-props',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./dot-template-props.component.scss']
 })
 export class DotTemplatePropsComponent implements OnInit {
-    constructor() {}
+    constructor(private config: DynamicDialogConfig) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log(this.config.data.template);
+    }
 }

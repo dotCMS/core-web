@@ -28,6 +28,9 @@ export class DotTemplateDesignerComponent implements OnInit {
         cancel: (event: MouseEvent) => void;
     };
 
+    // needs type
+    private template: any;
+
     constructor(
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
@@ -41,8 +44,7 @@ export class DotTemplateDesignerComponent implements OnInit {
             primary: [
                 {
                     label: 'Save',
-                    command: (e) => {
-                        console.log(e);
+                    command: (_e) => {
                         this.saveTemplate();
                     }
                 }
@@ -58,6 +60,7 @@ export class DotTemplateDesignerComponent implements OnInit {
         zip(inode$, data$)
             .pipe(take(1))
             .subscribe(([inode, template]: [string, any]) => {
+                this.template = template;
                 this.templateContainersCacheService.set(template.containers);
 
                 this.title = template.title;
@@ -77,7 +80,10 @@ export class DotTemplateDesignerComponent implements OnInit {
     editTemplateProps(_$event: MouseEvent) {
         this.dialogService.open(DotTemplatePropsComponent, {
             header: 'Template Properties',
-            width: '40%'
+            width: '30rem',
+            data: {
+                template: this.template
+            }
         });
     }
 
