@@ -10,9 +10,10 @@ import {
     SimpleChanges,
     TemplateRef,
     ContentChildren,
-    QueryList, ContentChild
+    QueryList,
+    ContentChild
 } from '@angular/core';
-import {LazyLoadEvent, PrimeTemplate} from 'primeng/api';
+import { LazyLoadEvent, PrimeTemplate } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
 import { DataTableColumn } from '@models/data-table/data-table-column';
@@ -27,11 +28,14 @@ function tableFactory(dotListingDataTableComponent: DotListingDataTableComponent
 }
 
 @Component({
-    providers: [PaginatorService, {
-        provide: Table,
-        useFactory: tableFactory,
-        deps: [DotListingDataTableComponent]
-    }],
+    providers: [
+        PaginatorService,
+        {
+            provide: Table,
+            useFactory: tableFactory,
+            deps: [DotListingDataTableComponent]
+        }
+    ],
     selector: 'dot-listing-data-table',
     styleUrls: ['./dot-listing-data-table.component.scss'],
     templateUrl: 'dot-listing-data-table.component.html'
@@ -183,11 +187,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
      * @memberof DotListingDataTableComponent
      */
     getAlign(col: DataTableColumn): string {
-        return col.textAlign
-            ? col.textAlign
-            : this.isTypeNumber(col)
-              ? 'right'
-              : 'left';
+        return col.textAlign ? col.textAlign : this.isTypeNumber(col) ? 'right' : 'left';
     }
 
     /**

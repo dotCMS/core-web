@@ -88,7 +88,6 @@ export class DotContentTypesPortletComponent implements OnInit {
     }
 
     editContentType(item: any): void {
-        debugger;
         this.router.navigate([`edit/${item.id}`], {
             relativeTo: this.route
         });
