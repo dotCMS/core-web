@@ -9,8 +9,10 @@ import {
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { MenuItem } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 import { zip } from 'rxjs';
 import { pluck, take } from 'rxjs/operators';
+import { DotTemplatePropsComponent } from '../dot-template-props/dot-template-props.component';
 
 @Component({
     selector: 'dot-dot-template-designer',
@@ -30,7 +32,8 @@ export class DotTemplateDesignerComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
         private templateContainersCacheService: TemplateContainersCacheService,
-        private dotTemplateService: DotTemplatesService
+        private dotTemplateService: DotTemplatesService,
+        private dialogService: DialogService
     ) {}
 
     ngOnInit(): void {
@@ -69,6 +72,13 @@ export class DotTemplateDesignerComponent implements OnInit {
                     })
                 });
             });
+    }
+
+    editTemplateProps(_$event: MouseEvent) {
+        this.dialogService.open(DotTemplatePropsComponent, {
+            header: 'Template Properties',
+            width: '40%'
+        });
     }
 
     private saveTemplate(): void {

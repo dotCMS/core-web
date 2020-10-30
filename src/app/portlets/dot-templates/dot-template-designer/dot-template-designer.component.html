@@ -1,7 +1,7 @@
 <dot-portlet-base>
     <dot-portlet-toolbar [title]="title" cancelButtonLabel="Cerrar" [actions]="portletActions">
         <ng-container id="left">
-            <button pButton label="Edit"></button>
+            <button pButton label="Edit" (click)="editTemplateProps($event)"></button>
         </ng-container>
     </dot-portlet-toolbar>
     <dot-layout-designer [group]="form.get('layout')"></dot-layout-designer>
