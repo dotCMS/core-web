@@ -12,6 +12,7 @@ import { DotActionMenuButtonModule } from '../_common/dot-action-menu-button/dot
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { RouterModule } from '@angular/router';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
     declarations: [DotListingDataTableComponent],
@@ -25,7 +26,8 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         DotActionMenuButtonModule,
         DotIconModule,
         RouterModule,
-        DotPipesModule
+        DotPipesModule,
+        CheckboxModule
     ],
     providers: [DotCrudService, FormatDateService, DotcmsConfigService, LoggerService]
 })

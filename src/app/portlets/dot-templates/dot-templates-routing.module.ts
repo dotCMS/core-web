@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DotTemplateDesignerResolver } from './dot-template-designer/dot-template-designer.resolver';
-import { DotTemplatesComponent } from './dot-templates.component';
+import { DotTemplateListComponent } from '@portlets/dot-templates/dot-template-list/dot-template-list.component';
+import { DotTemplateListResolver } from '@portlets/dot-templates/dot-template-list/dot-template-list-resolver.service';
 
 const routes: Routes = [
     {
         path: '',
-        component: DotTemplatesComponent
+        component: DotTemplateListComponent,
+        resolve: {
+            dotTemplateListResolverData: DotTemplateListResolver
+        }
     },
     {
         path: 'new',
