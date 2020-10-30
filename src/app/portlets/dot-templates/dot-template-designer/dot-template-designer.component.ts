@@ -12,7 +12,7 @@ import { MenuItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { zip } from 'rxjs';
 import { pluck, take } from 'rxjs/operators';
-import { DotTemplatePropsComponent } from '../dot-template-props/dot-template-props.component';
+import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 
 @Component({
     selector: 'dot-dot-template-designer',

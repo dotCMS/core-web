@@ -8,7 +8,7 @@ import { DotTemplateDesignerComponent } from './dot-template-designer.component'
 import { DotPortletBaseModule } from '@components/dot-portlet-base/dot-portlet-base.module';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
-import { DotTemplatePropsModule } from '../dot-template-props/dot-template-props.module';
+import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
 
 @NgModule({
     declarations: [DotTemplateDesignerComponent],
