@@ -1,12 +1,12 @@
-<dot-form-dialog>
-    <form class="p-fluid">
+<dot-form-dialog [saveButtonDisabled]="!(isFormValid$ | async)">
+    <form class="p-fluid" [formGroup]="form">
         <div class="p-field">
             <label for="title">Title</label>
-            <input id="title" pInputText />
+            <input id="title" pInputText formControlName="title" />
         </div>
         <div class="p-field">
             <label for="description">Description</label>
-            <textarea id="description" pInputTextarea></textarea>
+            <textarea id="description" pInputTextarea formControlName="description"></textarea>
         </div>
         <div class="p-field">
             <label for="title">Thumbnail</label>

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-dot-template-props',
@@ -7,9 +10,32 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
     styleUrls: ['./dot-template-props.component.scss']
 })
 export class DotTemplatePropsComponent implements OnInit {
-    constructor(private config: DynamicDialogConfig) {}
+    form: FormGroup;
+
+    isFormValid$: Observable<boolean>;
+
+    constructor(private config: DynamicDialogConfig, private fb: FormBuilder) {}
 
     ngOnInit(): void {
-        console.log(this.config.data.template);
+        const { title, description } = this.config.data.template;
+
+        this.form = this.fb.group({
+            title: [title, Validators.required],
+            description
+        });
+
+        this.isFormValid$ = this.form.valueChanges.pipe(
+            map(() => {
+                // this is not working
+                console.log(
+                    JSON.stringify(this.form.value),
+                    JSON.stringify({ title: title, description: description })
+                );
+                return (
+                    JSON.stringify(this.form.value) !== JSON.stringify({ title, description }) &&
+                    this.form.valid
+                );
+            })
+        );
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -11,6 +11,9 @@ export class DotFormDialogComponent implements OnInit, OnDestroy {
     destroy = new Subject();
 
     destroy$ = this.destroy.asObservable();
+
+    @Input()
+    saveButtonDisabled: boolean;
 
     constructor() {}
 
