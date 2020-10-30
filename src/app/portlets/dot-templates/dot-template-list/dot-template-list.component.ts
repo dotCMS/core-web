@@ -38,7 +38,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             {
                 fieldName: 'name',
                 header: this.dotMessageService.get('templates.fieldName.name'),
-                sortable: true
+                sortable: true,
             },
             {
                 fieldName: 'status',
@@ -52,8 +52,14 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             },
             {
                 fieldName: 'modDate',
+                format: 'date',
                 header: this.dotMessageService.get('templates.fieldName.lastEdit'),
                 sortable: true
+            },
+            {
+                fieldName: '',
+                header: '',
+                width: '5%'
             },
 
         ];
