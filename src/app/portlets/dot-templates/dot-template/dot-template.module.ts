@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
+import { DotTemplateRoutingModule } from './dot-template-routing.module';
 
 @NgModule({
     declarations: [DotTemplateComponent],
@@ -16,7 +17,8 @@ import { DotContainerSelectorModule } from '@components/dot-container-selector/d
         DotTextareaContentModule,
         ReactiveFormsModule,
         DotFieldValidationMessageModule,
-        DotContainerSelectorModule
+        DotContainerSelectorModule,
+        DotTemplateRoutingModule
     ],
     providers: [DotRouterService]
 })
