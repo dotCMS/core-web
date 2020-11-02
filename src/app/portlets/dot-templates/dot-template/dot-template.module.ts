@@ -7,7 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @NgModule({
     declarations: [DotTemplateComponent],
@@ -19,6 +18,6 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
         DotFieldValidationMessageModule,
         DotContainerSelectorModule
     ],
-    providers: [DotRouterService, TemplateContainersCacheService]
+    providers: [DotRouterService]
 })
 export class DotTemplateModule {}
