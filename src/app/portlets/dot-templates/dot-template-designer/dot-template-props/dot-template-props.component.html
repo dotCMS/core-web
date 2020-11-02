@@ -1,5 +1,5 @@
 <dot-form-dialog [saveButtonDisabled]="!(isFormValid$ | async)">
-    <form class="p-fluid" [formGroup]="form">
+    <form class="p-fluid" [formGroup]="form" (submit)="onSubmit($event)">
         <div class="p-field">
             <label for="title">Title</label>
             <input id="title" pInputText formControlName="title" />

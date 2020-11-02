@@ -26,16 +26,15 @@ export class DotTemplatePropsComponent implements OnInit {
 
         this.isFormValid$ = this.form.valueChanges.pipe(
             map(() => {
-                // this is not working
-                console.log(
-                    JSON.stringify(this.form.value),
-                    JSON.stringify({ title: title, description: description })
-                );
                 return (
-                    JSON.stringify(this.form.value) !== JSON.stringify({ title, description }) &&
-                    this.form.valid
+                    JSON.stringify(this.form.value) !==
+                        JSON.stringify({ title, description: description || '' }) && this.form.valid
                 );
             })
         );
+    }
+
+    onSubmit($event): void {
+        console.log($event);
     }
 }
