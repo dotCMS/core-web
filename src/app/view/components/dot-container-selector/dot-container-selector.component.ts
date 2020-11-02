@@ -1,7 +1,6 @@
 import { DotContainer } from '@models/container/dot-container.model';
 import { PaginatorService } from '@services/paginator/paginator.service';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { DotContainerColumnBox } from '@portlets/dot-edit-page/shared/models/dot-container-column-box.model';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @Component({
@@ -10,9 +9,7 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
     styleUrls: ['./dot-container-selector.component.scss']
 })
 export class DotContainerSelectorComponent implements OnInit {
-    @Input() data: DotContainerColumnBox[] = [];
-    @Input() multiple: boolean;
-    @Output() change: EventEmitter<DotContainerColumnBox[]> = new EventEmitter();
+    @Output() change: EventEmitter<DotContainer> = new EventEmitter();
 
     totalRecords: number;
     currentContainers: DotContainer[] = [];
@@ -33,9 +30,7 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     containerChange(container: DotContainer): void {
-        if (this.multiple || !this.isContainerSelected(container)) {
-            this.change.emit(this.data);
-        }
+        this.change.emit(container);
     }
 
     /**
@@ -55,29 +50,6 @@ export class DotContainerSelectorComponent implements OnInit {
      */
     handlePageChange(event: any): void {
         this.getContainersList(event.filter, event.first);
-    }
-
-    /**
-     * Remove container item from selected containers and emit selected containers
-     * @param number i
-     * @memberof DotContainerSelectorComponent
-     */
-    removeContainerItem(i: number): void {
-        this.data.splice(i, 1);
-        this.change.emit(this.data);
-    }
-
-    /**
-     * Check if a container was already added to the list
-     *
-     * @param DotContainer container
-     * @returns boolean
-     * @memberof DotContainerSelectorComponent
-     */
-    isContainerSelected(dotContainer: DotContainer): boolean {
-        return this.data.some(
-            (containerItem) => containerItem.container.identifier === dotContainer.identifier
-        );
     }
 
     private getContainersList(filter = '', offset = 0): void {

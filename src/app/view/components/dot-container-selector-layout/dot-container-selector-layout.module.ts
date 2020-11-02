@@ -21,4 +21,4 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
     ],
     providers: [PaginatorService]
 })
-export class DotContainerSelectorModule {}
+export class DotContainerSelectorLayoutModule {}

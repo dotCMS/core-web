@@ -1,52 +1,46 @@
-<form class="container p-fluid" [formGroup]="group" (ngSubmit)="onSubmit($event)">
-    <div class="p-field">
-        <label for="title">Title</label>
-        <input id="title" formControlName="title" type="text" placeholder="Title" pInputText />
-        <dot-field-validation-message
-            [field]="group.controls['title']"
-            message="This field is required"
-        >
-        </dot-field-validation-message>
-    </div>
-    <!-- /.p-field -->
-    <div class="p-field">
-        <label for="description">Description</label>
-        <input
-            id="description"
-            formControlName="friendlyName"
-            type="text"
-            placeholder="Description"
-            pInputText
-            required
-        />
-    </div>
-    <!-- /.p-field -->
-    <div class="p-field">
-        <label for="button">Template</label> <br />
-        <button
-            pButton
-            id="button"
-            type="submit"
-            label="Add Container"
-            class="p-button-secondary"
-        ></button>
-        <a href="#" (click)="enterInformation()">Add Content To Editor</a>
-        <dot-container-selector> </dot-container-selector>
-        <dot-textarea-content
-            #value
-            height="30rem"
-            width="70%"
-            formControlName="body"
-            required
-            [show]="['code']"
-            (monacoInit)="initEditor($event)"
-        ></dot-textarea-content>
-        <dot-field-validation-message
-            [field]="group.controls['body']"
-            message="This field is required"
-        >
-        </dot-field-validation-message>
-    </div>
-    <!-- /.text-control -->
-</form>
-<!-- /.container -->
+<div class="content-wrapper">
+    <form class="p-fluid" [formGroup]="group" (ngSubmit)="onSubmit($event)">
+        <div class="p-field">
+            <label for="title">Title</label>
+            <input id="title" formControlName="title" type="text" placeholder="Title" pInputText />
+            <dot-field-validation-message
+                [field]="group.controls['title']"
+                message="This field is required"
+            >
+            </dot-field-validation-message>
+        </div>
+        <!-- /.p-field -->
+        <div class="p-field">
+            <label for="description">Description</label>
+            <input
+                id="description"
+                formControlName="friendlyName"
+                type="text"
+                placeholder="Description"
+                pInputText
+                required
+            />
+        </div>
+        <!-- /.p-field -->
+        <div class="p-field">
+            <label for="button">Template</label> <br />
+            <dot-container-selector (change)="containerChange($event)"> </dot-container-selector>
+            <dot-textarea-content
+                #value
+                height="30rem"
+                formControlName="body"
+                required
+                [show]="['code']"
+                (monacoInit)="initEditor($event)"
+            ></dot-textarea-content>
+            <dot-field-validation-message
+                [field]="group.controls['body']"
+                message="This field is required"
+            >
+            </dot-field-validation-message>
+        </div>
+        <!-- /.text-control -->
+    </form>
+    <!-- /.container -->
+</div>
+<!-- /.content-wrapper -->

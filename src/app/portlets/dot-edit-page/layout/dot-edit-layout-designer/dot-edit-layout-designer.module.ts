@@ -14,7 +14,7 @@ import { DotTemplateAdditionalActionsModule } from '../components/dot-template-a
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { DotLayoutDesignerComponent } from './components/dot-layout-designer/dot-layout-designer.component';
-import { DotContainerSelectorModule } from '@components/dot-container-selector-layout/dot-container-selector-layout.module';
+import { DotContainerSelectorLayoutModule } from '@components/dot-container-selector-layout/dot-container-selector-layout.module';
 import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotThemeSelectorModule } from '../components/dot-theme-selector/dot-theme-selector.module';
 import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
@@ -37,7 +37,7 @@ import { TooltipModule } from 'primeng/tooltip';
         CommonModule,
         DialogModule,
         DotActionButtonModule,
-        DotContainerSelectorModule,
+        DotContainerSelectorLayoutModule,
         DotEditLayoutGridModule,
         DotEditLayoutSidebarModule,
         DotEditPageInfoModule,

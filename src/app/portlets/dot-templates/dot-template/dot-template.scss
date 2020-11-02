@@ -1,21 +1,16 @@
 @use "variables" as *;
 
-.container {
+.content-wrapper {
     margin: $spacing-4;
     padding: $spacing-4;
     background: $white;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
-
-dot-textarea-content {
-    width: 20rem;
-}
-
 .form__label {
     display: block;
     margin-bottom: $spacing-2;
 }
 
-// .p-field label {
-//     display: block;
-// }
+dot-container-selector {
+    margin-bottom: 1rem;
+}
