@@ -6,6 +6,8 @@ import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
+import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
+import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @NgModule({
     declarations: [DotTemplateComponent],
@@ -14,8 +16,9 @@ import { DotFieldValidationMessageModule } from '@components/_common/dot-field-v
         ButtonModule,
         DotTextareaContentModule,
         ReactiveFormsModule,
-        DotFieldValidationMessageModule
+        DotFieldValidationMessageModule,
+        DotContainerSelectorModule
     ],
-    providers: [DotRouterService]
+    providers: [DotRouterService, TemplateContainersCacheService]
 })
 export class DotTemplateModule {}
