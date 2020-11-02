@@ -8,22 +8,24 @@
                 type="text"
                 [placeholder]="('apps.search.placeholder' | dm) || ''"
             />
-            <button
-                pButton
-                link
-                icon="pi pi-upload"
-                [label]="'apps.confirmation.import.button' | dm"
-                (click)="confirmImportExport('Import')"
-            ></button>
-            <button
-                pButton
-                link
-                icon="pi pi-download"
-                class="dot-apps-configuration__action_export_button"
-                [label]="'apps.confirmation.export.all.button' | dm"
-                [disabled]="!isExportButtonDisabled()"
-                (click)="confirmImportExport('Export')"
-            ></button>
+            <div>
+                <button
+                    pButton
+                    link
+                    icon="pi pi-upload"
+                    [label]="'apps.confirmation.import.button' | dm"
+                    (click)="confirmImportExport('Import')"
+                ></button>
+                <button
+                    pButton
+                    link
+                    icon="pi pi-download"
+                    class="dot-apps-configuration__action_export_button"
+                    [label]="'apps.confirmation.export.all.button' | dm"
+                    [disabled]="!isExportButtonDisabled()"
+                    (click)="confirmImportExport('Export')"
+                ></button>
+            </div>
         </div>
         <div class="dot-apps__body">
             <dot-apps-card
@@ -38,4 +40,5 @@
 <dot-apps-import-export-dialog
     #importExportDialog
     [action]="importExportDialogAction"
+    (resolved)="reloadAppsData()"
 ></dot-apps-import-export-dialog>

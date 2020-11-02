@@ -1,4 +1,14 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    OnDestroy,
+    Input,
+    OnChanges,
+    SimpleChanges,
+    ViewChild,
+    ElementRef,
+    Output,
+    EventEmitter
+} from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
@@ -6,19 +16,22 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import {
     DotApps,
     DotAppsExportConfiguration,
+    DotAppsImportConfiguration,
     DotAppsSites
 } from '@shared/models/dot-apps/dot-apps.model';
-import { Subject } from 'rxjs/internal/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-apps-import-export-dialog',
     templateUrl: './dot-apps-import-export-dialog.component.html'
 })
-export class DotAppsImportExportDialogComponent implements OnInit, OnChanges, OnDestroy {
+export class DotAppsImportExportDialogComponent implements OnChanges, OnDestroy {
+    @ViewChild('importFile') importFile: ElementRef;
     @Input() action?: string;
     @Input() app?: DotApps;
     @Input() site?: DotAppsSites;
+    @Output() resolved: EventEmitter<boolean> = new EventEmitter();
 
     showExportDialog = false;
     form: FormGroup;
@@ -34,32 +47,23 @@ export class DotAppsImportExportDialogComponent implements OnInit, OnChanges, On
         private fb: FormBuilder
     ) {}
 
-    ngOnInit() {
-        console.log('init action', this.action);
-        // this.form = this.fb.group({
-        //     password: new FormControl('', Validators.required)
-        // });
-
-        // this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-        //     this.dialogExportActions = {
-        //         ...this.dialogExportActions,
-        //         accept: {
-        //             ...this.dialogExportActions.accept,
-        //             disabled: !this.form.valid
-        //         }
-        //     };
-        // });
-        // this.setExportDialogActions();
-    }
-
     // tslint:disable-next-line:cyclomatic-complexity
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('changes', changes);
-        if (changes.action && changes.action.currentValue && changes.action.currentValue === 'Export') {
-            this.dialogHeaderKey = 'apps.confirmation.export.header';
-            this.form = this.fb.group({
-                password: new FormControl('', Validators.required)
-            });
+        if (changes.action && changes.action.currentValue) {
+            if (changes.action.currentValue === 'Export') {
+                this.dialogHeaderKey = 'apps.confirmation.export.header';
+                this.form = this.fb.group({
+                    password: new FormControl('', Validators.required)
+                });
+                this.setExportDialogActions();
+            } else if (changes.action.currentValue === 'Import') {
+                this.dialogHeaderKey = 'apps.confirmation.import.header';
+                this.form = this.fb.group({
+                    password: new FormControl('', Validators.required),
+                    importFile: new FormControl('', Validators.required)
+                });
+                this.setImportDialogActions();
+            }
 
             this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
                 this.dialogActions = {
@@ -70,25 +74,6 @@ export class DotAppsImportExportDialogComponent implements OnInit, OnChanges, On
                     }
                 };
             });
-            this.setExportDialogActions();
-        } else if (changes.action && changes.action.currentValue && changes.action.currentValue === 'Import') {
-            this.dialogHeaderKey = 'apps.confirmation.import.header';
-            this.form = this.fb.group({
-                password: new FormControl('', Validators.required),
-                importFile: new FormControl('', Validators.required)
-            });
-
-            this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-                this.dialogActions = {
-                    ...this.dialogActions,
-                    accept: {
-                        ...this.dialogActions.accept,
-                        disabled: !this.form.valid
-                    }
-                };
-            });
-            this.setExportDialogActions();
-
         }
     }
 
@@ -131,6 +116,37 @@ export class DotAppsImportExportDialogComponent implements OnInit, OnChanges, On
                             } else {
                                 this.closeExportDialog();
                             }
+                        });
+                },
+                label: this.dotMessageService.get('dot.common.dialog.accept'),
+                disabled: true
+            },
+            cancel: {
+                label: this.dotMessageService.get('dot.common.dialog.reject'),
+                action: () => {
+                    this.closeExportDialog();
+                }
+            }
+        };
+    }
+
+    private setImportDialogActions(): void {
+        this.dialogActions = {
+            accept: {
+                action: () => {
+                    const requestConfiguration: DotAppsImportConfiguration = {
+                        file: this.importFile.nativeElement.files[0],
+                        json: { password: this.form.value.password }
+                    };
+
+                    this.dotAppsService
+                        .importConfiguration(requestConfiguration)
+                        .pipe(take(1))
+                        .subscribe((status: string) => {
+                            if (status !== '400') {
+                                this.resolved.emit(true);
+                            }
+                            this.closeExportDialog();
                         });
                 },
                 label: this.dotMessageService.get('dot.common.dialog.accept'),

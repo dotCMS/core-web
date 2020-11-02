@@ -7,7 +7,6 @@
     [appendToBody]="true"
     (hide)="closeExportDialog()"
 >
-    {{ action }}
     <form [formGroup]="form" [ngSwitch]="action" novalidate>
         <ng-container *ngSwitchCase="'Export'">
             <input
@@ -30,7 +29,7 @@
                 type="password"
                 [placeholder]="'apps.confirmation.import.password.label' | dm"
             />
-            <input type="file" />
+            <input #importFile type="file" formControlName="importFile" />
         </ng-container>
         <span>{{ errorMessage }}</span>
     </form>

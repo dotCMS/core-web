@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { debounceTime, pluck, takeUntil } from 'rxjs/operators';
+import { debounceTime, pluck, take, takeUntil } from 'rxjs/operators';
 import { fromEvent as observableFromEvent, Subject } from 'rxjs';
 import { DotApps, DotAppsListResolverData } from '@shared/models/dot-apps/dot-apps.model';
 import * as _ from 'lodash';
@@ -73,6 +73,20 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
      */
     isExportButtonDisabled(): boolean {
         return this.apps.filter((app: DotApps) => app.configurationsCount).length > 0;
+    }
+
+    /**
+     * Reloads data of all apps configuration listing to update the UI
+     *
+     * @memberof DotAppsListComponent
+     */
+    reloadAppsData(): void {
+        this.dotAppsService
+            .get()
+            .pipe(take(1))
+            .subscribe((apps: DotApps[]) => {
+                this.getApps(apps);
+            });
     }
 
     private getApps(apps: DotApps[]): void {

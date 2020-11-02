@@ -49,3 +49,8 @@ export interface DotAppsExportConfiguration {
     exportAll: boolean;
     password: string;
 }
+
+export interface DotAppsImportConfiguration {
+    file: File;
+    json: { password: string };
+}
