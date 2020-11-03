@@ -21,6 +21,7 @@ import { LoggerService } from 'dotcms-js';
 import { FormatDateService } from '@services/format-date-service';
 import { PaginatorService, OrderDirection } from '@services/paginator';
 import { take } from 'rxjs/operators';
+import { DotActionMenuItem } from '@shared/models/dot-action-menu/dot-action-menu-item.model';
 
 function tableFactory(dotListingDataTableComponent: DotListingDataTableComponent) {
     return dotListingDataTableComponent.dataTable;
@@ -48,7 +49,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
     @Input() sortField: string;
     @Input() multipleSelection = false;
     @Input() paginationPerPage = 40;
-    @Input() actions: ButtonAction[];
+    @Input() actions: DotActionMenuItem[];
     @Input() selectionMode = 'single';
     @Input() dataKey = '';
     @Input() checkbox = false;

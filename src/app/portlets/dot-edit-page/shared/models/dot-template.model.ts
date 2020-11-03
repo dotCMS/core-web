@@ -31,7 +31,7 @@ export interface DotTemplate {
 // Extra properties from renderHTML
 export interface DotTemplate {
     canEdit: boolean;
-    containers: {
+    containers?: {
         [id: string]: {
             container: DotContainer;
         };
