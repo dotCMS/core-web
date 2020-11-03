@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 
 @Component({
     selector: 'dot-portlet-toolbar',
@@ -13,10 +13,7 @@ export class DotPortletToolbarComponent implements OnInit {
 
     @Input() actionsButtonLabel: string;
 
-    @Input() actions: {
-        primary: MenuItem[];
-        cancel: (event: MouseEvent) => void;
-    };
+    @Input() actions: DotPortletToolbarActions;
 
     constructor() {}
 

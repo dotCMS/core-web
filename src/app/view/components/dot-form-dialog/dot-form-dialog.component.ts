@@ -1,4 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -9,13 +10,18 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class DotFormDialogComponent implements OnInit, OnDestroy {
     destroy = new Subject();
-
     destroy$ = this.destroy.asObservable();
 
     @Input()
     saveButtonDisabled: boolean;
 
-    constructor() {}
+    @Output()
+    save: EventEmitter<MouseEvent> = new EventEmitter(null);
+
+    @Output()
+    cancel: EventEmitter<MouseEvent> = new EventEmitter(null);
+
+    constructor(private dynamicDialog: DynamicDialogRef) {}
 
     ngOnInit(): void {
         const content = document.querySelector('p-dynamicdialog .p-dialog-content');
@@ -31,6 +37,30 @@ export class DotFormDialogComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.destroy.next();
+    }
+
+    /**
+     * Handle primary button click
+     *
+     * @param {MouseEvent} event
+     * @memberof DotFormDialogComponent
+     */
+    onPrimaryClick(event: MouseEvent): void {
+        this.save.emit(event);
+    }
+
+    /**
+     * Handle secondary button click
+     *
+     * @param {MouseEvent} $event
+     * @memberof DotFormDialogComponent
+     */
+    onSecondaryClick($event: MouseEvent): void {
+        this.cancel.emit($event);
+
+        if (!this.cancel.observers.length) {
+            this.dynamicDialog.close();
+        }
     }
 
     private getYPosition(e: Event): number {

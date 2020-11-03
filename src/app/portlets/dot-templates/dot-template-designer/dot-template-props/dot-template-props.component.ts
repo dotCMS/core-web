@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-dot-template-props',
@@ -14,27 +15,43 @@ export class DotTemplatePropsComponent implements OnInit {
 
     isFormValid$: Observable<boolean>;
 
-    constructor(private config: DynamicDialogConfig, private fb: FormBuilder) {}
+    constructor(
+        private ref: DynamicDialogRef,
+        private config: DynamicDialogConfig,
+        private fb: FormBuilder,
+        private dotTemplatesService: DotTemplatesService
+    ) {}
 
     ngOnInit(): void {
-        const { title, description } = this.config.data.template;
+        const { template } = this.config.data;
 
         this.form = this.fb.group({
-            title: [title, Validators.required],
-            description
+            ...template,
+            title: [template.title, Validators.required]
         });
 
         this.isFormValid$ = this.form.valueChanges.pipe(
             map(() => {
                 return (
-                    JSON.stringify(this.form.value) !==
-                        JSON.stringify({ title, description: description || '' }) && this.form.valid
+                    JSON.stringify(this.form.value) !== JSON.stringify(template) && this.form.valid
                 );
             })
         );
     }
 
-    onSubmit($event): void {
-        console.log($event);
+    /**
+     * Handle save button
+     *
+     * @param {MouseEvent} $event
+     * @memberof DotTemplatePropsComponent
+     */
+    onSave(): void {
+        this.dotTemplatesService
+            .update(this.form.value)
+            .pipe(take(1))
+            .subscribe(() => {
+                this.config.data.doSomething(this.form.value);
+                this.ref.close();
+            });
     }
 }

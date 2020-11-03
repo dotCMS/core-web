@@ -1,18 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import {
-    DotLayoutBody,
-    DotLayoutColumn,
-    DotLayoutRow
-} from '@portlets/dot-edit-page/shared/models';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
-import { MenuItem } from 'primeng/api';
+import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 import { DialogService } from 'primeng/dynamicdialog';
-import { zip } from 'rxjs';
-import { pluck, take } from 'rxjs/operators';
+import { Observable, zip } from 'rxjs';
+import { map, mergeAll, pluck, startWith, take } from 'rxjs/operators';
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
+
+import * as _ from 'lodash';
 
 @Component({
     selector: 'dot-dot-template-designer',
@@ -23,13 +20,9 @@ export class DotTemplateDesignerComponent implements OnInit {
     form: FormGroup;
     title: string;
 
-    portletActions: {
-        primary: MenuItem[];
-        cancel: (event: MouseEvent) => void;
-    };
+    private originalData: any;
 
-    // needs type
-    private template: any;
+    portletActions$: Observable<DotPortletToolbarActions>;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -40,11 +33,78 @@ export class DotTemplateDesignerComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.portletActions = {
+        this.activatedRoute.data
+            .pipe(pluck('template', 'title'), take(1))
+            .subscribe((title: string) => {
+                this.title = title;
+            });
+
+        const inode$ = this.activatedRoute.params.pipe(pluck('inode'));
+        const data$ = this.activatedRoute.data.pipe(pluck('template'));
+
+        this.portletActions$ = zip(inode$, data$).pipe(
+            take(1),
+            map(([inode, template]: [string, any]) => {
+                this.templateContainersCacheService.set(template.containers);
+                this.form = this.getForm(inode, template);
+                this.originalData = { ...this.form.value };
+
+                return this.form.valueChanges.pipe(
+                    map((value: any) => {
+                        console.log('valueChanges');
+                        return this.getToolbarActions(_.isEqual(value, this.originalData));
+                    }),
+                    startWith(this.getToolbarActions())
+                );
+            }),
+            mergeAll()
+        );
+    }
+
+    /**
+     * Start template properties edition
+     *
+     * @param {MouseEvent} _$event
+     * @memberof DotTemplateDesignerComponent
+     */
+    editTemplateProps() {
+        this.dialogService.open(DotTemplatePropsComponent, {
+            header: 'Template Properties',
+            width: '30rem',
+            data: {
+                template: this.form.value,
+                doSomething: (value) => {
+                    this.form.setValue(value);
+                    this.originalData = { ...this.form.value };
+                    this.title = value.title;
+                }
+            }
+        });
+    }
+
+    private getForm(inode: string, template: any): FormGroup {
+        const { title, friendlyName } = template;
+
+        return this.fb.group({
+            inode,
+            title,
+            friendlyName,
+            layout: this.fb.group({
+                body: template.layout.body,
+                header: template.layout.header,
+                footer: template.layout.footer,
+                sidebar: template.layout.sidebar
+            })
+        });
+    }
+
+    private getToolbarActions(disabled = true): DotPortletToolbarActions {
+        return {
             primary: [
                 {
                     label: 'Save',
-                    command: (_e) => {
+                    disabled: disabled,
+                    command: () => {
                         this.saveTemplate();
                     }
                 }
@@ -53,38 +113,6 @@ export class DotTemplateDesignerComponent implements OnInit {
                 console.log('cancel');
             }
         };
-
-        const inode$ = this.activatedRoute.params.pipe(pluck('inode'));
-        const data$ = this.activatedRoute.data.pipe(pluck('template'));
-
-        zip(inode$, data$)
-            .pipe(take(1))
-            .subscribe(([inode, template]: [string, any]) => {
-                this.template = template;
-                this.templateContainersCacheService.set(template.containers);
-
-                this.title = template.title;
-
-                this.form = this.fb.group({
-                    inode,
-                    layout: this.fb.group({
-                        body: this.cleanUpBody(template.layout.body) || {},
-                        header: template.layout.header,
-                        footer: template.layout.footer,
-                        sidebar: { location: '', containers: [], width: 'small' }
-                    })
-                });
-            });
-    }
-
-    editTemplateProps(_$event: MouseEvent) {
-        this.dialogService.open(DotTemplatePropsComponent, {
-            header: 'Template Properties',
-            width: '30rem',
-            data: {
-                template: this.template
-            }
-        });
     }
 
     private saveTemplate(): void {
@@ -99,26 +127,5 @@ export class DotTemplateDesignerComponent implements OnInit {
                     console.log(err);
                 }
             );
-    }
-
-    // this is dupe, need to extract
-    private cleanUpBody(body: DotLayoutBody): DotLayoutBody {
-        return body
-            ? {
-                  rows: body.rows.map((row: DotLayoutRow) => {
-                      return {
-                          ...row,
-                          columns: row.columns.map((column: DotLayoutColumn) => {
-                              return {
-                                  containers: column.containers,
-                                  leftOffset: column.leftOffset,
-                                  width: column.width,
-                                  styleClass: column.styleClass
-                              };
-                          })
-                      };
-                  })
-              }
-            : null;
     }
 }

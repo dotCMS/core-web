@@ -81,7 +81,7 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     update(values): Observable<DotTemplate> {
-        console.log(values);
+        console.log(JSON.stringify(values));
         const url = '/api/v1/templates';
 
         return this.request<DotTemplate>({ method: 'PUT', url, body: values });
