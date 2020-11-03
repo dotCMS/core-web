@@ -42,7 +42,6 @@ export class DotTemplatePropsComponent implements OnInit {
     /**
      * Handle save button
      *
-     * @param {MouseEvent} $event
      * @memberof DotTemplatePropsComponent
      */
     onSave(): void {

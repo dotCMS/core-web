@@ -64,7 +64,6 @@ export class DotTemplateDesignerComponent implements OnInit {
     /**
      * Start template properties edition
      *
-     * @param {MouseEvent} _$event
      * @memberof DotTemplateDesignerComponent
      */
     editTemplateProps() {

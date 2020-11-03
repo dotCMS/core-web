@@ -69,7 +69,7 @@ export class DotTemplatesService {
      * @returns Observable<DotTemplate>
      * @memberof DotTemplatesService
      */
-    create(values): Observable<DotTemplate> {
+    create(values: DotTemplate): Observable<DotTemplate> {
         const url = '/api/v1/templates';
 
         return this.request<DotTemplate>({ method: 'POST', url, body: values });
@@ -80,7 +80,7 @@ export class DotTemplatesService {
      * @returns Observable<DotTemplate>
      * @memberof DotTemplatesService
      */
-    update(values): Observable<DotTemplate> {
+    update(values: DotTemplate): Observable<DotTemplate> {
         console.log(JSON.stringify(values));
         const url = '/api/v1/templates';
 

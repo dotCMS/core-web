@@ -20,7 +20,7 @@ export class DotPortletToolbarComponent implements OnInit {
     ngOnInit(): void {}
 
     /**
-     * Hancdle cancel button click
+     * Handle cancel button click
      *
      * @param {MouseEvent} $event
      * @memberof DotPortletToolbarComponent
@@ -34,7 +34,7 @@ export class DotPortletToolbarComponent implements OnInit {
     }
 
     /**
-     * Hancdle primary button click
+     * Handle primary button click
      *
      * @param {MouseEvent} $event
      * @memberof DotPortletToolbarComponent
