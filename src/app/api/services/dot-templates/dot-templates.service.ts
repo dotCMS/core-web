@@ -5,7 +5,6 @@ import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { catchError, map, pluck, take } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotTemplateAdvancedProps } from '@shared/models/dot-templates/dot-template-advanced.model';
 
 /**
  * Provide util methods to handle templates in the system.
@@ -34,7 +33,7 @@ export class DotTemplatesService {
      * @returns Observable<DotTemplate>
      * @memberof DotTemplatesService
      */
-    create(values: DotTemplateAdvancedProps): Observable<DotTemplate> {
+    create(values: DotTemplate): Observable<DotTemplate> {
         const url = '/api/v1/templates';
         return this.request<DotTemplate>({ method: 'POST', url, body: JSON.stringify(values) });
     }

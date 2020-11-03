@@ -1,5 +1,6 @@
 <div class="content-wrapper">
     <form class="p-fluid" [formGroup]="group" (ngSubmit)="onSubmit($event)">
+        <button pButton label="Save" [disabled]="isDisabled" class="p-button-secondary"></button>
         <div class="p-field">
             <label for="title">Title</label>
             <input id="title" formControlName="title" type="text" placeholder="Title" pInputText />
