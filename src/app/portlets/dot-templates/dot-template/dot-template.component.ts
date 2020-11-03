@@ -41,18 +41,22 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
         this.destroy$.next(true);
         this.destroy$.complete();
     }
-
+    /**
+     * This method initializes the monaco editor
+     *
+     * @param {*} editor
+     * @memberof DotTemplateComponent
+     */
     initEditor(editor) {
         this.editor = editor;
     }
 
-    enterInformation() {
-        const selection = this.editor.getSelection();
-        const text = 'This is a string';
-        const operation = { range: selection, text: text, forceMoveMarkers: true };
-        this.editor.executeEdits('source', [operation]);
-    }
-
+    /**
+     * This method handles the submit event of the form
+     *
+     * @param {*} event
+     * @memberof DotTemplateComponent
+     */
     onSubmit(event) {
         event.preventDefault();
         this.dotTemplateService
@@ -64,7 +68,13 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
                 }
             });
     }
-
+    /**
+     * This method handles the change event of the searchable selector and
+     * inserts the container to the editor
+     *
+     * @param {DotContainer} container
+     * @memberof DotTemplateComponent
+     */
     containerChange(container: DotContainer): void {
         const selection = this.editor.getSelection();
 
