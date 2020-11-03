@@ -8,10 +8,7 @@ import { Observable } from 'rxjs';
 export class DotTemplateDesignerResolver implements Resolve<DotTemplate> {
     constructor(private service: DotTemplatesService) {}
 
-    resolve(
-        route: ActivatedRouteSnapshot,
-        _state: RouterStateSnapshot
-    ): Observable<DotTemplate> | Promise<DotTemplate> | DotTemplate {
+    resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<DotTemplate> {
         return this.service.getByInode(route.paramMap.get('inode'));
     }
 }
