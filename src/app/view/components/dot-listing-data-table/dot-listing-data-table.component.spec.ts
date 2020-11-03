@@ -211,6 +211,21 @@ describe('DotListingDataTableComponent', () => {
         expect(url).toEqual(paginatorService.url);
     });
 
+    it('should not call paginatorService when firstPageData comes', () => {
+        spyOn(paginatorService, 'getWithOffset');
+        comp.firstPageData = items;
+        comp.columns = columns;
+        comp.url = url;
+
+        comp.ngOnChanges({
+            columns: new SimpleChange(null, comp.columns, true),
+            url: new SimpleChange(null, url, true)
+        });
+
+        fixture.detectChanges();
+        expect(paginatorService.getWithOffset).not.toHaveBeenCalled();
+    });
+
     it('renderer with format date column', () => {
         const dotStringFormatPipe = new DotStringFormatPipe();
         const itemsWithFormat = items.map((item) => {
@@ -299,6 +314,30 @@ describe('DotListingDataTableComponent', () => {
         expect(5).toEqual(headers.length);
     });
 
+    it('should renderer table with checkboxes', () => {
+        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
+            return Observable.create((observer) => {
+                observer.next(Object.assign([], items));
+            });
+        });
+        comp.checkbox = true;
+        comp.columns = columns;
+        comp.url = url;
+
+        comp.ngOnChanges({
+            columns: new SimpleChange(null, comp.columns, true),
+            url: new SimpleChange(null, url, true)
+        });
+
+        fixture.detectChanges();
+
+        const headerCheckBoxes = el.querySelectorAll('p-tableheadercheckbox');
+        const bodyCheckboxes = el.querySelectorAll('p-tablecheckbox');
+        expect(1).toEqual(headerCheckBoxes.length);
+        expect(7).toEqual(bodyCheckboxes.length);
+    });
+
+
     it('should add a column if actions are received', () => {
         const fakeActions: DotDataTableAction[] = [
             {
@@ -383,7 +422,7 @@ describe('DotListingDataTableComponent', () => {
         expect(comp.items.length).toBe(7);
     });
 
-    xit('should focus first row on arrowDown in Global Search Input', () => {
+    it('should focus first row on arrowDown in Global Search Input', () => {
         spyOn(comp, 'focusFirstRow').and.callThrough();
         spyOn(paginatorService, 'get').and.returnValue(observableOf(items));
         comp.columns = columns;
@@ -392,7 +431,6 @@ describe('DotListingDataTableComponent', () => {
         comp.globalSearch.nativeElement.dispatchEvent(
             new KeyboardEvent('keydown', { key: 'arrowDown' })
         );
-
         expect(comp.dataTable.tableViewChild.nativeElement.rows[1]).toBe(document.activeElement);
     });
 

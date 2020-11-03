@@ -11,7 +11,8 @@ import {
     TemplateRef,
     ContentChildren,
     QueryList,
-    ContentChild
+    ContentChild,
+    SimpleChange
 } from '@angular/core';
 import { LazyLoadEvent, PrimeTemplate } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -53,6 +54,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
     @Input() selectionMode = 'single';
     @Input() dataKey = '';
     @Input() checkbox = false;
+    @Input() firstPageData: any[];
 
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
     @Output() selectedItems: EventEmitter<any> = new EventEmitter();
@@ -83,19 +85,9 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.url && changes.url.currentValue) {
-            this.paginatorService.url = changes.url.currentValue;
-        }
-
-        if (changes.columns && changes.columns.currentValue) {
-            this.dateColumns = changes.columns.currentValue.filter(
-                column => column.format === this.DATE_FORMAT
-            );
-            this.loadData(0);
-        }
-        if (changes.paginationPerPage && changes.paginationPerPage.currentValue) {
-            this.paginatorService.paginationPerPage = this.paginationPerPage;
-        }
+        this.urlChanges(changes.url);
+        this.columnChanges(changes.columns);
+        this.paginationPerPagesChanges(changes.paginationPerPage);
     }
 
     ngOnInit(): void {
@@ -107,8 +99,11 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
      *
      * @memberof DotListingDataTableComponent
      */
-    handleRowCheck(): void {
-        this.selectedItems.emit(this.selectedItems);
+    handleRowCheck(event: any): void {
+        debugger;
+        // event.originalEvent.stopPropagation();
+        console.log('handleRowCheck', event);
+        this.selectedItems.emit(this.selected);
     }
 
     /**
@@ -118,6 +113,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
      * @memberof DotListingDataTableComponent
      */
     handleRowClick(rowData: any): void {
+        console.log(rowData);
         this.rowWasClicked.emit(rowData);
     }
 
@@ -131,21 +127,23 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
         this.loadData(event.first, event.sortField, event.sortOrder);
     }
 
+    /**
+     * Request the data to the paginator service.
+     * @param {number} offset
+     * @param {string} sortFieldParam
+     * @param {OrderDirection} sortOrderParam
+     *
+     * @memberof DotListingDataTableComponent
+     */
     loadData(offset: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
         this.loading = true;
         if (this.columns) {
-            const sortField = sortFieldParam || this.sortField;
-            const sortOrder = sortOrderParam || this.sortOrder;
-
+            const { sortField, sortOrder } = this.setSortParams(sortFieldParam, sortOrderParam);
             this.paginatorService.filter = this.filter;
             this.paginatorService.sortField = sortField;
             this.paginatorService.sortOrder =
                 sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
-
-            this.paginatorService
-                .getWithOffset(offset)
-                .pipe(take(1))
-                .subscribe(items => this.setItems(items));
+            this.getPage(offset);
         }
     }
 
@@ -218,5 +216,44 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
 
     private isTypeNumber(col: DataTableColumn): boolean {
         return this.items && this.items[0] && typeof this.items[0][col.fieldName] === 'number';
+    }
+
+    private setSortParams(sortFieldParam?: string, sortOrderParam?: OrderDirection) {
+        return {
+            sortField: sortFieldParam || this.sortField,
+            sortOrder: sortOrderParam || this.sortOrder
+        };
+    }
+
+    private getPage(offset: number): void {
+        if (offset === 0 && this.firstPageData) {
+            this.setItems(this.firstPageData);
+        } else {
+            this.paginatorService
+                .getWithOffset(offset)
+                .pipe(take(1))
+                .subscribe(items => this.setItems(items));
+        }
+    }
+
+    private urlChanges(url: SimpleChange): void {
+        if (url && url.currentValue) {
+            this.paginatorService.url = url.currentValue;
+        }
+    }
+
+    private columnChanges(columns: SimpleChange): void {
+        if (columns && columns.currentValue) {
+            this.dateColumns = columns.currentValue.filter(
+                column => column.format === this.DATE_FORMAT
+            );
+            this.loadData(0);
+        }
+    }
+
+    private paginationPerPagesChanges(paginationPerPage: SimpleChange): void {
+        if (paginationPerPage && paginationPerPage.currentValue) {
+            this.paginatorService.paginationPerPage = this.paginationPerPage;
+        }
     }
 }
