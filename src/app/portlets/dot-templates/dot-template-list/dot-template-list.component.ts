@@ -33,6 +33,18 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
+
+    /**
+     * Handle selected template.
+     * @param {DotTemplate} template
+     *
+     * @memberof DotTemplateListComponent
+     */
+    editTemplate(template: DotTemplate): void {
+        console.log(template);
+    }
+
+
     private setTemplateColumns(): DataTableColumn[] {
         return [
             {

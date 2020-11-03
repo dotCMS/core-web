@@ -13,8 +13,8 @@
 <p-table
     #dataTable
     (onLazyLoad)="loadDataPaginationEvent($event)"
-    (onRowSelect)="handleRowCheck($event)"
-    (onRowUnselect)="handleRowCheck($event)"
+    (onRowSelect)="handleRowCheck()"
+    (onRowUnselect)="handleRowCheck()"
     [columns]="columns"
     [lazy]="true"
     [loading]="loading"

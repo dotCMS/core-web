@@ -99,10 +99,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
      *
      * @memberof DotListingDataTableComponent
      */
-    handleRowCheck(event: any): void {
-        debugger;
-        // event.originalEvent.stopPropagation();
-        console.log('handleRowCheck', event);
+    handleRowCheck(): void {
         this.selectedItems.emit(this.selected);
     }
 
@@ -113,7 +110,6 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
      * @memberof DotListingDataTableComponent
      */
     handleRowClick(rowData: any): void {
-        console.log(rowData);
         this.rowWasClicked.emit(rowData);
     }
 
