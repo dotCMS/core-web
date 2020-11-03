@@ -66,7 +66,7 @@ export class DotTemplateDesignerComponent implements OnInit {
      *
      * @memberof DotTemplateDesignerComponent
      */
-    editTemplateProps() {
+    editTemplateProps(): void {
         this.dialogService.open(DotTemplatePropsComponent, {
             header: 'Template Properties',
             width: '30rem',
