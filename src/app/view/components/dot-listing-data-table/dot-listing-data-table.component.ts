@@ -51,7 +51,6 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
     @Input() multipleSelection = false;
     @Input() paginationPerPage = 40;
     @Input() actions: DotDataTableAction[];
-    @Input() selectionMode = 'single';
     @Input() dataKey = '';
     @Input() checkbox = false;
     @Input() firstPageData: any[];

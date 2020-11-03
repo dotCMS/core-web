@@ -159,7 +159,7 @@ describe('DotListingDataTableComponent', () => {
 
     it('renderer basic datatable component', () => {
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create((observer) => {
+            return Observable.create(observer => {
                 observer.next(Object.assign([], items));
             });
         });
@@ -228,13 +228,13 @@ describe('DotListingDataTableComponent', () => {
 
     it('renderer with format date column', () => {
         const dotStringFormatPipe = new DotStringFormatPipe();
-        const itemsWithFormat = items.map((item) => {
+        const itemsWithFormat = items.map(item => {
             item.field3 = 1496178801000;
             return item;
         });
 
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create((observer) => {
+            return Observable.create(observer => {
                 observer.next(Object.assign([], itemsWithFormat));
             });
         });
@@ -285,7 +285,7 @@ describe('DotListingDataTableComponent', () => {
 
     it('should renderer table without checkbox', () => {
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create((observer) => {
+            return Observable.create(observer => {
                 observer.next(Object.assign([], items));
             });
         });
@@ -314,30 +314,6 @@ describe('DotListingDataTableComponent', () => {
         expect(5).toEqual(headers.length);
     });
 
-    it('should renderer table with checkboxes', () => {
-        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create((observer) => {
-                observer.next(Object.assign([], items));
-            });
-        });
-        comp.checkbox = true;
-        comp.columns = columns;
-        comp.url = url;
-
-        comp.ngOnChanges({
-            columns: new SimpleChange(null, comp.columns, true),
-            url: new SimpleChange(null, url, true)
-        });
-
-        fixture.detectChanges();
-
-        const headerCheckBoxes = el.querySelectorAll('p-tableheadercheckbox');
-        const bodyCheckboxes = el.querySelectorAll('p-tablecheckbox');
-        expect(1).toEqual(headerCheckBoxes.length);
-        expect(7).toEqual(bodyCheckboxes.length);
-    });
-
-
     it('should add a column if actions are received', () => {
         const fakeActions: DotDataTableAction[] = [
             {
@@ -349,7 +325,7 @@ describe('DotListingDataTableComponent', () => {
             }
         ];
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create((observer) => {
+            return Observable.create(observer => {
                 observer.next(Object.assign([], items));
             });
         });
@@ -382,7 +358,7 @@ describe('DotListingDataTableComponent', () => {
             }
         ];
         spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create((observer) => {
+            return Observable.create(observer => {
                 observer.next(Object.assign([], items));
             });
         });
@@ -442,5 +418,48 @@ describe('DotListingDataTableComponent', () => {
         fixture.detectChanges();
 
         expect(comp.dataTable.rows).toBe(5);
+    });
+
+    it('should emit when a row is clicked or enter', () => {
+        spyOn(paginatorService, 'get').and.returnValue(observableOf(items));
+        spyOn(comp.rowWasClicked, 'emit');
+        comp.columns = columns;
+        comp.loadFirstPage();
+        fixture.detectChanges();
+
+        const firstRow: DebugElement = de.queryAll(By.css('tr'))[1];
+        firstRow.triggerEventHandler('click', null);
+        firstRow.triggerEventHandler('keyup.enter', null);
+
+        expect(comp.rowWasClicked.emit).toHaveBeenCalledTimes(2);
+    });
+
+    describe('with checkBox', () => {
+        let bodyCheckboxes: DebugElement[];
+
+        beforeEach(() => {
+            spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
+                return Observable.create(observer => {
+                    observer.next(Object.assign([], items));
+                });
+            });
+            comp.checkbox = true;
+            comp.columns = columns;
+            comp.url = url;
+
+            comp.ngOnChanges({
+                columns: new SimpleChange(null, comp.columns, true),
+                url: new SimpleChange(null, url, true)
+            });
+
+            fixture.detectChanges();
+            bodyCheckboxes = de.queryAll(By.css('p-tablecheckbox'));
+        });
+
+        it('should renderer table', () => {
+            const headerCheckBoxes = el.querySelectorAll('p-tableheadercheckbox');
+            expect(1).toEqual(headerCheckBoxes.length);
+            expect(7).toEqual(bodyCheckboxes.length);
+        });
     });
 });
