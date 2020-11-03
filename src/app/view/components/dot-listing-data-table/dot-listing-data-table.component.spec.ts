@@ -1,13 +1,12 @@
-import { of as observableOf, Observable } from 'rxjs';
+import { of, of as observableOf } from 'rxjs';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 import { ActionMenuButtonComponent } from '../_common/action-menu-button/action-menu-button.component';
 import { DotActionButtonComponent } from '../_common/dot-action-button/dot-action-button.component';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture } from '@angular/core/testing';
-import { DOTTestBed } from '../../../test/dot-test-bed';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TableModule } from 'primeng/table';
-import { DebugElement, SimpleChange } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
 import { FormatDateService } from '@services/format-date-service';
 import { DotListingDataTableComponent } from './dot-listing-data-table.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -20,13 +19,78 @@ import { DotMenuModule } from '../_common/dot-menu/dot-menu.module';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 import { DotStringFormatPipe } from '@pipes/dot-string-format/dot-string-format.pipe';
-import { SharedModule } from 'primeng/api';
+import { ConfirmationService, SharedModule } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
-import { LoggerService } from 'dotcms-js';
+import { CoreWebService, LoggerService, StringUtils } from 'dotcms-js';
+import { DataTableColumn } from '@models/data-table';
+import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+    selector: 'dot-test-host-component',
+    template: `
+    <dot-listing-data-table
+        [columns]="columns"
+        [url]="url"
+        [actionHeaderOptions]="actionHeaderOptions"
+        [buttonActions]="buttonActions"
+        [sortOrder]="sortOrder"
+        [sortField]="sortField"
+        [multipleSelection]="multipleSelection"
+        [paginationPerPage]="paginationPerPage"
+        [actions]="actions"
+        [dataKey]="dataKey"
+        [checkbox]="checkbox"
+        [firstPageData]="firstPageData"
+        (rowWasClicked)="rowWasClicked($event)"
+        (selectedItems)="selectedItems($event)"
+       ></dot-listing-data-table>`
+})
+class TestHostComponent {
+    @Input() columns: DataTableColumn[];
+    @Input() url: string;
+    @Input() actionHeaderOptions: ActionHeaderOptions;
+    @Input() buttonActions: ButtonAction[] = [];
+    @Input() sortOrder: string;
+    @Input() sortField: string;
+    @Input() multipleSelection = false;
+    @Input() paginationPerPage = 40;
+    @Input() actions: DotDataTableAction[];
+    @Input() dataKey = '';
+    @Input() checkbox = false;
+    @Input() firstPageData: any[];
+
+    rowWasClicked(data: any) {
+        console.log(data);
+    }
+
+    selectedItems(data: any) {
+        console.log(data);
+    }
+}
+
+class TestPaginatorService {
+    filter: string;
+    url: string;
+    sortOrder: string;
+    sortField: string;
+    paginationPerPage: string;
+
+    getWithOffset(_offset: number) {
+        return of([]);
+    }
+
+    get() {}
+}
+
 
 describe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
-    let fixture: ComponentFixture<DotListingDataTableComponent>;
+    let hostFixture: ComponentFixture<TestHostComponent>;
+    let hostComponent: TestHostComponent;
     let de: DebugElement;
     let el: HTMLElement;
     let items;
@@ -39,12 +103,13 @@ describe('DotListingDataTableComponent', () => {
             'global-search': 'Global Serach'
         });
 
-        DOTTestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             declarations: [
                 ActionHeaderComponent,
                 DotActionButtonComponent,
                 DotListingDataTableComponent,
-                ActionMenuButtonComponent
+                ActionMenuButtonComponent,
+                TestHostComponent
             ],
             imports: [
                 TableModule,
@@ -56,20 +121,27 @@ describe('DotListingDataTableComponent', () => {
                 MenuModule,
                 DotMenuModule,
                 DotIconModule,
-                DotIconButtonModule
+                DotIconButtonModule,
+                HttpClientTestingModule,
+                DotPipesModule,
+                FormsModule
             ],
             providers: [
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
                 { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: LoggerService, useValue: {} },
-                { provide: PaginatorService, useValue: {} },
+                { provide: PaginatorService, useClass: TestPaginatorService },
+                LoggerService,
                 FormatDateService,
-                DotAlertConfirmService
+                DotAlertConfirmService,
+                ConfirmationService,
+                StringUtils
             ]
         });
 
-        fixture = DOTTestBed.createComponent(DotListingDataTableComponent);
-        comp = fixture.componentInstance;
-        de = fixture.debugElement.query(By.css('p-table'));
+        hostFixture = TestBed.createComponent(TestHostComponent);
+        hostComponent = hostFixture.componentInstance;
+        comp = hostFixture.debugElement.query(By.css('dot-listing-data-table')).componentInstance;
+        de = hostFixture.debugElement.query(By.css('p-table'));
         el = de.nativeElement;
 
         items = [
@@ -123,8 +195,9 @@ describe('DotListingDataTableComponent', () => {
                 variable: 'Banner'
             }
         ];
-
-        paginatorService = fixture.debugElement.injector.get(PaginatorService);
+        paginatorService = comp.paginatorService;
+        // paginatorService = TestBed.inject(PaginatorService);
+        // paginatorService = hostFixture.debugElement.injector.get(PaginatorService);
         paginatorService.paginationPerPage = 4;
         paginatorService.maxLinksPage = 2;
         paginatorService.totalRecords = items.length;
@@ -137,7 +210,7 @@ describe('DotListingDataTableComponent', () => {
         ];
 
         url = '/test/';
-        comp.actions = [
+        hostComponent.actions = [
             {
                 menuItem: {
                     icon: 'fa fa-trash',
@@ -149,40 +222,32 @@ describe('DotListingDataTableComponent', () => {
     });
 
     it('should set active element the global search on load', () => {
-        const actionHeader = fixture.debugElement.query(By.css('dot-action-header'));
+        const actionHeader = hostFixture.debugElement.query(By.css('dot-action-header'));
         const globalSearch = actionHeader.query(By.css('input'));
 
-        comp.ngOnInit();
+        hostFixture.detectChanges();
 
         expect(globalSearch.nativeElement).toBe(document.activeElement);
     });
 
     it('renderer basic datatable component', () => {
-        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
-                observer.next(Object.assign([], items));
-            });
-        });
-        comp.columns = columns;
-        comp.url = url;
-        comp.multipleSelection = true;
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(items));
 
-        comp.ngOnChanges({
-            columns: new SimpleChange(null, comp.columns, true),
-            url: new SimpleChange(null, url, true)
-        });
+        hostComponent.columns = columns;
+        hostComponent.url = url;
+        hostComponent.multipleSelection = true;
 
-        fixture.detectChanges();
+        hostFixture.detectChanges();
         const rows = el.querySelectorAll('tr');
         expect(8).toEqual(rows.length);
 
         const headers = rows[0].querySelectorAll('th');
         expect(5).toEqual(headers.length);
 
-        comp.columns.forEach((_col, index) => {
+        hostComponent.columns.forEach((_col, index) => {
             const sortableIcon = headers[index].querySelector('p-sortIcon');
             index === 0 ? expect(sortableIcon).toBeDefined() : expect(sortableIcon).toBeNull();
-            expect(comp.columns[index].header).toEqual(headers[index].textContent.trim());
+            expect(hostComponent.columns[index].header).toEqual(headers[index].textContent.trim());
         });
 
         rows.forEach((row, rowIndex) => {
@@ -192,13 +257,13 @@ describe('DotListingDataTableComponent', () => {
                 cells.forEach((_cell, cellIndex) => {
                     if (cellIndex < 3) {
                         expect(cells[cellIndex].querySelector('span').textContent).toContain(
-                            item[comp.columns[cellIndex].fieldName]
+                            item[hostComponent.columns[cellIndex].fieldName]
                         );
                     }
                     if (cellIndex === 3) {
                         const anchor = cells[cellIndex].querySelector('a');
                         expect(anchor.textContent).toContain(
-                            `View (${item[comp.columns[cellIndex].fieldName]})`
+                            `View (${item[hostComponent.columns[cellIndex].fieldName]})`
                         );
                         expect(anchor.href).toContain(
                             item.variable === 'Host' ? '/c/sites' : '/c/content?filter=Banner'
@@ -213,16 +278,11 @@ describe('DotListingDataTableComponent', () => {
 
     it('should not call paginatorService when firstPageData comes', () => {
         spyOn(paginatorService, 'getWithOffset');
-        comp.firstPageData = items;
-        comp.columns = columns;
-        comp.url = url;
+        hostComponent.firstPageData = items;
+        hostComponent.columns = columns;
+        hostComponent.url = url;
 
-        comp.ngOnChanges({
-            columns: new SimpleChange(null, comp.columns, true),
-            url: new SimpleChange(null, url, true)
-        });
-
-        fixture.detectChanges();
+        hostFixture.detectChanges();
         expect(paginatorService.getWithOffset).not.toHaveBeenCalled();
     });
 
@@ -232,24 +292,15 @@ describe('DotListingDataTableComponent', () => {
             item.field3 = 1496178801000;
             return item;
         });
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(itemsWithFormat));
 
-        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
-                observer.next(Object.assign([], itemsWithFormat));
-            });
-        });
 
         columns[2].format = 'date';
-        comp.columns = columns;
-        comp.url = url;
-        comp.multipleSelection = true;
+        hostComponent.columns = columns;
+        hostComponent.url = url;
+        hostComponent.multipleSelection = true;
 
-        comp.ngOnChanges({
-            columns: new SimpleChange(null, comp.columns, true),
-            url: new SimpleChange(null, url, true)
-        });
-
-        fixture.detectChanges();
+        hostFixture.detectChanges();
 
         const rows = el.querySelectorAll('tr');
         expect(8).toEqual(rows.length, 'tr');
@@ -257,8 +308,8 @@ describe('DotListingDataTableComponent', () => {
         const headers = rows[0].querySelectorAll('th');
         expect(5).toEqual(headers.length, 'th');
 
-        comp.columns.forEach((_col, index) =>
-            expect(comp.columns[index].header).toEqual(headers[index].textContent.trim())
+        hostComponent.columns.forEach((_col, index) =>
+            expect(hostComponent.columns[index].header).toEqual(headers[index].textContent.trim())
         );
 
         rows.forEach((row, rowIndex) => {
@@ -270,7 +321,7 @@ describe('DotListingDataTableComponent', () => {
                     if (cellIndex < 4) {
                         const textContent = cells[cellIndex].textContent;
                         const itemContent = comp.columns[cellIndex].textContent
-                            ? dotStringFormatPipe.transform(comp.columns[cellIndex].textContent, [
+                            ? dotStringFormatPipe.transform(hostComponent.columns[cellIndex].textContent, [
                                   item[comp.columns[cellIndex].fieldName]
                               ])
                             : item[comp.columns[cellIndex].fieldName];
@@ -284,28 +335,22 @@ describe('DotListingDataTableComponent', () => {
     });
 
     it('should renderer table without checkbox', () => {
-        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
-                observer.next(Object.assign([], items));
-            });
-        });
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(items));
 
-        comp.columns = columns;
-        comp.url = url;
 
-        comp.ngOnChanges({
-            columns: new SimpleChange(null, comp.columns, true),
-            url: new SimpleChange(null, url, true)
-        });
+        hostComponent.columns = columns;
+        hostComponent.url = url;
 
-        const dataList = fixture.debugElement.query(By.css('p-table'));
+        hostFixture.detectChanges();
+
+        const dataList = hostFixture.debugElement.query(By.css('p-table'));
         const dataListComponentInstance = dataList.componentInstance;
 
         dataListComponentInstance.onLazyLoad.emit({
             first: 0
         });
 
-        fixture.detectChanges();
+        hostFixture.detectChanges();
 
         const rows = el.querySelectorAll('tr');
         expect(8).toEqual(rows.length);
@@ -324,25 +369,17 @@ describe('DotListingDataTableComponent', () => {
                 }
             }
         ];
-        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
-                observer.next(Object.assign([], items));
-            });
-        });
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(items));
 
-        comp.columns = columns;
+        hostComponent.columns = columns;
 
-        comp.ngOnChanges({
-            columns: new SimpleChange(null, comp.columns, true)
-        });
-
-        fixture.detectChanges();
+        hostFixture.detectChanges();
 
         const rows = el.querySelectorAll('tr');
         expect(rows[0].cells.length).toEqual(5);
 
-        comp.actions = fakeActions;
-        fixture.detectChanges();
+        hostComponent.actions = fakeActions;
+        hostFixture.detectChanges();
 
         expect(rows[0].cells.length).toEqual(5);
     });
@@ -357,20 +394,12 @@ describe('DotListingDataTableComponent', () => {
                 }
             }
         ];
-        spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
-                observer.next(Object.assign([], items));
-            });
-        });
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(items));
 
-        comp.columns = columns;
-        comp.actions = fakeActions;
+        hostComponent.columns = columns;
+        hostComponent.actions = fakeActions;
 
-        comp.ngOnChanges({
-            columns: new SimpleChange(null, comp.columns, true)
-        });
-
-        fixture.detectChanges();
+        hostFixture.detectChanges();
         const actionButton = de.query(By.css('dot-action-menu-button'));
 
         const spy = spyOn(fakeActions[0].menuItem, 'command');
@@ -401,9 +430,9 @@ describe('DotListingDataTableComponent', () => {
     it('should focus first row on arrowDown in Global Search Input', () => {
         spyOn(comp, 'focusFirstRow').and.callThrough();
         spyOn(paginatorService, 'get').and.returnValue(observableOf(items));
-        comp.columns = columns;
+        hostComponent.columns = columns;
         comp.loadFirstPage();
-        fixture.detectChanges();
+        hostFixture.detectChanges();
         comp.globalSearch.nativeElement.dispatchEvent(
             new KeyboardEvent('keydown', { key: 'arrowDown' })
         );
@@ -412,10 +441,10 @@ describe('DotListingDataTableComponent', () => {
 
     it('should set the pagination size in the Table', () => {
         spyOn(paginatorService, 'get').and.returnValue(observableOf(items));
-        comp.paginationPerPage = 5;
-        comp.columns = columns;
+        hostComponent.paginationPerPage = 5;
+        hostComponent.columns = columns;
         comp.loadFirstPage();
-        fixture.detectChanges();
+        hostFixture.detectChanges();
 
         expect(comp.dataTable.rows).toBe(5);
     });
@@ -423,9 +452,9 @@ describe('DotListingDataTableComponent', () => {
     it('should emit when a row is clicked or enter', () => {
         spyOn(paginatorService, 'get').and.returnValue(observableOf(items));
         spyOn(comp.rowWasClicked, 'emit');
-        comp.columns = columns;
+        hostComponent.columns = columns;
         comp.loadFirstPage();
-        fixture.detectChanges();
+        hostFixture.detectChanges();
 
         const firstRow: DebugElement = de.queryAll(By.css('tr'))[1];
         firstRow.triggerEventHandler('click', null);
@@ -438,21 +467,12 @@ describe('DotListingDataTableComponent', () => {
         let bodyCheckboxes: DebugElement[];
 
         beforeEach(() => {
-            spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-                return Observable.create(observer => {
-                    observer.next(Object.assign([], items));
-                });
-            });
-            comp.checkbox = true;
-            comp.columns = columns;
-            comp.url = url;
+            spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(items));
+            hostComponent.checkbox = true;
+            hostComponent.columns = columns;
+            hostComponent.url = url;
 
-            comp.ngOnChanges({
-                columns: new SimpleChange(null, comp.columns, true),
-                url: new SimpleChange(null, url, true)
-            });
-
-            fixture.detectChanges();
+            hostFixture.detectChanges();
             bodyCheckboxes = de.queryAll(By.css('p-tablecheckbox'));
         });
 
