@@ -5,7 +5,7 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Observable, zip } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, mergeAll, pluck, startWith, take } from 'rxjs/operators';
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 
@@ -39,14 +39,13 @@ export class DotTemplateDesignerComponent implements OnInit {
                 this.title = title;
             });
 
-        const inode$ = this.activatedRoute.params.pipe(pluck('inode'));
         const data$ = this.activatedRoute.data.pipe(pluck('template'));
 
-        this.portletActions$ = zip(inode$, data$).pipe(
+        this.portletActions$ = data$.pipe(
             take(1),
-            map(([inode, template]: [string, any]) => {
+            map((template: any) => {
                 this.templateContainersCacheService.set(template.containers);
-                this.form = this.getForm(inode, template);
+                this.form = this.getForm(template);
                 this.originalData = { ...this.form.value };
 
                 return this.form.valueChanges.pipe(
@@ -81,11 +80,11 @@ export class DotTemplateDesignerComponent implements OnInit {
         });
     }
 
-    private getForm(inode: string, template: any): FormGroup {
-        const { title, friendlyName } = template;
+    private getForm(template: any): FormGroup {
+        const { title, friendlyName, identifier } = template;
 
         return this.fb.group({
-            inode,
+            identifier,
             title,
             friendlyName,
             layout: this.fb.group({
