@@ -8,12 +8,6 @@
     url="v1/templates"
     [actions]="[]"
 >
-    <<<<<<< HEAD
-    <!--    <dot-base-type-selector-->
-    <!--        *ngIf="!filterBy"-->
-    <!--        (selected)="changeBaseTypeSelector($event)"-->
-    <!--    ></dot-base-type-selector>-->
-    =======
     <ng-template #rowTemplate let-rowData="rowData">
         <td [ngStyle]="{ 'text-align': tableColumns[0].textAlign }">
             {{ rowData.name }}
@@ -31,5 +25,4 @@
             <span>Actions TBD</span>
         </td>
     </ng-template>
-    >>>>>>> 3092ee548f40b68f3387748798ec124e4c9eb97f
 </dot-listing-data-table>

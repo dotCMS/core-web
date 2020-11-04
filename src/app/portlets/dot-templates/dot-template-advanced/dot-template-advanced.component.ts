@@ -9,9 +9,9 @@ import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'dot-template-test',
-    templateUrl: './dot-template.component.html',
-    styleUrls: ['./dot-template.scss']
+    selector: 'dot-template-advanced',
+    templateUrl: './dot-template-advanced.component.html',
+    styleUrls: ['./dot-template-advanced.scss']
 })
 export class DotTemplateComponent implements OnInit, OnDestroy {
     group: FormGroup;

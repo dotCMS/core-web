@@ -30,13 +30,59 @@ export class DotTemplatesService {
     }
 
     /**
+     * Get template by inode
+     *
+     * @param {string} inode
+     * @returns {Observable<DotTemplate>}
+     * @memberof DotTemplatesService
+     */
+    getByInode(inode: string): Observable<DotTemplate> {
+        const url = `/api/v1/templates/${inode}`;
+
+        return this.request<DotTemplate>({
+            url
+        }).pipe(
+            map((template: DotTemplate) => {
+                const containers = Object.keys(template.containers).reduce((acc, item) => {
+                    return {
+                        ...acc,
+                        [item]: {
+                            container: template.containers[item]
+                        }
+                    };
+                }, {});
+
+                return {
+                    ...template,
+                    containers
+                };
+            })
+        );
+    }
+
+    /**
      * Creates a template
-     * @returns Observable<DotTemplate>
+     *
+     * @param {DotTemplate} values
+     * @return {*}  {Observable<DotTemplate>}
      * @memberof DotTemplatesService
      */
     create(values: DotTemplate): Observable<DotTemplate> {
         const url = '/api/v1/templates';
-        return this.request<DotTemplate>({ method: 'POST', url, body: JSON.stringify(values) });
+
+        return this.request<DotTemplate>({ method: 'POST', url, body: values });
+    }
+
+    /**
+     * Updates a template
+     * @returns Observable<DotTemplate>
+     * @memberof DotTemplatesService
+     */
+    update(values: DotTemplate): Observable<DotTemplate> {
+        console.log(JSON.stringify(values));
+        const url = '/api/v1/templates';
+
+        return this.request<DotTemplate>({ method: 'PUT', url, body: values });
     }
 
     private request<T>(options: DotRequestOptionsArgs): Observable<T> {

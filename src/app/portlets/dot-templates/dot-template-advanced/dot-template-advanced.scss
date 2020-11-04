@@ -4,7 +4,7 @@
     margin: $spacing-4;
     padding: $spacing-4;
     background: $white;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: $md-shadow-4;
 }
 .form__label {
     display: block;
@@ -12,5 +12,5 @@
 }
 
 dot-container-selector {
-    margin-bottom: 1rem;
+    margin-bottom: $spacing-3;
 }

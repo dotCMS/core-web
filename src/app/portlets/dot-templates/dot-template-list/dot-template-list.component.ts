@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
@@ -21,8 +20,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.route.data
             .pipe(pluck('dotTemplateListResolverData'), takeUntil(this.destroy$))
-            .subscribe((templates: DotTemplate[]) => {
-                console.log({ templates });
+            .subscribe(() => {
                 this.tableColumns = this.setTemplateColumns();
             });
     }
