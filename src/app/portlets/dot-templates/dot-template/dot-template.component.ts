@@ -5,8 +5,8 @@ import { DotTemplatesService } from '@services/dot-templates/dot-templates.servi
 import { DotContainer } from '@shared/models/container/dot-container.model';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import * as _ from 'lodash';
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'dot-template-test',
@@ -15,7 +15,7 @@ import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 })
 export class DotTemplateComponent implements OnInit, OnDestroy {
     group: FormGroup;
-    editor: any;
+    editor: any; // `any` because the type of the editor in the ngx-monaco-editor package is not typed
     isDisabled = true;
     private destroy$: Subject<boolean> = new Subject<boolean>();
     private originalValue: DotTemplate;
@@ -33,7 +33,7 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
             body: ['', Validators.required]
         });
 
-        this.initialFormValues();
+        this.setFormOriginalValue();
         this.onFormValueChanges();
     }
 
@@ -47,7 +47,7 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
      * @param {*} editor
      * @memberof DotTemplateComponent
      */
-    initEditor(editor) {
+    initEditor(editor: any): void {
         this.editor = editor;
     }
 
@@ -57,7 +57,7 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
      * @param {*} event
      * @memberof DotTemplateComponent
      */
-    onSubmit(event) {
+    onSubmit(event: Event): void {
         event.preventDefault();
         this.dotTemplateService
             .create(this.group.value)
@@ -87,24 +87,24 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
         this.editor.executeEdits('source', [operation]);
     }
 
-    private initialFormValues() {
+    private setFormOriginalValue() {
         this.originalValue = this.group.value;
     }
 
     private onFormValueChanges() {
         this.group.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((values) => {
-            this.compareValues(values, this.originalValue);
+            this.setIsDisabled(values, this.originalValue);
         });
     }
 
-    private setContainerId(container: DotContainer) {
+    private setContainerId(container: DotContainer): string {
         const regex = new RegExp('//' + container.parentPermissionable.hostname);
         return container.identifier.includes(container.parentPermissionable.hostname)
             ? container.identifier.replace(regex, '')
             : container.identifier;
     }
 
-    private compareValues(values: DotTemplate, oldValues: DotTemplate): void {
+    private setIsDisabled(values: DotTemplate, oldValues: DotTemplate): void {
         this.isDisabled = _.isEqual(values, oldValues);
     }
 }

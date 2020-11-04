@@ -7,6 +7,7 @@ import { NgModule } from '@angular/core';
 import { PaginatorService } from '@services/paginator';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
 
 @NgModule({
     declarations: [DotContainerSelectorLayoutComponent],
@@ -17,7 +18,8 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
         ButtonModule,
         SearchableDropDownModule,
         DotPipesModule,
-        DotIconButtonModule
+        DotIconButtonModule,
+        DotContainerSelectorModule
     ],
     providers: [PaginatorService]
 })
