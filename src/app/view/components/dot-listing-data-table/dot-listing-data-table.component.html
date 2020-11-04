@@ -42,7 +42,7 @@
     </ng-template>
 
     <ng-template  pTemplate="body" let-rowData let-columns="columns">
-        <tr>
+        <tr (click)="handleRowClick(rowData)" (keyup.enter)="handleRowClick(rowData)" [pSelectableRow]="rowData" >
             <td *ngIf="checkbox" >
                 <p-tableCheckbox (click)="$event.stopPropagation()" [value]="rowData"></p-tableCheckbox>
             </td>

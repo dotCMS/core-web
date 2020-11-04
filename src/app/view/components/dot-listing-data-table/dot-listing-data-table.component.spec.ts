@@ -45,6 +45,7 @@ import { FormsModule } from '@angular/forms';
         [dataKey]="dataKey"
         [checkbox]="checkbox"
         [firstPageData]="firstPageData"
+        [paginatorExtraParams]="paginatorExtraParams"
         (rowWasClicked)="rowWasClicked($event)"
         (selectedItems)="selectedItems($event)"
        ></dot-listing-data-table>`
@@ -62,6 +63,7 @@ class TestHostComponent {
     @Input() dataKey = '';
     @Input() checkbox = false;
     @Input() firstPageData: any[];
+    @Input() paginatorExtraParams: { [key: string]: string } = {};
 
     rowWasClicked(data: any) {
         console.log(data);
@@ -453,6 +455,15 @@ describe('DotListingDataTableComponent', () => {
         hostFixture.detectChanges();
 
         expect(comp.dataTable.rows).toBe(5);
+    });
+
+    it('should set pagination extra parameters', () => {
+        spyOn(paginatorService, 'get').and.returnValue(of(items));
+        hostComponent.paginatorExtraParams = { type: 'FORM', name: 'DotCMS' };
+        hostFixture.detectChanges();
+
+        expect(comp.paginatorService.extraParams.get('type')).toEqual('FORM');
+        expect(comp.paginatorService.extraParams.get('name')).toEqual('DotCMS');
     });
 
     it(

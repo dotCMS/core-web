@@ -47,6 +47,7 @@ export class DotListingDataTableComponent implements OnInit {
     @Input() sortField: string;
     @Input() multipleSelection = false;
     @Input() paginationPerPage = 40;
+    @Input() paginatorExtraParams: { [key: string]: string } = {};
     @Input() actions: DotActionMenuItem[];
     @Input() dataKey = '';
     @Input() checkbox = false;
@@ -82,8 +83,7 @@ export class DotListingDataTableComponent implements OnInit {
 
     ngOnInit(): void {
         this.globalSearch.nativeElement.focus();
-        this.paginatorService.url = this.url;
-        this.paginatorService.paginationPerPage = this.paginationPerPage;
+        this.paginationSetUp();
         this.dateColumns = this.columns.filter(column => column.format === this.DATE_FORMAT);
     }
 
@@ -225,6 +225,16 @@ export class DotListingDataTableComponent implements OnInit {
                 .getWithOffset(offset)
                 .pipe(take(1))
                 .subscribe(items => this.setItems(items));
+        }
+    }
+
+    private paginationSetUp(): void {
+        this.paginatorService.url = this.url;
+        this.paginatorService.paginationPerPage = this.paginationPerPage;
+        if (this.paginatorExtraParams) {
+            Object.entries(this.paginatorExtraParams).forEach(([key, value]) =>
+                this.paginatorService.setExtraParams(key, value)
+            );
         }
     }
 }
