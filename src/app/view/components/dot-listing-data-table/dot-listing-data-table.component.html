@@ -77,7 +77,7 @@
         <span *ngIf="!col.icon && col.fieldName !== 'nEntries'">
                     {{rowData[col.fieldName]}}
                 </span>
-        <a
+        <a (click)="$event.stopPropagation()"
             *ngIf="col.fieldName === 'nEntries'"
             [routerLink]="rowData.variable === 'Host' ? '/c/sites' : '/c/content'"
             [queryParams]="rowData.variable === 'Host' ? {} : { filter: rowData.variable }"

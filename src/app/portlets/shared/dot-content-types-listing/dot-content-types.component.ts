@@ -37,6 +37,7 @@ import { DotPushPublishDialogService } from 'dotcms-js';
 export class DotContentTypesPortletComponent implements OnInit {
     @ViewChild('listing', { static: true }) listing: DotListingDataTableComponent;
     filterBy: string;
+    showTable = false;
     public contentTypeColumns: DataTableColumn[];
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
@@ -84,6 +85,7 @@ export class DotContentTypesPortletComponent implements OnInit {
             if (filterBy) {
                 this.setFilterByContentType(filterBy as string);
             }
+            this.showTable = true;
         });
     }
 

@@ -1,4 +1,5 @@
 <dot-listing-data-table
+    *ngIf="showTable"
     #listing
     (rowWasClicked)="editContentType($event)"
     [actionHeaderOptions]="actionHeaderOptions"

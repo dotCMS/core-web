@@ -3,16 +3,13 @@ import {
     Input,
     Output,
     EventEmitter,
-    OnChanges,
     ViewChild,
     ElementRef,
     OnInit,
-    SimpleChanges,
     TemplateRef,
     ContentChildren,
     QueryList,
-    ContentChild,
-    SimpleChange
+    ContentChild
 } from '@angular/core';
 import { LazyLoadEvent, PrimeTemplate } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -41,7 +38,7 @@ function tableFactory(dotListingDataTableComponent: DotListingDataTableComponent
     styleUrls: ['./dot-listing-data-table.component.scss'],
     templateUrl: 'dot-listing-data-table.component.html'
 })
-export class DotListingDataTableComponent implements OnChanges, OnInit {
+export class DotListingDataTableComponent implements OnInit {
     @Input() columns: DataTableColumn[];
     @Input() url: string;
     @Input() actionHeaderOptions: ActionHeaderOptions;
@@ -83,14 +80,11 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
         this.paginatorService.url = this.url;
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        this.urlChanges(changes.url);
-        this.columnChanges(changes.columns);
-        this.paginationPerPagesChanges(changes.paginationPerPage);
-    }
-
     ngOnInit(): void {
         this.globalSearch.nativeElement.focus();
+        this.paginatorService.url = this.url;
+        this.paginatorService.paginationPerPage = this.paginationPerPage;
+        this.dateColumns = this.columns.filter(column => column.format === this.DATE_FORMAT);
     }
 
     /**
@@ -132,14 +126,13 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
      */
     loadData(offset: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
         this.loading = true;
-        if (this.columns) {
-            const { sortField, sortOrder } = this.setSortParams(sortFieldParam, sortOrderParam);
-            this.paginatorService.filter = this.filter;
-            this.paginatorService.sortField = sortField;
-            this.paginatorService.sortOrder =
-                sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
-            this.getPage(offset);
-        }
+
+        const { sortField, sortOrder } = this.setSortParams(sortFieldParam, sortOrderParam);
+        this.paginatorService.filter = this.filter;
+        this.paginatorService.sortField = sortField;
+        this.paginatorService.sortOrder =
+            sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
+        this.getPage(offset);
     }
 
     /**
@@ -205,8 +198,11 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
     }
 
     private setItems(items: any[]): void {
-        this.items = this.dateColumns ? this.formatData(items) : items;
-        this.loading = false;
+        setTimeout(() => {
+            // avoid ExpressionChangedAfterItHasBeenCheckedError on p-table
+            this.items = this.dateColumns ? this.formatData(items) : items;
+            this.loading = false;
+        }, 0);
     }
 
     private isTypeNumber(col: DataTableColumn): boolean {
@@ -223,32 +219,12 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
     private getPage(offset: number): void {
         if (offset === 0 && this.firstPageData) {
             this.setItems(this.firstPageData);
+            this.firstPageData = null;
         } else {
             this.paginatorService
                 .getWithOffset(offset)
                 .pipe(take(1))
                 .subscribe(items => this.setItems(items));
-        }
-    }
-
-    private urlChanges(url: SimpleChange): void {
-        if (url && url.currentValue) {
-            this.paginatorService.url = url.currentValue;
-        }
-    }
-
-    private columnChanges(columns: SimpleChange): void {
-        if (columns && columns.currentValue) {
-            this.dateColumns = columns.currentValue.filter(
-                column => column.format === this.DATE_FORMAT
-            );
-            this.loadData(0);
-        }
-    }
-
-    private paginationPerPagesChanges(paginationPerPage: SimpleChange): void {
-        if (paginationPerPage && paginationPerPage.currentValue) {
-            this.paginatorService.paginationPerPage = this.paginationPerPage;
         }
     }
 }

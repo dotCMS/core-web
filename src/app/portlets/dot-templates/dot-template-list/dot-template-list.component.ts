@@ -7,7 +7,7 @@ import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
-    selector: 'dot-dot-template-list',
+    selector: 'dot-template-list',
     templateUrl: './dot-template-list.component.html',
     styleUrls: ['./dot-template-list.component.scss']
 })
