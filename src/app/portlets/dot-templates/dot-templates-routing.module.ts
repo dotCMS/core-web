@@ -20,7 +20,7 @@ const routes: Routes = [
             ).then((m) => m.DotTemplateDesignerModule)
     },
     {
-        path: ':inode',
+        path: ':id',
         loadChildren: () =>
             import(
                 '@portlets/dot-templates/dot-template-designer/dot-template-designer.module.ts'

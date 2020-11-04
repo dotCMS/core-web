@@ -9,6 +9,6 @@ export class DotTemplateDesignerResolver implements Resolve<DotTemplate> {
     constructor(private service: DotTemplatesService) {}
 
     resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<DotTemplate> {
-        return this.service.getByInode(route.paramMap.get('inode'));
+        return this.service.getById(route.paramMap.get('id'));
     }
 }

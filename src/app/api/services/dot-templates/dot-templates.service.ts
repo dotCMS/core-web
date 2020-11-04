@@ -34,14 +34,16 @@ export class DotTemplatesService {
     }
 
     /**
-     * Get template by inode
+     * Get the template, pass the version default working
      *
-     * @param {string} inode
+     * @param {string} id
+     * @param {string} [version='working']
      * @returns {Observable<DotTemplate>}
      * @memberof DotTemplatesService
      */
-    getByInode(inode: string): Observable<DotTemplate> {
-        const url = `/api/v1/templates/${inode}`;
+    getById(id: string, version = 'working'): Observable<DotTemplate> {
+        // TODO: find out if 'working' is the version we have to edit
+        const url = `/api/v1/templates/${id}/${version}`;
 
         return this.request<DotTemplate>({
             url
