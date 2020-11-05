@@ -1,4 +1,5 @@
 <dot-listing-data-table
+    #listing
     (rowWasClicked)="editTemplate($event)"
     [actionHeaderOptions]=""
     [columns]="tableColumns"
@@ -10,6 +11,17 @@
     dataKey="inode"
     [firstPageData]="firstPage"
 >
+    <div>
+        <p-checkbox
+            label="{{'Show-Archived' | dm}}"
+            (onChange)="handleArchivedFilter($event.checked)"
+        ></p-checkbox>
+
+        <button type="button" pButton icon="pi pi-ellipsis-v" label="{{ 'Actions' | dm}}" (click)="menu.toggle($event)"></button>
+        <p-menu #menu [popup]="true" [model]="templateActions"></p-menu>
+
+    </div>
+
     <ng-template #rowTemplate let-rowData="rowData">
         <td [ngStyle]="{ 'text-align': tableColumns[0].textAlign }">
             {{ rowData.name }}

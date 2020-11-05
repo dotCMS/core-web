@@ -1,10 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotListingDataTableComponent } from '@components/dot-listing-data-table/dot-listing-data-table.component';
+import { MenuItem } from 'primeng/api';
 
 @Component({
     selector: 'dot-template-list',
@@ -12,8 +14,11 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
     styleUrls: ['./dot-template-list.component.scss']
 })
 export class DotTemplateListComponent implements OnInit, OnDestroy {
+    @ViewChild('listing', { static: false })
+    listing: DotListingDataTableComponent;
     tableColumns: DataTableColumn[];
     firstPage: DotTemplate[];
+    templateActions: MenuItem[];
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -25,6 +30,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             .subscribe((templates: DotTemplate[]) => {
                 this.firstPage = templates;
                 this.tableColumns = this.setTemplateColumns();
+                this.templateActions = this.setTemplateActions();
             });
     }
 
@@ -32,7 +38,6 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.destroy$.next(true);
         this.destroy$.complete();
     }
-
 
     /**
      * Handle selected template.
@@ -44,6 +49,18 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         console.log(template);
     }
 
+    /**
+     * Handle filter for hide / show archive templates
+     * @param {boolean} checked
+     *
+     * @memberof DotTemplateListComponent
+     */
+    handleArchivedFilter(checked: boolean): void {
+        checked
+            ? this.listing.paginatorService.setExtraParams('archive', checked)
+            : this.listing.paginatorService.deleteExtraParams('archive');
+        this.listing.loadFirstPage();
+    }
 
     private setTemplateColumns(): DataTableColumn[] {
         return [
@@ -67,5 +84,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 sortable: true
             }
         ];
+    }
+
+    private setTemplateActions(): MenuItem[] {
+        return [];
     }
 }

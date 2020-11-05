@@ -6,10 +6,21 @@ import { DotTemplatesService } from '@services/dot-templates/dot-templates.servi
 import { DotListingDataTableModule } from '@components/dot-listing-data-table';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { SharedModule } from 'primeng/api';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MenuModule } from 'primeng/menu';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     declarations: [DotTemplateListComponent],
-    imports: [CommonModule, DotListingDataTableModule, DotPipesModule, SharedModule],
+    imports: [
+        CommonModule,
+        DotListingDataTableModule,
+        DotPipesModule,
+        SharedModule,
+        CheckboxModule,
+        MenuModule,
+        ButtonModule
+    ],
     providers: [DotTemplateListResolver, DotTemplatesService]
 })
 export class DotTemplateListModule {}
