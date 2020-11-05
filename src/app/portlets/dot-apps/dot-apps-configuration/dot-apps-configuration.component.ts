@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { DotApps, DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
+import { dialogAction, DotApps, DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, take, debounceTime, takeUntil } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
@@ -22,7 +22,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     @ViewChild('importExportDialog') importExportDialog: DotAppsImportExportDialogComponent;
     apps: DotApps;
     siteSelected: DotAppsSites;
-    importExportDialogAction = 'Export';
+    importExportDialogAction = dialogAction.EXPORT;
     showDialog = false;
 
     hideLoadDataButton: boolean;
