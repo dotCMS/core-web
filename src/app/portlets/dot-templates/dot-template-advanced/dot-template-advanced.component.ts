@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import * as _ from 'lodash';
+import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 
 @Component({
     selector: 'dot-template-advanced',
@@ -16,7 +17,7 @@ import * as _ from 'lodash';
 export class DotTemplateComponent implements OnInit, OnDestroy {
     group: FormGroup;
     editor: any; // `any` because the type of the editor in the ngx-monaco-editor package is not typed
-    actions = {
+    actions: DotPortletToolbarActions = {
         primary: [
             {
                 label: 'Save',
@@ -104,7 +105,7 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
 
     private onFormValueChanges() {
         this.group.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((values) => {
-            this.setIsDisabled(values, this.originalValue);
+            this.setSaveActionState(values, this.originalValue);
         });
     }
 
@@ -115,11 +116,20 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
             : container.identifier;
     }
 
-    private setIsDisabled(values: DotTemplate, oldValues: DotTemplate): void {
-        const [primary] = this.actions.primary;
-        this.actions.primary[0] = {
-            ...primary,
-            disabled: _.isEqual(values, oldValues)
+    private setSaveActionState(values: DotTemplate, oldValues: DotTemplate): void {
+        const primaryActionIndex = this.actions.primary.findIndex(
+            (action) => action.label === 'Save'
+        );
+        this.actions = {
+            ...this.actions,
+            primary: [
+                ...this.actions.primary.slice(0, primaryActionIndex),
+                {
+                    ...this.actions.primary[primaryActionIndex],
+                    disabled: _.isEqual(values, oldValues)
+                },
+                ...this.actions.primary.slice(primaryActionIndex + 1)
+            ]
         };
     }
 }

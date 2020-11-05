@@ -1,7 +1,8 @@
 import { DotContainer } from '@models/container/dot-container.model';
 import { PaginatorService } from '@services/paginator/paginator.service';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotContainerColumnBox } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-container-selector',
@@ -10,7 +11,7 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
 })
 export class DotContainerSelectorComponent implements OnInit {
     @Output() change: EventEmitter<DotContainer> = new EventEmitter();
-
+    @Input() data: DotContainerColumnBox[] = [];
     totalRecords: number;
     currentContainers: DotContainer[] = [];
 
