@@ -40,7 +40,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     editTemplate = false;
     @Input()
     pageState: DotPageRenderState;
-    newPageState: DotPageRenderState;
 
     form: FormGroup;
     initialFormValue: any;
@@ -207,11 +206,8 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     private setupLayout(pageState?: DotPageRenderState): void {
         if (pageState) {
             this.pageState = pageState;
-
-            // This fixes https://github.com/dotCMS/core/issues/18830
-            // but the reason why it is happening is unknown at this moment
-            this.newPageState = _.cloneDeep(this.pageState);
         }
+
         this.templateContainersCacheService.set(this.pageState.containers);
         this.initForm();
         this.saveAsTemplateHandleChange(false);
