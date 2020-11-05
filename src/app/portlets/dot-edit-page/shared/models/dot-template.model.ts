@@ -1,4 +1,5 @@
 import { DotContainer } from '@shared/models/container/dot-container.model';
+import { DotLayout } from './dot-layout.model';
 
 export interface DotTemplate {
     anonymous: boolean;
@@ -36,4 +37,5 @@ export interface DotTemplate {
             container: DotContainer;
         };
     };
+    layout: DotLayout;
 }

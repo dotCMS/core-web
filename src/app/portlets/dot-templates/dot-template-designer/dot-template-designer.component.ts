@@ -10,17 +10,20 @@ import { map, mergeAll, pluck, startWith, take } from 'rxjs/operators';
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 
 import * as _ from 'lodash';
+import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
+import { DotTemplateStore } from './store/dot-template.store';
 
 @Component({
     selector: 'dot-dot-template-designer',
     templateUrl: './dot-template-designer.component.html',
-    styleUrls: ['./dot-template-designer.component.scss']
+    styleUrls: ['./dot-template-designer.component.scss'],
+    providers: [DotTemplateStore]
 })
 export class DotTemplateDesignerComponent implements OnInit {
     form: FormGroup;
-    title: string;
+    title$: Observable<string>;
 
-    private originalData: any;
+    private originalData: DotTemplate;
 
     portletActions$: Observable<DotPortletToolbarActions>;
 
@@ -29,28 +32,28 @@ export class DotTemplateDesignerComponent implements OnInit {
         private fb: FormBuilder,
         private templateContainersCacheService: TemplateContainersCacheService,
         private dotTemplateService: DotTemplatesService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private readonly store: DotTemplateStore
     ) {}
 
     ngOnInit(): void {
+        this.title$ = this.store.name$;
+
         this.activatedRoute.data
-            .pipe(pluck('template', 'title'), take(1))
-            .subscribe((title: string) => {
-                this.title = title;
+            .pipe(pluck('template'), take(1))
+            .subscribe((template: DotTemplate) => {
+                this.store.setState(template);
             });
 
-        const data$ = this.activatedRoute.data.pipe(pluck('template'));
-
-        this.portletActions$ = data$.pipe(
+        this.portletActions$ = this.store.state$.pipe(
             take(1),
-            map((template: any) => {
+            map((template: DotTemplate) => {
                 this.templateContainersCacheService.set(template.containers);
                 this.form = this.getForm(template);
                 this.originalData = { ...this.form.value };
 
                 return this.form.valueChanges.pipe(
-                    map((value: any) => {
-                        console.log('valueChanges');
+                    map((value: Partial<DotTemplate>) => {
                         return this.getToolbarActions(_.isEqual(value, this.originalData));
                     }),
                     startWith(this.getToolbarActions())
@@ -74,13 +77,12 @@ export class DotTemplateDesignerComponent implements OnInit {
                 doSomething: (value) => {
                     this.form.setValue(value);
                     this.originalData = { ...this.form.value };
-                    this.title = value.title;
                 }
             }
         });
     }
 
-    private getForm(template: any): FormGroup {
+    private getForm(template: DotTemplate): FormGroup {
         const { title, friendlyName, identifier } = template;
 
         return this.fb.group({

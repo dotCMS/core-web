@@ -1,6 +1,6 @@
 <dot-portlet-base>
     <dot-portlet-toolbar
-        [title]="title"
+        [title]="title$ | async"
         cancelButtonLabel="Cerrar"
         [actions]="portletActions$ | async"
     >
