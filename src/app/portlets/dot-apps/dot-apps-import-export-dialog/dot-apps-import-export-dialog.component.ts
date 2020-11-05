@@ -49,7 +49,7 @@ export class DotAppsImportExportDialogComponent implements OnChanges, OnDestroy 
 
     // tslint:disable-next-line:cyclomatic-complexity
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.action && changes.action.currentValue) {
+        if (changes?.action?.currentValue) {
             if (changes.action.currentValue === 'Export') {
                 this.dialogHeaderKey = 'apps.confirmation.export.header';
                 this.form = this.fb.group({
@@ -92,6 +92,16 @@ export class DotAppsImportExportDialogComponent implements OnChanges, OnDestroy 
         this.form.reset();
         this.site = null;
         this.showExportDialog = false;
+    }
+
+    /**
+     * Updates form control value for inputFile field
+     *
+     * @param { File[] } files
+     * @memberof DotAppsConfigurationComponent
+     */
+    onFileChange(files: File[]) {
+        this.form.controls['importFile'].setValue(files[0] ? files[0].name : '');
     }
 
     private setExportDialogActions(): void {

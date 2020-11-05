@@ -166,7 +166,7 @@ export class DotAppsService {
         formData.append('json', JSON.stringify(conf.json));
         formData.append('file', conf.file);
         return this.coreWebService
-            .requestView({
+            .requestView<string>({
                 url: `/api/${appsUrl}/import`,
                 body: formData,
                 headers: { 'Content-Type': 'multipart/form-data' },

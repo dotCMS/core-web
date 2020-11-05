@@ -29,7 +29,9 @@
                 type="password"
                 [placeholder]="'apps.confirmation.import.password.label' | dm"
             />
-            <input #importFile type="file" formControlName="importFile" />
+            <p></p>
+            <input #importFile type="file" (change)="onFileChange($event)" />
+            <input type="hidden" name="fileHidden" formControlName="importFile"/> <!-- Validation Field -->
         </ng-container>
         <span>{{ errorMessage }}</span>
     </form>

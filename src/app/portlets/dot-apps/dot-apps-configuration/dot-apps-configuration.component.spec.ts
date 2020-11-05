@@ -167,9 +167,10 @@ describe('DotAppsConfigurationComponent', () => {
             expect(component.apps).toBe(appData);
         });
 
-        it('should set App in export dialog attribute', () => {
-            const exportDialog = fixture.debugElement.query(By.css('dot-apps-export-dialog'));
-            expect(exportDialog.componentInstance.app).toEqual(appData);
+        it('should set params in export dialog attribute', () => {
+            const importExportDialog = fixture.debugElement.query(By.css('dot-apps-import-export-dialog'));
+            expect(importExportDialog.componentInstance.app).toEqual(appData);
+            expect(importExportDialog.componentInstance.action).toEqual('Export');
         });
 
         it('should set onInit Pagination Service with right values', () => {
@@ -241,8 +242,8 @@ describe('DotAppsConfigurationComponent', () => {
                 By.css('.dot-apps-configuration__action_export_button')
             );
             exportAllBtn.triggerEventHandler('click', null);
-            expect(component.exportDialog.showExportDialog).toBe(true);
-            expect(component.exportDialog.site).toBeUndefined();
+            expect(component.importExportDialog.showExportDialog).toBe(true);
+            expect(component.importExportDialog.site).toBeUndefined();
         });
 
         it('should open confirm dialog and delete All configurations', () => {
@@ -265,7 +266,7 @@ describe('DotAppsConfigurationComponent', () => {
             const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
                 .componentInstance;
             listComp.export.emit(sites[0]);
-            expect(component.exportDialog.showExportDialog).toBe(true);
+            expect(component.importExportDialog.showExportDialog).toBe(true);
             expect(component.siteSelected).toBe(sites[0]);
         });
 
