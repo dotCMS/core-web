@@ -1,8 +1,8 @@
 <dot-portlet-base>
     <dot-portlet-toolbar
         [title]="title$ | async"
+        [actions]="actions$ | async"
         cancelButtonLabel="Cerrar"
-        [actions]="portletActions$ | async"
     >
         <ng-container id="left">
             <button pButton label="Edit" (click)="editTemplateProps()"></button>

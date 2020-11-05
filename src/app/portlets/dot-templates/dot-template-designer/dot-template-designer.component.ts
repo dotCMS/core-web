@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
-import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
+// import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Observable } from 'rxjs';
-import { map, mergeAll, pluck, startWith, take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { pluck, take, takeUntil } from 'rxjs/operators';
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 
-import * as _ from 'lodash';
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { DotTemplateStore } from './store/dot-template.store';
+import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @Component({
     selector: 'dot-dot-template-designer',
@@ -22,45 +21,60 @@ import { DotTemplateStore } from './store/dot-template.store';
 export class DotTemplateDesignerComponent implements OnInit {
     form: FormGroup;
     title$: Observable<string>;
+    actions$: Observable<DotPortletToolbarActions>;
 
-    private originalData: DotTemplate;
-
-    portletActions$: Observable<DotPortletToolbarActions>;
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
-        private templateContainersCacheService: TemplateContainersCacheService,
-        private dotTemplateService: DotTemplatesService,
+        // private dotTemplateService: DotTemplatesService,
         private dialogService: DialogService,
-        private readonly store: DotTemplateStore
+        private readonly store: DotTemplateStore,
+        private templateContainersCacheService: TemplateContainersCacheService
     ) {}
 
     ngOnInit(): void {
         this.title$ = this.store.name$;
+        this.actions$ = this.store.actions$;
+
+        this.store.state$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                ({
+                    original: { identifier, title, friendlyName, layout, containers }
+                }: DotTemplateStore) => {
+                    if (!this.form) {
+                        this.form = this.getForm({
+                            identifier,
+                            title,
+                            friendlyName,
+                            layout
+                        });
+                    }
+                    this.templateContainersCacheService.set(containers);
+                }
+            );
 
         this.activatedRoute.data
             .pipe(pluck('template'), take(1))
-            .subscribe((template: DotTemplate) => {
-                this.store.setState(template);
+            .subscribe(({ identifier, title, friendlyName, layout, containers }: DotTemplate) => {
+                const template = { identifier, title, friendlyName, layout, containers };
+
+                this.store.setState({
+                    original: template,
+                    working: template
+                });
             });
 
-        this.portletActions$ = this.store.state$.pipe(
-            take(1),
-            map((template: DotTemplate) => {
-                this.templateContainersCacheService.set(template.containers);
-                this.form = this.getForm(template);
-                this.originalData = { ...this.form.value };
+        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((template: DotTemplate) => {
+            this.store.updateWorking(template);
+        });
+    }
 
-                return this.form.valueChanges.pipe(
-                    map((value: Partial<DotTemplate>) => {
-                        return this.getToolbarActions(_.isEqual(value, this.originalData));
-                    }),
-                    startWith(this.getToolbarActions())
-                );
-            }),
-            mergeAll()
-        );
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     /**
@@ -76,56 +90,31 @@ export class DotTemplateDesignerComponent implements OnInit {
                 template: this.form.value,
                 doSomething: (value) => {
                     this.form.setValue(value);
-                    this.originalData = { ...this.form.value };
                 }
             }
         });
     }
 
-    private getForm(template: DotTemplate): FormGroup {
-        const { title, friendlyName, identifier } = template;
-
+    private getForm({ title, friendlyName, identifier, layout }: Partial<DotTemplate>): FormGroup {
         return this.fb.group({
             identifier,
             title,
             friendlyName,
-            layout: this.fb.group({
-                body: template.layout.body,
-                header: template.layout.header,
-                footer: template.layout.footer,
-                sidebar: template.layout.sidebar
-            })
+            layout: this.fb.group(layout)
         });
     }
 
-    private getToolbarActions(disabled = true): DotPortletToolbarActions {
-        return {
-            primary: [
-                {
-                    label: 'Save',
-                    disabled: disabled,
-                    command: () => {
-                        this.saveTemplate();
-                    }
-                }
-            ],
-            cancel: () => {
-                console.log('cancel');
-            }
-        };
-    }
-
-    private saveTemplate(): void {
-        this.dotTemplateService
-            .update(this.form.value)
-            .pipe(take(1))
-            .subscribe(
-                (res) => {
-                    console.log(res);
-                },
-                (err) => {
-                    console.log(err);
-                }
-            );
-    }
+    // private saveTemplate(): void {
+    //     this.dotTemplateService
+    //         .update(this.form.value)
+    //         .pipe(take(1))
+    //         .subscribe(
+    //             (res) => {
+    //                 console.log(res);
+    //             },
+    //             (err) => {
+    //                 console.log(err);
+    //             }
+    //         );
+    // }
 }
