@@ -4,6 +4,7 @@ import { pluck, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-template-list',

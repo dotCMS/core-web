@@ -16,7 +16,21 @@ import * as _ from 'lodash';
 export class DotTemplateComponent implements OnInit, OnDestroy {
     group: FormGroup;
     editor: any; // `any` because the type of the editor in the ngx-monaco-editor package is not typed
-    isDisabled = true;
+    actions = {
+        primary: [
+            {
+                label: 'Save',
+                disabled: true,
+                command: () => {
+                    this.saveTemplate();
+                }
+            }
+        ],
+        cancel: () => {
+            console.log('cancel');
+            this.dotRouterService.goToURL('/c/templates');
+        }
+    };
     private destroy$: Subject<boolean> = new Subject<boolean>();
     private originalValue: DotTemplate;
 
@@ -52,13 +66,11 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * This method handles the submit event of the form
+     * This method creates the template
      *
-     * @param {*} event
      * @memberof DotTemplateComponent
      */
-    onSubmit(event: Event): void {
-        event.preventDefault();
+    saveTemplate(): void {
         this.dotTemplateService
             .create(this.group.value)
             .pipe(take(1))
@@ -105,6 +117,10 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
     }
 
     private setIsDisabled(values: DotTemplate, oldValues: DotTemplate): void {
-        this.isDisabled = _.isEqual(values, oldValues);
+        const [primary] = this.actions.primary;
+        this.actions.primary[0] = {
+            ...primary,
+            disabled: _.isEqual(values, oldValues)
+        };
     }
 }
