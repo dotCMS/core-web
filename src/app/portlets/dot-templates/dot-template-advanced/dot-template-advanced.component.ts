@@ -27,7 +27,6 @@ export class DotTemplateComponent implements OnInit, OnDestroy {
             }
         ],
         cancel: () => {
-            console.log('cancel');
             this.dotRouterService.goToURL('/c/templates');
         }
     };
