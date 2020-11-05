@@ -242,7 +242,7 @@ describe('DotAppsConfigurationComponent', () => {
                 By.css('.dot-apps-configuration__action_export_button')
             );
             exportAllBtn.triggerEventHandler('click', null);
-            expect(component.importExportDialog.showExportDialog).toBe(true);
+            expect(component.importExportDialog.show).toBe(true);
             expect(component.importExportDialog.site).toBeUndefined();
         });
 
@@ -266,7 +266,7 @@ describe('DotAppsConfigurationComponent', () => {
             const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
                 .componentInstance;
             listComp.export.emit(sites[0]);
-            expect(component.importExportDialog.showExportDialog).toBe(true);
+            expect(component.importExportDialog.show).toBe(true);
             expect(component.siteSelected).toBe(sites[0]);
         });
 

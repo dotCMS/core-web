@@ -14,6 +14,7 @@ import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import {
+    dialogAction,
     DotApps,
     DotAppsExportConfiguration,
     DotAppsImportConfiguration,
@@ -31,9 +32,10 @@ export class DotAppsImportExportDialogComponent implements OnChanges, OnDestroy 
     @Input() action?: string;
     @Input() app?: DotApps;
     @Input() site?: DotAppsSites;
+    @Input() show? = false;
     @Output() resolved: EventEmitter<boolean> = new EventEmitter();
+    @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
-    showExportDialog = false;
     form: FormGroup;
     dialogActions: DotDialogActions;
     errorMessage: string;
@@ -67,7 +69,8 @@ export class DotAppsImportExportDialogComponent implements OnChanges, OnDestroy 
         this.errorMessage = '';
         this.form.reset();
         this.site = null;
-        this.showExportDialog = false;
+        this.show = false;
+        this.onClose.emit();
     }
 
     /**
@@ -83,17 +86,17 @@ export class DotAppsImportExportDialogComponent implements OnChanges, OnDestroy 
     /**
      * Sets dialog form based on action Import/Export
      *
-     * @param { string } action
+     * @param { dialogAction } action
      * @memberof DotAppsConfigurationComponent
      */
-    setDialogForm(action: string): void {
-        if (action === 'Export') {
+    setDialogForm(action: dialogAction): void {
+        if (action === dialogAction.EXPORT) {
             this.dialogHeaderKey = 'apps.confirmation.export.header';
             this.form = this.fb.group({
                 password: new FormControl('', Validators.required)
             });
             this.setExportDialogActions();
-        } else if (action === 'Import') {
+        } else if (action === dialogAction.IMPORT) {
             this.dialogHeaderKey = 'apps.confirmation.import.header';
             this.form = this.fb.group({
                 password: new FormControl('', Validators.required),

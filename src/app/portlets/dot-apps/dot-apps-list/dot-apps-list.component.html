@@ -41,5 +41,7 @@
 <dot-apps-import-export-dialog
     #importExportDialog
     [action]="importExportDialogAction"
+    [show]="showDialog"
     (resolved)="reloadAppsData()"
+    (onClose)="onClosedDialog()"
 ></dot-apps-import-export-dialog>

@@ -20,6 +20,7 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
     appsCopy: DotApps[];
     canAccessPortlet: boolean;
     importExportDialogAction: string;
+    showDialog = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -61,8 +62,17 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
      * @memberof DotAppsConfigurationComponent
      */
     confirmImportExport(action: string): void {
-        this.importExportDialog.showExportDialog = true;
+        this.showDialog = true;
         this.importExportDialogAction = action;
+    }
+
+    /**
+     * Updates dialog show/hide state
+     *
+     * @memberof DotAppsConfigurationComponent
+     */
+    onClosedDialog(): void {
+        this.showDialog = false;
     }
 
     /**

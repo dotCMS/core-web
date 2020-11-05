@@ -1,8 +1,8 @@
 <dot-dialog
     class="p-fluid"
-    *ngIf="showExportDialog"
+    *ngIf="show"
     [header]="dialogHeaderKey | dm"
-    [visible]="showExportDialog"
+    [visible]="show"
     [actions]="dialogActions"
     [appendToBody]="true"
     (hide)="closeExportDialog()"

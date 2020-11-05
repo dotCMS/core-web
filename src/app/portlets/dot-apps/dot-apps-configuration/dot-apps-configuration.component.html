@@ -47,4 +47,6 @@
     [app]="apps"
     [site]="siteSelected"
     [action]="importExportDialogAction"
+    [show]="showDialog"
+    (onClose)="onClosedDialog()"
 ></dot-apps-import-export-dialog>

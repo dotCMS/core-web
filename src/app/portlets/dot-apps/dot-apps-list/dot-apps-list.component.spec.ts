@@ -56,6 +56,7 @@ class MockDotAppsCardComponent {
 })
 class MockDotAppsImportExportDialogComponent {
     @Input() action: string;
+    @Input() show: boolean;
     @Output() resolved = new EventEmitter<boolean>();
 }
 
@@ -161,7 +162,7 @@ describe('DotAppsListComponent', () => {
                 By.css('.dot-apps-configuration__action_export_button')
             );
             exportAllBtn.triggerEventHandler('click', 'Export');
-            expect(component.importExportDialog.showExportDialog).toBe(true);
+            expect(component.showDialog).toBe(true);
             expect(component.importExportDialogAction).toBe('Export');
         });
 
@@ -170,7 +171,7 @@ describe('DotAppsListComponent', () => {
                 By.css('.dot-apps-configuration__action_import_button')
             );
             importBtn.triggerEventHandler('click', 'Import');
-            expect(component.importExportDialog.showExportDialog).toBe(true);
+            expect(component.showDialog).toBe(true);
             expect(component.importExportDialogAction).toBe('Import');
         });
 

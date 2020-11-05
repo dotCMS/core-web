@@ -23,6 +23,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     apps: DotApps;
     siteSelected: DotAppsSites;
     importExportDialogAction = 'Export';
+    showDialog = false;
 
     hideLoadDataButton: boolean;
     paginationPerPage = 40;
@@ -96,6 +97,15 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Updates dialog show/hide state
+     *
+     * @memberof DotAppsConfigurationComponent
+     */
+    onClosedDialog(): void {
+        this.showDialog = false;
+    }
+
+    /**
      * Redirects to app configuration listing page
      *
      * @param string key
@@ -112,7 +122,7 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
      * @memberof DotAppsConfigurationComponent
      */
     confirmExport(site?: DotAppsSites): void {
-        this.importExportDialog.showExportDialog = true;
+        this.importExportDialog.show = true;
         this.siteSelected = site;
     }
 

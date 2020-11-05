@@ -1,5 +1,10 @@
 import { SelectItem } from 'primeng/api';
 
+export enum dialogAction {
+    IMPORT = 'Import',
+    EXPORT = 'Export'
+}
+
 export interface DotApps {
     allowExtraParams: boolean;
     configurationsCount?: number;

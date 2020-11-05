@@ -36,6 +36,7 @@ export class DotAppsServiceMock {
             [action]="action"
             [app]="app"
             [site]="site"
+            [show]="true"
             (resolved)="resolveHandler($event)"
         ></dot-apps-import-export-dialog>
     `
@@ -89,12 +90,12 @@ describe('DotAppsImportExportDialogComponent', () => {
             comp = hostFixture.debugElement.query(By.css('dot-apps-import-export-dialog'))
                 .componentInstance;
             dotAppsService = TestBed.inject(DotAppsService);
-            comp.showExportDialog = true;
+            comp.show = true;
         })
     );
 
     afterEach(() => {
-        comp.showExportDialog = false;
+        comp.show = false;
         hostFixture.detectChanges();
     });
 
@@ -197,7 +198,7 @@ describe('DotAppsImportExportDialogComponent', () => {
 
             expect(comp.errorMessage).toBe('');
             expect(comp.site).toBe(null);
-            expect(comp.showExportDialog).toBe(false);
+            expect(comp.show).toBe(false);
             expect(comp.form.reset).toHaveBeenCalledTimes(1);
         });
 
