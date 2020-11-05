@@ -47,33 +47,9 @@ export class DotAppsImportExportDialogComponent implements OnChanges, OnDestroy 
         private fb: FormBuilder
     ) {}
 
-    // tslint:disable-next-line:cyclomatic-complexity
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.action?.currentValue) {
-            if (changes.action.currentValue === 'Export') {
-                this.dialogHeaderKey = 'apps.confirmation.export.header';
-                this.form = this.fb.group({
-                    password: new FormControl('', Validators.required)
-                });
-                this.setExportDialogActions();
-            } else if (changes.action.currentValue === 'Import') {
-                this.dialogHeaderKey = 'apps.confirmation.import.header';
-                this.form = this.fb.group({
-                    password: new FormControl('', Validators.required),
-                    importFile: new FormControl('', Validators.required)
-                });
-                this.setImportDialogActions();
-            }
-
-            this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-                this.dialogActions = {
-                    ...this.dialogActions,
-                    accept: {
-                        ...this.dialogActions.accept,
-                        disabled: !this.form.valid
-                    }
-                };
-            });
+            this.setDialogForm(changes.action.currentValue);
         }
     }
 
@@ -102,6 +78,39 @@ export class DotAppsImportExportDialogComponent implements OnChanges, OnDestroy 
      */
     onFileChange(files: File[]) {
         this.form.controls['importFile'].setValue(files[0] ? files[0].name : '');
+    }
+
+    /**
+     * Sets dialog form based on action Import/Export
+     *
+     * @param { string } action
+     * @memberof DotAppsConfigurationComponent
+     */
+    setDialogForm(action: string): void {
+        if (action === 'Export') {
+            this.dialogHeaderKey = 'apps.confirmation.export.header';
+            this.form = this.fb.group({
+                password: new FormControl('', Validators.required)
+            });
+            this.setExportDialogActions();
+        } else if (action === 'Import') {
+            this.dialogHeaderKey = 'apps.confirmation.import.header';
+            this.form = this.fb.group({
+                password: new FormControl('', Validators.required),
+                importFile: new FormControl('', Validators.required)
+            });
+            this.setImportDialogActions();
+        }
+
+        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.dialogActions = {
+                ...this.dialogActions,
+                accept: {
+                    ...this.dialogActions.accept,
+                    disabled: !this.form.valid
+                }
+            };
+        });
     }
 
     private setExportDialogActions(): void {
