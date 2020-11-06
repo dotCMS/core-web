@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
-import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
+import { switchMap, tap } from 'rxjs/operators';
+import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 
 export interface DotTemplateStore {
     original: Partial<DotTemplate>;
@@ -13,19 +14,17 @@ export interface DotTemplateStore {
 
 @Injectable()
 export class DotTemplateStore extends ComponentStore<Partial<DotTemplateStore>> {
-    constructor() {
+    constructor(private dotTemplateService: DotTemplatesService) {
         super(null);
     }
 
     readonly name$: Observable<string> = this.select(
-        ({ original }: DotTemplateStore) => original.name
+        ({ original }: DotTemplateStore) => original.title
     );
 
-    readonly actions$: Observable<DotPortletToolbarActions> = this.select(
-        ({ original, working }: DotTemplateStore) => {
-            return this.getActions(_.isEqual(original.layout, working.layout));
-        }
-    );
+    readonly didTemplateChange$: Observable<
+        boolean
+    > = this.select(({ original, working }: DotTemplateStore) => _.isEqual(original, working));
 
     readonly updateWorking = this.updater(
         (state: DotTemplateStore, working: Partial<DotTemplate>) => ({
@@ -34,21 +33,18 @@ export class DotTemplateStore extends ComponentStore<Partial<DotTemplateStore>> 
         })
     );
 
-    private getActions(disabled = true): DotPortletToolbarActions {
-        console.log('disabled', disabled);
-        return {
-            primary: [
-                {
-                    label: 'Save',
-                    disabled: disabled,
-                    command: () => {
-                        console.log('Save template');
-                    }
-                }
-            ],
-            cancel: () => {
-                console.log('cancel');
-            }
-        };
-    }
+    readonly saveTemplate = this.effect((origin$: Observable<Partial<DotTemplate>>) =>
+        origin$.pipe(
+            switchMap((template: Partial<DotTemplate>) => {
+                const { containers, ...value } = template;
+                return this.dotTemplateService.update(value as DotTemplate);
+            }),
+            tap((template: DotTemplate) => {
+                this.setState({
+                    original: template,
+                    working: template
+                });
+            })
+        )
+    );
 }

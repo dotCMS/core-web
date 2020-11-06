@@ -42,7 +42,6 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     getById(id: string, version = 'working'): Observable<DotTemplate> {
-        // TODO: find out if 'working' is the version we have to edit
         const url = `/api/v1/templates/${id}/${version}`;
 
         return this.request<DotTemplate>({
@@ -83,7 +82,6 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     update(values: DotTemplate): Observable<DotTemplate> {
-        console.log(JSON.stringify(values));
         const url = '/api/v1/templates';
 
         return this.request<DotTemplate>({ method: 'PUT', url, body: values });

@@ -49,7 +49,7 @@ export class DotTemplatePropsComponent implements OnInit {
             .update(this.form.value)
             .pipe(take(1))
             .subscribe(() => {
-                this.config.data.doSomething(this.form.value);
+                this.config.data.callback(this.form.value);
                 this.ref.close();
             });
     }

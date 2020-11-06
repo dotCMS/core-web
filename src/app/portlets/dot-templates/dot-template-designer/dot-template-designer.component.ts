@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Observable, Subject } from 'rxjs';
-import { pluck, take, takeUntil } from 'rxjs/operators';
+import { map, pluck, take, takeUntil } from 'rxjs/operators';
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
@@ -36,7 +36,9 @@ export class DotTemplateDesignerComponent implements OnInit {
 
     ngOnInit(): void {
         this.title$ = this.store.name$;
-        this.actions$ = this.store.actions$;
+        this.actions$ = this.store.didTemplateChange$.pipe(
+            map((disabled: boolean) => this.getActions(disabled))
+        );
 
         this.store.state$
             .pipe(takeUntil(this.destroy$))
@@ -49,7 +51,8 @@ export class DotTemplateDesignerComponent implements OnInit {
                             identifier,
                             title,
                             friendlyName,
-                            layout
+                            layout,
+                            containers
                         });
                     }
                     this.templateContainersCacheService.set(containers);
@@ -68,6 +71,7 @@ export class DotTemplateDesignerComponent implements OnInit {
             });
 
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((template: DotTemplate) => {
+            console.log(template);
             this.store.updateWorking(template);
         });
     }
@@ -88,33 +92,43 @@ export class DotTemplateDesignerComponent implements OnInit {
             width: '30rem',
             data: {
                 template: this.form.value,
-                doSomething: (value) => {
-                    this.form.setValue(value);
+                callback: (value: DotTemplate) => {
+                    this.store.saveTemplate(value);
                 }
             }
         });
     }
 
-    private getForm({ title, friendlyName, identifier, layout }: Partial<DotTemplate>): FormGroup {
+    private getForm({
+        title,
+        friendlyName,
+        identifier,
+        layout,
+        containers
+    }: Partial<DotTemplate>): FormGroup {
         return this.fb.group({
             identifier,
             title,
             friendlyName,
+            containers,
             layout: this.fb.group(layout)
         });
     }
 
-    // private saveTemplate(): void {
-    //     this.dotTemplateService
-    //         .update(this.form.value)
-    //         .pipe(take(1))
-    //         .subscribe(
-    //             (res) => {
-    //                 console.log(res);
-    //             },
-    //             (err) => {
-    //                 console.log(err);
-    //             }
-    //         );
-    // }
+    private getActions(disabled = true): DotPortletToolbarActions {
+        return {
+            primary: [
+                {
+                    label: 'Save',
+                    disabled: disabled,
+                    command: () => {
+                        this.store.saveTemplate(this.form.value);
+                    }
+                }
+            ],
+            cancel: () => {
+                console.log('cancel');
+            }
+        };
+    }
 }
