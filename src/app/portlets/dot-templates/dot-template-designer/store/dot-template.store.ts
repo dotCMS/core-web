@@ -33,8 +33,8 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         })
     );
 
-    readonly saveTemplate = this.effect((origin$: Observable<Partial<DotTemplate>>) =>
-        origin$.pipe(
+    readonly saveTemplate = this.effect((origin$: Observable<Partial<DotTemplate>>) => {
+        return origin$.pipe(
             switchMap((template: Partial<DotTemplate>) => {
                 const { containers, ...value } = template;
                 return this.dotTemplateService.update(value as DotTemplate);
@@ -45,6 +45,6 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                     working: template
                 });
             })
-        )
-    );
+        );
+    });
 }

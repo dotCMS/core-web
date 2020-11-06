@@ -45,15 +45,18 @@ export class DotTemplateDesignerComponent implements OnInit {
                 ({
                     original: { identifier, title, friendlyName, layout, containers }
                 }: DotTemplateState) => {
+                    const template = {
+                        identifier,
+                        title,
+                        friendlyName,
+                        layout,
+                        containers
+                    };
+
                     if (!this.form) {
-                        this.form = this.getForm({
-                            identifier,
-                            title,
-                            friendlyName,
-                            layout,
-                            containers
-                        });
+                        this.form = this.getForm(template);
                     }
+                    this.form.setValue(template, { emitEvent: false });
                     this.templateContainersCacheService.set(containers);
                 }
             );

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-dot-template-props',
@@ -18,8 +17,7 @@ export class DotTemplatePropsComponent implements OnInit {
     constructor(
         private ref: DynamicDialogRef,
         private config: DynamicDialogConfig,
-        private fb: FormBuilder,
-        private dotTemplatesService: DotTemplatesService
+        private fb: FormBuilder
     ) {}
 
     ngOnInit(): void {
@@ -45,12 +43,7 @@ export class DotTemplatePropsComponent implements OnInit {
      * @memberof DotTemplatePropsComponent
      */
     onSave(): void {
-        this.dotTemplatesService
-            .update(this.form.value)
-            .pipe(take(1))
-            .subscribe(() => {
-                this.config.data.callback(this.form.value);
-                this.ref.close();
-            });
+        this.config.data.callback(this.form.value);
+        this.ref.close();
     }
 }
