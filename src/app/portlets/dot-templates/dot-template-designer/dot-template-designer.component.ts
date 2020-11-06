@@ -9,7 +9,7 @@ import { map, pluck, take, takeUntil } from 'rxjs/operators';
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
-import { DotTemplateStore } from './store/dot-template.store';
+import { DotTemplateState, DotTemplateStore } from './store/dot-template.store';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @Component({
@@ -28,9 +28,8 @@ export class DotTemplateDesignerComponent implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
-        // private dotTemplateService: DotTemplatesService,
         private dialogService: DialogService,
-        private readonly store: DotTemplateStore,
+        private store: DotTemplateStore,
         private templateContainersCacheService: TemplateContainersCacheService
     ) {}
 
@@ -45,7 +44,7 @@ export class DotTemplateDesignerComponent implements OnInit {
             .subscribe(
                 ({
                     original: { identifier, title, friendlyName, layout, containers }
-                }: DotTemplateStore) => {
+                }: DotTemplateState) => {
                     if (!this.form) {
                         this.form = this.getForm({
                             identifier,
@@ -71,7 +70,6 @@ export class DotTemplateDesignerComponent implements OnInit {
             });
 
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((template: DotTemplate) => {
-            console.log(template);
             this.store.updateWorking(template);
         });
     }

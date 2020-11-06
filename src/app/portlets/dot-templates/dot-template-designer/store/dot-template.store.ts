@@ -7,27 +7,27 @@ import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { switchMap, tap } from 'rxjs/operators';
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 
-export interface DotTemplateStore {
+export interface DotTemplateState {
     original: Partial<DotTemplate>;
     working: Partial<DotTemplate>;
 }
 
 @Injectable()
-export class DotTemplateStore extends ComponentStore<Partial<DotTemplateStore>> {
+export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     constructor(private dotTemplateService: DotTemplatesService) {
         super(null);
     }
 
     readonly name$: Observable<string> = this.select(
-        ({ original }: DotTemplateStore) => original.title
+        ({ original }: DotTemplateState) => original.title
     );
 
     readonly didTemplateChange$: Observable<
         boolean
-    > = this.select(({ original, working }: DotTemplateStore) => _.isEqual(original, working));
+    > = this.select(({ original, working }: DotTemplateState) => _.isEqual(original, working));
 
-    readonly updateWorking = this.updater(
-        (state: DotTemplateStore, working: Partial<DotTemplate>) => ({
+    readonly updateWorking = this.updater<DotTemplate>(
+        (state: DotTemplateState, working: Partial<DotTemplate>) => ({
             ...state,
             working
         })
