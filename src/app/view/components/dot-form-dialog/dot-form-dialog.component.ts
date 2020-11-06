@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output
+} from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,10 +24,15 @@ export class DotFormDialogComponent implements OnInit, OnDestroy {
     saveButtonDisabled: boolean;
 
     @Output()
-    save: EventEmitter<MouseEvent> = new EventEmitter(null);
+    save: EventEmitter<MouseEvent | KeyboardEvent> = new EventEmitter(null);
 
     @Output()
     cancel: EventEmitter<MouseEvent> = new EventEmitter(null);
+
+    @HostListener('document:keyup', ['$event'])
+    clickOutside(e: KeyboardEvent) {
+        console.log('Hello', e.target);
+    }
 
     constructor(private dynamicDialog: DynamicDialogRef) {}
 
@@ -60,6 +73,20 @@ export class DotFormDialogComponent implements OnInit, OnDestroy {
 
         if (!this.cancel.observers.length) {
             this.dynamicDialog.close();
+        }
+    }
+
+    /**
+     * Handle the key enter in the <form />
+     *
+     * @param {KeyboardEvent} $event
+     * @memberof DotFormDialogComponent
+     */
+    onEnter($event: KeyboardEvent) {
+        const nodeName = ($event.target as Element).nodeName;
+
+        if (!this.saveButtonDisabled && nodeName !== 'TEXTAREA') {
+            this.save.emit($event);
         }
     }
 
