@@ -8,6 +8,7 @@ on:
             - release-*
 jobs:
     build:
+        if: github.event.pull_request.draft == false
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
