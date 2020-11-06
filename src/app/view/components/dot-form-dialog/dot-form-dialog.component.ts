@@ -29,9 +29,13 @@ export class DotFormDialogComponent implements OnInit, OnDestroy {
     @Output()
     cancel: EventEmitter<MouseEvent> = new EventEmitter(null);
 
-    @HostListener('document:keyup', ['$event'])
-    clickOutside(e: KeyboardEvent) {
-        console.log('Hello', e.target);
+    @HostListener('document:keydown.enter', ['$event'])
+    onEnter($event: KeyboardEvent) {
+        const nodeName = ($event.target as Element).nodeName;
+
+        if (!this.saveButtonDisabled && nodeName !== 'TEXTAREA') {
+            this.save.emit($event);
+        }
     }
 
     constructor(private dynamicDialog: DynamicDialogRef) {}
@@ -73,20 +77,6 @@ export class DotFormDialogComponent implements OnInit, OnDestroy {
 
         if (!this.cancel.observers.length) {
             this.dynamicDialog.close();
-        }
-    }
-
-    /**
-     * Handle the key enter in the <form />
-     *
-     * @param {KeyboardEvent} $event
-     * @memberof DotFormDialogComponent
-     */
-    onEnter($event: KeyboardEvent) {
-        const nodeName = ($event.target as Element).nodeName;
-
-        if (!this.saveButtonDisabled && nodeName !== 'TEXTAREA') {
-            this.save.emit($event);
         }
     }
 
