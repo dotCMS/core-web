@@ -41,6 +41,7 @@ export class DotTemplateDesignerComponent implements OnInit {
         this.form = this.getForm(template);
 
         this.title$ = this.store.name$;
+
         this.actions$ = this.store.didTemplateChanged$.pipe(
             map((disabled: boolean) => this.getActions(disabled))
         );
