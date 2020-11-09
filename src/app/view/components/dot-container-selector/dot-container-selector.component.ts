@@ -12,7 +12,6 @@ import { DotContainerColumnBox } from '@portlets/dot-edit-page/shared/models';
 export class DotContainerSelectorComponent implements OnInit {
     @Output() change: EventEmitter<DotContainer> = new EventEmitter();
     @Input() data: DotContainerColumnBox[] = [];
-    @Input() multiple: boolean;
     totalRecords: number;
     currentContainers: DotContainer[] = [];
 
