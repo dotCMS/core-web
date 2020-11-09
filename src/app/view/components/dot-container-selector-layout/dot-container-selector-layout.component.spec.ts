@@ -7,7 +7,7 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { SearchableDropDownModule } from '../_common/searchable-dropdown/searchable-dropdown.module';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { ComponentFixture, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DotContainerSelectorLayoutComponent } from './dot-container-selector-layout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,12 +26,13 @@ import {
 } from 'dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
 
 describe('ContainerSelectorComponent', () => {
     let comp: DotContainerSelectorLayoutComponent;
     let fixture: ComponentFixture<DotContainerSelectorLayoutComponent>;
     let de: DebugElement;
-    let searchableDropdownComponent;
+    let dotContainerSelector;
     let containers: DotContainer[];
 
     beforeEach(() => {
@@ -48,7 +49,8 @@ describe('ContainerSelectorComponent', () => {
                 FormsModule,
                 ButtonModule,
                 DotPipesModule,
-                HttpClientTestingModule
+                HttpClientTestingModule,
+                DotContainerSelectorModule
             ],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
@@ -68,7 +70,7 @@ describe('ContainerSelectorComponent', () => {
         comp = fixture.componentInstance;
         de = fixture.debugElement;
 
-        searchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
+        dotContainerSelector = de.query(By.css('dot-container-selector')).componentInstance;
 
         containers = [
             {
@@ -114,52 +116,10 @@ describe('ContainerSelectorComponent', () => {
         expect(dataItem.nativeNode.textContent).toEqual('Container 1 (demo.dotcms.com)');
     });
 
-    it('should change Page', fakeAsync(() => {
-        const filter = 'filter';
-        const page = 1;
-
-        fixture.detectChanges();
-
-        const paginatorService: PaginatorService = de.injector.get(PaginatorService);
-        paginatorService.totalRecords = 2;
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
-
-        fixture.detectChanges();
-
-        searchableDropdownComponent.pageChange.emit({
-            filter: filter,
-            first: 10,
-            page: page,
-            pageCount: 10,
-            rows: 0
-        });
-
-        tick();
-        expect(paginatorService.getWithOffset).toHaveBeenCalledWith(10);
-    }));
-
-    it('should paginate when the filter change', fakeAsync(() => {
-        const filter = 'filter';
-
-        fixture.detectChanges();
-
-        const paginatorService: PaginatorService = de.injector.get(PaginatorService);
-        paginatorService.totalRecords = 2;
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
-
-        fixture.detectChanges();
-
-        searchableDropdownComponent.filterChange.emit(filter);
-
-        tick();
-        expect(paginatorService.getWithOffset).toHaveBeenCalledWith(0);
-        expect(paginatorService.filter).toEqual(filter);
-    }));
-
     it('should add containers to containers list and emit a change event', () => {
         comp.currentContainers = containers;
 
-        searchableDropdownComponent.change.emit(containers[0]);
+        dotContainerSelector.change.emit(containers[0]);
 
         expect(comp.data[0].container).toEqual(containers[0]);
         expect(comp.data[0].uuid).not.toBeNull();
@@ -172,7 +132,7 @@ describe('ContainerSelectorComponent', () => {
 
         comp.currentContainers = containers;
 
-        searchableDropdownComponent.change.emit(containers[0]);
+        dotContainerSelector.change.emit(containers[0]);
 
         fixture.detectChanges();
 
@@ -183,12 +143,12 @@ describe('ContainerSelectorComponent', () => {
     it('should not add duplicated containers to the list when multiple false', () => {
         comp.currentContainers = containers;
 
-        searchableDropdownComponent.change.emit(containers[0]);
+        dotContainerSelector.change.emit(containers[0]);
         fixture.detectChanges();
 
         expect(comp.data.length).toEqual(1);
 
-        searchableDropdownComponent.change.emit(containers[0]);
+        dotContainerSelector.change.emit(containers[0]);
         fixture.detectChanges();
 
         expect(comp.data.length).toEqual(1);
@@ -198,8 +158,8 @@ describe('ContainerSelectorComponent', () => {
         comp.currentContainers = containers;
         comp.multiple = true;
 
-        searchableDropdownComponent.change.emit(containers[0]);
-        searchableDropdownComponent.change.emit(containers[0]);
+        dotContainerSelector.change.emit(containers[0]);
+        dotContainerSelector.change.emit(containers[0]);
         fixture.detectChanges();
 
         expect(comp.data.length).toEqual(2);
