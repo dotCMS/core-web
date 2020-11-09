@@ -11,6 +11,7 @@ import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.
 
 @NgModule({
     declarations: [DotTemplateDesignerComponent],
+    exports: [DotTemplateDesignerComponent],
     imports: [
         ButtonModule,
         CommonModule,

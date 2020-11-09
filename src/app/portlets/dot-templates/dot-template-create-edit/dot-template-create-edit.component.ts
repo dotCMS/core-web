@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { Observable } from 'rxjs';
 import { map, mergeMap, pluck } from 'rxjs/operators';
 
@@ -10,17 +11,18 @@ import { map, mergeMap, pluck } from 'rxjs/operators';
 })
 export class DotTemplateCreateEditComponent implements OnInit {
     isAdvaced$: Observable<boolean>;
+    template$: Observable<DotTemplate>;
 
     constructor(private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         const type$ = this.activatedRoute.params.pipe(pluck('type'));
-        const template$ = this.activatedRoute.data.pipe(pluck('template'));
+        this.template$ = this.activatedRoute.data.pipe(pluck('template'));
 
         this.isAdvaced$ = type$.pipe(
             map((type: string) => type === 'advanced'),
             mergeMap((isAdvanced: boolean) =>
-                template$.pipe(
+                this.template$.pipe(
                     pluck('drawed'),
                     map((isDrawed: boolean) => !isDrawed || isAdvanced)
                 )
