@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DotTemplateDesignerComponent } from './dot-template-designer.component';
+import { DotTemplateCreateEditComponent } from './dot-template-create-edit.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: DotTemplateDesignerComponent
+        component: DotTemplateCreateEditComponent
     }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class DotTemplateDesignerRoutingModule {}
+export class DotTemplateCreateEditRoutingModule {}

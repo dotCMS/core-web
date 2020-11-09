@@ -5,7 +5,7 @@ import { DotTemplatesService } from '@services/dot-templates/dot-templates.servi
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class DotTemplateDesignerResolver implements Resolve<DotTemplate> {
+export class DotTemplateCreateEditResolver implements Resolve<DotTemplate> {
     constructor(private service: DotTemplatesService) {}
 
     resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<DotTemplate> {

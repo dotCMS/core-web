@@ -1,0 +1,4 @@
+{{ isAdvaced$ | async }}
+
+<div *ngIf="isAdvaced$ | async; else elseBlock">Advaced</div>
+<ng-template #elseBlock>Designer</ng-template>
