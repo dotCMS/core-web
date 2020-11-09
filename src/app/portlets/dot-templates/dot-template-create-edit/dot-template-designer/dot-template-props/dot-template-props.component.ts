@@ -47,6 +47,11 @@ export class DotTemplatePropsComponent implements OnInit {
         this.ref.close();
     }
 
+    /**
+     * Handle cancel button
+     *
+     * @memberof DotTemplatePropsComponent
+     */
     onCancel(): void {
         this.config.data?.onCancel?.();
         this.ref.close();
