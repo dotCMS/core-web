@@ -1,4 +1,8 @@
-<dot-form-dialog [saveButtonDisabled]="!(isFormValid$ | async)" (save)="onSave()">
+<dot-form-dialog
+    [saveButtonDisabled]="!(isFormValid$ | async)"
+    (cancel)="onCancel()"
+    (save)="onSave()"
+>
     <form class="p-fluid" [formGroup]="form">
         <div class="p-field">
             <label for="title">Title</label>

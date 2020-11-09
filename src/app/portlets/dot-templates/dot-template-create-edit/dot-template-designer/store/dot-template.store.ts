@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { switchMap, tap } from 'rxjs/operators';
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 export interface DotTemplateState {
     original: Partial<DotTemplate>;
@@ -14,7 +15,10 @@ export interface DotTemplateState {
 
 @Injectable()
 export class DotTemplateStore extends ComponentStore<DotTemplateState> {
-    constructor(private dotTemplateService: DotTemplatesService) {
+    constructor(
+        private dotTemplateService: DotTemplatesService,
+        private dotRouterService: DotRouterService
+    ) {
         super(null);
     }
 
@@ -44,7 +48,6 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 return this.dotTemplateService.update(value as DotTemplate);
             }),
             tap((template: DotTemplate) => {
-                console.log(template);
                 this.setState({
                     original: template,
                     working: template
@@ -52,4 +55,20 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
             })
         );
     });
+
+    readonly createTemplate = this.effect((origin$: Observable<Partial<DotTemplate>>) => {
+        return origin$.pipe(
+            switchMap((template: Partial<DotTemplate>) => {
+                const { containers, ...value } = template;
+                return this.dotTemplateService.create(value as DotTemplate);
+            }),
+            tap(({ identifier }: DotTemplate) => {
+                this.dotRouterService.goToEditTemplate(identifier);
+            })
+        );
+    });
+
+    readonly cancelCreate = () => {
+        this.dotRouterService.gotoPortlet('templates');
+    };
 }

@@ -4,8 +4,13 @@
         [actions]="actions$ | async"
         cancelButtonLabel="Cerrar"
     >
-        <ng-container id="left">
-            <button pButton label="Edit" (click)="editTemplateProps()"></button>
+        <ng-container id="left" *ngIf="title$ | async">
+            <button
+                pButton
+                class="p-button-text"
+                label="Edit"
+                (click)="editTemplateProps()"
+            ></button>
         </ng-container>
     </dot-portlet-toolbar>
     <dot-layout-designer [group]="form.get('layout')"></dot-layout-designer>

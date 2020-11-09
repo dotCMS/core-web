@@ -20,7 +20,7 @@ const routes: Routes = [
             ).then((m) => m.DotTemplateCreateEditModule)
     },
     {
-        path: ':id',
+        path: 'edit/:id',
         loadChildren: () =>
             import(
                 '@portlets/dot-templates/dot-template-create-edit/dot-template-create-edit.module.ts'

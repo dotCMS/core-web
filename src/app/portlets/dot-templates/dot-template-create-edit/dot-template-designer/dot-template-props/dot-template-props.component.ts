@@ -43,7 +43,12 @@ export class DotTemplatePropsComponent implements OnInit {
      * @memberof DotTemplatePropsComponent
      */
     onSave(): void {
-        this.config.data.callback(this.form.value);
+        this.config.data?.onSave?.(this.form.value);
+        this.ref.close();
+    }
+
+    onCancel(): void {
+        this.config.data?.onCancel?.();
         this.ref.close();
     }
 }

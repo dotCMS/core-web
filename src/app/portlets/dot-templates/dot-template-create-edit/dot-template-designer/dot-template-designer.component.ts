@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Observable, Subject } from 'rxjs';
@@ -74,6 +74,24 @@ export class DotTemplateDesignerComponent implements OnInit {
             original: template,
             working: template
         });
+
+        if (!identifier) {
+            this.dialogService.open(DotTemplatePropsComponent, {
+                header: 'Create new template',
+                width: '30rem',
+                closable: false,
+                closeOnEscape: false,
+                data: {
+                    template: this.form.value,
+                    onSave: (value: DotTemplate) => {
+                        this.store.createTemplate(value);
+                    },
+                    onCancel: () => {
+                        this.store.cancelCreate();
+                    }
+                }
+            });
+        }
     }
 
     ngOnDestroy(): void {
@@ -92,7 +110,7 @@ export class DotTemplateDesignerComponent implements OnInit {
             width: '30rem',
             data: {
                 template: this.form.value,
-                callback: (value: DotTemplate) => {
+                onSave: (value: DotTemplate) => {
                     this.store.saveTemplate(value);
                 }
             }
@@ -108,7 +126,7 @@ export class DotTemplateDesignerComponent implements OnInit {
     }: Partial<DotTemplate>): FormGroup {
         return this.fb.group({
             identifier,
-            title,
+            title: [title, Validators.required],
             friendlyName,
             containers,
             layout: this.fb.group(layout)

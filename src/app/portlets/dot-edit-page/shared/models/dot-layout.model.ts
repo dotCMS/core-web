@@ -8,4 +8,5 @@ export interface DotLayout {
     sidebar: DotLayoutSideBar;
     title: string;
     themeId?: string;
+    width: string;
 }
