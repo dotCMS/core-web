@@ -64,8 +64,8 @@ export class DotTemplateDesignerComponent implements OnInit {
             .subscribe(({ identifier, title, friendlyName, layout, containers }: DotTemplate) => {
                 const template = { identifier, title, friendlyName, layout, containers };
 
-                this.form = this.getForm(template);
                 this.templateContainersCacheService.set(containers);
+                this.form = this.getForm(template);
 
                 this.store.setState({
                     original: template,
