@@ -22,7 +22,11 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         ({ original }: DotTemplateState) => original.title
     );
 
-    readonly didTemplateChange$: Observable<
+    readonly orginal$: Observable<Partial<DotTemplate>> = this.select(
+        ({ original }: DotTemplateState) => original
+    );
+
+    readonly didTemplateChanged$: Observable<
         boolean
     > = this.select(({ original, working }: DotTemplateState) => _.isEqual(original, working));
 
@@ -40,6 +44,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 return this.dotTemplateService.update(value as DotTemplate);
             }),
             tap((template: DotTemplate) => {
+                console.log(template);
                 this.setState({
                     original: template,
                     working: template

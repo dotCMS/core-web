@@ -5,11 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Observable, Subject } from 'rxjs';
-import { map, pluck, take, takeUntil } from 'rxjs/operators';
+import { map, pluck, skip, take, takeUntil } from 'rxjs/operators';
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
-import { DotTemplateState, DotTemplateStore } from './store/dot-template.store';
+import { DotTemplateStore } from './store/dot-template.store';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @Component({
@@ -35,36 +35,31 @@ export class DotTemplateDesignerComponent implements OnInit {
 
     ngOnInit(): void {
         this.title$ = this.store.name$;
-        this.actions$ = this.store.didTemplateChange$.pipe(
+        this.actions$ = this.store.didTemplateChanged$.pipe(
             map((disabled: boolean) => this.getActions(disabled))
         );
 
-        this.store.state$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                ({
-                    original: { identifier, title, friendlyName, layout, containers }
-                }: DotTemplateState) => {
-                    const template = {
-                        identifier,
-                        title,
-                        friendlyName,
-                        layout,
-                        containers
-                    };
-
-                    if (!this.form) {
-                        this.form = this.getForm(template);
-                    }
-                    this.form.setValue(template, { emitEvent: false });
-                    this.templateContainersCacheService.set(containers);
-                }
-            );
+        this.store.orginal$
+            .pipe(takeUntil(this.destroy$), skip(1))
+            .subscribe(({ identifier, title, friendlyName, layout, containers }: DotTemplate) => {
+                const template = {
+                    identifier,
+                    title,
+                    friendlyName,
+                    layout,
+                    containers
+                };
+                this.form.setValue(template, { emitEvent: false });
+                this.templateContainersCacheService.set(containers);
+            });
 
         this.activatedRoute.data
             .pipe(pluck('template'), take(1))
             .subscribe(({ identifier, title, friendlyName, layout, containers }: DotTemplate) => {
                 const template = { identifier, title, friendlyName, layout, containers };
+
+                this.form = this.getForm(template);
+                this.templateContainersCacheService.set(containers);
 
                 this.store.setState({
                     original: template,
