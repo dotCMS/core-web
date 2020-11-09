@@ -17,6 +17,5 @@ export interface DotContainer {
     };
 }
 
-export interface DotContainerMap {
-    [key: string]: { container: DotContainer };
-}
+// The template endpoint returns DotContainer but the page endpoint returns {container}
+export type DotContainerMap = { container: DotContainer } & DotContainer;

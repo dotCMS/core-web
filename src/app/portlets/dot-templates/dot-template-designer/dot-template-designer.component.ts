@@ -49,8 +49,14 @@ export class DotTemplateDesignerComponent implements OnInit {
                     layout,
                     containers
                 };
-                this.form.setValue(template, { emitEvent: false });
+
+                /*
+                    Don't change the order or this two lines because we need to populate the
+                    containers cache before update the layout editor. Is bad but required a
+                    bigger refactor to fix.
+                */
                 this.templateContainersCacheService.set(containers);
+                this.form.setValue(template, { emitEvent: false });
             });
 
         this.activatedRoute.data

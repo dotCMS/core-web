@@ -17,7 +17,13 @@ export class TemplateContainersCacheService {
     }
 
     get(containerId: string): DotContainer {
-        return this.containers[containerId] ? this.containers[containerId].container : null;
+        const container = this.containers[containerId];
+
+        if (container.container) {
+            return container.container;
+        }
+
+        return container;
     }
 
     /**

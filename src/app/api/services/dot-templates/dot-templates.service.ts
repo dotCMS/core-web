@@ -46,23 +46,7 @@ export class DotTemplatesService {
 
         return this.request<DotTemplate>({
             url
-        }).pipe(
-            map((template: DotTemplate) => {
-                const containers = Object.keys(template.containers).reduce((acc, item) => {
-                    return {
-                        ...acc,
-                        [item]: {
-                            container: template.containers[item]
-                        }
-                    };
-                }, {});
-
-                return {
-                    ...template,
-                    containers
-                };
-            })
-        );
+        });
     }
 
     /**

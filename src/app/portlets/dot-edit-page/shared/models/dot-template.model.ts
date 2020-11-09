@@ -1,4 +1,4 @@
-import { DotContainer } from '@shared/models/container/dot-container.model';
+import { DotContainerMap } from '@shared/models/container/dot-container.model';
 import { DotLayout } from './dot-layout.model';
 
 export interface DotTemplate {
@@ -32,10 +32,6 @@ export interface DotTemplate {
 // Extra properties from renderHTML
 export interface DotTemplate {
     canEdit: boolean;
-    containers?: {
-        [id: string]: {
-            container: DotContainer;
-        };
-    };
+    containers?: DotContainerMap;
     layout: DotLayout;
 }
