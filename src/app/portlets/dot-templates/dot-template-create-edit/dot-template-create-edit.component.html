@@ -1,4 +1,33 @@
-<div *ngIf="isAdvaced$ | async; else elseBlock">Advaced</div>
-<ng-template #elseBlock>
-    <dot-template-designer [template]="template$ | async"></dot-template-designer>
-</ng-template>
+<dot-portlet-base>
+    <dot-portlet-toolbar
+        [title]="title$ | async"
+        [actions]="actions$ | async"
+        cancelButtonLabel="Cerrar"
+    >
+        <ng-container id="left" *ngIf="title$ | async">
+            <button
+                pButton
+                class="p-button-text"
+                icon="pi pi-pencil"
+                label="Edit"
+                (click)="editTemplateProps()"
+            ></button>
+            <dot-api-link [href]="apiLink$ | async"></dot-api-link>
+        </ng-container>
+    </dot-portlet-toolbar>
+    <p-tabView>
+        <p-tabPanel header="Design">
+            The template
+            <!-- <div *ngIf="isAdvaced$ | async; else elseBlock">Advaced</div>
+            <ng-template #elseBlock>
+                <dot-template-designer [template]="template$ | async"></dot-template-designer>
+            </ng-template> -->
+        </p-tabPanel>
+        <p-tabPanel header="Permissions">
+            <ng-template pTemplate="content">Permissions</ng-template>
+        </p-tabPanel>
+        <p-tabPanel header="History">
+            <ng-template pTemplate="content">History</ng-template>
+        </p-tabPanel>
+    </p-tabView>
+</dot-portlet-base>

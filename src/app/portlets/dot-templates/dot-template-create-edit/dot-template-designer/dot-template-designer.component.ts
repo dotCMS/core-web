@@ -1,13 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
+import { Subject } from 'rxjs';
+import { skip, takeUntil } from 'rxjs/operators';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Observable, Subject } from 'rxjs';
-import { map, skip, takeUntil } from 'rxjs/operators';
-import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 
+import { DotTemplatePropsComponent } from '../dot-template-props/dot-template-props.component';
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
-import { DotTemplateStore } from './store/dot-template.store';
+import { DotTemplateStore } from '../store/dot-template.store';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @Component({
@@ -18,9 +17,6 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
 })
 export class DotTemplateDesignerComponent implements OnInit {
     form: FormGroup;
-    title$: Observable<string>;
-    actions$: Observable<DotPortletToolbarActions>;
-    apiLink$: Observable<string>;
 
     @Input()
     template: DotTemplate;
@@ -40,16 +36,6 @@ export class DotTemplateDesignerComponent implements OnInit {
 
         this.templateContainersCacheService.set(containers);
         this.form = this.getForm(template);
-
-        this.title$ = this.store.name$;
-
-        this.apiLink$ = this.store.identifier$.pipe(
-            map((identifier: string) => `/api/v1/templates/${identifier}/working`)
-        );
-
-        this.actions$ = this.store.didTemplateChanged$.pipe(
-            map((disabled: boolean) => this.getActions(disabled))
-        );
 
         this.store.orginal$
             .pipe(takeUntil(this.destroy$), skip(1))
@@ -105,24 +91,6 @@ export class DotTemplateDesignerComponent implements OnInit {
         this.destroy$.complete();
     }
 
-    /**
-     * Start template properties edition
-     *
-     * @memberof DotTemplateDesignerComponent
-     */
-    editTemplateProps(): void {
-        this.dialogService.open(DotTemplatePropsComponent, {
-            header: 'Template Properties',
-            width: '30rem',
-            data: {
-                template: this.form.value,
-                onSave: (value: DotTemplate) => {
-                    this.store.saveTemplate(value);
-                }
-            }
-        });
-    }
-
     private getForm({
         title,
         friendlyName,
@@ -137,22 +105,5 @@ export class DotTemplateDesignerComponent implements OnInit {
             containers,
             layout: this.fb.group(layout)
         });
-    }
-
-    private getActions(disabled = true): DotPortletToolbarActions {
-        return {
-            primary: [
-                {
-                    label: 'Save',
-                    disabled: disabled,
-                    command: () => {
-                        this.store.saveTemplate(this.form.value);
-                    }
-                }
-            ],
-            cancel: () => {
-                console.log('cancel');
-            }
-        };
     }
 }
