@@ -8,9 +8,11 @@
             <button
                 pButton
                 class="p-button-text"
+                icon="pi pi-pencil"
                 label="Edit"
                 (click)="editTemplateProps()"
             ></button>
+            <dot-api-link [href]="apiLink$ | async"></dot-api-link>
         </ng-container>
     </dot-portlet-toolbar>
     <dot-layout-designer [group]="form.get('layout')"></dot-layout-designer>

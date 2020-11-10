@@ -8,6 +8,7 @@ import { DotPortletBaseModule } from '@components/dot-portlet-base/dot-portlet-b
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
+import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 
 @NgModule({
     declarations: [DotTemplateDesignerComponent],
@@ -21,7 +22,8 @@ import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.
         FormsModule,
         ReactiveFormsModule,
         DynamicDialogModule,
-        DotTemplatePropsModule
+        DotTemplatePropsModule,
+        DotApiLinkModule
     ],
     providers: [DialogService]
 })

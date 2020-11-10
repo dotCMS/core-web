@@ -26,6 +26,10 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         ({ original }: DotTemplateState) => original.title
     );
 
+    readonly identifier$: Observable<string> = this.select(
+        ({ original }: DotTemplateState) => original.identifier
+    );
+
     readonly orginal$: Observable<Partial<DotTemplate>> = this.select(
         ({ original }: DotTemplateState) => original
     );

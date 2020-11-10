@@ -20,6 +20,7 @@ export class DotTemplateDesignerComponent implements OnInit {
     form: FormGroup;
     title$: Observable<string>;
     actions$: Observable<DotPortletToolbarActions>;
+    apiLink$: Observable<string>;
 
     @Input()
     template: DotTemplate;
@@ -41,6 +42,10 @@ export class DotTemplateDesignerComponent implements OnInit {
         this.form = this.getForm(template);
 
         this.title$ = this.store.name$;
+
+        this.apiLink$ = this.store.identifier$.pipe(
+            map((identifier: string) => `/api/v1/templates/${identifier}/working`)
+        );
 
         this.actions$ = this.store.didTemplateChanged$.pipe(
             map((disabled: boolean) => this.getActions(disabled))
