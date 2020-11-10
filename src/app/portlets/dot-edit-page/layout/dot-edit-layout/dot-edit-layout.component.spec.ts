@@ -18,7 +18,7 @@ export class DotEditLayoutDesignerComponentMock {
 
 let fixture: ComponentFixture<DotEditLayoutComponent>;
 
-describe('DotEditLayoutComponent', () => {
+fdescribe('DotEditLayoutComponent', () => {
     let layoutDesigner: DebugElement;
 
     beforeEach(

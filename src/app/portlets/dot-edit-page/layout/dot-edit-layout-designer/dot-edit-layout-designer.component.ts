@@ -5,16 +5,21 @@ import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/do
 import { DotPageRenderState } from './../../shared/models/dot-rendered-page-state.model';
 import { DotAlertConfirmService } from './../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
-import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    ElementRef,
+    Input,
+    OnDestroy,
+    Output,
+    EventEmitter
+} from '@angular/core';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { ResponseView } from 'dotcms-js';
 import * as _ from 'lodash';
-import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { DotPageRender } from '../../shared/models/dot-rendered-page.model';
-import { LoginService } from 'dotcms-js';
+
 import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotTheme } from '../../shared/models/dot-theme.model';
@@ -36,10 +41,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     @ViewChild('templateName')
     templateName: ElementRef;
+
     @Input()
     editTemplate = false;
+
     @Input()
     pageState: DotPageRenderState;
+
+    @Output()
+    cancel: EventEmitter<MouseEvent> = new EventEmitter();
+
+    @Output()
+    save: EventEmitter<Event> = new EventEmitter();
 
     form: FormGroup;
     initialFormValue: any;
@@ -56,13 +69,10 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
         private dotDialogService: DotAlertConfirmService,
         private dotEditLayoutService: DotEditLayoutService,
         private dotEventsService: DotEventsService,
-        private dotGlobalMessageService: DotGlobalMessageService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
         private fb: FormBuilder,
-        private loginService: LoginService,
-        private dotPageLayoutService: DotPageLayoutService,
         private templateContainersCacheService: TemplateContainersCacheService,
         private dotMessageService: DotMessageService
     ) {}
@@ -103,12 +113,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Go to edit page when user click cancel
+     * Emit cancel event
      *
      * @memberof DotEditLayoutDesignerComponent
      */
     onCancel(): void {
-        this.dotRouterService.goToEditPage({ url: this.pageState.page.pageURI });
+        this.cancel.emit();
     }
 
     /**
@@ -141,31 +151,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Get the LayoutBody and call the service to save the layout
+     * Emit save event
      *
      * @memberof DotEditLayoutDesignerComponent
      */
-    saveLayout(): void {
-        this.dotGlobalMessageService.loading(
-            this.dotMessageService.get('dot.common.message.saving')
-        );
-
-        this.dotPageLayoutService
-            .save(this.pageState.page.identifier, this.form.value)
-            .pipe(take(1))
-            .subscribe(
-                (updatedPage: DotPageRender) => {
-                    this.dotGlobalMessageService.success(
-                        this.dotMessageService.get('dot.common.message.saved')
-                    );
-                    this.setupLayout(
-                        new DotPageRenderState(this.loginService.auth.user, updatedPage)
-                    );
-                },
-                (err: ResponseView) => {
-                    this.dotGlobalMessageService.error(err.response.statusText);
-                }
-            );
+    onSave(): void {
+        this.save.emit(this.form.value);
     }
 
     /**

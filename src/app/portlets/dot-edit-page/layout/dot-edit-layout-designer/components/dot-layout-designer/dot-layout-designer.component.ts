@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
+import { ControlContainer } from '@angular/forms';
 
 @Component({
     selector: 'dot-layout-designer',
@@ -7,7 +7,5 @@ import { FormGroup } from '@angular/forms';
     styleUrls: ['./dot-layout-designer.component.scss']
 })
 export class DotLayoutDesignerComponent {
-    @Input() group: FormGroup;
-
-    constructor() {}
+    constructor(public group: ControlContainer) {}
 }

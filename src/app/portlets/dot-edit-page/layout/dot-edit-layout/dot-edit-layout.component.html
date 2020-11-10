@@ -1,2 +1,6 @@
 <!--Advance template support was removed on commit https://github.com/dotCMS/core-web/pull/589-->
-<dot-edit-layout-designer [pageState]="pageState | async"></dot-edit-layout-designer>
+<dot-edit-layout-designer
+    (cancel)="onCancel()"
+    (save)="onSave($event)"
+    [pageState]="pageState"
+></dot-edit-layout-designer>

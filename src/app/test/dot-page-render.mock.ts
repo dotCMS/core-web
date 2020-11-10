@@ -106,7 +106,8 @@ export const mockDotTemplate = () => {
         versionType: '',
         drawed: true,
         canEdit: true,
-        theme: ''
+        theme: '',
+        layout: null
     };
 };
 
