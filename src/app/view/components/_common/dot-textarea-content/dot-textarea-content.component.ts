@@ -105,7 +105,12 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
         */
         $event.stopPropagation();
     }
-
+    /**
+     * Initializes the Monaco Editor
+     *
+     * @param {*} editor
+     * @memberof DotTextareaContentComponent
+     */
     onInit(editor: any): void {
         this.monacoInit.emit(editor);
     }
