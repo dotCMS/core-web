@@ -64,12 +64,11 @@ export class DotTemplatesService {
      * Creates a template
      *
      * @param {DotTemplate} values
-     * @return {*}  {Observable<DotTemplate>}
+     * @return Observable<DotTemplate>
      * @memberof DotTemplatesService
      */
     create(values: DotTemplate): Observable<DotTemplate> {
         const url = '/api/v1/templates';
-
         return this.request<DotTemplate>({ method: 'POST', url, body: values });
     }
 
