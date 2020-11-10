@@ -1,16 +1,5 @@
 @use "variables" as *;
 
-.content-wrapper {
-    margin: $spacing-4;
-    padding: $spacing-4;
-    background: $white;
-    box-shadow: $md-shadow-4;
-}
-.form__label {
-    display: block;
-    margin-bottom: $spacing-2;
-}
-
 dot-container-selector {
     margin-bottom: $spacing-3;
 }
