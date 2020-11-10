@@ -57,13 +57,6 @@
                 *ngIf="saveAsTemplate"
                 formControlName="title"
             />
-            <p-checkbox
-                class="dot-edit-layout__toolbar-save-template"
-                label="{{ 'editpage.layout.toolbar.save.template' | dm }}"
-                *ngIf="editTemplate && isLayout() && pageState.canCreateTemplate"
-                binary="true"
-                (onChange)="saveAsTemplateHandleChange($event)"
-            ></p-checkbox>
             <button
                 pButton
                 type="button"

@@ -3,8 +3,7 @@ import { DotLayoutRow } from './../../shared/models/dot-layout-row.model';
 import { Subject } from 'rxjs';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 import { DotPageRenderState } from './../../shared/models/dot-rendered-page-state.model';
-import { DotAlertConfirmService } from './../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import {
     Component,
     OnInit,
@@ -15,7 +14,6 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import * as _ from 'lodash';
@@ -43,9 +41,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     templateName: ElementRef;
 
     @Input()
-    editTemplate = false;
-
-    @Input()
     pageState: DotPageRenderState;
 
     @Output()
@@ -66,25 +61,18 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-        private dotDialogService: DotAlertConfirmService,
         private dotEditLayoutService: DotEditLayoutService,
         private dotEventsService: DotEventsService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
         private fb: FormBuilder,
-        private templateContainersCacheService: TemplateContainersCacheService,
-        private dotMessageService: DotMessageService
+        private templateContainersCacheService: TemplateContainersCacheService
     ) {}
 
     ngOnInit(): void {
         this.setupLayout();
-
-        if (this.shouldShowDialog()) {
-            this.showTemplateLayoutDialog();
-        } else {
-            this.setEditLayoutMode();
-        }
+        this.setEditLayoutMode();
     }
 
     ngOnDestroy(): void {
@@ -119,35 +107,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
      */
     onCancel(): void {
         this.cancel.emit();
-    }
-
-    /**
-     * Handle the change when user update save as template checkbox value
-     *
-     * @memberof DotEditLayoutDesignerComponent
-     */
-    saveAsTemplateHandleChange(value: boolean): void {
-        const titleFormControl = this.form.get('title');
-        titleFormControl.markAsUntouched();
-        titleFormControl.markAsPristine();
-
-        this.saveAsTemplate = value;
-
-        if (this.saveAsTemplate) {
-            titleFormControl.setValidators(Validators.required);
-            /*
-                Need the timeout so the textfield it's loaded in the DOM before focus, wasn't able to find a better solution
-            */
-            setTimeout(() => {
-                this.templateName.nativeElement.focus();
-            }, 0);
-        } else {
-            titleFormControl.setValidators(null);
-            if (this.initialFormValue.title === null) {
-                titleFormControl.setValue(null);
-            }
-        }
-        titleFormControl.updateValueAndValidity();
     }
 
     /**
@@ -201,7 +160,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
 
         this.templateContainersCacheService.set(this.pageState.containers);
         this.initForm();
-        this.saveAsTemplateHandleChange(false);
         this.dotThemesService
             .get(this.form.get('themeId').value)
             .pipe(take(1))
@@ -262,23 +220,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
         });
     }
 
-    private showTemplateLayoutDialog(): void {
-        this.dotDialogService.alert({
-            header: this.dotMessageService.get('editpage.layout.dialog.header'),
-            message: this.dotMessageService.get(
-                'editpage.layout.dialog.info',
-                this.pageState.template.name
-            ),
-            footerLabel: {
-                accept: this.dotMessageService.get('editpage.layout.dialog.edit.page'),
-                reject: this.dotMessageService.get('editpage.layout.dialog.edit.template')
-            },
-            accept: () => {
-                this.setEditLayoutMode();
-            }
-        });
-    }
-
     // tslint:disable-next-line:cyclomatic-complexity
     private createSidebarForm(): DotLayoutSideBar {
         return {
@@ -288,10 +229,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
                 : [],
             width: this.pageState.layout.sidebar ? this.pageState.layout.sidebar.width : 'small'
         };
-    }
-
-    private shouldShowDialog(): boolean {
-        return this.editTemplate && !this.isLayout() && this.pageState.template.canEdit;
     }
 
     private errorHandler(err: HttpErrorResponse): Observable<any> {
