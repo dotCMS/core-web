@@ -8,6 +8,7 @@ import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ResponseView, LoginService } from 'dotcms-js';
+import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -25,7 +26,8 @@ export class DotEditLayoutComponent implements OnInit {
         private dotGlobalMessageService: DotGlobalMessageService,
         private loginService: LoginService,
         private dotPageLayoutService: DotPageLayoutService,
-        private dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService,
+        private templateContainersCacheService: TemplateContainersCacheService
     ) {}
 
     ngOnInit() {
@@ -37,6 +39,7 @@ export class DotEditLayoutComponent implements OnInit {
             )
             .subscribe((state: DotPageRenderState) => {
                 this.pageState = state;
+                this.templateContainersCacheService.set(state.containers);
             });
     }
 
@@ -58,6 +61,7 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     onSave(value: any): void {
+        console.log(value);
         // TODO: needs to type this
         this.dotGlobalMessageService.loading(
             this.dotMessageService.get('dot.common.message.saving')
@@ -68,6 +72,8 @@ export class DotEditLayoutComponent implements OnInit {
             .pipe(take(1))
             .subscribe(
                 (updatedPage: DotPageRender) => {
+                    this.templateContainersCacheService.set(updatedPage.containers);
+
                     this.dotGlobalMessageService.success(
                         this.dotMessageService.get('dot.common.message.saved')
                     );

@@ -71,10 +71,6 @@
                 label="{{ 'editpage.layout.toolbar.action.save' | dm }}"
                 class="dot-edit-layout__toolbar-save p-button-sm"
             ></button>
-            <dot-template-addtional-actions-menu
-                *ngIf="!isLayout()"
-                [inode]="pageState.template.inode"
-            ></dot-template-addtional-actions-menu>
         </div>
     </dot-secondary-toolbar>
     <dot-layout-designer formGroupName="layout"></dot-layout-designer>

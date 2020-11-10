@@ -12,9 +12,9 @@ import {
     Input,
     OnDestroy,
     Output,
-    EventEmitter
+    EventEmitter,
+    ChangeDetectionStrategy
 } from '@angular/core';
-import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import * as _ from 'lodash';
 
@@ -34,7 +34,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
     selector: 'dot-edit-layout-designer',
     templateUrl: './dot-edit-layout-designer.component.html',
-    styleUrls: ['./dot-edit-layout-designer.component.scss']
+    styleUrls: ['./dot-edit-layout-designer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     @ViewChild('templateName')
@@ -66,13 +67,11 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
-        private fb: FormBuilder,
-        private templateContainersCacheService: TemplateContainersCacheService
+        private fb: FormBuilder
     ) {}
 
     ngOnInit(): void {
         this.setupLayout();
-        this.setEditLayoutMode();
     }
 
     ngOnDestroy(): void {
@@ -87,17 +86,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
      */
     addGridBox() {
         this.dotEditLayoutService.addBox();
-    }
-
-    /**
-     * Check if the template is a template or a layout by comparing the name of the template.
-     * Templates with the name "anonymous_layout_TIMESTAMP" are layout assigned to an specific page.
-     *
-     * @returns boolean
-     * @memberof DotEditLayoutDesignerComponent
-     */
-    isLayout(): boolean {
-        return !this.pageState.template || this.pageState.template.anonymous;
     }
 
     /**
@@ -116,20 +104,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
      */
     onSave(): void {
         this.save.emit(this.form.value);
-    }
-
-    /**
-     * Set component to edit layout mode, template have no name.
-     *
-     * @memberof DotEditLayoutDesignerComponent
-     */
-    setEditLayoutMode(): void {
-        this.initialFormValue.title = null;
-        this.form.get('title').setValue(null);
-
-        if (this.pageState.template) {
-            this.pageState.template.anonymous = true;
-        }
     }
 
     /**
@@ -153,12 +127,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
         this.themeDialogVisibility = false;
     }
 
-    private setupLayout(pageState?: DotPageRenderState): void {
-        if (pageState) {
-            this.pageState = pageState;
-        }
-
-        this.templateContainersCacheService.set(this.pageState.containers);
+    private setupLayout(): void {
         this.initForm();
         this.dotThemesService
             .get(this.form.get('themeId').value)
@@ -202,7 +171,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
 
     private initForm(): void {
         this.form = this.fb.group({
-            title: this.isLayout() ? null : this.pageState.template.title,
+            title: this.pageState.template.title,
             themeId: this.pageState.template.theme,
             layout: this.fb.group({
                 body: this.cleanUpBody(this.pageState.layout.body) || {},
