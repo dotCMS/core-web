@@ -20,9 +20,9 @@ export class DotTemplateDesignerComponent implements OnInit {
     form: FormGroup;
     title: string;
 
-    portletActions$: Observable<DotPortletToolbarActions>;
-
     private originalData: any;
+
+    portletActions$: Observable<DotPortletToolbarActions>;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -102,7 +102,7 @@ export class DotTemplateDesignerComponent implements OnInit {
             primary: [
                 {
                     label: 'Save',
-                    disabled,
+                    disabled: disabled,
                     command: () => {
                         this.saveTemplate();
                     }
