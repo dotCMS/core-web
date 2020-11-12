@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-
-import { DotTemplateCreateEditResolver } from './dot-template-designer.resolver';
+import { DotTemplateCreateEditResolver } from './dot-template-create-edit.resolver';
 
 xdescribe('DotTemplateDesignerService', () => {
     let service: DotTemplateCreateEditResolver;
