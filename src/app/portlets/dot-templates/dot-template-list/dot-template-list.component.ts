@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { ActionHeaderOptions } from '@shared/models/action-header';
+import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-template-list',
@@ -87,9 +87,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             },
             {
                 fieldName: 'modDate',
-                format: 'date',
                 header: this.dotMessageService.get('templates.fieldName.lastEdit'),
-                sortable: true
+                sortable: true,
+                format: 'date'
             }
         ];
     }
