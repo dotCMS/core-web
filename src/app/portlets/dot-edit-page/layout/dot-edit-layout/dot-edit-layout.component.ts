@@ -9,6 +9,7 @@ import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ResponseView } from 'dotcms-js';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotContainerMap, DotContainer } from '@shared/models/container/dot-container.model';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -39,7 +40,8 @@ export class DotEditLayoutComponent implements OnInit {
             )
             .subscribe((state: DotPageRenderState) => {
                 this.pageState = state;
-                this.templateContainersCacheService.set(state.containers);
+                const mappedContainers = this.getRemappedContainers(state.containers);
+                this.templateContainersCacheService.set(mappedContainers);
             });
 
         this.apiLink = `api/v1/page/render${this.pageState.page.pageURI}?language_id=${this.pageState.page.languageId}`;
@@ -74,7 +76,8 @@ export class DotEditLayoutComponent implements OnInit {
             .pipe(take(1))
             .subscribe(
                 (updatedPage: DotPageRender) => {
-                    this.templateContainersCacheService.set(updatedPage.containers);
+                    const mappedContainers = this.getRemappedContainers(updatedPage.containers);
+                    this.templateContainersCacheService.set(mappedContainers);
 
                     this.dotGlobalMessageService.success(
                         this.dotMessageService.get('dot.common.message.saved')
@@ -85,5 +88,21 @@ export class DotEditLayoutComponent implements OnInit {
                     this.dotGlobalMessageService.error(err.response.statusText);
                 }
             );
+    }
+
+    private getRemappedContainers(containers: {
+        [key: string]: {
+            container: DotContainer;
+        };
+    }): DotContainerMap {
+        return Object.keys(containers).reduce(
+            (acc: { [key: string]: DotContainer }, id: string) => {
+                return {
+                    ...acc,
+                    [id]: containers[id].container
+                };
+            },
+            {}
+        );
     }
 }

@@ -2,12 +2,17 @@ import { DotLayout } from './dot-layout.model';
 import { DotPage } from './dot-page.model';
 import { DotTemplate } from './dot-template.model';
 import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotContainer } from '@shared/models/container/dot-container.model';
 
 export module DotPageRender {
     export interface Parameters {
         layout?: DotLayout;
         page: DotPage;
-        containers?: any;
+        containers?: {
+            [key: string]: {
+                container: DotContainer;
+            };
+        };
         template?: DotTemplate;
         canCreateTemplate: boolean;
         viewAs: DotEditPageViewAs;
@@ -26,7 +31,11 @@ export class DotPageRender {
         return this.params.page;
     }
 
-    get containers(): any {
+    get containers(): {
+        [key: string]: {
+            container: DotContainer;
+        };
+    } {
         return this.params.containers;
     }
 

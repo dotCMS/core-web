@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
     styleUrls: ['./dot-template-designer.component.scss'],
     providers: [DotTemplateStore]
 })
-export class DotTemplateDesignerComponent implements OnInit {
+export class DotTemplateDesignerComponent implements OnInit, OnDestroy {
     form: FormGroup;
 
     @Input()
@@ -31,10 +31,15 @@ export class DotTemplateDesignerComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        const { identifier, title, friendlyName, layout, containers } = this.template;
-        const template = { identifier, title, friendlyName, layout, containers };
+        const template = {
+            identifier: this.template.identifier,
+            title: this.template.title,
+            friendlyName: this.template.friendlyName,
+            layout: this.template.layout,
+            containers: this.template.containers
+        };
 
-        this.templateContainersCacheService.set(containers);
+        this.templateContainersCacheService.set(this.template.containers);
         this.form = this.getForm(template);
 
         this.store.orginal$
@@ -58,8 +63,8 @@ export class DotTemplateDesignerComponent implements OnInit {
                 );
             });
 
-        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((template: DotTemplate) => {
-            this.store.updateWorking(template);
+        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value: DotTemplate) => {
+            this.store.updateWorking(value);
         });
 
         this.store.setState({
@@ -67,7 +72,7 @@ export class DotTemplateDesignerComponent implements OnInit {
             working: template
         });
 
-        if (!identifier) {
+        if (!this.template.identifier) {
             this.dialogService.open(DotTemplatePropsComponent, {
                 header: 'Create new template',
                 width: '30rem',
