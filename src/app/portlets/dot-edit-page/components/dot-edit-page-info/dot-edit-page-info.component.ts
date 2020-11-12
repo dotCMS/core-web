@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 
 import { DotPageRenderState } from '../../shared/models/dot-rendered-page-state.model';
 import { SiteService } from 'dotcms-js';
@@ -22,8 +22,6 @@ import { LOCATION_TOKEN } from 'src/app/providers';
 export class DotEditPageInfoComponent implements OnInit {
     @Input() pageState: DotPageRenderState;
 
-    @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
-
     url$: Observable<string>;
     apiLink: string;
 
@@ -35,20 +33,6 @@ export class DotEditPageInfoComponent implements OnInit {
     ngOnInit() {
         this.url$ = this.getFullUrl(this.pageState.page.pageURI);
         this.apiLink = `api/v1/page/render${this.pageState.page.pageURI}?language_id=${this.pageState.page.languageId}`;
-    }
-
-    /**
-     * Make the lock message blink with css
-     *
-     * @memberof DotEditPageInfoComponent
-     */
-    blinkLockMessage(): void {
-        const blinkClass = 'page-info__locked-by-message--blink';
-
-        this.lockedPageMessage.nativeElement.classList.add(blinkClass);
-        setTimeout(() => {
-            this.lockedPageMessage.nativeElement.classList.remove(blinkClass);
-        }, 500);
     }
 
     private getFullUrl(url: string): Observable<string> {

@@ -7,7 +7,7 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { ResponseView, LoginService } from 'dotcms-js';
+import { ResponseView } from 'dotcms-js';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
     styleUrls: ['./dot-edit-layout.component.scss']
 })
 export class DotEditLayoutComponent implements OnInit {
-    pageState: DotPageRenderState;
+    pageState: DotPageRender | DotPageRenderState;
 
     @HostBinding('style.minWidth') width = '100%';
 
@@ -24,7 +24,6 @@ export class DotEditLayoutComponent implements OnInit {
         private route: ActivatedRoute,
         private dotRouterService: DotRouterService,
         private dotGlobalMessageService: DotGlobalMessageService,
-        private loginService: LoginService,
         private dotPageLayoutService: DotPageLayoutService,
         private dotMessageService: DotMessageService,
         private templateContainersCacheService: TemplateContainersCacheService
@@ -61,8 +60,8 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     onSave(value: any): void {
-        console.log(value);
         // TODO: needs to type this
+        console.log(value);
         this.dotGlobalMessageService.loading(
             this.dotMessageService.get('dot.common.message.saving')
         );
@@ -77,10 +76,7 @@ export class DotEditLayoutComponent implements OnInit {
                     this.dotGlobalMessageService.success(
                         this.dotMessageService.get('dot.common.message.saved')
                     );
-                    this.pageState = new DotPageRenderState(
-                        this.loginService.auth.user,
-                        updatedPage
-                    );
+                    this.pageState = updatedPage;
                 },
                 (err: ResponseView) => {
                     this.dotGlobalMessageService.error(err.response.statusText);

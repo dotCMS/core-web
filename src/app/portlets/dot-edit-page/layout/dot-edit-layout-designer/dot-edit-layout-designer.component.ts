@@ -2,7 +2,6 @@ import { DotLayoutColumn } from './../../shared/models/dot-layout-column.model';
 import { DotLayoutRow } from './../../shared/models/dot-layout-row.model';
 import { Subject } from 'rxjs';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
-import { DotPageRenderState } from './../../shared/models/dot-rendered-page-state.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
     Component,
@@ -30,6 +29,7 @@ import {
 import { tap, take, takeUntil } from 'rxjs/operators';
 import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DotLayout } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -42,7 +42,13 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     templateName: ElementRef;
 
     @Input()
-    pageState: DotPageRenderState;
+    layout: DotLayout;
+
+    @Input()
+    title: string;
+
+    @Input()
+    theme: string;
 
     @Output()
     cancel: EventEmitter<MouseEvent> = new EventEmitter();
@@ -171,12 +177,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
 
     private initForm(): void {
         this.form = this.fb.group({
-            title: this.pageState.template.title,
-            themeId: this.pageState.template.theme,
+            title: this.title,
+            themeId: this.theme,
             layout: this.fb.group({
-                body: this.cleanUpBody(this.pageState.layout.body) || {},
-                header: this.pageState.layout.header,
-                footer: this.pageState.layout.footer,
+                body: this.cleanUpBody(this.layout.body) || {},
+                header: this.layout.header,
+                footer: this.layout.footer,
                 sidebar: this.createSidebarForm()
             })
         });
@@ -192,11 +198,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line:cyclomatic-complexity
     private createSidebarForm(): DotLayoutSideBar {
         return {
-            location: this.pageState.layout.sidebar ? this.pageState.layout.sidebar.location : '',
-            containers: this.pageState.layout.sidebar
-                ? this.pageState.layout.sidebar.containers
-                : [],
-            width: this.pageState.layout.sidebar ? this.pageState.layout.sidebar.width : 'small'
+            location: this.layout.sidebar ? this.layout.sidebar.location : '',
+            containers: this.layout.sidebar ? this.layout.sidebar.containers : [],
+            width: this.layout.sidebar ? this.layout.sidebar.width : 'small'
         };
     }
 

@@ -2,5 +2,7 @@
 <dot-edit-layout-designer
     (cancel)="onCancel()"
     (save)="onSave($event)"
-    [pageState]="pageState"
+    [layout]="pageState.layout"
+    [title]="pageState.page.title"
+    [theme]="pageState.template.theme"
 ></dot-edit-layout-designer>
