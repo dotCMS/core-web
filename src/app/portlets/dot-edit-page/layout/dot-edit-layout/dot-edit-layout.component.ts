@@ -17,6 +17,7 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
 })
 export class DotEditLayoutComponent implements OnInit {
     pageState: DotPageRender | DotPageRenderState;
+    apiLink: string;
 
     @HostBinding('style.minWidth') width = '100%';
 
@@ -40,6 +41,8 @@ export class DotEditLayoutComponent implements OnInit {
                 this.pageState = state;
                 this.templateContainersCacheService.set(state.containers);
             });
+
+        this.apiLink = `api/v1/page/render${this.pageState.page.pageURI}?language_id=${this.pageState.page.languageId}`;
     }
 
     /**

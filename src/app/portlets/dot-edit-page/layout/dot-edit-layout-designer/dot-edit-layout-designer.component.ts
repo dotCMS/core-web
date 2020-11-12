@@ -50,6 +50,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     @Input()
     theme: string;
 
+    @Input()
+    apiLink: string;
+
+    @Input()
+    url: string;
+
     @Output()
     cancel: EventEmitter<MouseEvent> = new EventEmitter();
 
