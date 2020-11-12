@@ -1,40 +1,32 @@
 import { of as observableOf } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { DotEditLayoutDesignerComponent } from './dot-edit-layout-designer.component';
 import { DotEditLayoutGridModule } from '../components/dot-edit-layout-grid/dot-edit-layout-grid.module';
-import { LoginService, DotEventsSocket, SiteService } from 'dotcms-js';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
-import { PaginatorService } from '@services/paginator';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input, EventEmitter, Output, DebugElement } from '@angular/core';
-import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
-import { mockDotRenderedPage, mockDotTemplate } from '../../../../test/dot-page-render.mock';
-import { mockUser } from '../../../../test/login-service.mock';
+import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-edit-page-info.module';
-import { mockDotThemes } from '../../../../test/dot-themes.mock';
+import { mockDotThemes } from '@tests/dot-themes.mock';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
-import { DotThemesServiceMock } from '../../../../test/dot-themes-service.mock';
+import { DotThemesServiceMock } from '@tests/dot-themes-service.mock';
 import { TooltipModule } from 'primeng/tooltip';
 import * as _ from 'lodash';
-import { SiteServiceMock } from '../../../../test/site-service.mock';
 import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
-import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 
 import cleanUpDialog from '@tests/clean-up-dialog';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -86,63 +78,47 @@ let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotRouterService: DotRouterService;
 let dotThemesService: DotThemesService;
 
-const testConfigObject = {
-    declarations: [
-        DotEditLayoutDesignerComponent,
-        MockAdditionalOptionsComponent,
-        MockDotLayoutDesignerComponent,
-        MockDotLayoutPropertiesComponent,
-        MockDotThemeSelectorComponent
-    ],
-    imports: [
-        DotActionButtonModule,
-        DotEditLayoutGridModule,
-        DotEditPageInfoModule,
-        DotSecondaryToolbarModule,
-        DotGlobalMessageModule,
-        DotFieldValidationMessageModule,
-        FormsModule,
-        RouterTestingModule,
-        TooltipModule,
-        DotIconButtonModule
-    ],
-    providers: [
-        DotAlertConfirmService,
-        LoginService,
-        DotPageLayoutService,
-        PaginatorService,
-        DotEventsSocket,
-        DotEditLayoutService,
-        TemplateContainersCacheService,
-        { provide: DotMessageService, useValue: messageServiceMock },
-        { provide: DotThemesService, useClass: DotThemesServiceMock },
-        { provide: SiteService, useClass: SiteServiceMock }
-    ]
-};
-
 describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
-        DOTTestBed.configureTestingModule({
-            ...testConfigObject,
-            providers: [...testConfigObject.providers]
+        TestBed.configureTestingModule({
+            declarations: [
+                DotEditLayoutDesignerComponent,
+                MockAdditionalOptionsComponent,
+                MockDotLayoutDesignerComponent,
+                MockDotLayoutPropertiesComponent,
+                MockDotThemeSelectorComponent
+            ],
+            imports: [
+                DotActionButtonModule,
+                DotEditLayoutGridModule,
+                DotEditPageInfoModule,
+                DotSecondaryToolbarModule,
+                DotGlobalMessageModule,
+                DotFieldValidationMessageModule,
+                FormsModule,
+                RouterTestingModule,
+                TooltipModule,
+                DotIconButtonModule
+            ],
+            providers: [
+                DotEditLayoutService,
+                DotThemesService,
+                DotHttpErrorManagerService,
+                DotRouterService,
+                { provide: DotMessageService, useValue: messageServiceMock },
+                { provide: DotThemesService, useClass: DotThemesServiceMock }
+            ]
         });
 
-        fixture = DOTTestBed.createComponent(DotEditLayoutDesignerComponent);
+        fixture = TestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
-        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
-        dotThemesService = fixture.debugElement.injector.get(DotThemesService);
+        dotRouterService = TestBed.inject(DotRouterService);
+        dotThemesService = TestBed.inject(DotThemesService);
     });
 
     describe('edit layout', () => {
         beforeEach(() => {
-            component.pageState = new DotPageRenderState(
-                mockUser(),
-                new DotPageRender({
-                    ...mockDotRenderedPage(),
-                    template: { ...mockDotTemplate(), theme: '123' },
-                    canCreateTemplate: false
-                })
-            );
+            component.layout = mockDotLayout();
             fixture.detectChanges();
         });
         // these need to be fixed when this is fixed correctly https://github.com/dotCMS/core/issues/18830
@@ -168,8 +144,8 @@ describe('DotEditLayoutDesignerComponent', () => {
             const dotEditPageInfo: DebugElement = fixture.debugElement.query(
                 By.css('dot-edit-page-info')
             );
-            expect(dotEditPageInfo.componentInstance.pageState).toBe(component.pageState);
             expect(dotEditPageInfo).toBeTruthy();
+            // TODO: NEED EXTRA EXPECTS
         });
 
         it('should not show template name input', () => {
@@ -265,70 +241,14 @@ describe('DotEditLayoutDesignerComponent', () => {
                 }
             });
         });
-
-        describe('can save as template', () => {
-            beforeEach(() => {
-                component.pageState = new DotPageRenderState(
-                    mockUser(),
-                    new DotPageRender({
-                        ...mockDotRenderedPage(),
-                        template: null,
-                        canCreateTemplate: true
-                    })
-                );
-                component.editTemplate = true;
-                fixture.detectChanges();
-            });
-
-            it('should show save as template checkbox', () => {
-                const saveAsTemplate: DebugElement = fixture.debugElement.query(
-                    By.css('.dot-edit-layout__toolbar-save-template')
-                );
-                expect(saveAsTemplate).not.toBe(null);
-            });
-
-            describe('save as template mode', () => {
-                let templateNameField: DebugElement;
-                beforeEach(() => {
-                    const saveAsTemplate: DebugElement = fixture.debugElement.query(
-                        By.css('.dot-edit-layout__toolbar-save-template input[type="checkbox"]')
-                    );
-                    saveAsTemplate.nativeElement.click();
-                    fixture.detectChanges();
-                    templateNameField = fixture.debugElement.query(
-                        By.css('.dot-edit-layout__toolbar-template-name')
-                    );
-                });
-
-                it('should set save as template mode', () => {
-                    expect(templateNameField).not.toBe(null);
-                });
-
-                it('should update template title in form model', () => {
-                    templateNameField.nativeElement.value = 'Hello World';
-                    const evt = document.createEvent('Event');
-                    evt.initEvent('input', true, false);
-                    templateNameField.nativeElement.dispatchEvent(evt);
-                    fixture.detectChanges();
-
-                    expect(component.form.get('title').value).toEqual('Hello World');
-                });
-            });
-        });
     });
 
     describe('themes', () => {
         let themeSelector: MockDotThemeSelectorComponent;
         let themeButton;
+
         beforeEach(() => {
-            component.pageState = new DotPageRenderState(
-                mockUser(),
-                new DotPageRender({
-                    ...mockDotRenderedPage(),
-                    template: { ...mockDotTemplate(), theme: '123' },
-                    canCreateTemplate: false
-                })
-            );
+            component.layout = mockDotLayout();
             component.themeDialogVisibility = true;
         });
 
@@ -375,51 +295,9 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
     });
 
-    describe('edit template', () => {
-        beforeEach(() => {
-            component.pageState = new DotPageRenderState(
-                mockUser(),
-                new DotPageRender(mockDotRenderedPage())
-            );
-            component.editTemplate = true;
-            fixture.detectChanges();
-        });
-
-        it('should show dot-template-addtional-actions-menu and bind attr correctly', () => {
-            const aditionalOptions: DebugElement = fixture.debugElement.query(
-                By.css('dot-template-addtional-actions-menu')
-            );
-
-            expect(aditionalOptions).toBeTruthy();
-            expect(aditionalOptions.componentInstance.inode).toEqual(
-                mockDotRenderedPage().template.inode
-            );
-        });
-
-        it('should set form model correctly', () => {
-            expect(component.form.value).toEqual({
-                title: mockDotRenderedPage().template.title,
-                themeId: '',
-                layout: {
-                    body: mockDotRenderedPage().layout.body,
-                    header: mockDotRenderedPage().layout.header,
-                    footer: mockDotRenderedPage().layout.footer,
-                    sidebar: {
-                        location: mockDotRenderedPage().layout.sidebar.location,
-                        containers: mockDotRenderedPage().layout.sidebar.containers,
-                        width: mockDotRenderedPage().layout.sidebar.width
-                    }
-                }
-            });
-        });
-    });
-
     describe('containers model', () => {
         beforeEach(() => {
-            component.pageState = new DotPageRenderState(
-                mockUser(),
-                new DotPageRender(mockDotRenderedPage())
-            );
+            component.layout = mockDotLayout();
         });
 
         it('should have a sidebar containers', () => {
@@ -433,7 +311,15 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         it('should have a null sidebar containers', () => {
-            component.pageState.layout.sidebar.containers = [];
+            const layout = mockDotLayout();
+
+            component.layout = {
+                ...layout,
+                sidebar: {
+                    ...layout.sidebar,
+                    containers: []
+                }
+            };
             fixture.detectChanges();
             expect(component.form.value.layout.sidebar.containers).toEqual([]);
         });
@@ -443,10 +329,8 @@ describe('DotEditLayoutDesignerComponent', () => {
         let saveButton: DebugElement;
 
         beforeEach(() => {
-            component.pageState = new DotPageRenderState(
-                mockUser(),
-                new DotPageRender(mockDotRenderedPage())
-            );
+            component.layout = mockDotLayout();
+
             fixture.detectChanges();
             saveButton = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-save'));
         });
@@ -469,123 +353,16 @@ describe('DotEditLayoutDesignerComponent', () => {
 
             expect(saveButton.nativeElement.disabled).toBe(true);
         });
-
-        it('should have enabled when model is updated and form is valid', () => {
-            component.saveAsTemplateHandleChange(true);
-            component.form.get('title').setValue('Hello World');
-
-            fixture.detectChanges();
-
-            expect(saveButton.nativeElement.disabled).toBe(false);
-        });
-    });
-
-    describe('edit layout/template dialog', () => {
-        let dotDialogService: DotAlertConfirmService;
-
-        beforeEach(() => {
-            dotDialogService = fixture.debugElement.injector.get(DotAlertConfirmService);
-            spyOn(dotDialogService, 'alert').and.callThrough();
-            spyOn(component, 'setEditLayoutMode');
-        });
-
-        describe('should show', () => {
-            beforeEach(() => {
-                component.pageState = new DotPageRenderState(
-                    mockUser(),
-                    new DotPageRender({
-                        ...mockDotRenderedPage(),
-                        template: {
-                            ...mockDotRenderedPage().template,
-                            anonymous: false
-                        }
-                    })
-                );
-                component.editTemplate = true;
-                fixture.detectChanges();
-            });
-
-            it('user have can edit page or template', () => {
-                expect(dotDialogService.alert).toHaveBeenCalled();
-            });
-
-            describe('set edit mode', () => {
-                it('should set edit layout mode on dialog accept click', () => {
-                    dotDialogService.alertModel.accept();
-                    expect(component.setEditLayoutMode).toHaveBeenCalledTimes(1);
-                });
-
-                it('should keep edit template mode on dialog reject click', () => {
-                    dotDialogService.alertReject(null);
-                    expect(component.setEditLayoutMode).not.toHaveBeenCalled();
-                });
-            });
-        });
-
-        describe('not show', () => {
-            it("when user can't edit the template and set layout mode", () => {
-                component.pageState = new DotPageRenderState(
-                    mockUser(),
-                    new DotPageRender({
-                        ...mockDotRenderedPage(),
-                        template: {
-                            ...mockDotRenderedPage().template,
-                            canEdit: false
-                        }
-                    })
-                );
-
-                fixture.detectChanges();
-                expect(dotDialogService.alert).not.toHaveBeenCalled();
-                expect(component.setEditLayoutMode).toHaveBeenCalled();
-            });
-
-            it('when page have a layout and set layout mode', () => {
-                component.pageState = new DotPageRenderState(
-                    mockUser(),
-                    new DotPageRender({
-                        ...mockDotRenderedPage(),
-                        template: {
-                            ...mockDotRenderedPage().template,
-                            anonymous: true
-                        }
-                    })
-                );
-                fixture.detectChanges();
-                expect(dotDialogService.alert).not.toHaveBeenCalled();
-                expect(component.setEditLayoutMode).toHaveBeenCalled();
-            });
-
-            it('when editTemplate is false by default', () => {
-                component.pageState = new DotPageRenderState(
-                    mockUser(),
-                    new DotPageRender({
-                        ...mockDotRenderedPage(),
-                        template: {
-                            ...mockDotRenderedPage().template,
-                            canEdit: true
-                        }
-                    })
-                );
-                fixture.detectChanges();
-                expect(dotDialogService.alert).not.toHaveBeenCalled();
-                expect(component.setEditLayoutMode).toHaveBeenCalled();
-                expect(component.editTemplate).toEqual(false);
-            });
-        });
     });
 
     describe('edit layout No sidebars', () => {
         beforeEach(() => {
-            component.pageState = new DotPageRenderState(
-                mockUser(),
-                new DotPageRender({
-                    ...mockDotRenderedPage(),
-                    template: { ...mockDotTemplate(), theme: '123' },
-                    canCreateTemplate: false
-                })
-            );
-            component.pageState.layout.sidebar = null;
+            const layout = mockDotLayout();
+
+            component.layout = {
+                ...layout,
+                sidebar: null
+            };
             fixture.detectChanges();
         });
 

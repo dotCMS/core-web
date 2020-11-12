@@ -60,7 +60,8 @@ export const mockDotLayout = (): DotLayout => {
         },
         body: {
             rows: []
-        }
+        },
+        width: ''
     };
 };
 
