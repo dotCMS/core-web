@@ -100,24 +100,24 @@ export class DotTemplatesService {
 
     /**
      * Unarchive a template
-     * @param {string} inode
+     * @param {string[]} inodes
      * @returns ???
      * @memberof DotTemplatesService
      */
-    unarchive(inode: string): Observable<any> {
-        const url = `/api/v1/templates/${inode}/_unarchive`;
-        return this.request<any>({ method: 'PUT', url });
+    unArchive(inodes: string[]): Observable<any> {
+        const url = `/api/v1/templates/_unarchive`;
+        return this.request<any>({ method: 'PUT', url, body: inodes });
     }
 
     /**
      * Archive a template
-     * @param {string} inode
+     * @param {string[]} inodes
      * @returns ???
      * @memberof DotTemplatesService
      */
-    archive(inode: string): Observable<any> {
-        const url = `/api/v1/templates/${inode}/_archive`;
-        return this.request<any>({ method: 'PUT', url });
+    archive(inodes: string[]): Observable<any> {
+        const url = `/api/v1/templates/_archive`;
+        return this.request<any>({ method: 'PUT', url, body: inodes });
     }
 
     /**

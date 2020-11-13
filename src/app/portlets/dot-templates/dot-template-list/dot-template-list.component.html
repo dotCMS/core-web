@@ -12,27 +12,23 @@
     dataKey="inode"
     [firstPageData]="firstPage"
 >
-    <div>
-        <p-checkbox
-            label="{{'Show-Archived' | dm}}"
-            (onChange)="handleArchivedFilter($event.checked)"
-        ></p-checkbox>
-
-        <button type="button"
-                pButton
-                class="p-button-secondary p-button-sm"
-                icon="pi pi-ellipsis-v"
-                label="{{ 'Actions' | dm}}"
-                (click)="actionsMenu.toggle($event)"></button>
+    <div class="template-listing__header-options">
+        <div>
+            <p-checkbox
+                label="{{'Show-Archived' | dm}}"
+                (onChange)="handleArchivedFilter($event.checked)"
+            ></p-checkbox>
+            <button type="button"
+                    pButton
+                    [disabled]="!this.selectedTemplates.length"
+                    class="p-button-secondary p-button-sm"
+                    icon="pi pi-ellipsis-v"
+                    label="{{ 'Actions' | dm}}"
+                    (click)="actionsMenu.toggle($event)"></button>
+        </div>
         <p-menu #actionsMenu [popup]="true" [model]="templateBulkActions"></p-menu>
-
-<!--        <dot-action-button-->
-<!--            class="action-header__primary-button"-->
-<!--            [model]="addOptions"-->
-<!--            (click)="handleTest()"-->
-<!--        ></dot-action-button>-->
-
     </div>
+
 
     <ng-template #rowTemplate let-rowData="rowData">
         <td [ngStyle]="{ 'text-align': tableColumns[0].textAlign }">

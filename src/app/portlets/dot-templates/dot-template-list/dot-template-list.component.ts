@@ -28,7 +28,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     addOptions: MenuItem[];
     actionHeaderOptions: ActionHeaderOptions;
     addToBundleIdentifier: string;
-    selectedTemplates: DotTemplate[];
+    selectedTemplates: DotTemplate[] = [];
 
     private isEnterPrise: boolean;
     private hasEnvironments: boolean;
@@ -160,20 +160,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                         label: 'primary 2'
                     }
                 ]
-            },
-            secondary: [
-                {
-                    label: 'secondary',
-                    model: [
-                        {
-                            command: () => {
-                                console.log('secondary');
-                            },
-                            label: 'secondary'
-                        }
-                    ]
-                }
-            ]
+            }
         };
 
         this.addOptions = [
@@ -185,18 +172,52 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     private setTemplateBulkActions(): MenuItem[] {
         return [
             {
-                label: this.dotMessageService.get('Delete'),
-                icon: 'pi-trash',
+                label: this.dotMessageService.get('Publish'),
                 command: () => {
-                    debugger;
-                    this.deleteTemplate(this.selectedTemplates.map(template => template.inode));
+                    this.publishTemplate(this.selectedTemplates.map(template => template.inode));
                 }
             },
             {
-                label: this.dotMessageService.get('Publish'),
-                icon: '',
+                label: this.dotMessageService.get('Remote-Publish'),
                 command: () => {
-                    console.log('beto');
+                    this.dotPushPublishDialogService.open({
+                        assetIdentifier: this.selectedTemplates
+                            .map(template => template.identifier)
+                            .toString(),
+                        title: this.dotMessageService.get('contenttypes.content.push_publish')
+                    });
+                }
+            },
+            {
+                label: this.dotMessageService.get('Add-To-Bundle'),
+                command: () => {
+                    this.addToBundleIdentifier = this.selectedTemplates
+                        .map(template => template.identifier)
+                        .toString();
+                }
+            },
+            {
+                label: this.dotMessageService.get('Unpublish'),
+                command: () => {
+                    this.unPublishTemplate(this.selectedTemplates.map(template => template.inode));
+                }
+            },
+            {
+                label: this.dotMessageService.get('Archive'),
+                command: () => {
+                    this.archiveTemplates(this.selectedTemplates.map(template => template.inode));
+                }
+            },
+            {
+                label: this.dotMessageService.get('Unarchive'),
+                command: () => {
+                    this.unArchiveTemplate(this.selectedTemplates.map(template => template.inode));
+                }
+            },
+            {
+                label: this.dotMessageService.get('Delete'),
+                command: () => {
+                    this.deleteTemplate(this.selectedTemplates.map(template => template.inode));
                 }
             }
         ];
@@ -251,15 +272,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 menuItem: {
                     label: this.dotMessageService.get('Unpublish'),
                     command: () => {
-                        this.dotTemplatesService
-                            .unPublish([template.inode])
-                            .pipe(take(1))
-                            .subscribe(() => {
-                                this.showToastNotification(
-                                    this.dotMessageService.get('message.template.unpublished')
-                                );
-                                this.listing.loadCurrentPage();
-                            });
+                        this.unPublishTemplate([template.inode]);
                     }
                 }
             });
@@ -268,15 +281,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 menuItem: {
                     label: this.dotMessageService.get('Archive'),
                     command: () => {
-                        this.dotTemplatesService
-                            .archive(template.inode)
-                            .pipe(take(1))
-                            .subscribe(() => {
-                                this.showToastNotification(
-                                    this.dotMessageService.get('message.template.delete')
-                                );
-                                this.listing.loadCurrentPage();
-                            });
+                        this.archiveTemplates([template.inode]);
                     }
                 }
             });
@@ -327,15 +332,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 menuItem: {
                     label: this.dotMessageService.get('publish'),
                     command: () => {
-                        this.dotTemplatesService
-                            .publish([template.inode])
-                            .pipe(take(1))
-                            .subscribe(() => {
-                                this.showToastNotification(
-                                    this.dotMessageService.get('message.template_list.published')
-                                );
-                                this.listing.loadCurrentPage();
-                            });
+                        this.publishTemplate([template.inode]);
                     }
                 }
             }
@@ -377,13 +374,49 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         }
     }
 
-    private unArchiveTemplate(template: DotTemplate): void {
+    private publishTemplate(inodes: string[]): void {
         this.dotTemplatesService
-            .unarchive(template.inode)
+            .publish(inodes)
+            .pipe(take(1))
+            .subscribe(() => {
+                this.showToastNotification(
+                    this.dotMessageService.get('message.template_list.published')
+                );
+                this.listing.loadCurrentPage();
+            });
+    }
+
+    private unPublishTemplate(inodes: string[]): void {
+        this.dotTemplatesService
+            .unPublish(inodes)
+            .pipe(take(1))
+            .subscribe(() => {
+                this.showToastNotification(
+                    this.dotMessageService.get('message.template.unpublished')
+                );
+                this.listing.loadCurrentPage();
+            });
+    }
+
+    private unArchiveTemplate(inodes: string[]): void {
+        this.dotTemplatesService
+            .unArchive(inodes)
             .pipe(take(1))
             .subscribe(() => {
                 this.listing.loadCurrentPage();
                 this.showToastNotification(this.dotMessageService.get('message.template.undelete'));
+            });
+    }
+
+    private archiveTemplates(inodes: string[]): void {
+        this.dotTemplatesService
+            .archive(inodes)
+            .pipe(take(1))
+            .subscribe(() => {
+                this.showToastNotification(
+                    this.dotMessageService.get('message.template.delete')
+                );
+                this.listing.loadCurrentPage();
             });
     }
 
