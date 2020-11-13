@@ -2,10 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
+import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, mergeMap, pluck, startWith, takeUntil } from 'rxjs/operators';
+import { map, mergeMap, pluck, skip, takeUntil } from 'rxjs/operators';
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 import { DotTemplateStore } from './store/dot-template.store';
 
@@ -27,14 +28,14 @@ const EMPTY_TEMPLATE = {
 };
 
 @Component({
-    selector: 'dot-dot-template-create-edit',
+    selector: 'dot-template-create-edit',
     templateUrl: './dot-template-create-edit.component.html',
     styleUrls: ['./dot-template-create-edit.component.scss'],
     providers: [DotTemplateStore]
 })
 export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     isAdvaced$: Observable<boolean>;
-    template$: Observable<DotTemplate>;
+    template$: Observable<Partial<DotTemplate>>;
 
     title$: Observable<string> = this.store.name$;
     actions$: Observable<DotPortletToolbarActions> = this.store.didTemplateChanged$.pipe(
@@ -44,6 +45,8 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         map((identifier: string) => `/api/v1/templates/${identifier}/working`)
     );
 
+    identifier$: Observable<string> = this.store.identifier$;
+
     form: FormGroup;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -52,43 +55,30 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private store: DotTemplateStore,
         private fb: FormBuilder,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private templateContainersCacheService: TemplateContainersCacheService
     ) {}
 
     ngOnInit() {
-        const type$ = this.activatedRoute.params.pipe(
-            pluck('type'),
-            filter((type: string) => !!type)
+        const type$ = this.activatedRoute.params.pipe(pluck('type'));
+
+        this.template$ = this.activatedRoute.data.pipe(
+            pluck('template'),
+            map((template: DotTemplate) => template || EMPTY_TEMPLATE)
         );
 
-        this.activatedRoute.data
-            .pipe(
-                pluck('template'),
-                filter((template) => !!template),
-                startWith(EMPTY_TEMPLATE),
-                takeUntil(this.destroy$)
-            )
-            .subscribe((template) => {
-                console.log('template', template);
-                this.store.setState({
-                    original: template,
-                    working: template
-                });
-                this.form = this.getForm(template);
+        this.template$.pipe(takeUntil(this.destroy$)).subscribe((template: DotTemplate) => {
+            this.store.setState({
+                original: template,
+                working: template
             });
+            this.templateContainersCacheService.set(template.containers);
+            this.form = this.getForm(template);
 
-        // this.template$ = this.activatedRoute.data.pipe(
-        //     pluck('template'),
-        //     filter((template) => !!template),
-        //     startWith(EMPTY_TEMPLATE),
-        //     tap((template) => {
-        //         this.store.setState({
-        //             original: template,
-        //             working: template
-        //         })
-        //         this.form = this.getForm(template);
-        //     })
-        // );
+            if (!template.identifier) {
+                this.createTemplate();
+            }
+        });
 
         this.isAdvaced$ = type$.pipe(
             map((type: string) => type === 'advanced'),
@@ -99,6 +89,13 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 );
             })
         );
+
+        this.store.orginal$
+            .pipe(skip(1), takeUntil(this.destroy$))
+            .subscribe(({ title, friendlyName, identifier, layout, containers }: DotTemplate) => {
+                this.templateContainersCacheService.set(containers);
+                this.form.setValue({ title, friendlyName, identifier, layout, containers });
+            });
     }
 
     ngOnDestroy(): void {
@@ -109,7 +106,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     /**
      * Start template properties edition
      *
-     * @memberof DotTemplateDesignerComponent
+     * @memberof DotTemplateCreateEditComponent
      */
     editTemplateProps(): void {
         this.dialogService.open(DotTemplatePropsComponent, {
@@ -124,19 +121,53 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * Save template to store
+     *
+     * @memberof DotTemplateCreateEditComponent
+     */
+    saveTemplate({ layout }: DotTemplate): void {
+        this.store.saveTemplate({
+            ...this.form.value,
+            layout
+        });
+    }
+
+    private createTemplate(): void {
+        this.dialogService.open(DotTemplatePropsComponent, {
+            header: 'Create new template',
+            width: '30rem',
+            closable: false,
+            closeOnEscape: false,
+            data: {
+                template: this.form.value,
+                onSave: (value: DotTemplate) => {
+                    this.store.createTemplate(value);
+                },
+                onCancel: () => {
+                    this.store.cancelCreate();
+                }
+            }
+        });
+    }
+
     private getForm({
         title,
         friendlyName,
         identifier,
         layout,
-        containers
-    }: Partial<DotTemplate>): FormGroup {
+        body,
+        containers,
+        theme
+    }: DotTemplate): FormGroup {
         return this.fb.group({
-            identifier,
             title: [title, Validators.required],
+            layout: layout ? this.fb.group(layout) : '',
+            body,
+            identifier,
             friendlyName,
             containers,
-            layout: this.fb.group(layout)
+            theme
         });
     }
 

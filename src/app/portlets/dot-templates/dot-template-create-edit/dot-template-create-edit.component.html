@@ -1,9 +1,5 @@
-<dot-portlet-base>
-    <dot-portlet-toolbar
-        [title]="title$ | async"
-        [actions]="actions$ | async"
-        cancelButtonLabel="Cerrar"
-    >
+<dot-portlet-base [boxed]="false" *ngIf="identifier$ | async">
+    <dot-portlet-toolbar [title]="title$ | async">
         <ng-container id="left" *ngIf="title$ | async">
             <button
                 pButton
@@ -17,11 +13,16 @@
     </dot-portlet-toolbar>
     <p-tabView>
         <p-tabPanel header="Design">
-            The template
-            <!-- <div *ngIf="isAdvaced$ | async; else elseBlock">Advaced</div>
+            <div *ngIf="isAdvaced$ | async; else elseBlock">Advaced</div>
             <ng-template #elseBlock>
-                <dot-template-designer [template]="template$ | async"></dot-template-designer>
-            </ng-template> -->
+                <ng-container *ngIf="template$ | async as template">
+                    <dot-edit-layout-designer
+                        [theme]="template.theme"
+                        [layout]="template.layout"
+                        (save)="saveTemplate($event)"
+                    ></dot-edit-layout-designer>
+                </ng-container>
+            </ng-template>
         </p-tabPanel>
         <p-tabPanel header="Permissions">
             <ng-template pTemplate="content">Permissions</ng-template>

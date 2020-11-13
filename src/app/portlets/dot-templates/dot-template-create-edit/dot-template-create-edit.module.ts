@@ -2,24 +2,27 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotTemplateCreateEditComponent } from './dot-template-create-edit.component';
 import { DotTemplateCreateEditRoutingModule } from './dot-template-create-edit-routing.module';
-import { DotTemplateDesignerModule } from './dot-template-designer/dot-template-designer.module';
 import { TabViewModule } from 'primeng/tabview';
 import { DotPortletBaseModule } from '@components/dot-portlet-base/dot-portlet-base.module';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { ButtonModule } from 'primeng/button';
+import { DotEditLayoutDesignerModule } from '@portlets/dot-edit-page/layout/dot-edit-layout-designer/dot-edit-layout-designer.module';
+import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
 
 @NgModule({
     imports: [
+        ButtonModule,
         CommonModule,
-        DotTemplateCreateEditRoutingModule,
-        DotTemplateDesignerModule,
-        TabViewModule,
-        DotPortletBaseModule,
-        DynamicDialogModule,
         DotApiLinkModule,
-        ButtonModule
+        DotEditLayoutDesignerModule,
+        DotPortletBaseModule,
+        DotTemplateCreateEditRoutingModule,
+        DotTemplatePropsModule,
+        DynamicDialogModule,
+        TabViewModule
     ],
-    declarations: [DotTemplateCreateEditComponent]
+    declarations: [DotTemplateCreateEditComponent],
+    providers: [DialogService]
 })
 export class DotTemplateCreateEditModule {}

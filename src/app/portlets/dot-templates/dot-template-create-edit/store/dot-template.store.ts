@@ -15,13 +15,6 @@ export interface DotTemplateState {
 
 @Injectable()
 export class DotTemplateStore extends ComponentStore<DotTemplateState> {
-    constructor(
-        private dotTemplateService: DotTemplatesService,
-        private dotRouterService: DotRouterService
-    ) {
-        super(null);
-    }
-
     readonly name$: Observable<string> = this.select(
         ({ original }: DotTemplateState) => original.title
     );
@@ -71,6 +64,13 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
             })
         );
     });
+
+    constructor(
+        private dotTemplateService: DotTemplatesService,
+        private dotRouterService: DotRouterService
+    ) {
+        super(null);
+    }
 
     readonly cancelCreate = () => {
         this.dotRouterService.gotoPortlet('templates');

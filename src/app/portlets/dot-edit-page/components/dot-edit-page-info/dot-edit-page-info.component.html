@@ -4,4 +4,4 @@
     [copy]="url"
     [tooltipText]="'dot.common.message.pageurl.copy.clipboard' | dm"
 ></dot-copy-button>
-<dot-api-link [href]="apiLink"></dot-api-link>
+<dot-api-link *ngIf="apiLink" [href]="apiLink"></dot-api-link>
