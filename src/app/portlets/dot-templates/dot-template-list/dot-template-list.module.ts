@@ -9,6 +9,9 @@ import { SharedModule } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
+import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
+import { DotActionMenuButtonModule } from '@components/_common/dot-action-menu-button/dot-action-menu-button.module';
+import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
 
 @NgModule({
     declarations: [DotTemplateListComponent],
@@ -19,7 +22,10 @@ import { ButtonModule } from 'primeng/button';
         SharedModule,
         CheckboxModule,
         MenuModule,
-        ButtonModule
+        ButtonModule,
+        DotActionButtonModule,
+        DotActionMenuButtonModule,
+        DotAddToBundleModule
     ],
     providers: [DotTemplateListResolver, DotTemplatesService]
 })

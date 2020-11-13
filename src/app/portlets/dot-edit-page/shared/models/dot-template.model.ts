@@ -15,6 +15,7 @@ export interface DotTemplate {
     identifier: string;
     image?: string;
     inode: string;
+    live?: boolean;
     locked?: boolean;
     modDate?: Date;
     name: string;
