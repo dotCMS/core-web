@@ -184,7 +184,7 @@ describe('SearchableDropdownComponent', () => {
         expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0');
     });
 
-    fit('should set CSS class, width', fakeAsync(() => {
+    it('should set CSS class, width', fakeAsync(() => {
         hostFixture.componentInstance.data = data;
         hostFixture.componentInstance.cssClass = 'testClass';
         hostFixture.componentInstance.overlayWidth = '650px';

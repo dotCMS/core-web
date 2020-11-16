@@ -155,7 +155,7 @@ describe('DotToolbarComponent', () => {
         expect<any>(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
 
-    fit(`should pass class and width`, () => {
+    it(`should pass class and width`, () => {
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         expect(siteSelector.componentInstance.cssClass).toBe('d-secondary');
         expect(siteSelector.componentInstance.width).toBe('200px');

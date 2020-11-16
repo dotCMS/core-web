@@ -129,7 +129,7 @@ describe('DotPersonaSelectorComponent', () => {
         expect(paginatorService.getWithOffset).toHaveBeenCalledWith(10);
     });
 
-    fit('should set dot-searchable-dropdown with right attributes', () => {
+    it('should set dot-searchable-dropdown with right attributes', () => {
         expect(dropdown.componentInstance.labelPropertyName).toBe('name');
         expect(dropdown.componentInstance.width).toBe('448px');
         expect(dropdown.componentInstance.rows).toBe(10);
