@@ -1,5 +1,3 @@
-import { DotLayoutColumn } from './../../shared/models/dot-layout-column.model';
-import { DotLayoutRow } from './../../shared/models/dot-layout-row.model';
 import { Subject } from 'rxjs';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -12,7 +10,9 @@ import {
     OnDestroy,
     Output,
     EventEmitter,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    OnChanges,
+    SimpleChanges
 } from '@angular/core';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import * as _ from 'lodash';
@@ -27,9 +27,13 @@ import {
     DotHttpErrorHandled
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { tap, take, takeUntil } from 'rxjs/operators';
-import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DotLayout } from '@portlets/dot-edit-page/shared/models';
+import {
+    DotLayout,
+    DotLayoutBody,
+    DotLayoutColumn,
+    DotLayoutRow
+} from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -37,7 +41,7 @@ import { DotLayout } from '@portlets/dot-edit-page/shared/models';
     styleUrls: ['./dot-edit-layout-designer.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
+export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('templateName')
     templateName: ElementRef;
 
@@ -45,7 +49,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
     layout: DotLayout;
 
     @Input()
-    title: string;
+    title = '';
 
     @Input()
     theme: string;
@@ -84,6 +88,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.setupLayout();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!changes.layout.firstChange) {
+            this.setFormValue(changes.layout.currentValue);
+        }
     }
 
     ngOnDestroy(): void {
@@ -141,15 +151,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
 
     private setupLayout(): void {
         this.initForm();
-        this.dotThemesService
-            .get(this.form.get('themeId').value)
-            .pipe(take(1))
-            .subscribe(
-                (theme: DotTheme) => {
-                    this.currentTheme = theme;
-                },
-                (error) => this.errorHandler(error)
-            );
         // Emit event to redraw the grid when the sidebar change
         this.form
             .get('layout.sidebar')
@@ -181,32 +182,59 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
             : null;
     }
 
+    private setFormValue(layout: DotLayout): void {
+        this.form.setValue({
+            title: this.title,
+            themeId: this.theme,
+            layout: {
+                body: this.cleanUpBody(layout.body),
+                header: layout.header,
+                footer: layout.footer,
+                sidebar: layout.sidebar
+            }
+        });
+        this.updateModel();
+    }
+
     private initForm(): void {
         this.form = this.fb.group({
             title: this.title,
             themeId: this.theme,
             layout: this.fb.group({
-                body: this.cleanUpBody(this.layout.body) || {},
+                body: this.cleanUpBody(this.layout.body),
                 header: this.layout.header,
                 footer: this.layout.footer,
                 sidebar: this.createSidebarForm()
             })
         });
+        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
+        });
+
+        this.updateModel();
+    }
+
+    private updateModel(): void {
+        this.dotThemesService
+            .get(this.theme)
+            .pipe(take(1))
+            .subscribe(
+                (theme: DotTheme) => {
+                    this.currentTheme = theme;
+                },
+                (error) => this.errorHandler(error)
+            );
 
         this.initialFormValue = _.cloneDeep(this.form.value);
         this.isModelUpdated = false;
-        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
-            // TODO: Set sidebar to null if sidebar location is empty, we're expecting a change in the backend to accept null value
-        });
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
+    // tslint:disable-next-line: cyclomatic-complexity
     private createSidebarForm(): DotLayoutSideBar {
         return {
-            location: this.layout.sidebar ? this.layout.sidebar.location : '',
-            containers: this.layout.sidebar ? this.layout.sidebar.containers : [],
-            width: this.layout.sidebar ? this.layout.sidebar.width : 'small'
+            location: this.layout?.sidebar?.location || '',
+            containers: this.layout?.sidebar?.containers || [],
+            width: this.layout?.sidebar?.width || 'small'
         };
     }
 

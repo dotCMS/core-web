@@ -1,38 +1,42 @@
-import { of as observableOf } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { DotEditLayoutDesignerComponent } from './dot-edit-layout-designer.component';
-import { DotEditLayoutGridModule } from '../components/dot-edit-layout-grid/dot-edit-layout-grid.module';
-import { MockDotMessageService } from '@tests/dot-message-service.mock';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
-import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input, EventEmitter, Output, DebugElement } from '@angular/core';
-import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
-import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-edit-page-info.module';
-import { mockDotThemes } from '@tests/dot-themes.mock';
-import { DotThemesService } from '@services/dot-themes/dot-themes.service';
-import { DotThemesServiceMock } from '@tests/dot-themes-service.mock';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, FormGroup, ReactiveFormsModule, ControlContainer } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { of as observableOf, of } from 'rxjs';
+
+import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import * as _ from 'lodash';
-import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model';
+
+import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
+import { DotEditLayoutDesignerComponent } from './dot-edit-layout-designer.component';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
-import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
+import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model';
+import { DotThemesService } from '@services/dot-themes/dot-themes.service';
+import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 import cleanUpDialog from '@tests/clean-up-dialog';
-import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotThemesServiceMock } from '@tests/dot-themes-service.mock';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock';
+import { mockDotThemes } from '@tests/dot-themes.mock';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
     template: ''
 })
-class MockAdditionalOptionsComponent {
+class AdditionalOptionsComponentMock {
     @Input() inode: '';
 }
 
@@ -40,7 +44,7 @@ class MockAdditionalOptionsComponent {
     selector: 'dot-layout-properties',
     template: ''
 })
-class MockDotLayoutPropertiesComponent {
+class DotLayoutPropertiesComponentMock {
     @Input() group: FormGroup;
 }
 
@@ -48,15 +52,15 @@ class MockDotLayoutPropertiesComponent {
     selector: 'dot-layout-designer',
     template: ''
 })
-class MockDotLayoutDesignerComponent {
-    @Input() group: FormGroup;
+class DotLayoutDesignerComponentMock {
+    constructor(public group: ControlContainer) {}
 }
 
 @Component({
     selector: 'dot-theme-selector',
     template: ''
 })
-class MockDotThemeSelectorComponent {
+class DotThemeSelectorComponentMock {
     @Input() value: DotTheme;
     @Output() selected = new EventEmitter<DotTheme>();
 }
@@ -75,50 +79,74 @@ const messageServiceMock = new MockDotMessageService({
 
 let component: DotEditLayoutDesignerComponent;
 let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
-let dotRouterService: DotRouterService;
 let dotThemesService: DotThemesService;
 
 describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
+                DotMessagePipe,
                 DotEditLayoutDesignerComponent,
-                MockAdditionalOptionsComponent,
-                MockDotLayoutDesignerComponent,
-                MockDotLayoutPropertiesComponent,
-                MockDotThemeSelectorComponent
+                AdditionalOptionsComponentMock,
+                DotLayoutPropertiesComponentMock,
+                DotThemeSelectorComponentMock,
+                DotLayoutDesignerComponentMock
             ],
             imports: [
                 DotActionButtonModule,
-                DotEditLayoutGridModule,
                 DotEditPageInfoModule,
                 DotSecondaryToolbarModule,
                 DotGlobalMessageModule,
                 DotFieldValidationMessageModule,
                 FormsModule,
+                ReactiveFormsModule,
                 RouterTestingModule,
                 TooltipModule,
-                DotIconButtonModule
+                DotIconButtonModule,
+                ButtonModule
             ],
             providers: [
                 DotEditLayoutService,
                 DotThemesService,
-                DotHttpErrorManagerService,
-                DotRouterService,
                 { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: DotThemesService, useClass: DotThemesServiceMock }
+                { provide: DotThemesService, useClass: DotThemesServiceMock },
+                {
+                    provide: DotRouterService,
+                    useValue: {
+                        goToSiteBrowser: jasmine.createSpy()
+                    }
+                },
+                {
+                    provide: DotEventsService,
+                    useValue: {
+                        notify: jasmine.createSpy(),
+                        listen: jasmine.createSpy().and.returnValue(of({}))
+                    }
+                },
+                {
+                    provide: DotHttpErrorManagerService,
+                    useValue: {
+                        handle: jasmine.createSpy().and.returnValue(of({}))
+                    }
+                },
+                {
+                    provide: TemplateContainersCacheService,
+                    useValue: {
+                        set: jasmine.createSpy
+                    }
+                }
             ]
         });
 
         fixture = TestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
-        dotRouterService = TestBed.inject(DotRouterService);
         dotThemesService = TestBed.inject(DotThemesService);
     });
 
     describe('edit layout', () => {
         beforeEach(() => {
             component.layout = mockDotLayout();
+            component.theme = '123';
             fixture.detectChanges();
         });
         // these need to be fixed when this is fixed correctly https://github.com/dotCMS/core/issues/18830
@@ -127,16 +155,12 @@ describe('DotEditLayoutDesignerComponent', () => {
             const dotEditPageInfo = fixture.debugElement.query(
                 By.css('dot-secondary-toolbar .main-toolbar-left dot-edit-page-info')
             );
-            const dotTemplateActions = fixture.debugElement.query(
-                By.css('dot-secondary-toolbar .main-toolbar-right form')
-            );
             const dotLayoutActions = fixture.debugElement.query(
                 By.css('.dot-edit-layout__toolbar-action-themes')
             );
 
             expect(dotSecondaryToolbar).not.toBeNull();
             expect(dotEditPageInfo).not.toBeNull();
-            expect(dotTemplateActions).not.toBeNull();
             expect(dotLayoutActions).not.toBeNull();
         });
         // these need to be fixed when this is fixed correctly https://github.com/dotCMS/core/issues/18830
@@ -171,12 +195,13 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(cancelButton.nativeElement.textContent).toEqual('Cancel');
         });
 
-        it('should redirect to edit page on cancel button click', () => {
+        it('should emit cancel', () => {
+            spyOn(component.cancel, 'emit');
             const cancelButton: DebugElement = fixture.debugElement.query(
                 By.css('.dot-edit-layout__toolbar-action-cancel')
             );
             cancelButton.triggerEventHandler('click', {});
-            expect(dotRouterService.goToEditPage).toHaveBeenCalledWith({ url: '/an/url/test' });
+            expect(component.cancel.emit).toHaveBeenCalledTimes(1);
         });
 
         it('should show save button', () => {
@@ -205,8 +230,7 @@ describe('DotEditLayoutDesignerComponent', () => {
                 By.css('dot-layout-designer')
             );
 
-            expect(layoutDesigner).toBeTruthy();
-            expect(layoutDesigner.componentInstance.group).toEqual(component.form.get('layout'));
+            expect(layoutDesigner.componentInstance.group.name).toEqual('layout');
         });
 
         it('should not show dot-template-addtional-actions-menu', () => {
@@ -227,7 +251,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         it('should set form model correctly', () => {
             expect(component.form.value).toEqual({
-                title: null,
+                title: '',
                 themeId: '123',
                 layout: {
                     body: mockDotRenderedPage().layout.body,
@@ -244,7 +268,7 @@ describe('DotEditLayoutDesignerComponent', () => {
     });
 
     describe('themes', () => {
-        let themeSelector: MockDotThemeSelectorComponent;
+        let themeSelector: DotThemeSelectorComponentMock;
         let themeButton;
 
         beforeEach(() => {
@@ -330,7 +354,6 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         beforeEach(() => {
             component.layout = mockDotLayout();
-
             fixture.detectChanges();
             saveButton = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-save'));
         });
@@ -339,10 +362,10 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(saveButton.nativeElement.disabled).toBe(true);
         });
 
-        it('should have enabled if the model is updated', () => {
+        it('should have enabled if the model is updated', async () => {
             component.form.get('layout.header').setValue(true);
             fixture.detectChanges();
-
+            await fixture.whenStable();
             expect(saveButton.nativeElement.disabled).toBe(false);
         });
 
@@ -363,12 +386,13 @@ describe('DotEditLayoutDesignerComponent', () => {
                 ...layout,
                 sidebar: null
             };
+            component.theme = '123';
             fixture.detectChanges();
         });
 
         it('should not break when sidebar property in layout is null', () => {
             expect(component.form.value).toEqual({
-                title: null,
+                title: '',
                 themeId: '123',
                 layout: {
                     body: mockDotRenderedPage().layout.body,

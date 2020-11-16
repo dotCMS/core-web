@@ -19,8 +19,6 @@
             padding: 0 $spacing-3;
         }
     }
-
-
 }
 
 dot-layout-designer {
@@ -63,8 +61,4 @@ dot-layout-designer {
 .dot-edit__layout-actions-right {
     display: flex;
     align-items: center;
-
-    .dot-edit__layout-actions-themes {
-        display: inline;
-    }
 }
