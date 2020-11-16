@@ -345,7 +345,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 menuItem: {
                     label: this.dotMessageService.get('Unarchive'),
                     command: () => {
-                        this.unArchiveTemplate(template);
+                        this.unArchiveTemplate([template.inode]);
                     }
                 }
             },
