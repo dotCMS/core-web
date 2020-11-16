@@ -155,10 +155,10 @@ describe('DotToolbarComponent', () => {
         expect<any>(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
 
-    it(`should pass class and width`, () => {
+    fit(`should pass class and width`, () => {
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         expect(siteSelector.componentInstance.cssClass).toBe('d-secondary');
-        expect(siteSelector.componentInstance.width).toBe('200');
+        expect(siteSelector.componentInstance.width).toBe('200px');
     });
 
     it('should toggle menu and update icon on click', () => {
