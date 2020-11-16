@@ -25,7 +25,6 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     tableColumns: DataTableColumn[];
     firstPage: DotTemplate[];
     templateBulkActions: MenuItem[];
-    addOptions: MenuItem[];
     actionHeaderOptions: ActionHeaderOptions;
     addToBundleIdentifier: string;
     selectedTemplates: DotTemplate[] = [];
@@ -93,10 +92,6 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.selectedTemplates = templates;
     }
 
-    handleTest(): void {
-        console.log('test');
-    }
-
     /**
      * Set the actions of each template based o current state.
      * @param {DotTemplate} template
@@ -149,24 +144,20 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 model: [
                     {
                         command: () => {
-                            console.log('primary');
+                            console.log('TBD 1');
                         },
-                        label: 'primary'
+                        label: this.dotMessageService.get('design-template')
                     },
                     {
                         command: () => {
-                            console.log('primary 2 ');
+                            console.log('TBD 2 ');
                         },
-                        label: 'primary 2'
+                        label: this.dotMessageService.get('code-template')
                     }
                 ]
             }
         };
 
-        this.addOptions = [
-            { label: this.dotMessageService.get('design-template'), url: '#/templates/new' },
-            { label: this.dotMessageService.get('code-template'), url: '#/templates/new' }
-        ];
     }
 
     private setTemplateBulkActions(): MenuItem[] {
