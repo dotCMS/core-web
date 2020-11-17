@@ -3,7 +3,7 @@ import { DotcmsConfigService, DotUiColors } from 'dotcms-js';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { take, pluck } from 'rxjs/operators';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-
+console.log('SHOWING UP');
 @Component({
     selector: 'dot-root',
     templateUrl: './app.component.html',
