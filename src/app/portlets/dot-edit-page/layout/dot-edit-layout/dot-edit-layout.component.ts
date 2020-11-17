@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotPageRenderState } from '../../shared/models/dot-rendered-page-state.model';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
+import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ResponseView } from 'dotcms-js';

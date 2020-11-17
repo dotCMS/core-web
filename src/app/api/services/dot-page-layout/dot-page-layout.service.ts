@@ -5,7 +5,7 @@ import { pluck, map } from 'rxjs/operators';
 
 import { CoreWebService } from 'dotcms-js';
 
-import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
+import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 import { DotLayout } from '@shared/models/dot-edit-layout-designer';
 
 /**

@@ -22,9 +22,10 @@ import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-re
 import { mockUser } from '@tests/login-service.mock';
 import { PageModelChangeEventType } from './models';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
-import { DotPageContent, DotPageRender } from '@portlets/dot-edit-page/shared/models';
+import { DotPageContent } from '@portlets/dot-edit-page/shared/models';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
+import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 
 @Injectable()
 class MockDotLicenseService {

@@ -9,7 +9,8 @@ import { DotTemplate } from '@shared/models/dot-edit-layout-designer';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { DotPageRender, DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
+import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
+import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 
 interface DotEditPageNavItem {
     action?: (inode: string) => void;
