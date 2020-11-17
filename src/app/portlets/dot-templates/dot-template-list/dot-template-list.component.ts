@@ -14,12 +14,11 @@ import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
     styleUrls: ['./dot-template-list.component.scss']
 })
 export class DotTemplateListComponent implements OnInit, OnDestroy {
-    tableColumns: DataTableColumn[];
+    actions: ActionHeaderOptions;
     firstPage: DotTemplate[];
+    tableColumns: DataTableColumn[];
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
-
-    actions: ActionHeaderOptions;
 
     constructor(
         private route: ActivatedRoute,

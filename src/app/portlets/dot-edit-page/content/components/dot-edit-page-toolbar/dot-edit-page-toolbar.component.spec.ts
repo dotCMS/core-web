@@ -190,10 +190,12 @@ describe('DotEditPageToolbarComponent', () => {
     });
 
     describe('dot-edit-page-info', () => {
-        it('should have pageState attr', () => {
+        it('should have the right attr', () => {
             fixtureHost.detectChanges();
-            const dotEditPageInfo = de.query(By.css('dot-edit-page-info'));
-            expect(dotEditPageInfo.componentInstance.pageState).toBe(mockDotRenderedPageState);
+            const dotEditPageInfo = de.query(By.css('dot-edit-page-info')).componentInstance;
+            expect(dotEditPageInfo.title).toBe('A title');
+            expect(dotEditPageInfo.url).toBe('/an/url/test');
+            expect(dotEditPageInfo.apiLink).toBe('api/v1/page/render/an/url/test?language_id=1');
         });
     });
 
@@ -264,7 +266,7 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         describe('with license', () => {
-            xit("should have what's change selector", async () => {
+            it("should have what's change selector", async () => {
                 componentHost.pageState.state.mode = DotPageMode.PREVIEW;
                 fixtureHost.detectChanges();
                 await fixtureHost.whenStable();
@@ -274,7 +276,7 @@ describe('DotEditPageToolbarComponent', () => {
                 expect(whatsChangedElem.componentInstance.label).toBe('Whats');
             });
 
-            it("should hide what's change selector", () => {
+            xit("should hide what's change selector", () => {
                 componentHost.pageState.state.mode = DotPageMode.EDIT;
                 fixtureHost.detectChanges();
 

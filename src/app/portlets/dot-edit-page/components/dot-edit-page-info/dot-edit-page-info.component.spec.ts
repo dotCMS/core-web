@@ -2,26 +2,33 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SiteService } from 'dotcms-js';
-
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotEditPageInfoComponent } from './dot-edit-page-info.component';
 
-import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 describe('DotEditPageInfoComponent', () => {
     let component: DotEditPageInfoComponent;
     let fixture: ComponentFixture<DotEditPageInfoComponent>;
     let de: DebugElement;
-    let siteService: SiteService;
 
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
-                declarations: [DotEditPageInfoComponent],
-                imports: [DotApiLinkModule, DotCopyButtonModule, DotPipesModule],
-                providers: []
+                declarations: [DotEditPageInfoComponent, DotMessagePipe],
+                imports: [DotApiLinkModule, DotCopyButtonModule],
+                providers: [
+                    {
+                        provide: DotMessageService,
+                        useValue: {
+                            get() {
+                                return 'Copy url page';
+                            }
+                        }
+                    }
+                ]
             }).compileComponents();
         })
     );
@@ -30,14 +37,10 @@ describe('DotEditPageInfoComponent', () => {
         fixture = TestBed.createComponent(DotEditPageInfoComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        siteService = de.injector.get(SiteService);
     });
 
     describe('default', () => {
         beforeEach(() => {
-            spyOnProperty(siteService, 'currentSite', 'get').and.returnValue({
-                name: 'demo.dotcms.com'
-            });
             component.apiLink = '/api/v1/page/render/an/url/test?language_id=1';
             component.title = 'A title';
             component.url = 'http://demo.dotcms.com:9876/an/url/test';
