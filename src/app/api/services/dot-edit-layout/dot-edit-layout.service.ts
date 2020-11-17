@@ -13,7 +13,7 @@ import {
     DotContainerColumnBox
 } from '@shared/models/dot-edit-layout-designer';
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
-import { DotPageContainer } from '../models';
+import { DotPageContainer } from '@portlets/dot-edit-page/shared/models';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.

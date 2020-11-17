@@ -37,7 +37,7 @@ import {
     DotLayoutSideBar
 } from '@models/dot-edit-layout-designer';
 
-import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 import { DotPageContainer } from '@portlets/dot-edit-page/shared/models';
 
 @Component({

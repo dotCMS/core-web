@@ -12,7 +12,7 @@ import { DotAutofocusModule } from 'projects/dot-rules/src/lib/directives/dot-au
 import { DotLayoutBody } from '@models/dot-edit-layout-designer';
 import { DotContainerSelectorLayoutModule } from '@components/dot-container-selector-layout/dot-container-selector-layout.module';
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
-import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 

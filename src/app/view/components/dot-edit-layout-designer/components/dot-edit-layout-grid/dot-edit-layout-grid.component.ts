@@ -12,7 +12,7 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-co
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
-import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 
 import {
     DotLayoutBody,

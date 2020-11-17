@@ -12,7 +12,7 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
 import { mockDotContainers } from '@tests/dot-page-render.mock';
-import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 import { DotLayoutSideBar } from '@models/dot-edit-layout-designer';
 
 let fakeValue: DotLayoutSideBar;

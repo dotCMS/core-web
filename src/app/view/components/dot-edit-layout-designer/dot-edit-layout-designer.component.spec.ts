@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { DotEditLayoutDesignerComponent } from './dot-edit-layout-designer.component';
-import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';

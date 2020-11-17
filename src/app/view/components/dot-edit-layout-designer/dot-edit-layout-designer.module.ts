@@ -31,7 +31,7 @@ import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.
 // @portlets
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
-import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 
 @NgModule({
     declarations: [DotEditLayoutDesignerComponent],
