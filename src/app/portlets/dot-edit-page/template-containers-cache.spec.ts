@@ -41,7 +41,7 @@ describe('TemplateContainersCacheService', () => {
 
         expect(service.get('/containers/path')).toEqual(containers['/containers/path']);
         expect(service.get('2')).toEqual(containers[2]);
-        expect(service.get('3')).toBeNull();
+        expect(service.get('3')).toBeUndefined();
     });
 
     it('should return the right container identifier', () => {
