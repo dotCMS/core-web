@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { ComponentStore } from '@ngrx/component-store';
 import { Observable, zip } from 'rxjs';
 import * as _ from 'lodash';
 
-import { DotLayout, DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { pluck, switchMap, take, tap } from 'rxjs/operators';
+
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { ActivatedRoute } from '@angular/router';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
-import { DotContainerMap } from '@shared/models/container/dot-container.model';
+import { DotContainerMap } from '@models/container/dot-container.model';
+import { DotLayout, DotTemplate } from '@models/dot-edit-layout-designer';
 
 type DotTemplateType = 'design' | 'advanced';
 

@@ -7,7 +7,7 @@ import { DotPortletBaseModule } from '@components/dot-portlet-base/dot-portlet-b
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { ButtonModule } from 'primeng/button';
-import { DotEditLayoutDesignerModule } from '@portlets/dot-edit-page/layout/dot-edit-layout-designer/dot-edit-layout-designer.module';
+import { DotEditLayoutDesignerModule } from '@components/dot-edit-layout-designer/dot-edit-layout-designer.module';
 import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
 
 @NgModule({

@@ -1,6 +1,5 @@
-import { DotLayout } from './dot-layout.model';
+import { DotLayout, DotTemplate } from '@shared/models/dot-edit-layout-designer';
 import { DotPage } from './dot-page.model';
-import { DotTemplate } from './dot-template.model';
 
 export interface DotPageView {
     layout: DotLayout;

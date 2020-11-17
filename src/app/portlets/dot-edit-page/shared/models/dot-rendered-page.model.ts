@@ -1,8 +1,7 @@
-import { DotLayout } from './dot-layout.model';
 import { DotPage } from './dot-page.model';
-import { DotTemplate } from './dot-template.model';
 import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotContainer } from '@shared/models/container/dot-container.model';
+import { DotLayout, DotTemplate } from '@shared/models/dot-edit-layout-designer';
 
 export module DotPageRender {
     export interface Parameters {

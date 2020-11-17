@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
-import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
-import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
-import { DotLayoutRow } from '../../shared/models/dot-layout-row.model';
-import { DotLayoutColumn } from '../../shared/models/dot-layout-column.model';
-import * as _ from 'lodash';
-import { TemplateContainersCacheService } from '../../template-containers-cache.service';
-import { DotPageContainer } from '../models/dot-page-container.model';
-import { DotContainerColumnBox } from '../models/dot-container-column-box.model';
-import { DotLayoutGrid } from '../models/dot-layout-grid.model';
-import { DotLayoutGridRow } from '../models/dot-layout-grid-row.model';
+
 import { Subject, Observable } from 'rxjs';
+import * as _ from 'lodash';
+
+import {
+    DotLayoutBody,
+    DotLayoutGrid,
+    DotLayoutGridBox,
+    DotLayoutRow,
+    DotLayoutColumn,
+    DotLayoutGridRow,
+    DotContainerColumnBox
+} from '@shared/models/dot-edit-layout-designer';
+import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotPageContainer } from '../models';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.

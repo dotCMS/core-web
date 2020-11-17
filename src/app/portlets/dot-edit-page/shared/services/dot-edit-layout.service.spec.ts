@@ -1,7 +1,7 @@
 import { DotEditLayoutService } from './dot-edit-layout.service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { mockDotContainers } from '../../../../test/dot-page-render.mock';
-import { DotContainerColumnBox } from '../models/dot-container-column-box.model';
+import { DotContainerColumnBox } from '../../../../shared/models/dot-edit-layout-designer/dot-container-column-box.model';
 import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
 import { DotLayoutGridBox } from '@portlets/dot-edit-page/shared/models/dot-layout-grid-box.model';
 import { CONTAINER_SOURCE } from '@models/container/dot-container.model';

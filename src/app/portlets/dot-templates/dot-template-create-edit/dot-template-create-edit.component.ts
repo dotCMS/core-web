@@ -1,10 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
-import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
-import { DialogService } from 'primeng/dynamicdialog';
+
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+
+import { DialogService } from 'primeng/dynamicdialog';
+
+import { DotTemplate } from '@shared/models/dot-edit-layout-designer/dot-template.model';
+import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
+
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 import { DotTemplateItem, DotTemplateStore } from './store/dot-template.store';
 

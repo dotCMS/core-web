@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
-import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+
+import { DotTemplate } from '@models/dot-edit-layout-designer';
+import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 
 @Injectable()
 export class DotTemplateCreateEditResolver implements Resolve<DotTemplate> {

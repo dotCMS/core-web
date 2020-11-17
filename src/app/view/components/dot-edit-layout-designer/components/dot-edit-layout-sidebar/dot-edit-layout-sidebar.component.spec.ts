@@ -8,7 +8,7 @@ import { DotEditLayoutSidebarComponent } from './dot-edit-layout-sidebar.compone
 import { FormControl, FormGroup } from '@angular/forms';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { TemplateContainersCacheService } from '../../../template-containers-cache.service';
+import { TemplateContainersCacheService } from '../../../../../portlets/dot-edit-page/template-containers-cache.service';
 import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
 import { mockDotContainers } from '../../../../../test/dot-page-render.mock';
 import { DotLayoutSideBar } from '@portlets/dot-edit-page/shared/models/dot-layout-sidebar.model';

@@ -2,18 +2,23 @@ import { Component, OnInit, forwardRef, ViewChild, OnDestroy } from '@angular/co
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormBuilder } from '@angular/forms';
 
 import * as _ from 'lodash';
-import { NgGrid, NgGridConfig } from 'dot-layout-grid';
-
-import { DOT_LAYOUT_GRID_MAX_COLUMNS } from './../../../shared/models/dot-layout-grid.model';
-import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
-import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
-import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
-import { DotLayoutGrid } from '@portlets/dot-edit-page/shared/models/dot-layout-grid.model';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NgGrid, NgGridConfig } from 'dot-layout-grid';
+
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+
+import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+
+import {
+    DotLayoutBody,
+    DotLayoutGrid,
+    DOT_LAYOUT_GRID_MAX_COLUMNS
+} from '@models/dot-edit-layout-designer';
 
 interface DotAddClass {
     setter: (string) => void;

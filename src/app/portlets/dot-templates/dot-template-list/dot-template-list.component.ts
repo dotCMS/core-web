@@ -6,7 +6,7 @@ import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { ActionHeaderOptions } from '@shared/models/action-header';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
+import { DotTemplate } from '@shared/models/dot-edit-layout-designer';
 
 @Component({
     selector: 'dot-template-list',

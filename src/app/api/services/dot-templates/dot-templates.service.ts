@@ -1,11 +1,12 @@
 import { catchError, map, pluck, take } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { Observable } from 'rxjs';
 import { CoreWebService, DotRequestOptionsArgs } from 'dotcms-js';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
+
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotTemplate } from '@shared/models/dot-edit-layout-designer';
 
 /**
  * Provide util methods to handle templates in the system.

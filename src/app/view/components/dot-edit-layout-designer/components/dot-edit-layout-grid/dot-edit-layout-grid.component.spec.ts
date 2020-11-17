@@ -11,7 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { PaginatorService } from '@services/paginator/paginator.service';
-import { TemplateContainersCacheService } from '../../../template-containers-cache.service';
+import { TemplateContainersCacheService } from '../../../../../portlets/dot-edit-page/template-containers-cache.service';
 import { NgGridModule } from 'dot-layout-grid';
 import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';

@@ -1,8 +1,8 @@
 import { Component, forwardRef } from '@angular/core';
-import { DotLayoutSideBar } from '../../../shared/models/dot-layout-sidebar.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DotContainerColumnBox } from '../../../shared/models/dot-container-column-box.model';
-import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
+
+import { DotContainerColumnBox, DotLayoutSideBar } from '@models/dot-edit-layout-designer';
+import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
 /**

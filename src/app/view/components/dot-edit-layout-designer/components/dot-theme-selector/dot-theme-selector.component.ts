@@ -1,6 +1,3 @@
-import { fromEvent as observableFromEvent, Observable } from 'rxjs';
-
-import { debounceTime } from 'rxjs/operators';
 import {
     Component,
     OnInit,
@@ -10,14 +7,18 @@ import {
     ViewChild,
     ElementRef
 } from '@angular/core';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { DotTheme } from '../../../shared/models/dot-theme.model';
+
+import { fromEvent as observableFromEvent, Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { Site, SiteService } from 'dotcms-js';
-import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { PaginatorService } from '@services/paginator';
 import { DataView } from 'primeng/dataview';
 import { LazyLoadEvent } from 'primeng/api';
+
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { PaginatorService } from '@services/paginator';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+import { DotTheme } from '@models/dot-edit-layout-designer';
 
 /**
  * The DotThemeSelectorComponent is modal that
@@ -50,7 +51,6 @@ export class DotThemeSelectorComponent implements OnInit {
 
     current: DotTheme;
     visible = true;
-
     dialogActions: DotDialogActions;
 
     constructor(

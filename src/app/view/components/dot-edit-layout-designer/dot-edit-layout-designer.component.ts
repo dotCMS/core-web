@@ -1,6 +1,3 @@
-import { Subject } from 'rxjs';
-import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import {
     Component,
     OnInit,
@@ -15,26 +12,32 @@ import {
     SimpleChanges,
     ChangeDetectorRef
 } from '@angular/core';
-import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormGroup, FormBuilder } from '@angular/forms';
+
 import * as _ from 'lodash';
 
-import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { DotTheme } from '../../shared/models/dot-theme.model';
-import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+import { tap, take, takeUntil } from 'rxjs/operators';
+
+import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import {
     DotHttpErrorManagerService,
     DotHttpErrorHandled
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { tap, take, takeUntil } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
 import {
     DotLayout,
+    DotTheme,
     DotLayoutBody,
+    DotLayoutRow,
     DotLayoutColumn,
-    DotLayoutRow
-} from '@portlets/dot-edit-page/shared/models';
+    DotLayoutSideBar
+} from '@models/dot-edit-layout-designer';
+
+import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
