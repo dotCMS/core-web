@@ -68,7 +68,7 @@ class MockDotLicenseService {
     }
 }
 
-fdescribe('DotEditPageToolbarComponent', () => {
+describe('DotEditPageToolbarComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     let componentHost: TestHostComponent;
     let component: DotEditPageToolbarComponent;
