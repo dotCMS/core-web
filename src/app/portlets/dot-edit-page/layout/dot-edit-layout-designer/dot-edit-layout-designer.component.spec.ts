@@ -296,12 +296,10 @@ describe('DotEditLayoutDesignerComponent', () => {
             fixture.detectChanges();
             const themeSelectorBtn = fixture.debugElement.query(
                 By.css('.dot-edit-layout__toolbar-action-themes')
-            ).nativeElement;
-            const themeSelectorBtnContainer = fixture.debugElement.query(
-                By.css('.dot-edit__layout-actions-themes')
-            ).nativeElement;
-            expect(themeSelectorBtn.disabled).toBe(true);
-            expect(themeSelectorBtnContainer.outerHTML).toContain('No Read Permission');
+            );
+            console.dir(themeSelectorBtn);
+            expect(themeSelectorBtn.nativeElement.disabled).toBe(true);
+            expect(themeSelectorBtn.attributes['ng-reflect-text']).toBe('No Read Permission');
         });
 
         it('should get the emitted value from themes and trigger a save', () => {
@@ -363,9 +361,9 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         it('should have enabled if the model is updated', async () => {
-            component.form.get('layout.header').setValue(true);
+            component.form.get('title').setValue('Hello');
             fixture.detectChanges();
-            await fixture.whenStable();
+            await fixture.whenRenderingDone();
             expect(saveButton.nativeElement.disabled).toBe(false);
         });
 

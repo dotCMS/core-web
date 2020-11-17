@@ -12,7 +12,8 @@ import {
     EventEmitter,
     ChangeDetectionStrategy,
     OnChanges,
-    SimpleChanges
+    SimpleChanges,
+    ChangeDetectorRef
 } from '@angular/core';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import * as _ from 'lodash';
@@ -83,7 +84,8 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private cd: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -209,6 +211,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
+            this.cd.detectChanges();
         });
 
         this.updateModel();
@@ -221,6 +224,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             .subscribe(
                 (theme: DotTheme) => {
                     this.currentTheme = theme;
+                    this.cd.detectChanges();
                 },
                 (error) => this.errorHandler(error)
             );
