@@ -1,11 +1,60 @@
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormGroup,
+    FormsModule,
+    NG_VALUE_ACCESSOR,
+    ReactiveFormsModule
+} from '@angular/forms';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Component, DebugElement, Input, OnInit } from '@angular/core';
+import { Component, DebugElement, forwardRef, Input, OnInit } from '@angular/core';
 
 import { DotLayoutDesignerComponent } from './dot-layout-designer.component';
 import { DotLayout } from '@portlets/dot-edit-page/shared/models';
-import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
+import { mockDotLayout } from '@tests/dot-page-render.mock';
+import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+
+@Component({
+    selector: 'dot-edit-layout-grid',
+    template: '',
+    providers: [
+        {
+            multi: true,
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => DotEditLayoutGridComponentMock)
+        }
+    ]
+})
+export class DotEditLayoutGridComponentMock implements ControlValueAccessor {
+    propagateChange = (_: any) => {};
+    registerOnChange(fn: any): void {
+        this.propagateChange = fn;
+    }
+    registerOnTouched(): void {}
+    writeValue(): void {}
+}
+
+@Component({
+    selector: 'dot-edit-layout-sidebar',
+    template: '',
+    providers: [
+        {
+            multi: true,
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => DotEditLayoutSidebarComponentMock)
+        }
+    ]
+})
+export class DotEditLayoutSidebarComponentMock implements ControlValueAccessor {
+    propagateChange = (_: any) => {};
+    registerOnChange(fn: any): void {
+        this.propagateChange = fn;
+    }
+    registerOnTouched(): void {}
+    writeValue(): void {}
+}
 
 @Component({
     template: `
@@ -39,7 +88,28 @@ describe('DotLayoutDesignerComponent', () => {
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
-                declarations: [TestHostComponent, DotLayoutDesignerComponent]
+                declarations: [
+                    DotMessagePipe,
+                    TestHostComponent,
+                    DotLayoutDesignerComponent,
+                    DotEditLayoutGridComponentMock,
+                    DotEditLayoutSidebarComponentMock
+                ],
+                imports: [FormsModule, ReactiveFormsModule],
+                providers: [
+                    {
+                        provide: DotMessageService,
+                        useValue: {
+                            get(value) {
+                                const map = {
+                                    'editpage.layout.designer.header': 'HEADER',
+                                    'editpage.layout.designer.footer': 'FOOTER'
+                                };
+                                return map[value];
+                            }
+                        }
+                    }
+                ]
             }).compileComponents();
         })
     );
@@ -56,7 +126,7 @@ describe('DotLayoutDesignerComponent', () => {
     describe('default', () => {
         beforeEach(() => {
             hostComponent.layout = {
-                ...mockDotRenderedPage().layout,
+                ...mockDotLayout(),
                 sidebar: {
                     location: '',
                     containers: [],
@@ -91,7 +161,7 @@ describe('DotLayoutDesignerComponent', () => {
             });
 
             it('should show dot-edit-layout-grid', () => {
-                expect(gridLayout).toBeTruthy();
+                expect(gridLayout).toBeDefined();
             });
 
             it('should pass body as form control', () => {
@@ -108,7 +178,7 @@ describe('DotLayoutDesignerComponent', () => {
                     title: '',
                     header: true,
                     footer: true,
-                    body: mockDotRenderedPage().layout.body,
+                    body: mockDotLayout().body,
                     sidebar: {
                         location: '',
                         containers: [],
@@ -137,50 +207,43 @@ describe('DotLayoutDesignerComponent', () => {
                 const headerSelector = de.query(By.css('.dot-layout-designer__footer'));
                 expect(headerSelector.nativeElement.outerText).toBe('FOOTER');
             });
+        });
 
-            describe('sidebar size and position', () => {
-                beforeEach(() => {
-                    hostComponent.layout = {
-                        ...mockDotRenderedPage().layout,
-                        sidebar: {
-                            location: 'left',
-                            containers: [],
-                            width: 'small'
-                        }
-                    };
+        describe('sidebar size and position', () => {
+            beforeEach(() => {
+                hostComponent.layout = mockDotLayout();
+                hostFixture.detectChanges();
+            });
+
+            it('should show', () => {
+                const sidebar: DebugElement = de.query(
+                    By.css('.dot-layout-designer__sidebar--left')
+                );
+                expect(sidebar).toBeTruthy();
+            });
+
+            it('should show sidebar position correctly', () => {
+                const positions = ['left', 'right'];
+                positions.forEach((position) => {
+                    component.group.control.get('sidebar').value.location = position;
                     hostFixture.detectChanges();
-                });
-
-                it('should show', () => {
                     const sidebar: DebugElement = de.query(
-                        By.css('.dot-layout-designer__sidebar--left')
+                        By.css(`.dot-layout-designer__sidebar--${position}`)
                     );
-                    expect(sidebar).toBeTruthy();
+                    expect(sidebar).toBeTruthy(position);
                 });
+            });
 
-                it('should show sidebar position correctly', () => {
-                    const positions = ['left', 'right'];
-                    positions.forEach((position) => {
-                        component.group.control.get('sidebar').value.location = position;
-                        hostFixture.detectChanges();
-                        const sidebar: DebugElement = de.query(
-                            By.css(`.dot-layout-designer__sidebar--${position}`)
-                        );
-                        expect(sidebar).toBeTruthy(position);
-                    });
-                });
+            it('it should set sidebar size correctly', () => {
+                const sizes = ['small', 'medium', 'large'];
 
-                it('it should set sidebar size correctly', () => {
-                    const sizes = ['small', 'medium', 'large'];
-
-                    sizes.forEach((size) => {
-                        component.group.control.get('sidebar').value.width = size;
-                        hostFixture.detectChanges();
-                        const sidebar: DebugElement = de.query(
-                            By.css(`.dot-layout-designer__sidebar--${size}`)
-                        );
-                        expect(sidebar).toBeTruthy(size);
-                    });
+                sizes.forEach((size) => {
+                    component.group.control.get('sidebar').value.width = size;
+                    hostFixture.detectChanges();
+                    const sidebar: DebugElement = de.query(
+                        By.css(`.dot-layout-designer__sidebar--${size}`)
+                    );
+                    expect(sidebar).toBeDefined();
                 });
             });
         });
