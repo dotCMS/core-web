@@ -51,7 +51,7 @@ import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
 import { mockDotRenderedPage, mockDotLayout } from '@tests/dot-page-render.mock';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotPageMode, DotPageContainer, DotPageContent } from '../shared/models';
+import { DotPageMode, DotPageContent } from '../shared/models';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { dotcmsContentletMock } from '@tests/dotcms-contentlet.mock';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
@@ -69,6 +69,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService } from 'primeng/api';
+import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 
 @Component({
     selector: 'dot-global-message',

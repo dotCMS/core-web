@@ -24,10 +24,12 @@ import { tap, take, takeUntil } from 'rxjs/operators';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
+import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 import {
     DotHttpErrorManagerService,
     DotHttpErrorHandled
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+
 import {
     DotLayout,
     DotTheme,
@@ -36,9 +38,7 @@ import {
     DotLayoutColumn,
     DotLayoutSideBar
 } from '@models/dot-edit-layout-designer';
-
-import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
-import { DotPageContainer } from '@portlets/dot-edit-page/shared/models';
+import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 
 @Component({
     selector: 'dot-edit-layout-designer',

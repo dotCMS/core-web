@@ -1,4 +1,4 @@
-import { DotPageContainer } from '@portlets/dot-edit-page/shared/models';
+import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 
 export interface DotLayoutSideBar {
     location?: string;

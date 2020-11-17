@@ -16,7 +16,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import {
     DotPageContainer,
     DotPageContainerPersonalized
-} from '../shared/models/dot-page-container.model';
+} from '../../../shared/models/dot-page-container/dot-page-container.model';
 import { DotPageContent } from '../shared/models/dot-page-content.model';
 import { DotPageRenderState } from '../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';

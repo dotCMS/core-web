@@ -1,4 +1,3 @@
-export * from './dot-page-container.model';
 export * from './dot-page-content.model';
 export * from './dot-page-view.model';
 export * from './dot-page.model';

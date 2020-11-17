@@ -12,11 +12,7 @@ import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.servic
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotLayout, DotLayoutColumn, DotLayoutRow } from '@shared/models/dot-edit-layout-designer';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import {
-    DotPageContainer,
-    DotPageContent,
-    DotPageRenderState
-} from '@portlets/dot-edit-page/shared/models';
+import { DotPageContent, DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
 import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
 import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
@@ -28,6 +24,7 @@ import {
     DotContentletEventSelect,
     DotRelocatePayload
 } from './models/dot-contentlets-events.model';
+import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 
 export enum DotContentletAction {
     EDIT,
