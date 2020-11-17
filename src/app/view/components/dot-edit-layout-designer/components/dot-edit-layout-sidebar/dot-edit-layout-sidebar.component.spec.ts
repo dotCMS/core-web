@@ -2,17 +2,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { FormControl, FormGroup } from '@angular/forms';
+
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotContainerSelectorLayoutModule } from '@components/dot-container-selector-layout/dot-container-selector-layout.module';
 import { DotEditLayoutSidebarComponent } from './dot-edit-layout-sidebar.component';
-import { FormControl, FormGroup } from '@angular/forms';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { TemplateContainersCacheService } from '../../../../../portlets/dot-edit-page/template-containers-cache.service';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
-import { mockDotContainers } from '../../../../../test/dot-page-render.mock';
-import { DotLayoutSideBar } from '@portlets/dot-edit-page/shared/models/dot-layout-sidebar.model';
+import { mockDotContainers } from '@tests/dot-page-render.mock';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotLayoutSideBar } from '@models/dot-edit-layout-designer';
 
 let fakeValue: DotLayoutSideBar;
 

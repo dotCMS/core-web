@@ -1,11 +1,10 @@
-import { DotTemplate } from '../portlets/dot-edit-page/shared/models/dot-template.model';
-import { DotPage } from '../portlets/dot-edit-page/shared/models/dot-page.model';
+import { DotPage } from '@portlets/dot-edit-page/shared/models/dot-page.model';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { DotLayout } from '@portlets/dot-edit-page/shared/models/dot-layout.model';
 import { mockDotLanguage } from './dot-language.mock';
 import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
 import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
 import { dotcmsContentTypeBasicMock } from './dot-content-types.mock';
+import { DotLayout, DotTemplate } from '@models/dot-edit-layout-designer';
 
 export const mockDotPage = (): DotPage => {
     return {

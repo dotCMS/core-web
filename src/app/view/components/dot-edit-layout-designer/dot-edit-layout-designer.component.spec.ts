@@ -22,7 +22,6 @@ import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
-import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 
@@ -31,6 +30,7 @@ import { DotThemesServiceMock } from '@tests/dot-themes-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { mockDotThemes } from '@tests/dot-themes.mock';
+import { DotTheme } from '@models/dot-edit-layout-designer';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',

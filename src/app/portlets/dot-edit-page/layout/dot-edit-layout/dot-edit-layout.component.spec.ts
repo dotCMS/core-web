@@ -1,17 +1,18 @@
 import { of as observableOf, of } from 'rxjs';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { DotEditLayoutComponent } from './dot-edit-layout.component';
 import { Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
-import { DotLayout } from '@portlets/dot-edit-page/shared/models';
+
+import { DotEditLayoutComponent } from './dot-edit-layout.component';
+import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotLayout } from '@models/dot-edit-layout-designer';
 
 @Component({
     selector: 'dot-edit-layout-designer',

@@ -2,22 +2,27 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { Component, DebugElement, Input, HostBinding, Output, EventEmitter } from '@angular/core';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
-import { DotContainerSelectorLayoutModule } from '@components/dot-container-selector-layout/dot-container-selector-layout.module';
-import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
-import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { PaginatorService } from '@services/paginator/paginator.service';
-import { TemplateContainersCacheService } from '../../../../../portlets/dot-edit-page/template-containers-cache.service';
+
 import { NgGridModule } from 'dot-layout-grid';
-import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
+
+import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
+import { DotAutofocusModule } from 'projects/dot-rules/src/lib/directives/dot-autofocus/dot-autofocus.module';
+
+import { DotLayoutBody } from '@models/dot-edit-layout-designer';
+import { DotContainerSelectorLayoutModule } from '@components/dot-container-selector-layout/dot-container-selector-layout.module';
+import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
-import { DotAutofocusModule } from 'projects/dot-rules/src/lib/directives/dot-autofocus/dot-autofocus.module';
+
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { PaginatorService } from '@services/paginator/paginator.service';
+
+import { DOTTestBed } from '@tests/dot-test-bed';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
 
 let fakeValue: DotLayoutBody;
 

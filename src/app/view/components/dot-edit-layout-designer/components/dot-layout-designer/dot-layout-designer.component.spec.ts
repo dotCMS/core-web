@@ -11,10 +11,10 @@ import { By } from '@angular/platform-browser';
 import { Component, DebugElement, forwardRef, Input, OnInit } from '@angular/core';
 
 import { DotLayoutDesignerComponent } from './dot-layout-designer.component';
-import { DotLayout } from '@portlets/dot-edit-page/shared/models';
 import { mockDotLayout } from '@tests/dot-page-render.mock';
 import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotLayout } from '@models/dot-edit-layout-designer';
 
 @Component({
     selector: 'dot-edit-layout-grid',

@@ -1,12 +1,15 @@
+import { TestBed } from '@angular/core/testing';
+
 import { DotEditLayoutService } from './dot-edit-layout.service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
-import { mockDotContainers } from '../../../../test/dot-page-render.mock';
-import { DotContainerColumnBox } from '../../../../shared/models/dot-edit-layout-designer/dot-container-column-box.model';
-import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
-import { DotLayoutGridBox } from '@portlets/dot-edit-page/shared/models/dot-layout-grid-box.model';
+import { mockDotContainers } from '@tests/dot-page-render.mock';
 import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
-import { DotLayoutGrid } from '../models/dot-layout-grid.model';
-import { TestBed } from '@angular/core/testing';
+import {
+    DotLayoutBody,
+    DotLayoutGrid,
+    DotLayoutGridBox,
+    DotContainerColumnBox
+} from '@models/dot-edit-layout-designer';
 
 describe('DotEditLayoutService', () => {
     const containers = {
