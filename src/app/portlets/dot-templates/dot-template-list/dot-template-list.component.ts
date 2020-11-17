@@ -61,8 +61,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
 
     /**
      * Handle selected template.
-     * @param {DotTemplate} template
      *
+     * @param {DotTemplate} { identifier }
      * @memberof DotTemplateListComponent
      */
     editTemplate({ identifier }: DotTemplate): void {

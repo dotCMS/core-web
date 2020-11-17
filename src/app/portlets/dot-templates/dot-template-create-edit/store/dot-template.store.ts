@@ -183,6 +183,11 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
             });
     }
 
+    /**
+     * Redirect to template listing
+     *
+     * @memberof DotTemplateStore
+     */
     cancelCreate = () => {
         this.dotRouterService.gotoPortlet('templates');
     };

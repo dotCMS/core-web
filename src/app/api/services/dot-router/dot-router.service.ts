@@ -108,7 +108,7 @@ export class DotRouterService {
     }
 
     /**
-     * Redirecto to edit the template id passed
+     * Redirect to edit the template id passed
      *
      * @param {string} id
      * @memberof DotRouterService

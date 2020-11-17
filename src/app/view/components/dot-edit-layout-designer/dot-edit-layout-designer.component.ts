@@ -38,6 +38,7 @@ import {
 } from '@models/dot-edit-layout-designer';
 
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotPageContainer } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -239,10 +240,22 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     // tslint:disable-next-line: cyclomatic-complexity
     private createSidebarForm(): DotLayoutSideBar {
         return {
-            location: this.layout?.sidebar?.location || '',
-            containers: this.layout?.sidebar?.containers || [],
-            width: this.layout?.sidebar?.width || 'small'
+            location: this.getSidebarLocation(this.layout),
+            containers: this.getSidebarContainers(this.layout),
+            width: this.getSidebarWidth(this.layout)
         };
+    }
+
+    private getSidebarLocation(layout: DotLayout): string {
+        return layout?.sidebar?.location;
+    }
+
+    private getSidebarContainers(layout: DotLayout): DotPageContainer[] {
+        return layout?.sidebar?.containers || [];
+    }
+
+    private getSidebarWidth(layout: DotLayout): string {
+        return layout?.sidebar?.width || 'small';
     }
 
     private errorHandler(err: HttpErrorResponse): Observable<any> {
