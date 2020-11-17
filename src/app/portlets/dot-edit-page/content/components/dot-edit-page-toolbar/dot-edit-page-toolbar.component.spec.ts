@@ -68,7 +68,7 @@ class MockDotLicenseService {
     }
 }
 
-describe('DotEditPageToolbarComponent', () => {
+fdescribe('DotEditPageToolbarComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     let componentHost: TestHostComponent;
     let component: DotEditPageToolbarComponent;
@@ -267,7 +267,7 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         describe('with license', () => {
-            it("should have what's change selector", async () => {
+            xit("should have what's change selector", async () => {
                 componentHost.pageState.state.mode = DotPageMode.PREVIEW;
                 fixtureHost.detectChanges();
                 await fixtureHost.whenStable();
@@ -277,7 +277,7 @@ describe('DotEditPageToolbarComponent', () => {
                 expect(whatsChangedElem.componentInstance.label).toBe('Whats');
             });
 
-            xit("should hide what's change selector", () => {
+            it("should hide what's change selector", () => {
                 componentHost.pageState.state.mode = DotPageMode.EDIT;
                 fixtureHost.detectChanges();
 

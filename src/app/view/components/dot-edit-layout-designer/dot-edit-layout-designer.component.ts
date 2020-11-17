@@ -247,7 +247,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     private getSidebarLocation(layout: DotLayout): string {
-        return layout?.sidebar?.location;
+        return layout?.sidebar?.location || '';
     }
 
     private getSidebarContainers(layout: DotLayout): DotPageContainer[] {
