@@ -9,7 +9,7 @@ import { pluck, switchMap, take, tap } from 'rxjs/operators';
 
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotContainerMap } from '@models/container/dot-container.model';
 import { DotLayout, DotTemplate } from '@models/dot-edit-layout-designer';
 
@@ -154,7 +154,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         private dotTemplateService: DotTemplatesService,
         private dotRouterService: DotRouterService,
         private activatedRoute: ActivatedRoute,
-        private templateContainersCacheService: TemplateContainersCacheService
+        private templateContainersCacheService: DotTemplateContainersCacheService
     ) {
         super(null);
 

@@ -8,7 +8,7 @@ import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ResponseView } from 'dotcms-js';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotContainerMap, DotContainer } from '@shared/models/container/dot-container.model';
 
 @Component({
@@ -28,7 +28,7 @@ export class DotEditLayoutComponent implements OnInit {
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotPageLayoutService: DotPageLayoutService,
         private dotMessageService: DotMessageService,
-        private templateContainersCacheService: TemplateContainersCacheService
+        private templateContainersCacheService: DotTemplateContainersCacheService
     ) {}
 
     ngOnInit() {

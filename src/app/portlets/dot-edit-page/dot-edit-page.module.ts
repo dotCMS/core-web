@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotEditPageRoutingModule } from './dot-edit-page-routing.module';
 import { DotEditLayoutModule } from './layout/dot-edit-layout.module';
-import { TemplateContainersCacheService } from './template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotEditPageMainModule } from './main/dot-edit-page-main/dot-edit-page-main.module';
 import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
@@ -28,7 +28,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         DotPageStateService,
         DotPageRenderService,
         DotPageLayoutService,
-        TemplateContainersCacheService
+        DotTemplateContainersCacheService
     ]
 })
 export class DotEditPageModule {}

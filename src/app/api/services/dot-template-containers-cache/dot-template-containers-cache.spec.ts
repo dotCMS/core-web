@@ -1,18 +1,18 @@
-import { TemplateContainersCacheService } from './template-containers-cache.service';
+import { DotTemplateContainersCacheService } from './dot-template-containers-cache.service';
 import { TestBed } from '@angular/core/testing';
 import { CONTAINER_SOURCE, DotContainerMap } from '@models/container/dot-container.model';
 
 describe('TemplateContainersCacheService', () => {
-    let service: TemplateContainersCacheService;
+    let service: DotTemplateContainersCacheService;
     let containers: DotContainerMap = {};
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [TemplateContainersCacheService],
+            providers: [DotTemplateContainersCacheService],
             imports: []
         });
 
-        service = TestBed.get(TemplateContainersCacheService);
+        service = TestBed.get(DotTemplateContainersCacheService);
         containers = {
             '/containers/path': {
                 identifier: '1',

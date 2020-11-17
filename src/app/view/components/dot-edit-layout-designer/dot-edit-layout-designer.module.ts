@@ -29,7 +29,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 
 // @portlets
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 
@@ -58,6 +58,6 @@ import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/do
         DotLayoutDesignerModule
     ],
     exports: [DotEditLayoutDesignerComponent],
-    providers: [DotEditLayoutService, DotPageLayoutService, TemplateContainersCacheService]
+    providers: [DotEditLayoutService, DotPageLayoutService, DotTemplateContainersCacheService]
 })
 export class DotEditLayoutDesignerModule {}

@@ -12,7 +12,7 @@ import {
     DotLayoutGridRow,
     DotContainerColumnBox
 } from '@shared/models/dot-edit-layout-designer';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotPageContainer } from '../models';
 
 /**
@@ -24,7 +24,7 @@ import { DotPageContainer } from '../models';
 export class DotEditLayoutService {
     private _addGridBox: Subject<boolean> = new Subject();
 
-    constructor(private templateContainersCacheService: TemplateContainersCacheService) {}
+    constructor(private templateContainersCacheService: DotTemplateContainersCacheService) {}
 
     /**
      * Take an DotPageView and return an array of DotLayoutGridBox

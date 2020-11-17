@@ -23,7 +23,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 
 import cleanUpDialog from '@tests/clean-up-dialog';
 import { DotThemesServiceMock } from '@tests/dot-themes-service.mock';
@@ -130,7 +130,7 @@ describe('DotEditLayoutDesignerComponent', () => {
                     }
                 },
                 {
-                    provide: TemplateContainersCacheService,
+                    provide: DotTemplateContainersCacheService,
                     useValue: {
                         set: jasmine.createSpy
                     }

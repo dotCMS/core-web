@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DotEditLayoutService } from './dot-edit-layout.service';
-import { TemplateContainersCacheService } from '../../template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { mockDotContainers } from '@tests/dot-page-render.mock';
 import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
 import {
@@ -16,14 +16,14 @@ describe('DotEditLayoutService', () => {
     const containers = dotContainerMapMock();
 
     let dotEditLayoutService: DotEditLayoutService;
-    let templateContainersCacheService: TemplateContainersCacheService;
+    let templateContainersCacheService: DotTemplateContainersCacheService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [DotEditLayoutService, TemplateContainersCacheService]
+            providers: [DotEditLayoutService, DotTemplateContainersCacheService]
         });
         dotEditLayoutService = TestBed.inject(DotEditLayoutService);
-        templateContainersCacheService = TestBed.inject(TemplateContainersCacheService);
+        templateContainersCacheService = TestBed.inject(DotTemplateContainersCacheService);
 
         templateContainersCacheService.set(containers);
     });

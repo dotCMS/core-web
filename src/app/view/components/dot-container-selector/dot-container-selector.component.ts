@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 import { PaginatorService } from '@services/paginator/paginator.service';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 
 import { DotContainerColumnBox } from '@models/dot-edit-layout-designer';
 import { DotContainer } from '@models/container/dot-container.model';
@@ -19,7 +19,7 @@ export class DotContainerSelectorComponent implements OnInit {
 
     constructor(
         public paginationService: PaginatorService,
-        private templateContainersCacheService: TemplateContainersCacheService
+        private templateContainersCacheService: DotTemplateContainersCacheService
     ) {}
 
     ngOnInit(): void {

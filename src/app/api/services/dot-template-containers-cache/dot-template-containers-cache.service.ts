@@ -9,7 +9,7 @@ import {
  * Save into cache the containers used by the current template
  */
 @Injectable()
-export class TemplateContainersCacheService {
+export class DotTemplateContainersCacheService {
     private containers: DotContainerMap;
 
     set(containers: DotContainerMap): void {
@@ -25,7 +25,7 @@ export class TemplateContainersCacheService {
      *
      * @param dotContainer
      * @returns string
-     * @memberof TemplateContainersCacheService
+     * @memberof DotTemplateContainersCacheService
      */
     getContainerReference(dotContainer: DotContainer): string {
         return dotContainer.source === CONTAINER_SOURCE.FILE

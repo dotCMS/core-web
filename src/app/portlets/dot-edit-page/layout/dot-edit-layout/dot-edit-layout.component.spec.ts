@@ -11,7 +11,7 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotLayout } from '@models/dot-edit-layout-designer';
 
 @Component({
@@ -66,7 +66,7 @@ describe('DotEditLayoutComponent', () => {
                         }
                     },
                     {
-                        provide: TemplateContainersCacheService,
+                        provide: DotTemplateContainersCacheService,
                         useValue: {
                             set: jasmine.createSpy()
                         }

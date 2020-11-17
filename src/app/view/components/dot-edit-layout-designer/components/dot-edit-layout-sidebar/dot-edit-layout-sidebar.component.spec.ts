@@ -9,7 +9,7 @@ import { DotContainerSelectorLayoutModule } from '@components/dot-container-sele
 import { DotEditLayoutSidebarComponent } from './dot-edit-layout-sidebar.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
 import { mockDotContainers } from '@tests/dot-page-render.mock';
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
@@ -58,7 +58,7 @@ describe('DotEditLayoutSidebarComponent', () => {
             ],
             providers: [
                 DotEditLayoutService,
-                TemplateContainersCacheService,
+                DotTemplateContainersCacheService,
                 { provide: DotMessageService, useValue: messageServiceMock }
             ]
         });
