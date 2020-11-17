@@ -237,7 +237,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         this.isModelUpdated = false;
     }
 
-    // tslint:disable-next-line: cyclomatic-complexity
     private createSidebarForm(): DotLayoutSideBar {
         return {
             location: this.getSidebarLocation(this.layout),
