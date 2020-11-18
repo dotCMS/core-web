@@ -15,9 +15,7 @@
         <p-tabView>
             <p-tabPanel [header]="template.type === 'advanced' ? 'Code' : 'Design'">
                 <div *ngIf="template.type === 'advanced'; else elseBlock">
-                    <dot-portlet-box>
-                        <dot-template-advanced></dot-template-advanced>
-                    </dot-portlet-box>
+                    <dot-template-advanced></dot-template-advanced>
                 </div>
                 <ng-template #elseBlock>
                     <dot-edit-layout-designer

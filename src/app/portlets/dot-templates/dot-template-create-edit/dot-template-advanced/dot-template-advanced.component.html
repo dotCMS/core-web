@@ -1,9 +1,15 @@
-<dot-container-selector (change)="containerChange($event)"> </dot-container-selector>
-<dot-textarea-content
-    #value
-    height="30rem"
-    formControlName="body"
-    [show]="['code']"
-    language="html"
-    (monacoInit)="initEditor($event)"
-></dot-textarea-content>
+<dot-portlet-base>
+    <dot-portlet-toolbar title="Hola"></dot-portlet-toolbar>
+
+    <main>
+        <dot-container-selector (change)="containerChange($event)"> </dot-container-selector>
+        <dot-textarea-content
+            #value
+            height="30rem"
+            formControlName="body"
+            [show]="['code']"
+            language="html"
+            (monacoInit)="initEditor($event)"
+        ></dot-textarea-content>
+    </main>
+</dot-portlet-base>
