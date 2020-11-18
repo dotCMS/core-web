@@ -1,1 +1,32 @@
-<p>dot-theme-selector-dropdown works!</p>
+<!-- <dot-searchable-dropdown
+    (change)="containerChange($event)"
+    (filterChange)="handleFilterChange($event)"
+    (pageChange)="handlePageChange($event)"
+    [data]="currentContainers"
+    [pageLinkSize]="5"
+    [rows]="paginationService.paginationPerPage"
+    [totalRecords]="paginationService.totalRecords"
+    [labelPropertyName]="['name', 'parentPermissionable.hostname']"
+    placeholder="{{ 'editpage.container.add.label' | dm }}"
+    persistentPlaceholder="true"
+    width="172px"
+    overlayWidth="300px"
+    [multiple]="true"
+>
+</dot-searchable-dropdown> -->
+
+<dot-searchable-dropdown
+    [placeholder]="placeholder"
+    [data]="themes"
+    persistentPlaceholder="true"
+    [labelPropertyName]="['name']"
+>
+    <ng-template let-theme="item" pTemplate="select">
+        <strong class="test">whatever</strong>
+    </ng-template>
+    <ng-template let-theme="item" pTemplate="listItem">
+        <strong class="test">whatever</strong>
+    </ng-template>
+</dot-searchable-dropdown>
+<h1>stuff 1</h1>
+<!-- <p (click)="handleClick($event)">dot-theme-selector-dropdown works!</p> -->

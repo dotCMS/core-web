@@ -250,6 +250,10 @@ export class SearchableDropdownComponent
         }
     }
 
+    log(val) {
+        console.log(val);
+    }
+
     /**
      * Call when a option is clicked, if this option is not the same of the current value then the
      * change events is emitted. If multiple is true allow to emit the same value.
