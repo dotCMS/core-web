@@ -7,10 +7,9 @@ import { OrderDirection, PaginatorService } from '@services/paginator';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
+import { TEMPLATE_API_URL } from '@services/dot-templates/dot-templates.service';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DotTemplateListResolver implements Resolve<[DotTemplate[], boolean, boolean]> {
     constructor(
         public paginatorService: PaginatorService,
@@ -19,7 +18,7 @@ export class DotTemplateListResolver implements Resolve<[DotTemplate[], boolean,
     ) {}
 
     resolve(): Observable<[DotTemplate[], boolean, boolean]> {
-        this.paginatorService.url = '/api/v1/templates';
+        this.paginatorService.url = TEMPLATE_API_URL;
         this.paginatorService.sortField = 'modDate';
         this.paginatorService.sortOrder = OrderDirection.DESC;
 

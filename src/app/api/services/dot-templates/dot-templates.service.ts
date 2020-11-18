@@ -7,6 +7,8 @@ import { CoreWebService, DotRequestOptionsArgs } from 'dotcms-js';
 import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
+
+export const TEMPLATE_API_URL = '/api/v1/templates/';
 /**
  * Provide util methods to handle templates in the system.
  * @export
@@ -25,8 +27,7 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     get(): Observable<DotTemplate[]> {
-        const url = '/api/v1/templates';
-        return this.request<DotTemplate[]>({ url });
+        return this.request<DotTemplate[]>({ url: TEMPLATE_API_URL });
     }
 
     /**
@@ -37,7 +38,7 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     getByInode(inode: string): Observable<DotTemplate> {
-        const url = `/api/v1/templates/${inode}`;
+        const url = `${TEMPLATE_API_URL}${inode}`;
 
         return this.request<DotTemplate>({
             url
@@ -68,8 +69,7 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     create(values: DotTemplate): Observable<DotTemplate> {
-        const url = '/api/v1/templates';
-        return this.request<DotTemplate>({ method: 'POST', url, body: values });
+        return this.request<DotTemplate>({ method: 'POST', url: TEMPLATE_API_URL, body: values });
     }
 
     /**
@@ -79,85 +79,82 @@ export class DotTemplatesService {
      */
     update(values: DotTemplate): Observable<DotTemplate> {
         console.log(JSON.stringify(values));
-        const url = '/api/v1/templates';
-
-        return this.request<DotTemplate>({ method: 'PUT', url, body: values });
+        return this.request<DotTemplate>({ method: 'PUT', url: TEMPLATE_API_URL, body: values });
     }
 
     /**
      * Delete a template
-     * @param {string[]} inodes
+     * @param {string[]} identifiers
      * @returns ???
      * @memberof DotTemplatesService
      */
-    delete(inodes: string[]): Observable<boolean> {
-        const url = `/api/v1/templates/`;
-        return this.request<boolean>({ method: 'DELETE', url,  body: inodes });
+    delete(identifiers: string[]): Observable<boolean> {
+        return this.request<boolean>({ method: 'DELETE', url: TEMPLATE_API_URL,  body: identifiers });
     }
 
     /**
      * Unarchive a template
-     * @param {string[]} inodes
+     * @param {string[]} identifiers
      * @returns ???
      * @memberof DotTemplatesService
      */
-    unArchive(inodes: string[]): Observable<any> {
-        const url = `/api/v1/templates/_unarchive`;
-        return this.request<any>({ method: 'PUT', url, body: inodes });
+    unArchive(identifiers: string[]): Observable<any> {
+        const url = `${TEMPLATE_API_URL}_unarchive`;
+        return this.request<any>({ method: 'PUT', url, body: identifiers });
     }
 
     /**
      * Archive a template
-     * @param {string[]} inodes
+     * @param {string[]} identifiers
      * @returns ???
      * @memberof DotTemplatesService
      */
-    archive(inodes: string[]): Observable<any> {
-        const url = `/api/v1/templates/_archive`;
-        return this.request<any>({ method: 'PUT', url, body: inodes });
+    archive(identifiers: string[]): Observable<any> {
+        const url = `${TEMPLATE_API_URL}_archive`;
+        return this.request<any>({ method: 'PUT', url, body: identifiers });
     }
 
     /**
      * Unpublish a template
-     * @param {string[]} inodes
+     * @param {string[]} identifiers
      * @returns ???
      * @memberof DotTemplatesService
      */
-    unPublish(inodes: string[]): Observable<any> {
-        const url = `/api/v1/templates/_unpublish`;
-        return this.request<any>({ method: 'PUT', url, body: inodes });
+    unPublish(identifiers: string[]): Observable<any> {
+        const url = `${TEMPLATE_API_URL}_unpublish`;
+        return this.request<any>({ method: 'PUT', url, body: identifiers });
     }
 
     /**
      * Publish a template
-     * @param {string[]} inodes
+     * @param {string[]} identifiers
      * @returns ???
      * @memberof DotTemplatesService
      */
-    publish(inodes: string[]): Observable<any> {
-        const url = `/api/v1/templates/_publish`;
-        return this.request<any>({ method: 'PUT', url, body: inodes });
+    publish(identifiers: string[]): Observable<any> {
+        const url = `${TEMPLATE_API_URL}_publish`;
+        return this.request<any>({ method: 'PUT', url, body: identifiers });
     }
 
     /**
      * Copy a template
-     * @param {string} inode
+     * @param {string} identifier
      * @returns ???
      * @memberof DotTemplatesService
      */
-    copy(inode: string): Observable<any> {
-        const url = `/api/v1/templates/${inode}/_copy`;
+    copy(identifier: string): Observable<any> {
+        const url = `${TEMPLATE_API_URL}${identifier}/_copy`;
         return this.request<any>({ method: 'PUT', url });
     }
 
     /**
      * Unlock a template
-     * @param {string} inode
+     * @param {string} identifier
      * @returns ???
      * @memberof DotTemplatesService
      */
-    unlock(inode: string): Observable<any> {
-        const url = `/api/v1/templates/${inode}/_unlock`;
+    unlock(identifier: string): Observable<any> {
+        const url = `${TEMPLATE_API_URL}${identifier}/_unlock`;
         return this.request<any>({ method: 'PUT', url });
     }
 
