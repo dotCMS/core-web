@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
+import { DotTemplate } from '@models/dot-edit-layout-designer';
 import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotListingDataTableComponent } from '@components/dot-listing-data-table/dot-listing-data-table.component';
@@ -12,7 +12,7 @@ import { DotActionMenuItem } from '@models/dot-action-menu/dot-action-menu-item.
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
-import { DotPushPublishDialogService } from 'dotcms-js';
+import { DotPushPublishDialogService, DotRouterService } from 'dotcms-js';
 
 @Component({
     selector: 'dot-template-list',
@@ -38,7 +38,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         private dotMessageService: DotMessageService,
         private dotTemplatesService: DotTemplatesService,
         private dotMessageDisplayService: DotMessageDisplayService,
-        private dotPushPublishDialogService: DotPushPublishDialogService
+        private dotPushPublishDialogService: DotPushPublishDialogService,
+        private dotRouterService: DotRouterService
     ) {}
 
     ngOnInit(): void {
@@ -61,12 +62,12 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
 
     /**
      * Handle selected template.
-     * @param {DotTemplate} template
      *
+     * @param {DotTemplate} { identifier }
      * @memberof DotTemplateListComponent
      */
-    editTemplate(template: DotTemplate): void {
-        console.log(template);
+    editTemplate({ identifier }: DotTemplate): void {
+        this.dotRouterService.goToEditTemplate(identifier);
     }
 
     /**
@@ -144,20 +145,19 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 model: [
                     {
                         command: () => {
-                            console.log('TBD 1');
+                            this.dotRouterService.gotoPortlet('/templates/new/designer');
                         },
                         label: this.dotMessageService.get('design-template')
                     },
                     {
                         command: () => {
-                            console.log('TBD 2 ');
+                            this.dotRouterService.gotoPortlet('/templates/new/advanced');
                         },
                         label: this.dotMessageService.get('code-template')
                     }
                 ]
             }
         };
-
     }
 
     private setTemplateBulkActions(): MenuItem[] {
@@ -165,7 +165,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             {
                 label: this.dotMessageService.get('Publish'),
                 command: () => {
-                    this.publishTemplate(this.selectedTemplates.map(template => template.identifier));
+                    this.publishTemplate(
+                        this.selectedTemplates.map((template) => template.identifier)
+                    );
                 }
             },
             {
@@ -173,7 +175,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 command: () => {
                     this.dotPushPublishDialogService.open({
                         assetIdentifier: this.selectedTemplates
-                            .map(template => template.identifier)
+                            .map((template) => template.identifier)
                             .toString(),
                         title: this.dotMessageService.get('contenttypes.content.push_publish')
                     });
@@ -183,32 +185,40 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                 label: this.dotMessageService.get('Add-To-Bundle'),
                 command: () => {
                     this.addToBundleIdentifier = this.selectedTemplates
-                        .map(template => template.identifier)
+                        .map((template) => template.identifier)
                         .toString();
                 }
             },
             {
                 label: this.dotMessageService.get('Unpublish'),
                 command: () => {
-                    this.unPublishTemplate(this.selectedTemplates.map(template => template.identifier));
+                    this.unPublishTemplate(
+                        this.selectedTemplates.map((template) => template.identifier)
+                    );
                 }
             },
             {
                 label: this.dotMessageService.get('Archive'),
                 command: () => {
-                    this.archiveTemplates(this.selectedTemplates.map(template => template.identifier));
+                    this.archiveTemplates(
+                        this.selectedTemplates.map((template) => template.identifier)
+                    );
                 }
             },
             {
                 label: this.dotMessageService.get('Unarchive'),
                 command: () => {
-                    this.unArchiveTemplate(this.selectedTemplates.map(template => template.identifier));
+                    this.unArchiveTemplate(
+                        this.selectedTemplates.map((template) => template.identifier)
+                    );
                 }
             },
             {
                 label: this.dotMessageService.get('Delete'),
                 command: () => {
-                    this.deleteTemplate(this.selectedTemplates.map(template => template.identifier));
+                    this.deleteTemplate(
+                        this.selectedTemplates.map((template) => template.identifier)
+                    );
                 }
             }
         ];
@@ -404,9 +414,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             .archive(identifiers)
             .pipe(take(1))
             .subscribe(() => {
-                this.showToastNotification(
-                    this.dotMessageService.get('message.template.delete')
-                );
+                this.showToastNotification(this.dotMessageService.get('message.template.delete'));
                 this.listing.loadCurrentPage();
             });
     }

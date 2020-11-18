@@ -1,12 +1,12 @@
 import { catchError, map, pluck, take } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { Observable } from 'rxjs';
 import { CoreWebService, DotRequestOptionsArgs } from 'dotcms-js';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
-import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotTemplate } from '@shared/models/dot-edit-layout-designer';
 
 export const TEMPLATE_API_URL = '/api/v1/templates/';
 /**
@@ -31,34 +31,19 @@ export class DotTemplatesService {
     }
 
     /**
-     * Get template by inode
+     * Get the template, pass the version default working
      *
-     * @param {string} inode
+     * @param {string} id
+     * @param {string} [version='working']
      * @returns {Observable<DotTemplate>}
      * @memberof DotTemplatesService
      */
-    getByInode(inode: string): Observable<DotTemplate> {
-        const url = `${TEMPLATE_API_URL}${inode}`;
+    getById(id: string, version = 'working'): Observable<DotTemplate> {
+        const url = `${TEMPLATE_API_URL}${id}/${version}`;
 
         return this.request<DotTemplate>({
             url
-        }).pipe(
-            map((template: DotTemplate) => {
-                const containers = Object.keys(template.containers).reduce((acc, item) => {
-                    return {
-                        ...acc,
-                        [item]: {
-                            container: template.containers[item]
-                        }
-                    };
-                }, {});
-
-                return {
-                    ...template,
-                    containers
-                };
-            })
-        );
+        });
     }
 
     /**
@@ -78,7 +63,6 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     update(values: DotTemplate): Observable<DotTemplate> {
-        console.log(JSON.stringify(values));
         return this.request<DotTemplate>({ method: 'PUT', url: TEMPLATE_API_URL, body: values });
     }
 
@@ -89,7 +73,11 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     delete(identifiers: string[]): Observable<boolean> {
-        return this.request<boolean>({ method: 'DELETE', url: TEMPLATE_API_URL,  body: identifiers });
+        return this.request<boolean>({
+            method: 'DELETE',
+            url: TEMPLATE_API_URL,
+            body: identifiers
+        });
     }
 
     /**
@@ -163,7 +151,10 @@ export class DotTemplatesService {
         return response$.pipe(
             pluck('entity'),
             catchError((error: HttpErrorResponse) => {
-                return this.httpErrorManagerService.handle(error).pipe(take(1), map(() => null));
+                return this.httpErrorManagerService.handle(error).pipe(
+                    take(1),
+                    map(() => null)
+                );
             })
         );
     }

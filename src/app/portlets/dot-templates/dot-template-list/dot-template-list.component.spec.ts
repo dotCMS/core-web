@@ -186,8 +186,14 @@ fdescribe('DotTemplateListComponent', () => {
                 DotEventsSocket,
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 DotcmsConfigService,
-                { provide: DotRouterService, useClass: MockDotRouterService },
-                DotMessageDisplayService
+                DotMessageDisplayService,
+                {
+                    provide: DotRouterService,
+                    useValue: {
+                        gotoPortlet: jasmine.createSpy(),
+                        goToEditTemplate: jasmine.createSpy()
+                    }
+                }
             ],
             imports: [
                 DotListingDataTableModule,
@@ -205,20 +211,18 @@ fdescribe('DotTemplateListComponent', () => {
         }).compileComponents();
     });
 
-    beforeEach(
-        fakeAsync(() => {
-            fixture = TestBed.createComponent(DotTemplateListComponent);
-            dotTemplatesService = TestBed.inject(DotTemplatesService);
-            dotMessageDisplayService = TestBed.inject(DotMessageDisplayService);
-            dotPushPublishDialogService = TestBed.inject(DotPushPublishDialogService);
-            fixture.detectChanges();
-            tick(2);
-            fixture.detectChanges();
-            dotListingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'))
-                .componentInstance;
-            rowActions = fixture.debugElement.queryAll(By.css('dot-action-menu-button'));
-        })
-    );
+    beforeEach(fakeAsync(() => {
+        fixture = TestBed.createComponent(DotTemplateListComponent);
+        dotTemplatesService = TestBed.inject(DotTemplatesService);
+        dotMessageDisplayService = TestBed.inject(DotMessageDisplayService);
+        dotPushPublishDialogService = TestBed.inject(DotPushPublishDialogService);
+        fixture.detectChanges();
+        tick(2);
+        fixture.detectChanges();
+        dotListingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'))
+            .componentInstance;
+        rowActions = fixture.debugElement.queryAll(By.css('dot-action-menu-button'));
+    }));
 
     it('should set attributes of dotListingDataTable', () => {
         // TODO set options correctly.
@@ -292,7 +296,6 @@ fdescribe('DotTemplateListComponent', () => {
             lockedTemplate = rowActions[1].componentInstance;
             unPublishTemplate = rowActions[2].componentInstance;
             archivedTemplate = rowActions[3].componentInstance;
-
         });
 
         it('should go to edit template', () => {});
@@ -367,7 +370,6 @@ fdescribe('DotTemplateListComponent', () => {
                 message: 'Template unlocked'
             });
             expect(dotListingDataTable.loadCurrentPage).toHaveBeenCalledTimes(1);
-
         });
         it('should call copy api, send notification and reload current page', () => {
             spyOn(dotTemplatesService, 'copy').and.returnValue(of({}));
@@ -400,7 +402,7 @@ fdescribe('DotTemplateListComponent', () => {
 
     it('', () => {});
 
-    function checkNotificationAndReLoadOfPage(messsage: string): void{
+    function checkNotificationAndReLoadOfPage(messsage: string): void {
         expect(dotMessageDisplayService.push).toHaveBeenCalledWith({
             ...mockMessageConfig,
             message: messsage
@@ -408,5 +410,3 @@ fdescribe('DotTemplateListComponent', () => {
         expect(dotListingDataTable.loadCurrentPage).toHaveBeenCalledTimes(1);
     }
 });
-
-
