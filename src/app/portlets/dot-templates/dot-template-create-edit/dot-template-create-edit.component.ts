@@ -73,11 +73,20 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
      *
      * @memberof DotTemplateCreateEditComponent
      */
-    saveTemplate({ layout }: DotTemplate): void {
+    saveTemplateDesigner({ layout }: DotTemplate): void {
         this.store.saveTemplate({
             ...this.form.value,
             layout
         });
+    }
+
+    /**
+     * Handle cancel button from designer
+     *
+     * @memberof DotTemplateCreateEditComponent
+     */
+    cancelTemplateDesigner() {
+        this.store.goToTemplateList();
     }
 
     private createTemplate(): void {
@@ -92,7 +101,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                     this.store.createTemplate(value);
                 },
                 onCancel: () => {
-                    this.store.cancelCreate();
+                    this.store.goToTemplateList();
                 }
             }
         });
@@ -105,7 +114,8 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 layout: this.fb.group(template.layout),
                 identifier: template.identifier,
                 friendlyName: template.friendlyName,
-                theme: template.theme
+                theme: template.theme,
+                drawed: template.drawed
             });
         }
 
@@ -113,8 +123,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             title: [template.title, Validators.required],
             body: template.body,
             identifier: template.identifier,
-            friendlyName: template.friendlyName,
-            drawed: template.drawed
+            friendlyName: template.friendlyName
         });
     }
 }

@@ -21,7 +21,8 @@
                     <dot-edit-layout-designer
                         [theme]="vm.original.theme"
                         [layout]="vm.original.layout"
-                        (save)="saveTemplate($event)"
+                        (save)="saveTemplateDesigner($event)"
+                        (cancel)="cancelTemplateDesigner()"
                     ></dot-edit-layout-designer>
                 </ng-template>
             </p-tabPanel>

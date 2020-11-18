@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { DotTemplateAdvancedComponent } from './dot-template-advanced.component';
 import { DotTextareaContentModule } from '@components/_common/dot-textarea-content/dot-textarea-content.module';
-import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
 import { DotPortletBaseModule } from '@components/dot-portlet-base/dot-portlet-base.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [DotTemplateAdvancedComponent],
@@ -13,9 +13,9 @@ import { DotPortletBaseModule } from '@components/dot-portlet-base/dot-portlet-b
     imports: [
         CommonModule,
         DotContainerSelectorModule,
-        DotFieldValidationMessageModule,
         DotTextareaContentModule,
-        DotPortletBaseModule
+        DotPortletBaseModule,
+        ReactiveFormsModule
     ],
     providers: []
 })

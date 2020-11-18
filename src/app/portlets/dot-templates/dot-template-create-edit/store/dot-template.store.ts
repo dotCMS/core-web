@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ComponentStore } from '@ngrx/component-store';
 import { Observable, zip } from 'rxjs';
-
 import { pluck, switchMap, take, tap } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -22,6 +22,7 @@ interface DotTemplateItemDesign {
     theme: string;
     layout: DotLayout;
     containers?: DotContainerMap;
+    drawed: boolean;
 }
 
 interface DotTemplateItemadvanced {
@@ -62,7 +63,8 @@ const EMPTY_TEMPLATE_DESIGN: DotTemplateItemDesign = {
         width: null
     },
     theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661', // TODO: use theme selector
-    containers: {}
+    containers: {},
+    drawed: true
 };
 
 const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
@@ -85,12 +87,17 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         };
     });
 
-    readonly updateWorking = this.updater<DotTemplateItem>(
-        (state: DotTemplateState, working: DotTemplateItem) => ({
-            ...state,
-            working
-        })
+    readonly didTemplateChanged$: Observable<boolean> = this.select(
+        ({ original, working }: DotTemplateState) => !_.isEqual(original, working)
     );
+
+    readonly updateBody = this.updater<string>((state: DotTemplateState, body: string) => ({
+        ...state,
+        working: {
+            ...state.working,
+            body
+        }
+    }));
 
     readonly updateTemplate = this.updater<DotTemplate>(
         (state: DotTemplateState, template: DotTemplate) => {
@@ -183,7 +190,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
      *
      * @memberof DotTemplateStore
      */
-    cancelCreate = () => {
+    goToTemplateList = () => {
         this.dotRouterService.gotoPortlet('templates');
     };
 
@@ -208,7 +215,8 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 friendlyName,
                 layout: template.layout || EMPTY_TEMPLATE_DESIGN.layout,
                 theme: template.theme,
-                containers: template.containers
+                containers: template.containers,
+                drawed: true
             };
         } else {
             result = {
@@ -217,7 +225,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 title,
                 friendlyName,
                 body: template.body,
-                drawed: template.drawed
+                drawed: false
             };
         }
 

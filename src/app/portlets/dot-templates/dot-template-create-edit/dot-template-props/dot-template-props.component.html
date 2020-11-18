@@ -5,8 +5,12 @@
 >
     <form class="p-fluid" [formGroup]="form">
         <div class="p-field">
-            <label for="title">Title</label>
+            <label for="title" class="p-label-input-required">Title</label>
             <input id="title" pInputText formControlName="title" autofocus />
+            <dot-field-validation-message
+                [field]="form.get('title')"
+                message="This field is required"
+            ></dot-field-validation-message>
         </div>
         <div class="p-field">
             <label for="description">Description</label>

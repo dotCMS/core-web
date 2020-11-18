@@ -1,18 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
+import { Observable, Subject } from 'rxjs';
+import { map, take, takeUntil } from 'rxjs/operators';
 
 import { DotContainer } from '@shared/models/container/dot-container.model';
+import { DotTemplateStore } from '../store/dot-template.store';
+import { DotPortletToolbarActions } from '@models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 
 @Component({
     selector: 'dot-template-advanced',
     templateUrl: './dot-template-advanced.component.html',
     styleUrls: ['./dot-template-advanced.scss']
 })
-export class DotTemplateAdvancedComponent implements OnInit {
-    editor: any; // `any` because the type of the editor in the ngx-monaco-editor package is not typed
+export class DotTemplateAdvancedComponent implements OnInit, OnDestroy {
+    // `any` because the type of the editor in the ngx-monaco-editor package is not typed
+    editor: any;
+    form: FormGroup;
+    actions$: Observable<DotPortletToolbarActions>;
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
-    constructor() {}
+    constructor(private store: DotTemplateStore, private fb: FormBuilder) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.store.vm$.pipe(take(1)).subscribe(({ original }) => {
+            if (original.type === 'advanced') {
+                this.form = this.fb.group({
+                    title: original.title,
+                    body: original.body,
+                    identifier: original.identifier,
+                    friendlyName: original.friendlyName
+                });
+            }
+        });
+
+        this.form
+            .get('body')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe(({ body }: { body: string }) => {
+                this.store.updateBody(body);
+            });
+
+        this.actions$ = this.store.didTemplateChanged$.pipe(
+            map((templateChange: boolean) => this.getActions(!templateChange))
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
+    }
 
     /**
      * This method initializes the monaco editor
@@ -43,10 +80,27 @@ export class DotTemplateAdvancedComponent implements OnInit {
         this.editor.executeEdits('source', [operation]);
     }
 
-    private setContainerId(container: DotContainer): string {
-        const regex = new RegExp('//' + container.parentPermissionable.hostname);
-        return container.identifier.includes(container.parentPermissionable.hostname)
-            ? container.identifier.replace(regex, '')
-            : container.identifier;
+    private setContainerId({ identifier, parentPermissionable }: DotContainer): string {
+        const regex = new RegExp('//' + parentPermissionable.hostname);
+        return identifier?.includes(parentPermissionable.hostname)
+            ? identifier.replace(regex, '')
+            : identifier;
+    }
+
+    private getActions(disabled = true): DotPortletToolbarActions {
+        return {
+            primary: [
+                {
+                    label: 'Save',
+                    disabled: disabled,
+                    command: () => {
+                        this.store.saveTemplate(this.form.value);
+                    }
+                }
+            ],
+            cancel: () => {
+                this.store.goToTemplateList();
+            }
+        };
     }
 }
