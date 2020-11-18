@@ -13,8 +13,12 @@
             </ng-container>
         </dot-portlet-toolbar>
         <p-tabView>
-            <p-tabPanel header="Design">
-                <div *ngIf="template.type === 'advanced'; else elseBlock">Advaced</div>
+            <p-tabPanel [header]="template.type === 'advanced' ? 'Code' : 'Design'">
+                <div *ngIf="template.type === 'advanced'; else elseBlock">
+                    <dot-portlet-box>
+                        <dot-template-advanced></dot-template-advanced>
+                    </dot-portlet-box>
+                </div>
                 <ng-template #elseBlock>
                     <dot-edit-layout-designer
                         [theme]="template.theme"

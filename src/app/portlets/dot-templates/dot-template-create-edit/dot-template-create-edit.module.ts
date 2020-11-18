@@ -9,6 +9,8 @@ import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { ButtonModule } from 'primeng/button';
 import { DotEditLayoutDesignerModule } from '@components/dot-edit-layout-designer/dot-edit-layout-designer.module';
 import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
+import { DotTemplateAdvancedModule } from './dot-template-advanced/dot-template-advanced.module';
+import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot-portlet-box/dot-portlet-box.module';
 
 @NgModule({
     imports: [
@@ -17,10 +19,12 @@ import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.
         DotApiLinkModule,
         DotEditLayoutDesignerModule,
         DotPortletBaseModule,
+        DotTemplateAdvancedModule,
         DotTemplateCreateEditRoutingModule,
         DotTemplatePropsModule,
         DynamicDialogModule,
-        TabViewModule
+        TabViewModule,
+        DotPortletBoxModule
     ],
     declarations: [DotTemplateCreateEditComponent],
     providers: [DialogService]
