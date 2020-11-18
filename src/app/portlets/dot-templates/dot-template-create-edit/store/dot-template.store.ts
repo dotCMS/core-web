@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ComponentStore } from '@ngrx/component-store';
 import { Observable, zip } from 'rxjs';
-import * as _ from 'lodash';
 
 import { pluck, switchMap, take, tap } from 'rxjs/operators';
 
@@ -38,8 +37,9 @@ export type DotTemplateItem = DotTemplateItemDesign | DotTemplateItemadvanced;
 
 export interface DotTemplateState {
     original: DotTemplateItem;
-    working: DotTemplateItem;
-    type: DotTemplateType;
+    working?: DotTemplateItem;
+    type?: DotTemplateType;
+    apiLink: string;
 }
 
 const EMPTY_TEMPLATE = {
@@ -74,22 +74,16 @@ const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
 
 @Injectable()
 export class DotTemplateStore extends ComponentStore<DotTemplateState> {
-    readonly template$ = this.select(({ original }: DotTemplateState) => {
+    readonly vm$ = this.select(({ original, apiLink }: DotTemplateState) => {
         if (original.type === 'design') {
             delete original.containers;
         }
 
-        return original;
+        return {
+            original,
+            apiLink
+        };
     });
-
-    readonly apiLink$: Observable<string> = this.select(
-        ({ original: { identifier } }: DotTemplateState) =>
-            `/api/v1/templates/${identifier}/working`
-    );
-
-    readonly didTemplateChanged$: Observable<
-        boolean
-    > = this.select(({ original, working }: DotTemplateState) => _.isEqual(original, working));
 
     readonly updateWorking = this.updater<DotTemplateItem>(
         (state: DotTemplateState, working: DotTemplateItem) => ({
@@ -178,7 +172,8 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 this.setState({
                     original: template,
                     working: template,
-                    type: fixType
+                    type: fixType,
+                    apiLink: `/api/v1/templates/${template.identifier}/working`
                 });
             });
     }

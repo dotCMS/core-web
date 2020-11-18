@@ -1,7 +1,7 @@
-<ng-container *ngIf="template$ | async as template">
-    <dot-portlet-base [boxed]="false" *ngIf="template.identifier">
-        <dot-portlet-toolbar [title]="template.title">
-            <ng-container id="left" *ngIf="template.title">
+<ng-container *ngIf="vm$ | async as vm">
+    <dot-portlet-base [boxed]="false" *ngIf="vm.original.identifier">
+        <dot-portlet-toolbar [title]="vm.original.title">
+            <ng-container id="left" *ngIf="vm.original.title">
                 <button
                     pButton
                     class="p-button-text"
@@ -9,18 +9,18 @@
                     label="Edit"
                     (click)="editTemplateProps()"
                 ></button>
-                <dot-api-link [href]="apiLink$ | async"></dot-api-link>
+                <dot-api-link [href]="vm.apiLink"></dot-api-link>
             </ng-container>
         </dot-portlet-toolbar>
         <p-tabView>
-            <p-tabPanel [header]="template.type === 'advanced' ? 'Code' : 'Design'">
-                <div *ngIf="template.type === 'advanced'; else elseBlock">
+            <p-tabPanel [header]="vm.original.type === 'advanced' ? 'Code' : 'Design'">
+                <div *ngIf="vm.original.type === 'advanced'; else elseBlock">
                     <dot-template-advanced></dot-template-advanced>
                 </div>
                 <ng-template #elseBlock>
                     <dot-edit-layout-designer
-                        [theme]="template.theme"
-                        [layout]="template.layout"
+                        [theme]="vm.original.theme"
+                        [layout]="vm.original.layout"
                         (save)="saveTemplate($event)"
                     ></dot-edit-layout-designer>
                 </ng-template>

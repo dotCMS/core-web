@@ -2,15 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { DialogService } from 'primeng/dynamicdialog';
 
 import { DotTemplate } from '@shared/models/dot-edit-layout-designer/dot-template.model';
-import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
-import { DotTemplateItem, DotTemplateStore } from './store/dot-template.store';
+import { DotTemplateItem, DotTemplateState, DotTemplateStore } from './store/dot-template.store';
 
 @Component({
     selector: 'dot-template-create-edit',
@@ -19,11 +18,7 @@ import { DotTemplateItem, DotTemplateStore } from './store/dot-template.store';
     providers: [DotTemplateStore]
 })
 export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
-    actions$ = this.store.didTemplateChanged$.pipe(
-        map((didChange: boolean) => this.getActions(didChange))
-    );
-    apiLink$ = this.store.apiLink$;
-    template$ = this.store.template$;
+    vm$ = this.store.vm$;
 
     form: FormGroup;
 
@@ -36,15 +31,15 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.template$.pipe(takeUntil(this.destroy$)).subscribe((template: DotTemplateItem) => {
+        this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original }: DotTemplateState) => {
             if (this.form) {
-                const { type, ...value } = template;
+                const { type, ...value } = original;
                 this.form.setValue(value);
             } else {
-                this.form = this.getForm(template);
+                this.form = this.getForm(original);
             }
 
-            if (!template.identifier) {
+            if (!original.identifier) {
                 this.createTemplate();
             }
         });
@@ -121,22 +116,5 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             friendlyName: template.friendlyName,
             drawed: template.drawed
         });
-    }
-
-    private getActions(disabled = true): DotPortletToolbarActions {
-        return {
-            primary: [
-                {
-                    label: 'Save',
-                    disabled: disabled,
-                    command: () => {
-                        this.store.saveTemplate(this.form.value);
-                    }
-                }
-            ],
-            cancel: () => {
-                console.log('cancel');
-            }
-        };
     }
 }
