@@ -16,17 +16,16 @@
 </dot-searchable-dropdown> -->
 
 <dot-searchable-dropdown
+    (filterChange)="handleFilterChange($event)"
     [placeholder]="placeholder"
     [data]="themes"
+    [totalRecords]="totalRecords"
+    (pageChange)="handlePageChange($event)"
+    rows="5"
     persistentPlaceholder="true"
     [labelPropertyName]="['name']"
+    overlayWidth="350"
 >
-    <ng-template let-theme="item" pTemplate="select">
-        <strong class="test">whatever</strong>
-    </ng-template>
-    <ng-template let-theme="item" pTemplate="listItem">
-        <strong class="test">whatever</strong>
-    </ng-template>
+    <!-- TODO: change overlayWidth to value + unit after it's merged -->
 </dot-searchable-dropdown>
-<h1>stuff 1</h1>
-<!-- <p (click)="handleClick($event)">dot-theme-selector-dropdown works!</p> -->
+<h1 *ngIf="totalRecords > 0">Total themes: {{ totalRecords }}</h1>

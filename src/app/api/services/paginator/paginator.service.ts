@@ -30,6 +30,7 @@ export class PaginatorService {
 
     private _url: string;
     private _filter: string;
+    private _searchParam: string;
     private _sortField: string;
     private _sortOrder: OrderDirection;
     private _extraParams: Map<string, any> = new Map();
@@ -57,6 +58,18 @@ export class PaginatorService {
             this._filter = filter;
         }
     }
+
+    set searchParam(searchParam: string) {
+        if (this._searchParam !== searchParam) {
+            this.links = {};
+            this._searchParam = searchParam;
+        }
+    }
+
+    get searchParam(): string {
+        return this._searchParam;
+    }
+
     /**
      * Set value of extra parameters of the eventual request.
      * @param string name
@@ -217,11 +230,14 @@ export class PaginatorService {
      * @memberof PaginatorService
      */
     public getWithOffset(offset: number): Observable<any[]> {
+        console.log({ offset });
         const page = this.getPageFromOffset(offset);
+        console.log({ page });
         return this.getPage(page);
     }
 
     private getPageFromOffset(offset: number): number {
+        console.log({ offset, perPage: this.paginationPerPage });
         return parseInt(String(offset / this.paginationPerPage), 10) + 1;
     }
 
@@ -242,6 +258,10 @@ export class PaginatorService {
 
         if (this.filter) {
             params.set('filter', this.filter);
+        }
+
+        if (this.searchParam) {
+            params.set('searchParam', this.searchParam);
         }
 
         if (this.sortField) {

@@ -92,7 +92,6 @@ export class DotThemeSelectorComponent implements OnInit {
      */
     paginate($event: LazyLoadEvent): void {
         this.themes = this.paginatorService.getWithOffset($event.first);
-        this.themes.subscribe(console.log);
         this.dataView.first = $event.first;
     }
 

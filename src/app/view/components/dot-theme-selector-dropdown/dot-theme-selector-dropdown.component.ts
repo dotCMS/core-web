@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { pluck, take } from 'rxjs/operators';
 
 @Component({
-    selector: 'dot-dot-theme-selector-dropdown',
+    selector: 'dot-theme-selector-dropdown',
     templateUrl: './dot-theme-selector-dropdown.component.html',
     styleUrls: ['./dot-theme-selector-dropdown.component.scss']
 })
@@ -14,8 +14,9 @@ export class DotThemeSelectorDropdownComponent implements OnInit {
     themes: DotTheme[] = [];
     currentSiteHostId$: Observable<string>;
     value: DotTheme;
-
+    totalRecords: number = 0;
     placeholder = 'Select Themes';
+    currentSiteIdentifier: string;
 
     constructor(
         private readonly paginatorService: PaginatorService,
@@ -24,23 +25,49 @@ export class DotThemeSelectorDropdownComponent implements OnInit {
 
     ngOnInit(): void {
         this.paginatorService.url = 'v1/themes';
-        this.paginatorService.paginationPerPage = 4;
         this.siteService
             .getCurrentSite()
             .pipe(take(1), pluck('identifier'))
             .subscribe((identifier) => {
-                this.setThemes(identifier);
+                this.currentSiteIdentifier = identifier;
+                this.setThemesWithOffset(5);
             });
     }
 
-    setThemes(identifier: string) {
-        this.paginatorService.setExtraParams('hostId', identifier);
+    setThemesWithOffset(perPage: number): void {
+        this.paginatorService.paginationPerPage = perPage;
+        this.paginatorService.setExtraParams('hostId', this.currentSiteIdentifier);
+
         this.paginatorService
             .getWithOffset(0)
             .pipe(take(1))
             .subscribe((themes) => {
-                console.log(themes);
+                this.themes = themes;
+                this.totalRecords = this.paginatorService.totalRecords;
+            });
+    }
+
+    handlePageChange(event: any): void {
+        if (!this.currentSiteIdentifier) return;
+        console.log({ event });
+        this.paginatorService
+            .getWithOffset(event.first)
+            .pipe(take(1))
+            .subscribe((themes) => {
                 this.themes = themes;
             });
+    }
+
+    handleFilterChange(filter: string): void {
+        this.getFilteredThemes(filter);
+    }
+
+    private getFilteredThemes(filter = '', offset = 0): void {
+        this.paginatorService.searchParam = filter;
+        this.paginatorService.paginationPerPage = 40;
+        this.paginatorService.getWithOffset(offset).subscribe((themes) => {
+            this.themes = themes;
+            this.totalRecords = this.paginatorService.totalRecords;
+        });
     }
 }

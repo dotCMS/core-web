@@ -116,6 +116,16 @@ export class SearchableDropdownComponent
     label: string;
     externalSelectTemplate: TemplateRef<any>;
     externalItemListTemplate: TemplateRef<any>;
+    keyMap: string[] = [
+        'Shift',
+        'Alt',
+        'Control',
+        'Meta',
+        'ArrowUp',
+        'ArrowDown',
+        'ArrowLeft',
+        'ArrowRight'
+    ];
 
     constructor() {}
 
@@ -131,8 +141,10 @@ export class SearchableDropdownComponent
     ngOnInit(): void {
         fromEvent(this.searchInput.nativeElement, 'keyup')
             .pipe(debounceTime(500))
-            .subscribe((keyboardEvent: Event) => {
-                this.filterChange.emit(keyboardEvent.target['value']);
+            .subscribe((keyboardEvent: KeyboardEvent) => {
+                if (!this.isModifierKey(keyboardEvent.key)) {
+                    this.filterChange.emit(keyboardEvent.target['value']);
+                }
             });
     }
 
@@ -250,10 +262,6 @@ export class SearchableDropdownComponent
         }
     }
 
-    log(val) {
-        console.log(val);
-    }
-
     /**
      * Call when a option is clicked, if this option is not the same of the current value then the
      * change events is emitted. If multiple is true allow to emit the same value.
@@ -315,6 +323,10 @@ export class SearchableDropdownComponent
                 return item;
             });
         }
+    }
+
+    private isModifierKey(key: string) {
+        return this.keyMap.includes(key);
     }
 
     private usePlaceholder(placeholderChange: SimpleChange): boolean {

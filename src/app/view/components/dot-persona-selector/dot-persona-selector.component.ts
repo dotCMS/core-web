@@ -106,10 +106,6 @@ export class DotPersonaSelectorComponent implements OnInit {
         this.searchableDropdown.toggleOverlayPanel();
     }
 
-    log(val) {
-        console.log(val);
-    }
-
     /**
      * Refresh the current page in the persona list option
      *
