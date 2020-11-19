@@ -96,7 +96,7 @@ describe('DotRouterService', () => {
         expect(service.goToEditPage).toHaveBeenCalledWith({ url: '/about/us' });
     });
 
-    fit('should go to edit page', () => {
+    it('should go to edit page', () => {
         service.goToEditTemplate('123');
 
         expect(router.navigate).toHaveBeenCalledWith(['/templates/edit/123']);

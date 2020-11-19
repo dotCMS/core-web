@@ -18,6 +18,7 @@ import { DotLayout } from '@models/dot-edit-layout-designer';
 import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
 import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 import { HttpResponse } from '@angular/common/http';
+import { mockResponseView } from '@tests/response-view.mock';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -47,7 +48,7 @@ const messageServiceMock = new MockDotMessageService({
     'dot.common.message.saved': 'Saved'
 });
 
-describe('DotEditLayoutComponent', () => {
+fdescribe('DotEditLayoutComponent', () => {
     let component: DotEditLayoutComponent;
     let layoutDesignerDe: DebugElement;
     let layoutDesigner: DotEditLayoutDesignerComponentMock;
@@ -182,19 +183,12 @@ describe('DotEditLayoutComponent', () => {
         it('should handle error when save fail', () => {
             spyOn(dotPageLayoutService, 'save').and.returnValue(
                 throwError(
-                    new ResponseView(
-                        new HttpResponse({
-                            body: null,
-                            status: HttpCode.BAD_REQUEST,
-                            headers: null,
-                            url: ''
-                        })
-                    )
+                    new ResponseView(new HttpResponse(mockResponseView(HttpCode.BAD_REQUEST)))
                 )
             );
 
             layoutDesignerDe.triggerEventHandler('save', fakeLayout);
-            expect(dotGlobalMessageService.error).toHaveBeenCalledWith('OK');
+            expect(dotGlobalMessageService.error).toHaveBeenCalledWith('Unknown Error');
         });
     });
 });
