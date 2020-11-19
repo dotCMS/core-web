@@ -1,5 +1,7 @@
 <div>
-    <dot-theme-selector-dropdown></dot-theme-selector-dropdown>
+    <dot-theme-selector-dropdown
+        (change)="onThemeSelectorChange($event)"
+    ></dot-theme-selector-dropdown>
 </div>
 <dot-listing-data-table
     *ngIf="showTable"

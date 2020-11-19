@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { DotTheme } from '@portlets/dot-edit-page/shared/models';
 import { PaginatorService } from '@services/paginator';
 import { SiteService } from 'dotcms-js';
@@ -18,6 +18,9 @@ export class DotThemeSelectorDropdownComponent implements OnInit {
     placeholder = 'Select Themes';
     currentSiteIdentifier: string;
 
+    @Output()
+    change = new EventEmitter<string>();
+
     constructor(
         private readonly paginatorService: PaginatorService,
         private readonly siteService: SiteService
@@ -32,6 +35,10 @@ export class DotThemeSelectorDropdownComponent implements OnInit {
                 this.currentSiteIdentifier = identifier;
                 this.setThemesWithOffset(5);
             });
+    }
+
+    onChange({ identifier }: DotTheme) {
+        this.change.emit(identifier);
     }
 
     setThemesWithOffset(perPage: number): void {
