@@ -21,6 +21,7 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
 import { DotPushPublishDialogService } from 'dotcms-js';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 /**
  * List of Content Types
@@ -44,6 +45,7 @@ export class DotContentTypesPortletComponent implements OnInit {
     public actionHeaderOptions: ActionHeaderOptions;
     public rowActions: DotActionMenuItem[];
     public addToBundleIdentifier: string;
+    form: FormGroup;
 
     constructor(
         private contentTypesInfoService: DotContentTypesInfoService,
@@ -56,10 +58,15 @@ export class DotContentTypesPortletComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private dotMessageService: DotMessageService,
-        private dotPushPublishDialogService: DotPushPublishDialogService
+        private dotPushPublishDialogService: DotPushPublishDialogService,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
+        this.form = this.fb.group({
+            name: 'Freddy',
+            themeid: '12345'
+        });
         forkJoin(
             this.dotContentTypeService.getAllContentTypes(),
             this.dotLicenseService.isEnterprise(),

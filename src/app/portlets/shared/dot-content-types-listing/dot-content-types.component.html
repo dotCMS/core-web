@@ -1,8 +1,11 @@
-<div>
+{{ form.value | json }}
+<form [formGroup]="form">
+    <input formControlName="name" />
     <dot-theme-selector-dropdown
+        formControlName="themeid"
         (change)="onThemeSelectorChange($event)"
     ></dot-theme-selector-dropdown>
-</div>
+</form>
 <dot-listing-data-table
     *ngIf="showTable"
     #listing
