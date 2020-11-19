@@ -127,10 +127,10 @@ export class DotTemplatesService {
     /**
      * Copy a template
      * @param {string} identifier
-     * @returns ???
+     * @returns Observable<DotTemplate>
      * @memberof DotTemplatesService
      */
-    copy(identifier: string): Observable<any> {
+    copy(identifier: string): Observable<DotTemplate> {
         const url = `${TEMPLATE_API_URL}${identifier}/_copy`;
         return this.request<any>({ method: 'PUT', url });
     }

@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { take } from 'rxjs/operators';
-import { DotTemplate } from '@portlets/dot-edit-page/shared/models';
+import { DotTemplate } from '@models/dot-edit-layout-designer';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { TEMPLATE_API_URL } from '@services/dot-templates/dot-templates.service';
 
@@ -31,6 +31,7 @@ describe('DotTemplateListResolverService', () => {
                 LoggerService,
                 StringUtils,
                 DotCurrentUserService,
+                DotTemplateListResolver,
                 { provide: CoreWebService, useClass: CoreWebServiceMock }
             ]
         });
@@ -50,7 +51,10 @@ describe('DotTemplateListResolverService', () => {
                 name: 'a',
                 type: '1',
                 versionType: '1',
-                canEdit: true
+                canEdit: true,
+                layout: null,
+                canPublish: true,
+                canWrite: true
             }
         ];
 

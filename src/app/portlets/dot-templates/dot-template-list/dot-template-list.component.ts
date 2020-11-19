@@ -12,7 +12,8 @@ import { DotActionMenuItem } from '@models/dot-action-menu/dot-action-menu-item.
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
-import { DotPushPublishDialogService, DotRouterService } from 'dotcms-js';
+import { DotPushPublishDialogService } from 'dotcms-js';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 @Component({
     selector: 'dot-template-list',
@@ -28,6 +29,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     actionHeaderOptions: ActionHeaderOptions;
     addToBundleIdentifier: string;
     selectedTemplates: DotTemplate[] = [];
+    showCheckBox: boolean;
 
     private isEnterPrise: boolean;
     private hasEnvironments: boolean;
@@ -46,9 +48,10 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.route.data
             .pipe(pluck('dotTemplateListResolverData'), takeUntil(this.destroy$))
             .subscribe(([templates, isEnterPrise, hasEnvironments]) => {
+                this.firstPage = templates;
+                this.showCheckBox = this.userCanPublish();
                 this.isEnterPrise = isEnterPrise;
                 this.hasEnvironments = hasEnvironments;
-                this.firstPage = templates;
                 this.tableColumns = this.setTemplateColumns();
                 this.templateBulkActions = this.setTemplateBulkActions();
             });
@@ -104,14 +107,21 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         if (template.deleted) {
             options = this.setArchiveTemplateActions(template);
         } else {
+            options = this.setBaseTemplateOptions(template);
+            if (template.canPublish) {
+                options = [
+                    ...options,
+                    ...this.setLicenseAndRemotePublishTemplateOptions(template),
+                    ...this.setUnPublishAndArchiveTemplateOptions(template)
+                ];
+            }
             options = [
-                ...this.setBaseTemplateOptions(template),
-                ...this.setLicenseAndRemotePublishTemplateOptions(template),
-                ...this.setUnPublishAndArchiveTemplateOptions(template),
+                ...options,
                 ...this.setUnlockTemplateOptions(template),
-                this.setCopyTemplateOptions(template)
+                ...this.setCopyTemplateOptions(template)
             ];
         }
+
         return options;
     }
 
@@ -170,25 +180,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                     );
                 }
             },
-            {
-                label: this.dotMessageService.get('Remote-Publish'),
-                command: () => {
-                    this.dotPushPublishDialogService.open({
-                        assetIdentifier: this.selectedTemplates
-                            .map((template) => template.identifier)
-                            .toString(),
-                        title: this.dotMessageService.get('contenttypes.content.push_publish')
-                    });
-                }
-            },
-            {
-                label: this.dotMessageService.get('Add-To-Bundle'),
-                command: () => {
-                    this.addToBundleIdentifier = this.selectedTemplates
-                        .map((template) => template.identifier)
-                        .toString();
-                }
-            },
+            ...this.setLicenseAndRemotePublishTemplateBulkOptions(),
             {
                 label: this.dotMessageService.get('Unpublish'),
                 command: () => {
@@ -224,27 +216,33 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         ];
     }
 
-    private setCopyTemplateOptions(template: DotTemplate): DotActionMenuItem {
-        return {
-            menuItem: {
-                label: this.dotMessageService.get('Copy'),
-                command: () => {
-                    this.dotTemplatesService
-                        .copy(template.identifier)
-                        .pipe(take(1))
-                        .subscribe(() => {
-                            this.showToastNotification(
-                                this.dotMessageService.get('message.template.copy')
-                            );
-                            this.listing.loadCurrentPage();
-                        });
-                }
-            }
-        };
+    private setCopyTemplateOptions(template: DotTemplate): DotActionMenuItem[] {
+        return template.canWrite
+            ? [
+                  {
+                      menuItem: {
+                          label: this.dotMessageService.get('Copy'),
+                          command: () => {
+                              this.dotTemplatesService
+                                  .copy(template.identifier)
+                                  .pipe(take(1))
+                                  .subscribe((response: DotTemplate) => {
+                                      if (response) {
+                                          this.showToastNotification(
+                                              this.dotMessageService.get('message.template.copy')
+                                          );
+                                          this.listing.loadCurrentPage();
+                                      }
+                                  });
+                          }
+                      }
+                  }
+              ]
+            : [];
     }
 
     private setUnlockTemplateOptions(template: DotTemplate): DotActionMenuItem[] {
-        return template.locked
+        return template.locked && template.canWrite
             ? [
                   {
                       menuItem: {
@@ -253,7 +251,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                               this.dotTemplatesService
                                   .unlock(template.identifier)
                                   .pipe(take(1))
-                                  .subscribe(() => {
+                                  .subscribe((x: any) => {
+                                      console.log(x);
+                                      debugger;
                                       this.showToastNotification(
                                           this.dotMessageService.get('message.template.unlocked')
                                       );
@@ -319,46 +319,87 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         return options;
     }
 
+    private setLicenseAndRemotePublishTemplateBulkOptions(): MenuItem[] {
+        const bulkOptions: MenuItem[] = [];
+        if (this.hasEnvironments) {
+            bulkOptions.push({
+                label: this.dotMessageService.get('Remote-Publish'),
+                command: () => {
+                    this.dotPushPublishDialogService.open({
+                        assetIdentifier: this.selectedTemplates
+                            .map((template) => template.identifier)
+                            .toString(),
+                        title: this.dotMessageService.get('contenttypes.content.push_publish')
+                    });
+                }
+            });
+        }
+
+        if (this.isEnterPrise) {
+            bulkOptions.push({
+                label: this.dotMessageService.get('Add-To-Bundle'),
+                command: () => {
+                    this.addToBundleIdentifier = this.selectedTemplates
+                        .map((template) => template.identifier)
+                        .toString();
+                }
+            });
+        }
+        return bulkOptions;
+    }
+
     private setBaseTemplateOptions(template: DotTemplate): DotActionMenuItem[] {
-        return [
-            {
+        const options: DotActionMenuItem[] = [];
+
+        if (template.canWrite) {
+            options.push({
                 menuItem: {
                     label: this.dotMessageService.get('edit'),
                     command: () => {
-                        // TODO: go to edit template
+                        this.editTemplate(template);
                     }
                 }
-            },
-            {
+            });
+        }
+
+        if (template.canPublish) {
+            options.push({
                 menuItem: {
                     label: this.dotMessageService.get('publish'),
                     command: () => {
                         this.publishTemplate([template.identifier]);
                     }
                 }
-            }
-        ];
+            });
+        }
+
+        return options;
     }
 
     private setArchiveTemplateActions(template: DotTemplate): DotActionMenuItem[] {
-        return [
-            {
+        const options: DotActionMenuItem[] = [];
+        if (template.canPublish) {
+            options.push({
                 menuItem: {
                     label: this.dotMessageService.get('Unarchive'),
                     command: () => {
                         this.unArchiveTemplate([template.identifier]);
                     }
                 }
-            },
-            {
+            });
+        }
+
+        if (template.canWrite) {
+            options.push({
                 menuItem: {
                     label: this.dotMessageService.get('Delete'),
                     command: () => {
                         this.deleteTemplate([template.identifier]);
                     }
                 }
-            }
-        ];
+            });
+        }
+        return options;
     }
 
     private deleteTemplate(identifiers: string[]): void {
@@ -366,7 +407,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             this.dotTemplatesService
                 .delete(identifiers)
                 .pipe(take(1))
-                .subscribe(() => {
+                .subscribe((x: any) => {
+                    console.log(x);
+                    debugger;
                     this.listing.loadCurrentPage();
                     this.showToastNotification(
                         this.dotMessageService.get('message.template.full_delete')
@@ -379,7 +422,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.dotTemplatesService
             .publish(identifiers)
             .pipe(take(1))
-            .subscribe(() => {
+            .subscribe((x: any) => {
+                console.log(x);
+                debugger;
                 this.showToastNotification(
                     this.dotMessageService.get('message.template_list.published')
                 );
@@ -391,7 +436,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.dotTemplatesService
             .unPublish(identifiers)
             .pipe(take(1))
-            .subscribe(() => {
+            .subscribe((x: any) => {
+                console.log(x);
+                debugger;
                 this.showToastNotification(
                     this.dotMessageService.get('message.template.unpublished')
                 );
@@ -403,7 +450,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.dotTemplatesService
             .unArchive(identifiers)
             .pipe(take(1))
-            .subscribe(() => {
+            .subscribe((x: any) => {
+                console.log(x);
+                debugger;
                 this.listing.loadCurrentPage();
                 this.showToastNotification(this.dotMessageService.get('message.template.undelete'));
             });
@@ -413,7 +462,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.dotTemplatesService
             .archive(identifiers)
             .pipe(take(1))
-            .subscribe(() => {
+            .subscribe((x: any) => {
+                console.log(x);
+                debugger;
                 this.showToastNotification(this.dotMessageService.get('message.template.delete'));
                 this.listing.loadCurrentPage();
             });
@@ -426,5 +477,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             severity: DotMessageSeverity.SUCCESS,
             type: DotMessageType.SIMPLE_MESSAGE
         });
+    }
+
+    private userCanPublish(): boolean {
+        return this.firstPage && this.firstPage.length && this.firstPage[0].canPublish;
     }
 }
