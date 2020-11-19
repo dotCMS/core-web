@@ -48,7 +48,7 @@ const messageServiceMock = new MockDotMessageService({
     'dot.common.message.saved': 'Saved'
 });
 
-fdescribe('DotEditLayoutComponent', () => {
+describe('DotEditLayoutComponent', () => {
     let component: DotEditLayoutComponent;
     let layoutDesignerDe: DebugElement;
     let layoutDesigner: DotEditLayoutDesignerComponentMock;
