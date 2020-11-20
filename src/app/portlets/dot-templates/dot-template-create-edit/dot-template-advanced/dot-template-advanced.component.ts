@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Observable, Subject } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 
 import { DotContainer } from '@shared/models/container/dot-container.model';
-import { DotTemplateStore } from '../store/dot-template.store';
+import { DotTemplateItem, DotTemplateStore } from '../store/dot-template.store';
 import { DotPortletToolbarActions } from '@models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 
 @Component({
@@ -14,6 +14,9 @@ import { DotPortletToolbarActions } from '@models/dot-portlet-toolbar.model/dot-
     styleUrls: ['./dot-template-advanced.scss']
 })
 export class DotTemplateAdvancedComponent implements OnInit, OnDestroy {
+    @Output() save = new EventEmitter<DotTemplateItem>();
+    @Output() cancel = new EventEmitter();
+
     // `any` because the type of the editor in the ngx-monaco-editor package is not typed
     editor: any;
     form: FormGroup;
@@ -94,12 +97,12 @@ export class DotTemplateAdvancedComponent implements OnInit, OnDestroy {
                     label: 'Save',
                     disabled: disabled,
                     command: () => {
-                        this.store.saveTemplate(this.form.value);
+                        this.save.emit(this.form.value);
                     }
                 }
             ],
             cancel: () => {
-                this.store.goToTemplateList();
+                this.cancel.emit();
             }
         };
     }

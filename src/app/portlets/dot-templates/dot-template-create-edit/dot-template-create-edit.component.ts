@@ -73,7 +73,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
      *
      * @memberof DotTemplateCreateEditComponent
      */
-    saveTemplateDesigner({ layout }: DotTemplate): void {
+    saveTemplate({ layout }: DotTemplate): void {
         this.store.saveTemplate({
             ...this.form.value,
             layout
@@ -85,7 +85,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
      *
      * @memberof DotTemplateCreateEditComponent
      */
-    cancelTemplateDesigner() {
+    cancelTemplate() {
         this.store.goToTemplateList();
     }
 

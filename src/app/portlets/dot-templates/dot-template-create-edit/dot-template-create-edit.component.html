@@ -12,26 +12,10 @@
                 <dot-api-link [href]="vm.apiLink"></dot-api-link>
             </ng-container>
         </dot-portlet-toolbar>
-        <p-tabView>
-            <p-tabPanel [header]="vm.original.type === 'advanced' ? 'Code' : 'Design'">
-                <div *ngIf="vm.original.type === 'advanced'; else elseBlock">
-                    <dot-template-advanced></dot-template-advanced>
-                </div>
-                <ng-template #elseBlock>
-                    <dot-edit-layout-designer
-                        [theme]="vm.original.theme"
-                        [layout]="vm.original.layout"
-                        (save)="saveTemplateDesigner($event)"
-                        (cancel)="cancelTemplateDesigner()"
-                    ></dot-edit-layout-designer>
-                </ng-template>
-            </p-tabPanel>
-            <p-tabPanel header="Permissions">
-                <ng-template pTemplate="content">Permissions</ng-template>
-            </p-tabPanel>
-            <p-tabPanel header="History">
-                <ng-template pTemplate="content">History</ng-template>
-            </p-tabPanel>
-        </p-tabView>
+        <dot-template-builder
+            [item]="vm.original"
+            (save)="saveTemplate($event)"
+            (cancel)="cancelTemplate()"
+        ></dot-template-builder>
     </dot-portlet-base>
 </ng-container>

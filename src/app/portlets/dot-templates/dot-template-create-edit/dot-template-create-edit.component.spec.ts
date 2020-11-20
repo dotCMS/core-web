@@ -1,4 +1,4 @@
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
@@ -17,6 +17,18 @@ import { DotTemplateCreateEditComponent } from './dot-template-create-edit.compo
 import { DotFormDialogModule } from '@components/dot-form-dialog/dot-form-dialog.module';
 import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
 
+@Component({
+    selector: 'dot-template-builder',
+    template: ''
+})
+export class DotTemplateBuilderMockComponent {
+    @Input() item;
+    @Output() save = new EventEmitter();
+    @Output() cancel = new EventEmitter();
+
+    constructor() {}
+}
+
 fdescribe('DotTemplateCreateEditComponent', () => {
     let fixture: ComponentFixture<DotTemplateCreateEditComponent>;
     let de: DebugElement;
@@ -25,7 +37,7 @@ fdescribe('DotTemplateCreateEditComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [DotTemplateCreateEditComponent],
+            declarations: [DotTemplateCreateEditComponent, DotTemplateBuilderMockComponent],
             imports: [
                 FormsModule,
                 ReactiveFormsModule,
