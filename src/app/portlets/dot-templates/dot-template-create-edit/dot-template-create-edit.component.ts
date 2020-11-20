@@ -10,6 +10,7 @@ import { DotTemplate } from '@shared/models/dot-edit-layout-designer/dot-templat
 
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 import { DotTemplateItem, DotTemplateState, DotTemplateStore } from './store/dot-template.store';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-template-create-edit',
@@ -27,7 +28,8 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     constructor(
         private store: DotTemplateStore,
         private fb: FormBuilder,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private dotMessageServide: DotMessageService
     ) {}
 
     ngOnInit() {
@@ -57,7 +59,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
      */
     editTemplateProps(): void {
         this.dialogService.open(DotTemplatePropsComponent, {
-            header: 'Template Properties',
+            header: this.dotMessageServide.get('templates.properties.title'),
             width: '30rem',
             data: {
                 template: this.form.value,
@@ -91,7 +93,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
 
     private createTemplate(): void {
         this.dialogService.open(DotTemplatePropsComponent, {
-            header: 'Create new template',
+            header: this.dotMessageServide.get('templates.create.title'),
             width: '30rem',
             closable: false,
             closeOnEscape: false,

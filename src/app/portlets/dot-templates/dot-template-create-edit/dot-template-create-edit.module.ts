@@ -10,6 +10,7 @@ import { DotPortletBaseModule } from '@components/dot-portlet-base/dot-portlet-b
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
 import { DotTemplateBuilderModule } from './dot-template-builder/dot-template-builder.module';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { DotTemplateBuilderModule } from './dot-template-builder/dot-template-bu
         DotTemplateCreateEditRoutingModule,
         DotTemplatePropsModule,
         DynamicDialogModule,
-        DotTemplateBuilderModule
+        DotTemplateBuilderModule,
+        DotMessagePipeModule
     ],
     declarations: [DotTemplateCreateEditComponent],
     providers: [DialogService]

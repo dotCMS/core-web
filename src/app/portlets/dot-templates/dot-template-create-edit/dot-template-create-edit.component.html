@@ -3,10 +3,11 @@
         <dot-portlet-toolbar [title]="vm.original.title">
             <ng-container id="left" *ngIf="vm.original.title">
                 <button
+                    data-testId="editTemplateButton"
                     pButton
                     class="p-button-text"
                     icon="pi pi-pencil"
-                    label="Edit"
+                    [label]="'templates.edit' | dm"
                     (click)="editTemplateProps()"
                 ></button>
                 <dot-api-link [href]="vm.apiLink"></dot-api-link>

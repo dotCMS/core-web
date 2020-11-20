@@ -2,11 +2,12 @@ import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/c
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { of } from 'rxjs';
 
 import { DialogService } from 'primeng/dynamicdialog';
+import { ButtonModule } from 'primeng/button';
 
 import {
     DotTemplateStore,
@@ -16,6 +17,9 @@ import {
 import { DotTemplateCreateEditComponent } from './dot-template-create-edit.component';
 import { DotFormDialogModule } from '@components/dot-form-dialog/dot-form-dialog.module';
 import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
 
 @Component({
     selector: 'dot-api-link',
@@ -59,6 +63,12 @@ export class DotPortletToolbarMockComponent {
     constructor() {}
 }
 
+const messageServiceMock = new MockDotMessageService({
+    'templates.create.title': 'Create new template',
+    'templates.properties.title': 'Template Properties',
+    'templates.edit': 'Edit'
+});
+
 describe('DotTemplateCreateEditComponent', () => {
     let fixture: ComponentFixture<DotTemplateCreateEditComponent>;
     let de: DebugElement;
@@ -72,16 +82,24 @@ describe('DotTemplateCreateEditComponent', () => {
                 DotPortletToolbarMockComponent,
                 DotTemplateBuilderMockComponent,
                 DotTemplateCreateEditComponent,
-                DotApiLinkMockComponent
+                DotApiLinkMockComponent,
+                DotMessagePipe
             ],
             imports: [
                 FormsModule,
                 ReactiveFormsModule,
                 BrowserAnimationsModule,
                 DotFormDialogModule,
-                DotTemplatePropsModule
+                DotTemplatePropsModule,
+                ButtonModule
             ],
-            providers: [DialogService]
+            providers: [
+                DialogService,
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                }
+            ]
         });
     });
 
@@ -274,7 +292,7 @@ describe('DotTemplateCreateEditComponent', () => {
             beforeEach(() => {
                 const storeMock = jasmine.createSpyObj(
                     'DotTemplateStore',
-                    ['createTemplate', 'goToTemplateList'],
+                    ['saveTemplate', 'goToTemplateList'],
                     {
                         vm$: of({
                             original: {
@@ -298,9 +316,7 @@ describe('DotTemplateCreateEditComponent', () => {
                 fixture.detectChanges();
             });
 
-            it('should open edit mode', async () => {
-                await fixture.whenStable();
-
+            it('should load edit mode', () => {
                 const portlet = de.query(By.css('dot-portlet-base')).componentInstance;
                 const toolbar = de.query(By.css('dot-portlet-toolbar')).componentInstance;
                 const builder = de.query(By.css('dot-template-builder')).componentInstance;
@@ -316,6 +332,87 @@ describe('DotTemplateCreateEditComponent', () => {
                 expect(apiLink.href).toBe('/api/link');
 
                 expect(dialogService.open).not.toHaveBeenCalled();
+            });
+
+            describe('edit body', () => {
+                it('should save', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('save', {
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        }
+                    });
+
+                    expect(store.saveTemplate).toHaveBeenCalledWith({
+                        title: 'Some template',
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        identifier: '123',
+                        friendlyName: '',
+                        theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661'
+                    });
+                });
+
+                it('should cancel', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('cancel', {});
+
+                    expect(store.goToTemplateList).toHaveBeenCalledTimes(1);
+                });
+            });
+
+            describe('edit properties', () => {
+                it('should have edit button', () => {
+                    const button = de.query(By.css('[data-testId="editTemplateButton"]'));
+
+                    expect(button.attributes['ng-reflect-label']).toBe('Edit');
+                    expect(button.attributes.icon).toBe('pi pi-pencil');
+                    expect(button.attributes.class).toContain('p-button-text');
+                    expect(button.attributes.pButton).toBeDefined();
+                });
+
+                it('should open edit props form', () => {
+                    const button = de.query(By.css('[data-testId="editTemplateButton"]'));
+                    button.nativeElement.click();
+
+                    expect(dialogService.open).toHaveBeenCalledWith(jasmine.any(Function), {
+                        header: 'Template Properties',
+                        width: '30rem',
+
+                        data: {
+                            template: {
+                                title: 'Some template',
+                                layout: {
+                                    header: true,
+                                    footer: true,
+                                    body: { rows: [] },
+                                    sidebar: null,
+                                    title: '',
+                                    width: null
+                                },
+                                identifier: '123',
+                                friendlyName: '',
+                                theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661'
+                            },
+                            onSave: jasmine.any(Function)
+                        }
+                    });
+                });
             });
         });
     });
