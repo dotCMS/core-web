@@ -15,23 +15,23 @@ import { DotLayout, DotTemplate } from '@models/dot-edit-layout-designer';
 type DotTemplateType = 'design' | 'advanced';
 
 interface DotTemplateItemDesign {
-    type?: 'design';
-    identifier: string;
-    title: string;
-    friendlyName: string;
-    theme: string;
-    layout: DotLayout;
     containers?: DotContainerMap;
-    drawed: boolean;
+    drawed?: boolean;
+    friendlyName: string;
+    identifier: string;
+    layout: DotLayout;
+    theme: string;
+    title: string;
+    type?: 'design';
 }
 
 interface DotTemplateItemadvanced {
-    type?: 'advanced';
+    body: string;
+    drawed?: boolean;
+    friendlyName: string;
     identifier: string;
     title: string;
-    friendlyName: string;
-    body: string;
-    drawed: boolean;
+    type?: 'advanced';
 }
 
 export type DotTemplateItem = DotTemplateItemDesign | DotTemplateItemadvanced;
@@ -49,7 +49,7 @@ const EMPTY_TEMPLATE = {
     friendlyName: ''
 };
 
-const EMPTY_TEMPLATE_DESIGN: DotTemplateItemDesign = {
+export const EMPTY_TEMPLATE_DESIGN: DotTemplateItemDesign = {
     ...EMPTY_TEMPLATE,
     type: 'design',
     layout: {
@@ -67,7 +67,7 @@ const EMPTY_TEMPLATE_DESIGN: DotTemplateItemDesign = {
     drawed: true
 };
 
-const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
+export const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
     ...EMPTY_TEMPLATE,
     type: 'advanced',
     body: '',

@@ -114,8 +114,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 layout: this.fb.group(template.layout),
                 identifier: template.identifier,
                 friendlyName: template.friendlyName,
-                theme: template.theme,
-                drawed: template.drawed
+                theme: template.theme
             });
         }
 

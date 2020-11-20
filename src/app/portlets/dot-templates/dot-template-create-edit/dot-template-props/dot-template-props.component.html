@@ -6,7 +6,13 @@
     <form class="p-fluid" [formGroup]="form">
         <div class="p-field">
             <label for="title" class="p-label-input-required">Title</label>
-            <input id="title" pInputText formControlName="title" autofocus />
+            <input
+                id="title"
+                pInputText
+                formControlName="title"
+                autofocus
+                data-testId="templatePropsTitleField"
+            />
             <dot-field-validation-message
                 [field]="form.get('title')"
                 message="This field is required"

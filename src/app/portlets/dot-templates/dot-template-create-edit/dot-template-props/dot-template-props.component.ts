@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-    selector: 'dot-dot-template-props',
+    selector: 'dot-template-props',
     templateUrl: './dot-template-props.component.html',
     styleUrls: ['./dot-template-props.component.scss']
 })
