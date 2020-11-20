@@ -18,6 +18,16 @@ import { DotFormDialogModule } from '@components/dot-form-dialog/dot-form-dialog
 import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.module';
 
 @Component({
+    selector: 'dot-api-link',
+    template: ''
+})
+export class DotApiLinkMockComponent {
+    @Input() href;
+
+    constructor() {}
+}
+
+@Component({
     selector: 'dot-template-builder',
     template: ''
 })
@@ -29,7 +39,27 @@ export class DotTemplateBuilderMockComponent {
     constructor() {}
 }
 
-fdescribe('DotTemplateCreateEditComponent', () => {
+@Component({
+    selector: 'dot-portlet-base',
+    template: '<ng-content></ng-content>'
+})
+export class DotPortletBaseMockComponent {
+    @Input() boxed;
+
+    constructor() {}
+}
+
+@Component({
+    selector: 'dot-portlet-toolbar',
+    template: '<ng-content></ng-content>'
+})
+export class DotPortletToolbarMockComponent {
+    @Input() title;
+
+    constructor() {}
+}
+
+describe('DotTemplateCreateEditComponent', () => {
     let fixture: ComponentFixture<DotTemplateCreateEditComponent>;
     let de: DebugElement;
     let dialogService: DialogService;
@@ -37,7 +67,13 @@ fdescribe('DotTemplateCreateEditComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [DotTemplateCreateEditComponent, DotTemplateBuilderMockComponent],
+            declarations: [
+                DotPortletBaseMockComponent,
+                DotPortletToolbarMockComponent,
+                DotTemplateBuilderMockComponent,
+                DotTemplateCreateEditComponent,
+                DotApiLinkMockComponent
+            ],
             imports: [
                 FormsModule,
                 ReactiveFormsModule,
@@ -62,7 +98,7 @@ fdescribe('DotTemplateCreateEditComponent', () => {
             beforeEach(() => {
                 const storeMock = jasmine.createSpyObj(
                     'DotTemplateStore',
-                    ['updateTemplate', 'saveTemplate', 'createTemplate', 'goToTemplateList'],
+                    ['createTemplate', 'goToTemplateList'],
                     {
                         vm$: of({
                             original: EMPTY_TEMPLATE_DESIGN
@@ -83,7 +119,14 @@ fdescribe('DotTemplateCreateEditComponent', () => {
 
             it('should not show extra components', () => {
                 const portlet = de.query(By.css('dot-portlet-base'));
-                console.log(portlet);
+                const toolbar = de.query(By.css('dot-portlet-toolbar'));
+                const builder = de.query(By.css('dot-template-builder'));
+                const apiLink = de.query(By.css('dot-api-link'));
+
+                expect(portlet).toBeNull();
+                expect(toolbar).toBeNull();
+                expect(builder).toBeNull();
+                expect(apiLink).toBeNull();
             });
 
             it('should open create dialog', async () => {
@@ -164,7 +207,7 @@ fdescribe('DotTemplateCreateEditComponent', () => {
             beforeEach(() => {
                 const storeMock = jasmine.createSpyObj(
                     'DotTemplateStore',
-                    ['updateTemplate', 'saveTemplate', 'createTemplate', 'goToTemplateList'],
+                    ['createTemplate', 'goToTemplateList'],
                     {
                         vm$: of({
                             original: EMPTY_TEMPLATE_ADVANCED
@@ -222,6 +265,57 @@ fdescribe('DotTemplateCreateEditComponent', () => {
                     identifier: '',
                     friendlyName: ''
                 });
+            });
+        });
+    });
+
+    describe('Edit', () => {
+        describe('Design', () => {
+            beforeEach(() => {
+                const storeMock = jasmine.createSpyObj(
+                    'DotTemplateStore',
+                    ['createTemplate', 'goToTemplateList'],
+                    {
+                        vm$: of({
+                            original: {
+                                ...EMPTY_TEMPLATE_DESIGN,
+                                identifier: '123',
+                                title: 'Some template'
+                            },
+                            apiLink: '/api/link'
+                        })
+                    }
+                );
+
+                TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
+                fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
+                de = fixture.debugElement;
+
+                dialogService = fixture.debugElement.injector.get(DialogService);
+                store = fixture.debugElement.injector.get(DotTemplateStore);
+                spyOn(dialogService, 'open').and.callThrough();
+
+                fixture.detectChanges();
+            });
+
+            it('should open edit mode', async () => {
+                await fixture.whenStable();
+
+                const portlet = de.query(By.css('dot-portlet-base')).componentInstance;
+                const toolbar = de.query(By.css('dot-portlet-toolbar')).componentInstance;
+                const builder = de.query(By.css('dot-template-builder')).componentInstance;
+                const apiLink = de.query(By.css('dot-api-link')).componentInstance;
+
+                expect(portlet.boxed).toBe(false);
+                expect(toolbar.title).toBe('Some template');
+                expect(builder.item).toEqual({
+                    ...EMPTY_TEMPLATE_DESIGN,
+                    identifier: '123',
+                    title: 'Some template'
+                });
+                expect(apiLink.href).toBe('/api/link');
+
+                expect(dialogService.open).not.toHaveBeenCalled();
             });
         });
     });
