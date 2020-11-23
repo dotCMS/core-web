@@ -61,7 +61,7 @@ export class PaginatorService {
 
     set searchParam(searchParam: string) {
         if (this._searchParam !== searchParam) {
-            this.links = {};
+            this.links = searchParam.length > 0 ? {} : this.links;
             this._searchParam = searchParam;
         }
     }
@@ -230,14 +230,11 @@ export class PaginatorService {
      * @memberof PaginatorService
      */
     public getWithOffset(offset: number): Observable<any[]> {
-        console.log({ offset });
         const page = this.getPageFromOffset(offset);
-        console.log({ page });
         return this.getPage(page);
     }
 
     private getPageFromOffset(offset: number): number {
-        console.log({ offset, perPage: this.paginationPerPage });
         return parseInt(String(offset / this.paginationPerPage), 10) + 1;
     }
 

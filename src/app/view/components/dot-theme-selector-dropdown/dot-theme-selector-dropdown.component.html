@@ -1,21 +1,5 @@
-<!-- <dot-searchable-dropdown
-    (change)="containerChange($event)"
-    (filterChange)="handleFilterChange($event)"
-    (pageChange)="handlePageChange($event)"
-    [data]="currentContainers"
-    [pageLinkSize]="5"
-    [rows]="paginationService.paginationPerPage"
-    [totalRecords]="paginationService.totalRecords"
-    [labelPropertyName]="['name', 'parentPermissionable.hostname']"
-    placeholder="{{ 'editpage.container.add.label' | dm }}"
-    persistentPlaceholder="true"
-    width="172px"
-    overlayWidth="300px"
-    [multiple]="true"
->
-</dot-searchable-dropdown> -->
-
 <dot-searchable-dropdown
+    [(ngModel)]="selectedTheme"
     (change)="onChange($event)"
     (filterChange)="handleFilterChange($event)"
     [placeholder]="placeholder"
@@ -27,6 +11,5 @@
     overlayWidth="350"
     valuePropertyName="name"
 >
-    <!-- TODO: change overlayWidth to value + unit after it's merged -->
+    <!-- TODO: change overlayWidth to value + unit before it's merged -->
 </dot-searchable-dropdown>
-<h1 *ngIf="totalRecords > 0">Total themes: {{ totalRecords }}</h1>

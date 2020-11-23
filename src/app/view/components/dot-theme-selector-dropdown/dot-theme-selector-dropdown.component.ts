@@ -1,9 +1,10 @@
-import { Component, EventEmitter, forwardRef, OnInit, Output } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotTheme } from '@portlets/dot-edit-page/shared/models';
+import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
 import { SiteService } from 'dotcms-js';
-import { Observable } from 'rxjs';
+import { LazyLoadEvent } from 'primeng/api';
 import { mergeMap, pluck, take } from 'rxjs/operators';
 
 @Component({
@@ -20,40 +21,18 @@ import { mergeMap, pluck, take } from 'rxjs/operators';
 })
 export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAccessor {
     themes: DotTheme[] = [];
-    currentSiteHostId$: Observable<string>;
-    value: DotTheme;
+    value: DotTheme = null;
     totalRecords: number = 0;
     placeholder = 'Select Themes';
     currentSiteIdentifier: string;
-
-    // 1. Crear una propiedad privada para manejar el value del host id
-    // 2. Usar esa propiedad para setear en el searchable dropdown el valor actual [ngModel]
-
-    @Output()
-    change = new EventEmitter<string>();
+    selectedTheme: string = '';
+    currentOffset: number;
 
     constructor(
         private readonly paginatorService: PaginatorService,
-        private readonly siteService: SiteService
+        private readonly siteService: SiteService,
+        private readonly themesService: DotThemesService
     ) {}
-
-    propagateChange = (_: any) => {};
-
-    /**
-     * Set the function to be called when the control receives a change event.
-     * @param any fn
-     * @memberof SearchableDropdownComponent
-     */
-    registerOnChange(fn): void {
-        this.propagateChange = fn;
-    }
-
-    registerOnTouched(): void {}
-
-    writeValue(value: string): void {
-        console.log(value);
-        console.log(this.themes);
-    }
 
     ngOnInit(): void {
         this.paginatorService.url = 'v1/themes';
@@ -65,6 +44,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
                 take(1),
                 pluck('identifier'),
                 mergeMap((identifier) => {
+                    this.currentSiteIdentifier = identifier;
                     this.paginatorService.setExtraParams('hostId', identifier);
                     return this.paginatorService.getWithOffset(0).pipe(take(1));
                 })
@@ -75,14 +55,56 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
             });
     }
 
-    onChange({ identifier }: DotTheme) {
-        this.change.emit(identifier);
-        this.propagateChange(identifier);
+    propagateChange = (_: any) => {};
+    registerOnTouched(): void {}
+
+    /**
+     * Set the function to be called when the control receives a change event.
+     * @param any fn
+     * @memberof SearchableDropdownComponent
+     */
+    registerOnChange(fn): void {
+        this.propagateChange = fn;
     }
 
-    handlePageChange(event: any): void {
+    /**
+     * Writes a new value to the element
+     *
+     * @param {DotTheme} theme
+     * @memberof DotThemeSelectorDropdownComponent
+     */
+    writeValue(theme: DotTheme): void {
+        this.value = theme;
+    }
+
+    /**
+     * Handles the onChange behavior of the select input
+     *
+     * @param {DotTheme} { identifier }
+     * @memberof DotThemeSelectorDropdownComponent
+     */
+    onChange({ identifier }: DotTheme) {
+        this.themesService
+            .get(identifier)
+            .pipe(take(1))
+            .subscribe((theme) => {
+                this.selectedTheme = theme.name;
+                this.writeValue(theme);
+            });
+        this.propagateChange(identifier);
+    }
+    /**
+     * Fetches a list of themes using an offset for pagination
+     *
+     * @param {LazyLoadEvent} event
+     * @return void
+     * @memberof DotThemeSelectorDropdownComponent
+     */
+    handlePageChange(event: LazyLoadEvent): void {
         if (!this.currentSiteIdentifier) return;
-        console.log({ event });
+
+        this.currentOffset = event.first;
+
         this.paginatorService
             .getWithOffset(event.first)
             .pipe(take(1))
@@ -90,17 +112,24 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
                 this.themes = themes;
             });
     }
-
+    /**
+     *  Fetch theme list via the DotThemeSelectorDropdownComponent input text
+     *
+     * @param {string} filter
+     * @memberof DotThemeSelectorDropdownComponent
+     */
     handleFilterChange(filter: string): void {
         this.getFilteredThemes(filter);
     }
 
     private getFilteredThemes(filter = '', offset = 0): void {
         this.paginatorService.searchParam = filter;
-        this.paginatorService.paginationPerPage = 40;
-        this.paginatorService.getWithOffset(offset).subscribe((themes) => {
-            this.themes = themes;
-            this.totalRecords = this.paginatorService.totalRecords;
-        });
+        this.paginatorService
+            .getWithOffset(this.currentOffset ? this.currentOffset : offset)
+            .pipe(take(1))
+            .subscribe((themes) => {
+                this.themes = themes;
+                this.totalRecords = this.paginatorService.totalRecords;
+            });
     }
 }
