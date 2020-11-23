@@ -8,6 +8,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DotTemplatePropsComponent } from './dot-template-props.component';
 import { DotFormDialogModule } from '@components/dot-form-dialog/dot-form-dialog.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 
 @NgModule({
     declarations: [DotTemplatePropsComponent],
@@ -18,7 +19,8 @@ import { DotFieldValidationMessageModule } from '@components/_common/dot-field-v
         FormsModule,
         InputTextModule,
         InputTextareaModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DotMessagePipeModule
     ]
 })
 export class DotTemplatePropsModule {}
