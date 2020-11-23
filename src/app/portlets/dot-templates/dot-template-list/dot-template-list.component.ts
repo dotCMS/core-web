@@ -14,6 +14,12 @@ import { DotMessageDisplayService } from '@components/dot-message-display/servic
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 import { DotPushPublishDialogService } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DialogService } from 'primeng/dynamicdialog';
+import { DotBulkInformationComponent } from '@components/_common/dot-bulk-information/dot-bulk-information.component';
+import {
+    DotActionBulkResult,
+    DotBulkFailItem
+} from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 
 @Component({
     selector: 'dot-template-list',
@@ -29,7 +35,6 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     actionHeaderOptions: ActionHeaderOptions;
     addToBundleIdentifier: string;
     selectedTemplates: DotTemplate[] = [];
-    showCheckBox: boolean;
 
     private isEnterPrise: boolean;
     private hasEnvironments: boolean;
@@ -41,7 +46,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         private dotTemplatesService: DotTemplatesService,
         private dotMessageDisplayService: DotMessageDisplayService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
-        private dotRouterService: DotRouterService
+        private dotRouterService: DotRouterService,
+        public dialogService: DialogService
     ) {}
 
     ngOnInit(): void {
@@ -49,7 +55,6 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             .pipe(pluck('dotTemplateListResolverData'), takeUntil(this.destroy$))
             .subscribe(([templates, isEnterPrise, hasEnvironments]) => {
                 this.firstPage = templates;
-                this.showCheckBox = this.userCanPublish();
                 this.isEnterPrise = isEnterPrise;
                 this.hasEnvironments = hasEnvironments;
                 this.tableColumns = this.setTemplateColumns();
@@ -407,13 +412,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             this.dotTemplatesService
                 .delete(identifiers)
                 .pipe(take(1))
-                .subscribe((x: any) => {
-                    console.log(x);
-                    debugger;
-                    this.listing.loadCurrentPage();
-                    this.showToastNotification(
-                        this.dotMessageService.get('message.template.full_delete')
-                    );
+                .subscribe((response: DotActionBulkResult) => {
+                    this.notifyResult(response, 'message.template.full_delete');
                 });
         }
     }
@@ -422,13 +422,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.dotTemplatesService
             .publish(identifiers)
             .pipe(take(1))
-            .subscribe((x: any) => {
-                console.log(x);
-                debugger;
-                this.showToastNotification(
-                    this.dotMessageService.get('message.template_list.published')
-                );
-                this.listing.loadCurrentPage();
+            .subscribe((response: DotActionBulkResult) => {
+                this.notifyResult(response, 'message.template_list.published');
             });
     }
 
@@ -436,13 +431,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.dotTemplatesService
             .unPublish(identifiers)
             .pipe(take(1))
-            .subscribe((x: any) => {
-                console.log(x);
-                debugger;
-                this.showToastNotification(
-                    this.dotMessageService.get('message.template.unpublished')
-                );
-                this.listing.loadCurrentPage();
+            .subscribe((response: DotActionBulkResult) => {
+                this.notifyResult(response, 'message.template.unpublished');
             });
     }
 
@@ -450,11 +440,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.dotTemplatesService
             .unArchive(identifiers)
             .pipe(take(1))
-            .subscribe((x: any) => {
-                console.log(x);
-                debugger;
-                this.listing.loadCurrentPage();
-                this.showToastNotification(this.dotMessageService.get('message.template.undelete'));
+            .subscribe((response: DotActionBulkResult) => {
+                this.notifyResult(response, 'message.template.undelete');
             });
     }
 
@@ -462,12 +449,21 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         this.dotTemplatesService
             .archive(identifiers)
             .pipe(take(1))
-            .subscribe((x: any) => {
-                console.log(x);
-                debugger;
-                this.showToastNotification(this.dotMessageService.get('message.template.delete'));
-                this.listing.loadCurrentPage();
+            .subscribe((response: DotActionBulkResult) => {
+                this.notifyResult(response, 'message.template.delete');
             });
+    }
+
+    private notifyResult(response: DotActionBulkResult, messageKey: string): void {
+        if (response.failed.length) {
+            this.showErrorDialog({
+                ...response,
+                fails: this.getFailsInfo(response.failed)
+            });
+        } else {
+            this.showToastNotification(this.dotMessageService.get(messageKey));
+        }
+        this.listing.loadCurrentPage();
     }
 
     private showToastNotification(message: string): void {
@@ -479,7 +475,25 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         });
     }
 
-    private userCanPublish(): boolean {
-        return this.firstPage && this.firstPage.length && this.firstPage[0].canPublish;
+    private showErrorDialog(result: DotActionBulkResult): void {
+        this.dialogService.open(DotBulkInformationComponent, {
+            header: this.dotMessageService.get('Results'),
+            width: '50rem',
+            contentStyle: { 'max-height': '500px', overflow: 'auto' },
+            baseZIndex: 10000,
+            data: result
+        });
+    }
+
+    private getFailsInfo(items: DotBulkFailItem[]): DotBulkFailItem[] {
+        return items.map((item: DotBulkFailItem) => {
+            return { ...item, description: this.getTemplateName(item.element) };
+        });
+    }
+
+    private getTemplateName(identifier: string): string {
+        return this.selectedTemplates.find((template: DotTemplate) => {
+            return template.identifier === identifier;
+        }).name;
     }
 }

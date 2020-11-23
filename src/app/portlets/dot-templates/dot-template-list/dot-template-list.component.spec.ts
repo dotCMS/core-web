@@ -464,15 +464,6 @@ fdescribe('DotTemplateListComponent', () => {
             fixture.detectChanges();
             expect(bulkActionsBtn.disabled).toEqual(false);
         });
-
-        xit('should be disable if dont have publish rights ', () => {
-            const bulkActionsBtn: HTMLButtonElement = fixture.debugElement.query(
-                By.css('.template-listing__header-options button')
-            ).nativeElement;
-            comp.showCheckBox = false;
-            fixture.detectChanges();
-            expect(bulkActionsBtn.disabled).toEqual(true);
-        });
     });
 
     it('', () => {});

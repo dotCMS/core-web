@@ -8,7 +8,7 @@
     sortOrder="DESC"
     url="v1/templates"
     [actions]="[]"
-    [checkbox]="showCheckBox"
+    [checkbox]="true"
     dataKey="inode"
     [firstPageData]="firstPage"
 >
@@ -21,7 +21,7 @@
             <button
                 type="button"
                 pButton
-                [disabled]="!this.selectedTemplates?.length || !this.showCheckBox"
+                [disabled]="!this.selectedTemplates?.length"
                 class="p-button-secondary p-button-sm"
                 icon="pi pi-ellipsis-v"
                 [label]="'Actions' | dm"

@@ -7,6 +7,7 @@ import { CoreWebService, DotRequestOptionsArgs } from 'dotcms-js';
 
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotTemplate } from '@shared/models/dot-edit-layout-designer';
+import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 
 export const TEMPLATE_API_URL = '/api/v1/templates/';
 /**
@@ -69,11 +70,11 @@ export class DotTemplatesService {
     /**
      * Delete a template
      * @param {string[]} identifiers
-     * @returns ???
+     * @returns Observable<DotActionBulkResult>
      * @memberof DotTemplatesService
      */
-    delete(identifiers: string[]): Observable<boolean> {
-        return this.request<boolean>({
+    delete(identifiers: string[]): Observable<DotActionBulkResult> {
+        return this.request<DotActionBulkResult>({
             method: 'DELETE',
             url: TEMPLATE_API_URL,
             body: identifiers
@@ -83,45 +84,45 @@ export class DotTemplatesService {
     /**
      * Unarchive a template
      * @param {string[]} identifiers
-     * @returns ???
+     * @returns Observable<DotActionBulkResult>
      * @memberof DotTemplatesService
      */
-    unArchive(identifiers: string[]): Observable<any> {
+    unArchive(identifiers: string[]): Observable<DotActionBulkResult> {
         const url = `${TEMPLATE_API_URL}_unarchive`;
-        return this.request<any>({ method: 'PUT', url, body: identifiers });
+        return this.request<DotActionBulkResult>({ method: 'PUT', url, body: identifiers });
     }
 
     /**
      * Archive a template
      * @param {string[]} identifiers
-     * @returns ???
+     * @returns Observable<DotActionBulkResult>
      * @memberof DotTemplatesService
      */
-    archive(identifiers: string[]): Observable<any> {
+    archive(identifiers: string[]): Observable<DotActionBulkResult> {
         const url = `${TEMPLATE_API_URL}_archive`;
-        return this.request<any>({ method: 'PUT', url, body: identifiers });
+        return this.request<DotActionBulkResult>({ method: 'PUT', url, body: identifiers });
     }
 
     /**
-     * Unpublish a template
+     * Unpublish a template00
      * @param {string[]} identifiers
-     * @returns ???
+     * @returns Observable<DotActionBulkResult>
      * @memberof DotTemplatesService
      */
-    unPublish(identifiers: string[]): Observable<any> {
+    unPublish(identifiers: string[]): Observable<DotActionBulkResult> {
         const url = `${TEMPLATE_API_URL}_unpublish`;
-        return this.request<any>({ method: 'PUT', url, body: identifiers });
+        return this.request<DotActionBulkResult>({ method: 'PUT', url, body: identifiers });
     }
 
     /**
      * Publish a template
      * @param {string[]} identifiers
-     * @returns ???
+     * @returns Observable<DotActionBulkResult>
      * @memberof DotTemplatesService
      */
-    publish(identifiers: string[]): Observable<any> {
+    publish(identifiers: string[]): Observable<DotActionBulkResult> {
         const url = `${TEMPLATE_API_URL}_publish`;
-        return this.request<any>({ method: 'PUT', url, body: identifiers });
+        return this.request<DotActionBulkResult>({ method: 'PUT', url, body: identifiers });
     }
 
     /**

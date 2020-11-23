@@ -12,6 +12,8 @@ import { ButtonModule } from 'primeng/button';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { DotActionMenuButtonModule } from '@components/_common/dot-action-menu-button/dot-action-menu-button.module';
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
+import { DotBulkInformationModule } from '@components/_common/dot-bulk-information/dot-bulk-information.module';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 
 @NgModule({
     declarations: [DotTemplateListComponent],
@@ -25,8 +27,10 @@ import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
         ButtonModule,
         DotActionButtonModule,
         DotActionMenuButtonModule,
-        DotAddToBundleModule
+        DotAddToBundleModule,
+        DynamicDialogModule,
+        DotBulkInformationModule
     ],
-    providers: [DotTemplateListResolver, DotTemplatesService]
+    providers: [DotTemplateListResolver, DotTemplatesService, DialogService]
 })
 export class DotTemplateListModule {}
