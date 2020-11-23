@@ -96,10 +96,6 @@ export class DotContentTypesPortletComponent implements OnInit {
         });
     }
 
-    onThemeSelectorChange(id: string) {
-        console.log(id);
-    }
-
     public changeBaseTypeSelector(value: string) {
         value !== ''
             ? this.listing.paginatorService.setExtraParams('type', value)
