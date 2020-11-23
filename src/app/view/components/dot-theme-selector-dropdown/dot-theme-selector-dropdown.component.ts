@@ -1,6 +1,6 @@
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DotTheme } from '@portlets/dot-edit-page/shared/models';
+import { DotTheme } from '@models/dot-edit-layout-designer';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
 import { SiteService } from 'dotcms-js';
