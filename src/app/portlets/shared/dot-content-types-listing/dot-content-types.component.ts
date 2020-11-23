@@ -57,8 +57,7 @@ export class DotContentTypesPortletComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private dotMessageService: DotMessageService,
-        private dotPushPublishDialogService: DotPushPublishDialogService,
-        private fb: FormBuilder
+        private dotPushPublishDialogService: DotPushPublishDialogService
     ) {}
 
     ngOnInit() {
