@@ -1,7 +1,6 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotTheme } from '@models/dot-edit-layout-designer';
-import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
 import { SiteService } from 'dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
@@ -32,8 +31,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
 
     constructor(
         private readonly paginatorService: PaginatorService,
-        private readonly siteService: SiteService,
-        private readonly themesService: DotThemesService
+        private readonly siteService: SiteService
     ) {}
 
     ngOnInit(): void {
@@ -82,17 +80,11 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
     /**
      * Handles the onChange behavior of the select input
      *
-     * @param {DotTheme} { identifier }
+     * @param {DotTheme} theme
      * @memberof DotThemeSelectorDropdownComponent
      */
     onChange(theme: DotTheme) {
-        this.themesService
-            .get(theme.identifier)
-            .pipe(take(1))
-            .subscribe((theme) => {
-                this.selectedTheme = theme.name;
-                this.writeValue(theme);
-            });
+        this.writeValue(theme);
         this.propagateChange(theme);
     }
     /**
