@@ -1,6 +1,7 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotTheme } from '@models/dot-edit-layout-designer';
+import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
 import { SiteService } from 'dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
@@ -23,7 +24,6 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
     value: DotTheme = null;
     totalRecords: number = 0;
     currentSiteIdentifier: string;
-    selectedTheme: string = '';
     currentOffset: number;
 
     @Input()
@@ -31,7 +31,8 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
 
     constructor(
         private readonly paginatorService: PaginatorService,
-        private readonly siteService: SiteService
+        private readonly siteService: SiteService,
+        private readonly themesService: DotThemesService
     ) {}
 
     ngOnInit(): void {
@@ -41,15 +42,15 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
         this.siteService
             .getCurrentSite()
             .pipe(
+                take(1),
                 pluck('identifier'),
                 mergeMap((identifier) => {
                     this.currentSiteIdentifier = identifier;
                     this.paginatorService.setExtraParams('hostId', identifier);
-                    return this.paginatorService.getWithOffset(0);
+                    return this.paginatorService.getWithOffset(0).pipe(take(1));
                 })
             )
-            .pipe(take(1))
-            .subscribe((themes: DotTheme[]) => {
+            .subscribe((themes) => {
                 this.themes = themes;
                 this.totalRecords = this.paginatorService.totalRecords;
             });
@@ -73,19 +74,24 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
      * @param {DotTheme} theme
      * @memberof DotThemeSelectorDropdownComponent
      */
-    writeValue(theme: DotTheme): void {
-        this.value = theme;
+    writeValue(identifier: string): void {
+        this.themesService
+            .get(identifier)
+            .pipe(take(1))
+            .subscribe((theme) => {
+                this.value = theme;
+            });
     }
 
     /**
-     * Handles the onChange from the searchable-dropdown
+     * Handles the onChange behavior of the select input
      *
      * @param {DotTheme} theme
      * @memberof DotThemeSelectorDropdownComponent
      */
     onChange(theme: DotTheme) {
-        this.writeValue(theme);
-        this.propagateChange(theme);
+        this.value = theme;
+        this.propagateChange(theme.identifier);
     }
     /**
      * Fetches a list of themes using an offset for pagination
@@ -98,7 +104,6 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
         if (!this.currentSiteIdentifier) return;
 
         this.currentOffset = event.first;
-        console.log(this.totalRecords);
 
         this.paginatorService
             .getWithOffset(event.first)
@@ -120,9 +125,9 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
     private getFilteredThemes(filter = '', offset = 0): void {
         this.paginatorService.searchParam = filter;
         this.paginatorService
-            .getWithOffset(this.currentOffset || offset)
+            .getWithOffset(this.currentOffset ? this.currentOffset : offset)
             .pipe(take(1))
-            .subscribe((themes: DotTheme[]) => {
+            .subscribe((themes) => {
                 this.themes = themes;
                 this.totalRecords = this.paginatorService.totalRecords;
             });
