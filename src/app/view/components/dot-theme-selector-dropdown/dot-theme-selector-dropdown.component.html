@@ -15,7 +15,7 @@
     [data]="themes"
     [totalRecords]="totalRecords"
     (pageChange)="handlePageChange($event)"
-    [rows]="5"
+    [rows]="paginatorService.paginationPerPage"
     labelPropertyName="name"
     overlayWidth="350px"
     valuePropertyName="name"
