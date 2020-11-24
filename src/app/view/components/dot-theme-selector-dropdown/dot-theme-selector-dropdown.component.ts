@@ -78,7 +78,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
     }
 
     /**
-     * Handles the onChange behavior of the select input
+     * Handles the onChange from the searchable-dropdown
      *
      * @param {DotTheme} { identifier }
      * @memberof DotThemeSelectorDropdownComponent
