@@ -337,7 +337,7 @@ export class SearchableDropdownComponent
         }
     }
 
-    private isModifierKey(key: string) {
+    private isModifierKey(key: string): boolean {
         return this.keyMap.includes(key);
     }
 
