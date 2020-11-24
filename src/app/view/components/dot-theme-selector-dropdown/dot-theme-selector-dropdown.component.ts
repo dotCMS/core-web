@@ -127,7 +127,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
         this.paginatorService
             .getWithOffset(this.currentOffset || offset)
             .pipe(take(1))
-            .subscribe((themes) => {
+            .subscribe((themes: DotTheme[]) => {
                 this.themes = themes;
                 this.totalRecords = this.paginatorService.totalRecords;
             });
