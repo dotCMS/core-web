@@ -1,21 +1,15 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
+import { FormatDateService } from '@services/format-date-service';
 import { PaginatorService } from '@services/paginator';
 import { moduleMetadata } from '@storybook/angular';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { SiteService } from 'dotcms-js';
 import { of } from 'rxjs';
 import { DotThemeSelectorDropdownComponent } from './dot-theme-selector-dropdown.component';
-import { DotThemeSelectorDropdownModule } from './dot-theme-selector-dropdown.module';
 
-@Pipe({
-    name: 'dm'
-})
-class DotMessagePipe implements PipeTransform {
-    transform(value: string): string {
-        return value;
-    }
-}
+const messageServiceMock = new MockDotMessageService({});
 
 export default {
     title: 'DotCMS/Forms/ThemeSelector',
@@ -23,6 +17,14 @@ export default {
     decorators: [
         moduleMetadata({
             providers: [
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                },
+                {
+                    provide: FormatDateService,
+                    useValue: {}
+                },
                 {
                     provide: PaginatorService,
                     useValue: {
@@ -49,8 +51,8 @@ export default {
                     }
                 }
             ],
-            imports: [ReactiveFormsModule, DotThemeSelectorDropdownModule],
-            declarations: [DotMessagePipe]
+            imports: [SearchableDropDownModule],
+            declarations: [DotThemeSelectorDropdownComponent]
         })
     ],
     parameters: {
@@ -74,7 +76,6 @@ export default {
 
 const ThemeSelectorTemplate = `
   <dot-theme-selector-dropdown
-          formControlName="themeid"
           (change)="onThemeSelectorChange($event)"
   ></dot-theme-selector-dropdown>
 `;
