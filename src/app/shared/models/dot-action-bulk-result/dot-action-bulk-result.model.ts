@@ -8,7 +8,6 @@ export interface DotActionBulkResult {
     skippedCount: number;
     successCount: number;
     fails: DotBulkFailItem[];
-    failed?: DotBulkFailItem[];
 }
 
 // optional attrs because api is not consistent

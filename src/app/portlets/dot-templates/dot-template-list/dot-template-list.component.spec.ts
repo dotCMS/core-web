@@ -41,6 +41,8 @@ import { DotMessageSeverity, DotMessageType } from '@components/dot-message-disp
 import { DotAddToBundleComponent } from '@components/_common/dot-add-to-bundle/dot-add-to-bundle.component';
 import { ButtonModel } from '@models/action-header';
 import { DotTemplate } from '@models/dot-edit-layout-designer';
+import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 
 const templatesMock: DotTemplate[] = [
     {
@@ -166,13 +168,34 @@ const columnsMock = [
     }
 ];
 
+const mockBulkResponseFail: DotActionBulkResult = {
+    skippedCount: 0,
+    successCount: 1,
+    fails: [
+        {
+            errorMessage: 'error 1',
+            element: '123Unpublish'
+        },
+        {
+            errorMessage: 'error 2',
+            element: '123Archived'
+        }
+    ]
+};
+
+const mockBulkResponseSuccess: DotActionBulkResult = {
+    skippedCount: 0,
+    successCount: 3,
+    fails: []
+};
+
 const mockMessageConfig = {
     life: 3000,
     severity: DotMessageSeverity.SUCCESS,
     type: DotMessageType.SIMPLE_MESSAGE
 };
 
-fdescribe('DotTemplateListComponent', () => {
+describe('DotTemplateListComponent', () => {
     let fixture: ComponentFixture<DotTemplateListComponent>;
     let dotListingDataTable: DotListingDataTableComponent;
     let dotTemplatesService: DotTemplatesService;
@@ -206,6 +229,7 @@ fdescribe('DotTemplateListComponent', () => {
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 DotcmsConfigService,
                 DotMessageDisplayService,
+                DialogService,
                 {
                     provide: DotRouterService,
                     useValue: {
@@ -225,7 +249,8 @@ fdescribe('DotTemplateListComponent', () => {
                 DotActionButtonModule,
                 DotActionMenuButtonModule,
                 DotAddToBundleModule,
-                HttpClientTestingModule
+                HttpClientTestingModule,
+                DynamicDialogModule
             ]
         }).compileComponents();
     });
@@ -253,7 +278,7 @@ fdescribe('DotTemplateListComponent', () => {
         expect(dotListingDataTable.actions).toEqual([]);
         expect(dotListingDataTable.checkbox).toEqual(true);
         expect(dotListingDataTable.dataKey).toEqual('inode');
-        // expect(dotListingDataTable.firstPageData).toEqual(templatesMock);
+        // TODO: expect(dotListingDataTable.firstPageData).toEqual(templatesMock);
     });
 
     it('should set Action Header options correctly', () => {
@@ -265,8 +290,6 @@ fdescribe('DotTemplateListComponent', () => {
         model[1].command();
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/templates/new/advanced');
     });
-
-    it('should set archive as extra param in pagination', () => {});
 
     describe('row actions', () => {
         it('should set actions to publish template', () => {
@@ -335,35 +358,35 @@ fdescribe('DotTemplateListComponent', () => {
             });
         });
         it('should call archive endpoint, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'archive').and.returnValue(of({}));
+            spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
             unPublishTemplate.actions[4].menuItem.command();
 
             expect(dotTemplatesService.archive).toHaveBeenCalledWith(['123Unpublish']);
             checkNotificationAndReLoadOfPage('Template archived');
         });
         it('should call unArchive api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of({}));
+            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseSuccess));
             archivedTemplate.actions[0].menuItem.command();
 
             expect(dotTemplatesService.unArchive).toHaveBeenCalledWith(['123Archived']);
             checkNotificationAndReLoadOfPage('Template unarchived');
         });
         it('should call publish api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'publish').and.returnValue(of({}));
+            spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseSuccess));
             unPublishTemplate.actions[1].menuItem.command();
 
             expect(dotTemplatesService.publish).toHaveBeenCalledWith(['123Unpublish']);
             checkNotificationAndReLoadOfPage('Templates published');
         });
         it('should call unpublish api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of({}));
+            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseSuccess));
             publishTemplate.actions[4].menuItem.command();
 
             expect(dotTemplatesService.unPublish).toHaveBeenCalledWith(['123Published']);
             checkNotificationAndReLoadOfPage('Template unpublished');
         });
         it('should call unlock api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'unlock').and.returnValue(of({}));
+            spyOn(dotTemplatesService, 'unlock').and.returnValue(of(mockBulkResponseSuccess));
             lockedTemplate.actions[5].menuItem.command();
 
             expect(dotTemplatesService.unlock).toHaveBeenCalledWith('123Locked');
@@ -380,7 +403,7 @@ fdescribe('DotTemplateListComponent', () => {
             spyOn(window, 'confirm').and.callFake(function () {
                 return true;
             });
-            spyOn(dotTemplatesService, 'delete').and.returnValue(of(true));
+            spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
             archivedTemplate.actions[1].menuItem.command();
 
             expect(dotTemplatesService.delete).toHaveBeenCalledWith(['123Archived']);
@@ -409,11 +432,11 @@ fdescribe('DotTemplateListComponent', () => {
                 By.css('.template-listing__header-options p-menu')
             ).componentInstance;
 
-            spyOn(dotTemplatesService, 'publish').and.returnValue(of({}));
-            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of({}));
-            spyOn(dotTemplatesService, 'archive').and.returnValue(of({}));
-            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of({}));
-            spyOn(dotTemplatesService, 'delete').and.returnValue(of(true));
+            spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseSuccess));
+            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseSuccess));
+            spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
+            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseSuccess));
+            spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
             spyOn(dotPushPublishDialogService, 'open');
             spyOn(window, 'confirm').and.callFake(function () {
                 return true;
@@ -466,7 +489,11 @@ fdescribe('DotTemplateListComponent', () => {
         });
     });
 
-    it('', () => {});
+    describe('error exceptions', () => {
+        // TODO: exceptions test
+        console.log(mockBulkResponseFail);
+        it('', () => {});
+    });
 
     function checkBasicOptions(menu: DotActionMenuButtonComponent): void {
         expect(menu.actions[0].menuItem.label).toEqual('Edit');

@@ -455,10 +455,10 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     }
 
     private notifyResult(response: DotActionBulkResult, messageKey: string): void {
-        if (response.failed.length) {
+        if (response.fails.length) {
             this.showErrorDialog({
                 ...response,
-                fails: this.getFailsInfo(response.failed)
+                fails: this.getFailsInfo(response.fails)
             });
         } else {
             this.showToastNotification(this.dotMessageService.get(messageKey));
