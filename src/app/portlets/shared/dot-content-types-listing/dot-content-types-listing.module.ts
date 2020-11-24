@@ -8,8 +8,6 @@ import { DotListingDataTableModule } from '@components/dot-listing-data-table';
 import { DotBaseTypeSelectorModule } from '@components/dot-base-type-selector';
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { DotThemeSelectorDropdownModule } from '@components/dot-theme-selector-dropdown/dot-theme-selector-dropdown.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
@@ -17,10 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         DotListingDataTableModule,
         DotBaseTypeSelectorModule,
         DotAddToBundleModule,
-        DotPipesModule,
-        DotThemeSelectorDropdownModule,
-        FormsModule,
-        ReactiveFormsModule
+        DotPipesModule
     ],
     declarations: [DotContentTypesPortletComponent],
     exports: [DotContentTypesPortletComponent],
