@@ -125,7 +125,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
     private getFilteredThemes(filter = '', offset = 0): void {
         this.paginatorService.searchParam = filter;
         this.paginatorService
-            .getWithOffset(this.currentOffset ? this.currentOffset : offset)
+            .getWithOffset(this.currentOffset || offset)
             .pipe(take(1))
             .subscribe((themes) => {
                 this.themes = themes;
