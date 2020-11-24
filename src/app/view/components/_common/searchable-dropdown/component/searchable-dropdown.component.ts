@@ -95,6 +95,9 @@ export class SearchableDropdownComponent
     @Input()
     disabled = false;
 
+    @Input()
+    externalItemListTemplate: TemplateRef<any>;
+
     @Output()
     change: EventEmitter<any> = new EventEmitter();
 
@@ -127,7 +130,7 @@ export class SearchableDropdownComponent
     options: any[];
     label: string;
     externalSelectTemplate: TemplateRef<any>;
-    externalItemListTemplate: TemplateRef<any>;
+
     keyMap: string[] = [
         'Shift',
         'Alt',
