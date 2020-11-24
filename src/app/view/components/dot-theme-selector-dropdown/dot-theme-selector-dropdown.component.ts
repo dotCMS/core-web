@@ -41,15 +41,15 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
         this.siteService
             .getCurrentSite()
             .pipe(
-                take(1),
                 pluck('identifier'),
                 mergeMap((identifier) => {
                     this.currentSiteIdentifier = identifier;
                     this.paginatorService.setExtraParams('hostId', identifier);
-                    return this.paginatorService.getWithOffset(0).pipe(take(1));
+                    return this.paginatorService.getWithOffset(0);
                 })
             )
-            .subscribe((themes) => {
+            .pipe(take(1))
+            .subscribe((themes: DotTheme[]) => {
                 this.themes = themes;
                 this.totalRecords = this.paginatorService.totalRecords;
             });
