@@ -77,12 +77,15 @@ export const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
 @Injectable()
 export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     readonly vm$ = this.select(({ original, apiLink }: DotTemplateState) => {
+        let value;
+
         if (original.type === 'design') {
-            delete original.containers;
+            value = { ...original };
+            delete value.containers;
         }
 
         return {
-            original,
+            original: value || original,
             apiLink
         };
     });
@@ -137,6 +140,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         (origin$: Observable<DotTemplateItem>) => {
             return origin$.pipe(
                 switchMap((template: DotTemplateItem) => {
+                    console.log(template);
                     delete template.type;
 
                     if (template.type === 'design') {
@@ -172,6 +176,8 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                     ? this.getTemplateItem(dotTemplate)
                     : this.getDefaultTemplate(isAdvanced);
 
+                console.log(template);
+
                 if (template.type === 'design') {
                     this.templateContainersCacheService.set(template.containers);
                 }
@@ -180,7 +186,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                     original: template,
                     working: template,
                     type: fixType,
-                    apiLink: `/api/v1/templates/${template.identifier}/working`
+                    apiLink: this.getApiLink(template?.identifier)
                 });
             });
     }
@@ -193,6 +199,10 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     goToTemplateList = () => {
         this.dotRouterService.gotoPortlet('templates');
     };
+
+    private getApiLink(identifier: string): string {
+        return identifier ? `/api/v1/templates/${identifier}/working` : '';
+    }
 
     private getDefaultTemplate(isAdvanced: boolean): DotTemplateItem {
         return isAdvanced ? EMPTY_TEMPLATE_ADVANCED : EMPTY_TEMPLATE_DESIGN;

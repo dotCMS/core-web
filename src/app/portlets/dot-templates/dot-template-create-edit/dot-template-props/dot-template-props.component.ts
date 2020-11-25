@@ -23,6 +23,8 @@ export class DotTemplatePropsComponent implements OnInit {
     ngOnInit(): void {
         const { template } = this.config.data;
 
+        console.log(template);
+
         this.form = this.fb.group({
             ...template,
             title: [template.title, Validators.required]
