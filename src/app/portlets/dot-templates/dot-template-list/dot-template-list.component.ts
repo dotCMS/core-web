@@ -256,9 +256,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                               this.dotTemplatesService
                                   .unlock(template.identifier)
                                   .pipe(take(1))
-                                  .subscribe((x: any) => {
-                                      console.log(x);
-                                      debugger;
+                                  .subscribe(() => {
                                       this.showToastNotification(
                                           this.dotMessageService.get('message.template.unlocked')
                                       );
@@ -478,7 +476,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     private showErrorDialog(result: DotActionBulkResult): void {
         this.dialogService.open(DotBulkInformationComponent, {
             header: this.dotMessageService.get('Results'),
-            width: '50rem',
+            width: '40rem',
             contentStyle: { 'max-height': '500px', overflow: 'auto' },
             baseZIndex: 10000,
             data: result

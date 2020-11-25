@@ -4,7 +4,6 @@ import { DotTemplateListComponent } from './dot-template-list.component';
 import { DotTemplateListResolver } from '@portlets/dot-templates/dot-template-list/dot-template-list-resolver.service';
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotListingDataTableModule } from '@components/dot-listing-data-table';
-import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { SharedModule } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MenuModule } from 'primeng/menu';
@@ -14,13 +13,14 @@ import { DotActionMenuButtonModule } from '@components/_common/dot-action-menu-b
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
 import { DotBulkInformationModule } from '@components/_common/dot-bulk-information/dot-bulk-information.module';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 
 @NgModule({
     declarations: [DotTemplateListComponent],
     imports: [
         CommonModule,
         DotListingDataTableModule,
-        DotPipesModule,
+        DotMessagePipeModule,
         SharedModule,
         CheckboxModule,
         MenuModule,

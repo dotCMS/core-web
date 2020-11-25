@@ -24,7 +24,6 @@ import { ConfirmationService, SharedModule } from 'primeng/api';
 import { dotEventSocketURLFactory } from '@tests/dot-test-bed';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
-import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotListingDataTableModule } from '@components/dot-listing-data-table';
 import { CommonModule } from '@angular/common';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -43,6 +42,8 @@ import { ButtonModel } from '@models/action-header';
 import { DotTemplate } from '@models/dot-edit-layout-designer';
 import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DotBulkInformationComponent } from '@components/_common/dot-bulk-information/dot-bulk-information.component';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 
 const templatesMock: DotTemplate[] = [
     {
@@ -143,7 +144,8 @@ const messages = {
     'message.template.full_delete': 'Template deleted',
     'message.template_list.published': 'Templates published',
     'message.template.unpublished': 'Template unpublished',
-    'message.template.undelete': 'Template unarchived'
+    'message.template.undelete': 'Template unarchived',
+    Results: 'Results'
 };
 
 const columnsMock = [
@@ -174,11 +176,11 @@ const mockBulkResponseFail: DotActionBulkResult = {
     fails: [
         {
             errorMessage: 'error 1',
-            element: '123Unpublish'
+            element: '123Published'
         },
         {
             errorMessage: 'error 2',
-            element: '123Archived'
+            element: '123Locked'
         }
     ]
 };
@@ -241,7 +243,7 @@ describe('DotTemplateListComponent', () => {
             imports: [
                 DotListingDataTableModule,
                 CommonModule,
-                DotPipesModule,
+                DotMessagePipeModule,
                 SharedModule,
                 CheckboxModule,
                 MenuModule,
@@ -268,6 +270,9 @@ describe('DotTemplateListComponent', () => {
         dotListingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'))
             .componentInstance;
         rowActions = fixture.debugElement.queryAll(By.css('dot-action-menu-button'));
+        spyOn(window, 'confirm').and.callFake(function () {
+            return true;
+        });
     }));
 
     it('should set attributes of dotListingDataTable', () => {
@@ -278,7 +283,6 @@ describe('DotTemplateListComponent', () => {
         expect(dotListingDataTable.actions).toEqual([]);
         expect(dotListingDataTable.checkbox).toEqual(true);
         expect(dotListingDataTable.dataKey).toEqual('inode');
-        // TODO: expect(dotListingDataTable.firstPageData).toEqual(templatesMock);
     });
 
     it('should set Action Header options correctly', () => {
@@ -300,6 +304,13 @@ describe('DotTemplateListComponent', () => {
             expect(publishRow.actions[5].menuItem.label).toEqual('Copy');
         });
 
+        it('should set actions to unPublish template', () => {
+            const unpublish: DotActionMenuButtonComponent = rowActions[2].componentInstance;
+            checkBasicOptions(unpublish);
+            expect(unpublish.actions[4].menuItem.label).toEqual('Archive');
+            expect(unpublish.actions[5].menuItem.label).toEqual('Copy');
+        });
+
         it('should set actions to archived template', () => {
             const archived: DotActionMenuButtonComponent = rowActions[3].componentInstance;
             expect(archived.actions.length).toEqual(2);
@@ -307,12 +318,6 @@ describe('DotTemplateListComponent', () => {
             expect(archived.actions[1].menuItem.label).toEqual('Delete');
         });
 
-        it('should set actions to unPublish template', () => {
-            const unpublish: DotActionMenuButtonComponent = rowActions[2].componentInstance;
-            checkBasicOptions(unpublish);
-            expect(unpublish.actions[4].menuItem.label).toEqual('Archive');
-            expect(unpublish.actions[5].menuItem.label).toEqual('Copy');
-        });
         it('should set actions to locked template', () => {
             const locked: DotActionMenuButtonComponent = rowActions[1].componentInstance;
             expect(locked.actions.length).toEqual(7);
@@ -321,7 +326,23 @@ describe('DotTemplateListComponent', () => {
             expect(locked.actions[6].menuItem.label).toEqual('Copy');
         });
 
-        it('should hide push-publish and Add to Bundle actions', () => {});
+        it('should hide push-publish and Add to Bundle actions', () => {
+            let activatedRoute: ActivatedRoute;
+            activatedRoute = TestBed.inject(ActivatedRoute);
+            spyOnProperty(activatedRoute, 'data', 'get').and.returnValue(
+                of({
+                    dotTemplateListResolverData: [templatesMock, false, false]
+                })
+            );
+            comp.ngOnInit();
+            fixture.detectChanges();
+            const publishRow: DotActionMenuButtonComponent = rowActions[0].componentInstance;
+            expect(publishRow.actions.length).toEqual(4);
+            expect(publishRow.actions[0].menuItem.label).toEqual('Edit');
+            expect(publishRow.actions[1].menuItem.label).toEqual('Publish');
+            expect(publishRow.actions[2].menuItem.label).toEqual('Unpublish');
+            expect(publishRow.actions[3].menuItem.label).toEqual('Copy');
+        });
     });
 
     describe('actions command', () => {
@@ -339,7 +360,6 @@ describe('DotTemplateListComponent', () => {
             archivedTemplate = rowActions[3].componentInstance;
         });
 
-        it('should go to edit template', () => {});
         it('should open add to bundle dialog', () => {
             publishTemplate.actions[3].menuItem.command();
             fixture.detectChanges();
@@ -386,7 +406,7 @@ describe('DotTemplateListComponent', () => {
             checkNotificationAndReLoadOfPage('Template unpublished');
         });
         it('should call unlock api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'unlock').and.returnValue(of(mockBulkResponseSuccess));
+            spyOn(dotTemplatesService, 'unlock').and.returnValue(of('template unlocked'));
             lockedTemplate.actions[5].menuItem.command();
 
             expect(dotTemplatesService.unlock).toHaveBeenCalledWith('123Locked');
@@ -400,22 +420,26 @@ describe('DotTemplateListComponent', () => {
             checkNotificationAndReLoadOfPage('Template copied');
         });
         it('should call delete api, send notification and reload current page', () => {
-            spyOn(window, 'confirm').and.callFake(function () {
-                return true;
-            });
             spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
             archivedTemplate.actions[1].menuItem.command();
-
             expect(dotTemplatesService.delete).toHaveBeenCalledWith(['123Archived']);
             checkNotificationAndReLoadOfPage('Template deleted');
         });
     });
 
     describe('bulk', () => {
+        let menu: Menu;
+        let dialogService: DialogService;
+
+        beforeEach(() => {
+            dialogService = TestBed.inject(DialogService);
+            comp.selectedTemplates = [templatesMock[0], templatesMock[1]];
+            fixture.detectChanges();
+            menu = fixture.debugElement.query(By.css('.template-listing__header-options p-menu'))
+                .componentInstance;
+        });
+
         it('should set labels', () => {
-            const menu: Menu = fixture.debugElement.query(
-                By.css('.template-listing__header-options p-menu')
-            ).componentInstance;
             expect(menu.model.length).toEqual(7);
             expect(menu.model[0].label).toEqual('Publish');
             expect(menu.model[1].label).toEqual('Push Publish');
@@ -427,20 +451,14 @@ describe('DotTemplateListComponent', () => {
         });
 
         it('should execute actions', () => {
-            comp.selectedTemplates = [templatesMock[0], templatesMock[1]];
-            const menu: Menu = fixture.debugElement.query(
-                By.css('.template-listing__header-options p-menu')
-            ).componentInstance;
-
             spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseSuccess));
             spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseSuccess));
             spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
             spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseSuccess));
             spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
             spyOn(dotPushPublishDialogService, 'open');
-            spyOn(window, 'confirm').and.callFake(function () {
-                return true;
-            });
+            spyOn(dotMessageDisplayService, 'push');
+            spyOn(dotListingDataTable, 'loadCurrentPage');
             menu.model[0].command();
             expect(dotTemplatesService.publish).toHaveBeenCalledWith(['123Published', '123Locked']);
 
@@ -474,25 +492,56 @@ describe('DotTemplateListComponent', () => {
 
             menu.model[6].command();
             expect(dotTemplatesService.delete).toHaveBeenCalledWith(['123Published', '123Locked']);
-        });
 
-        it('should display error if an action is wrong', () => {});
+            expect(dotMessageDisplayService.push).toHaveBeenCalledTimes(5);
+            expect(dotListingDataTable.loadCurrentPage).toHaveBeenCalledTimes(5);
+        });
 
         it('should disable enable bulk action button based on selection', () => {
             const bulkActionsBtn: HTMLButtonElement = fixture.debugElement.query(
                 By.css('.template-listing__header-options button')
             ).nativeElement;
-            expect(bulkActionsBtn.disabled).toEqual(true);
-            comp.selectedTemplates = templatesMock;
-            fixture.detectChanges();
             expect(bulkActionsBtn.disabled).toEqual(false);
+            comp.selectedTemplates = [];
+            fixture.detectChanges();
+            expect(bulkActionsBtn.disabled).toEqual(true);
         });
-    });
 
-    describe('error exceptions', () => {
-        // TODO: exceptions test
-        console.log(mockBulkResponseFail);
-        it('', () => {});
+        it('error exceptions', () => {
+            spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseFail));
+            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseFail));
+            spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseFail));
+            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseFail));
+            spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseFail));
+            spyOn(dialogService, 'open');
+            menu.model[0].command();
+            menu.model[3].command();
+            menu.model[4].command();
+            menu.model[5].command();
+            menu.model[6].command();
+            expect(dialogService.open).toHaveBeenCalledTimes(5);
+            expect(dialogService.open).toHaveBeenCalledWith(DotBulkInformationComponent, {
+                header: 'Results',
+                width: '40rem',
+                contentStyle: { 'max-height': '500px', overflow: 'auto' },
+                baseZIndex: 10000,
+                data: {
+                    ...mockBulkResponseFail,
+                    fails: [
+                        {
+                            errorMessage: 'error 1',
+                            element: '123Published',
+                            description: 'Published template'
+                        },
+                        {
+                            errorMessage: 'error 2',
+                            element: '123Locked',
+                            description: 'Locked template'
+                        }
+                    ]
+                }
+            });
+        });
     });
 
     function checkBasicOptions(menu: DotActionMenuButtonComponent): void {

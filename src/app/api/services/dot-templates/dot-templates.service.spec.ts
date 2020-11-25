@@ -1,16 +1,116 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { DotTemplatesService } from './dot-templates.service';
+import { CoreWebService } from 'dotcms-js';
 
-xdescribe('DotTemplatesService', () => {
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotTemplatesService, TEMPLATE_API_URL } from './dot-templates.service';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+
+import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
+import { DotTemplate } from '@models/dot-edit-layout-designer';
+
+const mockBulkResponseSuccess: DotActionBulkResult = {
+    skippedCount: 0,
+    successCount: 1,
+    fails: []
+};
+
+const mockTemplate: DotTemplate = {
+    anonymous: false,
+    friendlyName: 'Copy template',
+    identifier: '123',
+    inode: '1AreSD',
+    name: 'Copy template',
+    type: 'type',
+    versionType: 'type',
+    deleted: false,
+    live: true,
+    layout: null,
+    canEdit: true,
+    canWrite: true,
+    canPublish: true
+};
+
+describe('DotTemplatesService', () => {
     let service: DotTemplatesService;
+    let httpMock: HttpTestingController;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
+        TestBed.configureTestingModule({
+            providers: [
+                DotTemplatesService,
+                {
+                    provide: DotHttpErrorManagerService,
+                    useValue: {
+                        handle() {}
+                    }
+                },
+                {
+                    provide: CoreWebService,
+                    useClass: CoreWebServiceMock
+                }
+            ],
+            imports: [HttpClientTestingModule]
+        });
         service = TestBed.inject(DotTemplatesService);
+
+        httpMock = TestBed.inject(HttpTestingController);
     });
 
-    it('should be created', () => {
-        expect(service).toBeTruthy();
+    it('should delete a template', () => {
+        service.delete(['testId01']).subscribe();
+        const req = httpMock.expectOne(TEMPLATE_API_URL);
+
+        expect(req.request.method).toBe('DELETE');
+        expect(req.request.body).toEqual(['testId01']);
+        req.flush(mockBulkResponseSuccess);
+    });
+    it('should unArchive a template', () => {
+        service.unArchive(['testId01']).subscribe();
+        const req = httpMock.expectOne(`${TEMPLATE_API_URL}_unarchive`);
+
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.body).toEqual(['testId01']);
+        req.flush(mockBulkResponseSuccess);
+    });
+    it('should archive a template', () => {
+        service.archive(['testId01']).subscribe();
+        const req = httpMock.expectOne(`${TEMPLATE_API_URL}_archive`);
+
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.body).toEqual(['testId01']);
+        req.flush(mockBulkResponseSuccess);
+    });
+    it('should unPublish a template', () => {
+        service.unPublish(['testId01']).subscribe();
+        const req = httpMock.expectOne(`${TEMPLATE_API_URL}_unpublish`);
+
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.body).toEqual(['testId01']);
+        req.flush(mockBulkResponseSuccess);
+    });
+    it('should publish a template', () => {
+        service.publish(['testId01']).subscribe();
+        const req = httpMock.expectOne(`${TEMPLATE_API_URL}_publish`);
+
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.body).toEqual(['testId01']);
+        req.flush(mockBulkResponseSuccess);
+    });
+    it('should copy a template', () => {
+        service.copy('testId01').subscribe();
+        const req = httpMock.expectOne(`${TEMPLATE_API_URL}testId01/_copy`);
+
+        expect(req.request.method).toBe('PUT');
+        req.flush(mockTemplate);
+    });
+    it('should unlock a template', () => {
+        service.unlock('testId01').subscribe();
+        const req = httpMock.expectOne(`${TEMPLATE_API_URL}testId01/_unlock`);
+
+        expect(req.request.method).toBe('PUT');
+        req.flush(mockTemplate);
     });
 });

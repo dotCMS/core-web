@@ -29,7 +29,7 @@
                 attr.data-testid="bulkActions"
             ></button>
         </div>
-        <p-menu #actionsMenu [popup]="true" [model]="templateBulkActions"></p-menu>
+        <p-menu #actionsMenu [popup]="true" [model]="templateBulkActions" appendTo="body"></p-menu>
     </div>
 
     <ng-template #rowTemplate let-rowData="rowData">

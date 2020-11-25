@@ -139,10 +139,10 @@ export class DotTemplatesService {
     /**
      * Unlock a template
      * @param {string} identifier
-     * @returns ???
+     * @returns Observable<string>
      * @memberof DotTemplatesService
      */
-    unlock(identifier: string): Observable<any> {
+    unlock(identifier: string): Observable<string> {
         const url = `${TEMPLATE_API_URL}${identifier}/_unlock`;
         return this.request<any>({ method: 'PUT', url });
     }
