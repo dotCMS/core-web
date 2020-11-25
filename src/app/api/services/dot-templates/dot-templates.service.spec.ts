@@ -6,9 +6,8 @@ import { CoreWebService } from 'dotcms-js';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotTemplatesService, TEMPLATE_API_URL } from './dot-templates.service';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
-
-import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 import { DotTemplate } from '@models/dot-edit-layout-designer';
+import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 
 const mockBulkResponseSuccess: DotActionBulkResult = {
     skippedCount: 0,
@@ -37,7 +36,6 @@ describe('DotTemplatesService', () => {
     let httpMock: HttpTestingController;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({});
         TestBed.configureTestingModule({
             providers: [
                 DotTemplatesService,
@@ -59,6 +57,103 @@ describe('DotTemplatesService', () => {
         httpMock = TestBed.inject(HttpTestingController);
     });
 
+    it('should get a list of templates', () => {
+        service.get().subscribe((template) => {
+            expect(template as any).toEqual([
+                {
+                    identifier: '1234',
+                    name: 'Theme name'
+                }
+            ]);
+        });
+
+        const req = httpMock.expectOne(TEMPLATE_API_URL);
+
+        expect(req.request.method).toBe('GET');
+
+        req.flush({
+            entity: [
+                {
+                    identifier: '1234',
+                    name: 'Theme name'
+                }
+            ]
+        });
+    });
+
+    it('should get a template by id', () => {
+        service.getById('123').subscribe((template) => {
+            expect(template as any).toEqual({
+                identifier: '1234',
+                name: 'Theme name'
+            });
+        });
+
+        const req = httpMock.expectOne(`${TEMPLATE_API_URL}123/working`);
+
+        expect(req.request.method).toBe('GET');
+
+        req.flush({
+            entity: {
+                identifier: '1234',
+                name: 'Theme name'
+            }
+        });
+    });
+
+    it('should post to create a template', () => {
+        service
+            .create({
+                name: '',
+                anonymous: true,
+                friendlyName: ''
+            } as DotTemplate)
+            .subscribe((template) => {
+                expect(template as any).toEqual({
+                    identifier: '1234',
+                    name: 'Theme name'
+                });
+            });
+
+        const req = httpMock.expectOne(TEMPLATE_API_URL);
+
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual({ name: '', anonymous: true, friendlyName: '' });
+
+        req.flush({
+            entity: {
+                identifier: '1234',
+                name: 'Theme name'
+            }
+        });
+    });
+
+    it('should put to update a template', () => {
+        service
+            .update({
+                name: '',
+                anonymous: true,
+                friendlyName: ''
+            } as DotTemplate)
+            .subscribe((template) => {
+                expect(template as any).toEqual({
+                    identifier: '1234',
+                    name: 'Theme name'
+                });
+            });
+
+        const req = httpMock.expectOne(TEMPLATE_API_URL);
+
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.body).toEqual({ name: '', anonymous: true, friendlyName: '' });
+
+        req.flush({
+            entity: {
+                identifier: '1234',
+                name: 'Theme name'
+            }
+        });
+    });
     it('should delete a template', () => {
         service.delete(['testId01']).subscribe();
         const req = httpMock.expectOne(TEMPLATE_API_URL);
