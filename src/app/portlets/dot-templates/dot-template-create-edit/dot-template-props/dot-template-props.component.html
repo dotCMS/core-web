@@ -9,7 +9,13 @@
             <label for="title" class="p-label-input-required">{{
                 'templates.properties.form.label.title' | dm
             }}</label>
-            <input id="title" pInputText formControlName="title" autofocus />
+            <input
+                id="title"
+                pInputText
+                formControlName="title"
+                autofocus
+                data-testId="templatePropsTitleField"
+            />
             <dot-field-validation-message
                 [field]="form.get('title')"
             ></dot-field-validation-message>
