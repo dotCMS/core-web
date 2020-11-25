@@ -29,7 +29,7 @@ describe('DotTemplateDesignerService', () => {
         templateService = TestBed.inject(DotTemplatesService);
     });
 
-    it('should be created', (done) => {
+    it('should return page by id from router', (done) => {
         service
             .resolve(
                 {
