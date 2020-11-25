@@ -81,6 +81,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         if (original.type === 'design') {
             value = { ...original };
             delete value.containers;
+            delete value.drawed;
         }
 
         return {
