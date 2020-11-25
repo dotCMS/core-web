@@ -1,5 +1,8 @@
 <p-tabView>
-    <p-tabPanel [header]="item.type === 'advanced' ? 'Code' : 'Design'">
+    <p-tabPanel
+        data-testId="builder"
+        [header]="item.type === 'advanced' ? ('code' | dm) : ('design' | dm)"
+    >
         <div *ngIf="item.type === 'advanced'; else elseBlock">
             <dot-template-advanced
                 (save)="save.emit($event)"
