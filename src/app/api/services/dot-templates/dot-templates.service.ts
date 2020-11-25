@@ -55,7 +55,6 @@ export class DotTemplatesService {
      * @memberof DotTemplatesService
      */
     create(values: DotTemplate): Observable<DotTemplate> {
-        console.log(values);
         return this.request<DotTemplate>({ method: 'POST', url: this.url, body: values });
     }
 

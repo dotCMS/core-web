@@ -39,7 +39,6 @@ export type DotTemplateItem = DotTemplateItemDesign | DotTemplateItemadvanced;
 export interface DotTemplateState {
     original: DotTemplateItem;
     working?: DotTemplateItem;
-    type?: DotTemplateType;
     apiLink: string;
 }
 
@@ -102,20 +101,12 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         }
     }));
 
-    readonly updateTemplate = this.updater<DotTemplate>(
-        (state: DotTemplateState, template: DotTemplate) => {
-            const type: DotTemplateType = template.drawed ? 'design' : 'advanced';
-
-            if (type === 'design') {
-                this.templateContainersCacheService.set(template.containers);
-            }
-
-            const item = this.getTemplateItem(template);
-
+    readonly updateTemplate = this.updater<DotTemplateItem>(
+        (state: DotTemplateState, template: DotTemplateItem) => {
             return {
                 ...state,
-                working: item,
-                original: item
+                working: template,
+                original: template
             };
         }
     );
@@ -131,7 +122,11 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 return this.dotTemplateService.update(template as DotTemplate);
             }),
             tap((template: DotTemplate) => {
-                this.updateTemplate(template);
+                if (template.drawed) {
+                    this.templateContainersCacheService.set(template.containers);
+                }
+
+                this.updateTemplate(this.getTemplateItem(template));
             })
         );
     });
@@ -140,12 +135,12 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         (origin$: Observable<DotTemplateItem>) => {
             return origin$.pipe(
                 switchMap((template: DotTemplateItem) => {
-                    console.log(template);
-                    delete template.type;
-
                     if (template.type === 'design') {
                         delete template.containers;
                     }
+
+                    delete template.type;
+
                     return this.dotTemplateService.create(template as DotTemplate);
                 }),
                 tap(({ identifier }: DotTemplate) => {
@@ -176,8 +171,6 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                     ? this.getTemplateItem(dotTemplate)
                     : this.getDefaultTemplate(isAdvanced);
 
-                console.log(template);
-
                 if (template.type === 'design') {
                     this.templateContainersCacheService.set(template.containers);
                 }
@@ -185,7 +178,6 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 this.setState({
                     original: template,
                     working: template,
-                    type: fixType,
                     apiLink: this.getApiLink(template?.identifier)
                 });
             });
