@@ -1,15 +1,21 @@
 <ng-template let-item="item" pTemplate="listItem" #externalItemListTemplate>
     <span
         class="searchable-dropdown__data-list-item"
-        [class.selected]="item[labelPropertyName] === valueString"
-        (click)="handleClick(item)"
-        >{{ item.label }}</span
+        [class.selected]="value && value.identifier === item.identifier"
+        (click)="onChange(item)"
     >
+        <img
+            *ngIf="item?.themeThumbnail"
+            class="dot-theme-item__image"
+            src="/dA/{{ item.themeThumbnail }}/48w/48h/thumbnail.png"
+            onerror="this.src='http://localhost:8080/dA/568824e8-0de9-46af-90b1-19e5286f7921/48w/48h/thumbnail.png';this.onerror='';"
+        />
+        {{ item.label }}
+    </span>
 </ng-template>
 
 <dot-searchable-dropdown
     [(ngModel)]="value"
-    (change)="onChange($event)"
     (filterChange)="handleFilterChange($event)"
     [placeholder]="placeholder"
     [data]="themes"

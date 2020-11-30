@@ -44,7 +44,7 @@ export default {
                                     path: '/application/themes/sports 42/',
                                     showOnMenu: false,
                                     sortOrder: 0,
-                                    themeThumbnail: null,
+                                    themeThumbnail: '568824e8-0de9-46af-90b1-19e5286f7921',
                                     title: 'sports 42',
                                     type: 'folder'
                                 },
@@ -60,7 +60,7 @@ export default {
                                     path: '/application/themes/sports 43/',
                                     showOnMenu: false,
                                     sortOrder: 0,
-                                    themeThumbnail: null,
+                                    themeThumbnail: '568824e8-0de9-46af-90b1-19e5286f7921',
                                     title: 'sports 43',
                                     type: 'folder'
                                 },
@@ -76,7 +76,7 @@ export default {
                                     path: '/application/themes/sports 44/',
                                     showOnMenu: false,
                                     sortOrder: 0,
-                                    themeThumbnail: null,
+                                    themeThumbnail: '568824e8-0de9-46af-90b1-19e5286f7921',
                                     title: 'sports 44',
                                     type: 'folder'
                                 },
@@ -92,7 +92,7 @@ export default {
                                     path: '/application/themes/sports 45/',
                                     showOnMenu: false,
                                     sortOrder: 0,
-                                    themeThumbnail: null,
+                                    themeThumbnail: '568824e8-0de9-46af-90b1-19e5286f7921',
                                     title: 'sports 45',
                                     type: 'folder'
                                 },
@@ -108,7 +108,7 @@ export default {
                                     path: '/application/themes/sports 46/',
                                     showOnMenu: false,
                                     sortOrder: 0,
-                                    themeThumbnail: null,
+                                    themeThumbnail: '568824e8-0de9-46af-90b1-19e5286f7921',
                                     title: 'sports 46',
                                     type: 'folder'
                                 },
@@ -124,7 +124,7 @@ export default {
                                     path: '/application/themes/sports 47/',
                                     showOnMenu: false,
                                     sortOrder: 0,
-                                    themeThumbnail: null,
+                                    themeThumbnail: '568824e8-0de9-46af-90b1-19e5286f7921',
                                     title: 'sports 47',
                                     type: 'folder'
                                 },
@@ -140,7 +140,7 @@ export default {
                                     path: '/application/themes/sports 48/',
                                     showOnMenu: false,
                                     sortOrder: 0,
-                                    themeThumbnail: null,
+                                    themeThumbnail: '568824e8-0de9-46af-90b1-19e5286f7921',
                                     title: 'sports 48',
                                     type: 'folder'
                                 },
@@ -156,7 +156,7 @@ export default {
                                     path: '/application/themes/sports 49/',
                                     showOnMenu: false,
                                     sortOrder: 0,
-                                    themeThumbnail: null,
+                                    themeThumbnail: '568824e8-0de9-46af-90b1-19e5286f7921',
                                     title: 'sports 49',
                                     type: 'folder'
                                 }
