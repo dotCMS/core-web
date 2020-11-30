@@ -36,11 +36,9 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original }: DotTemplateState) => {
             if (this.form) {
                 const value = this.getFormValue(original);
-                console.log('vm update', value);
 
                 this.form.setValue(value);
             } else {
-                console.log('vm create');
                 this.form = this.getForm(original);
             }
 
