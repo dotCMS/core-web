@@ -159,23 +159,19 @@ describe('DotTemplateAdvancedComponent', () => {
             });
         });
 
-        it('should have main', () => {
-            const main = de.query(By.css('main'));
-            expect(main).not.toBeNull();
-        });
-
         it('should have form and fields', () => {
-            const form = de.query(By.css('main form'));
+            const form = de.query(By.css('form'));
 
             expect(form).not.toBeNull();
             const container = de.query(By.css('dot-container-selector'));
             const code = de.query(By.css('dot-textarea-content'));
 
             expect(container).not.toBeNull();
-            expect(code).not.toBeNull();
+            expect(container.attributes.class).toBeUndefined();
 
+            expect(code).not.toBeNull();
             expect(code.attributes.formControlName).toBe('body');
-            expect(code.attributes.height).toBe('30rem');
+            expect(code.attributes.height).toBe('100%');
             expect(code.attributes.language).toBe('html');
             expect(code.attributes['ng-reflect-show']).toBe('code');
         });

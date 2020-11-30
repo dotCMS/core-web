@@ -13,7 +13,10 @@ import { DotContainer } from '@models/container/dot-container.model';
 })
 export class DotContainerSelectorComponent implements OnInit {
     @Output() change: EventEmitter<DotContainer> = new EventEmitter();
+
     @Input() data: DotContainerColumnBox[] = [];
+    @Input() class = '';
+
     totalRecords: number;
     currentContainers: DotContainer[] = [];
 

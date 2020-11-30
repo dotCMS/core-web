@@ -116,6 +116,10 @@ describe('ContainerSelectorComponent', () => {
         expect(dataItem.nativeNode.textContent).toEqual('Container 1 (demo.dotcms.com)');
     });
 
+    it('should pass the class', () => {
+        expect(dotContainerSelector.class).toBe('d-secondary');
+    });
+
     it('should add containers to containers list and emit a change event', () => {
         comp.currentContainers = containers;
 

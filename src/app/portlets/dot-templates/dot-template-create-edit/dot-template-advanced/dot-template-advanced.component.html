@@ -2,8 +2,7 @@
     <dot-portlet-toolbar [actions]="actions$ | async"></dot-portlet-toolbar>
 
     <form [formGroup]="form">
-        <dot-container-selector class="d-secondary" (change)="containerChange($event)">
-        </dot-container-selector>
+        <dot-container-selector (change)="containerChange($event)"> </dot-container-selector>
         <dot-textarea-content
             #value
             height="100%"
