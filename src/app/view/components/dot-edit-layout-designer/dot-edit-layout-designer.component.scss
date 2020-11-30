@@ -27,15 +27,6 @@ form {
     height: 100%;
 }
 
-dot-layout-designer {
-    background-color: $white;
-    box-shadow: $md-shadow-1;
-    flex-grow: 1;
-    margin: $spacing-3;
-    padding: $spacing-6;
-    overflow: auto;
-}
-
 .dot-edit-layout__actions {
     display: flex;
     height: $dot-secondary-toolbar-height;
