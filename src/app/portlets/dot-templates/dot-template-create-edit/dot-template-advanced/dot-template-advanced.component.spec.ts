@@ -83,14 +83,13 @@ export class DotTextareaContentMockComponent implements ControlValueAccessor {
 }
 
 const messageServiceMock = new MockDotMessageService({
-    '': ''
+    save: 'Save'
 });
 
 describe('DotTemplateAdvancedComponent', () => {
     let fixture: ComponentFixture<DotTemplateAdvancedComponent>;
     let de: DebugElement;
     let component: DotTemplateAdvancedComponent;
-    // let store: DotTemplateStore;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({

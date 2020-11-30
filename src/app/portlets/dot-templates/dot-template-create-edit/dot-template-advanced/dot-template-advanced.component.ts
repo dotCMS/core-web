@@ -7,6 +7,7 @@ import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { DotContainer } from '@shared/models/container/dot-container.model';
 import { DotTemplateItem, DotTemplateStore } from '../store/dot-template.store';
 import { DotPortletToolbarActions } from '@models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-template-advanced',
@@ -23,7 +24,11 @@ export class DotTemplateAdvancedComponent implements OnInit, OnDestroy {
     actions$: Observable<DotPortletToolbarActions>;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
-    constructor(private store: DotTemplateStore, private fb: FormBuilder) {}
+    constructor(
+        private store: DotTemplateStore,
+        private fb: FormBuilder,
+        private dotMessageService: DotMessageService
+    ) {}
 
     ngOnInit(): void {
         this.store.vm$.pipe(take(1)).subscribe(({ original }) => {
@@ -98,7 +103,7 @@ export class DotTemplateAdvancedComponent implements OnInit, OnDestroy {
         return {
             primary: [
                 {
-                    label: 'Save',
+                    label: this.dotMessageService.get('save'),
                     disabled: disabled,
                     command: () => {
                         this.save.emit(this.form.value);
