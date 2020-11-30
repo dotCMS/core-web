@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import { DotContainer } from '@shared/models/container/dot-container.model';
 import { DotTemplateItem, DotTemplateStore } from '../store/dot-template.store';
@@ -39,8 +39,11 @@ export class DotTemplateAdvancedComponent implements OnInit, OnDestroy {
 
         this.form
             .get('body')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe(({ body }: { body: string }) => {
+            .valueChanges.pipe(
+                takeUntil(this.destroy$),
+                filter((body: string) => body !== undefined)
+            )
+            .subscribe((body: string) => {
                 this.store.updateBody(body);
             });
 

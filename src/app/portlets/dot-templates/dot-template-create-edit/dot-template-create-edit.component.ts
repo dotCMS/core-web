@@ -35,9 +35,12 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original }: DotTemplateState) => {
             if (this.form) {
-                const { type, ...value } = original;
+                const value = this.getFormValue(original);
+                console.log('vm update', value);
+
                 this.form.setValue(value);
             } else {
+                console.log('vm create');
                 this.form = this.getForm(original);
             }
 
@@ -126,5 +129,24 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             identifier: template.identifier,
             friendlyName: template.friendlyName
         });
+    }
+
+    private getFormValue(template: DotTemplateItem): { [key: string]: any } {
+        if (template.type === 'design') {
+            return {
+                title: template.title,
+                layout: template.layout,
+                identifier: template.identifier,
+                friendlyName: template.friendlyName,
+                theme: template.theme
+            };
+        }
+
+        return {
+            title: template.title,
+            body: template.body,
+            identifier: template.identifier,
+            friendlyName: template.friendlyName
+        };
     }
 }

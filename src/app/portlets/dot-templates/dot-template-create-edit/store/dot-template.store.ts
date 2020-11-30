@@ -76,16 +76,8 @@ export const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
 @Injectable()
 export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     readonly vm$ = this.select(({ original, apiLink }: DotTemplateState) => {
-        let value;
-
-        if (original.type === 'design') {
-            value = { ...original };
-            delete value.containers;
-            delete value.drawed;
-        }
-
         return {
-            original: value || original,
+            original,
             apiLink
         };
     });

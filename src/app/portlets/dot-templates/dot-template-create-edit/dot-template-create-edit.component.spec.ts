@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 
 import { DialogService } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
@@ -72,6 +72,7 @@ const messageServiceMock = new MockDotMessageService({
 describe('DotTemplateCreateEditComponent', () => {
     let fixture: ComponentFixture<DotTemplateCreateEditComponent>;
     let de: DebugElement;
+    let component: DotTemplateCreateEditComponent;
     let dialogService: DialogService;
     let store: DotTemplateStore;
 
@@ -413,6 +414,70 @@ describe('DotTemplateCreateEditComponent', () => {
                         }
                     });
                 });
+            });
+        });
+    });
+
+    describe('Forms', () => {
+        const subject = new BehaviorSubject<any>(null);
+
+        beforeEach(() => {
+            const storeMock = jasmine.createSpyObj(
+                'DotTemplateStore',
+                ['createTemplate', 'goToTemplateList'],
+                {
+                    vm$: subject
+                }
+            );
+
+            TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
+            fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
+            component = fixture.componentInstance;
+
+            dialogService = fixture.debugElement.injector.get(DialogService);
+            store = fixture.debugElement.injector.get(DotTemplateStore);
+            spyOn(dialogService, 'open').and.callThrough();
+
+            subject.next({
+                original: EMPTY_TEMPLATE_ADVANCED
+            });
+
+            fixture.detectChanges();
+        });
+
+        it('should have basic value', () => {
+            expect(component.form.value).toEqual({
+                title: '',
+                body: '',
+                identifier: '',
+                friendlyName: ''
+            });
+        });
+
+        it('should update the form when state updates', () => {
+            expect(component.form.value).toEqual({
+                title: '',
+                body: '',
+                identifier: '',
+                friendlyName: ''
+            });
+
+            subject.next({
+                original: {
+                    friendlyName: 'Not batman',
+                    identifier: '123',
+                    title: 'Hello World',
+                    body: '<h1>I am Batman</h1>'
+                }
+            });
+
+            fixture.detectChanges();
+
+            expect(component.form.value).toEqual({
+                title: 'Hello World',
+                body: '<h1>I am Batman</h1>',
+                identifier: '123',
+                friendlyName: 'Not batman'
             });
         });
     });

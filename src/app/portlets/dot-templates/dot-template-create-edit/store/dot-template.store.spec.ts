@@ -128,6 +128,7 @@ describe('DotTemplateStore', () => {
             service.vm$.subscribe((res) => {
                 expect(res).toEqual({
                     original: {
+                        containers: {},
                         identifier: '',
                         title: '',
                         friendlyName: '',
