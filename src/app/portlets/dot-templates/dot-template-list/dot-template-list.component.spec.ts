@@ -197,7 +197,7 @@ const mockMessageConfig = {
     type: DotMessageType.SIMPLE_MESSAGE
 };
 
-fdescribe('DotTemplateListComponent', () => {
+describe('DotTemplateListComponent', () => {
     let fixture: ComponentFixture<DotTemplateListComponent>;
     let dotListingDataTable: DotListingDataTableComponent;
     let dotTemplatesService: DotTemplatesService;
