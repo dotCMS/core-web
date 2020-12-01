@@ -10,7 +10,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      &:hover {
+      &:hover, &.selected {
         background: $bg-highlight
       }
 
