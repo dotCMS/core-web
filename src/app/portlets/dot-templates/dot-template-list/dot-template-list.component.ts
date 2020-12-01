@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { pluck, take, takeUntil } from 'rxjs/operators';
+import { pluck, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DotTemplate } from '@models/dot-edit-layout-designer';
 import { DataTableColumn } from '@models/data-table';
@@ -52,14 +52,16 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.route.data
-            .pipe(pluck('dotTemplateListResolverData'), takeUntil(this.destroy$))
-            .subscribe(([templates, isEnterPrise, hasEnvironments]) => {
-                this.firstPage = templates;
-                this.isEnterPrise = isEnterPrise;
-                this.hasEnvironments = hasEnvironments;
-                this.tableColumns = this.setTemplateColumns();
-                this.templateBulkActions = this.setTemplateBulkActions();
-            });
+            .pipe(pluck('dotTemplateListResolverData'), take(1))
+            .subscribe(
+                ([templates, isEnterPrise, hasEnvironments]: [DotTemplate[], boolean, boolean]) => {
+                    this.firstPage = templates;
+                    this.isEnterPrise = isEnterPrise;
+                    this.hasEnvironments = hasEnvironments;
+                    this.tableColumns = this.setTemplateColumns();
+                    this.templateBulkActions = this.setTemplateBulkActions();
+                }
+            );
         this.setAddOptions();
     }
 

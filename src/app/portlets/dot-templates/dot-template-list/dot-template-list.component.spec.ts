@@ -197,7 +197,7 @@ const mockMessageConfig = {
     type: DotMessageType.SIMPLE_MESSAGE
 };
 
-describe('DotTemplateListComponent', () => {
+fdescribe('DotTemplateListComponent', () => {
     let fixture: ComponentFixture<DotTemplateListComponent>;
     let dotListingDataTable: DotListingDataTableComponent;
     let dotTemplatesService: DotTemplatesService;
@@ -298,32 +298,39 @@ describe('DotTemplateListComponent', () => {
     describe('row actions', () => {
         it('should set actions to publish template', () => {
             const publishRow: DotActionMenuButtonComponent = rowActions[0].componentInstance;
-            expect(publishRow.actions.length).toEqual(6);
-            checkBasicOptions(publishRow);
-            expect(publishRow.actions[4].menuItem.label).toEqual('Unpublish');
-            expect(publishRow.actions[5].menuItem.label).toEqual('Copy');
+            const actions = setBasicOptions();
+            actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
+            actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
+
+            expect(publishRow.actions).toEqual(actions);
         });
 
         it('should set actions to unPublish template', () => {
             const unpublish: DotActionMenuButtonComponent = rowActions[2].componentInstance;
-            checkBasicOptions(unpublish);
-            expect(unpublish.actions[4].menuItem.label).toEqual('Archive');
-            expect(unpublish.actions[5].menuItem.label).toEqual('Copy');
+            const actions = setBasicOptions();
+            actions.push({ menuItem: { label: 'Archive', command: jasmine.any(Function) } });
+            actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
+
+            expect(unpublish.actions).toEqual(actions);
         });
 
         it('should set actions to archived template', () => {
             const archived: DotActionMenuButtonComponent = rowActions[3].componentInstance;
-            expect(archived.actions.length).toEqual(2);
-            expect(archived.actions[0].menuItem.label).toEqual('Unarchive');
-            expect(archived.actions[1].menuItem.label).toEqual('Delete');
+            const actions = [
+                { menuItem: { label: 'Unarchive', command: jasmine.any(Function) } },
+                { menuItem: { label: 'Delete', command: jasmine.any(Function) } }
+            ];
+            expect(archived.actions).toEqual(actions);
         });
 
         it('should set actions to locked template', () => {
             const locked: DotActionMenuButtonComponent = rowActions[1].componentInstance;
-            expect(locked.actions.length).toEqual(7);
-            checkBasicOptions(locked);
-            expect(locked.actions[5].menuItem.label).toEqual('Unlock');
-            expect(locked.actions[6].menuItem.label).toEqual('Copy');
+            const actions = setBasicOptions();
+            actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
+            actions.push({ menuItem: { label: 'Unlock', command: jasmine.any(Function) } });
+            actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
+
+            expect(locked.actions).toEqual(actions);
         });
 
         it('should hide push-publish and Add to Bundle actions', () => {
@@ -337,11 +344,14 @@ describe('DotTemplateListComponent', () => {
             comp.ngOnInit();
             fixture.detectChanges();
             const publishRow: DotActionMenuButtonComponent = rowActions[0].componentInstance;
-            expect(publishRow.actions.length).toEqual(4);
-            expect(publishRow.actions[0].menuItem.label).toEqual('Edit');
-            expect(publishRow.actions[1].menuItem.label).toEqual('Publish');
-            expect(publishRow.actions[2].menuItem.label).toEqual('Unpublish');
-            expect(publishRow.actions[3].menuItem.label).toEqual('Copy');
+            const actions = [
+                { menuItem: { label: 'Edit', command: jasmine.any(Function) } },
+                { menuItem: { label: 'Publish', command: jasmine.any(Function) } },
+                { menuItem: { label: 'Unpublish', command: jasmine.any(Function) } },
+                { menuItem: { label: 'Copy', command: jasmine.any(Function) } }
+            ];
+
+            expect(publishRow.actions).toEqual(actions);
         });
     });
 
@@ -440,14 +450,17 @@ describe('DotTemplateListComponent', () => {
         });
 
         it('should set labels', () => {
-            expect(menu.model.length).toEqual(7);
-            expect(menu.model[0].label).toEqual('Publish');
-            expect(menu.model[1].label).toEqual('Push Publish');
-            expect(menu.model[2].label).toEqual('Add To Bundle');
-            expect(menu.model[3].label).toEqual('Unpublish');
-            expect(menu.model[4].label).toEqual('Archive');
-            expect(menu.model[5].label).toEqual('Unarchive');
-            expect(menu.model[6].label).toEqual('Delete');
+            const actions = [
+                { label: 'Publish', command: jasmine.any(Function) },
+                { label: 'Push Publish', command: jasmine.any(Function) },
+                { label: 'Add To Bundle', command: jasmine.any(Function) },
+                { label: 'Unpublish', command: jasmine.any(Function) },
+                { label: 'Archive', command: jasmine.any(Function) },
+                { label: 'Unarchive', command: jasmine.any(Function) },
+                { label: 'Delete', command: jasmine.any(Function) }
+            ];
+
+            expect(menu.model).toEqual(actions);
         });
 
         it('should execute actions', () => {
@@ -544,11 +557,13 @@ describe('DotTemplateListComponent', () => {
         });
     });
 
-    function checkBasicOptions(menu: DotActionMenuButtonComponent): void {
-        expect(menu.actions[0].menuItem.label).toEqual('Edit');
-        expect(menu.actions[1].menuItem.label).toEqual('Publish');
-        expect(menu.actions[2].menuItem.label).toEqual('Push Publish');
-        expect(menu.actions[3].menuItem.label).toEqual('Add To Bundle');
+    function setBasicOptions(): any {
+        return [
+            { menuItem: { label: 'Edit', command: jasmine.any(Function) } },
+            { menuItem: { label: 'Publish', command: jasmine.any(Function) } },
+            { menuItem: { label: 'Push Publish', command: jasmine.any(Function) } },
+            { menuItem: { label: 'Add To Bundle', command: jasmine.any(Function) } }
+        ];
     }
 
     function checkNotificationAndReLoadOfPage(messsage: string): void {
