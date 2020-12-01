@@ -1,10 +1,55 @@
-// .searchable-dropdown__data-list-item {
-//     &.selected {
-//         font-weight: normal !important // TODO: Temp while we fix specificity;
-//     }
-//     .dot-theme-item__image {
-//         border-radius: 4px;
-//         width: px;
-//         height: px;
-//     }
-// }
+  @use "variables"as *;
+  
+  .theme-selector__data-list-item {
+      cursor: pointer;
+      display: flex;
+      line-height: normal;
+      padding: 1rem 1rem;
+      transition: background-color 150ms ease-in;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &:hover {
+        background: $bg-highlight
+      }
+
+      .dot-theme-item__image,
+      .dot-theme-item__image--fallback {
+        border-radius: 4px;
+      }
+      .dot-theme-item__image--fallback {
+        background: $bg-highlight;
+        width: 48px;
+        height: 48px;
+        font-size: $font-size-xx-large;
+        color: $brand-primary_mod;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 45px;
+        > span {
+          line-height: 1;
+          vertical-align: middle;
+        }
+      }
+      .dot-theme-item__meta {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: $spacing-2;
+          .dot-theme-item__label {
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: $spacing-1;
+          }
+          .dot-theme-item__date {
+            color: $gray-dark;
+            font-size: $font-size-small;
+          }
+          &>span {
+              display: block;
+          }
+      }
+  }
+
+

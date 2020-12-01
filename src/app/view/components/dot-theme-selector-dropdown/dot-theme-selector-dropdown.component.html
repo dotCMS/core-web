@@ -1,16 +1,25 @@
 <ng-template let-item="item" pTemplate="listItem" #externalItemListTemplate>
     <span
-        class="searchable-dropdown__data-list-item"
+        class="theme-selector__data-list-item"
         [class.selected]="value && value.identifier === item.identifier"
         (click)="onChange(item)"
     >
         <img
-            *ngIf="item?.themeThumbnail"
+            *ngIf="item?.themeThumbnail; else imageFallback"
             class="dot-theme-item__image"
             src="/dA/{{ item.themeThumbnail }}/48w/48h/thumbnail.png"
-            onerror="this.src='http://localhost:8080/dA/568824e8-0de9-46af-90b1-19e5286f7921/48w/48h/thumbnail.png';this.onerror='';"
+            onerror="this.src='https://images.unsplash.com/photo-1495615080073-6b89c9839ce0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=48&q=80';this.onerror='';"
         />
-        {{ item.label }}
+
+        <ng-template #imageFallback>
+            <div class="dot-theme-item__image--fallback">
+                <span>{{ item.label.charAt(0) }}</span>
+            </div>
+        </ng-template>
+        <span class="dot-theme-item__meta">
+            <span class="dot-theme-item__label">{{ item.label }}</span>
+            <span class="dot-theme-item__date">Last modified: {{ item.modDate | date: "MM/dd/yy" }}</span>
+        </span>
     </span>
 </ng-template>
 
