@@ -8,11 +8,16 @@
     hr {
         border-top: 1px solid $gray-lighter;
     }
+
     .p-col,
     .p-col-fixed,
     .p-grid {
         margin: 0;
         padding: 0;
+    }
+
+    a {
+        text-decoration: none;
     }
 
     .dot-starter-title {
@@ -33,16 +38,19 @@
         flex-grow: 1;
     }
 
+    .dot-starter-top-content {
+        padding: 0 $spacing-1;
+    }
+
     .dot-starter-top-main__section {
         background-color: $white;
         box-shadow: $md-shadow-4;
-        margin-bottom: $spacing-7;
+        margin-bottom: $spacing-4;
     }
 
     .dot-starter-top-main__block {
         border-bottom: 1px solid $gray-lighter;
         min-height: 100px;
-        padding: $spacing-4 0;
 
         &:hover {
             background-color: $bg-hover;
@@ -93,7 +101,6 @@
     }
 
     .dot-starter-top-secondary__section {
-        margin-bottom: $spacing-7;
         padding: 0 0 0 $spacing-5;
 
         h3 {
@@ -108,6 +115,8 @@
     }
 
     .dot-starter-top-secondary__link-icon {
+        padding-top: 4px;
+
         span {
             color: $brand-primary;
             fill: $brand-primary;
@@ -135,11 +144,17 @@
         }
     }
 
+    .dot-starter-bottom-content {
+        margin-bottom: $spacing-5;
+    }
+
     .dot-starter-bottom__block {
         background-color: $white;
         border-bottom: 1px solid $gray-lighter;
         box-shadow: $md-shadow-4;
-        margin: $spacing-5 $spacing-5 0 0;
+        display: flex;
+        flex-grow: 1;
+        margin: $spacing-5 $spacing-3 0;
         min-height: 100px;
         padding: $spacing-4 $spacing-4 $spacing-4 0;
 

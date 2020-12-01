@@ -1,79 +1,84 @@
 <div class="p-grid dot-starter-top-content">
     <div class="p-col-12">
-        <h2 class="dot-starter-title">Welcome!</h2>
-        <p class="dot-starter-description">
-            You are logged in as <em>Admin</em>. To help you get started <br />
-            building with <strong>dotCMS</strong> we provided some quick links.
-        </p>
+        <h2 class="dot-starter-title">{{ 'starter.title' | dm }}</h2>
+        <p class="dot-starter-description" [innerHTML]="'starter.description' | dm: [username]"></p>
     </div>
     <div class="p-col-12">
         <div class="p-grid">
-            <div class="p-md-12 p-lg-8 p-grid dot-starter-top-main__section">
-                <div class="p-col-12 dot-starter-top-main__block p-grid">
+            <div class="p-md-12 p-lg-7 p-grid dot-starter-top-main__section">
+                <a
+                    class="p-col-12 dot-starter-top-main__block p-grid"
+                    data-testid="starter.main.link.data.model"
+                    href="#"
+                >
                     <div class="dot-starter-top-main__link-number p-col-fixed">
                         <span>1</span>
                     </div>
                     <div class="dot-starter-top-main__link-data p-col">
-                        <h4>Create data model</h4>
-                        <p>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil,
-                            aspernatur.
-                        </p>
+                        <h4>{{ 'starter.main.link.data.model.title' | dm }}</h4>
+                        <p>{{ 'starter.main.link.data.model.description' | dm }}</p>
                     </div>
                     <span class="dot-starter-top-main__link-arrow p-col-fixed">
                         <i class="pi pi-angle-right"></i>
                     </span>
-                </div>
-                <div class="p-col-12 dot-starter-top-main__block p-grid">
+                </a>
+                <a
+                    href="#"
+                    data-testid="starter.main.link.content"
+                    class="p-col-12 dot-starter-top-main__block p-grid"
+                >
                     <div class="dot-starter-top-main__link-number p-col-fixed">
                         <span>2</span>
                     </div>
                     <div class="dot-starter-top-main__link-data p-col">
-                        <h4>Add content</h4>
-                        <p>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil,
-                            aspernatur.
-                        </p>
+                        <h4>{{ 'starter.main.link.add.content.title' | dm }}</h4>
+                        <p>{{ 'starter.main.link.add.content.description' | dm }}</p>
                     </div>
                     <span class="dot-starter-top-main__link-arrow p-col-fixed">
                         <i class="pi pi-angle-right"></i>
                     </span>
-                </div>
-                <div class="p-col-12 dot-starter-top-main__block p-grid">
+                </a>
+                <a
+                    href="#"
+                    data-testid="starter.main.link.design.layout"
+                    class="p-col-12 dot-starter-top-main__block p-grid"
+                >
                     <div class="dot-starter-top-main__link-number p-col-fixed">
                         <span>3</span>
                     </div>
                     <div class="dot-starter-top-main__link-data p-col">
-                        <h4>Design a layout</h4>
-                        <p>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil,
-                            aspernatur.
-                        </p>
+                        <h4>{{ 'starter.main.link.design.layout.title' | dm }}</h4>
+                        <p>{{ 'starter.main.link.design.layout.description' | dm }}</p>
                     </div>
                     <span class="dot-starter-top-main__link-arrow p-col-fixed">
                         <i class="pi pi-angle-right"></i>
                     </span>
-                </div>
-                <div class="p-col-12 dot-starter-top-main__block p-grid">
+                </a>
+                <a
+                    href="#"
+                    data-testid="starter.main.link.create.page"
+                    class="p-col-12 dot-starter-top-main__block p-grid"
+                >
                     <div class="dot-starter-top-main__link-number p-col-fixed">
                         <span>4</span>
                     </div>
                     <div class="dot-starter-top-main__link-data p-col">
-                        <h4>Create a page</h4>
-                        <p>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil,
-                            aspernatur.
-                        </p>
+                        <h4>{{ 'starter.main.link.create.page.title' | dm }}</h4>
+                        <p>{{ 'starter.main.link.create.page.description' | dm }}</p>
                     </div>
                     <span class="dot-starter-top-main__link-arrow p-col-fixed">
                         <i class="pi pi-angle-right"></i>
                     </span>
-                </div>
+                </a>
             </div>
-            <div class="p-md-12 p-lg-4 dot-starter-top-secondary__section">
-                <h3>APIs and Services</h3>
+            <div class="p-md-12 p-lg-5 dot-starter-top-secondary__section">
+                <h3>{{ 'starter.side.title' | dm }}</h3>
                 <div class="p-grid">
-                    <div class="p-col-12 dot-starter-top-secondary__block p-grid">
+                    <a
+                        href="#"
+                        data-testid="starter.side.link.graphQl"
+                        class="p-col-12 dot-starter-top-secondary__block p-grid"
+                    >
                         <div class="dot-starter-top-secondary__link-icon p-col-fixed">
                             <span>
                                 <svg
@@ -99,64 +104,62 @@
                             </span>
                         </div>
                         <div class="dot-starter-top-secondary__link-data p-col">
-                            <h4>GraphQL API</h4>
-                            <p>
-                                GraphQL is an open query language which allows you to perform real.
-                            </p>
+                            <h4>{{ 'starter.side.link.graphQl.title' | dm }}</h4>
+                            <p>{{ 'starter.side.link.graphQl.description' | dm }}</p>
                         </div>
-                    </div>
-                    <div class="p-col-12 dot-starter-top-secondary__block p-grid">
+                    </a>
+                    <a
+                        href="#"
+                        data-testid="starter.side.link.content"
+                        class="p-col-12 dot-starter-top-secondary__block p-grid"
+                    >
                         <div class="dot-starter-top-secondary__link-icon p-col-fixed">
-                            <span class="material-icons">
-                                wysiwyg
-                            </span>
+                            <span class="material-icons"> wysiwyg </span>
                         </div>
                         <div class="dot-starter-top-secondary__link-data p-col">
-                            <h4>Content API</h4>
-                            <p>
-                                GraphQL is an open query language which allows you to perform real.
-                            </p>
+                            <h4>{{ 'starter.side.link.content.title' | dm }}</h4>
+                            <p>{{ 'starter.side.link.content.description' | dm }}</p>
                         </div>
-                    </div>
-                    <div class="p-col-12 dot-starter-top-secondary__block p-grid">
+                    </a>
+                    <a
+                        href="#"
+                        data-testid="starter.side.link.image.processing"
+                        class="p-col-12 dot-starter-top-secondary__block p-grid"
+                    >
                         <div class="dot-starter-top-secondary__link-icon p-col-fixed">
-                            <span class="material-icons">
-                                insert_photo
-                            </span>
+                            <span class="material-icons"> insert_photo </span>
                         </div>
                         <div class="dot-starter-top-secondary__link-data p-col">
-                            <h4>Image Resizing and Processing</h4>
-                            <p>
-                                GraphQL is an open query language which allows you to perform real.
-                            </p>
+                            <h4>{{ 'starter.side.link.image.processing.title' | dm }}</h4>
+                            <p>{{ 'starter.side.link.image.processing.description' | dm }}</p>
                         </div>
-                    </div>
-                    <div class="p-col-12 dot-starter-top-secondary__block p-grid">
+                    </a>
+                    <a
+                        href="#"
+                        data-testid="starter.side.link.page.layout"
+                        class="p-col-12 dot-starter-top-secondary__block p-grid"
+                    >
                         <div class="dot-starter-top-secondary__link-icon p-col-fixed">
-                            <span class="material-icons">
-                                web
-                            </span>
+                            <span class="material-icons"> web </span>
                         </div>
                         <div class="dot-starter-top-secondary__link-data p-col">
-                            <h4>Page Layout API (Layout as a Service)</h4>
-                            <p>
-                                The Page REST API enables you to retrieve all the elements of.
-                            </p>
+                            <h4>{{ 'starter.side.link.page.layout.title' | dm }}</h4>
+                            <p>{{ 'starter.side.link.page.layout.description' | dm }}</p>
                         </div>
-                    </div>
-                    <div class="p-col-12 dot-starter-top-secondary__block p-grid">
+                    </a>
+                    <a
+                        href="#"
+                        data-testid="starter.side.link.generate.key"
+                        class="p-col-12 dot-starter-top-secondary__block p-grid"
+                    >
                         <div class="dot-starter-top-secondary__link-icon p-col-fixed">
-                            <span class="material-icons">
-                                vpn_key
-                            </span>
+                            <span class="material-icons"> vpn_key </span>
                         </div>
                         <div class="dot-starter-top-secondary__link-data p-col">
-                            <h4>Generate API Key</h4>
-                            <p>
-                                The Page REST API enables you to retrieve all the elements of.
-                            </p>
+                            <h4>{{ 'starter.side.link.generate.key.title' | dm }}</h4>
+                            <p>{{ 'starter.side.link.generate.key.description' | dm }}</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -164,82 +167,74 @@
 </div>
 <hr />
 <div class="p-grid dot-starter-bottom-content">
-    <div class="p-lg-4 p-md-12 dot-starter-bottom__block p-grid">
-        <div class="dot-starter-bottom__link-icon p-col-fixed">
-            <span class="material-icons">
-                text_snippet
-            </span>
-        </div>
-        <div class="dot-starter-bottom__link-data p-col">
-            <h4>Documentation</h4>
-            <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil, aspernatur.
-            </p>
-        </div>
+    <div class="p-lg-4 p-md-12 p-grid">
+        <a
+            href="#"
+            data-testid="starter.footer.link.documentation"
+            class="dot-starter-bottom__block"
+        >
+            <div class="dot-starter-bottom__link-icon p-col-fixed">
+                <span class="material-icons"> text_snippet </span>
+            </div>
+            <div class="dot-starter-bottom__link-data p-col">
+                <h4>{{ 'starter.footer.link.documentation.title' | dm }}</h4>
+                <p>{{ 'starter.footer.link.documentation.description' | dm }}</p>
+            </div>
+        </a>
     </div>
-    <div class="p-lg-4 p-md-12 dot-starter-bottom__block p-grid">
-        <div class="dot-starter-bottom__link-icon p-col-fixed">
-            <span class="material-icons">
-                label
-            </span>
-        </div>
-        <div class="dot-starter-bottom__link-data p-col">
-            <h4>Examples</h4>
-            <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil, aspernatur.
-            </p>
-        </div>
+    <div class="p-lg-4 p-md-12 p-grid">
+        <a href="#" data-testid="starter.footer.link.examples" class="dot-starter-bottom__block">
+            <div class="dot-starter-bottom__link-icon p-col-fixed">
+                <span class="material-icons"> label </span>
+            </div>
+            <div class="dot-starter-bottom__link-data p-col">
+                <h4>{{ 'starter.footer.link.examples.title' | dm }}</h4>
+                <p>{{ 'starter.footer.link.examples.description' | dm }}</p>
+            </div>
+        </a>
     </div>
-    <div class="p-lg-4 p-md-12 dot-starter-bottom__block p-grid">
-        <div class="dot-starter-bottom__link-icon p-col-fixed">
-            <span class="material-icons">
-                people
-            </span>
-        </div>
-        <div class="dot-starter-bottom__link-data p-col">
-            <h4>Community</h4>
-            <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil, aspernatur.
-            </p>
-        </div>
+    <div class="p-lg-4 p-md-12 p-grid">
+        <a href="#" data-testid="starter.footer.link.community" class="dot-starter-bottom__block">
+            <div class="dot-starter-bottom__link-icon p-col-fixed">
+                <span class="material-icons"> people </span>
+            </div>
+            <div class="dot-starter-bottom__link-data p-col">
+                <h4>{{ 'starter.footer.link.community.title' | dm }}</h4>
+                <p>{{ 'starter.footer.link.community.description' | dm }}</p>
+            </div>
+        </a>
     </div>
-    <div class="p-lg-4 p-md-12 dot-starter-bottom__block p-grid">
-        <div class="dot-starter-bottom__link-icon p-col-fixed">
-            <span class="material-icons">
-                movie
-            </span>
-        </div>
-        <div class="dot-starter-bottom__link-data p-col">
-            <h4>Training Videos</h4>
-            <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil, aspernatur.
-            </p>
-        </div>
+    <div class="p-lg-4 p-md-12 p-grid">
+        <a href="#" data-testid="starter.footer.link.training" class="dot-starter-bottom__block">
+            <div class="dot-starter-bottom__link-icon p-col-fixed">
+                <span class="material-icons"> movie </span>
+            </div>
+            <div class="dot-starter-bottom__link-data p-col">
+                <h4>{{ 'starter.footer.link.training.title' | dm }}</h4>
+                <p>{{ 'starter.footer.link.training.description' | dm }}</p>
+            </div>
+        </a>
     </div>
-    <div class="p-lg-4 p-md-12 dot-starter-bottom__block p-grid">
-        <div class="dot-starter-bottom__link-icon p-col-fixed">
-            <span class="material-icons">
-                star
-            </span>
-        </div>
-        <div class="dot-starter-bottom__link-data p-col">
-            <h4>Write A Review</h4>
-            <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil, aspernatur.
-            </p>
-        </div>
+    <div class="p-lg-4 p-md-12 p-grid">
+        <a href="#" data-testid="starter.footer.link.review" class="dot-starter-bottom__block">
+            <div class="dot-starter-bottom__link-icon p-col-fixed">
+                <span class="material-icons"> star </span>
+            </div>
+            <div class="dot-starter-bottom__link-data p-col">
+                <h4>{{ 'starter.footer.link.review.title' | dm }}</h4>
+                <p>{{ 'starter.footer.link.review.description' | dm }}</p>
+            </div>
+        </a>
     </div>
-    <div class="p-lg-4 p-md-12 dot-starter-bottom__block p-grid">
-        <div class="dot-starter-bottom__link-icon p-col-fixed">
-            <span class="material-icons">
-                comment
-            </span>
-        </div>
-        <div class="dot-starter-bottom__link-data p-col">
-            <h4>Feedback</h4>
-            <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil, aspernatur.
-            </p>
-        </div>
+    <div class="p-lg-4 p-md-12 p-grid">
+        <a href="#" data-testid="starter.footer.link.feedback" class="dot-starter-bottom__block">
+            <div class="dot-starter-bottom__link-icon p-col-fixed">
+                <span class="material-icons"> comment </span>
+            </div>
+            <div class="dot-starter-bottom__link-data p-col">
+                <h4>{{ 'starter.footer.link.feedback.title' | dm }}</h4>
+                <p>{{ 'starter.footer.link.feedback.description' | dm }}</p>
+            </div>
+        </a>
     </div>
 </div>
