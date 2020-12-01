@@ -18,7 +18,9 @@
         </ng-template>
         <span class="dot-theme-item__meta">
             <span class="dot-theme-item__label">{{ item.label }}</span>
-            <span class="dot-theme-item__date">Last modified: {{ item.modDate | date: "MM/dd/yy" }}</span>
+            <span class="dot-theme-item__date"
+                >Last modified: {{ item.modDate | date: 'MM/dd/yy' }}</span
+            >
         </span>
     </span>
 </ng-template>
@@ -28,6 +30,7 @@
     (filterChange)="handleFilterChange($event)"
     [placeholder]="placeholder"
     [data]="themes"
+    (change)="onChange($event)"
     [totalRecords]="totalRecords"
     (pageChange)="handlePageChange($event)"
     [rows]="paginatorService.paginationPerPage"

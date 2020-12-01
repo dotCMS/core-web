@@ -36,7 +36,7 @@ class TestSearchableComponent implements ControlValueAccessor {
     registerOnTouched(): void {}
 }
 
-fdescribe('DotThemeSelectorDropdownComponent', () => {
+describe('DotThemeSelectorDropdownComponent', () => {
     let component: DotThemeSelectorDropdownComponent;
     let fixture: ComponentFixture<DotThemeSelectorDropdownComponent>;
 
