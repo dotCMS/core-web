@@ -8,7 +8,6 @@
             *ngIf="item?.themeThumbnail; else imageFallback"
             class="dot-theme-item__image"
             src="/dA/{{ item.themeThumbnail }}/48w/48h/thumbnail.png"
-            onerror="this.src='https://images.unsplash.com/photo-1495615080073-6b89c9839ce0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=48&q=80';this.onerror='';"
         />
 
         <ng-template #imageFallback>
@@ -28,9 +27,9 @@
 <dot-searchable-dropdown
     [(ngModel)]="value"
     (filterChange)="handleFilterChange($event)"
+    (change)="onChange($event)"
     [placeholder]="'dot.common.select.themes' | dm"
     [data]="themes"
-    (change)="onChange($event)"
     [totalRecords]="totalRecords"
     (pageChange)="handlePageChange($event)"
     [rows]="paginatorService.paginationPerPage"

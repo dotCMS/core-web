@@ -11,7 +11,14 @@ import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
 import { By } from '@angular/platform-browser';
 import { mockDotThemes } from '@tests/dot-themes.mock';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
+const messageServiceMock = new MockDotMessageService({
+    'dot.common.select.themes': 'Select Themes',
+    'Last-Updated': 'Last updated'
+});
 @Component({
     selector: 'dot-searchable-dropdown',
     template: ``,
@@ -28,7 +35,7 @@ class TestSearchableComponent implements ControlValueAccessor {
     @Input() data;
     @Input() rows;
     @Input() externalItemListTemplate;
-    @Input() totalRecords;
+    @Input() totalRecords = [...mockDotThemes].length;
 
     propagateChange = (_: any) => {};
     writeValue(): void {}
@@ -39,16 +46,22 @@ class TestSearchableComponent implements ControlValueAccessor {
 describe('DotThemeSelectorDropdownComponent', () => {
     let component: DotThemeSelectorDropdownComponent;
     let fixture: ComponentFixture<DotThemeSelectorDropdownComponent>;
+    let paginationService: PaginatorService;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [DotThemeSelectorDropdownComponent, TestSearchableComponent],
             providers: [
                 {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                },
+                {
                     provide: PaginatorService,
                     useValue: {
                         url: '',
                         paginationPerPage: '',
+                        totalRecords: mockDotThemes.length,
 
                         setExtraParams() {},
                         getWithOffset() {
@@ -75,14 +88,14 @@ describe('DotThemeSelectorDropdownComponent', () => {
                     }
                 }
             ],
-            imports: [FormsModule]
+            imports: [FormsModule, DotMessagePipeModule]
         }).compileComponents();
     });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DotThemeSelectorDropdownComponent);
+        paginationService = TestBed.inject(PaginatorService);
         component = fixture.componentInstance;
-
         spyOn(component, 'propagateChange');
         fixture.detectChanges();
     });
@@ -94,9 +107,35 @@ describe('DotThemeSelectorDropdownComponent', () => {
 
             expect(searchable.data).toEqual(mockDotThemes);
         });
+
+        it('shoud set the right attributes', () => {
+            const element = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
+            const instance = element.componentInstance;
+
+            expect(instance.totalRecords).toBe(3);
+            expect(instance.placeholder).toBe('Select Themes');
+            expect(instance.rows).toBe(5);
+            expect(instance.data).toEqual([...mockDotThemes]);
+            expect(element.attributes.overlayWidth).toBe('350px');
+            expect(element.attributes.labelPropertyName).toBe('name');
+            expect(element.attributes.valuePropertyName).toBe('name');
+        });
     });
 
     describe('events', () => {
+        it('should call filterChange with right values', () => {
+            paginationService.totalRecords = 5;
+            const searchable = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
+            const arr = [mockDotThemes[1], mockDotThemes[4]];
+            spyOn(paginationService, 'getWithOffset').and.returnValue(of([...arr]));
+            searchable.triggerEventHandler('filterChange', 'test');
+
+            expect(paginationService.getWithOffset).toHaveBeenCalledWith(0);
+            expect(paginationService.searchParam).toEqual('test');
+            expect(component.themes).toEqual(arr);
+            expect(paginationService.totalRecords).toEqual(5);
+        });
+
         it('should do something with change', () => {
             const searchable = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
             const value = mockDotThemes[0];
