@@ -23,6 +23,7 @@ interface DotTemplateItemDesign {
     theme: string;
     title: string;
     type?: 'design';
+    selectedimage: string;
 }
 
 interface DotTemplateItemadvanced {
@@ -32,6 +33,7 @@ interface DotTemplateItemadvanced {
     identifier: string;
     title: string;
     type?: 'advanced';
+    selectedimage: string;
 }
 
 export type DotTemplateItem = DotTemplateItemDesign | DotTemplateItemadvanced;
@@ -45,7 +47,8 @@ export interface DotTemplateState {
 const EMPTY_TEMPLATE = {
     identifier: '',
     title: '',
-    friendlyName: ''
+    friendlyName: '',
+    selectedimage: ''
 };
 
 export const EMPTY_TEMPLATE_DESIGN: DotTemplateItemDesign = {
@@ -211,7 +214,8 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 layout: template.layout || EMPTY_TEMPLATE_DESIGN.layout,
                 theme: template.theme,
                 containers: template.containers,
-                drawed: true
+                drawed: true,
+                selectedimage: template.selectedimage
             };
         } else {
             result = {
@@ -220,7 +224,8 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 title,
                 friendlyName,
                 body: template.body,
-                drawed: false
+                drawed: false,
+                selectedimage: template.selectedimage
             };
         }
 

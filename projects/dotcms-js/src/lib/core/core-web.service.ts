@@ -27,6 +27,7 @@ import {
 export interface DotCMSResponse<T> {
     contentlets?: T;
     entity?: T;
+    tempFiles?: T; // /api/v1/temp don't have entity
     errors: string[];
     i18nMessagesMap: { [key: string]: string };
     messages: string[];

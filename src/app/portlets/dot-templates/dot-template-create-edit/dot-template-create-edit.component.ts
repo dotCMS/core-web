@@ -117,7 +117,8 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 layout: this.fb.group(template.layout),
                 identifier: template.identifier,
                 friendlyName: template.friendlyName,
-                theme: template.theme
+                theme: template.theme,
+                selectedimage: template.selectedimage
             });
         }
 
@@ -125,7 +126,8 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             title: [template.title, Validators.required],
             body: template.body,
             identifier: template.identifier,
-            friendlyName: template.friendlyName
+            friendlyName: template.friendlyName,
+            selectedimage: template.selectedimage
         });
     }
 
@@ -136,7 +138,8 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 layout: template.layout,
                 identifier: template.identifier,
                 friendlyName: template.friendlyName,
-                theme: template.theme
+                theme: template.theme,
+                selectedimage: template.selectedimage
             };
         }
 
@@ -144,7 +147,8 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             title: template.title,
             body: template.body,
             identifier: template.identifier,
-            friendlyName: template.friendlyName
+            friendlyName: template.friendlyName,
+            selectedimage: template.selectedimage
         };
     }
 }

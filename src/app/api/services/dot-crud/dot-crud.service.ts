@@ -56,12 +56,12 @@ export class DotCrudService {
      *
      * @memberof CrudService
      */
-    getDataById(baseUrl: string, id: string): Observable<any> {
+    getDataById(baseUrl: string, id: string, pick = 'entity'): Observable<any> {
         return this.coreWebService
             .requestView({
                 url: `${baseUrl}/id/${id}`
             })
-            .pipe(pluck('entity'));
+            .pipe(pluck(pick));
     }
 
     /**
