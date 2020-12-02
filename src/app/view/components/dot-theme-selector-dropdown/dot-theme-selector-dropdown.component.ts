@@ -42,7 +42,6 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
         this.siteService
             .getCurrentSite()
             .pipe(
-                take(1),
                 pluck('identifier'),
                 mergeMap((identifier) => {
                     this.currentSiteIdentifier = identifier;
@@ -50,7 +49,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
                     return this.paginatorService.getWithOffset(0).pipe(take(1));
                 })
             )
-            .subscribe((themes) => {
+            .subscribe((themes: DotTheme[]) => {
                 this.themes = themes;
                 this.totalRecords = this.paginatorService.totalRecords;
             });
@@ -71,14 +70,14 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
     /**
      * Writes a new value to the element
      *
-     * @param {DotTheme} theme
+     * @param {string} identifier
      * @memberof DotThemeSelectorDropdownComponent
      */
     writeValue(identifier: string): void {
         this.themesService
             .get(identifier)
             .pipe(take(1))
-            .subscribe((theme) => {
+            .subscribe((theme: DotTheme) => {
                 this.value = theme;
             });
     }
@@ -94,7 +93,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
         this.propagateChange(theme.identifier);
     }
     /**
-     * Fetches a list of themes using an offset for pagination
+     * Handles page change for pagination purposes.
      *
      * @param {LazyLoadEvent} event
      * @return void
@@ -125,7 +124,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
     private getFilteredThemes(filter = '', offset = 0): void {
         this.paginatorService.searchParam = filter;
         this.paginatorService
-            .getWithOffset(this.currentOffset ? this.currentOffset : offset)
+            .getWithOffset(this.currentOffset || offset)
             .pipe(take(1))
             .subscribe((themes) => {
                 this.themes = themes;
