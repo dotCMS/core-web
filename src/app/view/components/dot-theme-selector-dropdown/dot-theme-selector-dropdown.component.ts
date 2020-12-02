@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotTheme } from '@models/dot-edit-layout-designer';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
@@ -25,9 +25,6 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
     totalRecords: number = 0;
     currentSiteIdentifier: string;
     currentOffset: number;
-
-    @Input()
-    placeholder = 'Select Themes';
 
     constructor(
         private readonly paginatorService: PaginatorService,

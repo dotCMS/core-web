@@ -1,5 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { FormatDateService } from '@services/format-date-service';
@@ -10,7 +11,10 @@ import { SiteService } from 'dotcms-js';
 import { of } from 'rxjs';
 import { DotThemeSelectorDropdownComponent } from './dot-theme-selector-dropdown.component';
 
-const messageServiceMock = new MockDotMessageService({});
+const messageServiceMock = new MockDotMessageService({
+    'dot.common.select.themes': 'Select Themes',
+    'Last-Updated': 'Last updated'
+});
 
 export default {
     title: 'DotCMS/Forms/ThemeSelector',
@@ -181,7 +185,7 @@ export default {
                     }
                 }
             ],
-            imports: [SearchableDropDownModule, BrowserAnimationsModule],
+            imports: [SearchableDropDownModule, BrowserAnimationsModule, DotMessagePipeModule],
             declarations: [DotThemeSelectorDropdownComponent]
         })
     ],
@@ -199,8 +203,7 @@ export default {
         },
         totalRecords: 8,
         paginationPerPage: 5,
-        rows: 5,
-        placeholder: 'Select Theme'
+        rows: 5
     }
 } as Meta;
 
