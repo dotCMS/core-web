@@ -43,11 +43,12 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
             .getCurrentSite()
             .pipe(
                 pluck('identifier'),
-                mergeMap((identifier) => {
+                mergeMap((identifier: string) => {
                     this.currentSiteIdentifier = identifier;
                     this.paginatorService.setExtraParams('hostId', identifier);
                     return this.paginatorService.getWithOffset(0).pipe(take(1));
-                })
+                }),
+                take(1)
             )
             .subscribe((themes: DotTheme[]) => {
                 this.themes = themes;
@@ -126,7 +127,7 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
         this.paginatorService
             .getWithOffset(this.currentOffset || offset)
             .pipe(take(1))
-            .subscribe((themes) => {
+            .subscribe((themes: DotTheme[]) => {
                 this.themes = themes;
                 this.totalRecords = this.paginatorService.totalRecords;
             });
