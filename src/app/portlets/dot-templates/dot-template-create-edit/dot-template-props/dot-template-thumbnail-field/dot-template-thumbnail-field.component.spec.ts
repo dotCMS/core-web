@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 
 import { DotTemplateThumbnailFieldComponent } from './dot-template-thumbnail-field.component';
 
-fdescribe('DotTemplateThumbnailFieldComponent', () => {
+describe('DotTemplateThumbnailFieldComponent', () => {
     let component: DotTemplateThumbnailFieldComponent;
     let fixture: ComponentFixture<DotTemplateThumbnailFieldComponent>;
 
