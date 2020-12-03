@@ -136,11 +136,25 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     /**
      * get the attributes that define the state of a template.
      * @param {DotTemplate} { live, working, deleted, hasLiveVersion}
-     ** @returns DotContentState
+     * @returns DotContentState
      * @memberof DotTemplateListComponent
      */
     getTemplateState({ live, working, deleted, hasLiveVersion }: DotTemplate): DotContentState {
         return { live, working, deleted, hasLiveVersion };
+    }
+
+    /**
+     * set the labels of dot-state-icon.
+     * @returns { [key: string]: string }
+     * @memberof DotTemplateListComponent
+     */
+    setStateLabels(): { [key: string]: string } {
+        return {
+            archived: this.dotMessageService.get('Archived'),
+            published: this.dotMessageService.get('Published'),
+            revision: this.dotMessageService.get('Revision'),
+            draft: this.dotMessageService.get('Draft')
+        };
     }
 
     private setTemplateColumns(): DataTableColumn[] {

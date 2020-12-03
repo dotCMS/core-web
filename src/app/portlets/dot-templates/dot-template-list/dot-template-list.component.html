@@ -37,7 +37,12 @@
             {{ rowData.name }}
         </td>
         <td [ngStyle]="{ 'text-align': tableColumns[1].textAlign }">
-            <dot-state-icon [state]="getTemplateState(rowData)" size="14px"></dot-state-icon>
+            <dot-state-icon
+                [labels]="setStateLabels()"
+                [state]="getTemplateState(rowData)"
+                size="14px"
+            >
+            </dot-state-icon>
             <dot-icon *ngIf="rowData.locked" name="lock" size="14"></dot-icon>
         </td>
         <td [ngStyle]="{ 'text-align': tableColumns[2].textAlign }">

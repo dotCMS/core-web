@@ -45,6 +45,7 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DotBulkInformationComponent } from '@components/_common/dot-bulk-information/dot-bulk-information.component';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotContentState } from 'dotcms-models';
 
 const templatesMock: DotTemplate[] = [
     {
@@ -154,7 +155,11 @@ const messages = {
     'message.template_list.published': 'Templates published',
     'message.template.unpublished': 'Template unpublished',
     'message.template.undelete': 'Template unarchived',
-    Results: 'Results'
+    Results: 'Results',
+    Archived: 'Archived',
+    Published: 'Published',
+    Revision: 'Revision',
+    Draft: 'Draft'
 };
 
 const columnsMock = [
@@ -207,7 +212,7 @@ const mockMessageConfig = {
     type: DotMessageType.SIMPLE_MESSAGE
 };
 
-describe('DotTemplateListComponent', () => {
+fdescribe('DotTemplateListComponent', () => {
     let fixture: ComponentFixture<DotTemplateListComponent>;
     let dotListingDataTable: DotListingDataTableComponent;
     let dotTemplatesService: DotTemplatesService;
@@ -311,6 +316,20 @@ describe('DotTemplateListComponent', () => {
     });
 
     it('should pass data to the status elements', () => {
+        const state: DotContentState = {
+            live: true,
+            working: true,
+            deleted: false,
+            hasLiveVersion: true
+        };
+
+        const labels = {
+            archived: 'Archived',
+            published: 'Published',
+            revision: 'Revision',
+            draft: 'Draft'
+        };
+
         lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
             .componentInstance;
         const stateIcon = fixture.debugElement.query(By.css('dot-state-icon'));
@@ -319,8 +338,11 @@ describe('DotTemplateListComponent', () => {
         );
 
         expect(stateIcon.attributes['size']).toEqual('14px');
+        expect(stateIcon.nativeNode.state).toEqual(state);
+        expect(stateIcon.nativeNode.labels).toEqual(labels);
         expect(lockIcon).toBeDefined();
     });
+
     describe('row', () => {
         it('should set actions to publish template', () => {
             publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
