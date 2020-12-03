@@ -3,13 +3,13 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ActivatedRoute } from '@angular/router';
-import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { CoreWebService } from 'dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotStarterComponent } from './dot-starter.component';
 import { DotStarterResolver } from './dot-starter-resolver.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 
 const messages = {
     'starter.title': 'Welcome!',
@@ -65,7 +65,7 @@ describe('DotStarterComponent', () => {
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
-                imports: [DotPipesModule],
+                imports: [DotMessagePipeModule],
                 declarations: [DotStarterComponent],
                 providers: [
                     { provide: DotMessageService, useValue: messageServiceMock },

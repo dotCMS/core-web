@@ -1,5 +1,7 @@
 @use "variables" as *;
 
+$number-link-icon-size: 32px;
+
 :host {
     display: block;
     height: 100%;
@@ -9,13 +11,6 @@
         border-top: 1px solid $gray-lighter;
     }
 
-    .p-col,
-    .p-col-fixed,
-    .p-grid {
-        margin: 0;
-        padding: 0;
-    }
-
     a {
         text-decoration: none;
     }
@@ -23,11 +18,13 @@
     .dot-starter-title {
         color: $black;
         font-size: $font-size-x-large;
+        margin: $spacing-5 $spacing-3 $spacing-1;
     }
 
     .dot-starter-description {
         color: $gray;
         font-size: $font-size-large;
+        margin: 0 $spacing-3 $spacing-5 $spacing-3;
     }
 
     .dot-starter-top-content,
@@ -38,19 +35,20 @@
         flex-grow: 1;
     }
 
-    .dot-starter-top-content {
-        padding: 0 $spacing-1;
-    }
-
     .dot-starter-top-main__section {
         background-color: $white;
         box-shadow: $md-shadow-4;
+        flex-grow: 1;
+        margin-left: $spacing-1;
         margin-bottom: $spacing-4;
+        margin-right: $spacing-1;
     }
 
     .dot-starter-top-main__block {
         border-bottom: 1px solid $gray-lighter;
+        margin: 0;
         min-height: 100px;
+        transition: background-color $basic-speed ease-in;
 
         &:hover {
             background-color: $bg-hover;
@@ -60,7 +58,7 @@
     .dot-starter-top-main__link-number {
         align-self: center;
         text-align: center;
-        width: 85px;
+        width: 71px;
 
         span {
             align-items: center;
@@ -69,9 +67,9 @@
             color: $white;
             display: inline-flex;
             font-size: $md-icon-size-normal;
-            height: 32px;
+            height: $number-link-icon-size;
             justify-content: center;
-            width: 32px;
+            width: $number-link-icon-size;
         }
     }
 
@@ -96,12 +94,12 @@
         i {
             color: $gray-light;
             font-size: $font-size-x-large;
-            margin-right: 28px;
+            margin-right: $spacing-3;
         }
     }
 
     .dot-starter-top-secondary__section {
-        padding: 0 0 0 $spacing-5;
+        margin-left: $spacing-1;
 
         h3 {
             font-size: $font-size-large;
@@ -111,17 +109,17 @@
     }
 
     .dot-starter-top-secondary__block {
-        padding: $spacing-3 0;
+        padding: ($spacing-1 + $spacing-2) 0;
     }
 
     .dot-starter-top-secondary__link-icon {
-        padding-top: 4px;
+        padding-top: 0;
 
         span {
             color: $brand-primary;
             fill: $brand-primary;
             display: inline-flex;
-            width: 32px;
+            width: $number-link-icon-size;
         }
 
         svg {
@@ -132,6 +130,8 @@
     }
 
     .dot-starter-top-secondary__link-data {
+        padding: 0;
+
         h4 {
             color: $black;
             font-size: $font-size-large;
@@ -145,7 +145,9 @@
     }
 
     .dot-starter-bottom-content {
+        flex-wrap: wrap;
         margin-bottom: $spacing-5;
+        padding-top: $spacing-1;
     }
 
     .dot-starter-bottom__block {
@@ -154,9 +156,9 @@
         box-shadow: $md-shadow-4;
         display: flex;
         flex-grow: 1;
-        margin: $spacing-5 $spacing-3 0;
+        margin: $spacing-3 $spacing-1 0;
         min-height: 100px;
-        padding: $spacing-4 $spacing-4 $spacing-4 0;
+        transition: background-color $basic-speed ease-in;
 
         &:hover {
             background-color: $bg-hover;
@@ -166,7 +168,7 @@
     .dot-starter-bottom__link-icon {
         align-self: center;
         text-align: center;
-        width: 85px;
+        width: 91px;
 
         span {
             color: $brand-primary;
@@ -176,6 +178,7 @@
 
     .dot-starter-bottom__link-data {
         align-self: center;
+        padding: 0;
 
         h4 {
             color: $black;

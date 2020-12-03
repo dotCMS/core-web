@@ -1,79 +1,81 @@
-<div class="p-grid dot-starter-top-content">
+<div class="p-grid p-nogutter dot-starter-top-content">
     <div class="p-col-12">
         <h2 class="dot-starter-title">{{ 'starter.title' | dm }}</h2>
         <p class="dot-starter-description" [innerHTML]="'starter.description' | dm: [username]"></p>
     </div>
     <div class="p-col-12">
-        <div class="p-grid">
-            <div class="p-md-12 p-lg-7 p-grid dot-starter-top-main__section">
-                <a
-                    class="p-col-12 dot-starter-top-main__block p-grid"
-                    data-testid="starter.main.link.data.model"
-                    href="#"
-                >
-                    <div class="dot-starter-top-main__link-number p-col-fixed">
-                        <span>1</span>
-                    </div>
-                    <div class="dot-starter-top-main__link-data p-col">
-                        <h4>{{ 'starter.main.link.data.model.title' | dm }}</h4>
-                        <p>{{ 'starter.main.link.data.model.description' | dm }}</p>
-                    </div>
-                    <span class="dot-starter-top-main__link-arrow p-col-fixed">
-                        <i class="pi pi-angle-right"></i>
-                    </span>
-                </a>
-                <a
-                    href="#"
-                    data-testid="starter.main.link.content"
-                    class="p-col-12 dot-starter-top-main__block p-grid"
-                >
-                    <div class="dot-starter-top-main__link-number p-col-fixed">
-                        <span>2</span>
-                    </div>
-                    <div class="dot-starter-top-main__link-data p-col">
-                        <h4>{{ 'starter.main.link.add.content.title' | dm }}</h4>
-                        <p>{{ 'starter.main.link.add.content.description' | dm }}</p>
-                    </div>
-                    <span class="dot-starter-top-main__link-arrow p-col-fixed">
-                        <i class="pi pi-angle-right"></i>
-                    </span>
-                </a>
-                <a
-                    href="#"
-                    data-testid="starter.main.link.design.layout"
-                    class="p-col-12 dot-starter-top-main__block p-grid"
-                >
-                    <div class="dot-starter-top-main__link-number p-col-fixed">
-                        <span>3</span>
-                    </div>
-                    <div class="dot-starter-top-main__link-data p-col">
-                        <h4>{{ 'starter.main.link.design.layout.title' | dm }}</h4>
-                        <p>{{ 'starter.main.link.design.layout.description' | dm }}</p>
-                    </div>
-                    <span class="dot-starter-top-main__link-arrow p-col-fixed">
-                        <i class="pi pi-angle-right"></i>
-                    </span>
-                </a>
-                <a
-                    href="#"
-                    data-testid="starter.main.link.create.page"
-                    class="p-col-12 dot-starter-top-main__block p-grid"
-                >
-                    <div class="dot-starter-top-main__link-number p-col-fixed">
-                        <span>4</span>
-                    </div>
-                    <div class="dot-starter-top-main__link-data p-col">
-                        <h4>{{ 'starter.main.link.create.page.title' | dm }}</h4>
-                        <p>{{ 'starter.main.link.create.page.description' | dm }}</p>
-                    </div>
-                    <span class="dot-starter-top-main__link-arrow p-col-fixed">
-                        <i class="pi pi-angle-right"></i>
-                    </span>
-                </a>
+        <div class="p-grid p-nogutter">
+            <div class="p-md-12 p-lg-7">
+                <div class="dot-starter-top-main__section p-grid">
+                    <a
+                        class="p-col-12 dot-starter-top-main__block p-grid"
+                        data-testid="starter.main.link.data.model"
+                        href="#"
+                    >
+                        <div class="dot-starter-top-main__link-number p-col-fixed">
+                            <span>1</span>
+                        </div>
+                        <div class="dot-starter-top-main__link-data p-col">
+                            <h4>{{ 'starter.main.link.data.model.title' | dm }}</h4>
+                            <p>{{ 'starter.main.link.data.model.description' | dm }}</p>
+                        </div>
+                        <span class="dot-starter-top-main__link-arrow p-col-fixed">
+                            <i class="pi pi-angle-right"></i>
+                        </span>
+                    </a>
+                    <a
+                        href="#"
+                        data-testid="starter.main.link.content"
+                        class="p-col-12 dot-starter-top-main__block p-grid"
+                    >
+                        <div class="dot-starter-top-main__link-number p-col-fixed">
+                            <span>2</span>
+                        </div>
+                        <div class="dot-starter-top-main__link-data p-col">
+                            <h4>{{ 'starter.main.link.add.content.title' | dm }}</h4>
+                            <p>{{ 'starter.main.link.add.content.description' | dm }}</p>
+                        </div>
+                        <span class="dot-starter-top-main__link-arrow p-col-fixed">
+                            <i class="pi pi-angle-right"></i>
+                        </span>
+                    </a>
+                    <a
+                        href="#"
+                        data-testid="starter.main.link.design.layout"
+                        class="p-col-12 dot-starter-top-main__block p-grid"
+                    >
+                        <div class="dot-starter-top-main__link-number p-col-fixed">
+                            <span>3</span>
+                        </div>
+                        <div class="dot-starter-top-main__link-data p-col">
+                            <h4>{{ 'starter.main.link.design.layout.title' | dm }}</h4>
+                            <p>{{ 'starter.main.link.design.layout.description' | dm }}</p>
+                        </div>
+                        <span class="dot-starter-top-main__link-arrow p-col-fixed">
+                            <i class="pi pi-angle-right"></i>
+                        </span>
+                    </a>
+                    <a
+                        href="#"
+                        data-testid="starter.main.link.create.page"
+                        class="p-col-12 dot-starter-top-main__block p-grid"
+                    >
+                        <div class="dot-starter-top-main__link-number p-col-fixed">
+                            <span>4</span>
+                        </div>
+                        <div class="dot-starter-top-main__link-data p-col">
+                            <h4>{{ 'starter.main.link.create.page.title' | dm }}</h4>
+                            <p>{{ 'starter.main.link.create.page.description' | dm }}</p>
+                        </div>
+                        <span class="dot-starter-top-main__link-arrow p-col-fixed">
+                            <i class="pi pi-angle-right"></i>
+                        </span>
+                    </a>
+                </div>
             </div>
-            <div class="p-md-12 p-lg-5 dot-starter-top-secondary__section">
-                <h3>{{ 'starter.side.title' | dm }}</h3>
-                <div class="p-grid">
+            <div class="p-md-12 p-lg-5">
+                <div class="dot-starter-top-secondary__section">
+                    <h3>{{ 'starter.side.title' | dm }}</h3>
                     <a
                         href="#"
                         data-testid="starter.side.link.graphQl"
@@ -166,8 +168,8 @@
     </div>
 </div>
 <hr />
-<div class="p-grid dot-starter-bottom-content">
-    <div class="p-lg-4 p-md-12 p-grid">
+<div class="dot-starter-bottom-content">
+    <div class="p-lg-4 p-md-12 p-grid p-nogutter">
         <a
             href="#"
             data-testid="starter.footer.link.documentation"
@@ -182,7 +184,7 @@
             </div>
         </a>
     </div>
-    <div class="p-lg-4 p-md-12 p-grid">
+    <div class="p-lg-4 p-md-12 p-grid p-nogutter">
         <a href="#" data-testid="starter.footer.link.examples" class="dot-starter-bottom__block">
             <div class="dot-starter-bottom__link-icon p-col-fixed">
                 <span class="material-icons"> label </span>
@@ -193,7 +195,7 @@
             </div>
         </a>
     </div>
-    <div class="p-lg-4 p-md-12 p-grid">
+    <div class="p-lg-4 p-md-12 p-grid p-nogutter">
         <a href="#" data-testid="starter.footer.link.community" class="dot-starter-bottom__block">
             <div class="dot-starter-bottom__link-icon p-col-fixed">
                 <span class="material-icons"> people </span>
@@ -204,7 +206,7 @@
             </div>
         </a>
     </div>
-    <div class="p-lg-4 p-md-12 p-grid">
+    <div class="p-lg-4 p-md-12 p-grid p-nogutter">
         <a href="#" data-testid="starter.footer.link.training" class="dot-starter-bottom__block">
             <div class="dot-starter-bottom__link-icon p-col-fixed">
                 <span class="material-icons"> movie </span>
@@ -215,7 +217,7 @@
             </div>
         </a>
     </div>
-    <div class="p-lg-4 p-md-12 p-grid">
+    <div class="p-lg-4 p-md-12 p-grid p-nogutter">
         <a href="#" data-testid="starter.footer.link.review" class="dot-starter-bottom__block">
             <div class="dot-starter-bottom__link-icon p-col-fixed">
                 <span class="material-icons"> star </span>
@@ -226,7 +228,7 @@
             </div>
         </a>
     </div>
-    <div class="p-lg-4 p-md-12 p-grid">
+    <div class="p-lg-4 p-md-12 p-grid p-nogutter">
         <a href="#" data-testid="starter.footer.link.feedback" class="dot-starter-bottom__block">
             <div class="dot-starter-bottom__link-icon p-col-fixed">
                 <span class="material-icons"> comment </span>
