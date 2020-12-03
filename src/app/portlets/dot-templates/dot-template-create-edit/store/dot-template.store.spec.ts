@@ -90,7 +90,7 @@ const BASIC_PROVIDERS = [
     }
 ];
 
-fdescribe('DotTemplateStore', () => {
+describe('DotTemplateStore', () => {
     let service: DotTemplateStore;
     let dotTemplateContainersCacheService: DotTemplateContainersCacheService;
     let dotRouterService: DotRouterService;
