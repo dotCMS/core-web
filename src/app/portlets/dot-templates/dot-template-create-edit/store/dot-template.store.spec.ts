@@ -38,7 +38,7 @@ function getTemplate({ identifier, name, body }) {
         name: name,
         new: false,
         owner: 'dotcms.org.1',
-        selectedimage: null,
+        selectedimage: '',
         showOnMenu: true,
         sortOrder: 0,
         theme: null,
@@ -90,7 +90,7 @@ const BASIC_PROVIDERS = [
     }
 ];
 
-describe('DotTemplateStore', () => {
+fdescribe('DotTemplateStore', () => {
     let service: DotTemplateStore;
     let dotTemplateContainersCacheService: DotTemplateContainersCacheService;
     let dotRouterService: DotRouterService;
@@ -142,7 +142,8 @@ describe('DotTemplateStore', () => {
                             width: null
                         },
                         theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661',
-                        drawed: true
+                        drawed: true,
+                        selectedimage: ''
                     },
                     apiLink: ''
                 });
@@ -212,7 +213,8 @@ describe('DotTemplateStore', () => {
                         friendlyName: '',
                         type: 'advanced',
                         drawed: false,
-                        body: ''
+                        body: '',
+                        selectedimage: ''
                     },
                     apiLink: '/api/v1/templates/2d87af36-a935-4689-b427-dea75e9d84cf/working'
                 });
@@ -278,7 +280,8 @@ describe('DotTemplateStore', () => {
                             friendlyName: '',
                             type: 'advanced',
                             drawed: false,
-                            body: '<h3>Hola Mundo</h3>'
+                            body: '<h3>Hola Mundo</h3>',
+                            selectedimage: ''
                         },
                         original: {
                             identifier: '2d87af36-a935-4689-b427-dea75e9d84cf',
@@ -286,7 +289,8 @@ describe('DotTemplateStore', () => {
                             friendlyName: '',
                             type: 'advanced',
                             drawed: false,
-                            body: ''
+                            body: '',
+                            selectedimage: ''
                         },
                         apiLink: '/api/v1/templates/2d87af36-a935-4689-b427-dea75e9d84cf/working'
                     });
@@ -318,7 +322,8 @@ describe('DotTemplateStore', () => {
                             title: 'Updated template',
                             friendlyName: '',
                             drawed: false,
-                            body: '<h4>Hi you</h1>'
+                            body: '<h4>Hi you</h1>',
+                            selectedimage: ''
                         },
                         original: {
                             type: 'advanced',
@@ -326,7 +331,8 @@ describe('DotTemplateStore', () => {
                             title: 'Updated template',
                             friendlyName: '',
                             drawed: false,
-                            body: '<h4>Hi you</h1>'
+                            body: '<h4>Hi you</h1>',
+                            selectedimage: ''
                         },
                         apiLink: '/api/v1/templates/2d87af36-a935-4689-b427-dea75e9d84cf/working'
                     });
