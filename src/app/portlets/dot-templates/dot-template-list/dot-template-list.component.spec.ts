@@ -34,7 +34,7 @@ import { DotActionMenuButtonModule } from '@components/_common/dot-action-menu-b
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotListingDataTableComponent } from '@components/dot-listing-data-table/dot-listing-data-table.component';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DotActionMenuButtonComponent } from '@components/_common/dot-action-menu-button/dot-action-menu-button.component';
 import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 import { DotAddToBundleComponent } from '@components/_common/dot-add-to-bundle/dot-add-to-bundle.component';
@@ -214,7 +214,7 @@ describe('DotTemplateListComponent', () => {
     let dotMessageDisplayService: DotMessageDisplayService;
     let dotPushPublishDialogService: DotPushPublishDialogService;
     let dotRouterService: DotRouterService;
-    let rowActions: DebugElement[];
+
     let comp: DotTemplateListComponent;
     let unPublishTemplate: DotActionMenuButtonComponent;
     let publishTemplate: DotActionMenuButtonComponent;
@@ -285,7 +285,6 @@ describe('DotTemplateListComponent', () => {
         fixture.detectChanges();
         dotListingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'))
             .componentInstance;
-        rowActions = fixture.debugElement.queryAll(By.css('dot-action-menu-button'));
         spyOn(window, 'confirm').and.callFake(function () {
             return true;
         });
@@ -312,7 +311,8 @@ describe('DotTemplateListComponent', () => {
     });
 
     it('should pass data to the status elements', () => {
-        lockedTemplate = rowActions[1].componentInstance;
+        lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
+            .componentInstance;
         const stateIcon = fixture.debugElement.query(By.css('dot-state-icon'));
         const lockIcon = fixture.debugElement.query(
             By.css('p-table dot-icon[name="lock"][size="14"]')
@@ -323,7 +323,8 @@ describe('DotTemplateListComponent', () => {
     });
     describe('row', () => {
         it('should set actions to publish template', () => {
-            publishTemplate = rowActions[0].componentInstance;
+            publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
+                .componentInstance;
             const actions = setBasicOptions();
             actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
             actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
@@ -332,7 +333,8 @@ describe('DotTemplateListComponent', () => {
         });
 
         it('should set actions to locked template', () => {
-            lockedTemplate = rowActions[1].componentInstance;
+            lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
+                .componentInstance;
             const actions = setBasicOptions();
             actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
             actions.push({ menuItem: { label: 'Unlock', command: jasmine.any(Function) } });
@@ -342,7 +344,8 @@ describe('DotTemplateListComponent', () => {
         });
 
         it('should set actions to unPublish template', () => {
-            unPublishTemplate = rowActions[2].componentInstance;
+            unPublishTemplate = fixture.debugElement.query(By.css('[data-testid="123Unpublish"]'))
+                .componentInstance;
             const actions = setBasicOptions();
             actions.push({ menuItem: { label: 'Archive', command: jasmine.any(Function) } });
             actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
@@ -351,7 +354,8 @@ describe('DotTemplateListComponent', () => {
         });
 
         it('should set actions to archived template', () => {
-            archivedTemplate = rowActions[3].componentInstance;
+            archivedTemplate = fixture.debugElement.query(By.css('[data-testid="123Archived"]'))
+                .componentInstance;
             const actions = [
                 { menuItem: { label: 'Unarchive', command: jasmine.any(Function) } },
                 { menuItem: { label: 'Delete', command: jasmine.any(Function) } }
@@ -369,7 +373,8 @@ describe('DotTemplateListComponent', () => {
             );
             comp.ngOnInit();
             fixture.detectChanges();
-            const publishRow: DotActionMenuButtonComponent = rowActions[0].componentInstance;
+            publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
+                .componentInstance;
             const actions = [
                 { menuItem: { label: 'Edit', command: jasmine.any(Function) } },
                 { menuItem: { label: 'Publish', command: jasmine.any(Function) } },
@@ -377,7 +382,7 @@ describe('DotTemplateListComponent', () => {
                 { menuItem: { label: 'Copy', command: jasmine.any(Function) } }
             ];
 
-            expect(publishRow.actions).toEqual(actions);
+            expect(publishTemplate.actions).toEqual(actions);
         });
     });
 
@@ -385,10 +390,14 @@ describe('DotTemplateListComponent', () => {
         beforeEach(() => {
             spyOn(dotMessageDisplayService, 'push');
             spyOn(dotListingDataTable, 'loadCurrentPage');
-            publishTemplate = rowActions[0].componentInstance;
-            lockedTemplate = rowActions[1].componentInstance;
-            unPublishTemplate = rowActions[2].componentInstance;
-            archivedTemplate = rowActions[3].componentInstance;
+            publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
+                .componentInstance;
+            lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
+                .componentInstance;
+            unPublishTemplate = fixture.debugElement.query(By.css('[data-testid="123Unpublish"]'))
+                .componentInstance;
+            archivedTemplate = fixture.debugElement.query(By.css('[data-testid="123Archived"]'))
+                .componentInstance;
         });
 
         it('should open add to bundle dialog', () => {
