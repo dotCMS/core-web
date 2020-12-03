@@ -23,7 +23,7 @@ interface DotTemplateItemDesign {
     theme: string;
     title: string;
     type?: 'design';
-    selectedimage: string;
+    selectedimage?: string;
 }
 
 interface DotTemplateItemadvanced {
@@ -33,7 +33,7 @@ interface DotTemplateItemadvanced {
     identifier: string;
     title: string;
     type?: 'advanced';
-    selectedimage: string;
+    selectedimage?: string;
 }
 
 export type DotTemplateItem = DotTemplateItemDesign | DotTemplateItemadvanced;

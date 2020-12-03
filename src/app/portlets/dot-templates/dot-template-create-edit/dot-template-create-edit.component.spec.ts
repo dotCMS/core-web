@@ -20,6 +20,9 @@ import { DotTemplatePropsModule } from './dot-template-props/dot-template-props.
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
+import { DotCrudService } from '@services/dot-crud';
+import { DotTempFileUploadService } from '@services/dot-temp-file-upload/dot-temp-file-upload.service';
+import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 
 @Component({
     selector: 'dot-api-link',
@@ -79,12 +82,12 @@ describe('DotTemplateCreateEditComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [
+                DotApiLinkMockComponent,
+                DotMessagePipe,
                 DotPortletBaseMockComponent,
                 DotPortletToolbarMockComponent,
                 DotTemplateBuilderMockComponent,
-                DotTemplateCreateEditComponent,
-                DotApiLinkMockComponent,
-                DotMessagePipe
+                DotTemplateCreateEditComponent
             ],
             imports: [
                 FormsModule,
@@ -99,6 +102,47 @@ describe('DotTemplateCreateEditComponent', () => {
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
+                },
+                /*
+                    DotTempFileUploadService, DotWorkflowActionsFireService and DotCrudService:
+                    This three are from DotTemplateThumbnailFieldComponent and because
+                    I had to import DotTemplatePropsModule because I need to click the duialog
+                */
+                {
+                    provide: DotTempFileUploadService,
+                    useValue: {
+                        upload: jasmine.createSpy().and.returnValue(
+                            of([
+                                {
+                                    assetVersion: '',
+                                    name: '',
+                                    identifier: ''
+                                }
+                            ])
+                        )
+                    }
+                },
+                {
+                    provide: DotWorkflowActionsFireService,
+                    useValue: {
+                        publishContentletAndWaitForIndex: jasmine.createSpy().and.returnValue(
+                            of({
+                                identifier: ''
+                            })
+                        )
+                    }
+                },
+                {
+                    provide: DotCrudService,
+                    useValue: {
+                        getDataById: jasmine.createSpy().and.returnValue(
+                            of([
+                                {
+                                    identifier: ''
+                                }
+                            ])
+                        )
+                    }
                 }
             ]
         });
@@ -167,7 +211,8 @@ describe('DotTemplateCreateEditComponent', () => {
                             },
                             identifier: '',
                             friendlyName: '',
-                            theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661'
+                            theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661',
+                            selectedimage: ''
                         },
                         onSave: jasmine.any(Function),
                         onCancel: jasmine.any(Function)
@@ -217,7 +262,8 @@ describe('DotTemplateCreateEditComponent', () => {
                     },
                     identifier: '',
                     friendlyName: '',
-                    theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661'
+                    theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661',
+                    selectedimage: ''
                 });
             });
         });
@@ -251,7 +297,13 @@ describe('DotTemplateCreateEditComponent', () => {
                     closable: false,
                     closeOnEscape: false,
                     data: {
-                        template: { title: '', body: '', identifier: '', friendlyName: '' },
+                        template: {
+                            title: '',
+                            body: '',
+                            identifier: '',
+                            friendlyName: '',
+                            selectedimage: ''
+                        },
                         onSave: jasmine.any(Function),
                         onCancel: jasmine.any(Function)
                     }
@@ -282,7 +334,8 @@ describe('DotTemplateCreateEditComponent', () => {
                     title: 'Hello World',
                     body: '',
                     identifier: '',
-                    friendlyName: ''
+                    friendlyName: '',
+                    selectedimage: ''
                 });
             });
         });
@@ -365,7 +418,8 @@ describe('DotTemplateCreateEditComponent', () => {
                         },
                         identifier: '123',
                         friendlyName: '',
-                        theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661'
+                        theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661',
+                        selectedimage: ''
                     });
                 });
 
@@ -408,7 +462,8 @@ describe('DotTemplateCreateEditComponent', () => {
                                 },
                                 identifier: '123',
                                 friendlyName: '',
-                                theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661'
+                                theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661',
+                                selectedimage: ''
                             },
                             onSave: jasmine.any(Function)
                         }
@@ -450,7 +505,8 @@ describe('DotTemplateCreateEditComponent', () => {
                 title: '',
                 body: '',
                 identifier: '',
-                friendlyName: ''
+                friendlyName: '',
+                selectedimage: ''
             });
         });
 
@@ -459,7 +515,8 @@ describe('DotTemplateCreateEditComponent', () => {
                 title: '',
                 body: '',
                 identifier: '',
-                friendlyName: ''
+                friendlyName: '',
+                selectedimage: ''
             });
 
             subject.next({
@@ -467,7 +524,8 @@ describe('DotTemplateCreateEditComponent', () => {
                     friendlyName: 'Not batman',
                     identifier: '123',
                     title: 'Hello World',
-                    body: '<h1>I am Batman</h1>'
+                    body: '<h1>I am Batman</h1>',
+                    selectedimage: ''
                 }
             });
 
@@ -477,7 +535,8 @@ describe('DotTemplateCreateEditComponent', () => {
                 title: 'Hello World',
                 body: '<h1>I am Batman</h1>',
                 identifier: '123',
-                friendlyName: 'Not batman'
+                friendlyName: 'Not batman',
+                selectedimage: ''
             });
         });
     });

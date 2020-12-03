@@ -30,9 +30,18 @@ export class DotTempFileUploadService {
      * @returns {(Observable<DotCMSTempFile | string>)}
      * @memberof DotTempFileUploadService
      */
-    upload(file: File): Observable<DotCMSTempFile[] | string> {
+    upload(file: File | string): Observable<DotCMSTempFile[] | string> {
+        if (typeof file === 'string') {
+            return this.uploadByUrl(file);
+        }
+
+        return this.uploadByFile(file);
+    }
+
+    private uploadByFile(file: File): Observable<DotCMSTempFile[] | string> {
         const formData = new FormData();
         formData.append('file', file);
+
         return this.coreWebService
             .requestView<DotCMSTempFile[]>({
                 url: `/api/v1/temp`,
@@ -42,12 +51,32 @@ export class DotTempFileUploadService {
             })
             .pipe(
                 pluck('tempFiles'),
-                catchError((error: HttpErrorResponse) => {
-                    return this.dotHttpErrorManagerService.handle(error).pipe(
-                        take(1),
-                        map((err) => err.status.toString())
-                    );
-                })
+                catchError((error: HttpErrorResponse) => this.handleError(error))
             );
+    }
+
+    private uploadByUrl(file: string): Observable<DotCMSTempFile[] | string> {
+        return this.coreWebService
+            .requestView<DotCMSTempFile[]>({
+                url: `/api/v1/temp/byUrl`,
+                body: {
+                    remoteUrl: file
+                },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST'
+            })
+            .pipe(
+                pluck('tempFiles'),
+                catchError((error: HttpErrorResponse) => this.handleError(error))
+            );
+    }
+
+    private handleError(error: HttpErrorResponse) {
+        return this.dotHttpErrorManagerService.handle(error).pipe(
+            take(1),
+            map((err) => err.status.toString())
+        );
     }
 }

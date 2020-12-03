@@ -46,8 +46,7 @@ export class DotTemplateThumbnailFieldComponent implements OnInit, ControlValueA
      * @param {CustomEvent<{ name: string; value: File }>} { detail: { value } }
      * @memberof DotTemplateThumbnailFieldComponent
      */
-    onThumbnailChange({ detail: { value } }: CustomEvent<{ name: string; value: File }>) {
-        console.log('value', value);
+    onThumbnailChange({ detail: { value } }: CustomEvent<{ name: string; value: File | string }>) {
         if (value) {
             this.loading = true;
             this.dotTempFileUploadService
@@ -63,9 +62,9 @@ export class DotTemplateThumbnailFieldComponent implements OnInit, ControlValueA
                     }),
                     take(1)
                 )
-                .subscribe((res: DotCMSTemplateThumbnail) => {
+                .subscribe((asset: DotCMSTemplateThumbnail) => {
                     this.loading = false;
-                    this.asset = res;
+                    this.asset = asset;
                     this.propagateChange(this.asset.identifier);
                 });
         } else {
@@ -93,7 +92,7 @@ export class DotTemplateThumbnailFieldComponent implements OnInit, ControlValueA
                     this.asset = contentlet;
                 },
                 () => {
-                    // do nothing, failing silently
+                    // do nothing, failing silently like any html input select that get an invalid value
                 }
             );
     }
