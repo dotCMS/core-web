@@ -20,6 +20,7 @@ import {
     DotActionBulkResult,
     DotBulkFailItem
 } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
+import { DotContentState } from 'dotcms-models';
 
 @Component({
     selector: 'dot-template-list',
@@ -132,6 +133,16 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         return options;
     }
 
+    /**
+     * get the attributes that define the state of a template.
+     * @param {DotTemplate} { live, working, deleted, hasLiveVersion}
+     ** @returns DotContentState
+     * @memberof DotTemplateListComponent
+     */
+    getTemplateState({ live, working, deleted, hasLiveVersion }: DotTemplate): DotContentState {
+        return { live, working, deleted, hasLiveVersion };
+    }
+
     private setTemplateColumns(): DataTableColumn[] {
         return [
             {
@@ -141,7 +152,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             },
             {
                 fieldName: 'status',
-                header: this.dotMessageService.get('templates.fieldName.status')
+                header: this.dotMessageService.get('templates.fieldName.status'),
+                width: '8%'
             },
             {
                 fieldName: 'friendlyName',
