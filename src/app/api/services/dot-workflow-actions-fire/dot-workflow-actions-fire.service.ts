@@ -104,7 +104,6 @@ export class DotWorkflowActionsFireService {
         contentType: string,
         data: { [key: string]: any }
     ): Observable<T> {
-        console.log(data);
         return this.publishContentlet(contentType, {
             ...data,
             ...{ indexPolicy: 'WAIT_FOR' }

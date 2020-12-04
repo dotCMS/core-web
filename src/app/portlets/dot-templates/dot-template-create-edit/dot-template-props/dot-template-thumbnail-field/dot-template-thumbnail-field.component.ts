@@ -1,13 +1,18 @@
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { throwError } from 'rxjs';
+import { finalize, switchMap, take } from 'rxjs/operators';
+
 import { DotCrudService } from '@services/dot-crud';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import {
     DotCMSTempFile,
     DotTempFileUploadService
 } from '@services/dot-temp-file-upload/dot-temp-file-upload.service';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotCMSContentlet } from 'dotcms-models';
-import { finalize, switchMap, take } from 'rxjs/operators';
 
 export interface DotCMSTemplateThumbnail extends DotCMSContentlet {
     assetVersion: string;
@@ -26,19 +31,17 @@ export interface DotCMSTemplateThumbnail extends DotCMSContentlet {
         }
     ]
 })
-export class DotTemplateThumbnailFieldComponent implements OnInit, ControlValueAccessor {
+export class DotTemplateThumbnailFieldComponent implements ControlValueAccessor {
     asset: DotCMSTemplateThumbnail;
+    error = '';
     loading = false;
-
-    identifier: string;
 
     constructor(
         private dotTempFileUploadService: DotTempFileUploadService,
         private dotWorkflowActionsFireService: DotWorkflowActionsFireService,
-        private dotCrudService: DotCrudService
+        private dotCrudService: DotCrudService,
+        private dotMessageService: DotMessageService
     ) {}
-
-    ngOnInit(): void {}
 
     /**
      * Habdle thumbnail setup
@@ -49,34 +52,57 @@ export class DotTemplateThumbnailFieldComponent implements OnInit, ControlValueA
     onThumbnailChange({ detail: { value } }: CustomEvent<{ name: string; value: File | string }>) {
         if (value) {
             this.loading = true;
+            this.error = '';
+
             this.dotTempFileUploadService
                 .upload(value)
                 .pipe(
-                    switchMap(([{ id }]: DotCMSTempFile[]) => {
-                        return this.dotWorkflowActionsFireService.publishContentletAndWaitForIndex(
+                    switchMap(([{ id, image }]: DotCMSTempFile[]) => {
+                        if (!image) {
+                            return throwError(
+                                this.dotMessageService.get(
+                                    'templates.properties.form.thumbnail.error.invalid.url'
+                                )
+                            );
+                        }
+
+                        return this.dotWorkflowActionsFireService.publishContentletAndWaitForIndex<DotCMSTemplateThumbnail>(
                             'dotAsset',
                             {
                                 asset: id
                             }
                         );
                     }),
-                    take(1)
+                    take(1),
+                    finalize(() => {
+                        this.loading = false;
+                    })
                 )
-                .subscribe((asset: DotCMSTemplateThumbnail) => {
-                    this.loading = false;
-                    this.asset = asset;
-                    this.propagateChange(this.asset.identifier);
-                });
-        } else {
+                .subscribe(
+                    (asset: DotCMSTemplateThumbnail) => {
+                        this.asset = asset;
+                        this.propagateChange(this.asset.identifier);
+                    },
+                    (err: HttpErrorResponse | string) => {
+                        const defaultError = this.dotMessageService.get(
+                            'templates.properties.form.thumbnail.error'
+                        );
+                        this.error = typeof err === 'string' ? err : defaultError;
+                    }
+                );
+        } else if (this.asset) {
             this.asset = null;
             this.propagateChange('');
+        } else {
+            this.error = this.dotMessageService.get(
+                'templates.properties.form.thumbnail.error.invalid.image'
+            );
         }
     }
 
     propagateChange = (_: any) => {};
 
     writeValue(id: string): void {
-        this.identifier = id;
         this.loading = true;
 
         this.dotCrudService
@@ -92,7 +118,7 @@ export class DotTemplateThumbnailFieldComponent implements OnInit, ControlValueA
                     this.asset = contentlet;
                 },
                 () => {
-                    // do nothing, failing silently like any html input select that get an invalid value
+                    // do nothing, failing silently like any html input select that get pass an invalid value
                 }
             );
     }

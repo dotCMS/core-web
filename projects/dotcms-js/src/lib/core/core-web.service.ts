@@ -204,7 +204,7 @@ export class CoreWebService {
         return new ResponseView<T>(resp);
     }
 
-    private handleResponseHttpErrors(resp: HttpErrorResponse): any {
+    private handleResponseHttpErrors(resp: HttpErrorResponse): HttpErrorResponse {
         if (resp.status === 401) {
             this.router.navigate(['/public/login']);
         }
