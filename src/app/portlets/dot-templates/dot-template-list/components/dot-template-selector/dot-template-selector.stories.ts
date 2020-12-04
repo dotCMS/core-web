@@ -1,11 +1,15 @@
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { Meta, moduleMetadata } from '@storybook/angular';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { ButtonModule } from 'primeng/button';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DotTemplateSelectorComponent } from './dot-template-selector.component';
 
 const messageServiceMock = new MockDotMessageService({
+    'templates.template.selector.label.designer': 'Designer',
+    'templates.template.selector.label.advanced': 'Advanced',
     'templates.template.selector.design':
         '<b>Template Designer</b> allows you to create templates seamlessly with a set of tools lorem ipsum.',
     'templates.template.selector.advanced':
@@ -17,11 +21,17 @@ export default {
     component: DotTemplateSelectorComponent,
     decorators: [
         moduleMetadata({
-            imports: [DotIconModule, ButtonModule],
+            imports: [DotIconModule, ButtonModule, DotMessagePipeModule],
             providers: [
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
+                },
+                {
+                    provide: DynamicDialogRef,
+                    useValue: {
+                        close: () => {}
+                    }
                 }
             ]
         })
