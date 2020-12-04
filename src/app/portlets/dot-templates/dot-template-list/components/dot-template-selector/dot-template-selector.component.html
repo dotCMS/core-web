@@ -1,0 +1,22 @@
+<div class="wrapper">
+    <div class="options">
+        <label>
+            <input type="radio" value="design" name="template" [(ngModel)]="value" id="design" />
+            <div class="item">
+                <dot-icon size="100" name="web"></dot-icon>
+                <span>Designer</span>
+            </div>
+        </label>
+        <label>
+            <input type="radio" value="code" name="template" [(ngModel)]="value" id="code" />
+            <div class="item">
+                <dot-icon size="100" name="settings_applications"></dot-icon>
+                <span>Advanced</span>
+            </div>
+        </label>
+    </div>
+
+    <p [innerHTML]="map[value]"></p>
+</div>
+
+<button pButton label="Next" (click)="onClick()"></button>
