@@ -40,6 +40,10 @@ describe('DotTempFileUploadService', () => {
         httpMock = TestBed.inject(HttpTestingController);
     });
 
+    afterEach(() => {
+        httpMock.verify();
+    });
+
     it('should upload a file by url', (done) => {
         service.upload('https://dotcms.com/image.jpg').subscribe((res) => {
             expect(res).toEqual([

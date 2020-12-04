@@ -15,7 +15,7 @@ export class DotContainerSelectorComponent implements OnInit {
     @Output() change: EventEmitter<DotContainer> = new EventEmitter();
 
     @Input() data: DotContainerColumnBox[] = [];
-    @Input() class = '';
+    @Input() innerClass = '';
 
     totalRecords: number;
     currentContainers: DotContainer[] = [];

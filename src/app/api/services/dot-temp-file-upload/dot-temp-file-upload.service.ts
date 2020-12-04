@@ -26,8 +26,8 @@ export class DotTempFileUploadService {
     /**
      * Upload file to the dotcms temp service
      *
-     * @param {File} file
-     * @returns {(Observable<DotCMSTempFile | string>)}
+     * @param {(File | string)} file
+     * @returns {(Observable<DotCMSTempFile[] | string>)}
      * @memberof DotTempFileUploadService
      */
     upload(file: File | string): Observable<DotCMSTempFile[] | string> {

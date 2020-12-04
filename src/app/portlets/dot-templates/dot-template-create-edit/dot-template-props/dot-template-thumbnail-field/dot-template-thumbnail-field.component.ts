@@ -44,12 +44,14 @@ export class DotTemplateThumbnailFieldComponent implements ControlValueAccessor 
     ) {}
 
     /**
-     * Habdle thumbnail setup
+     * Handle thumbnail setup
      *
-     * @param {CustomEvent<{ name: string; value: File }>} { detail: { value } }
+     * @param {(CustomEvent<{ name: string; value: File | string }>)} { detail: { value } }
      * @memberof DotTemplateThumbnailFieldComponent
      */
-    onThumbnailChange({ detail: { value } }: CustomEvent<{ name: string; value: File | string }>) {
+    onThumbnailChange({
+        detail: { value }
+    }: CustomEvent<{ name: string; value: File | string }>): void {
         if (value) {
             this.loading = true;
             this.error = '';

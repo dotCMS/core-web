@@ -106,7 +106,8 @@ describe('DotTemplateCreateEditComponent', () => {
                 /*
                     DotTempFileUploadService, DotWorkflowActionsFireService and DotCrudService:
                     This three are from DotTemplateThumbnailFieldComponent and because
-                    I had to import DotTemplatePropsModule because I need to click the duialog
+                    I had to import DotTemplatePropsModule so I can click the real dialog that
+                    gets append to the body.
                 */
                 {
                     provide: DotTempFileUploadService,
