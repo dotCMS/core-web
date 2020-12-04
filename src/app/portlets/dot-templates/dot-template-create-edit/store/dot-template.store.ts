@@ -3,9 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ComponentStore } from '@ngrx/component-store';
 import { Observable, zip } from 'rxjs';
-import * as _ from 'lodash';
-
 import { pluck, switchMap, take, tap } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -16,39 +15,43 @@ import { DotLayout, DotTemplate } from '@models/dot-edit-layout-designer';
 type DotTemplateType = 'design' | 'advanced';
 
 interface DotTemplateItemDesign {
-    type?: 'design';
-    identifier: string;
-    title: string;
-    friendlyName: string;
-    theme: string;
-    layout: DotLayout;
     containers?: DotContainerMap;
+    drawed?: boolean;
+    friendlyName: string;
+    identifier: string;
+    layout: DotLayout;
+    theme: string;
+    title: string;
+    type?: 'design';
+    selectedimage?: string;
 }
 
 interface DotTemplateItemadvanced {
-    type?: 'advanced';
+    body: string;
+    drawed?: boolean;
+    friendlyName: string;
     identifier: string;
     title: string;
-    friendlyName: string;
-    body: string;
-    drawed: boolean;
+    type?: 'advanced';
+    selectedimage?: string;
 }
 
 export type DotTemplateItem = DotTemplateItemDesign | DotTemplateItemadvanced;
 
 export interface DotTemplateState {
     original: DotTemplateItem;
-    working: DotTemplateItem;
-    type: DotTemplateType;
+    working?: DotTemplateItem;
+    apiLink: string;
 }
 
 const EMPTY_TEMPLATE = {
     identifier: '',
     title: '',
-    friendlyName: ''
+    friendlyName: '',
+    selectedimage: ''
 };
 
-const EMPTY_TEMPLATE_DESIGN: DotTemplateItemDesign = {
+export const EMPTY_TEMPLATE_DESIGN: DotTemplateItemDesign = {
     ...EMPTY_TEMPLATE,
     type: 'design',
     layout: {
@@ -61,11 +64,12 @@ const EMPTY_TEMPLATE_DESIGN: DotTemplateItemDesign = {
         title: '',
         width: null
     },
-    theme: 'd7b0ebc2-37ca-4a5a-b769-e8a3ff187661', // TODO: use theme selector
-    containers: {}
+    theme: '',
+    containers: {},
+    drawed: true
 };
 
-const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
+export const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
     ...EMPTY_TEMPLATE,
     type: 'advanced',
     body: '',
@@ -74,44 +78,31 @@ const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
 
 @Injectable()
 export class DotTemplateStore extends ComponentStore<DotTemplateState> {
-    readonly template$ = this.select(({ original }: DotTemplateState) => {
-        if (original.type === 'design') {
-            delete original.containers;
-        }
-
-        return original;
+    readonly vm$ = this.select(({ original, apiLink }: DotTemplateState) => {
+        return {
+            original,
+            apiLink
+        };
     });
 
-    readonly apiLink$: Observable<string> = this.select(
-        ({ original: { identifier } }: DotTemplateState) =>
-            `/api/v1/templates/${identifier}/working`
+    readonly didTemplateChanged$: Observable<boolean> = this.select(
+        ({ original, working }: DotTemplateState) => !_.isEqual(original, working)
     );
 
-    readonly didTemplateChanged$: Observable<
-        boolean
-    > = this.select(({ original, working }: DotTemplateState) => _.isEqual(original, working));
+    readonly updateBody = this.updater<string>((state: DotTemplateState, body: string) => ({
+        ...state,
+        working: {
+            ...state.working,
+            body
+        }
+    }));
 
-    readonly updateWorking = this.updater<DotTemplateItem>(
-        (state: DotTemplateState, working: DotTemplateItem) => ({
-            ...state,
-            working
-        })
-    );
-
-    readonly updateTemplate = this.updater<DotTemplate>(
-        (state: DotTemplateState, template: DotTemplate) => {
-            const type: DotTemplateType = template.drawed ? 'design' : 'advanced';
-
-            if (type === 'design') {
-                this.templateContainersCacheService.set(template.containers);
-            }
-
-            const item = this.getTemplateItem(template);
-
+    readonly updateTemplate = this.updater<DotTemplateItem>(
+        (state: DotTemplateState, template: DotTemplateItem) => {
             return {
                 ...state,
-                working: item,
-                original: item
+                working: template,
+                original: template
             };
         }
     );
@@ -127,7 +118,11 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 return this.dotTemplateService.update(template as DotTemplate);
             }),
             tap((template: DotTemplate) => {
-                this.updateTemplate(template);
+                if (template.drawed) {
+                    this.templateContainersCacheService.set(template.containers);
+                }
+
+                this.updateTemplate(this.getTemplateItem(template));
             })
         );
     });
@@ -136,11 +131,12 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         (origin$: Observable<DotTemplateItem>) => {
             return origin$.pipe(
                 switchMap((template: DotTemplateItem) => {
-                    delete template.type;
-
                     if (template.type === 'design') {
                         delete template.containers;
                     }
+
+                    delete template.type;
+
                     return this.dotTemplateService.create(template as DotTemplate);
                 }),
                 tap(({ identifier }: DotTemplate) => {
@@ -178,7 +174,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 this.setState({
                     original: template,
                     working: template,
-                    type: fixType
+                    apiLink: this.getApiLink(template?.identifier)
                 });
             });
     }
@@ -188,9 +184,13 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
      *
      * @memberof DotTemplateStore
      */
-    cancelCreate = () => {
+    goToTemplateList = () => {
         this.dotRouterService.gotoPortlet('templates');
     };
+
+    private getApiLink(identifier: string): string {
+        return identifier ? `/api/v1/templates/${identifier}/working` : '';
+    }
 
     private getDefaultTemplate(isAdvanced: boolean): DotTemplateItem {
         return isAdvanced ? EMPTY_TEMPLATE_ADVANCED : EMPTY_TEMPLATE_DESIGN;
@@ -213,7 +213,9 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 friendlyName,
                 layout: template.layout || EMPTY_TEMPLATE_DESIGN.layout,
                 theme: template.theme,
-                containers: template.containers
+                containers: template.containers,
+                drawed: true,
+                selectedimage: template.selectedimage
             };
         } else {
             result = {
@@ -222,7 +224,8 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 title,
                 friendlyName,
                 body: template.body,
-                drawed: template.drawed
+                drawed: false,
+                selectedimage: template.selectedimage
             };
         }
 

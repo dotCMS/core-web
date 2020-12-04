@@ -2,15 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { DialogService } from 'primeng/dynamicdialog';
 
 import { DotTemplate } from '@shared/models/dot-edit-layout-designer/dot-template.model';
-import { DotPortletToolbarActions } from '@shared/models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
-import { DotTemplateItem, DotTemplateStore } from './store/dot-template.store';
+import { DotTemplateItem, DotTemplateState, DotTemplateStore } from './store/dot-template.store';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-template-create-edit',
@@ -19,11 +19,7 @@ import { DotTemplateItem, DotTemplateStore } from './store/dot-template.store';
     providers: [DotTemplateStore]
 })
 export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
-    actions$ = this.store.didTemplateChanged$.pipe(
-        map((didChange: boolean) => this.getActions(didChange))
-    );
-    apiLink$ = this.store.apiLink$;
-    template$ = this.store.template$;
+    vm$ = this.store.vm$;
 
     form: FormGroup;
 
@@ -32,19 +28,21 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     constructor(
         private store: DotTemplateStore,
         private fb: FormBuilder,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private dotMessageServide: DotMessageService
     ) {}
 
     ngOnInit() {
-        this.template$.pipe(takeUntil(this.destroy$)).subscribe((template: DotTemplateItem) => {
+        this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original }: DotTemplateState) => {
             if (this.form) {
-                const { type, ...value } = template;
+                const value = this.getFormValue(original);
+
                 this.form.setValue(value);
             } else {
-                this.form = this.getForm(template);
+                this.form = this.getForm(original);
             }
 
-            if (!template.identifier) {
+            if (!original.identifier) {
                 this.createTemplate();
             }
         });
@@ -62,7 +60,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
      */
     editTemplateProps(): void {
         this.dialogService.open(DotTemplatePropsComponent, {
-            header: 'Template Properties',
+            header: this.dotMessageServide.get('templates.properties.title'),
             width: '30rem',
             data: {
                 template: this.form.value,
@@ -85,9 +83,18 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * Handle cancel button from designer
+     *
+     * @memberof DotTemplateCreateEditComponent
+     */
+    cancelTemplate() {
+        this.store.goToTemplateList();
+    }
+
     private createTemplate(): void {
         this.dialogService.open(DotTemplatePropsComponent, {
-            header: 'Create new template',
+            header: this.dotMessageServide.get('templates.create.title'),
             width: '30rem',
             closable: false,
             closeOnEscape: false,
@@ -97,7 +104,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                     this.store.createTemplate(value);
                 },
                 onCancel: () => {
-                    this.store.cancelCreate();
+                    this.store.goToTemplateList();
                 }
             }
         });
@@ -110,7 +117,8 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 layout: this.fb.group(template.layout),
                 identifier: template.identifier,
                 friendlyName: template.friendlyName,
-                theme: template.theme
+                theme: template.theme,
+                selectedimage: template.selectedimage
             });
         }
 
@@ -119,24 +127,28 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             body: template.body,
             identifier: template.identifier,
             friendlyName: template.friendlyName,
-            drawed: template.drawed
+            selectedimage: template.selectedimage
         });
     }
 
-    private getActions(disabled = true): DotPortletToolbarActions {
+    private getFormValue(template: DotTemplateItem): { [key: string]: any } {
+        if (template.type === 'design') {
+            return {
+                title: template.title,
+                layout: template.layout,
+                identifier: template.identifier,
+                friendlyName: template.friendlyName,
+                theme: template.theme,
+                selectedimage: template.selectedimage
+            };
+        }
+
         return {
-            primary: [
-                {
-                    label: 'Save',
-                    disabled: disabled,
-                    command: () => {
-                        this.store.saveTemplate(this.form.value);
-                    }
-                }
-            ],
-            cancel: () => {
-                console.log('cancel');
-            }
+            title: template.title,
+            body: template.body,
+            identifier: template.identifier,
+            friendlyName: template.friendlyName,
+            selectedimage: template.selectedimage
         };
     }
 }

@@ -1,20 +1,45 @@
 <dot-form-dialog
+    data-testId="dialogForm"
     [saveButtonDisabled]="!(isFormValid$ | async)"
     (cancel)="onCancel()"
     (save)="onSave()"
 >
-    <form class="p-fluid" [formGroup]="form">
-        <div class="p-field">
-            <label for="title">Title</label>
-            <input id="title" pInputText formControlName="title" autofocus />
+    <form class="p-fluid" [formGroup]="form" data-testId="form" *ngIf="form">
+        <div class="p-field" data-testId="titleField">
+            <label for="title" class="p-label-input-required">{{
+                'templates.properties.form.label.title' | dm
+            }}</label>
+            <input
+                id="title"
+                pInputText
+                formControlName="title"
+                autofocus
+                data-testId="templatePropsTitleField"
+            />
+            <dot-field-validation-message
+                [field]="form.get('title')"
+            ></dot-field-validation-message>
         </div>
-        <div class="p-field">
-            <label for="description">Description</label>
+        <div class="p-field" data-testId="descriptionField">
+            <label for="description">{{
+                'templates.properties.form.label.description' | dm
+            }}</label>
             <textarea id="description" pInputTextarea formControlName="friendlyName"></textarea>
         </div>
-        <div class="p-field">
-            <label for="title">Thumbnail</label>
-            <input id="title" type="text" pInputText />
+        <ng-container *ngIf="form.get('theme')">
+            <div class="p-field" data-testId="themeField">
+                <label for="theme">{{ 'templates.properties.form.label.theme' | dm }}</label>
+                <dot-theme-selector-dropdown
+                    id="theme"
+                    formControlName="theme"
+                ></dot-theme-selector-dropdown>
+            </div>
+        </ng-container>
+        <div class="p-field" data-testId="thumbnailField">
+            <label for="thumbnail">{{ 'templates.properties.form.label.thumbnail' | dm }}</label>
+            <dot-template-thumbnail-field
+                formControlName="selectedimage"
+            ></dot-template-thumbnail-field>
         </div>
     </form>
 </dot-form-dialog>

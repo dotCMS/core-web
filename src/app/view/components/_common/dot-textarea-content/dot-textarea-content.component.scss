@@ -1,24 +1,28 @@
 @use "variables" as *;
 @import "mixins";
 
-:host ::ng-deep .p-selectbutton {
-    box-shadow: none;
-    border-bottom: 0;
+:host {
+    display: block;
 
-    .p-button {
-        &:first-child {
-            border-bottom-left-radius: 0;
-        }
+    & ::ng-deep .p-selectbutton {
+        box-shadow: none;
+        border-bottom: 0;
 
-        &:last-child {
-            border-bottom-right-radius: 0;
+        .p-button {
+            &:first-child {
+                border-bottom-left-radius: 0;
+            }
+
+            &:last-child {
+                border-bottom-right-radius: 0;
+            }
         }
     }
 }
 
 .textarea-content__code-field,
 .textarea-content__plain-field {
-    border: solid 1px $gray;
+    border: 1px solid $input-border-color;
 }
 
 .textarea-content__plain-field {

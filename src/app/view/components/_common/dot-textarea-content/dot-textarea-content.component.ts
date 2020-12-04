@@ -5,9 +5,11 @@ import {
     forwardRef,
     ChangeDetectionStrategy,
     Output,
-    EventEmitter
+    EventEmitter,
+    HostBinding
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -45,6 +47,18 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
     @Output()
     monacoInit = new EventEmitter<any>();
 
+    @Input() set language(value: string) {
+        this.editorOptions = {
+            ...this.editorOptions,
+            language: value
+        };
+    }
+
+    @HostBinding('style')
+    get myStyle(): SafeStyle {
+        return this.sanitizer.bypassSecurityTrustStyle(this.styles);
+    }
+
     selectOptions: SelectItem[] = [];
     selected: string;
     styles: any;
@@ -60,7 +74,8 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
         selectionHighlight: false,
         roundedSelection: false,
         selectOnLineNumbers: false,
-        columnSelection: false
+        columnSelection: false,
+        language: 'text/plain'
     };
 
     private DEFAULT_OPTIONS: SelectItem[] = [
@@ -68,20 +83,13 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
         { label: 'Code', value: 'code' }
     ];
 
-    constructor() {}
+    constructor(private sanitizer: DomSanitizer) {}
 
     propagateChange = (_: any) => {};
 
     ngOnInit() {
-        this.selectOptions = this.show
-            ? this.show
-                  .map((item) => {
-                      return this.DEFAULT_OPTIONS.find((option) => option.value === item);
-                  })
-                  .filter((item) => item) // Remove undefined values in the array
-            : this.DEFAULT_OPTIONS;
-
-        this.selected = this.selectOptions[0].value;
+        this.selectOptions = this.getSelectOptions();
+        this.selected = this.selectOptions[0]?.value;
 
         this.propagateChange(this.value);
 
@@ -149,4 +157,14 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
     }
 
     registerOnTouched(): void {}
+
+    private getSelectOptions() {
+        return this.show
+            ? this.show
+                  .map((item) => {
+                      return this.DEFAULT_OPTIONS.find((option) => option.value === item);
+                  })
+                  .filter((item) => item) // Remove undefined values in the array
+            : this.DEFAULT_OPTIONS;
+    }
 }
