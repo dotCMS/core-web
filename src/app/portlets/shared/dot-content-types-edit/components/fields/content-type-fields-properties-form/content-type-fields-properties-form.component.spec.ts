@@ -213,7 +213,7 @@ describe('ContentTypeFieldsPropertiesFormComponent', () => {
         });
 
         // TODO: fix because is failing intermittently
-        fit('should set system indexed true when you select show in list', () => {
+        it('should set system indexed true when you select show in list', () => {
             comp.form.get('indexed').setValue(false);
             comp.form.get('listed').setValue(true);
 
