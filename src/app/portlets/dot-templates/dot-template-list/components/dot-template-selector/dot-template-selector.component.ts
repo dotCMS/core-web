@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'dot-dot-template-selector',
@@ -7,19 +8,16 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
     styleUrls: ['./dot-template-selector.component.scss']
 })
 export class DotTemplateSelectorComponent {
-    value = 'design';
+    value = 'designer';
 
     map = {
-        design: this.dotMessageService.get('templates.template.selector.design'),
-        code: this.dotMessageService.get('templates.template.selector.advanced')
+        designer: this.dotMessageService.get('templates.template.selector.design'),
+        advanced: this.dotMessageService.get('templates.template.selector.advanced')
     };
 
-    @Output()
-    next = new EventEmitter<string>();
-
-    constructor(private dotMessageService: DotMessageService) {}
+    constructor(private dotMessageService: DotMessageService, private ref: DynamicDialogRef) {}
 
     onClick(): void {
-        this.next.emit(this.value);
+        this.ref.close(this.value);
     }
 }
