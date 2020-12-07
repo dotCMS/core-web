@@ -97,7 +97,7 @@ describe('DotTemplateSelectorComponent', () => {
         let advanced: DebugElement;
 
         beforeEach(() => {
-            advanced = de.query(By.css('.wrapper .options [data-testId="advaced"]'));
+            advanced = de.query(By.css('.wrapper .options [data-testId="advanced"]'));
         });
 
         it('should have radio button', () => {
@@ -128,14 +128,14 @@ describe('DotTemplateSelectorComponent', () => {
     });
 
     describe('description', () => {
-        it('should have innterText', () => {
+        it('should have innerText', () => {
             const description = de.query(By.css('.wrapper [data-testId="description"]'));
             expect(description.nativeElement.innerText).toBe(
                 'Template Designer allows you to create templates seamlessly with a set of tools lorem ipsum.'
             );
 
             const advanced = de.query(
-                By.css('.wrapper .options [data-testId="advaced"] input[type="radio"]')
+                By.css('.wrapper .options [data-testId="advanced"] input[type="radio"]')
             );
 
             advanced.nativeElement.click();
@@ -153,7 +153,7 @@ describe('DotTemplateSelectorComponent', () => {
             button.triggerEventHandler('click', {});
 
             const advanced = de.query(
-                By.css('.wrapper .options [data-testId="advaced"] input[type="radio"]')
+                By.css('.wrapper .options [data-testId="advanced"] input[type="radio"]')
             );
 
             advanced.nativeElement.click();

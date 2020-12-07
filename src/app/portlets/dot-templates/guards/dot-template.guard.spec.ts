@@ -24,17 +24,17 @@ describe('DotTemplateGuard', () => {
         dotRouterService = TestBed.inject(DotRouterService);
     });
 
-    it('should be return when path is /advanced', () => {
+    it('should return true when path is /advanced', () => {
         const segment = new UrlSegment('advanced', null);
         expect(guard.canLoad(null, [null, segment])).toBe(true);
     });
 
-    it('should be return when path is /designer', () => {
+    it('should return true when path is /designer', () => {
         const segment = new UrlSegment('designer', null);
         expect(guard.canLoad(null, [null, segment])).toBe(true);
     });
 
-    it('should be return false and redirect with invalid path', () => {
+    it('should return false and redirect with invalid path', () => {
         const segment = new UrlSegment('xxxx', null);
         expect(guard.canLoad(null, [null, segment])).toBe(false);
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('templates');
