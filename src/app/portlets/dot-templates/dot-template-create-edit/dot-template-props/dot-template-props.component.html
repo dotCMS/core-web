@@ -28,7 +28,9 @@
         </div>
         <ng-container *ngIf="form.get('theme')">
             <div class="p-field" data-testId="themeField">
-                <label for="theme">{{ 'templates.properties.form.label.theme' | dm }}</label>
+                <label class="p-label-input-required" for="theme">{{
+                    'templates.properties.form.label.theme' | dm
+                }}</label>
                 <dot-theme-selector-dropdown
                     id="theme"
                     formControlName="theme"
