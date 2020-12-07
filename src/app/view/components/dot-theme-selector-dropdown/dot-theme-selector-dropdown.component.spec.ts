@@ -213,7 +213,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
             expect(selector.value).toEqual(mockDotThemes[1]);
         });
 
-        it('should not get theme', () => {
+        it('should not get theme when value is empty', () => {
             fixture = TestBed.createComponent(TestHostEmtpyComponent);
             de = fixture.debugElement;
             dotThemesService = TestBed.inject(DotThemesService);
