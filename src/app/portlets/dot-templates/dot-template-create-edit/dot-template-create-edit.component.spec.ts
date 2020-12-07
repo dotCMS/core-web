@@ -444,7 +444,7 @@ describe('DotTemplateCreateEditComponent', () => {
                 expect(dialogService.open).not.toHaveBeenCalled();
             });
 
-            describe('edit body', () => {
+            describe('edit layout', () => {
                 it('should save', () => {
                     const builder = de.query(By.css('dot-template-builder'));
                     builder.triggerEventHandler('save', {
@@ -523,6 +523,52 @@ describe('DotTemplateCreateEditComponent', () => {
                             },
                             onSave: jasmine.any(Function)
                         }
+                    });
+                });
+            });
+        });
+
+        describe('Advanced', () => {
+            beforeEach(() => {
+                const storeMock = jasmine.createSpyObj(
+                    'DotTemplateStore',
+                    ['saveTemplate', 'goToTemplateList'],
+                    {
+                        vm$: of({
+                            original: {
+                                ...EMPTY_TEMPLATE_ADVANCED,
+                                identifier: '123',
+                                title: 'Some template'
+                            },
+                            apiLink: '/api/link'
+                        })
+                    }
+                );
+
+                TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
+                fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
+                de = fixture.debugElement;
+
+                dialogService = fixture.debugElement.injector.get(DialogService);
+                store = fixture.debugElement.injector.get(DotTemplateStore);
+                spyOn(dialogService, 'open').and.callThrough();
+
+                fixture.detectChanges();
+            });
+
+            describe('edit layout', () => {
+                it('should save', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('save', {
+                        body: `<h1>##Container and stuff</h1>`
+                    });
+
+                    expect(store.saveTemplate).toHaveBeenCalledWith({
+                        title: 'Some template',
+                        body: '<h1>##Container and stuff</h1>',
+                        identifier: '123',
+                        friendlyName: '',
+                        selectedimage: ''
                     });
                 });
             });
