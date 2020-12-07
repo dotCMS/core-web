@@ -28,7 +28,7 @@
         </label>
     </div>
 
-    <p [innerHTML]="map[value]"></p>
+    <p [innerHTML]="map[value]" data-testId="description"></p>
 </div>
 
-<button pButton label="Next" (click)="onClick()"></button>
+<button pButton [label]="'next' | dm" (click)="onClick()" data-testId="button"></button>
