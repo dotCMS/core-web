@@ -18,7 +18,11 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const messageServiceMock = new MockDotMessageService({
-    archived: 'archived'
+    'message.template.archived': 'archived',
+    'message.template.failed': 'failed',
+    'message.template.success': 'has been successfully',
+    'message.template.singular': 'template',
+    'message.template.plural': 'templates'
 });
 
 const mockBulkResponseFail: DotActionBulkResult = {
@@ -93,7 +97,7 @@ describe('DotBulkInformationComponent', () => {
         const success: HTMLElement = document.querySelector('[data-testId="successful"]');
         const fail: HTMLElement = document.querySelector('[data-testId="fails"]');
 
-        expect(success.innerText).toEqual('1 template have been successfully archived');
+        expect(success.innerText).toEqual('1 template has been successfully archived');
         expect(fail.innerText).toEqual('2 failed');
     });
 

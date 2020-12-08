@@ -7,7 +7,11 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { DotBulkInformationComponent } from './dot-bulk-information.component';
 
 const messageServiceMock = new MockDotMessageService({
-    archived: 'archived'
+    'message.template.archived': 'archived',
+    'message.template.failed': 'failed',
+    'message.template.success': 'has been successfully',
+    'message.template.singular': 'template',
+    'message.template.plural': 'templates'
 });
 
 export default {
