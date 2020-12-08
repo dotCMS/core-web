@@ -197,7 +197,8 @@ const mockBulkResponseFail: DotActionBulkResult = {
             errorMessage: 'error 2',
             element: '123Locked'
         }
-    ]
+    ],
+    action: ''
 };
 
 const mockBulkResponseSuccess: DotActionBulkResult = {
@@ -572,7 +573,7 @@ describe('DotTemplateListComponent', () => {
             expect(bulkActionsBtn.disabled).toEqual(true);
         });
 
-        it('error exceptions', () => {
+        fit('error exceptions', () => {
             spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseFail));
             spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseFail));
             spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseFail));
@@ -603,7 +604,8 @@ describe('DotTemplateListComponent', () => {
                             element: '123Locked',
                             description: 'Locked template'
                         }
-                    ]
+                    ],
+                    action: 'Template deleted'
                 }
             });
         });

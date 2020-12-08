@@ -485,7 +485,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             this.showErrorDialog({
                 ...response,
                 fails: this.getFailsInfo(response.fails),
-                action: messageKey
+                action: this.dotMessageService.get(messageKey)
             });
         } else {
             this.showToastNotification(this.dotMessageService.get(messageKey));
