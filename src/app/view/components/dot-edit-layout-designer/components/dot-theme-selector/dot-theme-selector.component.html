@@ -7,15 +7,21 @@
     "
     [header]="'editpage.layout.theme.header' | dm"
 >
-    <div class="dot-theme__header">
+    <div class="dot-theme__header" data-testId="header">
         <dot-site-selector
+            data-testId="siteSelector"
             #siteSelector
             (change)="siteChange($event)"
             [archive]="false"
         ></dot-site-selector>
         <div class="dot-theme-search-box">
-            <dot-icon class="searchable-dropdown__search-icon" name="search"></dot-icon>
+            <dot-icon
+                class="searchable-dropdown__search-icon"
+                name="search"
+                data-testId="searchIcon"
+            ></dot-icon>
             <input
+                data-testId="searchInput"
                 #searchInput
                 pInputText
                 placeholder="{{ 'editpage.layout.theme.search' | dm }}"

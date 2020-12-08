@@ -61,7 +61,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
         private dotMessageService: DotMessageService,
         public paginatorService: PaginatorService,
         private siteService: SiteService,
-        private cd: ChangeDetectorRef
+        public cd: ChangeDetectorRef
     ) {}
 
     ngOnInit() {
