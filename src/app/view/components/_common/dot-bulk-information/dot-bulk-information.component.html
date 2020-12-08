@@ -1,11 +1,12 @@
 <p data-testId="successful" class="bulk-information__success-message">
-    {{ data.successCount }} templates have been successfully {{ data.action }}
+    {{ data.successCount }} template{{ data.successCount > 1 ? 's' : '' }} have been successfully
+    {{ data.action }}
 </p>
 
 <div class="bulk-information__fail-container">
-    <p data-testId="fails" class="bulk-information__fail-message">
+    <p class="bulk-information__fail-message">
         <span class="material-icons">error_outline</span>
-        <span>{{ data.fails?.length }} {{ 'failed' | dm }}</span>
+        <span data-testId="fails">{{ data.fails?.length }} {{ 'failed' | dm }}</span>
     </p>
     <div class="bulk-information__fail-item" *ngFor="let item of data.fails">
         <h5>{{ item.description }}</h5>

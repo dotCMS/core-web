@@ -46,7 +46,7 @@ export default {
                                         'Template cannot be published because it is archived'
                                 }
                             ],
-                            successCount: 10,
+                            successCount: 1,
                             action: messageServiceMock.get('archived')
                         }
                     }
