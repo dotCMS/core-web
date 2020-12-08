@@ -61,7 +61,8 @@ export class TabViewMockComponent {}
 
 @Component({
     selector: 'p-tabPanel',
-    template: '<ng-container *ngTemplateOutlet="contentTemplate"></ng-container>'
+    template:
+        '<ng-content></ng-content><ng-container *ngTemplateOutlet="contentTemplate"></ng-container>'
 })
 export class TabPanelMockComponent implements AfterContentInit {
     @Input() header: string;
@@ -69,7 +70,9 @@ export class TabPanelMockComponent implements AfterContentInit {
     contentTemplate;
 
     ngAfterContentInit() {
-        this.contentTemplate = this.container;
+        if (this.container.elementRef.nativeElement.textContent === 'container') {
+            this.contentTemplate = this.container;
+        }
     }
 }
 
