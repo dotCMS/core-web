@@ -11,7 +11,7 @@ const messageServiceMock = new MockDotMessageService({
 });
 
 export default {
-    title: 'DotCMS/Forms/BulkDialog',
+    title: 'DotCMS/Misc/BulkDialog',
     decorators: [
         moduleMetadata({
             imports: [DotMessagePipeModule],
