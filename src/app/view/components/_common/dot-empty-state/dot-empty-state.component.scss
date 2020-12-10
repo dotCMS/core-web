@@ -1,0 +1,95 @@
+@use "variables" as *;
+
+.dot-empty-container {
+    position: relative;
+}
+
+.dot-empty-container__content {
+    .material-icons {
+        color: $brand-primary;
+        font-size: 4rem;
+    }
+    position: absolute;
+    padding: $spacing-3 $spacing-5;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translateY(-50%) translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h3,
+    p {
+        padding: 0;
+        margin: 0;
+    }
+
+    h3 {
+        font-size: $font-size-x-large;
+        margin: $spacing-3 $spacing-0 $spacing-2 $spacing-0;
+        font-weight: $font-weight-semi-bold;
+    }
+    p {
+        margin-bottom: $spacing-4;
+    }
+}
+
+.dot-empty-state {
+    position: relative;
+    border-collapse: collapse;
+    width: 100%;
+    background: $white;
+    tbody {
+        tr {
+            border-top: 1px solid #f5f5f5;
+            outline: 0 none;
+            background: $white;
+            transition: none;
+            outline-color: transparent;
+            cursor: pointer;
+            td:first-child {
+                width: 5%;
+            }
+            td {
+                &:first-child {
+                    padding-left: $spacing-5;
+                }
+                text-align: left;
+                border: 1px solid #f5f5f5;
+                border-width: 0 0 1px 0;
+                padding: 1.25rem $spacing-2;
+                width: 23.75%;
+                position: relative;
+                span {
+                    display: inline-block;
+                    color: transparent;
+                    position: relative;
+                    pointer-events: none;
+                }
+                span::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 50%;
+                    bottom: 50%;
+                    background-color: #f6f6f6;
+                    height: 0.71rem;
+                    transform: translateY(-50%);
+                    border-radius: 1.7rem;
+                }
+            }
+        }
+    }
+}
+
+.checkbox-dummy {
+    border: 2px solid #f5f5f5;
+    background: $white;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: $border-radius;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s,
+        background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+    position: relative;
+}

@@ -1,4 +1,4 @@
-<dot-action-header [options]="actionHeaderOptions">
+<dot-action-header [options]="actionHeaderOptions" style="margin-top: 4rem; padding: 1.5rem 0">
     <input
         #gf
         pInputText
@@ -10,6 +10,7 @@
     />
     <ng-content></ng-content>
 </dot-action-header>
+<dot-empty-state></dot-empty-state>
 <p-table
     #dataTable
     (onLazyLoad)="loadDataPaginationEvent($event)"
