@@ -12,7 +12,6 @@
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
                         "aot": true,
-                        "baseHref": "./",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "outputPath": "dist",
@@ -48,11 +47,26 @@
                                     "maximumWarning": "60kb"
                                 }
                             ],
+                            "aot": false,
                             "poll": 1000,
                             "sourceMap": true,
-                            "watch": true
+                            "namedChunks": true
+                        },
+                        "serve": {
+                            "baseHref": "/",
+                            "budgets": [
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "60kb"
+                                }
+                            ],
+                            "aot": false,
+                            "poll": 1000,
+                            "sourceMap": true,
+                            "namedChunks": true
                         },
                         "production": {
+                            "baseHref": "./",
                             "aot": true,
                             "budgets": [
                                 {
@@ -62,15 +76,8 @@
                             ],
                             "buildOptimizer": true,
                             "deleteOutputPath": true,
-                            "extractCss": true,
                             "extractLicenses": true,
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
-                                }
-                            ],
-                            "namedChunks": true,
+                            "namedChunks": false,
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
@@ -81,11 +88,12 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "dotcms-ui:build"
+                        "browserTarget": "dotcms-ui:build",
+                        "proxyConfig": "proxy.conf.json"
                     },
                     "configurations": {
-                        "production": {
-                            "browserTarget": "dotcms-ui:build:production"
+                        "serve": {
+                            "browserTarget": "dotcms-ui:build:serve"
                         }
                     }
                 },
