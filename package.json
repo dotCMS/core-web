@@ -13,7 +13,7 @@
         "publish:doc:docms-models": "typedoc projects/dotcms-models/src/ --options projects/dotcms-models/typedoc.json; gh-pages --dist ./dist-docs/dotcms-models --dest ./docs/dotcms-models",
         "publish:docs": "npm run publish:doc:docms && npm run publish:doc:docms-models",
         "build:dev": "ng build --configuration=development",
-        "build:prod": "ng build --configuration=production --prod dotcms-ui",
+        "build:prod": "ng build --configuration=production dotcms-ui",
         "build:libs": "ng build dotcms-js; ng build dot-rules; ng build dot-layout-grid",
         "docker:test": "npm run docker:build;IMAGE_BASE_NAME=core-web docker-compose -f docker-compose-running-test.yml up",
         "docker:build": "docker build -t core-web .",
