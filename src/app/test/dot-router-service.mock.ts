@@ -26,6 +26,8 @@ export class MockDotRouterService {
     goToEditTask = jasmine.createSpy('goToEditTask');
     goToForgotPassword = jasmine.createSpy('goToForgotPassword');
     goToLogin = jasmine.createSpy('goToLogin');
+    goToContent = jasmine.createSpy('goToContent');
+    goToStarter = jasmine.createSpy('goToStarter');
     doLogOut = jasmine.createSpy('doLogOut');
     goToMain = jasmine.createSpy('goToMain');
     gotoPortlet = jasmine

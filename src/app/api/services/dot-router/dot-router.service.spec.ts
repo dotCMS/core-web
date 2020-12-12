@@ -96,6 +96,20 @@ describe('DotRouterService', () => {
         expect(service.goToEditPage).toHaveBeenCalledWith({ url: '/about/us' });
     });
 
+    it('should go to Starter page', () => {
+        spyOn(service, 'goToStarter');
+        service.goToStarter();
+
+        expect(service.goToStarter).toHaveBeenCalledTimes(1);
+    });
+
+    it('should go to Content page', () => {
+        spyOn(service, 'goToContent');
+        service.goToContent();
+
+        expect(service.goToContent).toHaveBeenCalledTimes(1);
+    });
+
     it('should go to edit page', () => {
         service.goToEditTemplate('123');
 

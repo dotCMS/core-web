@@ -103,6 +103,24 @@ export class DotRouterService {
         this.router.navigate(['/c/site-browser']);
     }
 
+    /**
+     * Redirect to Starter page
+     *
+     * @memberof DotRouterService
+     */
+    goToStarter(): void {
+        this.router.navigate(['/starter']);
+    }
+
+    /**
+     * Redirect to Content page
+     *
+     * @memberof DotRouterService
+     */
+    goToContent(): void {
+        this.router.navigate(['/c/content']);
+    }
+
     goToEditContentType(id: string, portlet: string): void {
         this.router.navigate([`/${portlet}/edit/${id}`]);
     }
