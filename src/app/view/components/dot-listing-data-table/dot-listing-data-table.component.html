@@ -10,7 +10,9 @@
     />
     <ng-content></ng-content>
 </dot-action-header>
-<dot-empty-state></dot-empty-state>
+
+<dot-empty-state [rows]="10" [cols]="[60, 50, 60, 30, 40]"></dot-empty-state>
+
 <p-table
     #dataTable
     (onLazyLoad)="loadDataPaginationEvent($event)"

@@ -1,14 +1,15 @@
 <div class="dot-empty-container">
     <div class="dot-empty-container__content">
         <span class="material-icons">web</span>
-        <h3>Your template list is empty</h3>
+        <h3>Your template list is empty {{ rows }}</h3>
         <p>You haven’t added anything yet, start by clicking the button below</p>
         <button pButton type="button" label="Add New Template"></button>
     </div>
+
     <!-- /.dot-empty-container__content -->
     <table class="dot-empty-state">
         <tbody>
-            <tr>
+            <tr *ngFor="let number of numberOfRows()">
                 <td>
                     <div class="list-item">
                         <div role="checkbox" aria-checked="false" class="checkbox-dummy">
@@ -16,186 +17,8 @@
                         </div>
                     </div>
                 </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td><span class="dot-dummy-text">Lorem ipsum dolor sit amet</span></td>
-                <td>
-                    <span class="dot-dummy-text">Lorem ipsum dolor sit amet consectetur </span>
-                </td>
-                <td>
-                    <span class="dot-dummy-text"
-                        >Lorem ipsum dolor sit amet consectetur adipisicing.</span
-                    >
+                <td *ngFor="let width of cols" [ngStyle]="{ width: inputWidth }">
+                    <span class="dot-dummy-text" [ngStyle]="{ width: width + '%' }"></span>
                 </td>
             </tr>
         </tbody>
