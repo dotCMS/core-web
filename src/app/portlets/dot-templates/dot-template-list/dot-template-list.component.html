@@ -12,6 +12,16 @@
     dataKey="inode"
     [firstPageData]="firstPage"
 >
+    <dot-empty-state
+        [rows]="10"
+        [colsTextWidth]="[60, 50, 60, 80]"
+        icon="web"
+        title="Your template list is empty"
+        content="You haven\'t added anything yet, start by clicking the button below"
+        buttonLabel="Add New Template"
+        (buttonClick)="handleButtonClick()"
+    >
+    </dot-empty-state>
     <div class="template-listing__header-options">
         <div>
             <p-checkbox

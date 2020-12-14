@@ -1,4 +1,4 @@
-<dot-action-header [options]="actionHeaderOptions" style="margin-top: 4rem; padding: 1.5rem 0">
+<dot-action-header [options]="actionHeaderOptions">
     <input
         #gf
         pInputText
@@ -11,7 +11,7 @@
     <ng-content></ng-content>
 </dot-action-header>
 
-<dot-empty-state [rows]="10" [cols]="[60, 50, 60, 30, 40]"></dot-empty-state>
+<ng-content *ngIf="items?.length === 0" select="dot-empty-state"></ng-content>
 
 <p-table
     #dataTable
@@ -33,7 +33,7 @@
     [dataKey]="dataKey"
     [selectionMode]="checkbox ? 'multiple' : 'single'"
 >
-    <ng-template pTemplate="header" let-columns>
+    <ng-template *ngIf="items?.length > 0" pTemplate="header" let-columns>
         <tr>
             <th *ngIf="checkbox" style="width: 5%">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>

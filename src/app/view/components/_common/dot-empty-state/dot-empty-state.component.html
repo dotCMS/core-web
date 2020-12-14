@@ -1,23 +1,23 @@
 <div class="dot-empty-container">
     <div class="dot-empty-container__content">
-        <span class="material-icons">web</span>
-        <h3>Your template list is empty {{ rows }}</h3>
-        <p>You haven’t added anything yet, start by clicking the button below</p>
-        <button pButton type="button" label="Add New Template"></button>
+        <span *ngIf="icon" class="material-icons">{{ icon }}</span>
+        <h3 *ngIf="title">{{ title }}</h3>
+        <p *ngIf="content">{{ content }}</p>
+        <button pButton type="button" (click)="goToPortlet($event)" [label]="buttonLabel"></button>
     </div>
 
     <!-- /.dot-empty-container__content -->
     <table class="dot-empty-state">
         <tbody>
             <tr *ngFor="let number of numberOfRows()">
-                <td>
+                <td [ngStyle]="{ width: checkBoxWidth + '%' }">
                     <div class="list-item">
                         <div role="checkbox" aria-checked="false" class="checkbox-dummy">
                             <span class="p-checkbox-icon"></span>
                         </div>
                     </div>
                 </td>
-                <td *ngFor="let width of cols" [ngStyle]="{ width: inputWidth }">
+                <td *ngFor="let width of colsTextWidth" [ngStyle]="{ width: columnWidth }">
                     <span class="dot-dummy-text" [ngStyle]="{ width: width + '%' }"></span>
                 </td>
             </tr>

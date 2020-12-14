@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'dot-empty-state',
@@ -6,26 +6,28 @@ import { Component, Input, OnInit } from '@angular/core';
     styleUrls: ['./dot-empty-state.component.scss']
 })
 export class DotEmptyStateComponent implements OnInit {
-    @Input()
-    rows: number;
+    @Input() rows: number;
+    @Input() colsTextWidth: number[];
+    @Input() icon: string;
+    @Input() title: string;
+    @Input() content: string;
+    @Input() buttonLabel: string;
+    @Output() buttonClick = new EventEmitter<string>();
 
-    @Input()
-    cols: number[];
-    inputWidth: string;
+    columnWidth: string;
+    checkBoxWidth: number = 3.5;
 
     constructor() {}
 
-    /**
-     * Return rows for empty template
-     * @param number n
-     * @returns number[]
-     * @memberof DotEmptyStateComponent
-     */
+    ngOnInit(): void {
+        this.columnWidth = `${(100 - this.checkBoxWidth) / this.colsTextWidth.length}%`; // 100% - width of checkbox = 96.5%, which is then divided by number of cols
+    }
+
     numberOfRows(): number[] {
         return Array(this.rows).fill(0);
     }
 
-    ngOnInit(): void {
-        this.inputWidth = `${96.5 / this.cols.length}%`; // 100% - width of checkbox = 96.5%, which is then divided by number of cols
+    goToPortlet(event: string) {
+        this.buttonClick.emit(event);
     }
 }
