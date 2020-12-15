@@ -11,11 +11,7 @@
         <tbody>
             <tr *ngFor="let number of numberOfRows()">
                 <td [ngStyle]="{ width: checkBoxWidth + '%' }">
-                    <div class="list-item">
-                        <div role="checkbox" aria-checked="false" class="checkbox-dummy">
-                            <span class="p-checkbox-icon"></span>
-                        </div>
-                    </div>
+                    <div class="checkbox-dummy"></div>
                 </td>
                 <td *ngFor="let width of colsTextWidth" [ngStyle]="{ width: columnWidth }">
                     <span class="dot-dummy-text" [ngStyle]="{ width: width + '%' }"></span>
