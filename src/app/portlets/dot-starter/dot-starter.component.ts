@@ -19,6 +19,11 @@ export class DotStarterComponent implements OnInit {
         });
     }
 
+    /**
+     * Hit the endpoint to show/hide the tool group in the menu.
+     * @param {boolean} hide
+     * @memberof DotStarterComponent
+     */
     handleVisibility(hide: boolean): void {
         const layoutId = 'gettingstarted';
         hide
