@@ -2,7 +2,15 @@ import { Observable, Subject, fromEvent, merge } from 'rxjs';
 
 import { filter, takeUntil, pluck, take, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    ElementRef,
+    NgZone,
+    OnDestroy,
+    HostListener
+} from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { SiteService } from 'dotcms-js';
@@ -26,7 +34,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
+// import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import {
     PageModelChangeEvent,
     PageModelChangeEventType
@@ -48,7 +56,7 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
     styleUrls: ['./dot-edit-content.component.scss']
 })
 export class DotEditContentComponent implements OnInit, OnDestroy {
-    @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('iframe') iframe: ElementRef<HTMLIFrameElement>;
 
     contentletActionsUrl: SafeResourceUrl;
     pageState$: Observable<DotPageRenderState>;
@@ -57,10 +65,50 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     showIframe = true;
     reorderMenuUrl = '';
     showOverlay = false;
+    currentInode = '';
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
     private pageStateInternal: DotPageRenderState;
+
+    @HostListener('window:message', ['$event'])
+    onMessage(e) {
+        const style = this.el.nativeElement.style;
+
+        if (e.data.type === 'clear') {
+            style.setProperty('--opacity', `0`);
+            style.setProperty('--width', `0`);
+            style.setProperty('--height', `0`);
+            style.setProperty('--left', `0`);
+            style.setProperty('--top', `0`);
+        } else {
+            style.setProperty('--opacity', `1`);
+            style.setProperty('--width', `${e.data.contentlet.pos.width}px`);
+            style.setProperty('--height', `${e.data.contentlet.pos.height}px`);
+            style.setProperty('--left', `${e.data.contentlet.pos.x}px`);
+            style.setProperty('--top', `${e.data.contentlet.pos.y}px`);
+            this.currentInode = e.data.contentlet.inode;
+        }
+    }
+
+    onClickEdit() {
+        this.dotContentletEditorService.edit({
+            data: {
+                inode: this.currentInode
+            }
+        });
+    }
+
+    onClickDelete() {
+        this.iframe.nativeElement.contentWindow.postMessage(
+            { type: 'delete', contentlet: { inode: this.currentInode } },
+            '*'
+        );
+    }
+
+    pierce() {
+        console.log(this.iframe.nativeElement.contentWindow.document);
+    }
 
     constructor(
         private dotContentletEditorService: DotContentletEditorService,
@@ -70,7 +118,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         private dotMessageService: DotMessageService,
         private dotPageStateService: DotPageStateService,
         private dotRouterService: DotRouterService,
-        private dotUiColorsService: DotUiColorsService,
+        // private dotUiColorsService: DotUiColorsService,
         private ngZone: NgZone,
         private route: ActivatedRoute,
         private siteService: SiteService,
@@ -78,7 +126,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
         public sanitizer: DomSanitizer,
-        public iframeOverlayService: IframeOverlayService
+        public iframeOverlayService: IframeOverlayService,
+        private el: ElementRef
     ) {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
@@ -127,8 +176,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.dotLoadingIndicatorService.show();
-
+        // this.dotLoadingIndicatorService.show();
         this.setInitalData();
         this.subscribeSwitchSite();
         this.subscribeIframeCustomEvents();
@@ -155,19 +203,19 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @param any $event
      * @memberof DotEditContentComponent
      */
-    onLoad($event): void {
+    onLoad(): void {
         this.dotLoadingIndicatorService.hide();
-        if (
-            this.shouldSetContainersHeight() &&
-            $event.currentTarget.contentDocument.body.innerHTML
-        ) {
-            this.dotEditContentHtmlService.setContaintersChangeHeightListener(
-                this.pageStateInternal.layout
-            );
-        }
+        // if (
+        //     this.shouldSetContainersHeight() &&
+        //     $event.currentTarget.contentDocument.body.innerHTML
+        // ) {
+        //     this.dotEditContentHtmlService.setContaintersChangeHeightListener(
+        //         this.pageStateInternal.layout
+        //     );
+        // }
 
-        const doc = $event.target.contentWindow.document;
-        this.dotUiColorsService.setColors(doc.querySelector('html'));
+        // const doc = $event.target.contentWindow.document;
+        // this.dotUiColorsService.setColors(doc.querySelector('html'));
     }
 
     /**
@@ -375,12 +423,18 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         });
     }
 
-    private renderPage(pageState: DotPageRenderState): void {
-        if (this.shouldEditMode(pageState)) {
-            this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
-        } else {
-            this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
-        }
+    // private renderPage(pageState: DotPageRenderState): void {
+    private renderPage(pageState): void {
+        // this.iframe.nativeElement.src = 'http://localhost:3000';
+        // this.iframe.nativeElement.src = '/dotAdmin/#/';
+
+        this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
+
+        // if (this.shouldEditMode(pageState)) {
+        //     this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
+        // } else {
+        //     this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
+        // }
     }
 
     private subscribeIframeActions(): void {
@@ -395,13 +449,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private setInitalData(): void {
         const content$ = merge(
-            this.route.parent.parent.data.pipe(pluck('content')),
-            this.dotPageStateService.state$
+            this.route.parent.parent.data.pipe(pluck('content'))
+            //this.dotPageStateService.state$
         ).pipe(takeUntil(this.destroy$));
 
         this.pageState$ = content$.pipe(
             takeUntil(this.destroy$),
             tap((pageState: DotPageRenderState) => {
+                console.log('1');
+
                 this.pageStateInternal = pageState;
                 this.showIframe = false;
 
@@ -419,9 +475,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         );
     }
 
-    private shouldEditMode(pageState: DotPageRenderState): boolean {
-        return pageState.state.mode === DotPageMode.EDIT && !pageState.state.lockedByAnotherUser;
-    }
+    // private shouldEditMode(pageState: DotPageRenderState): boolean {
+    //     return pageState.state.mode === DotPageMode.EDIT && !pageState.state.lockedByAnotherUser;
+    // }
 
     private subscribePageModelChange(): void {
         this.dotEditContentHtmlService.pageModel$

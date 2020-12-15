@@ -1,7 +1,31 @@
 @use "variables" as *;
 @import "mixins";
 
+.editor {
+    position: absolute;
+    background-color: #0000006b;
+    z-index: 1;
+    width: var(--width);
+    height: var(--height);
+    top: var(--top);
+    left: var(--left);
+    opacity: var(--opacity);
+    display: flex;
+    place-content: center;
+    place-items: center;
+
+    button {
+        font-size: 1.2rem;
+    }
+}
+
 :host {
+    --width: 100px;
+    --height: 100px;
+    --top: 0;
+    --left: 0;
+    --opacity: 0;
+
     background-color: $gray-bg;
     display: flex;
     flex-direction: column;

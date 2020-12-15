@@ -8,6 +8,8 @@
 <dot-edit-contentlet (custom)="onCustomEvent($event)"></dot-edit-contentlet>
 <dot-reorder-menu [url]="reorderMenuUrl" (close)="onCloseReorderDialog()"></dot-reorder-menu>
 
+<button (click)="pierce()">click</button>
+
 <div class="dot-edit-content__wrapper">
     <dot-loading-indicator fullscreen="true"></dot-loading-indicator>
     <ng-container *ngIf="pageState$ | async as pageState">
@@ -44,6 +46,10 @@
                         [languageId]="pageState.viewAs.language.id"
                         *ngIf="showWhatsChanged"
                     ></dot-whats-changed>
+                    <div class="editor">
+                        <button (click)="onClickEdit($event)">Edit</button>
+                        <button (click)="onClickDelete($event)">Delete</button>
+                    </div>
                     <iframe
                         *ngIf="showIframe"
                         #iframe

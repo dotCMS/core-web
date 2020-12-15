@@ -6,15 +6,15 @@ import { Injectable, ElementRef } from '@angular/core';
 import * as _ from 'lodash';
 
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
-import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
+// import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
-import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
+// import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotLayout, DotLayoutColumn, DotLayoutRow } from '@shared/models/dot-edit-layout-designer';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotPageContent, DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
-import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
-import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
+// import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
+// import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
 import { DotCMSContentType } from 'dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
@@ -53,9 +53,9 @@ export class DotEditContentHtmlService {
 
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
-        private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService,
+        // private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService,
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
-        private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
+        // private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
         private dotDialogService: DotAlertConfirmService,
         private dotMessageService: DotMessageService
     ) {
@@ -113,7 +113,8 @@ export class DotEditContentHtmlService {
      */
     initEditMode(pageState: DotPageRenderState, iframeEl: ElementRef): void {
         this.renderPage(pageState, iframeEl).then(() => {
-            this.setEditMode();
+            console.log('Done render');
+            // this.setEditMode()
         });
     }
 
@@ -475,11 +476,11 @@ export class DotEditContentHtmlService {
         );
     }
 
-    private addContentToolBars(): void {
-        const doc = this.getEditPageDocument();
-        this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
-        this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
-    }
+    // private addContentToolBars(): void {
+    //     const doc = this.getEditPageDocument();
+    //     this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
+    //     this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
+    // }
 
     private createScriptTag(node: HTMLScriptElement): HTMLScriptElement {
         const doc = this.getEditPageDocument();
@@ -629,12 +630,52 @@ export class DotEditContentHtmlService {
         const fakeHtml = document.createElement('html');
         fakeHtml.innerHTML = pageState.html;
 
+        const script = document.createElement('script');
+
+        script.innerHTML = `
+            var currentContentlet = '';
+
+            function getContentletEl(inode) {
+                return document.querySelector('[data-dot-inode="' + inode + '"]')
+            }
+
+            window.addEventListener('scroll', (e) => {
+                if (currentContentlet) {
+                    const pos = currentContentlet.getBoundingClientRect();
+                    const inode = currentContentlet.dataset.dotInode;
+                    window.parent.postMessage({ type: 'edit', contentlet: { pos, inode } }, '*');
+                }
+            });
+
+            window.addEventListener('message', (event) => {
+                console.log('from the parent', event.data);
+                const contentlet = getContentletEl(event.data.contentlet.inode);
+                contentlet.remove();
+                window.parent.postMessage({ type: 'clear' }, '*');
+            });
+
+            document.addEventListener('click', (e) => {
+                currentContentlet = e.target.closest('[data-dot-object="contentlet"]');
+
+                if (currentContentlet) {
+                    const pos = currentContentlet.getBoundingClientRect();
+                    const inode = currentContentlet.dataset.dotInode;
+                    window.parent.postMessage({ type: 'edit', contentlet: { pos, inode } }, '*');
+                } else {
+                    window.parent.postMessage({ type: 'clear' }, '*');
+                }
+            });
+        `;
+
         if (fakeHtml.querySelector('base')) {
             return pageState.html;
         } else {
             const head = fakeHtml.querySelector('head');
             head.insertBefore(this.getBaseTag(pageState.page.pageURI), head.childNodes[0]);
         }
+
+        const head = fakeHtml.querySelector('head');
+        head.insertBefore(script, head.childNodes[0]);
 
         return fakeHtml.innerHTML;
     }
@@ -656,25 +697,25 @@ export class DotEditContentHtmlService {
         doc.close();
     }
 
-    private setEditContentletStyles(): void {
-        const timeStampId = `iframeId_${Math.floor(Date.now() / 100).toString()}`;
-        const style = this.dotDOMHtmlUtilService.createStyleElement(
-            getEditPageCss(`#${timeStampId}`)
-        );
-        const robotoFontElement = this.dotDOMHtmlUtilService.createLinkElement(GOOGLE_FONTS);
+    // private setEditContentletStyles(): void {
+    //     const timeStampId = `iframeId_${Math.floor(Date.now() / 100).toString()}`;
+    //     const style = this.dotDOMHtmlUtilService.createStyleElement(
+    //         getEditPageCss(`#${timeStampId}`)
+    //     );
+    //     const robotoFontElement = this.dotDOMHtmlUtilService.createLinkElement(GOOGLE_FONTS);
 
-        const doc = this.getEditPageDocument();
-        doc.documentElement.id = timeStampId;
-        doc.head.appendChild(style);
-        doc.head.appendChild(robotoFontElement);
-    }
+    //     const doc = this.getEditPageDocument();
+    //     doc.documentElement.id = timeStampId;
+    //     doc.head.appendChild(style);
+    //     doc.head.appendChild(robotoFontElement);
+    // }
 
-    private setEditMode(): void {
-        this.addContentToolBars();
+    // private setEditMode(): void {
+    //     this.addContentToolBars();
 
-        this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
-        this.setEditContentletStyles();
-    }
+    //     this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
+    //     this.setEditContentletStyles();
+    // }
 
     private removeCurrentContentlet(): void {
         const doc = this.getEditPageDocument();
