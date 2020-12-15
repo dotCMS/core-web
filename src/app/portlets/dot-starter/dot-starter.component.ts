@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, take } from 'rxjs/operators';
-import { DotStarterService } from '@services/dot-starter/dot-starter.service';
+import { DotToolGroupService } from '@services/dot-tool-group/dot-tool-group.service';
 
 @Component({
     selector: 'dot-starter',
@@ -11,7 +11,7 @@ import { DotStarterService } from '@services/dot-starter/dot-starter.service';
 export class DotStarterComponent implements OnInit {
     username: string;
 
-    constructor(private route: ActivatedRoute, private dotStarterService: DotStarterService) {}
+    constructor(private route: ActivatedRoute, private dotToolGroupService: DotToolGroupService) {}
 
     ngOnInit() {
         this.route.data.pipe(pluck('username'), take(1)).subscribe((username: string) => {
@@ -20,9 +20,9 @@ export class DotStarterComponent implements OnInit {
     }
 
     handleVisibility(hide: boolean): void {
-        console.log(hide);
+        const layoutId = 'gettingstarted';
         hide
-            ? this.dotStarterService.hide().pipe(take(1)).subscribe()
-            : this.dotStarterService.show().pipe(take(1)).subscribe();
+            ? this.dotToolGroupService.hide(layoutId).pipe(take(1)).subscribe()
+            : this.dotToolGroupService.show(layoutId).pipe(take(1)).subscribe();
     }
 }

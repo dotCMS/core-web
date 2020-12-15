@@ -10,7 +10,7 @@ import { DotStarterResolver } from './dot-starter-resolver.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
-import { DotStarterService } from '@services/dot-starter/dot-starter.service';
+import { DotToolGroupService } from '@services/dot-tool-group/dot-tool-group.service';
 import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -65,7 +65,7 @@ describe('DotStarterComponent', () => {
     let fixture: ComponentFixture<DotStarterComponent>;
     let de: DebugElement;
     const messageServiceMock = new MockDotMessageService(messages);
-    let dotStarterService: DotStarterService;
+    let dotToolGroupService: DotToolGroupService;
 
     beforeEach(
         waitForAsync(() => {
@@ -80,7 +80,7 @@ describe('DotStarterComponent', () => {
                     },
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
                     DotStarterResolver,
-                    DotStarterService
+                    DotToolGroupService
                 ]
             });
 
@@ -89,7 +89,7 @@ describe('DotStarterComponent', () => {
 
             fixture.detectChanges();
             de = fixture.debugElement;
-            dotStarterService = TestBed.inject(DotStarterService);
+            dotToolGroupService = TestBed.inject(DotToolGroupService);
         })
     );
 
@@ -244,13 +244,13 @@ describe('DotStarterComponent', () => {
         const checkBox: Checkbox = de.query(By.css('p-checkbox')).componentInstance;
         const boxEl = fixture.nativeElement.querySelector('.p-checkbox-box');
 
-        spyOn(dotStarterService, 'show');
-        spyOn(dotStarterService, 'hide');
+        spyOn(dotToolGroupService, 'show').and.returnValue(of({ message: 'test' }));
+        spyOn(dotToolGroupService, 'hide').and.returnValue(of({ message: 'test' }));
 
         expect(checkBox.label).toEqual(messageServiceMock.get('starter.dont.show'));
         boxEl.click();
-        expect(dotStarterService.hide).toHaveBeenCalledTimes(1);
+        expect(dotToolGroupService.hide).toHaveBeenCalledWith('gettingstarted');
         boxEl.click();
-        expect(dotStarterService.show).toHaveBeenCalledTimes(1);
+        expect(dotToolGroupService.show).toHaveBeenCalledWith('gettingstarted');
     });
 });

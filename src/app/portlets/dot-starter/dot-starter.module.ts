@@ -4,11 +4,11 @@ import { DotStarterResolver } from './dot-starter-resolver.service';
 import { DotStarterRoutingModule } from './dot-starter-routing.module';
 import { DotStarterComponent } from './dot-starter.component';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DotStarterService } from '@services/dot-starter/dot-starter.service';
+import { DotToolGroupService } from '@services/dot-tool-group/dot-tool-group.service';
 
 @NgModule({
     declarations: [DotStarterComponent],
     imports: [DotStarterRoutingModule, DotMessagePipeModule, CheckboxModule],
-    providers: [DotStarterResolver, DotStarterService]
+    providers: [DotStarterResolver, DotToolGroupService]
 })
 export class DotStarterModule {}
