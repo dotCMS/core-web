@@ -36,4 +36,8 @@ describe('DotToolGroupService', () => {
         const req = httpMock.expectOne(url);
         expect(req.request.method).toBe('PUT');
     });
+
+    afterEach(() => {
+        httpMock.verify();
+    });
 });
