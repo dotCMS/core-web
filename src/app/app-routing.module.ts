@@ -13,8 +13,6 @@ import { PublicAuthGuardService } from '@services/guards/public-auth-guard.servi
 import { DotLoginPageComponent } from '@components/login/main/dot-login-page.component';
 import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
 import { DotIframePortletLegacyResolver } from '@components/_common/iframe/service/dot-iframe-porlet-legacy-resolver.service';
-import { DotCreateContentletComponent } from '@components/dot-contentlet-editor/components/dot-create-contentlet/dot-create-contentlet.component';
-import { DotCreateContentletResolver } from '@components/dot-contentlet-editor/components/dot-create-contentlet/dot-create-contentlet.resolver.service';
 
 const PORTLETS_ANGULAR = [
     {
@@ -102,22 +100,17 @@ const PORTLETS_IFRAME = [
                 children: [
                     {
                         loadChildren: () =>
+                            import(
+                                '@components/dot-contentlet-editor/dot-contentlet-editor.routing.module'
+                            ).then((m) => m.DotContentletEditorRoutingModule),
+                        path: 'new'
+                    },
+                    {
+                        loadChildren: () =>
                             import('@portlets/dot-porlet-detail/dot-portlet-detail.module').then(
                                 (m) => m.DotPortletDetailModule
                             ),
                         path: ':asset'
-                    },
-                    {
-                        path: 'new',
-                        children: [
-                            {
-                                component: DotCreateContentletComponent,
-                                path: ':contentType',
-                                resolve: {
-                                    url: DotCreateContentletResolver
-                                }
-                            }
-                        ]
                     }
                 ],
                 resolve: {
