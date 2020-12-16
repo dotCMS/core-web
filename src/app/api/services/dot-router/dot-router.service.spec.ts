@@ -59,8 +59,8 @@ describe('DotRouterService', () => {
                 imports: [RouterTestingModule]
             });
 
-            service = testbed.get(DotRouterService);
-            router = testbed.get(Router);
+            service = testbed.inject(DotRouterService);
+            router = testbed.inject(Router);
         })
     );
 
@@ -92,39 +92,32 @@ describe('DotRouterService', () => {
     it('should go to edit page', () => {
         spyOn(service, 'goToEditPage');
         service.goToMain('/about/us');
-
         expect(service.goToEditPage).toHaveBeenCalledWith({ url: '/about/us' });
     });
 
     it('should go to Starter page', () => {
-        spyOn(service, 'goToStarter');
         service.goToStarter();
-
-        expect(service.goToStarter).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['/starter']);
     });
 
     it('should go to Content page', () => {
-        spyOn(service, 'goToContent');
         service.goToContent();
-
-        expect(service.goToContent).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith(['/c/content']);
     });
 
     it('should go to edit page', () => {
         service.goToEditTemplate('123');
-
         expect(router.navigate).toHaveBeenCalledWith(['/templates/edit/123']);
     });
 
     it('should go to edit content type page', () => {
         service.goToEditContentType('123', 'Form');
-
         expect(router.navigate).toHaveBeenCalledWith(['/Form/edit/123']);
     });
+
     it('should go to previousSavedURL', () => {
         service.previousSavedURL = 'test/fake';
         service.goToMain();
-
         expect(router.navigate).toHaveBeenCalledWith(['test/fake']);
     });
 
