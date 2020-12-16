@@ -27,7 +27,7 @@ export class DotTemplateNewComponent implements OnInit {
         });
 
         ref.onClose.pipe(take(1)).subscribe((value: string) => {
-            value !== undefined
+            value
                 ? this.dotRouterService.gotoPortlet(`/templates/new/${value}`)
                 : this.dotRouterService.goToURL(`/templates`);
         });
