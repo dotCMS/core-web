@@ -20,9 +20,35 @@ export class DotDragDropAPIHtmlService {
      */
     public initDragAndDropContext(iframe: any): void {
         const doc = iframe.contentDocument || iframe.contentWindow.document;
-        const dragulaCSSElement = this.dotDOMHtmlUtilService.createLinkElement(
-            `${API_ROOT_PATH}/dragula.min.css`
-        );
+        // const dragulaCSSElement = this.dotDOMHtmlUtilService.createLinkElement(
+        //     `${API_ROOT_PATH}/dragula.min.css`
+        // );
+
+        const dragulaCSSElement = document.createElement('style');
+        dragulaCSSElement.innerHTML = `
+        .gu-mirror {
+            position: fixed !important;
+            margin: 0 !important;
+            z-index: 9999 !important;
+            opacity: 0.8;
+        }
+
+        .gu-mirror {
+            transform: scale(0.75);
+            transform-origin: right top;
+        }
+
+
+        .gu-hide {
+            display: none !important;
+        }
+        .gu-unselectable {
+            user-select: none !important;
+        }
+        .gu-transit {
+            opacity: 0.2;
+        }
+        `;
 
         doc.head.appendChild(dragulaCSSElement);
         const dragulaJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(

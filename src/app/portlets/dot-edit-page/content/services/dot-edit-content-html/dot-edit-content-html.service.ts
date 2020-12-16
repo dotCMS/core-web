@@ -477,8 +477,8 @@ export class DotEditContentHtmlService {
 
     private addContentToolBars(): void {
         const doc = this.getEditPageDocument();
+        this.dotEditContentToolbarHtmlService.bindContentletEvents(doc);
         this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
-        this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
     }
 
     private createScriptTag(node: HTMLScriptElement): HTMLScriptElement {
@@ -523,8 +523,6 @@ export class DotEditContentHtmlService {
     private generateNewContentlet(html: string): HTMLElement {
         const newContentlet = this.getContentletElementFromHtml(html);
 
-        this.dotEditContentToolbarHtmlService.addToolbarToContentlet(newContentlet);
-
         let scriptTags: HTMLScriptElement[] = [];
         scriptTags = this.getScriptTags(scriptTags, newContentlet);
 
@@ -568,8 +566,6 @@ export class DotEditContentHtmlService {
                 dotEditContentletEl.setAttribute(`data-dot-${attr}`, dotPageContent[attr]);
             }
         }
-
-        this.dotEditContentToolbarHtmlService.addToolbarToContentlet(dotEditContentletEl);
 
         return dotEditContentletEl;
     }
@@ -670,10 +666,9 @@ export class DotEditContentHtmlService {
     }
 
     private setEditMode(): void {
-        this.addContentToolBars();
-
-        this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
         this.setEditContentletStyles();
+        this.addContentToolBars();
+        this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
     }
 
     private removeCurrentContentlet(): void {

@@ -78,35 +78,24 @@ export class DotEditContentToolbarHtmlService {
     }
 
     /**
-     * Edit contentlet html to add button and content
+     * Bind event to the document to add the contentlet toolbar on contentlet element mouseover
      *
-     * @param Document doc
+     * @param {Document} doc
      * @memberof DotEditContentToolbarHtmlService
      */
-    addContentletMarkup(doc: Document): void {
-        const contentletQuery = `[data-dot-object="contentlet"][data-dot-has-page-lang-version="true"]`;
-        const contentlets: HTMLDivElement[] = Array.from(doc.querySelectorAll(contentletQuery));
+    bindContentletEvents(doc: Document): void {
+        // TODO: how do I remove this listener?
+        doc.addEventListener('mouseover', (e) => {
+            const contentlet: HTMLElement = (e.target as Element).closest(
+                '[data-dot-object="contentlet"]:not([data-dot-toolbar="true"]'
+            );
 
-        contentlets.forEach((contentlet: HTMLDivElement) => {
-            this.addToolbarToContentlet(contentlet);
+            if (contentlet) {
+                console.log(contentlet);
+                contentlet.setAttribute('data-dot-toolbar', 'true');
+                this.addToolbarToContentlet(contentlet);
+            }
         });
-    }
-
-    addToolbarToContentlet(contentlet: HTMLElement) {
-        const contentletToolbar = document.createElement('div');
-        contentletToolbar.classList.add('dotedit-contentlet__toolbar');
-
-        const vtls: HTMLElement[] = Array.from(
-            contentlet.querySelectorAll('[data-dot-object="vtl-file"]')
-        );
-
-        if (vtls.length) {
-            contentletToolbar.innerHTML += this.getEditVtlButtons(vtls);
-        }
-
-        contentletToolbar.innerHTML += this.getContentButton(contentlet.dataset);
-
-        contentlet.insertAdjacentElement('afterbegin', contentletToolbar);
     }
 
     getContentButton(contentletDataset: { [key: string]: any }): string {
@@ -168,6 +157,23 @@ export class DotEditContentToolbarHtmlService {
                 };
             })
         });
+    }
+
+    private addToolbarToContentlet(contentlet: HTMLElement) {
+        const contentletToolbar = document.createElement('div');
+        contentletToolbar.classList.add('dotedit-contentlet__toolbar');
+
+        const vtls: HTMLElement[] = Array.from(
+            contentlet.querySelectorAll('[data-dot-object="vtl-file"]')
+        );
+
+        if (vtls.length) {
+            contentletToolbar.innerHTML += this.getEditVtlButtons(vtls);
+        }
+
+        contentletToolbar.innerHTML += this.getContentButton(contentlet.dataset);
+
+        contentlet.insertAdjacentElement('afterbegin', contentletToolbar);
     }
 
     private createContainerToolbar(container: HTMLElement) {
