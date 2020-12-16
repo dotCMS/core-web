@@ -5,7 +5,6 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 
-innerWidth;
 const messageServiceMock = new MockDotMessageService({
     'message.template.empty.title': 'Your template list is empty',
     'message.template.empty.content':
@@ -24,7 +23,11 @@ export default {
     parameters: {
         docs: {}
     },
-    args: {}
+    args: {
+        handleButtonClick: () => {
+            console.log('button click');
+        }
+    }
 } as Meta;
 
 const PrimaryTemplate = `
@@ -35,6 +38,7 @@ const PrimaryTemplate = `
         [title]="'message.template.empty.title' | dm"
         [content]="'message.template.empty.content' | dm"
         [buttonLabel]="'message.template.empty.button.label' | dm"
+        (buttonClick)="handleButtonClick()"
     >
     </dot-empty-state>
 `;

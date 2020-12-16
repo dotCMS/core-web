@@ -16,9 +16,9 @@
         [rows]="10"
         [colsTextWidth]="[60, 50, 60, 80]"
         icon="web"
-        title="'message.template.empty.title' | dm"
-        content="'message.template.empty.content' | dm"
-        buttonLabel="'message.template.empty.button.label' | dm"
+        [title]="'message.template.empty.title' | dm"
+        [content]="'message.template.empty.content' | dm"
+        [buttonLabel]="'message.template.empty.button.label' | dm"
         (buttonClick)="handleButtonClick()"
     >
     </dot-empty-state>

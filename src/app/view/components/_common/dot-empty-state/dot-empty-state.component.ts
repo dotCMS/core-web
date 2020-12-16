@@ -7,11 +7,11 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class DotEmptyStateComponent implements OnInit {
     @Input() rows: number;
-    @Input() colsTextWidth: number[];
+    @Input() colsTextWidth: number[] = [];
     @Input() icon: string;
     @Input() title: string;
     @Input() content: string;
-    @Input() buttonLabel: string;
+    @Input() buttonLabel: string = 'Hello';
     @Output() buttonClick = new EventEmitter<string>();
 
     columnWidth: string;
@@ -20,7 +20,7 @@ export class DotEmptyStateComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {
-        this.columnWidth = `${(100 - this.checkBoxWidth) / this.colsTextWidth.length}%`; // 100% - width of checkbox = 96.5%, which is then divided by number of cols
+        this.columnWidth = this.calculateColumnWidth();
     }
 
     numberOfRows(): number[] {
@@ -29,5 +29,9 @@ export class DotEmptyStateComponent implements OnInit {
 
     goToPortlet(event: string) {
         this.buttonClick.emit(event);
+    }
+
+    private calculateColumnWidth(): string {
+        return `${(100 - this.checkBoxWidth) / this.colsTextWidth.length}%`;
     }
 }
