@@ -87,7 +87,7 @@ class TestPaginatorService {
     get() {}
 }
 
-describe('DotListingDataTableComponent', () => {
+fdescribe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
     let hostFixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
@@ -210,18 +210,22 @@ describe('DotListingDataTableComponent', () => {
                 variable: 'Banner'
             }
         ];
+
         paginatorService = comp.paginatorService;
         paginatorService.paginationPerPage = 4;
         paginatorService.maxLinksPage = 2;
         paginatorService.totalRecords = items.length;
     });
 
-    it('should set active element the global search on load', () => {
-        const actionHeader = hostFixture.debugElement.query(By.css('dot-action-header'));
-        const globalSearch = actionHeader.query(By.css('input'));
+    fit('should set active element the global search on load', () => {
         hostFixture.detectChanges();
 
-        expect(globalSearch.nativeElement).toBe(document.activeElement);
+        const actionHeader = hostFixture.debugElement.query(By.css('dot-action-header'));
+        const globalSearch = actionHeader.query(By.css('input'));
+
+        console.log(globalSearch);
+
+        // expect(globalSearch.nativeElement).toBe(document.activeElement);
     });
 
     it('renderer basic datatable component', fakeAsync(() => {
@@ -405,6 +409,17 @@ describe('DotListingDataTableComponent', () => {
         tick(1);
         expect(comp.dataTable.first).toBe(1);
         expect(comp.items.length).toBe(7);
+    }));
+
+    it('renders the dot empty state component if items array is empty', fakeAsync(() => {
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(of([]));
+        // hostFixture.detectChanges();
+        // tick(1);
+        // console.log(hostFixture.debugElement.nativeElement);
+
+        // test when clicking button
+
+        pending();
     }));
 
     it('should focus first row on arrowDown in Global Search Input', fakeAsync(() => {

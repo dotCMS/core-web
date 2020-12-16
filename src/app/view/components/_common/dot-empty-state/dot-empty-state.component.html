@@ -1,29 +1,22 @@
-<div class="dot-empty-state-container">
-    <div class="dot-empty-container__notice">
-        <span *ngIf="icon" class="material-icons">{{ icon }}</span>
-        <h3 class="dot-empty-container__title" *ngIf="title">{{ title }}</h3>
-        <p class="dot-empty-container__content" *ngIf="content">{{ content }}</p>
-        <button
-            pButton
-            type="button"
-            (click)="goToPortlet($event)"
-            label="{{ buttonLabel }}"
-        ></button>
-    </div>
-    <table class="dot-empty-state">
-        <tbody>
-            <tr *ngFor="let number of numberOfRows()">
-                <td [ngStyle]="{ width: checkBoxWidth + '%' }" data-testid="checkbox">
-                    <div class="checkbox-dummy"></div>
-                </td>
-                <td
-                    *ngFor="let width of colsTextWidth"
-                    [ngStyle]="{ width: columnWidth }"
-                    data-testid="dummy-text-td"
-                >
-                    <span class="dot-dummy-text" [ngStyle]="{ width: width + '%' }"></span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="dot-empty-container__notice">
+    <span *ngIf="icon" class="material-icons">{{ icon }}</span>
+    <h3 class="dot-empty-container__title" *ngIf="title">{{ title }}</h3>
+    <p class="dot-empty-container__content" *ngIf="content">{{ content }}</p>
+    <button pButton type="button" (click)="goToPortlet($event)" label="{{ buttonLabel }}"></button>
 </div>
+<table class="dot-empty-state" data-testid="dot-empty-state">
+    <tbody>
+        <tr *ngFor="let number of numberOfRows()">
+            <td [ngStyle]="{ width: checkBoxWidth + '%' }" data-testid="checkbox">
+                <div class="checkbox-dummy"></div>
+            </td>
+            <td
+                *ngFor="let width of colsTextWidth"
+                [ngStyle]="{ width: columnWidth }"
+                data-testid="dummy-text-td"
+            >
+                <span class="dot-dummy-text" [ngStyle]="{ width: width + '%' }"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

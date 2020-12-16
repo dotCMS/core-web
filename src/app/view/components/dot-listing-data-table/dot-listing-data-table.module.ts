@@ -29,7 +29,7 @@ import { DotEmptyStateModule } from '@components/_common/dot-empty-state/dot-emp
         RouterModule,
         DotPipesModule,
         CheckboxModule,
-        DotEmptyStateModule // TODO: Remove
+        DotEmptyStateModule
     ],
     providers: [DotCrudService, FormatDateService, DotcmsConfigService, LoggerService]
 })
