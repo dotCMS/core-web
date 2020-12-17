@@ -97,6 +97,18 @@ export const EDIT_PAGE_JS = `
     })
 
     window.getDotNgModel = getDotNgModel;
+
+    var myAutoScroll = autoScroll([
+        window
+    ],{
+        margin: 100,
+        maxSpeed: 20,
+        scrollWhenOutside: true,
+        autoScroll: function(){
+            //Only scroll when the pointer is down, and there is a child being dragged.
+            return this.down && drake.dragging;
+        }
+    });
 })();
 `;
 

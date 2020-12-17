@@ -20,6 +20,8 @@ export class DotDragDropAPIHtmlService {
      */
     public initDragAndDropContext(iframe: any): void {
         const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+        // TODO: remove this file in core
         // const dragulaCSSElement = this.dotDOMHtmlUtilService.createLinkElement(
         //     `${API_ROOT_PATH}/dragula.min.css`
         // );
@@ -30,14 +32,10 @@ export class DotDragDropAPIHtmlService {
             position: fixed !important;
             margin: 0 !important;
             z-index: 9999 !important;
-            opacity: 0.8;
-        }
-
-        .gu-mirror {
-            transform: scale(0.75);
+            opacity: 1;
+            transform: scale(0.5);
             transform-origin: right top;
         }
-
 
         .gu-hide {
             display: none !important;
@@ -53,8 +51,11 @@ export class DotDragDropAPIHtmlService {
         doc.head.appendChild(dragulaCSSElement);
         const dragulaJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
             `${API_ROOT_PATH}/dragula.min.js`,
-            () => this.initDragula(doc)
+            () => {
+                this.initDragula(doc);
+            }
         );
+
         // If the page has DOJO, we need to inject the Dragula dependency with require.
         if (iframe.contentWindow.hasOwnProperty('dojo')) {
             doc.body.appendChild(

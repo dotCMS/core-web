@@ -46,6 +46,20 @@ export const getEditPageCss = (timestampId: string): string => {
         transition: background ${animation} !important;
     }
 
+    ${timestampId} [data-dot-object="contentlet"].gu-mirror {
+        margin: 0 !important;
+        border: solid 1px #53c2f9;
+        padding: 2rem !important;
+        background: #ccc !important;
+        height: auto !important;
+        min-height: auto !important;
+        box-shadow: 0 0 40px 0 #00000038;
+    }
+
+    ${timestampId} [data-dot-object="contentlet"].gu-mirror .dotedit-contentlet__toolbar {
+        display: none !important;
+    }
+
     ${timestampId} [data-dot-object="contentlet"][data-dot-has-page-lang-version="false"] {
         display: none !important;
     }

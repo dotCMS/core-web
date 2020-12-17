@@ -625,11 +625,17 @@ export class DotEditContentHtmlService {
         const fakeHtml = document.createElement('html');
         fakeHtml.innerHTML = pageState.html;
 
+        // TODO: bring this file to core?
+        const domScrollerJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
+            'https://unpkg.com/dom-autoscroller@2.2.3/dist/dom-autoscroller.js'
+        );
+
         if (fakeHtml.querySelector('base')) {
             return pageState.html;
         } else {
             const head = fakeHtml.querySelector('head');
             head.insertBefore(this.getBaseTag(pageState.page.pageURI), head.childNodes[0]);
+            head.appendChild(domScrollerJSElement);
         }
 
         return fakeHtml.innerHTML;
