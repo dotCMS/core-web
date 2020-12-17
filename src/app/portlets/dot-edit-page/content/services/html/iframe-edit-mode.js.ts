@@ -52,6 +52,10 @@ export const EDIT_PAGE_JS = `
 
     var drake = dragula(
         getContainers(), {
+        moves: function (el, target, source, sibling) {
+            el.classList.toggle('moving');
+            return true;
+        },
         accepts: function (el, target, source, sibling) {
             var canDrop = false;
             if (target.dataset.dotObject === 'container') {
@@ -78,6 +82,7 @@ export const EDIT_PAGE_JS = `
         if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
             forbiddenTarget.classList.remove('no');
         }
+        el.classList.toggle('moving');
 
         currentModel = [];
     });
@@ -90,9 +95,6 @@ export const EDIT_PAGE_JS = `
                 type: 3,
             });
         }
-
-
-
 
         if (target !== source) {
             window.contentletEvents.next({
@@ -117,10 +119,10 @@ export const EDIT_PAGE_JS = `
         window
     ],{
         margin: 100,
-        maxSpeed: 20,
+        maxSpeed: 60,
         scrollWhenOutside: true,
         autoScroll: function(){
-            //Only scroll when the pointer is down, and there is a child being dragged.
+            // Only scroll when the pointer is down, and there is a child being dragged.
             return this.down && drake.dragging;
         }
     });

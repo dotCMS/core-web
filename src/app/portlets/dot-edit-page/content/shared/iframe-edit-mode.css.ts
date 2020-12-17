@@ -39,11 +39,15 @@ export const getEditPageCss = (timestampId: string): string => {
 
     ${timestampId} [data-dot-object="contentlet"] {
         background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQoU2NkIAIEH/6VxkhIHUjRWlu2WXgVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQCguSaB0AmkRwAAAABJRU5ErkJggg==") !important;
-        margin: 40px 16px 16px !important;
+        margin: 16px 16px 16px !important;
         min-height: 60px !important;
         position: relative;
         padding-top: 25px !important;
         transition: background ${animation} !important;
+    }
+
+    ${timestampId} [data-dot-object="contentlet"]:first-child {
+        margin-top: 40px !important;
     }
 
     /*
@@ -60,6 +64,29 @@ export const getEditPageCss = (timestampId: string): string => {
         min-height: auto !important;
         box-shadow: 0 0 40px 0 #00000038;
         z-index: 2147483648 !important;
+    }
+
+    /*
+        We add the .moving class to the element on drake "moves" property.
+        And we use it to make the contentlet into a smaller block to easier
+        relocation and prevent big layout shifts
+    */
+    ${timestampId} [data-dot-object="contentlet"].moving:not(.gu-mirror) {
+        min-height: 0 !important;
+        background: rgba(83, 194, 249, 1) !important;
+        overflow: hidden;
+        padding: 0px !important;
+        margin: 0px !important;
+        height: 16px;
+        border: solid 2px #53c2f9;
+        margin: 0 16px !important;
+        z-index: 100;
+    }
+
+
+    /* Hide all the elements inside the contentlet while were relocating */
+    ${timestampId} [data-dot-object="contentlet"].moving:not(.gu-mirror) * {
+        display: none;
     }
 
     ${timestampId} [data-dot-object="contentlet"].gu-mirror .dotedit-contentlet__toolbar {
