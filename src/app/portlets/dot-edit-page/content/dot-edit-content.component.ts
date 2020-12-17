@@ -1,6 +1,6 @@
 import { Observable, Subject, fromEvent, merge } from 'rxjs';
 
-import { filter, takeUntil, pluck, take, tap } from 'rxjs/operators';
+import { filter, takeUntil, pluck, take, tap, skip } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -394,6 +394,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private setInitalData(): void {
+        this.route.parent.parent.data
+            .pipe(pluck('content'))
+            .subscribe((e) => console.log('content', e)),
+            this.dotPageStateService.state$.subscribe((e) => console.log('state', e));
+
         const content$ = merge(
             this.route.parent.parent.data.pipe(pluck('content')),
             this.dotPageStateService.state$
@@ -438,7 +443,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private subscribeSwitchSite(): void {
-        this.siteService.switchSite$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.siteService.switchSite$.pipe(skip(1), takeUntil(this.destroy$)).subscribe(() => {
             this.reload();
         });
     }

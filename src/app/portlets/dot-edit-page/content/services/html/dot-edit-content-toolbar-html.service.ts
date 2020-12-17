@@ -91,7 +91,6 @@ export class DotEditContentToolbarHtmlService {
             );
 
             if (contentlet) {
-                console.log(contentlet);
                 contentlet.setAttribute('data-dot-toolbar', 'true');
                 this.addToolbarToContentlet(contentlet);
             }
