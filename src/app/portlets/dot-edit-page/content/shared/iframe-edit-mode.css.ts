@@ -55,7 +55,7 @@ export const getEditPageCss = (timestampId: string): string => {
         border: solid 1px #53c2f9;
         padding: 2rem !important;
         background: #FFF !important;
-        color: #222;
+        color: #444 !important;
         height: auto !important;
         min-height: auto !important;
         box-shadow: 0 0 40px 0 #00000038;
