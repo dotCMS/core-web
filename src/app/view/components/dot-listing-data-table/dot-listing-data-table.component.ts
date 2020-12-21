@@ -97,6 +97,16 @@ export class DotListingDataTableComponent implements OnInit {
     }
 
     /**
+     * Clear selection and notify change.
+     *
+     * @memberof DotListingDataTableComponent
+     */
+    clearSelection(): void {
+        this.selected = [];
+        this.handleRowCheck();
+    }
+
+    /**
      * Emit selected row
      * @param {any} rowData
      *

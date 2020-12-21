@@ -479,6 +479,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         } else {
             this.showToastNotification(this.dotMessageService.get(messageKey));
         }
+        this.listing.clearSelection();
         this.listing.loadCurrentPage();
     }
 
