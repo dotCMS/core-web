@@ -96,7 +96,7 @@ fdescribe('DotListingDataTableComponent', () => {
     let items;
     let paginatorService: PaginatorService;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
         const messageServiceMock = new MockDotMessageService({
             'global-search': 'Global Serach'
         });
@@ -156,8 +156,6 @@ fdescribe('DotListingDataTableComponent', () => {
         hostComponent.url = '/test/';
 
         comp = hostFixture.debugElement.query(By.css('dot-listing-data-table')).componentInstance;
-        de = hostFixture.debugElement.query(By.css('p-table'));
-        el = de.nativeElement;
 
         items = [
             {
@@ -215,7 +213,12 @@ fdescribe('DotListingDataTableComponent', () => {
         paginatorService.paginationPerPage = 4;
         paginatorService.maxLinksPage = 2;
         paginatorService.totalRecords = items.length;
-    });
+        tick(1);
+        hostFixture.detectChanges();
+
+        de = hostFixture.debugElement.query(By.css('p-table'));
+        el = de.nativeElement;
+    }));
 
     fit('should set active element the global search on load', () => {
         hostFixture.detectChanges();
@@ -223,9 +226,11 @@ fdescribe('DotListingDataTableComponent', () => {
         const actionHeader = hostFixture.debugElement.query(By.css('dot-action-header'));
         const globalSearch = actionHeader.query(By.css('input'));
 
-        console.log(globalSearch);
+        // console.log(items, actionHeader);
 
-        // expect(globalSearch.nativeElement).toBe(document.activeElement);
+        // pending();
+
+        expect(globalSearch.nativeElement).toBe(document.activeElement);
     });
 
     it('renderer basic datatable component', fakeAsync(() => {
