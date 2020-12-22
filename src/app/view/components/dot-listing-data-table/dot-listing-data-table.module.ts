@@ -13,7 +13,6 @@ import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { RouterModule } from '@angular/router';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DotEmptyStateModule } from '@components/_common/dot-empty-state/dot-empty-state.module';
 
 @NgModule({
     declarations: [DotListingDataTableComponent],
@@ -28,8 +27,7 @@ import { DotEmptyStateModule } from '@components/_common/dot-empty-state/dot-emp
         DotIconModule,
         RouterModule,
         DotPipesModule,
-        CheckboxModule,
-        DotEmptyStateModule
+        CheckboxModule
     ],
     providers: [DotCrudService, FormatDateService, DotcmsConfigService, LoggerService]
 })

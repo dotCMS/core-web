@@ -96,7 +96,7 @@ fdescribe('DotListingDataTableComponent', () => {
     let items;
     let paginatorService: PaginatorService;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
             'global-search': 'Global Serach'
         });
@@ -156,6 +156,8 @@ fdescribe('DotListingDataTableComponent', () => {
         hostComponent.url = '/test/';
 
         comp = hostFixture.debugElement.query(By.css('dot-listing-data-table')).componentInstance;
+        de = hostFixture.debugElement.query(By.css('p-table'));
+        el = de.nativeElement;
 
         items = [
             {
@@ -208,27 +210,16 @@ fdescribe('DotListingDataTableComponent', () => {
                 variable: 'Banner'
             }
         ];
-
         paginatorService = comp.paginatorService;
         paginatorService.paginationPerPage = 4;
         paginatorService.maxLinksPage = 2;
         paginatorService.totalRecords = items.length;
-        tick(1);
-        hostFixture.detectChanges();
+    });
 
-        de = hostFixture.debugElement.query(By.css('p-table'));
-        el = de.nativeElement;
-    }));
-
-    fit('should set active element the global search on load', () => {
-        hostFixture.detectChanges();
-
+    it('should set active element the global search on load', () => {
         const actionHeader = hostFixture.debugElement.query(By.css('dot-action-header'));
         const globalSearch = actionHeader.query(By.css('input'));
-
-        // console.log(items, actionHeader);
-
-        // pending();
+        hostFixture.detectChanges();
 
         expect(globalSearch.nativeElement).toBe(document.activeElement);
     });
@@ -416,17 +407,6 @@ fdescribe('DotListingDataTableComponent', () => {
         expect(comp.items.length).toBe(7);
     }));
 
-    it('renders the dot empty state component if items array is empty', fakeAsync(() => {
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(of([]));
-        // hostFixture.detectChanges();
-        // tick(1);
-        // console.log(hostFixture.debugElement.nativeElement);
-
-        // test when clicking button
-
-        pending();
-    }));
-
     it('should focus first row on arrowDown in Global Search Input', fakeAsync(() => {
         spyOn(comp, 'focusFirstRow').and.callThrough();
         spyOn(paginatorService, 'get').and.returnValue(of(items));
@@ -491,4 +471,16 @@ fdescribe('DotListingDataTableComponent', () => {
             expect(7).toEqual(bodyCheckboxes.length);
         });
     });
+
+    it('renders the dot empty state component if items array is empty', fakeAsync(() => {
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(of([]));
+        hostFixture.detectChanges();
+        tick(1);
+        hostFixture.detectChanges();
+        // console.log(hostFixture.debugElement.nativeElement);
+
+        // test when clicking button
+
+        pending();
+    }));
 });

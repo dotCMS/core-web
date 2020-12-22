@@ -198,14 +198,11 @@ export class DotListingDataTableComponent implements OnInit {
     }
 
     private setItems(items: any[]): void {
-        this.items = [];
-        this.loading = false;
-        console.log(items, this.formatData);
-        // setTimeout(() => {
-        //     // avoid ExpressionChangedAfterItHasBeenCheckedError on p-table
-        //     this.items = this.dateColumns ? this.formatData(items) : items;
-        //     this.loading = false;
-        // }, 0);
+        setTimeout(() => {
+            // avoid ExpressionChangedAfterItHasBeenCheckedError on p-table
+            this.items = this.dateColumns ? this.formatData(items) : items;
+            this.loading = false;
+        }, 0);
     }
 
     private isTypeNumber(col: DataTableColumn): boolean {

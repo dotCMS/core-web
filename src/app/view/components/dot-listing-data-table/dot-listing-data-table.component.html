@@ -10,77 +10,60 @@
     />
     <ng-content></ng-content>
 </dot-action-header>
+<p-table
+    #dataTable
+    (onLazyLoad)="loadDataPaginationEvent($event)"
+    (onRowSelect)="handleRowCheck()"
+    (onRowUnselect)="handleRowCheck()"
+    (onHeaderCheckboxToggle)="handleRowCheck()"
+    [columns]="columns"
+    [lazy]="true"
+    [loading]="loading"
+    loadingIcon="fa fa-circle-o-notch fa-spin"
+    [pageLinks]="paginatorService.maxLinksPage"
+    [paginator]="true"
+    [rows]="paginationPerPage"
+    [sortOrder]="sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1"
+    [totalRecords]="paginatorService.totalRecords"
+    [value]="items"
+    [(selection)]="selected"
+    [dataKey]="dataKey"
+    [selectionMode]="checkbox ? 'multiple' : 'single'"
+>
+    <ng-template pTemplate="header" let-columns>
+        <tr *ngIf="items?.length">
+            <th *ngIf="checkbox" style="width: 5%">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <ng-container
+                [ngTemplateOutlet]="headerTemplate || defaultHeaderTemplate"
+                [ngTemplateOutletContext]="{ columns: columns }"
+            ></ng-container>
+        </tr>
+    </ng-template>
 
-<ng-template #dotEmptyState>
-    <dot-empty-state
-        [rows]="10"
-        [colsTextWidth]="[60, 50, 60, 80]"
-        icon="web"
-        [title]="'message.template.empty.title' | dm"
-        [content]="'message.template.empty.content' | dm"
-        [buttonLabel]="'message.template.empty.button.label' | dm"
-        (buttonClick)="handleButtonClick()"
-    >
-    </dot-empty-state>
-</ng-template>
-
-<ng-container [ngTemplateOutlet]="items?.length === 0 ? dotEmptyState : dataTableComp">
-</ng-container>
-
-<ng-template #dataTableComp>
-    <p-table
-        #dataTable
-        (onLazyLoad)="loadDataPaginationEvent($event)"
-        (onRowSelect)="handleRowCheck()"
-        (onRowUnselect)="handleRowCheck()"
-        (onHeaderCheckboxToggle)="handleRowCheck()"
-        [columns]="columns"
-        [lazy]="true"
-        [loading]="loading"
-        loadingIcon="fa fa-circle-o-notch fa-spin"
-        [pageLinks]="paginatorService.maxLinksPage"
-        [paginator]="true"
-        [rows]="paginationPerPage"
-        [sortOrder]="sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1"
-        [totalRecords]="paginatorService.totalRecords"
-        [value]="items"
-        [(selection)]="selected"
-        [dataKey]="dataKey"
-        [selectionMode]="checkbox ? 'multiple' : 'single'"
-    >
-        <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th *ngIf="checkbox" style="width: 5%">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
-                <ng-container
-                    [ngTemplateOutlet]="headerTemplate || defaultHeaderTemplate"
-                    [ngTemplateOutletContext]="{ columns: columns }"
-                ></ng-container>
-            </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr
-                (click)="handleRowClick(rowData)"
-                (keyup.enter)="handleRowClick(rowData)"
-                [pSelectableRow]="rowData"
-            >
-                <td *ngIf="checkbox">
-                    <p-tableCheckbox
-                        (click)="$event.stopPropagation()"
-                        [value]="rowData"
-                    ></p-tableCheckbox>
-                </td>
-                <ng-container
-                    [ngTemplateOutlet]="rowTemplate || defaultRowTemplate"
-                    [ngTemplateOutletContext]="{ rowData: rowData }"
-                ></ng-container>
-            </tr>
-        </ng-template>
-    </p-table>
-</ng-template>
-
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr
+            (click)="handleRowClick(rowData)"
+            (keyup.enter)="handleRowClick(rowData)"
+            [pSelectableRow]="rowData"
+        >
+            <td *ngIf="checkbox">
+                <p-tableCheckbox
+                    (click)="$event.stopPropagation()"
+                    [value]="rowData"
+                ></p-tableCheckbox>
+            </td>
+            <ng-container
+                [ngTemplateOutlet]="rowTemplate || defaultRowTemplate"
+                [ngTemplateOutletContext]="{ rowData: rowData }"
+            ></ng-container>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <ng-content select="dot-empty-state"></ng-content>
+    </ng-template>
+</p-table>
 <ng-template pTemplate="header" let-columns="columns" #defaultHeaderTemplate>
     <th
         *ngFor="let col of columns"
