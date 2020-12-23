@@ -228,15 +228,10 @@ export class DotListingDataTableComponent implements OnInit {
     }
 
     private getPage(offset: number): void {
-        if (offset === 0 && this.firstPageData) {
-            this.setItems(this.firstPageData);
-            this.firstPageData = null;
-        } else {
-            this.paginatorService
-                .getWithOffset(offset)
-                .pipe(take(1))
-                .subscribe((items) => this.setItems(items));
-        }
+        this.paginatorService
+            .getWithOffset(offset)
+            .pipe(take(1))
+            .subscribe((items) => this.setItems(items));
     }
 
     private paginationSetUp(): void {
