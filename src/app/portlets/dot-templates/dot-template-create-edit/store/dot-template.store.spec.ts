@@ -90,7 +90,7 @@ const BASIC_PROVIDERS = [
     }
 ];
 
-describe('DotTemplateStore', () => {
+fdescribe('DotTemplateStore', () => {
     let service: DotTemplateStore;
     let dotTemplateContainersCacheService: DotTemplateContainersCacheService;
     let dotRouterService: DotRouterService;
@@ -313,6 +313,8 @@ describe('DotTemplateStore', () => {
                     identifier: 'string',
                     title: 'string'
                 });
+
+                expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('templates');
 
                 service.state$.subscribe((res) => {
                     expect(res).toEqual({

@@ -123,6 +123,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 }
 
                 this.updateTemplate(this.getTemplateItem(template));
+                this.goToTemplateList();
             })
         );
     });
