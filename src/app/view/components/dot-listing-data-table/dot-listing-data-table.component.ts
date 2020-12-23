@@ -11,7 +11,7 @@ import {
     QueryList,
     ContentChild
 } from '@angular/core';
-import { LazyLoadEvent, PrimeTemplate } from 'primeng/api';
+import { LazyLoadEvent, MenuItem, PrimeTemplate } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
 import { DataTableColumn } from '@models/data-table/data-table-column';
@@ -20,6 +20,7 @@ import { FormatDateService } from '@services/format-date-service';
 import { PaginatorService, OrderDirection } from '@services/paginator';
 import { DotActionMenuItem } from '@shared/models/dot-action-menu/dot-action-menu-item.model';
 import { take } from 'rxjs/operators';
+import { ContextMenu } from 'primeng/contextmenu';
 
 function tableFactory(dotListingDataTableComponent: DotListingDataTableComponent) {
     return dotListingDataTableComponent.dataTable;
@@ -52,14 +53,16 @@ export class DotListingDataTableComponent implements OnInit {
     @Input() dataKey = '';
     @Input() checkbox = false;
     @Input() firstPageData: any[];
-
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
     @Output() selectedItems: EventEmitter<any> = new EventEmitter();
+    @Output() getContextMenu: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('gf', { static: true })
     globalSearch: ElementRef;
     @ViewChild('dataTable', { static: true })
     dataTable: Table;
+    @ViewChild('cm', { static: true })
+    contextMenu: ContextMenu;
 
     @ContentChildren(PrimeTemplate) templates: QueryList<ElementRef>;
 
@@ -72,6 +75,7 @@ export class DotListingDataTableComponent implements OnInit {
     filter;
     dateColumns: DataTableColumn[];
     loading = true;
+    contextMenuItems: MenuItem[];
 
     constructor(
         public loggerService: LoggerService,

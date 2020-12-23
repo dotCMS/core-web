@@ -10,13 +10,14 @@
     />
     <ng-content></ng-content>
 </dot-action-header>
-selsssected: {{ selected?.length }}
 <p-table
     #dataTable
+    [contextMenu]="cm"
     (onLazyLoad)="loadDataPaginationEvent($event)"
     (onRowSelect)="handleRowCheck()"
     (onRowUnselect)="handleRowCheck()"
     (onHeaderCheckboxToggle)="handleRowCheck()"
+    (onContextMenuSelect)="getContextMenu.emit($event.data)"
     [columns]="columns"
     [lazy]="true"
     [loading]="loading"
@@ -48,6 +49,7 @@ selsssected: {{ selected?.length }}
             (click)="handleRowClick(rowData)"
             (keyup.enter)="handleRowClick(rowData)"
             [pSelectableRow]="rowData"
+            [pContextMenuRow]="rowData"
         >
             <td *ngIf="checkbox">
                 <p-tableCheckbox
@@ -62,6 +64,7 @@ selsssected: {{ selected?.length }}
         </tr>
     </ng-template>
 </p-table>
+<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
 <ng-template pTemplate="header" let-columns="columns" #defaultHeaderTemplate>
     <th
         *ngFor="let col of columns"

@@ -133,6 +133,10 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         return options;
     }
 
+    setContextMenu(template: DotTemplate): void {
+        this.listing.contextMenuItems = this.setTemplateActions(template).map((x) => x.menuItem);
+    }
+
     /**
      * get the attributes that define the state of a template.
      * @param {DotTemplate} { live, working, deleted, hasLiveVersion}

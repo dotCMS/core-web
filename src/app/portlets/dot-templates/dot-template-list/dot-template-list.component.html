@@ -1,8 +1,8 @@
-selectedTemplates: {{ selectedTemplates.length }}
 <dot-listing-data-table
     #listing
     (rowWasClicked)="editTemplate($event)"
     (selectedItems)="updateSelectedTemplates($event)"
+    (getContextMenu)="setContextMenu($event)"
     [actionHeaderOptions]="actionHeaderOptions"
     [columns]="tableColumns"
     sortField="modDate"
@@ -54,6 +54,7 @@ selectedTemplates: {{ selectedTemplates.length }}
         </td>
         <td style="width: 5%">
             <dot-action-menu-button
+                #rowActionMenu
                 [attr.data-testid]="rowData.identifier"
                 class="listing-datatable__action-button"
                 [actions]="setTemplateActions(rowData)"
