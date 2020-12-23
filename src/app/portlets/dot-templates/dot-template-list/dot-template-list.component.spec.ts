@@ -147,6 +147,7 @@ const messages = {
     'templates.fieldName.lastEdit': 'Last Edit',
     'templates.fieldName.name': 'Name',
     'templates.fieldName.status': 'Status',
+    'Delete-Template': 'Delete Template',
     Archive: 'Archive',
     Archived: 'Archived',
     Copy: 'Copy',
@@ -214,7 +215,7 @@ const mockMessageConfig = {
     type: DotMessageType.SIMPLE_MESSAGE
 };
 
-describe('DotTemplateListComponent', () => {
+fdescribe('DotTemplateListComponent', () => {
     let fixture: ComponentFixture<DotTemplateListComponent>;
     let dotListingDataTable: DotListingDataTableComponent;
     let dotTemplatesService: DotTemplatesService;
@@ -228,6 +229,7 @@ describe('DotTemplateListComponent', () => {
     let publishTemplate: DotActionMenuButtonComponent;
     let lockedTemplate: DotActionMenuButtonComponent;
     let archivedTemplate: DotActionMenuButtonComponent;
+    let dotAlertConfirmService: DotAlertConfirmService;
 
     const messageServiceMock = new MockDotMessageService(messages);
 
@@ -294,15 +296,13 @@ describe('DotTemplateListComponent', () => {
         dotPushPublishDialogService = TestBed.inject(DotPushPublishDialogService);
         dotRouterService = TestBed.inject(DotRouterService);
         dialogService = TestBed.inject(DialogService);
+        dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
 
         fixture.detectChanges();
         tick(2);
         fixture.detectChanges();
         dotListingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'))
             .componentInstance;
-        spyOn(window, 'confirm').and.callFake(function () {
-            return true;
-        });
         spyOn(dotPushPublishDialogService, 'open');
 
         spyOn<any>(dialogService, 'open').and.returnValue({
@@ -495,6 +495,9 @@ describe('DotTemplateListComponent', () => {
         });
         it('should call delete api, send notification and reload current page', () => {
             spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
+            spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
+                conf.accept();
+            });
             archivedTemplate.actions[1].menuItem.command();
             expect(dotTemplatesService.delete).toHaveBeenCalledWith(['123Archived']);
             checkNotificationAndReLoadOfPage('Template deleted');
@@ -509,6 +512,8 @@ describe('DotTemplateListComponent', () => {
             fixture.detectChanges();
             menu = fixture.debugElement.query(By.css('.template-listing__header-options p-menu'))
                 .componentInstance;
+            spyOn(dotMessageDisplayService, 'push');
+            spyOn(dotListingDataTable, 'loadCurrentPage');
         });
 
         it('should set labels', () => {
@@ -525,52 +530,60 @@ describe('DotTemplateListComponent', () => {
             expect(menu.model).toEqual(actions);
         });
 
-        it('should execute actions', () => {
+        it('should execute Publish action', () => {
             spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseSuccess));
-            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseSuccess));
-            spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
-            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseSuccess));
-            spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
-            spyOn(dotMessageDisplayService, 'push');
-            spyOn(dotListingDataTable, 'loadCurrentPage');
             menu.model[0].command();
             expect(dotTemplatesService.publish).toHaveBeenCalledWith(['123Published', '123Locked']);
-
+            checkNotificationAndReLoadOfPage('Templates published');
+        });
+        it('should execute Push Publish action', () => {
             menu.model[1].command();
             expect(dotPushPublishDialogService.open).toHaveBeenCalledWith({
                 assetIdentifier: '123Published,123Locked',
                 title: 'Push Publish'
             });
-
+        });
+        it('should execute Add To Bundle action', () => {
             menu.model[2].command();
-            expect(dotTemplatesService.publish).toHaveBeenCalledWith(['123Published', '123Locked']);
-
-            menu.model[3].command();
-            expect(dotTemplatesService.unPublish).toHaveBeenCalledWith([
-                '123Published',
-                '123Locked'
-            ]);
-
-            menu.model[4].command();
             fixture.detectChanges();
             const addToBundleDialog: DotAddToBundleComponent = fixture.debugElement.query(
                 By.css('dot-add-to-bundle')
             ).componentInstance;
             expect(addToBundleDialog.assetIdentifier).toEqual('123Published,123Locked');
-
+        });
+        it('should execute Unpublish action', () => {
+            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseSuccess));
+            menu.model[3].command();
+            expect(dotTemplatesService.unPublish).toHaveBeenCalledWith([
+                '123Published',
+                '123Locked'
+            ]);
+            checkNotificationAndReLoadOfPage('Template unpublished');
+        });
+        it('should execute Archive action', () => {
+            spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
+            menu.model[4].command();
+            expect(dotTemplatesService.archive).toHaveBeenCalledWith(['123Published', '123Locked']);
+            checkNotificationAndReLoadOfPage('Template archived');
+        });
+        it('should execute UnArchive action', () => {
+            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseSuccess));
             menu.model[5].command();
             expect(dotTemplatesService.unArchive).toHaveBeenCalledWith([
                 '123Published',
                 '123Locked'
             ]);
-
+            checkNotificationAndReLoadOfPage('Template unarchived');
+        });
+        it('should execute Delete action', () => {
+            spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
+            spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
+                conf.accept();
+            });
             menu.model[6].command();
             expect(dotTemplatesService.delete).toHaveBeenCalledWith(['123Published', '123Locked']);
-
-            expect(dotMessageDisplayService.push).toHaveBeenCalledTimes(5);
-            expect(dotListingDataTable.loadCurrentPage).toHaveBeenCalledTimes(5);
+            checkNotificationAndReLoadOfPage('Template deleted');
         });
-
         it('should disable enable bulk action button based on selection', () => {
             const bulkActionsBtn: HTMLButtonElement = fixture.debugElement.query(
                 By.css('.template-listing__header-options button')
@@ -581,39 +594,34 @@ describe('DotTemplateListComponent', () => {
             expect(bulkActionsBtn.disabled).toEqual(true);
         });
 
-        it('error exceptions', () => {
-            spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseFail));
-            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseFail));
-            spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseFail));
-            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseFail));
-            spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseFail));
-            menu.model[0].command();
-            menu.model[3].command();
-            menu.model[4].command();
-            menu.model[5].command();
-            menu.model[6].command();
-            expect(dialogService.open).toHaveBeenCalledTimes(5);
-            expect(dialogService.open).toHaveBeenCalledWith(DotBulkInformationComponent, {
-                header: 'Results',
-                width: '40rem',
-                contentStyle: { 'max-height': '500px', overflow: 'auto' },
-                baseZIndex: 10000,
-                data: {
-                    ...mockBulkResponseFail,
-                    fails: [
-                        {
-                            errorMessage: 'error 1',
-                            element: '123Published',
-                            description: 'Published template'
-                        },
-                        {
-                            errorMessage: 'error 2',
-                            element: '123Locked',
-                            description: 'Locked template'
-                        }
-                    ],
-                    action: 'Template deleted'
-                }
+        describe('error', () => {
+            it('should fire exception on publish', () => {
+                spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseFail));
+                menu.model[0].command();
+                checkOpenOfDialogService('Templates published');
+            });
+            it('should fire exception on unPublish', () => {
+                spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseFail));
+                menu.model[3].command();
+                checkOpenOfDialogService('Template unpublished');
+            });
+            it('should fire exception on archive', () => {
+                spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseFail));
+                menu.model[4].command();
+                checkOpenOfDialogService('Template archived');
+            });
+            it('should fire exception on unArchive', () => {
+                spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseFail));
+                menu.model[5].command();
+                checkOpenOfDialogService('Template unarchived');
+            });
+            it('should fire exception on delete', () => {
+                spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseFail));
+                spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
+                    conf.accept();
+                });
+                menu.model[6].command();
+                checkOpenOfDialogService('Template deleted');
             });
         });
     });
@@ -633,5 +641,30 @@ describe('DotTemplateListComponent', () => {
             message: messsage
         });
         expect(dotListingDataTable.loadCurrentPage).toHaveBeenCalledTimes(1);
+    }
+
+    function checkOpenOfDialogService(action: string): void {
+        expect(dialogService.open).toHaveBeenCalledWith(DotBulkInformationComponent, {
+            header: 'Results',
+            width: '40rem',
+            contentStyle: { 'max-height': '500px', overflow: 'auto' },
+            baseZIndex: 10000,
+            data: {
+                ...mockBulkResponseFail,
+                fails: [
+                    {
+                        errorMessage: 'error 1',
+                        element: '123Published',
+                        description: 'Published template'
+                    },
+                    {
+                        errorMessage: 'error 2',
+                        element: '123Locked',
+                        description: 'Locked template'
+                    }
+                ],
+                action: action
+            }
+        });
     }
 });

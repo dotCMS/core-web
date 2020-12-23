@@ -21,6 +21,7 @@ import {
     DotBulkFailItem
 } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 import { DotContentState } from 'dotcms-models';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 @Component({
     selector: 'dot-template-list',
@@ -48,7 +49,8 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         private dotMessageDisplayService: DotMessageDisplayService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
         private dotRouterService: DotRouterService,
-        public dialogService: DialogService
+        public dialogService: DialogService,
+        private dotAlertConfirmService: DotAlertConfirmService
     ) {}
 
     ngOnInit(): void {
@@ -427,14 +429,19 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     }
 
     private deleteTemplate(identifiers: string[]): void {
-        if (confirm(this.dotMessageService.get('message.template.confirm.delete.template'))) {
-            this.dotTemplatesService
-                .delete(identifiers)
-                .pipe(take(1))
-                .subscribe((response: DotActionBulkResult) => {
-                    this.notifyResult(response, 'message.template.full_delete');
-                });
-        }
+        this.dotAlertConfirmService.confirm({
+            accept: () => {
+                this.dotTemplatesService
+                    .delete(identifiers)
+                    .pipe(take(1))
+                    .subscribe((response: DotActionBulkResult) => {
+                        this.notifyResult(response, 'message.template.full_delete');
+                    });
+            },
+            reject: () => {},
+            header: this.dotMessageService.get('Delete-Template'),
+            message: this.dotMessageService.get('message.template.confirm.delete.template')
+        });
     }
 
     private publishTemplate(identifiers: string[]): void {

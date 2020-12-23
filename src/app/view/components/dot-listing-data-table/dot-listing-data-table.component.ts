@@ -20,7 +20,6 @@ import { FormatDateService } from '@services/format-date-service';
 import { PaginatorService, OrderDirection } from '@services/paginator';
 import { DotActionMenuItem } from '@shared/models/dot-action-menu/dot-action-menu-item.model';
 import { take } from 'rxjs/operators';
-import { ContextMenu } from 'primeng/contextmenu';
 
 function tableFactory(dotListingDataTableComponent: DotListingDataTableComponent) {
     return dotListingDataTableComponent.dataTable;
@@ -61,8 +60,6 @@ export class DotListingDataTableComponent implements OnInit {
     globalSearch: ElementRef;
     @ViewChild('dataTable', { static: true })
     dataTable: Table;
-    @ViewChild('cm', { static: true })
-    contextMenu: ContextMenu;
 
     @ContentChildren(PrimeTemplate) templates: QueryList<ElementRef>;
 

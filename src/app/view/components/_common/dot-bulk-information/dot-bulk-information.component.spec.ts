@@ -58,7 +58,7 @@ export class TestDynamicDialogComponent {
     }
 }
 
-fdescribe('DotBulkInformationComponent', () => {
+describe('DotBulkInformationComponent', () => {
     let fixture: ComponentFixture<TestDynamicDialogComponent>;
     let testDynamicDialogComponent: TestDynamicDialogComponent;
 
