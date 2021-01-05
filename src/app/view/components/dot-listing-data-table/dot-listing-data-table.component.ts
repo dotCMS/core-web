@@ -224,7 +224,7 @@ export class DotListingDataTableComponent implements OnInit {
         } else {
             this.paginatorService
                 .getWithOffset(offset)
-                .pipe(take(1), tap(console.log))
+                .pipe(take(1))
                 .subscribe((items) => this.setItems(items));
         }
     }
