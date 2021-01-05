@@ -19,7 +19,7 @@ import { LoggerService } from 'dotcms-js';
 import { FormatDateService } from '@services/format-date-service';
 import { PaginatorService, OrderDirection } from '@services/paginator';
 import { DotActionMenuItem } from '@shared/models/dot-action-menu/dot-action-menu-item.model';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 function tableFactory(dotListingDataTableComponent: DotListingDataTableComponent) {
     return dotListingDataTableComponent.dataTable;
@@ -113,6 +113,7 @@ export class DotListingDataTableComponent implements OnInit {
      * @memberof DotListingDataTableComponent
      */
     loadDataPaginationEvent(event: LazyLoadEvent): void {
+        console.log('loadDataPaginationEvent');
         this.loadData(event.first, event.sortField, event.sortOrder);
     }
 
@@ -223,7 +224,7 @@ export class DotListingDataTableComponent implements OnInit {
         } else {
             this.paginatorService
                 .getWithOffset(offset)
-                .pipe(take(1))
+                .pipe(take(1), tap(console.log))
                 .subscribe((items) => this.setItems(items));
         }
     }

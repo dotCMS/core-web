@@ -336,7 +336,7 @@ fdescribe('DotListingDataTableComponent', () => {
         expect(5).toEqual(headers.length);
     }));
 
-    it('should add a column if actions are received', () => {
+    fit('should add a column if actions are received', fakeAsync(() => {
         const fakeActions: DotActionMenuItem[] = [
             {
                 menuItem: {
@@ -346,17 +346,15 @@ fdescribe('DotListingDataTableComponent', () => {
                 }
             }
         ];
+        hostComponent.actions = fakeActions;
         spyOn(paginatorService, 'getWithOffset').and.returnValue(of(items));
         hostFixture.detectChanges();
-
-        const rows = el.querySelectorAll('tr');
-        expect(rows[0].cells.length).toEqual(5);
-
-        hostComponent.actions = fakeActions;
+        tick(1);
         hostFixture.detectChanges();
-
+        const rows = el.querySelectorAll('tr');
+        console.log(rows);
         expect(rows[0].cells.length).toEqual(5);
-    });
+    }));
 
     it('should receive an action an execute the command after clickling over the action button', fakeAsync(() => {
         const fakeActions: DotActionMenuItem[] = [
@@ -472,15 +470,15 @@ fdescribe('DotListingDataTableComponent', () => {
         });
     });
 
-    it('renders the dot empty state component if items array is empty', fakeAsync(() => {
+    fit('renders the dot empty state component if items array is empty', fakeAsync(() => {
         spyOn(paginatorService, 'getWithOffset').and.returnValue(of([]));
         hostFixture.detectChanges();
         tick(1);
         hostFixture.detectChanges();
-        // console.log(hostFixture.debugElement.nativeElement);
+        console.log(hostFixture.debugElement.nativeElement);
 
         // test when clicking button
 
-        pending();
+        // pending();
     }));
 });
