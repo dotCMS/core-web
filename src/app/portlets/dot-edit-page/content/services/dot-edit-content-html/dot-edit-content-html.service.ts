@@ -10,7 +10,6 @@ import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
-import { DotLayout, DotLayoutColumn, DotLayoutRow } from '@shared/models/dot-edit-layout-designer';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotPageContent, DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
 import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
@@ -44,7 +43,6 @@ export class DotEditContentHtmlService {
     mutationConfig = { attributes: false, childList: true, characterData: false };
 
     private currentAction: DotContentletAction;
-    private rowsMaxHeight: number[] = [];
     private docClickSubscription: Subscription;
     private updateContentletInode = false;
     private remoteRendered: boolean;
@@ -263,61 +261,6 @@ export class DotEditContentHtmlService {
     }
 
     /**
-     * Set listener for Iframe body changes to change container's height
-     *
-     * @param DotLayout pageLayout
-     * @memberof DotEditContentHtmlService
-     */
-    setContaintersChangeHeightListener(pageLayout: DotLayout): void {
-        const doc = this.getEditPageDocument();
-        const target = doc.querySelector('body');
-        const debounceContainersHeightChange = _.debounce(
-            (layout: DotLayout) => this.setContaintersSameHeight(layout),
-            500,
-            {
-                leading: true
-            }
-        );
-        const observer = new MutationObserver(() => {
-            debounceContainersHeightChange(pageLayout);
-        });
-        observer.observe(target, this.mutationConfig);
-    }
-
-    /**
-     * Set the same height to containers in the same row
-     *
-     * @param DotLayout pageLayout
-     * @memberof DotEditContentHtmlService
-     */
-    setContaintersSameHeight(pageLayout: DotLayout): void {
-        try {
-            const containersLayoutIds = this.getContainersLayoutIds(pageLayout);
-            const containerDomElements = this.getContainerDomElements(containersLayoutIds);
-            containerDomElements.forEach((row: Array<HTMLElement>) => {
-                if (row.length > 1) {
-                    let maxHeight = 0;
-                    row.forEach((container: HTMLElement) => {
-                        container.style.height = 'auto';
-
-                        maxHeight =
-                            maxHeight < container.offsetHeight ? container.offsetHeight : maxHeight;
-                    });
-                    row.forEach((container: HTMLElement) => {
-                        container.style.height = `${maxHeight}px`;
-                    });
-                }
-            });
-        } catch (err) {
-            console.error(err);
-        }
-
-        const body = this.getEditPageDocument().querySelector('body');
-        body.style.display = 'none';
-        body.style.display = '';
-    }
-
-    /**
      * Return the page model
      *
      * @returns *
@@ -409,35 +352,6 @@ export class DotEditContentHtmlService {
 
             this.buttonClickHandler(target, target.dataset.dotAction);
         };
-    }
-
-    private getContainersLayoutIds(pageLayout: DotLayout): Array<Array<DotPageContainer>> {
-        return pageLayout.body.rows.map((row: DotLayoutRow) => {
-            return row.columns.map((column: DotLayoutColumn) => {
-                return {
-                    identifier: column.containers[0].identifier,
-                    uuid: column.containers[0].uuid
-                };
-            });
-        });
-    }
-
-    private getContainerDomElements(
-        containersLayoutIds: Array<Array<DotPageContainer>>
-    ): HTMLElement[][] {
-        const doc = this.getEditPageDocument();
-
-        return containersLayoutIds.map((containerRow: Array<DotPageContainer>, index: number) => {
-            this.rowsMaxHeight[index] = 0;
-            return containerRow.map((container: DotPageContainer) => {
-                const querySelector = [
-                    `[data-dot-object="container"]`,
-                    `[data-dot-identifier="${container.identifier}"]`,
-                    `[data-dot-uuid="${container.uuid}"]`
-                ].join('');
-                return doc.querySelector(querySelector);
-            });
-        });
     }
 
     private showContentAlreadyAddedError(): void {
