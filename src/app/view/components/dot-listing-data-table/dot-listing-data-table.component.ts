@@ -19,7 +19,7 @@ import { LoggerService } from 'dotcms-js';
 import { FormatDateService } from '@services/format-date-service';
 import { PaginatorService, OrderDirection } from '@services/paginator';
 import { DotActionMenuItem } from '@shared/models/dot-action-menu/dot-action-menu-item.model';
-import { take, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 function tableFactory(dotListingDataTableComponent: DotListingDataTableComponent) {
     return dotListingDataTableComponent.dataTable;
