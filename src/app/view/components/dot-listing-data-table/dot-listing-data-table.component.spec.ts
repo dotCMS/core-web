@@ -30,6 +30,12 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+    selector: 'dot-empty-state',
+    template: `<h1>Im empty</h1>`
+})
+class EmptyMockComponent {}
+
+@Component({
     selector: 'dot-test-host-component',
     template: ` <dot-listing-data-table
         [columns]="columns"
@@ -47,7 +53,9 @@ import { FormsModule } from '@angular/forms';
         [paginatorExtraParams]="paginatorExtraParams"
         (rowWasClicked)="rowWasClicked($event)"
         (selectedItems)="selectedItems($event)"
-    ></dot-listing-data-table>`
+    >
+        <dot-empty-state></dot-empty-state>
+    </dot-listing-data-table>`
 })
 class TestHostComponent {
     @Input() columns: DataTableColumn[];
@@ -107,7 +115,8 @@ fdescribe('DotListingDataTableComponent', () => {
                 DotActionButtonComponent,
                 DotListingDataTableComponent,
                 DotActionMenuButtonComponent,
-                TestHostComponent
+                TestHostComponent,
+                EmptyMockComponent
             ],
             imports: [
                 TableModule,
@@ -336,7 +345,7 @@ fdescribe('DotListingDataTableComponent', () => {
         expect(5).toEqual(headers.length);
     }));
 
-    fit('should add a column if actions are received', fakeAsync(() => {
+    it('should add a column if actions are received', fakeAsync(() => {
         const fakeActions: DotActionMenuItem[] = [
             {
                 menuItem: {
@@ -475,10 +484,7 @@ fdescribe('DotListingDataTableComponent', () => {
         hostFixture.detectChanges();
         tick(1);
         hostFixture.detectChanges();
-        console.log(hostFixture.debugElement.nativeElement);
-
-        // test when clicking button
-
-        // pending();
+        const empty = de.query(By.css('dot-empty-state'));
+        expect(empty.nativeElement.innerText).toBe('Im empty');
     }));
 });
