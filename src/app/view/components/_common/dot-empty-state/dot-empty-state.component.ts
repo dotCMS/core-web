@@ -15,7 +15,7 @@ export class DotEmptyStateComponent implements OnInit {
     @Output() buttonClick = new EventEmitter<string>();
 
     columnWidth: string;
-    checkBoxWidth: number = 3.5;
+    readonly private checkBoxWidth: number = 3.5;
 
     constructor() {}
 
