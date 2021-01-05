@@ -64,7 +64,7 @@ describe('DotEmptyStateComponent', () => {
         expect(checkbox.nativeElement.style.width).toEqual('3.5%', 'correct checkbox width');
     });
 
-    fit('should have the correct attributes set', () => {
+    it('should have the correct attributes set', () => {
         const title = de.query(By.css('[data-testid="title"]'));
         const content = de.query(By.css('[data-testid="content"]'));
         const button = de.query(By.css('[data-testid="button"]'));
