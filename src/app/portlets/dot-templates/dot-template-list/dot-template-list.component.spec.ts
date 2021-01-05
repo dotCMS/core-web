@@ -17,7 +17,6 @@ import {
     StringUtils
 } from 'dotcms-js';
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
-import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService, SharedModule } from 'primeng/api';
@@ -47,6 +46,7 @@ import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotContentState } from 'dotcms-models';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
 const templatesMock: DotTemplate[] = [
     {
@@ -120,7 +120,7 @@ const templatesMock: DotTemplate[] = [
 ];
 
 const routeDataMock = {
-    dotTemplateListResolverData: [templatesMock, true, true]
+    dotTemplateListResolverData: [true, true]
 };
 class ActivatedRouteMock {
     get data() {
@@ -244,7 +244,6 @@ describe('DotTemplateListComponent', () => {
                     useClass: ActivatedRouteMock
                 },
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 {
                     provide: DotRouterService,
@@ -296,8 +295,12 @@ describe('DotTemplateListComponent', () => {
         dialogService = TestBed.inject(DialogService);
         dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
         coreWebService = TestBed.inject(CoreWebService);
-        // @ts-ignore
-        spyOn(coreWebService, 'requestView').and.returnValue(of({ entity: templatesMock }));
+        spyOn<any>(coreWebService, 'requestView').and.returnValue(
+            of({
+                entity: templatesMock,
+                header: (type) => (type === 'Link' ? 'test;test=test' : '10')
+            })
+        );
         fixture.detectChanges();
         tick(2);
         fixture.detectChanges();
@@ -328,7 +331,7 @@ describe('DotTemplateListComponent', () => {
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/templates/new');
     });
 
-    fit('should pass data to the status elements', () => {
+    it('should pass data to the status elements', () => {
         const state: DotContentState = {
             live: true,
             working: true,
@@ -401,7 +404,7 @@ describe('DotTemplateListComponent', () => {
             activatedRoute = TestBed.inject(ActivatedRoute);
             spyOnProperty(activatedRoute, 'data', 'get').and.returnValue(
                 of({
-                    dotTemplateListResolverData: [templatesMock, false, false]
+                    dotTemplateListResolverData: [false, false]
                 })
             );
             comp.ngOnInit();
