@@ -32,7 +32,6 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     @ViewChild('listing', { static: false })
     listing: DotListingDataTableComponent;
     tableColumns: DataTableColumn[];
-    firstPage: DotTemplate[];
     templateBulkActions: MenuItem[];
     actionHeaderOptions: ActionHeaderOptions;
     addToBundleIdentifier: string;
@@ -56,16 +55,12 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.route.data
             .pipe(pluck('dotTemplateListResolverData'), take(1))
-            .subscribe(
-                ([templates, isEnterPrise, hasEnvironments]: [DotTemplate[], boolean, boolean]) => {
-                    debugger;
-                    this.firstPage = templates;
-                    this.isEnterPrise = isEnterPrise;
-                    this.hasEnvironments = hasEnvironments;
-                    this.tableColumns = this.setTemplateColumns();
-                    this.templateBulkActions = this.setTemplateBulkActions();
-                }
-            );
+            .subscribe(([isEnterPrise, hasEnvironments]: [boolean, boolean]) => {
+                this.isEnterPrise = isEnterPrise;
+                this.hasEnvironments = hasEnvironments;
+                this.tableColumns = this.setTemplateColumns();
+                this.templateBulkActions = this.setTemplateBulkActions();
+            });
         this.setAddOptions();
     }
 
