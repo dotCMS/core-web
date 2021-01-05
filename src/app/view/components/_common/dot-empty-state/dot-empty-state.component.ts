@@ -11,27 +11,37 @@ export class DotEmptyStateComponent implements OnInit {
     @Input() icon: string;
     @Input() title: string;
     @Input() content: string;
-    @Input() buttonLabel: string = 'Hello';
+    @Input() buttonLabel: string;
     @Output() buttonClick = new EventEmitter<string>();
 
     columnWidth: string;
-    readonly private checkBoxWidth: number = 3.5;
+    public readonly checkBoxWidth: number = 3.5;
 
     constructor() {}
 
     ngOnInit(): void {
-        this.columnWidth = this.calculateColumnWidth();
+        this.columnWidth = this.getColumnWidth();
     }
-
+    /**
+     * Sets an array with its length set to the length of the rows property
+     *
+     * @return {array}  {number[]}
+     * @memberof DotEmptyStateComponent
+     */
     numberOfRows(): number[] {
         return Array(this.rows).fill(0);
     }
-
-    goToPortlet(event: string) {
+    /**
+     *  Emits event to navigate later to a Portlet
+     *
+     * @param {string} event
+     * @memberof DotEmptyStateComponent
+     */
+    handleClick(event: string) {
         this.buttonClick.emit(event);
     }
 
-    private calculateColumnWidth(): string {
+    private getColumnWidth(): string {
         return `${(100 - this.checkBoxWidth) / this.colsTextWidth.length}%`;
     }
 }

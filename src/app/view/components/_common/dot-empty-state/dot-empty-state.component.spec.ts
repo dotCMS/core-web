@@ -39,7 +39,6 @@ describe('DotEmptyStateComponent', () => {
         component.content = dotMessageService.get('message.template.empty.content');
         component.buttonLabel = dotMessageService.get('message.template.empty.button.label');
         component.rows = 10;
-        component.checkBoxWidth = 3.5;
         component.colsTextWidth = [60, 50, 60, 80];
         component.columnWidth = `${
             (100 - component.checkBoxWidth) / component.colsTextWidth.length
@@ -54,24 +53,24 @@ describe('DotEmptyStateComponent', () => {
         expect(rows.length).toEqual(10);
     });
 
-    it('should have all correct attributes', () => {
+    it('should have all correct styles', () => {
         const checkbox = de.query(By.css('[data-testid="checkbox"]'));
         const tableCell = de.queryAll(By.css('[data-testid="dummy-text-td"]'));
-        const icon = de.query(By.css('.material-icons'));
 
         tableCell.forEach((node) => {
             expect(node.nativeElement.style.width).toEqual('24.125%');
         });
 
-        expect(icon.nativeElement.innerText).toBe('web');
         expect(checkbox.nativeElement.style.width).toEqual('3.5%', 'correct checkbox width');
     });
 
-    it('should have the correct message keys', () => {
-        const title = de.query(By.css('.dot-empty-container__title'));
-        const content = de.query(By.css('.dot-empty-container__content'));
-        const button = de.query(By.css('.dot-empty-container__notice > button'));
+    fit('should have the correct attributes set', () => {
+        const title = de.query(By.css('[data-testid="title"]'));
+        const content = de.query(By.css('[data-testid="content"]'));
+        const button = de.query(By.css('[data-testid="button"]'));
+        const icon = de.query(By.css('[data-testid="material-icons"]'));
 
+        expect(icon.nativeElement.innerText).toBe('web');
         expect(title.nativeElement.innerText).toEqual('Your template list is empty');
         expect(content.nativeElement.innerText).toEqual(
             "You haven't added anything yet, start by clicking the button below"
