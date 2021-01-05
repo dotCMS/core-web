@@ -9,6 +9,7 @@
             color: $brand-primary;
             font-size: 4rem;
         }
+
         position: absolute;
         padding: $spacing-3 $spacing-5;
         top: 50%;
@@ -18,6 +19,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
         h3,
         p {
             padding: 0;
@@ -29,6 +31,7 @@
             margin: $spacing-3 $spacing-0 $spacing-2 $spacing-0;
             font-weight: $font-weight-semi-bold;
         }
+
         p {
             margin-bottom: $spacing-4;
         }
@@ -48,6 +51,7 @@
         border-collapse: collapse;
         width: 100%;
         background: $white;
+
         tbody {
             tr {
                 border-top: 1px solid $gray-bg;
@@ -55,9 +59,11 @@
                 background: $white;
                 transition: none;
                 outline-color: transparent;
+
                 td:first-child {
                     width: 5%;
                 }
+
                 td {
                     &:first-child {
                         padding-left: $spacing-5;
