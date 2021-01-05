@@ -2,7 +2,7 @@
     #listing
     (rowWasClicked)="editTemplate($event)"
     (selectedItems)="updateSelectedTemplates($event)"
-    (getContextMenu)="setContextMenu($event)"
+    (onContextMenuSelect)="setContextMenu($event)"
     [actionHeaderOptions]="actionHeaderOptions"
     [columns]="tableColumns"
     sortField="modDate"

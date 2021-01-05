@@ -127,8 +127,15 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
         return options;
     }
 
+    /**
+     * set the content menu items of the listing to be shown, base on the template status.
+     * @param {DotTemplate} template
+     * @memberof DotTemplateListComponent
+     */
     setContextMenu(template: DotTemplate): void {
-        this.listing.contextMenuItems = this.setTemplateActions(template).map((x) => x.menuItem);
+        this.listing.contextMenuItems = this.setTemplateActions(template).map(
+            ({ menuItem }: DotActionMenuItem) => menuItem
+        );
     }
 
     /**

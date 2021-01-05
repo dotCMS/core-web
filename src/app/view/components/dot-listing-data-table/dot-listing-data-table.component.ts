@@ -54,7 +54,7 @@ export class DotListingDataTableComponent implements OnInit {
     @Input() firstPageData: any[];
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
     @Output() selectedItems: EventEmitter<any> = new EventEmitter();
-    @Output() getContextMenu: EventEmitter<any> = new EventEmitter();
+    @Output() onContextMenuSelect: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('gf', { static: true })
     globalSearch: ElementRef;

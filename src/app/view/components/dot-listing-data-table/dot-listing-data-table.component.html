@@ -17,7 +17,7 @@
     (onRowSelect)="handleRowCheck()"
     (onRowUnselect)="handleRowCheck()"
     (onHeaderCheckboxToggle)="handleRowCheck()"
-    (onContextMenuSelect)="getContextMenu.emit($event.data)"
+    (onContextMenuSelect)="onContextMenuSelect.emit($event.data)"
     [columns]="columns"
     [lazy]="true"
     [loading]="loading"
