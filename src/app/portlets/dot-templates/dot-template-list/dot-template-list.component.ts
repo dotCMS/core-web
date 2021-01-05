@@ -58,6 +58,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             .pipe(pluck('dotTemplateListResolverData'), take(1))
             .subscribe(
                 ([templates, isEnterPrise, hasEnvironments]: [DotTemplate[], boolean, boolean]) => {
+                    debugger;
                     this.firstPage = templates;
                     this.isEnterPrise = isEnterPrise;
                     this.hasEnvironments = hasEnvironments;
@@ -125,11 +126,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                     ...this.setUnPublishAndArchiveTemplateOptions(template)
                 ];
             }
-            options = [
-                ...options,
-                ...this.setUnlockTemplateOptions(template),
-                ...this.setCopyTemplateOptions(template)
-            ];
+            options = [...options, ...this.setCopyTemplateOptions(template)];
         }
 
         return options;
@@ -261,29 +258,6 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                                           );
                                           this.listing.loadCurrentPage();
                                       }
-                                  });
-                          }
-                      }
-                  }
-              ]
-            : [];
-    }
-
-    private setUnlockTemplateOptions(template: DotTemplate): DotActionMenuItem[] {
-        return template.locked && template.canWrite
-            ? [
-                  {
-                      menuItem: {
-                          label: this.dotMessageService.get('unlock'),
-                          command: () => {
-                              this.dotTemplatesService
-                                  .unlock(template.identifier)
-                                  .pipe(take(1))
-                                  .subscribe(() => {
-                                      this.showToastNotification(
-                                          this.dotMessageService.get('message.template.unlocked')
-                                      );
-                                      this.listing.loadCurrentPage();
                                   });
                           }
                       }

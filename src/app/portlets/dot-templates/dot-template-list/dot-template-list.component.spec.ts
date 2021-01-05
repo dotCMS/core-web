@@ -140,7 +140,6 @@ const messages = {
     'message.template.delete': 'Template archived',
     'message.template.full_delete': 'Template deleted',
     'message.template.undelete': 'Template unarchived',
-    'message.template.unlocked': 'Template unlocked',
     'message.template.unpublished': 'Template unpublished',
     'message.template_list.published': 'Templates published',
     'templates.fieldName.description': 'Description',
@@ -160,8 +159,7 @@ const messages = {
     Unarchive: 'Unarchive',
     Unpublish: 'Unpublish',
     edit: 'Edit',
-    publish: 'Publish',
-    unlock: 'Unlock'
+    publish: 'Publish'
 };
 
 const columnsMock = [
@@ -215,7 +213,7 @@ const mockMessageConfig = {
     type: DotMessageType.SIMPLE_MESSAGE
 };
 
-fdescribe('DotTemplateListComponent', () => {
+describe('DotTemplateListComponent', () => {
     let fixture: ComponentFixture<DotTemplateListComponent>;
     let dotListingDataTable: DotListingDataTableComponent;
     let dotTemplatesService: DotTemplatesService;
@@ -230,6 +228,7 @@ fdescribe('DotTemplateListComponent', () => {
     let lockedTemplate: DotActionMenuButtonComponent;
     let archivedTemplate: DotActionMenuButtonComponent;
     let dotAlertConfirmService: DotAlertConfirmService;
+    let coreWebService: CoreWebService;
 
     const messageServiceMock = new MockDotMessageService(messages);
 
@@ -247,7 +246,6 @@ fdescribe('DotTemplateListComponent', () => {
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
 
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
-
                 {
                     provide: DotRouterService,
                     useValue: {
@@ -297,7 +295,9 @@ fdescribe('DotTemplateListComponent', () => {
         dotRouterService = TestBed.inject(DotRouterService);
         dialogService = TestBed.inject(DialogService);
         dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
-
+        coreWebService = TestBed.inject(CoreWebService);
+        // @ts-ignore
+        spyOn(coreWebService, 'requestView').and.returnValue(of({ entity: templatesMock }));
         fixture.detectChanges();
         tick(2);
         fixture.detectChanges();
@@ -328,7 +328,7 @@ fdescribe('DotTemplateListComponent', () => {
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/templates/new');
     });
 
-    it('should pass data to the status elements', () => {
+    fit('should pass data to the status elements', () => {
         const state: DotContentState = {
             live: true,
             working: true,
@@ -342,7 +342,6 @@ fdescribe('DotTemplateListComponent', () => {
             revision: 'Revision',
             draft: 'Draft'
         };
-
         lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
             .componentInstance;
         const stateIcon = fixture.debugElement.query(By.css('dot-state-icon'));
@@ -372,7 +371,6 @@ fdescribe('DotTemplateListComponent', () => {
                 .componentInstance;
             const actions = setBasicOptions();
             actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
-            actions.push({ menuItem: { label: 'Unlock', command: jasmine.any(Function) } });
             actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
 
             expect(lockedTemplate.actions).toEqual(actions);
@@ -478,13 +476,6 @@ fdescribe('DotTemplateListComponent', () => {
 
             expect(dotTemplatesService.unPublish).toHaveBeenCalledWith(['123Published']);
             checkNotificationAndReLoadOfPage('Template unpublished');
-        });
-        it('should call unlock api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'unlock').and.returnValue(of('template unlocked'));
-            lockedTemplate.actions[5].menuItem.command();
-
-            expect(dotTemplatesService.unlock).toHaveBeenCalledWith('123Locked');
-            checkNotificationAndReLoadOfPage('Template unlocked');
         });
         it('should call copy api, send notification and reload current page', () => {
             spyOn(dotTemplatesService, 'copy').and.returnValue(of(templatesMock[0]));
