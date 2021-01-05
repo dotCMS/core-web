@@ -95,7 +95,7 @@ class TestPaginatorService {
     get() {}
 }
 
-fdescribe('DotListingDataTableComponent', () => {
+describe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
     let hostFixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
@@ -361,7 +361,6 @@ fdescribe('DotListingDataTableComponent', () => {
         tick(1);
         hostFixture.detectChanges();
         const rows = el.querySelectorAll('tr');
-        console.log(rows);
         expect(rows[0].cells.length).toEqual(5);
     }));
 
@@ -479,7 +478,7 @@ fdescribe('DotListingDataTableComponent', () => {
         });
     });
 
-    fit('renders the dot empty state component if items array is empty', fakeAsync(() => {
+    it('renders the dot empty state component if items array is empty', fakeAsync(() => {
         spyOn(paginatorService, 'getWithOffset').and.returnValue(of([]));
         hostFixture.detectChanges();
         tick(1);
