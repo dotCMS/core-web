@@ -30,6 +30,12 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+    selector: 'dot-empty-state',
+    template: `<h1>Im empty</h1>`
+})
+class EmptyMockComponent {}
+
+@Component({
     selector: 'dot-test-host-component',
     template: ` <dot-listing-data-table
         [columns]="columns"
@@ -47,7 +53,9 @@ import { FormsModule } from '@angular/forms';
         [paginatorExtraParams]="paginatorExtraParams"
         (rowWasClicked)="rowWasClicked($event)"
         (selectedItems)="selectedItems($event)"
-    ></dot-listing-data-table>`
+    >
+        <dot-empty-state></dot-empty-state>
+    </dot-listing-data-table>`
 })
 class TestHostComponent {
     @Input() columns: DataTableColumn[];
@@ -108,7 +116,8 @@ fdescribe('DotListingDataTableComponent', () => {
                 DotActionButtonComponent,
                 DotListingDataTableComponent,
                 DotActionMenuButtonComponent,
-                TestHostComponent
+                TestHostComponent,
+                EmptyMockComponent
             ],
             imports: [
                 TableModule,
@@ -337,7 +346,7 @@ fdescribe('DotListingDataTableComponent', () => {
         expect(5).toEqual(headers.length);
     }));
 
-    it('should add a column if actions are received', () => {
+    it('should add a column if actions are received', fakeAsync(() => {
         const fakeActions: DotActionMenuItem[] = [
             {
                 menuItem: {
@@ -347,17 +356,14 @@ fdescribe('DotListingDataTableComponent', () => {
                 }
             }
         ];
+        hostComponent.actions = fakeActions;
         spyOn(paginatorService, 'getWithOffset').and.returnValue(of(items));
         hostFixture.detectChanges();
-
+        tick(1);
+        hostFixture.detectChanges();
         const rows = el.querySelectorAll('tr');
         expect(rows[0].cells.length).toEqual(5);
-
-        hostComponent.actions = fakeActions;
-        hostFixture.detectChanges();
-
-        expect(rows[0].cells.length).toEqual(5);
-    });
+    }));
 
     it('should receive an action an execute the command after clickling over the action button', fakeAsync(() => {
         const fakeActions: DotActionMenuItem[] = [
@@ -472,6 +478,16 @@ fdescribe('DotListingDataTableComponent', () => {
             expect(7).toEqual(bodyCheckboxes.length);
         });
     });
+
+    it('renders the dot empty state component if items array is empty', fakeAsync(() => {
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(of([]));
+        hostFixture.detectChanges();
+        tick(1);
+        hostFixture.detectChanges();
+        const empty = de.query(By.css('dot-empty-state'));
+        expect(empty.nativeElement.innerText).toBe('Im empty');
+    }));
+
     function setRequestSpy(response: any): void {
         spyOn<any>(coreWebService, 'requestView').and.returnValue(
             of({

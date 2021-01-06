@@ -33,7 +33,7 @@
     [selectionMode]="checkbox ? 'multiple' : 'single'"
 >
     <ng-template pTemplate="header" let-columns>
-        <tr>
+        <tr *ngIf="items?.length">
             <th *ngIf="checkbox" style="width: 5%">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
@@ -62,6 +62,9 @@
                 [ngTemplateOutletContext]="{ rowData: rowData }"
             ></ng-container>
         </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <ng-content select="dot-empty-state"></ng-content>
     </ng-template>
 </p-table>
 <p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
