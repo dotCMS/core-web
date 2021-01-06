@@ -283,9 +283,6 @@ describe('DotTemplateListComponent', () => {
             ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA]
         }).compileComponents();
-    });
-
-    beforeEach(fakeAsync(() => {
         fixture = TestBed.createComponent(DotTemplateListComponent);
         comp = fixture.componentInstance;
         dotTemplatesService = TestBed.inject(DotTemplatesService);
@@ -295,345 +292,374 @@ describe('DotTemplateListComponent', () => {
         dialogService = TestBed.inject(DialogService);
         dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
         coreWebService = TestBed.inject(CoreWebService);
-        spyOn<any>(coreWebService, 'requestView').and.returnValue(
-            of({
-                entity: templatesMock,
-                header: (type) => (type === 'Link' ? 'test;test=test' : '10')
-            })
-        );
-        fixture.detectChanges();
-        tick(2);
-        fixture.detectChanges();
-        dotListingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'))
-            .componentInstance;
-        spyOn(dotPushPublishDialogService, 'open');
-
-        spyOn<any>(dialogService, 'open').and.returnValue({
-            onClose: dialogRefClose
-        });
-    }));
-
-    it('should set attributes of dotListingDataTable', () => {
-        expect(dotListingDataTable.columns).toEqual(columnsMock);
-        expect(dotListingDataTable.sortField).toEqual('modDate');
-        expect(dotListingDataTable.sortOrder).toEqual('DESC');
-        expect(dotListingDataTable.url).toEqual('v1/templates');
-        expect(dotListingDataTable.actions).toEqual([]);
-        expect(dotListingDataTable.checkbox).toEqual(true);
-        expect(dotListingDataTable.dataKey).toEqual('inode');
     });
 
-    it('should set Action Header options correctly', () => {
-        const model: ButtonModel[] = dotListingDataTable.actionHeaderOptions.primary.model;
-        expect(model).toBeUndefined();
-
-        dotListingDataTable.actionHeaderOptions.primary.command();
-        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/templates/new');
-    });
-
-    it('should pass data to the status elements', () => {
-        const state: DotContentState = {
-            live: true,
-            working: true,
-            deleted: false,
-            hasLiveVersion: true
-        };
-
-        const labels = {
-            archived: 'Archived',
-            published: 'Published',
-            revision: 'Revision',
-            draft: 'Draft'
-        };
-        lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
-            .componentInstance;
-        const stateIcon = fixture.debugElement.query(By.css('dot-state-icon'));
-        const lockIcon = fixture.debugElement.query(
-            By.css('p-table dot-icon[name="lock"][size="14"]')
-        );
-
-        expect(stateIcon.attributes['size']).toEqual('14px');
-        expect(stateIcon.nativeNode.state).toEqual(state);
-        expect(stateIcon.nativeNode.labels).toEqual(labels);
-        expect(lockIcon).toBeDefined();
-    });
-
-    // TODO: Fix this test when DotTemplateList is refactored
-    xit('should set dot-empty-state if the templates array is empty', () => {
-        const activatedRoute = TestBed.inject(ActivatedRoute);
-        spyOnProperty(activatedRoute, 'data', 'get').and.returnValue(
-            of({
-                dotTemplateListResolverData: [[], false, false]
-            })
-        );
-        comp.ngOnInit();
-        fixture.detectChanges();
-
-        activatedRoute.data.subscribe(console.log); // { dotTemplateListResolverData: [ [], false, false ] }
-
-        const emptyState = fixture.debugElement.query(By.css('dot-empty-state'));
-        console.log(emptyState); // null
-    });
-
-    describe('row', () => {
-        it('should set actions to publish template', () => {
-            publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
-                .componentInstance;
-            const actions = setBasicOptions();
-            actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
-            actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
-
-            expect(publishTemplate.actions).toEqual(actions);
-        });
-
-        it('should set actions to locked template', () => {
-            lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
-                .componentInstance;
-            const actions = setBasicOptions();
-            actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
-            actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
-
-            expect(lockedTemplate.actions).toEqual(actions);
-        });
-
-        it('should set actions to unPublish template', () => {
-            unPublishTemplate = fixture.debugElement.query(By.css('[data-testid="123Unpublish"]'))
-                .componentInstance;
-            const actions = setBasicOptions();
-            actions.push({ menuItem: { label: 'Archive', command: jasmine.any(Function) } });
-            actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
-
-            expect(unPublishTemplate.actions).toEqual(actions);
-        });
-
-        it('should set actions to archived template', () => {
-            archivedTemplate = fixture.debugElement.query(By.css('[data-testid="123Archived"]'))
-                .componentInstance;
-            const actions = [
-                { menuItem: { label: 'Unarchive', command: jasmine.any(Function) } },
-                { menuItem: { label: 'Delete', command: jasmine.any(Function) } }
-            ];
-            expect(archivedTemplate.actions).toEqual(actions);
-        });
-
-        it('should hide push-publish and Add to Bundle actions', () => {
-            let activatedRoute: ActivatedRoute;
-            activatedRoute = TestBed.inject(ActivatedRoute);
-            spyOnProperty(activatedRoute, 'data', 'get').and.returnValue(
+    describe('with data', () => {
+        beforeEach(fakeAsync(() => {
+            spyOn<any>(coreWebService, 'requestView').and.returnValue(
                 of({
-                    dotTemplateListResolverData: [false, false]
+                    entity: templatesMock,
+                    header: (type) => (type === 'Link' ? 'test;test=test' : '10')
                 })
             );
-            comp.ngOnInit();
             fixture.detectChanges();
-            publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
+            tick(2);
+            fixture.detectChanges();
+            dotListingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'))
                 .componentInstance;
-            const actions = [
-                { menuItem: { label: 'Edit', command: jasmine.any(Function) } },
-                { menuItem: { label: 'Publish', command: jasmine.any(Function) } },
-                { menuItem: { label: 'Unpublish', command: jasmine.any(Function) } },
-                { menuItem: { label: 'Copy', command: jasmine.any(Function) } }
-            ];
+            spyOn(dotPushPublishDialogService, 'open');
 
-            expect(publishTemplate.actions).toEqual(actions);
+            spyOn<any>(dialogService, 'open').and.returnValue({
+                onClose: dialogRefClose
+            });
+        }));
+
+        it('should set attributes of dotListingDataTable', () => {
+            expect(dotListingDataTable.columns).toEqual(columnsMock);
+            expect(dotListingDataTable.sortField).toEqual('modDate');
+            expect(dotListingDataTable.sortOrder).toEqual('DESC');
+            expect(dotListingDataTable.url).toEqual('v1/templates');
+            expect(dotListingDataTable.actions).toEqual([]);
+            expect(dotListingDataTable.checkbox).toEqual(true);
+            expect(dotListingDataTable.dataKey).toEqual('inode');
         });
-    });
 
-    describe('row actions command', () => {
-        beforeEach(() => {
-            spyOn(dotMessageDisplayService, 'push');
-            spyOn(dotListingDataTable, 'loadCurrentPage');
-            publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
-                .componentInstance;
+        it('should set Action Header options correctly', () => {
+            const model: ButtonModel[] = dotListingDataTable.actionHeaderOptions.primary.model;
+            expect(model).toBeUndefined();
+
+            dotListingDataTable.actionHeaderOptions.primary.command();
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/templates/new');
+        });
+
+        it('should pass data to the status elements', () => {
+            const state: DotContentState = {
+                live: true,
+                working: true,
+                deleted: false,
+                hasLiveVersion: true
+            };
+
+            const labels = {
+                archived: 'Archived',
+                published: 'Published',
+                revision: 'Revision',
+                draft: 'Draft'
+            };
             lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
                 .componentInstance;
-            unPublishTemplate = fixture.debugElement.query(By.css('[data-testid="123Unpublish"]'))
-                .componentInstance;
-            archivedTemplate = fixture.debugElement.query(By.css('[data-testid="123Archived"]'))
-                .componentInstance;
+            const stateIcon = fixture.debugElement.query(By.css('dot-state-icon'));
+            const lockIcon = fixture.debugElement.query(
+                By.css('p-table dot-icon[name="lock"][size="14"]')
+            );
+
+            expect(stateIcon.attributes['size']).toEqual('14px');
+            expect(stateIcon.nativeNode.state).toEqual(state);
+            expect(stateIcon.nativeNode.labels).toEqual(labels);
+            expect(lockIcon).toBeDefined();
         });
 
-        it('should open add to bundle dialog', () => {
-            publishTemplate.actions[3].menuItem.command();
-            fixture.detectChanges();
-            const addToBundleDialog: DotAddToBundleComponent = fixture.debugElement.query(
-                By.css('dot-add-to-bundle')
-            ).componentInstance;
-            expect(addToBundleDialog.assetIdentifier).toEqual('123Published');
-        });
+        describe('row', () => {
+            it('should set actions to publish template', () => {
+                publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
+                    .componentInstance;
+                const actions = setBasicOptions();
+                actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
+                actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
 
-        it('should open Push Publish dialog', () => {
-            publishTemplate.actions[2].menuItem.command();
-            expect(dotPushPublishDialogService.open).toHaveBeenCalledWith({
-                assetIdentifier: '123Published',
-                title: 'Push Publish'
+                expect(publishTemplate.actions).toEqual(actions);
+            });
+
+            it('should set actions to locked template', () => {
+                lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
+                    .componentInstance;
+                const actions = setBasicOptions();
+                actions.push({ menuItem: { label: 'Unpublish', command: jasmine.any(Function) } });
+                actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
+
+                expect(lockedTemplate.actions).toEqual(actions);
+            });
+
+            it('should set actions to unPublish template', () => {
+                unPublishTemplate = fixture.debugElement.query(
+                    By.css('[data-testid="123Unpublish"]')
+                ).componentInstance;
+                const actions = setBasicOptions();
+                actions.push({ menuItem: { label: 'Archive', command: jasmine.any(Function) } });
+                actions.push({ menuItem: { label: 'Copy', command: jasmine.any(Function) } });
+
+                expect(unPublishTemplate.actions).toEqual(actions);
+            });
+
+            it('should set actions to archived template', () => {
+                archivedTemplate = fixture.debugElement.query(By.css('[data-testid="123Archived"]'))
+                    .componentInstance;
+                const actions = [
+                    { menuItem: { label: 'Unarchive', command: jasmine.any(Function) } },
+                    { menuItem: { label: 'Delete', command: jasmine.any(Function) } }
+                ];
+                expect(archivedTemplate.actions).toEqual(actions);
+            });
+
+            it('should hide push-publish and Add to Bundle actions', () => {
+                let activatedRoute: ActivatedRoute;
+                activatedRoute = TestBed.inject(ActivatedRoute);
+                spyOnProperty(activatedRoute, 'data', 'get').and.returnValue(
+                    of({
+                        dotTemplateListResolverData: [false, false]
+                    })
+                );
+                comp.ngOnInit();
+                fixture.detectChanges();
+                publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
+                    .componentInstance;
+                const actions = [
+                    { menuItem: { label: 'Edit', command: jasmine.any(Function) } },
+                    { menuItem: { label: 'Publish', command: jasmine.any(Function) } },
+                    { menuItem: { label: 'Unpublish', command: jasmine.any(Function) } },
+                    { menuItem: { label: 'Copy', command: jasmine.any(Function) } }
+                ];
+
+                expect(publishTemplate.actions).toEqual(actions);
             });
         });
-        it('should call archive endpoint, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
-            unPublishTemplate.actions[4].menuItem.command();
 
-            expect(dotTemplatesService.archive).toHaveBeenCalledWith(['123Unpublish']);
-            checkNotificationAndReLoadOfPage('Template archived');
-        });
-        it('should call unArchive api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseSuccess));
-            archivedTemplate.actions[0].menuItem.command();
-
-            expect(dotTemplatesService.unArchive).toHaveBeenCalledWith(['123Archived']);
-            checkNotificationAndReLoadOfPage('Template unarchived');
-        });
-        it('should call publish api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseSuccess));
-            unPublishTemplate.actions[1].menuItem.command();
-
-            expect(dotTemplatesService.publish).toHaveBeenCalledWith(['123Unpublish']);
-            checkNotificationAndReLoadOfPage('Templates published');
-        });
-        it('should call unpublish api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseSuccess));
-            publishTemplate.actions[4].menuItem.command();
-
-            expect(dotTemplatesService.unPublish).toHaveBeenCalledWith(['123Published']);
-            checkNotificationAndReLoadOfPage('Template unpublished');
-        });
-        it('should call copy api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'copy').and.returnValue(of(templatesMock[0]));
-            publishTemplate.actions[5].menuItem.command();
-
-            expect(dotTemplatesService.copy).toHaveBeenCalledWith('123Published');
-            checkNotificationAndReLoadOfPage('Template copied');
-        });
-        it('should call delete api, send notification and reload current page', () => {
-            spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
-            spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
-                conf.accept();
+        describe('row actions command', () => {
+            beforeEach(() => {
+                spyOn(dotMessageDisplayService, 'push');
+                spyOn(dotListingDataTable, 'loadCurrentPage');
+                publishTemplate = fixture.debugElement.query(By.css('[data-testid="123Published"]'))
+                    .componentInstance;
+                lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
+                    .componentInstance;
+                unPublishTemplate = fixture.debugElement.query(
+                    By.css('[data-testid="123Unpublish"]')
+                ).componentInstance;
+                archivedTemplate = fixture.debugElement.query(By.css('[data-testid="123Archived"]'))
+                    .componentInstance;
             });
-            archivedTemplate.actions[1].menuItem.command();
-            expect(dotTemplatesService.delete).toHaveBeenCalledWith(['123Archived']);
-            checkNotificationAndReLoadOfPage('Template deleted');
-        });
-    });
 
-    describe('bulk', () => {
-        let menu: Menu;
+            it('should open add to bundle dialog', () => {
+                publishTemplate.actions[3].menuItem.command();
+                fixture.detectChanges();
+                const addToBundleDialog: DotAddToBundleComponent = fixture.debugElement.query(
+                    By.css('dot-add-to-bundle')
+                ).componentInstance;
+                expect(addToBundleDialog.assetIdentifier).toEqual('123Published');
+            });
 
-        beforeEach(() => {
-            comp.selectedTemplates = [templatesMock[0], templatesMock[1]];
-            fixture.detectChanges();
-            menu = fixture.debugElement.query(By.css('.template-listing__header-options p-menu'))
-                .componentInstance;
-            spyOn(dotMessageDisplayService, 'push');
-            spyOn(dotListingDataTable, 'loadCurrentPage');
-        });
+            it('should open Push Publish dialog', () => {
+                publishTemplate.actions[2].menuItem.command();
+                expect(dotPushPublishDialogService.open).toHaveBeenCalledWith({
+                    assetIdentifier: '123Published',
+                    title: 'Push Publish'
+                });
+            });
+            it('should call archive endpoint, send notification and reload current page', () => {
+                spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
+                unPublishTemplate.actions[4].menuItem.command();
 
-        it('should set labels', () => {
-            const actions = [
-                { label: 'Publish', command: jasmine.any(Function) },
-                { label: 'Push Publish', command: jasmine.any(Function) },
-                { label: 'Add To Bundle', command: jasmine.any(Function) },
-                { label: 'Unpublish', command: jasmine.any(Function) },
-                { label: 'Archive', command: jasmine.any(Function) },
-                { label: 'Unarchive', command: jasmine.any(Function) },
-                { label: 'Delete', command: jasmine.any(Function) }
-            ];
+                expect(dotTemplatesService.archive).toHaveBeenCalledWith(['123Unpublish']);
+                checkNotificationAndReLoadOfPage('Template archived');
+            });
+            it('should call unArchive api, send notification and reload current page', () => {
+                spyOn(dotTemplatesService, 'unArchive').and.returnValue(
+                    of(mockBulkResponseSuccess)
+                );
+                archivedTemplate.actions[0].menuItem.command();
 
-            expect(menu.model).toEqual(actions);
-        });
+                expect(dotTemplatesService.unArchive).toHaveBeenCalledWith(['123Archived']);
+                checkNotificationAndReLoadOfPage('Template unarchived');
+            });
+            it('should call publish api, send notification and reload current page', () => {
+                spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseSuccess));
+                unPublishTemplate.actions[1].menuItem.command();
 
-        it('should execute Publish action', () => {
-            spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseSuccess));
-            menu.model[0].command();
-            expect(dotTemplatesService.publish).toHaveBeenCalledWith(['123Published', '123Locked']);
-            checkNotificationAndReLoadOfPage('Templates published');
-        });
-        it('should execute Push Publish action', () => {
-            menu.model[1].command();
-            expect(dotPushPublishDialogService.open).toHaveBeenCalledWith({
-                assetIdentifier: '123Published,123Locked',
-                title: 'Push Publish'
+                expect(dotTemplatesService.publish).toHaveBeenCalledWith(['123Unpublish']);
+                checkNotificationAndReLoadOfPage('Templates published');
+            });
+            it('should call unpublish api, send notification and reload current page', () => {
+                spyOn(dotTemplatesService, 'unPublish').and.returnValue(
+                    of(mockBulkResponseSuccess)
+                );
+                publishTemplate.actions[4].menuItem.command();
+
+                expect(dotTemplatesService.unPublish).toHaveBeenCalledWith(['123Published']);
+                checkNotificationAndReLoadOfPage('Template unpublished');
+            });
+            it('should call copy api, send notification and reload current page', () => {
+                spyOn(dotTemplatesService, 'copy').and.returnValue(of(templatesMock[0]));
+                publishTemplate.actions[5].menuItem.command();
+
+                expect(dotTemplatesService.copy).toHaveBeenCalledWith('123Published');
+                checkNotificationAndReLoadOfPage('Template copied');
+            });
+            it('should call delete api, send notification and reload current page', () => {
+                spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
+                spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
+                    conf.accept();
+                });
+                archivedTemplate.actions[1].menuItem.command();
+                expect(dotTemplatesService.delete).toHaveBeenCalledWith(['123Archived']);
+                checkNotificationAndReLoadOfPage('Template deleted');
             });
         });
-        it('should execute Add To Bundle action', () => {
-            menu.model[2].command();
-            fixture.detectChanges();
-            const addToBundleDialog: DotAddToBundleComponent = fixture.debugElement.query(
-                By.css('dot-add-to-bundle')
-            ).componentInstance;
-            expect(addToBundleDialog.assetIdentifier).toEqual('123Published,123Locked');
-        });
-        it('should execute Unpublish action', () => {
-            spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseSuccess));
-            menu.model[3].command();
-            expect(dotTemplatesService.unPublish).toHaveBeenCalledWith([
-                '123Published',
-                '123Locked'
-            ]);
-            checkNotificationAndReLoadOfPage('Template unpublished');
-        });
-        it('should execute Archive action', () => {
-            spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
-            menu.model[4].command();
-            expect(dotTemplatesService.archive).toHaveBeenCalledWith(['123Published', '123Locked']);
-            checkNotificationAndReLoadOfPage('Template archived');
-        });
-        it('should execute UnArchive action', () => {
-            spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseSuccess));
-            menu.model[5].command();
-            expect(dotTemplatesService.unArchive).toHaveBeenCalledWith([
-                '123Published',
-                '123Locked'
-            ]);
-            checkNotificationAndReLoadOfPage('Template unarchived');
-        });
-        it('should execute Delete action', () => {
-            spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
-            spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
-                conf.accept();
-            });
-            menu.model[6].command();
-            expect(dotTemplatesService.delete).toHaveBeenCalledWith(['123Published', '123Locked']);
-            checkNotificationAndReLoadOfPage('Template deleted');
-        });
-        it('should disable enable bulk action button based on selection', () => {
-            const bulkActionsBtn: HTMLButtonElement = fixture.debugElement.query(
-                By.css('.template-listing__header-options button')
-            ).nativeElement;
-            expect(bulkActionsBtn.disabled).toEqual(false);
-            comp.selectedTemplates = [];
-            fixture.detectChanges();
-            expect(bulkActionsBtn.disabled).toEqual(true);
-        });
 
-        describe('error', () => {
-            it('should fire exception on publish', () => {
-                spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseFail));
+        describe('bulk', () => {
+            let menu: Menu;
+
+            beforeEach(() => {
+                comp.selectedTemplates = [templatesMock[0], templatesMock[1]];
+                fixture.detectChanges();
+                menu = fixture.debugElement.query(
+                    By.css('.template-listing__header-options p-menu')
+                ).componentInstance;
+                spyOn(dotMessageDisplayService, 'push');
+                spyOn(dotListingDataTable, 'loadCurrentPage');
+            });
+
+            it('should set labels', () => {
+                const actions = [
+                    { label: 'Publish', command: jasmine.any(Function) },
+                    { label: 'Push Publish', command: jasmine.any(Function) },
+                    { label: 'Add To Bundle', command: jasmine.any(Function) },
+                    { label: 'Unpublish', command: jasmine.any(Function) },
+                    { label: 'Archive', command: jasmine.any(Function) },
+                    { label: 'Unarchive', command: jasmine.any(Function) },
+                    { label: 'Delete', command: jasmine.any(Function) }
+                ];
+
+                expect(menu.model).toEqual(actions);
+            });
+
+            it('should execute Publish action', () => {
+                spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseSuccess));
                 menu.model[0].command();
-                checkOpenOfDialogService('Templates published');
+                expect(dotTemplatesService.publish).toHaveBeenCalledWith([
+                    '123Published',
+                    '123Locked'
+                ]);
+                checkNotificationAndReLoadOfPage('Templates published');
             });
-            it('should fire exception on unPublish', () => {
-                spyOn(dotTemplatesService, 'unPublish').and.returnValue(of(mockBulkResponseFail));
+            it('should execute Push Publish action', () => {
+                menu.model[1].command();
+                expect(dotPushPublishDialogService.open).toHaveBeenCalledWith({
+                    assetIdentifier: '123Published,123Locked',
+                    title: 'Push Publish'
+                });
+            });
+            it('should execute Add To Bundle action', () => {
+                menu.model[2].command();
+                fixture.detectChanges();
+                const addToBundleDialog: DotAddToBundleComponent = fixture.debugElement.query(
+                    By.css('dot-add-to-bundle')
+                ).componentInstance;
+                expect(addToBundleDialog.assetIdentifier).toEqual('123Published,123Locked');
+            });
+            it('should execute Unpublish action', () => {
+                spyOn(dotTemplatesService, 'unPublish').and.returnValue(
+                    of(mockBulkResponseSuccess)
+                );
                 menu.model[3].command();
-                checkOpenOfDialogService('Template unpublished');
+                expect(dotTemplatesService.unPublish).toHaveBeenCalledWith([
+                    '123Published',
+                    '123Locked'
+                ]);
+                checkNotificationAndReLoadOfPage('Template unpublished');
             });
-            it('should fire exception on archive', () => {
-                spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseFail));
+            it('should execute Archive action', () => {
+                spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseSuccess));
                 menu.model[4].command();
-                checkOpenOfDialogService('Template archived');
+                expect(dotTemplatesService.archive).toHaveBeenCalledWith([
+                    '123Published',
+                    '123Locked'
+                ]);
+                checkNotificationAndReLoadOfPage('Template archived');
             });
-            it('should fire exception on unArchive', () => {
-                spyOn(dotTemplatesService, 'unArchive').and.returnValue(of(mockBulkResponseFail));
+            it('should execute UnArchive action', () => {
+                spyOn(dotTemplatesService, 'unArchive').and.returnValue(
+                    of(mockBulkResponseSuccess)
+                );
                 menu.model[5].command();
-                checkOpenOfDialogService('Template unarchived');
+                expect(dotTemplatesService.unArchive).toHaveBeenCalledWith([
+                    '123Published',
+                    '123Locked'
+                ]);
+                checkNotificationAndReLoadOfPage('Template unarchived');
             });
-            it('should fire exception on delete', () => {
-                spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseFail));
+            it('should execute Delete action', () => {
+                spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseSuccess));
                 spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
                     conf.accept();
                 });
                 menu.model[6].command();
-                checkOpenOfDialogService('Template deleted');
+                expect(dotTemplatesService.delete).toHaveBeenCalledWith([
+                    '123Published',
+                    '123Locked'
+                ]);
+                checkNotificationAndReLoadOfPage('Template deleted');
             });
+            it('should disable enable bulk action button based on selection', () => {
+                const bulkActionsBtn: HTMLButtonElement = fixture.debugElement.query(
+                    By.css('.template-listing__header-options button')
+                ).nativeElement;
+                expect(bulkActionsBtn.disabled).toEqual(false);
+                comp.selectedTemplates = [];
+                fixture.detectChanges();
+                expect(bulkActionsBtn.disabled).toEqual(true);
+            });
+
+            describe('error', () => {
+                it('should fire exception on publish', () => {
+                    spyOn(dotTemplatesService, 'publish').and.returnValue(of(mockBulkResponseFail));
+                    menu.model[0].command();
+                    checkOpenOfDialogService('Templates published');
+                });
+                it('should fire exception on unPublish', () => {
+                    spyOn(dotTemplatesService, 'unPublish').and.returnValue(
+                        of(mockBulkResponseFail)
+                    );
+                    menu.model[3].command();
+                    checkOpenOfDialogService('Template unpublished');
+                });
+                it('should fire exception on archive', () => {
+                    spyOn(dotTemplatesService, 'archive').and.returnValue(of(mockBulkResponseFail));
+                    menu.model[4].command();
+                    checkOpenOfDialogService('Template archived');
+                });
+                it('should fire exception on unArchive', () => {
+                    spyOn(dotTemplatesService, 'unArchive').and.returnValue(
+                        of(mockBulkResponseFail)
+                    );
+                    menu.model[5].command();
+                    checkOpenOfDialogService('Template unarchived');
+                });
+                it('should fire exception on delete', () => {
+                    spyOn(dotTemplatesService, 'delete').and.returnValue(of(mockBulkResponseFail));
+                    spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
+                        conf.accept();
+                    });
+                    menu.model[6].command();
+                    checkOpenOfDialogService('Template deleted');
+                });
+            });
+        });
+    });
+
+    describe('without data', () => {
+        beforeEach(() => {
+            spyOn<any>(coreWebService, 'requestView').and.returnValue(
+                of({
+                    entity: [],
+                    header: (type) => (type === 'Link' ? 'test;test=test' : '10')
+                })
+            );
+            fixture.detectChanges();
+        });
+
+        it('should set dot-empty-state if the templates array is empty', () => {
+            const emptyState = fixture.debugElement.query(By.css('dot-empty-state'));
+            expect(emptyState).toBeDefined();
         });
     });
 

@@ -213,6 +213,7 @@ export class DotListingDataTableComponent implements OnInit {
     private setItems(items: any[]): void {
         setTimeout(() => {
             // avoid ExpressionChangedAfterItHasBeenCheckedError on p-table on tests.
+            // TODO: Double check if versions after prime-ng 11.0.0 solve the need to add this hack.
             this.items = this.dateColumns ? this.formatData(items) : items;
             this.loading = false;
             this.maxLinksPage = this.paginatorService.maxLinksPage;
