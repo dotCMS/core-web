@@ -275,7 +275,6 @@ describe('DotEditContentToolbarHtmlService', () => {
                     </div>
                 `;
                 htmlElement.appendChild(dummyContainer);
-                dotEditContentToolbarHtmlService.addContentletMarkup(testDoc);
             });
 
             it('should create buttons', () => {
@@ -309,7 +308,6 @@ describe('DotEditContentToolbarHtmlService', () => {
                     </div>
                 `;
                 htmlElement.appendChild(dummyContainer);
-                dotEditContentToolbarHtmlService.addContentletMarkup(testDoc);
             });
 
             it('should create buttons for only one contentlet', () => {
@@ -329,7 +327,6 @@ describe('DotEditContentToolbarHtmlService', () => {
                     </div>
                 `;
                 htmlElement.appendChild(dummyContainer);
-                dotEditContentToolbarHtmlService.addContentletMarkup(testDoc);
             });
 
             it('should have edit button disabled', () => {
@@ -357,7 +354,6 @@ describe('DotEditContentToolbarHtmlService', () => {
                         </div>
                     `;
                     htmlElement.appendChild(dummyContainer);
-                    dotEditContentToolbarHtmlService.addContentletMarkup(testDoc);
                 });
 
                 it('should have button', () => {
@@ -386,7 +382,6 @@ describe('DotEditContentToolbarHtmlService', () => {
                         </div>
                     `;
                     htmlElement.appendChild(dummyContainer);
-                    dotEditContentToolbarHtmlService.addContentletMarkup(testDoc);
                 });
 
                 it('should have submenu link', () => {
