@@ -113,7 +113,6 @@ export class DotListingDataTableComponent implements OnInit {
      * @memberof DotListingDataTableComponent
      */
     loadDataPaginationEvent(event: LazyLoadEvent): void {
-        console.log('loadDataPaginationEvent');
         this.loadData(event.first, event.sortField, event.sortOrder);
     }
 
