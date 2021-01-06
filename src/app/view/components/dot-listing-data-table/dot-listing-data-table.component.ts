@@ -73,6 +73,8 @@ export class DotListingDataTableComponent implements OnInit {
     dateColumns: DataTableColumn[];
     loading = true;
     contextMenuItems: MenuItem[];
+    maxLinksPage: number;
+    totalRecords: number;
 
     constructor(
         public loggerService: LoggerService,
@@ -210,9 +212,11 @@ export class DotListingDataTableComponent implements OnInit {
 
     private setItems(items: any[]): void {
         setTimeout(() => {
-            // avoid ExpressionChangedAfterItHasBeenCheckedError on p-table
+            // avoid ExpressionChangedAfterItHasBeenCheckedError on p-table on tests.
             this.items = this.dateColumns ? this.formatData(items) : items;
             this.loading = false;
+            this.maxLinksPage = this.paginatorService.maxLinksPage;
+            this.totalRecords = this.paginatorService.totalRecords;
         }, 0);
     }
 
