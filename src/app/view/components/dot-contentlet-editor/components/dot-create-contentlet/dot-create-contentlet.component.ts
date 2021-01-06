@@ -25,8 +25,6 @@ export class DotCreateContentletComponent implements OnInit {
     @Output()
     custom: EventEmitter<any> = new EventEmitter();
 
-    private contentLoaded: string;
-
     constructor(
         private dotRouterService: DotRouterService,
         private dotContentletEditorService: DotContentletEditorService,
@@ -46,9 +44,7 @@ export class DotCreateContentletComponent implements OnInit {
      * @memberof DotCreateContentletComponent
      */
     onClose(event): void {
-        if (this.contentLoaded !== 'Page') {
-            this.dotRouterService.goToContent();
-        }
+        this.dotRouterService.goToContent();
         this.close.emit(event);
     }
 
@@ -58,9 +54,6 @@ export class DotCreateContentletComponent implements OnInit {
      * @memberof DotCreateContentletComponent
      */
     onCustom(event): void {
-        if (event.detail?.name === 'edit-contentlet-loaded') {
-            this.contentLoaded = event.detail.data['contentType'];
-        }
         this.custom.emit(event);
     }
 }

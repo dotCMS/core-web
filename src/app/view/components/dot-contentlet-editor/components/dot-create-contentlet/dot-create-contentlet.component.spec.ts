@@ -113,18 +113,6 @@ describe('DotCreateContentletComponent', () => {
             expect(routerService.goToContent).toHaveBeenCalledTimes(1);
         });
 
-        it('should emit close and NOT redirect when Content Type equal to Page', () => {
-            dotCreateContentletWrapper.triggerEventHandler(
-                'custom',
-                new CustomEvent('custom', {
-                    detail: { data: { contentType: 'Page' }, name: 'edit-contentlet-loaded' }
-                })
-            );
-            dotCreateContentletWrapper.triggerEventHandler('close', {});
-            expect(component.close.emit).toHaveBeenCalledTimes(1);
-            expect(routerService.goToContent).not.toHaveBeenCalled();
-        });
-
         it('should emit custom', () => {
             dotCreateContentletWrapper.triggerEventHandler('custom', {});
             expect(component.custom.emit).toHaveBeenCalledTimes(1);
