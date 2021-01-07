@@ -182,7 +182,7 @@ export class DotEditContentHtmlService {
      * @param * contentlet
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(contentlet: DotPageContent, eventType: PageModelChangeEventType): void {
+    renderAddedContentlet(contentlet: DotPageContent): void {
         const doc = this.getEditPageDocument();
         const containerEl: HTMLElement = doc.querySelector(
             `[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
@@ -203,7 +203,7 @@ export class DotEditContentHtmlService {
                     // Update the model with the recently added contentlet
                     this.pageModel$.next({
                         model: this.getContentModel(),
-                        type: eventType
+                        type: PageModelChangeEventType.ADD_CONTENT
                     });
                     this.currentAction = DotContentletAction.EDIT;
                     this.updateContainerToolbar(containerEl.dataset.dotIdentifier);
@@ -502,7 +502,7 @@ export class DotEditContentHtmlService {
             // When an user create or edit a contentlet from the jsp
             save: (contentlet: DotPageContent) => {
                 if (this.currentAction === DotContentletAction.ADD) {
-                    this.renderAddedContentlet(contentlet, PageModelChangeEventType.ADD_CONTENT);
+                    this.renderAddedContentlet(contentlet);
                 } else {
                     if (this.updateContentletInode) {
                         this.currentContentlet.inode = contentlet.inode;
@@ -512,7 +512,7 @@ export class DotEditContentHtmlService {
             },
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {
-                this.renderAddedContentlet(contentlet, PageModelChangeEventType.ADD_CONTENT);
+                this.renderAddedContentlet(contentlet);
                 this.iframeActions$.next({
                     name: 'select'
                 });
@@ -539,14 +539,14 @@ export class DotEditContentHtmlService {
         const fakeHtml = document.createElement('html');
         fakeHtml.innerHTML = pageState.html;
 
-        // TODO: bring this file to core?
-        const domScrollerJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
-            'https://unpkg.com/dom-autoscroller@2.2.3/dist/dom-autoscroller.js'
-        );
-
         if (fakeHtml.querySelector('base')) {
             return pageState.html;
         } else {
+            // TODO: bring this file to core?
+            const domScrollerJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
+                'https://unpkg.com/dom-autoscroller@2.2.3/dist/dom-autoscroller.js'
+            );
+
             const head = fakeHtml.querySelector('head');
             head.insertBefore(this.getBaseTag(pageState.page.pageURI), head.childNodes[0]);
             head.appendChild(domScrollerJSElement);
@@ -567,8 +567,9 @@ export class DotEditContentHtmlService {
 
     private loadCodeIntoIframe(pageState: DotPageRenderState): void {
         const doc = this.getEditPageDocument();
+        const html = this.updateHtml(pageState);
         doc.open();
-        doc.write(this.updateHtml(pageState));
+        doc.write(html);
         doc.close();
     }
 
