@@ -257,7 +257,7 @@ describe('DotEditContentToolbarHtmlService', () => {
         });
     });
 
-    fdescribe('contentlet toolbar', () => {
+    describe('contentlet toolbar', () => {
         let htmlElement: HTMLHtmlElement;
 
         beforeEach(() => {

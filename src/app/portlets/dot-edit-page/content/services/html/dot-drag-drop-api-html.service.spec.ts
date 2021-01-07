@@ -31,7 +31,6 @@ describe('DotDragDropAPIHtmlService', () => {
     let dotDOMHtmlUtilService: MockDotDOMHtmlUtilService;
 
     const cssElement = {};
-    const jsElement = {};
     let callbackFunc;
     const iframe: any = {
         contentWindow: {
@@ -75,19 +74,37 @@ describe('DotDragDropAPIHtmlService', () => {
         })
     );
 
-    it('should crate and set js and css draguls element', () => {
+    it('should create and set js and css dragula element', () => {
         dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
-
-        expect<any>(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith(
-            '/html/js/dragula-3.7.2/dragula.min.css'
-        );
-        expect(iframe.contentWindow.document.head.appendChild).toHaveBeenCalledWith(cssElement);
 
         expect<any>(dotDOMHtmlUtilService.creatExternalScriptElement).toHaveBeenCalledWith(
             '/html/js/dragula-3.7.2/dragula.min.js',
             jasmine.any(Function)
         );
-        expect(iframe.contentWindow.document.head.appendChild).toHaveBeenCalledWith(jsElement);
+
+        // Element in the last call
+        const [el] = iframe.contentWindow.document.head.appendChild.calls.mostRecent().args;
+
+        expect(el.innerHTML).toContain(`
+        .gu-mirror {
+            position: fixed !important;
+            margin: 0 !important;
+            z-index: 9999 !important;
+            opacity: 1;
+            transform: scale(0.5);
+            transform-origin: right top;
+        }
+
+        .gu-hide {
+            display: none !important;
+        }
+        .gu-unselectable {
+            user-select: none !important;
+        }
+        .gu-transit {
+            opacity: 0.2;
+        }
+    `);
     });
 
     it('should init dragula context', () => {
