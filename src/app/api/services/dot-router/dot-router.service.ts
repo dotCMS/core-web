@@ -15,20 +15,13 @@ export class DotRouterService {
     private CUSTOM_PORTLET_ID_PREFIX = 'c_';
 
     constructor(private router: Router, private route: ActivatedRoute) {
-        console.log('****router service');
         this._currentSavedURL = this.router.url;
-
         this.router.events.subscribe((event: Event) => {
             if (event instanceof NavigationEnd) {
                 this._previousSavedURL = this._currentSavedURL;
                 this._currentSavedURL = event.url;
-                console.log('****previous url', this._previousSavedURL);
-                console.log('***current url', this._currentSavedURL);
             }
         });
-
-        console.log('****previous url', this._previousSavedURL);
-        console.log('***current url', this._currentSavedURL);
     }
 
     get currentSavedURL(): string {
