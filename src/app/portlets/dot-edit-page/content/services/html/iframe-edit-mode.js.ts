@@ -52,10 +52,6 @@ export const EDIT_PAGE_JS = `
 
     var drake = dragula(
         getContainers(), {
-        moves: function (el, target, source, sibling) {
-            el.classList.toggle('moving');
-            return true;
-        },
         accepts: function (el, target, source, sibling) {
             var canDrop = false;
             if (target.dataset.dotObject === 'container') {
@@ -78,14 +74,22 @@ export const EDIT_PAGE_JS = `
         currentModel = getDotNgModel();
     })
 
+    drake.on('over', function(el, container, source) {
+        container.classList.add('over')
+    })
+
+    drake.on('out', function(el, container, source) {
+        container.classList.remove('over')
+    })
+
     drake.on('dragend', function(el) {
         if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
             forbiddenTarget.classList.remove('no');
         }
-        el.classList.toggle('moving');
 
         currentModel = [];
     });
+
     drake.on('drop', function(el, target, source, sibling) {
         const updatedModel = getDotNgModel();
 

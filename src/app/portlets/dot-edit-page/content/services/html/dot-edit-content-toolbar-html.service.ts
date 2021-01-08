@@ -84,7 +84,6 @@ export class DotEditContentToolbarHtmlService {
      * @memberof DotEditContentToolbarHtmlService
      */
     bindContentletEvents(doc: Document): void {
-        // TODO: how do I remove this listener?
         doc.addEventListener('mouseover', (e) => {
             const contentlet: HTMLElement = (e.target as Element).closest(
                 '[data-dot-object="contentlet"]:not([data-dot-toolbar="true"]'

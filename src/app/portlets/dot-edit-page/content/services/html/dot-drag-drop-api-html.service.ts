@@ -43,9 +43,6 @@ export class DotDragDropAPIHtmlService {
         .gu-unselectable {
             user-select: none !important;
         }
-        .gu-transit {
-            opacity: 0.2;
-        }
         `;
 
         doc.head.appendChild(dragulaCSSElement);

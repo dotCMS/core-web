@@ -53,7 +53,7 @@ export const getEditPageCss = (timestampId: string): string => {
 
     /*
         When you start D&D in a contentlet dragula clones the elements and append it to the end
-        the body. This styles are for that element
+        the body and position to the mouse movement. This styles are for that element
     */
     ${timestampId} [data-dot-object="contentlet"].gu-mirror {
         margin: 0 !important;
@@ -65,28 +65,29 @@ export const getEditPageCss = (timestampId: string): string => {
         min-height: auto !important;
         box-shadow: 0 0 40px 0 #00000038;
         z-index: 2147483648 !important;
+        pointer-events: none !important;
+        user-select: none !important;
     }
 
     /*
-        We add the .moving class to the element on drake "moves" property.
-        And we use it to make the contentlet into a smaller block to easier
-        relocation and prevent big layout shifts
+        .gu-transit is the element that dragula place is the possible drop area
+        We change that to be a 10px line to indicate the user where is going to
+        drop the element is dragging.
     */
-    ${timestampId} [data-dot-object="contentlet"].moving:not(.gu-mirror) {
+    ${timestampId} [data-dot-object="contentlet"].gu-transit:not(.gu-mirror) {
         min-height: 0 !important;
-        background: rgba(83, 194, 249, 1) !important;
+        background: rgba(83, 194, 249, 0.5) !important;
         overflow: hidden;
         padding: 0px !important;
         margin: 0px !important;
-        height: 16px;
-        border: solid 2px #53c2f9;
+        height: 10px;
         margin: 0 16px !important;
         z-index: 100;
     }
 
 
     /* Hide all the elements inside the contentlet while were relocating */
-    ${timestampId} [data-dot-object="contentlet"].moving:not(.gu-mirror) * {
+    ${timestampId} [data-dot-object="contentlet"].gu-transit:not(.gu-mirror) * {
         display: none;
     }
 
@@ -98,8 +99,13 @@ export const getEditPageCss = (timestampId: string): string => {
         display: none !important;
     }
 
-    ${timestampId} [data-dot-object="container"]:hover [data-dot-object="contentlet"] {
+    ${timestampId} [data-dot-object="container"]:hover [data-dot-object="contentlet"]:not(.gu-transit) {
         background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQoU2NkIAIEH/r5n5GQOpCitXbsjHgVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQCQPycYlScX0wAAAABJRU5ErkJggg==") !important;
+    }
+
+    ${timestampId} [data-dot-object="container"].over [data-dot-object="contentlet"] {
+        pointer-events: none;
+        user-select: none !important;
     }
 
     ${timestampId} .dotedit-container__toolbar {

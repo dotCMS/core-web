@@ -368,11 +368,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private setInitalData(): void {
-        this.route.parent.parent.data
-            .pipe(pluck('content'))
-            .subscribe((e) => console.log('content', e)),
-            this.dotPageStateService.state$.subscribe((e) => console.log('state', e));
-
         const content$ = merge(
             this.route.parent.parent.data.pipe(pluck('content')),
             this.dotPageStateService.state$

@@ -169,9 +169,7 @@ describe('DotEditContentHtmlService', () => {
 
             fakeIframeEl = document.createElement('iframe');
             document.body.appendChild(fakeIframeEl);
-            // fakeIframeEl.contentWindow.document.open();
-            // fakeIframeEl.contentWindow.document.write('');
-            // fakeIframeEl.contentWindow.document.close();
+
             /*
                 TODO: in the refactor we need to make this service just to generate and return stuff, pass the iframe
                 is not a good architecture.
