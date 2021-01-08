@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
+// import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotCMSEditPageEvent } from '@components/dot-contentlet-editor/components/dot-contentlet-wrapper/dot-contentlet-wrapper.component';
@@ -21,7 +21,7 @@ export class DotCustomEventHandlerService {
     constructor(
         private dotLoadingIndicatorService: DotLoadingIndicatorService,
         private dotRouterService: DotRouterService,
-        private dotContentletEditorService: DotContentletEditorService,
+        // private dotContentletEditorService: DotContentletEditorService,
         private dotUiColorsService: DotUiColorsService,
         private dotIframeService: DotIframeService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
@@ -55,9 +55,10 @@ export class DotCustomEventHandlerService {
     }
 
     private createContentlet($event: CustomEvent): void {
-        this.dotContentletEditorService.create({
-            data: $event.detail.data
-        });
+        // this.dotContentletEditorService.create({
+        //     data: $event.detail.data
+        // });
+        this.dotRouterService.goToCreateContent($event.detail.data);
     }
 
     private goToEditPage($event: CustomEvent<DotCMSEditPageEvent>): void {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params, Event, NavigationEnd } from '@angular/router';
 
 import { PortletNav } from '@models/navigation';
 import { Subject } from 'rxjs';
@@ -11,9 +11,29 @@ import { LOGOUT_URL } from 'dotcms-js';
 export class DotRouterService {
     portletReload$ = new Subject();
     private _previousSavedURL: string;
+    private _currentSavedURL: string;
     private CUSTOM_PORTLET_ID_PREFIX = 'c_';
 
-    constructor(private router: Router, private route: ActivatedRoute) {}
+    constructor(private router: Router, private route: ActivatedRoute) {
+        console.log('****router service');
+        this._currentSavedURL = this.router.url;
+
+        this.router.events.subscribe((event: Event) => {
+            if (event instanceof NavigationEnd) {
+                this._previousSavedURL = this._currentSavedURL;
+                this._currentSavedURL = event.url;
+                console.log('****previous url', this._previousSavedURL);
+                console.log('***current url', this._currentSavedURL);
+            }
+        });
+
+        console.log('****previous url', this._previousSavedURL);
+        console.log('***current url', this._currentSavedURL);
+    }
+
+    get currentSavedURL(): string {
+        return this._currentSavedURL;
+    }
 
     get currentPortlet(): PortletNav {
         return {
@@ -22,10 +42,27 @@ export class DotRouterService {
         };
     }
 
+    get previousSavedURL(): string {
+        return this._previousSavedURL;
+    }
+
+    set previousSavedURL(url: string) {
+        this._previousSavedURL = url;
+    }
+
     get queryParams(): Params {
         const nav = this.router.getCurrentNavigation();
 
         return nav ? nav.finalUrl.queryParams : this.route.snapshot.queryParams;
+    }
+
+    /**
+     * Redirect to previous url
+     *
+     * @memberof DotRouterService
+     */
+    goToPreviousUrl(): void {
+        this.router.navigate([this.previousSavedURL]);
     }
 
     /**
@@ -119,6 +156,15 @@ export class DotRouterService {
      */
     goToContent(): void {
         this.router.navigate(['/c/content']);
+    }
+
+    /**
+     * Redirect to Content page
+     *
+     * @memberof DotRouterService
+     */
+    goToCreateContent(variableName: string): void {
+        this.router.navigate([`/c/content/new/${variableName}`]);
     }
 
     goToEditContentType(id: string, portlet: string): void {
@@ -226,14 +272,6 @@ export class DotRouterService {
             .split('/')
             .filter((item) => item !== '' && item !== '#' && item !== 'c');
         return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
-    }
-
-    set previousSavedURL(url: string) {
-        this._previousSavedURL = url;
-    }
-
-    get previousSavedURL(): string {
-        return this._previousSavedURL;
     }
 
     isPublicPage(): boolean {

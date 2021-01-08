@@ -1,10 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-
 import { merge, Observable } from 'rxjs';
 import { filter, pluck } from 'rxjs/operators';
-
+import { ActivatedRoute } from '@angular/router';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
 
 /**
@@ -35,25 +33,36 @@ export class DotCreateContentletComponent implements OnInit {
         this.url$ = merge(
             this.dotContentletEditorService.createUrl$,
             this.route.data.pipe(pluck('url'))
-        ).pipe(filter((url: string) => !!url));
+        ).pipe(
+            filter((url: string) => {
+                return !!url;
+            })
+        );
     }
 
     /**
      * Handle close event
-     *
+     * @param {Event} event
      * @memberof DotCreateContentletComponent
      */
-    onClose(event): void {
-        this.dotRouterService.goToContent();
+    onClose(event: Event): void {
+        if (
+            this.dotRouterService.previousSavedURL.includes('/starter') ||
+            this.dotRouterService.previousSavedURL === '/'
+        ) {
+            this.dotRouterService.goToContent();
+        } else {
+            this.dotRouterService.goToPreviousUrl();
+        }
         this.close.emit(event);
     }
 
     /**
      * Handle custom event
-     *
+     * @param {Event} event
      * @memberof DotCreateContentletComponent
      */
-    onCustom(event): void {
+    onCustom(event: Event): void {
         this.custom.emit(event);
     }
 }
