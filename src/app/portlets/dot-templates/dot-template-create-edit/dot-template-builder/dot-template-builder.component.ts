@@ -22,10 +22,10 @@ export class DotTemplateBuilderComponent implements OnInit {
     }
 
     /**
-     * Handle the custom events emmited by the Edit Contentlet
+     * Handle the custom events emmited by the History Tab
      *
      * @param CustomEvent $event
-     * @memberof DotEditContentComponent
+     * @memberof DotTemplateBuilderComponent
      */
     onCustomEvent($event: CustomEvent): void {
         this.dotCustomEventHandlerService.handle($event);
