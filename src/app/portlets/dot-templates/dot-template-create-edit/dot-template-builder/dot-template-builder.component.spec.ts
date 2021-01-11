@@ -17,23 +17,20 @@ import { DotTemplateBuilderComponent } from './dot-template-builder.component';
 import { By } from '@angular/platform-browser';
 import { EMPTY_TEMPLATE_ADVANCED, EMPTY_TEMPLATE_DESIGN } from '../store/dot-template.store';
 import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot-portlet-box/dot-portlet-box.module';
+import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
     template: ``
 })
 class DotEditLayoutDesignerMockComponent {
-    @Input()
-    theme: string;
+    @Input() theme: string;
 
-    @Input()
-    layout;
+    @Input() layout;
 
-    @Output()
-    cancel: EventEmitter<MouseEvent> = new EventEmitter();
+    @Output() cancel: EventEmitter<MouseEvent> = new EventEmitter();
 
-    @Output()
-    save: EventEmitter<Event> = new EventEmitter();
+    @Output() save: EventEmitter<Event> = new EventEmitter();
 }
 
 @Component({
@@ -41,8 +38,7 @@ class DotEditLayoutDesignerMockComponent {
     template: ``
 })
 class DotTemplateAdvancedMockComponent {
-    @Input()
-    url;
+    @Input() url;
 }
 
 @Component({
@@ -51,6 +47,7 @@ class DotTemplateAdvancedMockComponent {
 })
 export class IframeMockComponent {
     @Input() src: string;
+    @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
 }
 
 @Component({
@@ -80,6 +77,7 @@ describe('DotTemplateBuilderComponent', () => {
     let component: DotTemplateBuilderComponent;
     let fixture: ComponentFixture<DotTemplateBuilderComponent>;
     let de: DebugElement;
+    let dotCustomEventHandlerService: DotCustomEventHandlerService;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -99,6 +97,12 @@ describe('DotTemplateBuilderComponent', () => {
                         design: 'Design',
                         code: 'Code'
                     })
+                },
+                {
+                    provide: DotCustomEventHandlerService,
+                    useValue: {
+                        handle: jasmine.createSpy()
+                    }
                 }
             ]
         }).compileComponents();
@@ -108,7 +112,7 @@ describe('DotTemplateBuilderComponent', () => {
         fixture = TestBed.createComponent(DotTemplateBuilderComponent);
         de = fixture.debugElement;
         component = fixture.componentInstance;
-
+        dotCustomEventHandlerService = TestBed.inject(DotCustomEventHandlerService);
         spyOn(component.save, 'emit');
         spyOn(component.cancel, 'emit');
     });
@@ -206,6 +210,22 @@ describe('DotTemplateBuilderComponent', () => {
             expect(permissions.componentInstance.src).toBe(
                 '/html/templates/push_history.jsp?templateId=123&popup=true'
             );
+        });
+
+        it('should handle custom event', () => {
+            const permissions: IframeMockComponent = de.query(
+                By.css('[data-testId="historyIframe"]')
+            ).componentInstance;
+            const customEvent = document.createEvent('CustomEvent');
+            customEvent.initCustomEvent('ng-event', false, false, {
+                name: 'edit-template',
+                data: {
+                    id: 'id',
+                    inode: 'inode'
+                }
+            });
+            permissions.custom.emit(customEvent);
+            expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith(customEvent);
         });
     });
 });

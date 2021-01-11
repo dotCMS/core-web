@@ -102,6 +102,12 @@ describe('DotRouterService', () => {
         expect(router.navigate).toHaveBeenCalledWith(['/templates/edit/123']);
     });
 
+    it('should go to edit page with inode', () => {
+        service.goToEditTemplate('123', 'inode');
+
+        expect(router.navigate).toHaveBeenCalledWith(['/templates/edit/123/inode']);
+    });
+
     it('should go to edit content type page', () => {
         service.goToEditContentType('123', 'Form');
 

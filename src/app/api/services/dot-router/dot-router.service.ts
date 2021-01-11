@@ -113,8 +113,8 @@ export class DotRouterService {
      * @param {string} id
      * @memberof DotRouterService
      */
-    goToEditTemplate(id: string): void {
-        this.router.navigate([`/templates/edit/${id}`]);
+    goToEditTemplate(id: string, inode?: string): void {
+        this.router.navigate([inode ? `/templates/edit/${id}/${inode}` : `/templates/edit/${id}`]);
     }
 
     goToURL(url: string): void {
