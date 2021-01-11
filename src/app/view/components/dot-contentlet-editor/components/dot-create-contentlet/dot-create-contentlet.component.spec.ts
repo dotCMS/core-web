@@ -96,46 +96,55 @@ describe('DotCreateContentletComponent', () => {
         spyOn(component.custom, 'emit');
     });
 
-    describe('default', () => {
-        it('should have dot-contentlet-wrapper', () => {
-            expect(dotCreateContentletWrapper).toBeTruthy();
-        });
+    it('should have dot-contentlet-wrapper', () => {
+        expect(dotCreateContentletWrapper).toBeTruthy();
+    });
 
-        it('should emit close and redirect when Content Type different than Page', () => {
-            dotCreateContentletWrapper.triggerEventHandler(
-                'custom',
-                new CustomEvent('custom', {
-                    detail: { data: { contentType: 'Banner' }, name: 'edit-contentlet-loaded' }
-                })
-            );
-            dotCreateContentletWrapper.triggerEventHandler('close', {});
-            expect(component.close.emit).toHaveBeenCalledTimes(1);
-            expect(routerService.goToContent).toHaveBeenCalledTimes(1);
-        });
+    it('should emit close and redirect to Previous page when coming from url different than starter or new url', () => {
+        dotCreateContentletWrapper.triggerEventHandler(
+            'custom',
+            new CustomEvent('custom', {
+                detail: { data: { contentType: 'Banner' }, name: 'edit-contentlet-loaded' }
+            })
+        );
+        dotCreateContentletWrapper.triggerEventHandler('close', {});
+        expect(component.close.emit).toHaveBeenCalledTimes(1);
+        expect(routerService.goToPreviousUrl).toHaveBeenCalledTimes(1);
+    });
 
-        it('should emit custom', () => {
-            dotCreateContentletWrapper.triggerEventHandler('custom', {});
-            expect(component.custom.emit).toHaveBeenCalledTimes(1);
-        });
+    it('should emit close and redirect to Content page when coming from starter or new url', () => {
+        routerService.previousSavedURL = '/starter';
+        dotCreateContentletWrapper.triggerEventHandler(
+            'custom',
+            new CustomEvent('custom', {
+                detail: { data: { contentType: 'Banner' }, name: 'edit-contentlet-loaded' }
+            })
+        );
+        dotCreateContentletWrapper.triggerEventHandler('close', {});
+        expect(component.close.emit).toHaveBeenCalledTimes(1);
+        expect(routerService.goToContent).toHaveBeenCalledTimes(1);
+    });
 
-        it('should have url in null', () => {
-            expect(dotCreateContentletWrapperComponent.url).toEqual(undefined);
-        });
+    it('should emit custom', () => {
+        dotCreateContentletWrapper.triggerEventHandler('custom', {});
+        expect(component.custom.emit).toHaveBeenCalledTimes(1);
+    });
 
-        it('should set url from service', () => {
-            spyOnProperty(dotContentletEditorServiceMock, 'createUrl$', 'get').and.returnValue(
-                of('hello.world.com')
-            );
-            fixture.detectChanges();
-            expect(dotCreateContentletWrapperComponent.url).toEqual('hello.world.com');
-        });
+    it('should have url in null', () => {
+        expect(dotCreateContentletWrapperComponent.url).toEqual(undefined);
+    });
 
-        it('should set url from resolver', () => {
-            spyOnProperty<any>(routeService, 'data').and.returnValue(
-                of({ url: 'url.from.resolver' })
-            );
-            fixture.detectChanges();
-            expect(dotCreateContentletWrapperComponent.url).toEqual('url.from.resolver');
-        });
+    it('should set url from service', () => {
+        spyOnProperty(dotContentletEditorServiceMock, 'createUrl$', 'get').and.returnValue(
+            of('hello.world.com')
+        );
+        fixture.detectChanges();
+        expect(dotCreateContentletWrapperComponent.url).toEqual('hello.world.com');
+    });
+
+    it('should set url from resolver', () => {
+        spyOnProperty<any>(routeService, 'data').and.returnValue(of({ url: 'url.from.resolver' }));
+        fixture.detectChanges();
+        expect(dotCreateContentletWrapperComponent.url).toEqual('url.from.resolver');
     });
 });
