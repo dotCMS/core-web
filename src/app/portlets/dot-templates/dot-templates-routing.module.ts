@@ -30,7 +30,7 @@ const routes: Routes = [
         }
     },
     {
-        path: 'edit/:id/:inode',
+        path: 'edit/:id/inode/:inode',
         loadChildren: () =>
             import(
                 '@portlets/dot-templates/dot-template-create-edit/dot-template-create-edit.module.ts'

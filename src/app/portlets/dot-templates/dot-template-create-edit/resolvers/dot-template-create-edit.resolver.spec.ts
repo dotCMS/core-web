@@ -108,7 +108,7 @@ describe('DotTemplateDesignerService', () => {
             )
             .subscribe(() => {
                 expect(templateService.getFiltered).toHaveBeenCalledWith('inode123');
-                expect(dotRouterService.goToMain).toHaveBeenCalled();
+                expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('templates');
                 done();
             });
     });

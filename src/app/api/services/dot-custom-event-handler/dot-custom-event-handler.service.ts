@@ -37,8 +37,7 @@ export class DotCustomEventHandlerService {
                 'company-info-updated': this.setDotcmsUiColors.bind(this),
                 'push-publish': this.pushPublishDialog.bind(this),
                 'download-bundle': this.downloadBundleDialog.bind(this),
-                'workflow-wizard': this.executeWorkflowWizard.bind(this),
-                'edit-template': this.goToEditTemplate.bind(this)
+                'workflow-wizard': this.executeWorkflowWizard.bind(this)
             };
         }
     }
@@ -96,9 +95,5 @@ export class DotCustomEventHandlerService {
 
     private executeWorkflowWizard($event: CustomEvent): void {
         this.dotWorkflowEventHandlerService.open($event.detail.data);
-    }
-
-    private goToEditTemplate($event: CustomEvent): void {
-        this.dotRouterService.goToEditTemplate($event.detail.data.id, $event.detail.data.inode);
     }
 }

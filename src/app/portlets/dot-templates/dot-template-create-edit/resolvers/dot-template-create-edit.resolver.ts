@@ -19,7 +19,7 @@ export class DotTemplateCreateEditResolver implements Resolve<DotTemplate> {
                       if (templates.length) {
                           return templates[0];
                       } else {
-                          this.dotRouterService.goToMain();
+                          this.dotRouterService.gotoPortlet('templates');
                       }
                   })
               )

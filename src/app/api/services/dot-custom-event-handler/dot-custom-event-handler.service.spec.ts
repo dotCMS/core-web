@@ -242,19 +242,4 @@ describe('DotCustomEventHandlerService', () => {
         );
         expect<any>(dotWorkflowEventHandlerService.open).toHaveBeenCalledWith('testData');
     });
-
-    it('should go to the edit template page', () => {
-        service.handle(
-            new CustomEvent('ng-event', {
-                detail: {
-                    name: 'edit-template',
-                    data: {
-                        id: 'id',
-                        inode: '123'
-                    }
-                }
-            })
-        );
-        expect(dotRouterService.goToEditTemplate).toHaveBeenCalledWith('id', '123');
-    });
 });
