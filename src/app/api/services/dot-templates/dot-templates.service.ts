@@ -48,7 +48,7 @@ export class DotTemplatesService {
     }
 
     /**
-     * Get the template, tittle or inode .
+     * Get the template filtered by tittle or inode .
      *
      * @param {string} filter
      * @returns {Observable<DotTemplate>}
