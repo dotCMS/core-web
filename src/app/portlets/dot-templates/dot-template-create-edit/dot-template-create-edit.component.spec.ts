@@ -403,7 +403,7 @@ describe('DotTemplateCreateEditComponent', () => {
             beforeEach(() => {
                 const storeMock = jasmine.createSpyObj(
                     'DotTemplateStore',
-                    ['saveTemplate', 'goToTemplateList'],
+                    ['saveTemplate', 'goToTemplateList', 'goToEditTemplate'],
                     {
                         vm$: of({
                             original: {
@@ -488,7 +488,6 @@ describe('DotTemplateCreateEditComponent', () => {
                 });
 
                 it('should go to edit template page', () => {
-                    spyOn(store, 'goToEditTemplate');
                     const builder = de.query(By.css('dot-template-builder'));
                     builder.triggerEventHandler('custom', {
                         detail: { data: { id: '1', inode: '2' } }
