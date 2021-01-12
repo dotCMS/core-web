@@ -8,7 +8,6 @@ import EDIT_MODE_DRAG_DROP, { EDIT_PAGE_JS_DOJO_REQUIRE } from './libraries';
 
 describe('DotDragDropAPIHtmlService', () => {
     let service: DotDragDropAPIHtmlService;
-    // let dotDOMHtmlUtilService: DotDOMHtmlUtilService;
 
     const iframe = document.createElement('iframe');
     document.body.appendChild(iframe);
@@ -22,7 +21,6 @@ describe('DotDragDropAPIHtmlService', () => {
             });
 
             service = TestBed.inject(DotDragDropAPIHtmlService);
-            // dotDOMHtmlUtilService = TestBed.inject(DotDOMHtmlUtilService);
 
             spyOn(doc.head, 'appendChild').and.callThrough();
             spyOn(doc.body, 'appendChild').and.callThrough();
