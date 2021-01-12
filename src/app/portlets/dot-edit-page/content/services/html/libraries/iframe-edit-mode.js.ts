@@ -1,3 +1,6 @@
+import AUTOSCROLLER_JS from './autoscroller.js.js';
+import DRAGULA_JS from './dragula.min.js';
+
 export const GOOGLE_FONTS = 'https://fonts.googleapis.com/css?family=Roboto:400,700';
 export const MODEL_VAR_NAME = 'dotNgModel';
 
@@ -134,4 +137,8 @@ export const EDIT_PAGE_JS = `
 
 `;
 
-export const EDIT_PAGE_JS_DOJO_REQUIRE = `require(['/html/js/dragula-3.7.2/dragula.min.js'], function(dragula) { ${EDIT_PAGE_JS} });  `;
+export const EDIT_PAGE_JS_DOJO_REQUIRE = `require(['/html/js/dragula-3.7.2/dragula.min.js'], function(dragula) { 
+    ${DRAGULA_JS}
+    ${AUTOSCROLLER_JS}
+    ${EDIT_PAGE_JS}
+});  `;

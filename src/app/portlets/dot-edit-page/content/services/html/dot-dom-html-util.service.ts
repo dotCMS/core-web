@@ -41,6 +41,7 @@ export class DotDOMHtmlUtilService {
     public createInlineScriptElement(text: string): any {
         const script = this.createScriptElement();
         script.text = text;
+        script.id = 'DOTCMS_EDIT_MODE';
 
         return script;
     }

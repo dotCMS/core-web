@@ -3,7 +3,7 @@ import { waitForAsync } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
-import { EDIT_PAGE_JS, EDIT_PAGE_JS_DOJO_REQUIRE } from './iframe-edit-mode.js';
+import { EDIT_PAGE_JS, EDIT_PAGE_JS_DOJO_REQUIRE } from './libraries/iframe-edit-mode.js';
 
 const jsDragulaInlineElement = {};
 let lastAppendChildCallElementParam;

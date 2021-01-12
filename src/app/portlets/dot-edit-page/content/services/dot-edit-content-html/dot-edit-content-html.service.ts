@@ -13,8 +13,8 @@ import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolb
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotPageContent, DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
 import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
-import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
-import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
+import { GOOGLE_FONTS } from '../html/libraries/iframe-edit-mode.js.js';
+import { MODEL_VAR_NAME } from '../html/libraries/iframe-edit-mode.js.js';
 import { DotCMSContentType } from 'dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {
@@ -84,6 +84,7 @@ export class DotEditContentHtmlService {
      */
     renderPage(pageState: DotPageRenderState, iframeEl: ElementRef): Promise<boolean> {
         this.remoteRendered = pageState.page.remoteRendered;
+
         return new Promise((resolve, _reject) => {
             this.iframe = iframeEl;
             const iframeElement = this.getEditPageIframe();
@@ -123,12 +124,16 @@ export class DotEditContentHtmlService {
      */
     removeContentlet(container: DotPageContainer, content: DotPageContent): void {
         const doc = this.getEditPageDocument();
+
         const selector = [
             `[data-dot-object="container"][data-dot-identifier="${container.identifier}"][data-dot-uuid="${container.uuid}"] `,
             `[data-dot-object="contentlet"][data-dot-inode="${content.inode}"]`
         ].join('');
+
         const contenletEl = doc.querySelector(selector);
+
         contenletEl.remove();
+
         this.pageModel$.next({
             model: this.getContentModel(),
             type: PageModelChangeEventType.REMOVE_CONTENT
@@ -539,20 +544,16 @@ export class DotEditContentHtmlService {
         const fakeHtml = document.createElement('html');
         fakeHtml.innerHTML = pageState.html;
 
-        if (fakeHtml.querySelector('base')) {
-            return pageState.html;
-        } else {
-            // TODO: bring this file to core?
-            const domScrollerJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
-                'https://unpkg.com/dom-autoscroller@2.2.3/dist/dom-autoscroller.js'
-            );
+        const head = fakeHtml.querySelector('head');
 
-            const head = fakeHtml.querySelector('head');
-            head.insertBefore(this.getBaseTag(pageState.page.pageURI), head.childNodes[0]);
-            head.appendChild(domScrollerJSElement);
+        if (fakeHtml.querySelector('base')) {
+            // return pageState.html;
+        } else {
+            const base = this.getBaseTag(pageState.page.pageURI);
+            head.appendChild(base);
         }
 
-        return fakeHtml.innerHTML;
+        return fakeHtml.outerHTML;
     }
 
     private getBaseTag(url: string): HTMLBaseElement {
@@ -568,6 +569,7 @@ export class DotEditContentHtmlService {
     private loadCodeIntoIframe(pageState: DotPageRenderState): void {
         const doc = this.getEditPageDocument();
         const html = this.updateHtml(pageState);
+
         doc.open();
         doc.write(html);
         doc.close();
@@ -608,7 +610,6 @@ export class DotEditContentHtmlService {
         const contenletEl: HTMLElement = doc.querySelector(
             `[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`
         );
-
         contenletEl.insertAdjacentElement('afterbegin', this.getLoadingIndicator());
 
         const container: HTMLElement = <HTMLElement>contenletEl.parentNode;
