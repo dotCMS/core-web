@@ -133,7 +133,7 @@ export const getEditPageCss = (timestampId: string): string => {
     ${timestampId} .dotedit-container__toolbar button:not([disabled]):hover,
     ${timestampId} .dotedit-contentlet__toolbar button:not([disabled]):hover {
         box-shadow: ${mdShadow3} !important;
-        transform: scale(1.1);
+        transform: scale(1.1) !important;
     }
 
     ${timestampId} .dotedit-container__toolbar button:active,
