@@ -10,22 +10,21 @@ import { LOGOUT_URL } from 'dotcms-js';
 @Injectable()
 export class DotRouterService {
     portletReload$ = new Subject();
-    private _previousSavedURL: string;
-    private _currentSavedURL: string;
+    private _routeHistory: PortletNav = { url: '' };
     private CUSTOM_PORTLET_ID_PREFIX = 'c_';
 
     constructor(private router: Router, private route: ActivatedRoute) {
-        this._currentSavedURL = this.router.url;
+        this._routeHistory.url = this.router.url;
         this.router.events.subscribe((event: Event) => {
             if (event instanceof NavigationEnd) {
-                this._previousSavedURL = this._currentSavedURL;
-                this._currentSavedURL = event.url;
+                this._routeHistory.previousUrl = this._routeHistory.url;
+                this._routeHistory.url = event.url;
             }
         });
     }
 
     get currentSavedURL(): string {
-        return this._currentSavedURL;
+        return this._routeHistory.url;
     }
 
     get currentPortlet(): PortletNav {
@@ -36,11 +35,11 @@ export class DotRouterService {
     }
 
     get previousSavedURL(): string {
-        return this._previousSavedURL;
+        return this._routeHistory.previousUrl;
     }
 
     set previousSavedURL(url: string) {
-        this._previousSavedURL = url;
+        this._routeHistory.previousUrl = url;
     }
 
     get queryParams(): Params {
@@ -307,9 +306,9 @@ export class DotRouterService {
     }
 
     private redirectMain(): Promise<boolean> {
-        if (this._previousSavedURL) {
+        if (this._routeHistory.previousUrl) {
             return this.router.navigate([this.previousSavedURL]).then((ok: boolean) => {
-                this.previousSavedURL = null;
+                this._routeHistory.url = null;
                 return ok;
             });
         } else {
