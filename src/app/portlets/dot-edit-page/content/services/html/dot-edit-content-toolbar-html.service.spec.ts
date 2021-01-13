@@ -24,6 +24,11 @@ describe('DotEditContentToolbarHtmlService', () => {
     let testDoc: Document;
     let dummyContainer: HTMLDivElement;
 
+    function dispatchMouseOver() {
+        const el = testDoc.querySelector('.large-column');
+        el.dispatchEvent(mouseoverEvent);
+    }
+
     const messageServiceMock = new MockDotMessageService({
         'editpage.content.contentlet.menu.drag': 'Drag',
         'editpage.content.contentlet.menu.edit': 'Edit',
@@ -284,8 +289,7 @@ describe('DotEditContentToolbarHtmlService', () => {
             });
 
             it('should create buttons', () => {
-                const el = testDoc.querySelector('.large-column');
-                el.dispatchEvent(mouseoverEvent);
+                dispatchMouseOver();
 
                 expect(testDoc.querySelectorAll('.dotedit-contentlet__drag').length).toEqual(1);
                 expect(testDoc.querySelectorAll('.dotedit-contentlet__edit').length).toEqual(1);
@@ -294,8 +298,7 @@ describe('DotEditContentToolbarHtmlService', () => {
             });
 
             it('should have edit button disabled', () => {
-                const el = testDoc.querySelector('.large-column');
-                el.dispatchEvent(mouseoverEvent);
+                dispatchMouseOver();
 
                 expect(
                     testDoc
@@ -321,8 +324,7 @@ describe('DotEditContentToolbarHtmlService', () => {
             });
 
             it('should create buttons for only one contentlet', () => {
-                const el = testDoc.querySelector('.large-column');
-                el.dispatchEvent(mouseoverEvent);
+                dispatchMouseOver();
 
                 expect(testDoc.querySelectorAll('.dotedit-contentlet__drag').length).toEqual(1);
                 expect(testDoc.querySelectorAll('.dotedit-contentlet__edit').length).toEqual(1);
@@ -343,8 +345,7 @@ describe('DotEditContentToolbarHtmlService', () => {
             });
 
             it('should have edit button disabled', () => {
-                const el = testDoc.querySelector('.large-column');
-                el.dispatchEvent(mouseoverEvent);
+                dispatchMouseOver();
 
                 expect(
                     testDoc
