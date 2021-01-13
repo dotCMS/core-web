@@ -96,6 +96,13 @@ export class DotEditContentToolbarHtmlService {
         });
     }
 
+    /**
+     * Return the HTML of the buttons for the contentlets
+     *
+     * @param {{ [key: string]: any }} contentletDataset
+     * @returns {string}
+     * @memberof DotEditContentToolbarHtmlService
+     */
     getContentButton(contentletDataset: { [key: string]: any }): string {
         const identifier: string = contentletDataset.dotIdentifier;
         const inode: string = contentletDataset.dotInode;
@@ -138,6 +145,13 @@ export class DotEditContentToolbarHtmlService {
         `;
     }
 
+    /**
+     * Returns the html for the edit vlt buttons
+     *
+     * @param {HTMLElement[]} vtls
+     * @returns {string}
+     * @memberof DotEditContentToolbarHtmlService
+     */
     getEditVtlButtons(vtls: HTMLElement[]): string {
         return this.getDotEditPopupMenuHtml({
             button: {

@@ -4,7 +4,10 @@ const JS_MIME_TYPE = 'text/javascript';
 const CSS_MIME_TYPE = 'text/css';
 
 /**
- * Util class for work directly with DOM element
+ * Util service to create html elements to inject into our edit mode
+ *
+ * @export
+ * @class DotDOMHtmlUtilService
  */
 @Injectable()
 export class DotDOMHtmlUtilService {
