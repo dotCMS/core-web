@@ -44,6 +44,7 @@ describe('DotCustomEventHandlerService', () => {
     let dotRouterService: DotRouterService;
     let dotUiColorsService: DotUiColorsService;
     let dotPushPublishDialogService: DotPushPublishDialogService;
+    let dotContentletEditorService: DotContentletEditorService;
     let dotDownloadBundleDialogService: DotDownloadBundleDialogService;
     let dotWorkflowEventHandlerService: DotWorkflowEventHandlerService;
 
@@ -91,6 +92,7 @@ describe('DotCustomEventHandlerService', () => {
         dotLoadingIndicatorService = TestBed.get(DotLoadingIndicatorService);
         dotRouterService = TestBed.get(DotRouterService);
         dotUiColorsService = TestBed.get(DotUiColorsService);
+        dotContentletEditorService = TestBed.get(DotContentletEditorService);
         dotPushPublishDialogService = TestBed.get(DotPushPublishDialogService);
         dotDownloadBundleDialogService = TestBed.get(DotDownloadBundleDialogService);
         dotWorkflowEventHandlerService = TestBed.get(DotWorkflowEventHandlerService);
@@ -121,16 +123,21 @@ describe('DotCustomEventHandlerService', () => {
     });
 
     it('should create a contentlet', () => {
+        spyOn(dotContentletEditorService, 'create');
         service.handle(
             new CustomEvent('ng-event', {
                 detail: {
                     name: 'create-contentlet',
-                    data: 'hello.world.com'
+                    data: { url: 'hello.world.com' }
                 }
             })
         );
 
-        expect(dotRouterService.goToCreateContent).toHaveBeenCalledWith('hello.world.com');
+        expect(dotContentletEditorService.create).toHaveBeenCalledWith({
+            data: {
+                url: 'hello.world.com'
+            }
+        });
     });
 
     it('should edit a contentlet', () => {

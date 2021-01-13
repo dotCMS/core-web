@@ -22,6 +22,10 @@ export class MockDotRouterService {
         return this._currentSavedURL;
     }
 
+    set currentSavedURL(url: string) {
+        this._currentSavedURL = url;
+    }
+
     get previousSavedURL(): string {
         return this._previousSavedURL;
     }

@@ -40,7 +40,7 @@ describe('DotCreateContentletComponent', () => {
     let dotCreateContentletWrapperComponent: DotContentletWrapperComponent;
     let component: DotCreateContentletComponent;
     let routeService: ActivatedRoute;
-    let routerService: DotRouterService;
+    let routerService;
     const dotContentletEditorServiceMock: DotContentletEditorServiceMock = new DotContentletEditorServiceMock();
 
     beforeEach(
@@ -100,26 +100,8 @@ describe('DotCreateContentletComponent', () => {
         expect(dotCreateContentletWrapper).toBeTruthy();
     });
 
-    it('should emit close and redirect to Previous page when coming from url different than starter or new url', () => {
-        dotCreateContentletWrapper.triggerEventHandler(
-            'custom',
-            new CustomEvent('custom', {
-                detail: { data: { contentType: 'Banner' }, name: 'edit-contentlet-loaded' }
-            })
-        );
-        dotCreateContentletWrapper.triggerEventHandler('close', {});
-        expect(component.close.emit).toHaveBeenCalledTimes(1);
-        expect(routerService.goToPreviousUrl).toHaveBeenCalledTimes(1);
-    });
-
-    it('should emit close and redirect to Content page when coming from starter or new url', () => {
-        routerService.previousSavedURL = '/starter';
-        dotCreateContentletWrapper.triggerEventHandler(
-            'custom',
-            new CustomEvent('custom', {
-                detail: { data: { contentType: 'Banner' }, name: 'edit-contentlet-loaded' }
-            })
-        );
+    it('should emit close and redirect to Content page when coming from starter', () => {
+        routerService.currentSavedURL = '/c/content/new/';
         dotCreateContentletWrapper.triggerEventHandler('close', {});
         expect(component.close.emit).toHaveBeenCalledTimes(1);
         expect(routerService.goToContent).toHaveBeenCalledTimes(1);

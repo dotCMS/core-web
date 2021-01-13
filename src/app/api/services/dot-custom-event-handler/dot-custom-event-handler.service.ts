@@ -7,6 +7,7 @@ import { DotCMSEditPageEvent } from '@components/dot-contentlet-editor/component
 import { DotPushPublishDialogService, DotUiColors } from 'dotcms-js';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
+import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 /**
  * Handle Custom events
  *
@@ -21,6 +22,7 @@ export class DotCustomEventHandlerService {
         private dotLoadingIndicatorService: DotLoadingIndicatorService,
         private dotRouterService: DotRouterService,
         private dotUiColorsService: DotUiColorsService,
+        private dotContentletEditorService: DotContentletEditorService,
         private dotIframeService: DotIframeService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
         private dotDownloadBundleDialogService: DotDownloadBundleDialogService,
@@ -53,7 +55,11 @@ export class DotCustomEventHandlerService {
     }
 
     private createContentlet($event: CustomEvent): void {
-        this.dotRouterService.goToCreateContent($event.detail.data);
+        this.dotContentletEditorService.create({
+            data: $event.detail.data
+        });
+        // TODO: Enabled this and remove previous 3 lines of code when endpoint gets updated
+        // this.dotRouterService.goToCreateContent($event.detail.data);
     }
 
     private goToEditPage($event: CustomEvent<DotCMSEditPageEvent>): void {

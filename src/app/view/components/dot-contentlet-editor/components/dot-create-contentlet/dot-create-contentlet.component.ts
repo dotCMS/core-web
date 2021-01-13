@@ -35,7 +35,7 @@ export class DotCreateContentletComponent implements OnInit {
             this.route.data.pipe(pluck('url'))
         ).pipe(
             filter((url: string) => {
-                return !!url;
+                return url !== undefined;
             })
         );
     }
@@ -46,13 +46,8 @@ export class DotCreateContentletComponent implements OnInit {
      * @memberof DotCreateContentletComponent
      */
     onClose(event: Event): void {
-        if (
-            this.dotRouterService.previousSavedURL.includes('/starter') ||
-            this.dotRouterService.previousSavedURL === '/'
-        ) {
+        if (this.dotRouterService.currentSavedURL.includes('/c/content/new/')) {
             this.dotRouterService.goToContent();
-        } else {
-            this.dotRouterService.goToPreviousUrl();
         }
         this.close.emit(event);
     }
