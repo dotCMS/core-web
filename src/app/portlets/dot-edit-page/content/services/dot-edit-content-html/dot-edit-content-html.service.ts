@@ -547,13 +547,13 @@ export class DotEditContentHtmlService {
         const head = fakeHtml.querySelector('head');
 
         if (fakeHtml.querySelector('base')) {
-            // return pageState.html;
+            return pageState.html;
         } else {
             const base = this.getBaseTag(pageState.page.pageURI);
             head.appendChild(base);
         }
 
-        return fakeHtml.outerHTML;
+        return fakeHtml.innerHTML;
     }
 
     private getBaseTag(url: string): HTMLBaseElement {

@@ -279,59 +279,6 @@ describe('DotEditContentHtmlService', () => {
     });
 
     it('should render relocated contentlet', () => {
-        spyOn(dotContainerContentletService, 'getContentletToContainer').and.callThrough();
-
-        const dataObj = {
-            container: {
-                identifier: '123',
-                uuid: '456'
-            },
-            contentlet: {
-                identifier: '456',
-                inode: '456'
-            }
-        };
-
-        service.contentletEvents$.next({
-            name: 'relocate',
-            data: dataObj
-        });
-
-        expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(
-            dataObj.container,
-            dataObj.contentlet
-        );
-    });
-
-    it('should show loading indicator on relocate contentlet', () => {
-        spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue(
-            of('<div></div>')
-        );
-
-        const contentlet = service.iframe.nativeElement.contentDocument.querySelector(
-            'div[data-dot-object="contentlet"][data-dot-inode="456"]'
-        );
-
-        service.contentletEvents$.next({
-            name: 'relocate',
-            data: {
-                container: {
-                    identifier: '123',
-                    uuid: '456'
-                },
-                contentlet: {
-                    identifier: '456',
-                    inode: '456'
-                }
-            }
-        });
-
-        expect(contentlet.querySelector('.loader__overlay').innerHTML.trim()).toBe(
-            '<div class="loader"></div>'
-        );
-    });
-
-    it('should not render relocated contentlet', () => {
         spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue(
             of('<h1>new container</h1>')
         );
@@ -383,8 +330,6 @@ describe('DotEditContentHtmlService', () => {
             }
         });
 
-        spyOn(service.iframe.nativeElement, 'contentDocument').and.returnValue(null);
-
         const dataObj = {
             container: {
                 identifier: '123',
@@ -427,6 +372,73 @@ describe('DotEditContentHtmlService', () => {
                 }
             })
         );
+    });
+
+    it('should show loading indicator on relocate contentlet', () => {
+        spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue(
+            of('<div></div>')
+        );
+
+        const contentlet = service.iframe.nativeElement.contentDocument.querySelector(
+            'div[data-dot-object="contentlet"][data-dot-inode="456"]'
+        );
+
+        service.contentletEvents$.next({
+            name: 'relocate',
+            data: {
+                container: {
+                    identifier: '123',
+                    uuid: '456'
+                },
+                contentlet: {
+                    identifier: '456',
+                    inode: '456'
+                }
+            }
+        });
+
+        expect(contentlet.querySelector('.loader__overlay').innerHTML.trim()).toBe(
+            '<div class="loader"></div>'
+        );
+    });
+
+    it('should not render relocated contentlet', () => {
+        spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue(
+            of('<h1>new container</h1>')
+        );
+
+        const pageState: DotPageRenderState = new DotPageRenderState(
+            mockUser(),
+            new DotPageRender({
+                ...mockDotRenderedPage(),
+                page: {
+                    ...mockDotPage(),
+                    rendered: fakeHTML,
+                    remoteRendered: true
+                }
+            })
+        );
+        service.initEditMode(pageState, {
+            nativeElement: fakeIframeEl
+        });
+
+        const dataObj = {
+            container: {
+                identifier: '123',
+                uuid: '456'
+            },
+            contentlet: {
+                identifier: '456',
+                inode: '456'
+            }
+        };
+
+        service.contentletEvents$.next({
+            name: 'relocate',
+            data: dataObj
+        });
+
+        expect(dotContainerContentletService.getContentletToContainer).not.toHaveBeenCalled();
     });
 
     it('should emit save when edit a piece of content outside a contentlet div', (done) => {
