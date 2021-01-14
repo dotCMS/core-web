@@ -83,13 +83,14 @@ export class DotCrumbtrailService {
 
     private getCrumbtrailSection(sectionKey: string): string {
         const data: Data = this.getData();
-
         let currentData: any = data;
-
-        this.portletsTitlePathFinder[sectionKey]
-            .split('.')
-            .forEach((key) => (currentData = currentData[key]));
-        return currentData;
+        if (Object.keys(data).length) {
+            this.portletsTitlePathFinder[sectionKey]
+                .split('.')
+                .forEach((key) => (currentData = currentData[key]));
+            return currentData;
+        }
+        return null;
     }
 
     private getData(): Data {
@@ -112,11 +113,12 @@ export class DotCrumbtrailService {
             map((crumbTrail: DotCrumb[]) => {
                 if (sections.length > 1 && this.isPortletTitleAvailable(url)) {
                     const sectionLabel = this.getCrumbtrailSection(sections[0]);
-
-                    crumbTrail.push({
-                        label: sectionLabel,
-                        url: ''
-                    });
+                    if (sectionLabel) {
+                        crumbTrail.push({
+                            label: sectionLabel,
+                            url: ''
+                        });
+                    }
                 }
 
                 return crumbTrail;
