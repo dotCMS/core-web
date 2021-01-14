@@ -102,7 +102,7 @@ class MockActivatedRoute {
     root: any;
 }
 
-describe('DotCrumbtrailService', () => {
+fdescribe('DotCrumbtrailService', () => {
     const dotNavigationServiceMock: MockDotNavigationService = new MockDotNavigationService();
     const mockRouter = new MockRouter();
     const mockActivatedRoute = new MockActivatedRoute();
@@ -361,6 +361,37 @@ describe('DotCrumbtrailService', () => {
         expect(secondCrumb).toEqual([
             {
                 label: 'Template-01',
+                url: ''
+            }
+        ]);
+    });
+
+    it('Should get URL segment if resolver data is not available', () => {
+        mockActivatedRoute.root = {
+            firstChild: {
+                data: new BehaviorSubject({}),
+                firstChild: {
+                    data: new BehaviorSubject({}),
+                    firstChild: {
+                        firstChild: {
+                            firstChild: null,
+                            data: new BehaviorSubject({})
+                        },
+                        data: new BehaviorSubject({})
+                    }
+                }
+            }
+        };
+
+        dotNavigationServiceMock.navigationEnd.next({
+            url: 'templates/new',
+            urlAfterRedirects: 'templates/new',
+            id: 1
+        });
+
+        expect(secondCrumb).toEqual([
+            {
+                label: 'new',
                 url: ''
             }
         ]);
