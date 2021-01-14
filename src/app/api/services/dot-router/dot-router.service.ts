@@ -13,7 +13,11 @@ export class DotRouterService {
     private _previousSavedURL: string;
     private CUSTOM_PORTLET_ID_PREFIX = 'c_';
 
-    constructor(private router: Router, private route: ActivatedRoute) {}
+    constructor(private router: Router, private route: ActivatedRoute) {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => {
+            return false;
+        };
+    }
 
     get currentPortlet(): PortletNav {
         return {
