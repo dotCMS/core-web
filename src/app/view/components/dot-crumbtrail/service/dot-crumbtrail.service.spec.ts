@@ -102,7 +102,7 @@ class MockActivatedRoute {
     root: any;
 }
 
-fdescribe('DotCrumbtrailService', () => {
+describe('DotCrumbtrailService', () => {
     const dotNavigationServiceMock: MockDotNavigationService = new MockDotNavigationService();
     const mockRouter = new MockRouter();
     const mockActivatedRoute = new MockActivatedRoute();
