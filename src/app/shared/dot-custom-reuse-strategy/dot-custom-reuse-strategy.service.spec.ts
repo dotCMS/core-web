@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { DotCustomReuseStrategyService } from './dot-custom-reuse-strategy.service';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
-fdescribe('DotCustomReuseStrategyService', () => {
+describe('DotCustomReuseStrategyService', () => {
     let service: DotCustomReuseStrategyService;
     const regularRoute = { routeConfig: null, data: {} };
     const regularRoute2 = { routeConfig: { path: 'test' }, data: {} };
