@@ -4,6 +4,8 @@ import { DotTemplateListComponent } from '@portlets/dot-templates/dot-template-l
 import { DotTemplateListResolver } from '@portlets/dot-templates/dot-template-list/dot-template-list-resolver.service';
 import { DotTemplateCreateEditResolver } from './dot-template-create-edit/resolvers/dot-template-create-edit.resolver';
 
+export const EDIT_TEMPLATE_BY_INODE_PATH = 'edit/:id/inode/:inode';
+
 const routes: Routes = [
     {
         path: '',
@@ -30,11 +32,14 @@ const routes: Routes = [
         }
     },
     {
-        path: 'edit/:id/inode/:inode',
+        path: EDIT_TEMPLATE_BY_INODE_PATH,
         loadChildren: () =>
             import(
                 '@portlets/dot-templates/dot-template-create-edit/dot-template-create-edit.module.ts'
             ).then((m) => m.DotTemplateCreateEditModule),
+        data: {
+            reuseRoute: false
+        },
         resolve: {
             template: DotTemplateCreateEditResolver
         }
