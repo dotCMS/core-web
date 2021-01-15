@@ -79,7 +79,7 @@ class MockDotEditContentletComponent {
     @Output() custom = new EventEmitter<any>();
 }
 
-fdescribe('DotEditPageMainComponent', () => {
+describe('DotEditPageMainComponent', () => {
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;
     let dotContentletEditorService: DotContentletEditorService;
@@ -216,7 +216,7 @@ fdescribe('DotEditPageMainComponent', () => {
             dotContentletEditorService.close$.next(true);
             expect(dotRouterService.goToEditPage).toHaveBeenCalledWith({
                 url: '/about-us/index2',
-                languageId: mockDotRenderedPage().page.languageId
+                languageId: mockDotRenderedPage().page.languageId.toString()
             });
         });
 

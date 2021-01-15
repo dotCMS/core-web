@@ -17,7 +17,7 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
 export class DotEditPageMainComponent implements OnInit, OnDestroy {
     pageState$: Observable<DotPageRenderState>;
     private pageUrl: string;
-    private languageId: number;
+    private languageId: string;
     private pageIsSaved: boolean = false;
     private destroy$: Subject<boolean> = new Subject<boolean>();
     private readonly customEventsHandler;
@@ -50,7 +50,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
             takeUntil(this.destroy$),
             tap(({ page }: DotPageRenderState) => {
                 this.pageUrl = page.pageURI;
-                this.languageId = page.languageId;
+                this.languageId = page.languageId.toString();
             })
         );
 
@@ -87,7 +87,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
                     this.dotPageStateService.get({
                         url: this.pageUrl,
                         viewAs: {
-                            language: this.languageId
+                            language: parseInt(this.languageId, 10)
                         }
                     });
                 }
