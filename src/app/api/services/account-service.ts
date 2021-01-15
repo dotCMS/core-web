@@ -13,6 +13,20 @@ export class AccountService {
             url: 'v1/users/current'
         });
     }
+
+    public addStarterPage(): Observable<ResponseView> {
+        return this.coreWebService.requestView({
+            method: 'PUT',
+            url: '/api/v1/toolgroups/gettingstarted/_addtocurrentuser'
+        });
+    }
+
+    public removeStarterPage(): Observable<ResponseView> {
+        return this.coreWebService.requestView({
+            method: 'PUT',
+            url: '/api/v1/toolgroups/gettingstarted/_removefromcurrentuser'
+        });
+    }
 }
 
 export interface AccountUser {

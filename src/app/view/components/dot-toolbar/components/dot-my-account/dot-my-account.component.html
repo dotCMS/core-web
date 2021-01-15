@@ -126,4 +126,15 @@
             </small>
         </div>
     </form>
+
+    <div class="p-field">
+        <p-checkbox
+            id="dot-my-account-show-starter"
+            (onChange)="toggleShowStarter()"
+            [(ngModel)]="showStarter"
+            binary="true"
+            label="{{ 'starter.show.getting.started' | dm }}"
+        >
+        </p-checkbox>
+    </div>
 </dot-dialog>
