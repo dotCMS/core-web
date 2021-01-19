@@ -1,12 +1,20 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { CoreWebService, ResponseView } from 'dotcms-js';
+import { take, pluck } from 'rxjs/operators';
 
 @Injectable()
 export class AccountService {
     constructor(private coreWebService: CoreWebService) {}
 
-    public updateUser(user: AccountUser): Observable<ResponseView> {
+    /**
+     * Updates user data
+     *
+     * @param {AccountUser} user
+     * @returns {Observable<ResponseView>}
+     * @memberof AccountService
+     */
+    updateUser(user: AccountUser): Observable<ResponseView> {
         return this.coreWebService.requestView({
             body: user,
             method: 'PUT',
@@ -14,18 +22,34 @@ export class AccountService {
         });
     }
 
-    public addStarterPage(): Observable<ResponseView> {
-        return this.coreWebService.requestView({
-            method: 'PUT',
-            url: '/api/v1/toolgroups/gettingstarted/_addtocurrentuser'
-        });
+    /**
+     * Put request to add the getting starter portlet to menu
+     *
+     * @returns {Observable<string>}
+     * @memberof AccountService
+     */
+    addStarterPage(): Observable<string> {
+        return this.coreWebService
+            .requestView({
+                method: 'PUT',
+                url: '/api/v1/toolgroups/gettingstarted/_addtocurrentuser'
+            })
+            .pipe(take(1), pluck('entity'));
     }
 
-    public removeStarterPage(): Observable<ResponseView> {
-        return this.coreWebService.requestView({
-            method: 'PUT',
-            url: '/api/v1/toolgroups/gettingstarted/_removefromcurrentuser'
-        });
+    /**
+     * put request to remove the getting starter portlet to menu
+     *
+     * @returns {Observable<string>}
+     * @memberof AccountService
+     */
+    removeStarterPage(): Observable<string> {
+        return this.coreWebService
+            .requestView({
+                method: 'PUT',
+                url: '/api/v1/toolgroups/gettingstarted/_removefromcurrentuser'
+            })
+            .pipe(take(1), pluck('entity'));
     }
 }
 

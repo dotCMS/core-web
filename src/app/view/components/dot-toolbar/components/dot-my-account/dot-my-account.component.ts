@@ -10,7 +10,7 @@ import {
     OnDestroy
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
@@ -18,6 +18,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotcmsConfigService, LoginService, User, Auth } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotMenuService } from '@services/dot-menu.service';
+import { Observable } from 'rxjs';
 
 interface AccountUserForm extends AccountUser {
     confirmPassword?: string;
@@ -49,7 +50,7 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
     message = null;
     changePasswordOption = false;
     dialogActions: DotDialogActions;
-    showStarter: boolean;
+    showStarter: Observable<boolean>;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -83,12 +84,7 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
             }
         };
 
-        this.dotMenuService
-            .isPortletInMenu('starter')
-            .pipe(take(1))
-            .subscribe((showStarter: boolean) => {
-                this.showStarter = showStarter;
-            });
+        this.showStarter = this.dotMenuService.isPortletInMenu('starter');
 
         this.form.valueChanges
             .pipe(takeUntil(this.destroy$))
@@ -125,8 +121,14 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
         this.changePasswordOption = !this.changePasswordOption;
     }
 
-    toggleShowStarter(): void {
-        if (this.showStarter) {
+    /**
+     * Calls Api based on checked input to add/remove starter portlet from menu
+     *
+     * @param {boolean} checked
+     * @memberof DotMyAccountComponent
+     */
+    toggleShowStarter(checked: boolean): void {
+        if (checked) {
             this.accountService.addStarterPage().subscribe();
         } else {
             this.accountService.removeStarterPage().subscribe();

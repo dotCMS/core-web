@@ -136,7 +136,7 @@ describe('DotMyAccountComponent', () => {
         const confirmPassword = de.nativeElement.querySelector(
             '#dot-my-account-confirm-new-password-input'
         ).parentNode;
-        const showStarter = de.nativeElement.querySelector('#dot-my-account-show-starter');
+        const showStarter = de.query(By.css('#dot-my-account-show-starter'));
         const cancel = de.nativeElement.querySelector('.dialog__button-cancel');
         const save = de.nativeElement.querySelector('.dialog__button-accept');
 
@@ -147,7 +147,7 @@ describe('DotMyAccountComponent', () => {
         expect(changePassword.innerText).toEqual(messageServiceMock.get('change-password'));
         expect(newPassword.innerText).toEqual(messageServiceMock.get('new-password'));
         expect(confirmPassword.innerText).toEqual(messageServiceMock.get('re-enter-new-password'));
-        expect(showStarter.innerText).toEqual(
+        expect(showStarter.nativeElement.innerText).toEqual(
             messageServiceMock.get('starter.show.getting.started')
         );
         expect(cancel.innerText).toEqual(messageServiceMock.get('modes.Close').toUpperCase());
@@ -170,7 +170,9 @@ describe('DotMyAccountComponent', () => {
         const save = de.nativeElement.querySelector('.dialog__button-accept');
 
         expect(comp.form.valid).toBe(true);
-        expect(comp.showStarter).toBe(true);
+        expect(
+            de.query(By.css('#dot-my-account-show-starter')).attributes['ng-reflect-model']
+        ).toBe('true');
         expect(save.disabled).toBe(false);
     });
 
@@ -226,20 +228,20 @@ describe('DotMyAccountComponent', () => {
     it(`should call to add starter method in account service`, async () => {
         spyOn<any>(accountService, 'addStarterPage').and.returnValue(of({ entity: {} }));
         fixture.detectChanges();
-        comp.showStarter = true;
-        fixture.detectChanges();
         const toggleShowStarter = de.query(By.css('#dot-my-account-show-starter'));
-        toggleShowStarter.triggerEventHandler('onChange', {});
+        toggleShowStarter.triggerEventHandler('onChange', {
+            checked: true
+        });
         expect(accountService.addStarterPage).toHaveBeenCalledTimes(1);
     });
 
     it(`should call to remove starter method in account service`, async () => {
         spyOn<any>(accountService, 'removeStarterPage').and.returnValue(of({ entity: {} }));
         fixture.detectChanges();
-        comp.showStarter = false;
-        fixture.detectChanges();
         const toggleShowStarter = de.query(By.css('#dot-my-account-show-starter'));
-        toggleShowStarter.triggerEventHandler('onChange', {});
+        toggleShowStarter.triggerEventHandler('onChange', {
+            checked: false
+        });
         expect(accountService.removeStarterPage).toHaveBeenCalledTimes(1);
     });
 

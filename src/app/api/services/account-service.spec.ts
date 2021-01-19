@@ -40,7 +40,7 @@ describe('AccountService', () => {
         reqMock.flush({});
     });
 
-    it('Should send Put to show starter page', () => {
+    it('Should do the put request to add the getting starter portlet to menu', () => {
         service.addStarterPage().subscribe();
 
         const reqMock = httpTestingController.expectOne((req) => {
@@ -50,7 +50,7 @@ describe('AccountService', () => {
         reqMock.flush({});
     });
 
-    it('Should send Put to remove starter page', () => {
+    it('Should do the put request to remove the getting starter portlet to menu', () => {
         service.removeStarterPage().subscribe();
 
         const reqMock = httpTestingController.expectOne((req) => {
