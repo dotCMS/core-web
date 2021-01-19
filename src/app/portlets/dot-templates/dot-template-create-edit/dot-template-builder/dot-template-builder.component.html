@@ -25,7 +25,7 @@
             </dot-portlet-box>
         </ng-template>
     </p-tabPanel>
-    <p-tabPanel header="History">
+    <p-tabPanel data-testId="historyTab" header="History" [cache]="false">
         <ng-template pTemplate="content">
             <dot-portlet-box>
                 <dot-iframe

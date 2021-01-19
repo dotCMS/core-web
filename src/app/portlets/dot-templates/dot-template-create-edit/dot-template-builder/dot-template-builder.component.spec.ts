@@ -17,6 +17,7 @@ import { DotTemplateBuilderComponent } from './dot-template-builder.component';
 import { By } from '@angular/platform-browser';
 import { EMPTY_TEMPLATE_ADVANCED, EMPTY_TEMPLATE_DESIGN } from '../store/dot-template.store';
 import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot-portlet-box/dot-portlet-box.module';
+import { TabPanel } from 'primeng/tabview';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -62,6 +63,7 @@ export class TabViewMockComponent {}
 })
 export class TabPanelMockComponent implements AfterContentInit {
     @Input() header: string;
+    @Input() cache = true;
     @ContentChild(TemplateRef) container;
     contentTemplate;
 
@@ -197,10 +199,16 @@ describe('DotTemplateBuilderComponent', () => {
         });
 
         it('should set iframe history url', () => {
-            const permissions = de.query(By.css('[data-testId="historyIframe"]'));
-            expect(permissions.componentInstance.src).toBe(
+            const historyIframe = de.query(By.css('[data-testId="historyIframe"]'));
+            expect(historyIframe.componentInstance.src).toBe(
                 '/html/templates/push_history.jsp?templateId=123&popup=true'
             );
+        });
+
+        it('should set cahce to false in history tab', () => {
+            const historyTab: TabPanel = de.query(By.css('[data-testId="historyTab"]'))
+                .componentInstance;
+            expect(historyTab.cache).toBe(false);
         });
 
         it('should handle custom event', () => {
