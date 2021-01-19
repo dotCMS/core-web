@@ -205,7 +205,7 @@ describe('DotTemplateBuilderComponent', () => {
             );
         });
 
-        it('should set cahce to false in history tab', () => {
+        it('should set cache to false in history tab', () => {
             const historyTab: TabPanel = de.query(By.css('[data-testId="historyTab"]'))
                 .componentInstance;
             expect(historyTab.cache).toBe(false);
