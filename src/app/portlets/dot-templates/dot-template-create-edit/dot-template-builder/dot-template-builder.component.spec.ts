@@ -3,10 +3,12 @@ import {
     Component,
     ContentChild,
     DebugElement,
+    ElementRef,
     EventEmitter,
     Input,
     Output,
-    TemplateRef
+    TemplateRef,
+    ViewChild
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -17,7 +19,7 @@ import { DotTemplateBuilderComponent } from './dot-template-builder.component';
 import { By } from '@angular/platform-browser';
 import { EMPTY_TEMPLATE_ADVANCED, EMPTY_TEMPLATE_DESIGN } from '../store/dot-template.store';
 import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot-portlet-box/dot-portlet-box.module';
-import { TabPanel } from 'primeng/tabview';
+import { IframeComponent } from '@components/_common/iframe/iframe-component';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -48,6 +50,7 @@ class DotTemplateAdvancedMockComponent {
 export class IframeMockComponent {
     @Input() src: string;
     @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
+    @ViewChild('iframeElement') iframeElement: ElementRef;
 }
 
 @Component({
@@ -63,7 +66,6 @@ export class TabViewMockComponent {}
 })
 export class TabPanelMockComponent implements AfterContentInit {
     @Input() header: string;
-    @Input() cache = true;
     @ContentChild(TemplateRef) container;
     contentTemplate;
 
@@ -205,10 +207,22 @@ describe('DotTemplateBuilderComponent', () => {
             );
         });
 
-        it('should set cache to false in history tab', () => {
-            const historyTab: TabPanel = de.query(By.css('[data-testId="historyTab"]'))
+        it('should reload iframe when changes in the template happens', () => {
+            const historyIframe: IframeComponent = de.query(By.css('[data-testId="historyIframe"]'))
                 .componentInstance;
-            expect(historyTab.cache).toBe(false);
+            historyIframe.iframeElement = {
+                nativeElement: {
+                    contentWindow: {
+                        location: {
+                            reload: jasmine.createSpy('reload')
+                        }
+                    }
+                }
+            };
+            component.ngOnChanges();
+            expect(
+                historyIframe.iframeElement.nativeElement.contentWindow.location.reload
+            ).toHaveBeenCalledTimes(1);
         });
 
         it('should handle custom event', () => {
