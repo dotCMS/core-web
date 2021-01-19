@@ -81,7 +81,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
                 if (this.pageUrl !== this.route.snapshot.queryParams.url) {
                     this.dotRouterService.goToEditPage({
                         url: this.pageUrl,
-                        languageId: this.languageId
+                        language_id: this.languageId
                     });
                 } else {
                     this.dotPageStateService.get({
