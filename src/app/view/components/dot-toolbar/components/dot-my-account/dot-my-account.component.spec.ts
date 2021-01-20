@@ -171,7 +171,7 @@ describe('DotMyAccountComponent', () => {
 
         expect(comp.form.valid).toBe(true);
         expect(
-            de.query(By.css('#dot-my-account-show-starter')).attributes['ng-reflect-model']
+            de.query(By.css('[data-testid="showStarterBtn"]')).attributes['ng-reflect-model']
         ).toBe('true');
         expect(save.disabled).toBe(false);
     });
@@ -228,7 +228,7 @@ describe('DotMyAccountComponent', () => {
     it(`should call to add starter method in account service`, async () => {
         spyOn<any>(accountService, 'addStarterPage').and.returnValue(of({ entity: {} }));
         fixture.detectChanges();
-        const toggleShowStarter = de.query(By.css('#dot-my-account-show-starter'));
+        const toggleShowStarter = de.query(By.css('[data-testid="showStarterBtn"]'));
         toggleShowStarter.triggerEventHandler('onChange', {
             checked: true
         });
@@ -238,7 +238,7 @@ describe('DotMyAccountComponent', () => {
     it(`should call to remove starter method in account service`, async () => {
         spyOn<any>(accountService, 'removeStarterPage').and.returnValue(of({ entity: {} }));
         fixture.detectChanges();
-        const toggleShowStarter = de.query(By.css('#dot-my-account-show-starter'));
+        const toggleShowStarter = de.query(By.css('[data-testid="showStarterBtn"]'));
         toggleShowStarter.triggerEventHandler('onChange', {
             checked: false
         });
