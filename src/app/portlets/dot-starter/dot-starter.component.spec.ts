@@ -19,36 +19,36 @@ const messages = {
     'starter.description': 'You are logged in as <em>{0}</em>.',
     'starter.dont.show': `Don't show this again`,
     'starter.main.link.data.model.title': 'Create data model',
-    'starter.main.link.data.model.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.main.link.data.model.description': 'Create data model description',
     'starter.main.link.add.content.title': 'Add content',
-    'starter.main.link.add.content.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.main.link.add.content.description': 'Add content description',
     'starter.main.link.design.layout.title': 'Design a layout',
-    'starter.main.link.design.layout.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.main.link.design.layout.description': 'Design a layout description',
     'starter.main.link.create.page.title': 'Create a page',
-    'starter.main.link.create.page.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.main.link.create.page.description': 'Create a page description',
     'starter.side.title': 'APIs and Services',
     'starter.side.link.graphQl.title': 'GraphQL API',
-    'starter.side.link.graphQl.description': 'GraphQL is an open query language...',
+    'starter.side.link.graphQl.description': 'GraphQL API description',
     'starter.side.link.content.title': 'Content API',
-    'starter.side.link.content.description': 'GraphQL is an open query language...',
+    'starter.side.link.content.description': 'Content API description',
     'starter.side.link.image.processing.title': 'Image Resizing and Processing',
-    'starter.side.link.image.processing.description': 'GraphQL is an open query .',
+    'starter.side.link.image.processing.description': 'Image Resizing and Processing description',
     'starter.side.link.page.layout.title': 'Page Layout API (Layout as a Service)',
-    'starter.side.link.page.layout.description': 'The Page REST API enables you...',
+    'starter.side.link.page.layout.description': 'Page Layout API description',
     'starter.side.link.generate.key.title': 'Generate API Key',
-    'starter.side.link.generate.key.description': 'The Page REST API enables you...',
+    'starter.side.link.generate.key.description': 'Generate API Key description',
     'starter.footer.link.documentation.title': 'Documentation',
-    'starter.footer.link.documentation.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.footer.link.documentation.description': 'Documentation description',
     'starter.footer.link.examples.title': 'Examples',
-    'starter.footer.link.examples.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.footer.link.examples.description': 'Examples description',
     'starter.footer.link.community.title': 'Community',
-    'starter.footer.link.community.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.footer.link.community.description': 'Community description',
     'starter.footer.link.training.title': 'Training Videos',
-    'starter.footer.link.training.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.footer.link.training.description': 'Training Videos description',
     'starter.footer.link.review.title': 'Write A Review',
-    'starter.footer.link.review.description': 'Lorem, ipsum dolor sit amet...',
+    'starter.footer.link.review.description': 'Write A Review description',
     'starter.footer.link.feedback.title': 'Feedback',
-    'starter.footer.link.feedback.description': 'Lorem, ipsum dolor sit amet...'
+    'starter.footer.link.feedback.description': 'Feedback description'
 };
 
 const routeDatamock = {
@@ -60,7 +60,7 @@ class ActivatedRouteMock {
     }
 }
 
-describe('DotStarterComponent', () => {
+fdescribe('DotStarterComponent', () => {
     let component: DotStarterComponent;
     let fixture: ComponentFixture<DotStarterComponent>;
     let de: DebugElement;
