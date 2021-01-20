@@ -136,7 +136,7 @@ describe('DotMyAccountComponent', () => {
         const confirmPassword = de.nativeElement.querySelector(
             '#dot-my-account-confirm-new-password-input'
         ).parentNode;
-        const showStarter = de.query(By.css('#dot-my-account-show-starter'));
+        const showStarter = de.query(By.css('[data-testid="showStarterBtn"]'));
         const cancel = de.nativeElement.querySelector('.dialog__button-cancel');
         const save = de.nativeElement.querySelector('.dialog__button-accept');
 
