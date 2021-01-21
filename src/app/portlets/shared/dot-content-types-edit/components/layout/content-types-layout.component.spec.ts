@@ -1,6 +1,6 @@
 import { of, Observable } from 'rxjs';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -23,6 +23,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TabViewModule } from 'primeng/tabview';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MenuItem } from 'primeng/api';
+import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot-portlet-box/dot-portlet-box.module';
 
 @Component({
     selector: 'dot-content-types-fields-list',
@@ -117,7 +118,8 @@ describe('ContentTypesLayoutComponent', () => {
                 DotCopyButtonModule,
                 DotPipesModule,
                 SplitButtonModule,
-                HttpClientTestingModule
+                HttpClientTestingModule,
+                DotPortletBoxModule
             ],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
@@ -158,6 +160,36 @@ describe('ContentTypesLayoutComponent', () => {
         fixture.detectChanges();
         expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
     });
+
+    it('should have dot-portlet-box in all tabs', fakeAsync(() => {
+        const tabPanel = fixture.debugElement.query(By.css('p-tabpanel'));
+        fixture.componentInstance.contentType = fakeContentType;
+        fixture.detectChanges();
+
+        const dotPortletBox = tabPanel.query(By.css('dot-portlet-box'));
+
+        const comp = fixture.nativeElement;
+
+        comp.querySelector('#p-tabpanel-1-label').click();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            const firstTabPanel = comp.querySelector('#p-tabpanel-1');
+            const firstTabPanelDotPortletBox = firstTabPanel.querySelector('dot-portlet-box');
+            expect(firstTabPanelDotPortletBox).not.toBeNull();
+        });
+
+        tick(500);
+
+        comp.querySelector('#p-tabpanel-2-label').click();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            const secondTabPanel = comp.querySelector('#p-tabpanel-2');
+            const secondTabPanelDotPortletBox = secondTabPanel.querySelector('dot-portlet-box');
+            expect(secondTabPanelDotPortletBox).not.toBeNull();
+        });
+
+        expect(dotPortletBox).not.toBeNull();
+    }));
 
     describe('Edit toolBar', () => {
         beforeEach(() => {

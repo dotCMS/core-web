@@ -55,12 +55,6 @@ $top-height: ($toolbar-height + $tabview-nav-height + $dot-secondary-toolbar-mai
         height: calc(100vh - #{$top-height});
     }
 
-    .content-type__fields-layout {
-        display: flex;
-        height: calc(100vh - #{$top-height});
-        overflow: hidden;
-    }
-
     .content-type__fields-main {
         display: flex;
         flex-grow: 1;
