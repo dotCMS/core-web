@@ -170,7 +170,7 @@ $number-link-icon-size: 2.28rem;
         box-shadow: $md-shadow-4;
         display: flex;
         flex-grow: 1;
-        height: 97px;
+        min-height: 97px;
         margin: $spacing-3 $spacing-1 0;
         overflow: hidden;
         transition: background-color $basic-speed ease-in;

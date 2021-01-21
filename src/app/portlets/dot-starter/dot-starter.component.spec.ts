@@ -13,6 +13,8 @@ import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module
 import { DotToolGroupService } from '@services/dot-tool-group/dot-tool-group.service';
 import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MockDotRouterService } from '@tests/dot-router-service.mock';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 const messages = {
     'starter.title': 'Welcome!',
@@ -60,12 +62,13 @@ class ActivatedRouteMock {
     }
 }
 
-fdescribe('DotStarterComponent', () => {
+describe('DotStarterComponent', () => {
     let component: DotStarterComponent;
     let fixture: ComponentFixture<DotStarterComponent>;
     let de: DebugElement;
     const messageServiceMock = new MockDotMessageService(messages);
     let dotToolGroupService: DotToolGroupService;
+    let dotRouterService: DotRouterService;
 
     beforeEach(
         waitForAsync(() => {
@@ -79,6 +82,7 @@ fdescribe('DotStarterComponent', () => {
                         useClass: ActivatedRouteMock
                     },
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
+                    { provide: DotRouterService, useClass: MockDotRouterService },
                     DotStarterResolver,
                     DotToolGroupService
                 ]
@@ -87,9 +91,11 @@ fdescribe('DotStarterComponent', () => {
             fixture = TestBed.createComponent(DotStarterComponent);
             component = fixture.debugElement.componentInstance;
 
-            fixture.detectChanges();
             de = fixture.debugElement;
             dotToolGroupService = TestBed.inject(DotToolGroupService);
+            dotRouterService = TestBed.inject(DotRouterService);
+
+            fixture.detectChanges();
         })
     );
 
@@ -238,6 +244,28 @@ fdescribe('DotStarterComponent', () => {
             de.query(By.css('[data-testid="starter.footer.link.feedback"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.feedback.description'));
+    });
+
+    it('should do redirect to internal portlets', () => {
+        de.query(By.css('[data-testid="starter.main.link.data.model"]')).nativeElement.click();
+        expect(dotRouterService.goToURL).toHaveBeenCalledWith(
+            component.portletKeyLink['starter.main.link.data.model']
+        );
+
+        de.query(By.css('[data-testid="starter.main.link.content"]')).nativeElement.click();
+        expect(dotRouterService.goToURL).toHaveBeenCalledWith(
+            component.portletKeyLink['starter.main.link.add.content']
+        );
+
+        de.query(By.css('[data-testid="starter.main.link.design.layout"]')).nativeElement.click();
+        expect(dotRouterService.goToURL).toHaveBeenCalledWith(
+            component.portletKeyLink['starter.main.link.design.layout']
+        );
+
+        de.query(By.css('[data-testid="starter.main.link.create.page"]')).nativeElement.click();
+        expect(dotRouterService.goToURL).toHaveBeenCalledWith(
+            component.portletKeyLink['starter.main.link.create.page']
+        );
     });
 
     it('should call the endpoint to hide/show the portlet', () => {
