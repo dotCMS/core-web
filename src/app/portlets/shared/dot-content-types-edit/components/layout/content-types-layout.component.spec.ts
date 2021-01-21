@@ -161,7 +161,7 @@ describe('ContentTypesLayoutComponent', () => {
         expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
     });
 
-    it('should have dot-portlet-box in all tabs', fakeAsync(() => {
+    fit('should have dot-portlet-box', fakeAsync(() => {
         const tabPanel = fixture.debugElement.query(By.css('p-tabpanel'));
         fixture.componentInstance.contentType = fakeContentType;
         fixture.detectChanges();
@@ -170,17 +170,17 @@ describe('ContentTypesLayoutComponent', () => {
 
         const comp = fixture.nativeElement;
 
-        comp.querySelector('#p-tabpanel-1-label').click();
+        comp.querySelector('#p-tabpanel-1-label').click() as HTMLAnchorElement;
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             const firstTabPanel = comp.querySelector('#p-tabpanel-1');
-            const firstTabPanelDotPortletBox = firstTabPanel.querySelector('dot-portlet-box');
-            expect(firstTabPanelDotPortletBox).not.toBeNull();
+            const nextDotPortletBox = firstTabPanel.querySelector('dot-portlet-box');
+            expect(nextDotPortletBox).not.toBeNull();
         });
 
         tick(500);
 
-        comp.querySelector('#p-tabpanel-2-label').click();
+        comp.querySelector('#p-tabpanel-2-label').click() as HTMLAnchorElement;
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             const secondTabPanel = comp.querySelector('#p-tabpanel-2');
