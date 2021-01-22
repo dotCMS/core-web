@@ -17,6 +17,7 @@
     (onRowSelect)="handleRowCheck()"
     (onRowUnselect)="handleRowCheck()"
     (onHeaderCheckboxToggle)="handleRowCheck()"
+    (onFilter)="handleFilter()"
     (onContextMenuSelect)="onContextMenuSelect.emit($event.data)"
     [columns]="columns"
     [lazy]="true"
@@ -64,7 +65,14 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
-        <ng-content select="dot-empty-state"></ng-content>
+        <div *ngIf="!isContentFiltered; else emptyResults">
+            <ng-content select="dot-empty-state"></ng-content>
+        </div>
+        <ng-template #emptyResults>
+            <div class="listing-datatable__empty">
+                {{ 'No-Results-Found' | dm }}
+            </div>
+        </ng-template>
     </ng-template>
 </p-table>
 <p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
