@@ -161,24 +161,21 @@ describe('ContentTypesLayoutComponent', () => {
         expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
     });
 
-    it('should have dot-portlet-box', fakeAsync(() => {
+    fit('should have dot-portlet-box', fakeAsync(() => {
         const tabPanel = fixture.debugElement.query(By.css('p-tabpanel'));
         fixture.componentInstance.contentType = fakeContentType;
         fixture.detectChanges();
 
         const dotPortletBox = tabPanel.query(By.css('dot-portlet-box'));
 
-        const comp = fixture.nativeElement;
-
         const pushRelationshipsTab = de.query(By.css('.content-type__relationships'));
         pushRelationshipsTab.componentInstance.selected = true;
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            console.log(comp);
-            const pushRelationshipsTabPanel = comp.querySelector('#p-tabpanel-1');
-            const pushRelationshipsPortletBox = pushRelationshipsTabPanel.querySelector(
-                'dot-portlet-box'
+            const pushRelationshipsTabPanel = de.query(By.css('#p-tabpanel-1'));
+            const pushRelationshipsPortletBox = pushRelationshipsTabPanel.query(
+                By.css('dot-portlet-box')
             );
             expect(pushRelationshipsPortletBox).not.toBeNull();
         });
@@ -188,8 +185,8 @@ describe('ContentTypesLayoutComponent', () => {
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            const pushHistoryTabPanel = comp.querySelector('#p-tabpanel-2');
-            const pushHistoryPortletBox = pushHistoryTabPanel.querySelector('dot-portlet-box');
+            const pushHistoryTabPanel = de.query(By.css('#p-tabpanel-2'));
+            const pushHistoryPortletBox = pushHistoryTabPanel.query(By.css('dot-portlet-box'));
             expect(pushHistoryPortletBox).not.toBeNull();
         });
 
