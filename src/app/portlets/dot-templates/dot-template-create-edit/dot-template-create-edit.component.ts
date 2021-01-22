@@ -114,19 +114,19 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     }
 
     private createTemplate(): void {
-        this.dialogService.open(DotTemplatePropsComponent, {
+        const ref = this.dialogService.open(DotTemplatePropsComponent, {
             header: this.dotMessageService.get('templates.create.title'),
             width: '30rem',
-            closable: false,
-            closeOnEscape: false,
             data: {
                 template: this.form.value,
                 onSave: (value: DotTemplateItem) => {
                     this.store.createTemplate(value);
-                },
-                onCancel: () => {
-                    this.store.goToTemplateList();
                 }
+            }
+        });
+        ref.onClose.pipe(takeUntil(this.destroy$)).subscribe((goToListing: boolean) => {
+            if (goToListing || goToListing === undefined) {
+                this.cancelTemplate();
             }
         });
     }
