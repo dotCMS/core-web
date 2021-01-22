@@ -18,9 +18,8 @@
                 <div class="dot-starter-top-main__section">
                     <a
                         class="dot-starter-top-main__block"
-                        data-testid="starter.main.link.data.model"
-                        href="javascript:void(0)"
-                        (click)="gotoPortlet('starter.main.link.data.model')"
+                        data-testId="starter.main.link.data.model"
+                        routerLink="/content-types-angular/create/content"
                     >
                         <div class="dot-starter-top-main__link-number">
                             <span>1</span>
@@ -34,10 +33,9 @@
                         </span>
                     </a>
                     <a
-                        href="javascript:void(0)"
-                        data-testid="starter.main.link.content"
+                        data-testId="starter.main.link.content"
                         class="dot-starter-top-main__block"
-                        (click)="gotoPortlet('starter.main.link.add.content')"
+                        routerLink="/c/content/new/webPageContent"
                     >
                         <div class="dot-starter-top-main__link-number">
                             <span>2</span>
@@ -51,10 +49,9 @@
                         </span>
                     </a>
                     <a
-                        href="javascript:void(0)"
-                        data-testid="starter.main.link.design.layout"
+                        data-testId="starter.main.link.design.layout"
                         class="dot-starter-top-main__block"
-                        (click)="gotoPortlet('starter.main.link.design.layout')"
+                        routerLink="/templates/new/designer"
                     >
                         <div class="dot-starter-top-main__link-number">
                             <span>3</span>
@@ -68,10 +65,9 @@
                         </span>
                     </a>
                     <a
-                        href="javascript:void(0)"
-                        data-testid="starter.main.link.create.page"
+                        data-testId="starter.main.link.create.page"
                         class="dot-starter-top-main__block"
-                        (click)="gotoPortlet('starter.main.link.create.page')"
+                        routerLink="/c/content/new/htmlpageasset"
                     >
                         <div class="dot-starter-top-main__link-number">
                             <span>4</span>
@@ -91,7 +87,7 @@
                     <h3>{{ 'starter.side.title' | dm }}</h3>
                     <a
                         href="https://dotcms.com/docs/latest/graphql"
-                        data-testid="starter.side.link.graphQl"
+                        data-testId="starter.side.link.graphQl"
                         class="dot-starter-top-secondary__block"
                         target="_blank"
                     >
@@ -126,7 +122,7 @@
                     </a>
                     <a
                         href="https://dotcms.com/docs/latest/content-api"
-                        data-testid="starter.side.link.content"
+                        data-testId="starter.side.link.content"
                         class="dot-starter-top-secondary__block"
                         target="_blank"
                     >
@@ -140,7 +136,7 @@
                     </a>
                     <a
                         href="https://dotcms.com/docs/latest/image-resizing-and-processing"
-                        data-testid="starter.side.link.image.processing"
+                        data-testId="starter.side.link.image.processing"
                         class="dot-starter-top-secondary__block"
                         target="_blank"
                     >
@@ -154,7 +150,7 @@
                     </a>
                     <a
                         href="https://dotcms.com/docs/latest/page-rest-api-layout-as-a-service-laas"
-                        data-testid="starter.side.link.page.layout"
+                        data-testId="starter.side.link.page.layout"
                         class="dot-starter-top-secondary__block"
                         target="_blank"
                     >
@@ -168,7 +164,7 @@
                     </a>
                     <a
                         href="https://dotcms.com/docs/latest/rest-api-authentication#APIToken"
-                        data-testid="starter.side.link.generate.key"
+                        data-testId="starter.side.link.generate.key"
                         class="dot-starter-top-secondary__block"
                         target="_blank"
                     >
@@ -190,7 +186,7 @@
     <div class="p-lg-4 p-md-12">
         <a
             href="https://dotcms.com/docs/latest/"
-            data-testid="starter.footer.link.documentation"
+            data-testId="starter.footer.link.documentation"
             class="dot-starter-bottom__block"
             target="_blank"
         >
@@ -206,7 +202,7 @@
     <div class="p-lg-4 p-md-12">
         <a
             href="https://dotcms.com/codeshare/"
-            data-testid="starter.footer.link.examples"
+            data-testId="starter.footer.link.examples"
             class="dot-starter-bottom__block"
             target="_blank"
         >
@@ -222,7 +218,7 @@
     <div class="p-lg-4 p-md-12">
         <a
             href="https://dotcms.com/forum/"
-            data-testid="starter.footer.link.community"
+            data-testId="starter.footer.link.community"
             class="dot-starter-bottom__block"
             target="_blank"
         >
@@ -238,7 +234,7 @@
     <div class="p-lg-4 p-md-12">
         <a
             href="https://dotcms.com/courses/"
-            data-testid="starter.footer.link.training"
+            data-testId="starter.footer.link.training"
             class="dot-starter-bottom__block"
             target="_blank"
         >
@@ -254,7 +250,7 @@
     <div class="p-lg-4 p-md-12">
         <a
             href="https://dotcms.com/review/"
-            data-testid="starter.footer.link.review"
+            data-testId="starter.footer.link.review"
             class="dot-starter-bottom__block"
             target="_blank"
         >
@@ -270,7 +266,7 @@
     <div class="p-lg-4 p-md-12">
         <a
             href="https://dotcms.com/contact-us/"
-            data-testid="starter.footer.link.feedback"
+            data-testId="starter.footer.link.feedback"
             class="dot-starter-bottom__block"
             target="_blank"
         >

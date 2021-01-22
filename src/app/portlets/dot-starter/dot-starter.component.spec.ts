@@ -68,7 +68,6 @@ describe('DotStarterComponent', () => {
     let de: DebugElement;
     const messageServiceMock = new MockDotMessageService(messages);
     let dotToolGroupService: DotToolGroupService;
-    let dotRouterService: DotRouterService;
 
     beforeEach(
         waitForAsync(() => {
@@ -93,7 +92,6 @@ describe('DotStarterComponent', () => {
 
             de = fixture.debugElement;
             dotToolGroupService = TestBed.inject(DotToolGroupService);
-            dotRouterService = TestBed.inject(DotRouterService);
 
             fixture.detectChanges();
         })
@@ -111,36 +109,36 @@ describe('DotStarterComponent', () => {
             'You are logged in as Admin'
         );
         expect(
-            de.query(By.css('[data-testid="starter.main.link.data.model"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.main.link.data.model"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.main.link.data.model.title'));
         expect(
-            de.query(By.css('[data-testid="starter.main.link.data.model"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.main.link.data.model"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.main.link.data.model.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.main.link.content"] h4')).nativeElement.innerText
+            de.query(By.css('[data-testId="starter.main.link.content"] h4')).nativeElement.innerText
         ).toContain(messageServiceMock.get('starter.main.link.add.content.title'));
         expect(
-            de.query(By.css('[data-testid="starter.main.link.content"] p')).nativeElement.innerText
+            de.query(By.css('[data-testId="starter.main.link.content"] p')).nativeElement.innerText
         ).toContain(messageServiceMock.get('starter.main.link.add.content.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.main.link.design.layout"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.main.link.design.layout"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.main.link.design.layout.title'));
         expect(
-            de.query(By.css('[data-testid="starter.main.link.design.layout"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.main.link.design.layout"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.main.link.design.layout.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.main.link.create.page"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.main.link.create.page"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.main.link.create.page.title'));
         expect(
-            de.query(By.css('[data-testid="starter.main.link.create.page"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.main.link.create.page"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.main.link.create.page.description'));
     });
@@ -150,122 +148,123 @@ describe('DotStarterComponent', () => {
             de.query(By.css('.dot-starter-top-secondary__section h3')).nativeElement.innerText
         ).toContain(messageServiceMock.get('starter.side.title'));
         expect(
-            de.query(By.css('[data-testid="starter.side.link.graphQl"] h4')).nativeElement.innerText
+            de.query(By.css('[data-testId="starter.side.link.graphQl"] h4')).nativeElement.innerText
         ).toContain(messageServiceMock.get('starter.side.link.graphQl.title'));
         expect(
-            de.query(By.css('[data-testid="starter.side.link.graphQl"] p')).nativeElement.innerText
+            de.query(By.css('[data-testId="starter.side.link.graphQl"] p')).nativeElement.innerText
         ).toContain(messageServiceMock.get('starter.side.link.graphQl.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.side.link.content"] h4')).nativeElement.innerText
+            de.query(By.css('[data-testId="starter.side.link.content"] h4')).nativeElement.innerText
         ).toContain(messageServiceMock.get('starter.side.link.content.title'));
         expect(
-            de.query(By.css('[data-testid="starter.side.link.content"] p')).nativeElement.innerText
+            de.query(By.css('[data-testId="starter.side.link.content"] p')).nativeElement.innerText
         ).toContain(messageServiceMock.get('starter.side.link.content.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.side.link.image.processing"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.side.link.image.processing"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.side.link.image.processing.title'));
         expect(
-            de.query(By.css('[data-testid="starter.side.link.image.processing"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.side.link.image.processing"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.side.link.image.processing.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.side.link.page.layout"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.side.link.page.layout"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.side.link.page.layout.title'));
         expect(
-            de.query(By.css('[data-testid="starter.side.link.page.layout"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.side.link.page.layout"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.side.link.page.layout.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.side.link.generate.key"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.side.link.generate.key"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.side.link.generate.key.title'));
         expect(
-            de.query(By.css('[data-testid="starter.side.link.generate.key"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.side.link.generate.key"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.side.link.generate.key.description'));
     });
 
     it('should set proper labels to the footer container', () => {
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.documentation"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.documentation"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.documentation.title'));
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.documentation"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.documentation"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.documentation.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.examples"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.examples"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.examples.title'));
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.examples"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.examples"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.examples.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.community"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.community"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.community.title'));
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.community"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.community"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.community.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.training"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.training"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.training.title'));
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.training"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.training"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.training.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.review"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.review"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.review.title'));
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.review"] p')).nativeElement.innerText
+            de.query(By.css('[data-testId="starter.footer.link.review"] p')).nativeElement.innerText
         ).toContain(messageServiceMock.get('starter.footer.link.review.description'));
 
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.feedback"] h4')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.feedback"] h4')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.feedback.title'));
         expect(
-            de.query(By.css('[data-testid="starter.footer.link.feedback"] p')).nativeElement
+            de.query(By.css('[data-testId="starter.footer.link.feedback"] p')).nativeElement
                 .innerText
         ).toContain(messageServiceMock.get('starter.footer.link.feedback.description'));
     });
 
-    it('should do redirect to internal portlets', () => {
-        de.query(By.css('[data-testid="starter.main.link.data.model"]')).nativeElement.click();
-        expect(dotRouterService.goToURL).toHaveBeenCalledWith(
-            component.portletKeyLink['starter.main.link.data.model']
-        );
+    fit('should have right links to internal portlets', () => {
+        expect(
+            de.query(By.css('[data-testId="starter.main.link.data.model"]')).nativeElement
+                .attributes['routerLink'].value
+        ).toEqual('/content-types-angular/create/content');
 
-        de.query(By.css('[data-testid="starter.main.link.content"]')).nativeElement.click();
-        expect(dotRouterService.goToURL).toHaveBeenCalledWith(
-            component.portletKeyLink['starter.main.link.add.content']
-        );
+        expect(
+            de.query(By.css('[data-testId="starter.main.link.content"]')).nativeElement.attributes[
+                'routerLink'
+            ].value
+        ).toEqual('/c/content/new/webPageContent');
 
-        de.query(By.css('[data-testid="starter.main.link.design.layout"]')).nativeElement.click();
-        expect(dotRouterService.goToURL).toHaveBeenCalledWith(
-            component.portletKeyLink['starter.main.link.design.layout']
-        );
+        expect(
+            de.query(By.css('[data-testId="starter.main.link.design.layout"]')).nativeElement
+                .attributes['routerLink'].value
+        ).toEqual('/templates/new/designer');
 
-        de.query(By.css('[data-testid="starter.main.link.create.page"]')).nativeElement.click();
-        expect(dotRouterService.goToURL).toHaveBeenCalledWith(
-            component.portletKeyLink['starter.main.link.create.page']
-        );
+        expect(
+            de.query(By.css('[data-testId="starter.main.link.create.page"]')).nativeElement
+                .attributes['routerLink'].value
+        ).toEqual('/c/content/new/htmlpageasset');
     });
 
     it('should call the endpoint to hide/show the portlet', () => {
