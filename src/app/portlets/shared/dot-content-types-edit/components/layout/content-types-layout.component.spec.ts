@@ -1,6 +1,6 @@
 import { of, Observable } from 'rxjs';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -161,7 +161,7 @@ describe('ContentTypesLayoutComponent', () => {
         expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
     });
 
-    it('should have dot-portlet-box', fakeAsync(() => {
+    fit('should have dot-portlet-box', fakeAsync(() => {
         const tabPanel = fixture.debugElement.query(By.css('p-tabpanel'));
         fixture.componentInstance.contentType = fakeContentType;
         fixture.detectChanges();
@@ -170,22 +170,27 @@ describe('ContentTypesLayoutComponent', () => {
 
         const comp = fixture.nativeElement;
 
-        comp.querySelector('#p-tabpanel-1-label').click() as HTMLAnchorElement;
+        const pushRelationshipsTab = de.query(By.css('.content-type__relationships'));
+        pushRelationshipsTab.componentInstance.selected = true;
+
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            const firstTabPanel = comp.querySelector('#p-tabpanel-1');
-            const nextDotPortletBox = firstTabPanel.querySelector('dot-portlet-box');
-            expect(nextDotPortletBox).not.toBeNull();
+            console.log(comp);
+            const pushRelationshipsTabPanel = comp.querySelector('#p-tabpanel-1');
+            const pushRelationshipsPortletBox = pushRelationshipsTabPanel.querySelector(
+                'dot-portlet-box'
+            );
+            expect(pushRelationshipsPortletBox).not.toBeNull();
         });
 
-        tick(500);
+        const pushHistoryTab = de.query(By.css('.content-type__push_history'));
+        pushHistoryTab.componentInstance.selected = true;
 
-        comp.querySelector('#p-tabpanel-2-label').click() as HTMLAnchorElement;
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            const secondTabPanel = comp.querySelector('#p-tabpanel-2');
-            const secondTabPanelDotPortletBox = secondTabPanel.querySelector('dot-portlet-box');
-            expect(secondTabPanelDotPortletBox).not.toBeNull();
+            const pushHistoryTabPanel = comp.querySelector('#p-tabpanel-2');
+            const pushHistoryPortletBox = pushHistoryTabPanel.querySelector('dot-portlet-box');
+            expect(pushHistoryPortletBox).not.toBeNull();
         });
 
         expect(dotPortletBox).not.toBeNull();
