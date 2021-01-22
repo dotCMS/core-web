@@ -469,7 +469,7 @@ describe('DotListingDataTableComponent', () => {
         comp.globalSearch.nativeElement.dispatchEvent(new Event('input'));
         tick(de.componentInstance.filterDelay + 1);
         hostFixture.detectChanges();
-        const noResults = de.query(By.css('.listing-datatable__empty'));
+        const noResults = de.query(By.css('[data-testid="listing-datatable__empty"]'));
         expect(noResults.nativeElement.innerText).toEqual('No Results Found');
     }));
 

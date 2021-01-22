@@ -65,13 +65,15 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
-        <div *ngIf="!isContentFiltered; else emptyResults">
-            <ng-content select="dot-empty-state"></ng-content>
+        <div
+            *ngIf="isContentFiltered; else emptyState"
+            class="listing-datatable__empty"
+            data-testId="listing-datatable__empty"
+        >
+            {{ 'No-Results-Found' | dm }}
         </div>
-        <ng-template #emptyResults>
-            <div class="listing-datatable__empty">
-                {{ 'No-Results-Found' | dm }}
-            </div>
+        <ng-template #emptyState>
+            <ng-content select="dot-empty-state"></ng-content>
         </ng-template>
     </ng-template>
 </p-table>

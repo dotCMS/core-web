@@ -207,7 +207,7 @@ export class DotListingDataTableComponent implements OnInit {
      * @memberof ListingDataTableComponent
      */
     handleFilter(): void {
-        this.isContentFiltered = this.dataTable.filters.hasOwnProperty('global') ? true : false;
+        this.isContentFiltered = this.dataTable.filters.hasOwnProperty('global');
     }
 
     private formatData(items: any[]): any[] {
