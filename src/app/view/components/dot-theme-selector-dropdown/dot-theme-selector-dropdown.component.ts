@@ -144,10 +144,6 @@ export class DotThemeSelectorDropdownComponent
             });
     }
 
-    private setTotalRecords() {
-        this.totalRecords = this.paginatorService.totalRecords;
-    }
-
     private getFilteredThemes(filter = '', offset = 0): void {
         this.paginatorService.searchParam = filter;
         this.paginatorService
@@ -155,7 +151,11 @@ export class DotThemeSelectorDropdownComponent
             .pipe(take(1))
             .subscribe((themes: DotTheme[]) => {
                 this.themes = themes;
-                this.totalRecords = this.paginatorService.totalRecords;
+                this.setTotalRecords();
             });
+    }
+
+    private setTotalRecords() {
+        this.totalRecords = this.paginatorService.totalRecords;
     }
 }
