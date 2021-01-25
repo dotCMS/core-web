@@ -4,8 +4,9 @@ import { SearchableDropdownComponent } from '@components/_common/searchable-drop
 import { DotTheme } from '@models/dot-edit-layout-designer';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
-import { SiteService } from 'dotcms-js';
+import { Site, SiteService } from 'dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
+import { Observable } from 'rxjs';
 import { mergeMap, pluck, take } from 'rxjs/operators';
 
 @Component({
@@ -40,21 +41,8 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.paginationPerPage = 5;
 
-        this.siteService
-            .getCurrentSite()
-            .pipe(
-                pluck('identifier'),
-                mergeMap((identifier: string) => {
-                    this.currentSiteIdentifier = identifier;
-                    this.paginatorService.setExtraParams('hostId', identifier);
-                    return this.paginatorService.getWithOffset(0).pipe(take(1));
-                }),
-                take(1)
-            )
-            .subscribe((themes: DotTheme[]) => {
-                this.themes = themes;
-                this.totalRecords = this.paginatorService.totalRecords;
-            });
+        const site$ = this.siteService.getCurrentSite();
+        this.setThemes(site$);
     }
 
     propagateChange = (_: any) => {};
@@ -84,6 +72,16 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
                     this.value = theme;
                 });
         }
+    }
+    /**
+     *  Sets the themes on site host change
+     *
+     * @param {Site} event
+     * @memberof DotThemeSelectorDropdownComponent
+     */
+    siteChange(event: Site): void {
+        const site$ = this.siteService.getSiteById(event.identifier);
+        this.setThemes(site$);
     }
 
     /**
@@ -124,6 +122,27 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
      */
     handleFilterChange(filter: string): void {
         this.getFilteredThemes(filter);
+    }
+
+    private setThemes(site$: Observable<Site>) {
+        site$
+            .pipe(
+                pluck('identifier'),
+                mergeMap((identifier: string) => {
+                    this.currentSiteIdentifier = identifier;
+                    this.paginatorService.setExtraParams('hostId', identifier);
+                    return this.paginatorService.getWithOffset(0).pipe(take(1));
+                }),
+                take(1)
+            )
+            .subscribe((themes: DotTheme[]) => {
+                this.themes = themes;
+                this.setTotalRecords();
+            });
+    }
+
+    private setTotalRecords() {
+        this.totalRecords = this.paginatorService.totalRecords;
     }
 
     private getFilteredThemes(filter = '', offset = 0): void {

@@ -24,6 +24,8 @@
     </span>
 </ng-template>
 
+<dot-site-selector (change)="siteChange($event)"></dot-site-selector>
+
 <dot-searchable-dropdown
     #searchableDropdown
     [(ngModel)]="value"

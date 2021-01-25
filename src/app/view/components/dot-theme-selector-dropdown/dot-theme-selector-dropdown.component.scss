@@ -1,5 +1,9 @@
 @use "variables"as *;
 
+:host {
+    display: flex;
+}
+
 .theme-selector__data-list-item {
     cursor: pointer;
     display: flex;
@@ -51,4 +55,13 @@
             display: block;
         }
     }
+}
+
+dot-site-selector {
+    margin-right: $spacing-2;
+    min-width: 40%;
+}
+
+dot-searchable-dropdown {
+    width: 60%;
 }
