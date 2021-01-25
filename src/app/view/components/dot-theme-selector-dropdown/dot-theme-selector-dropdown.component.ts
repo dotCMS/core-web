@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, forwardRef, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SearchableDropdownComponent } from '@components/_common/searchable-dropdown/component';
 import { DotTheme } from '@models/dot-edit-layout-designer';
@@ -6,8 +6,8 @@ import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
 import { Site, SiteService } from 'dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
-import { Observable } from 'rxjs';
-import { mergeMap, pluck, take } from 'rxjs/operators';
+import { fromEvent, Observable } from 'rxjs';
+import { debounceTime, mergeMap, pluck, take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-theme-selector-dropdown',
@@ -21,7 +21,8 @@ import { mergeMap, pluck, take } from 'rxjs/operators';
         }
     ]
 })
-export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAccessor {
+export class DotThemeSelectorDropdownComponent
+    implements OnInit, ControlValueAccessor, AfterViewInit {
     themes: DotTheme[] = [];
     value: DotTheme = null;
     totalRecords: number = 0;
@@ -30,6 +31,9 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
 
     @ViewChild('searchableDropdown', { static: true })
     searchableDropdown: SearchableDropdownComponent;
+
+    @ViewChild('searchInput', { static: false })
+    searchInput: ElementRef;
 
     constructor(
         public readonly paginatorService: PaginatorService,
@@ -43,6 +47,14 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
 
         const site$ = this.siteService.getCurrentSite();
         this.setThemes(site$);
+    }
+
+    ngAfterViewInit(): void {
+        fromEvent(this.searchInput.nativeElement, 'keyup')
+            .pipe(debounceTime(500))
+            .subscribe((keyboardEvent: KeyboardEvent) => {
+                this.getFilteredThemes(keyboardEvent.target['value']);
+            });
     }
 
     propagateChange = (_: any) => {};
@@ -113,15 +125,6 @@ export class DotThemeSelectorDropdownComponent implements OnInit, ControlValueAc
             .subscribe((themes) => {
                 this.themes = themes;
             });
-    }
-    /**
-     *  Fetch theme list via the DotThemeSelectorDropdownComponent input text
-     *
-     * @param {string} filter
-     * @memberof DotThemeSelectorDropdownComponent
-     */
-    handleFilterChange(filter: string): void {
-        this.getFilteredThemes(filter);
     }
 
     private setThemes(site$: Observable<Site>) {

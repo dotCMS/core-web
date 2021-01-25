@@ -14,7 +14,8 @@ import {
     TemplateRef,
     ContentChildren,
     QueryList,
-    AfterContentInit
+    AfterContentInit,
+    AfterViewInit
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent } from 'rxjs';
@@ -41,7 +42,7 @@ import { PrimeTemplate } from 'primeng/api';
     templateUrl: './searchable-dropdown.component.html'
 })
 export class SearchableDropdownComponent
-    implements ControlValueAccessor, OnChanges, OnInit, AfterContentInit {
+    implements ControlValueAccessor, OnChanges, OnInit, AfterContentInit, AfterViewInit {
     @Input()
     data: any[];
 
@@ -98,6 +99,9 @@ export class SearchableDropdownComponent
     @Input()
     externalItemListTemplate: TemplateRef<any>;
 
+    @Input()
+    externalFilterTemplate: TemplateRef<any>;
+
     @Output()
     change: EventEmitter<any> = new EventEmitter();
 
@@ -113,7 +117,7 @@ export class SearchableDropdownComponent
     @Output()
     show: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('searchInput', { static: true })
+    @ViewChild('searchInput', { static: false })
     searchInput: ElementRef;
 
     @ViewChild('searchPanel', { static: true })
@@ -153,7 +157,9 @@ export class SearchableDropdownComponent
         this.setOptions(changes);
     }
 
-    ngOnInit(): void {
+    ngOnInit(): void {}
+
+    ngAfterViewInit(): void {
         fromEvent(this.searchInput.nativeElement, 'keyup')
             .pipe(debounceTime(500))
             .subscribe((keyboardEvent: KeyboardEvent) => {

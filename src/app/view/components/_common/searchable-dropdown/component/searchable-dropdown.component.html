@@ -7,6 +7,18 @@
     >
 </ng-template>
 
+<ng-template #defaultFilterTemplate>
+    <dot-icon class="searchable-dropdown__search-icon" name="search"></dot-icon>
+    <input
+        #searchInput
+        pInputText
+        [placeholder]="'search' | dm"
+        type="text"
+        class="searchable-dropdown__search-inputfield"
+        (click)="$event.stopPropagation()"
+    />
+</ng-template>
+
 <ng-template let-item="item" #defaultSelectTemplate>
     <button
         #button
@@ -21,7 +33,6 @@
         [disabled]="disabled"
     ></button>
 </ng-template>
-
 <p-overlayPanel
     #searchPanel
     (onHide)="hideOverlayHandler()"
@@ -33,15 +44,9 @@
 >
     <header class="searchable-dropdown__search">
         <div class="searchable-dropdown__search-section">
-            <dot-icon class="searchable-dropdown__search-icon" name="search"></dot-icon>
-            <input
-                #searchInput
-                pInputText
-                [placeholder]="'search' | dm"
-                type="text"
-                class="searchable-dropdown__search-inputfield"
-                (click)="$event.stopPropagation()"
-            />
+            <ng-container
+                [ngTemplateOutlet]="externalFilterTemplate || defaultFilterTemplate"
+            ></ng-container>
         </div>
         <div *ngIf="action" class="searchable-dropdown__search-action">
             <dot-icon-button
