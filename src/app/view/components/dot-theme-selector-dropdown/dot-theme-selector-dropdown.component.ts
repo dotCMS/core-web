@@ -6,7 +6,7 @@ import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
 import { Site, SiteService } from 'dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
-import { fromEvent, Observable } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { debounceTime, mergeMap, pluck, take } from 'rxjs/operators';
 
 @Component({
@@ -45,8 +45,21 @@ export class DotThemeSelectorDropdownComponent
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.paginationPerPage = 5;
 
-        const site$ = this.siteService.getCurrentSite();
-        this.setThemes(site$);
+        this.siteService
+            .getCurrentSite()
+            .pipe(
+                pluck('identifier'),
+                mergeMap((identifier: string) => {
+                    this.currentSiteIdentifier = identifier;
+                    this.paginatorService.setExtraParams('hostId', identifier);
+                    return this.paginatorService.getWithOffset(0).pipe(take(1));
+                }),
+                take(1)
+            )
+            .subscribe((themes: DotTheme[]) => {
+                this.themes = themes;
+                this.setTotalRecords();
+            });
     }
 
     ngAfterViewInit(): void {
@@ -92,8 +105,7 @@ export class DotThemeSelectorDropdownComponent
      * @memberof DotThemeSelectorDropdownComponent
      */
     siteChange(event: Site): void {
-        const site$ = this.siteService.getSiteById(event.identifier);
-        this.setThemes(site$);
+        this.setHostThemes(event.identifier);
     }
 
     /**
@@ -127,17 +139,13 @@ export class DotThemeSelectorDropdownComponent
             });
     }
 
-    private setThemes(site$: Observable<Site>) {
-        site$
-            .pipe(
-                pluck('identifier'),
-                mergeMap((identifier: string) => {
-                    this.currentSiteIdentifier = identifier;
-                    this.paginatorService.setExtraParams('hostId', identifier);
-                    return this.paginatorService.getWithOffset(0).pipe(take(1));
-                }),
-                take(1)
-            )
+    private setHostThemes(identifier: string) {
+        this.currentSiteIdentifier = identifier;
+        this.paginatorService.setExtraParams('hostId', identifier);
+
+        this.paginatorService
+            .getWithOffset(0)
+            .pipe(take(1))
             .subscribe((themes: DotTheme[]) => {
                 this.themes = themes;
                 this.setTotalRecords();

@@ -62,7 +62,7 @@ dot-searchable-dropdown {
     display: block;
 }
 
-.searchable-dropdown__search {
+.theme-selector__filters {
     display: flex;
     margin: 0 $spacing-2;
     position: relative;
@@ -71,6 +71,7 @@ dot-searchable-dropdown {
         margin-right: $spacing-2;
         display: block;
 
+        // Required for shadow piercing. Required to force a style down to child components
         ::ng-deep {
             .site-selector__title {
                 display: block;
