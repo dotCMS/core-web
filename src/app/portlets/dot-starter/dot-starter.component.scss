@@ -21,6 +21,7 @@ $number-link-icon-size: 2.28rem;
         align-items: flex-start;
 
         p-checkbox {
+            font-size: $font-size-medium;
             margin-top: $spacing-5;
         }
     }
@@ -33,7 +34,7 @@ $number-link-icon-size: 2.28rem;
 
     .dot-starter-description {
         color: $gray;
-        font-size: $font-size-large;
+        font-size: $font-size-medium;
         margin: 0 $spacing-3 $spacing-5 $spacing-3;
     }
 
@@ -92,11 +93,12 @@ $number-link-icon-size: 2.28rem;
         h4 {
             color: $brand-primary;
             font-size: $font-size-large;
+            font-weight: bold;
             margin: 0;
         }
         p {
             color: $gray;
-            font-size: $font-size-small;
+            font-size: $font-size-medium;
             margin: 0;
         }
     }
@@ -153,7 +155,7 @@ $number-link-icon-size: 2.28rem;
         }
         p {
             color: $gray;
-            font-size: $font-size-small;
+            font-size: $font-size-medium;
             margin: 0;
         }
     }
@@ -204,7 +206,7 @@ $number-link-icon-size: 2.28rem;
         }
         p {
             color: $gray;
-            font-size: $font-size-small;
+            font-size: $font-size-medium;
             margin: 0;
         }
     }
