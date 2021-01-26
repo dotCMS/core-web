@@ -4,6 +4,7 @@ $number-link-icon-size: 2.28rem;
 
 :host {
     display: block;
+    font-size: $font-size-medium;
     height: 100%;
     overflow: auto;
 
@@ -21,7 +22,6 @@ $number-link-icon-size: 2.28rem;
         align-items: flex-start;
 
         p-checkbox {
-            font-size: $font-size-medium;
             margin-top: $spacing-5;
         }
     }
@@ -34,7 +34,6 @@ $number-link-icon-size: 2.28rem;
 
     .dot-starter-description {
         color: $gray;
-        font-size: $font-size-medium;
         margin: 0 $spacing-3 $spacing-5 $spacing-3;
     }
 
@@ -98,7 +97,6 @@ $number-link-icon-size: 2.28rem;
         }
         p {
             color: $gray;
-            font-size: $font-size-medium;
             margin: 0;
         }
     }
@@ -155,7 +153,6 @@ $number-link-icon-size: 2.28rem;
         }
         p {
             color: $gray;
-            font-size: $font-size-medium;
             margin: 0;
         }
     }
@@ -206,7 +203,6 @@ $number-link-icon-size: 2.28rem;
         }
         p {
             color: $gray;
-            font-size: $font-size-medium;
             margin: 0;
         }
     }
