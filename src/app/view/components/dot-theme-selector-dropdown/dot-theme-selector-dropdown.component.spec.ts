@@ -1,4 +1,4 @@
-import { DebugElement, forwardRef, Input } from '@angular/core';
+import { DebugElement, ElementRef, forwardRef, Input, ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
@@ -22,6 +22,10 @@ import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
+export class MockElementRef extends ElementRef {
+    nativeElement = {};
+}
+
 const messageServiceMock = new MockDotMessageService({
     'dot.common.select.themes': 'Select Themes',
     'Last-Updated': 'Last updated'
@@ -42,7 +46,10 @@ class TestSearchableComponent implements ControlValueAccessor {
     @Input() data;
     @Input() rows;
     @Input() externalItemListTemplate;
+    @Input() externalFilterTemplate;
     @Input() totalRecords = [...mockDotThemes].length;
+    @ViewChild('searchInput', { static: false })
+    searchInput: ElementRef;
 
     toggleOverlayPanel = jasmine.createSpy();
 
@@ -105,6 +112,10 @@ describe('DotThemeSelectorDropdownComponent', () => {
                     useValue: messageServiceMock
                 },
                 {
+                    provide: ElementRef,
+                    useClass: MockElementRef
+                },
+                {
                     provide: PaginatorService,
                     useValue: {
                         url: '',
@@ -159,13 +170,14 @@ describe('DotThemeSelectorDropdownComponent', () => {
 
             it('shoud set the right attributes', () => {
                 const element = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
+
                 const instance = element.componentInstance;
 
                 expect(instance.totalRecords).toBe(3);
                 expect(instance.placeholder).toBe('Select Themes');
                 expect(instance.rows).toBe(5);
                 expect(instance.data).toEqual([...mockDotThemes]);
-                expect(element.attributes.overlayWidth).toBe('350px');
+                expect(element.attributes.overlayWidth).toBe('490px');
                 expect(element.attributes.labelPropertyName).toBe('name');
                 expect(element.attributes.valuePropertyName).toBe('name');
             });

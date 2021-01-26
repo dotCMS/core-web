@@ -119,6 +119,17 @@ export class DotThemeSelectorDropdownComponent
         this.propagateChange(theme.identifier);
         this.searchableDropdown.toggleOverlayPanel();
     }
+
+    /**
+     *  Fetch theme list via the DotThemeSelectorDropdownComponent input text
+     *
+     * @param {string} filter
+     * @memberof DotThemeSelectorDropdownComponent
+     */
+    handleFilterChange(filter: string): void {
+        this.getFilteredThemes(filter);
+    }
+
     /**
      * Handles page change for pagination purposes.
      *
