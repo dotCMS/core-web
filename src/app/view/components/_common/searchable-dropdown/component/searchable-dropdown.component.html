@@ -15,6 +15,7 @@
         [placeholder]="'search' | dm"
         type="text"
         class="searchable-dropdown__search-inputfield"
+        data-testid="searchInput"
         (click)="$event.stopPropagation()"
     />
 </ng-template>
@@ -33,6 +34,7 @@
         [disabled]="disabled"
     ></button>
 </ng-template>
+
 <p-overlayPanel
     #searchPanel
     (onHide)="hideOverlayHandler()"

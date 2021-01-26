@@ -26,7 +26,6 @@ export class DotThemeSelectorDropdownComponent
     themes: DotTheme[] = [];
     value: DotTheme = null;
     totalRecords: number = 0;
-    currentSiteIdentifier: string;
     currentOffset: number;
 
     @ViewChild('searchableDropdown', { static: true })
@@ -50,7 +49,6 @@ export class DotThemeSelectorDropdownComponent
             .pipe(
                 pluck('identifier'),
                 mergeMap((identifier: string) => {
-                    this.currentSiteIdentifier = identifier;
                     this.paginatorService.setExtraParams('hostId', identifier);
                     return this.paginatorService.getWithOffset(0).pipe(take(1));
                 }),
@@ -138,8 +136,6 @@ export class DotThemeSelectorDropdownComponent
      * @memberof DotThemeSelectorDropdownComponent
      */
     handlePageChange(event: LazyLoadEvent): void {
-        if (!this.currentSiteIdentifier) return;
-
         this.currentOffset = event.first;
 
         this.paginatorService
@@ -151,7 +147,6 @@ export class DotThemeSelectorDropdownComponent
     }
 
     private setHostThemes(identifier: string) {
-        this.currentSiteIdentifier = identifier;
         this.paginatorService.setExtraParams('hostId', identifier);
 
         this.paginatorService

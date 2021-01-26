@@ -1,14 +1,7 @@
-import { DebugElement, ElementRef, forwardRef, Input, ViewChild } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-    ControlValueAccessor,
-    FormBuilder,
-    FormGroup,
-    FormsModule,
-    NG_VALUE_ACCESSOR,
-    ReactiveFormsModule
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { SiteService } from 'dotcms-js';
@@ -21,42 +14,21 @@ import { mockDotThemes } from '@tests/dot-themes.mock';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-
-export class MockElementRef extends ElementRef {
-    nativeElement = {};
-}
+import { SearchableDropdownComponent } from '@components/_common/searchable-dropdown/component/searchable-dropdown.component';
+import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
+import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 
 const messageServiceMock = new MockDotMessageService({
     'dot.common.select.themes': 'Select Themes',
     'Last-Updated': 'Last updated'
 });
+
 @Component({
-    selector: 'dot-searchable-dropdown',
-    template: ``,
-    providers: [
-        {
-            multi: true,
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => TestSearchableComponent)
-        }
-    ]
+    selector: 'dot-site-selector',
+    template: ``
 })
-class TestSearchableComponent implements ControlValueAccessor {
-    @Input() placeholder;
-    @Input() data;
-    @Input() rows;
-    @Input() externalItemListTemplate;
-    @Input() externalFilterTemplate;
-    @Input() totalRecords = [...mockDotThemes].length;
-    @ViewChild('searchInput', { static: false })
-    searchInput: ElementRef;
-
-    toggleOverlayPanel = jasmine.createSpy();
-
-    propagateChange = (_: any) => {};
-    writeValue(): void {}
-    registerOnChange(): void {}
-    registerOnTouched(): void {}
+class MockDotSiteSelectorComponent {
+    siteChange(): void {}
 }
 
 @Component({
@@ -95,25 +67,22 @@ class TestHostEmtpyComponent {
     }
 }
 
-describe('DotThemeSelectorDropdownComponent', () => {
+fdescribe('DotThemeSelectorDropdownComponent', () => {
     let paginationService: PaginatorService;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [
                 DotThemeSelectorDropdownComponent,
-                TestSearchableComponent,
+                SearchableDropdownComponent,
                 TestHostFilledComponent,
-                TestHostEmtpyComponent
+                TestHostEmtpyComponent,
+                MockDotSiteSelectorComponent
             ],
             providers: [
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
-                },
-                {
-                    provide: ElementRef,
-                    useClass: MockElementRef
                 },
                 {
                     provide: PaginatorService,
@@ -145,7 +114,13 @@ describe('DotThemeSelectorDropdownComponent', () => {
                     }
                 }
             ],
-            imports: [FormsModule, DotMessagePipeModule, ReactiveFormsModule]
+            imports: [
+                FormsModule,
+                DotMessagePipeModule,
+                ReactiveFormsModule,
+                SearchableDropDownModule,
+                DotIconModule
+            ]
         }).compileComponents();
     });
 
@@ -197,8 +172,9 @@ describe('DotThemeSelectorDropdownComponent', () => {
                 expect(paginationService.totalRecords).toEqual(5);
             });
 
-            it('should do something with change', () => {
+            it('should set value propagate change and toggle the overlay', () => {
                 const searchable = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
+                spyOn(searchable.componentInstance, 'toggleOverlayPanel');
                 const value = mockDotThemes[0];
 
                 searchable.triggerEventHandler('change', { ...value });

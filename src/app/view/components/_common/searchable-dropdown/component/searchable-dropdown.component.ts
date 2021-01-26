@@ -160,13 +160,15 @@ export class SearchableDropdownComponent
     ngOnInit(): void {}
 
     ngAfterViewInit(): void {
-        fromEvent(this.searchInput.nativeElement, 'keyup')
-            .pipe(debounceTime(500))
-            .subscribe((keyboardEvent: KeyboardEvent) => {
-                if (!this.isModifierKey(keyboardEvent.key)) {
-                    this.filterChange.emit(keyboardEvent.target['value']);
-                }
-            });
+        if (this.searchInput) {
+            fromEvent(this.searchInput.nativeElement, 'keyup')
+                .pipe(debounceTime(500))
+                .subscribe((keyboardEvent: KeyboardEvent) => {
+                    if (!this.isModifierKey(keyboardEvent.key)) {
+                        this.filterChange.emit(keyboardEvent.target['value']);
+                    }
+                });
+        }
     }
 
     ngAfterContentInit() {
@@ -186,7 +188,7 @@ export class SearchableDropdownComponent
      * @memberof SearchableDropdownComponent
      */
     hideOverlayHandler(): void {
-        if (this.searchInput.nativeElement.value.length) {
+        if (this.searchInput?.nativeElement.value.length) {
             this.searchInput.nativeElement.value = '';
             this.paginate(null);
         }
@@ -227,7 +229,9 @@ export class SearchableDropdownComponent
      */
     paginate(event: PaginationEvent): void {
         const paginationEvent = Object.assign({}, event);
-        paginationEvent.filter = this.searchInput.nativeElement.value;
+        if (this.searchInput) {
+            paginationEvent.filter = this.searchInput.nativeElement.value;
+        }
         this.pageChange.emit(paginationEvent);
     }
 

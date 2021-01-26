@@ -73,7 +73,7 @@ class HostTestComponent {
     disabled: boolean;
 }
 
-fdescribe('SearchableDropdownComponent', () => {
+describe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let hostFixture: ComponentFixture<HostTestComponent>;
@@ -211,6 +211,13 @@ fdescribe('SearchableDropdownComponent', () => {
         const actionBtn = de.query(By.css('.searchable-dropdown__search-action dot-icon-button'))
             .componentInstance;
         expect(actionBtn.icon).toBe('add');
+    });
+
+    it('should display defaultFilterTemplate', () => {
+        hostFixture.detectChanges();
+        const searchInput = de.query(By.css('[data-testid="searchInput"]'));
+        console.log(searchInput.attributes);
+        expect(searchInput).not.toBeNull();
     });
 
     it('should not display Action button', () => {
