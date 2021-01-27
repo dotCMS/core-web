@@ -1,10 +1,12 @@
-import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 import { PaginatorService } from '@services/paginator/paginator.service';
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 
 import { DotContainerColumnBox } from '@models/dot-edit-layout-designer';
 import { DotContainer } from '@models/container/dot-container.model';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-container-selector',
@@ -18,12 +20,11 @@ export class DotContainerSelectorComponent implements OnInit {
     @Input() innerClass = '';
 
     totalRecords: number;
-    currentContainers: DotContainer[] = [];
+    currentContainers: Observable<DotContainer[]>;
 
     constructor(
         public paginationService: PaginatorService,
-        private templateContainersCacheService: DotTemplateContainersCacheService,
-        private cd: ChangeDetectorRef
+        private templateContainersCacheService: DotTemplateContainersCacheService
     ) {}
 
     ngOnInit(): void {
@@ -57,18 +58,19 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     handlePageChange(event: any): void {
-        console.log('handlePageChange', event.filter, event.first);
         this.getContainersList(event.filter, event.first);
     }
 
     private getContainersList(filter = '', offset = 0): void {
         console.log('getContainersList');
         this.paginationService.filter = filter;
-        this.paginationService.getWithOffset(offset).subscribe((items) => {
-            this.currentContainers = this.setIdentifierReference(items.splice(0));
-            this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-            this.cd.detectChanges();
-        });
+        this.currentContainers = this.paginationService.getWithOffset(offset).pipe(
+            take(1),
+            map((items) => {
+                this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
+                return this.setIdentifierReference(items.splice(0));
+            })
+        );
     }
 
     private setIdentifierReference(items: DotContainer[]): any {

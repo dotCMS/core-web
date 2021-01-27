@@ -2,7 +2,7 @@
     (change)="containerChange($event)"
     (filterChange)="handleFilterChange($event)"
     (pageChange)="handlePageChange($event)"
-    [data]="currentContainers"
+    [data]="currentContainers | async"
     [pageLinkSize]="5"
     [rows]="paginationService.paginationPerPage"
     [totalRecords]="paginationService.totalRecords"
