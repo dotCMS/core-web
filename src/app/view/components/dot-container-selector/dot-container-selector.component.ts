@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 
 import { PaginatorService } from '@services/paginator/paginator.service';
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
@@ -22,11 +22,13 @@ export class DotContainerSelectorComponent implements OnInit {
 
     constructor(
         public paginationService: PaginatorService,
-        private templateContainersCacheService: DotTemplateContainersCacheService
+        private templateContainersCacheService: DotTemplateContainersCacheService,
+        private cd: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
         this.paginationService.url = 'v1/containers';
+        this.paginationService.paginationPerPage = 5;
     }
 
     /**
@@ -55,14 +57,17 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     handlePageChange(event: any): void {
+        console.log('handlePageChange', event.filter, event.first);
         this.getContainersList(event.filter, event.first);
     }
 
     private getContainersList(filter = '', offset = 0): void {
+        console.log('getContainersList');
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe((items) => {
             this.currentContainers = this.setIdentifierReference(items.splice(0));
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
+            this.cd.detectChanges();
         });
     }
 
