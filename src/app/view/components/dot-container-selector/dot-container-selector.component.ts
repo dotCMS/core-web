@@ -62,7 +62,6 @@ export class DotContainerSelectorComponent implements OnInit {
     }
 
     private getContainersList(filter = '', offset = 0): void {
-        console.log('getContainersList');
         this.paginationService.filter = filter;
         this.currentContainers = this.paginationService.getWithOffset(offset).pipe(
             take(1),

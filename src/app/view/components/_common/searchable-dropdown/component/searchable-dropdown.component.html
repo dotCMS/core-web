@@ -59,7 +59,7 @@
         (onLazyLoad)="paginate($event)"
         [lazy]="true"
         [pageLinks]="pageLinkSize"
-        [paginator]="true"
+        [paginator]="totalRecords > rows"
         [rows]="rows"
         [totalRecords]="totalRecords"
         [value]="options"
