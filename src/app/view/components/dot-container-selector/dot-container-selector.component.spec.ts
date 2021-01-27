@@ -101,19 +101,17 @@ describe('ContainerSelectorComponent', () => {
 
     it('should pass all the right attr', () => {
         fixture.detectChanges();
-        const searchable = de.query(By.css('dot-searchable-dropdown'));
+        const searchable = de.query(By.css('[data-testId="searchableDropdown"]'));
         expect(searchable.attributes).toEqual(
             jasmine.objectContaining({
-                'ng-reflect-data': '',
                 'ng-reflect-label-property-name': 'name,parentPermissionable.host',
                 'ng-reflect-multiple': 'true',
-                'ng-reflect-overlay-width': '300px',
                 'ng-reflect-page-link-size': '5',
                 'ng-reflect-persistent-placeholder': 'true',
                 'ng-reflect-placeholder': 'editpage.container.add.label',
-                'ng-reflect-rows': '40',
+                'ng-reflect-rows': '5',
                 'ng-reflect-width': '172px',
-                overlayWidth: '300px',
+                overlayWidth: '440px',
                 persistentPlaceholder: 'true',
                 width: '172px'
             })
@@ -168,8 +166,9 @@ describe('ContainerSelectorComponent', () => {
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(containers));
         comp.handleFilterChange('');
-
-        expect(comp.currentContainers[0].identifier).toEqual('427c47a4-c380-439f');
-        expect(comp.currentContainers[1].identifier).toEqual('container/path');
+        comp.currentContainers.subscribe((items: DotContainer[]) => {
+            expect(items[0].identifier).toEqual('427c47a4-c380-439f');
+            expect(items[1].identifier).toEqual('container/path');
+        });
     });
 });

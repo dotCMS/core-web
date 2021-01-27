@@ -65,10 +65,7 @@ export class DotContainerSelectorComponent implements OnInit {
         this.paginationService.filter = filter;
         this.currentContainers = this.paginationService.getWithOffset(offset).pipe(
             take(1),
-            map((items) => {
-                this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-                return this.setIdentifierReference(items.splice(0));
-            })
+            map((items: DotContainer[]) => this.setIdentifierReference(items.splice(0)))
         );
     }
 
