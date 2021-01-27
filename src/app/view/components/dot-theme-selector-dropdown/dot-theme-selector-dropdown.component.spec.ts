@@ -17,6 +17,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { SearchableDropdownComponent } from '@components/_common/searchable-dropdown/component/searchable-dropdown.component';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const messageServiceMock = new MockDotMessageService({
     'dot.common.select.themes': 'Select Themes',
@@ -25,11 +26,11 @@ const messageServiceMock = new MockDotMessageService({
 
 @Component({
     selector: 'dot-site-selector',
-    template: ``
+    template: `<select>
+        <option>Fake site selector</option>
+    </select>`
 })
-class MockDotSiteSelectorComponent {
-    siteChange(): void {}
-}
+class MockDotSiteSelectorComponent {}
 
 @Component({
     selector: 'dot-fake-form',
@@ -67,8 +68,9 @@ class TestHostEmtpyComponent {
     }
 }
 
-fdescribe('DotThemeSelectorDropdownComponent', () => {
+describe('DotThemeSelectorDropdownComponent', () => {
     let paginationService: PaginatorService;
+    let de: DebugElement;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -87,10 +89,26 @@ fdescribe('DotThemeSelectorDropdownComponent', () => {
                 {
                     provide: PaginatorService,
                     useValue: {
+                        param: '',
                         url: '',
                         paginationPerPage: '',
-                        totalRecords: mockDotThemes.length,
+                        total: '',
 
+                        set searchParam(value) {
+                            this.param = value;
+                        },
+
+                        get searchParam() {
+                            return this.param;
+                        },
+
+                        set totalRecords(value) {
+                            this.total = value;
+                        },
+
+                        get totalRecords() {
+                            return this.total || mockDotThemes.length;
+                        },
                         setExtraParams() {},
                         getWithOffset() {
                             return of([...mockDotThemes]);
@@ -119,7 +137,8 @@ fdescribe('DotThemeSelectorDropdownComponent', () => {
                 DotMessagePipeModule,
                 ReactiveFormsModule,
                 SearchableDropDownModule,
-                DotIconModule
+                DotIconModule,
+                BrowserAnimationsModule
             ]
         }).compileComponents();
     });
@@ -130,6 +149,8 @@ fdescribe('DotThemeSelectorDropdownComponent', () => {
 
         beforeEach(() => {
             fixture = TestBed.createComponent(DotThemeSelectorDropdownComponent);
+
+            de = fixture.debugElement;
             paginationService = TestBed.inject(PaginatorService);
             component = fixture.componentInstance;
             spyOn(component, 'propagateChange');
@@ -138,13 +159,12 @@ fdescribe('DotThemeSelectorDropdownComponent', () => {
 
         describe('html', () => {
             it('should pass themes', () => {
-                const searchable = fixture.debugElement.query(By.css('dot-searchable-dropdown'))
-                    .componentInstance;
+                const searchable = de.query(By.css('dot-searchable-dropdown')).componentInstance;
                 expect(searchable.data).toEqual(mockDotThemes);
             });
 
             it('shoud set the right attributes', () => {
-                const element = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
+                const element = de.query(By.css('dot-searchable-dropdown'));
 
                 const instance = element.componentInstance;
 
@@ -161,7 +181,7 @@ fdescribe('DotThemeSelectorDropdownComponent', () => {
         describe('events', () => {
             it('should call filterChange with right values', () => {
                 paginationService.totalRecords = 5;
-                const searchable = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
+                const searchable = de.query(By.css('dot-searchable-dropdown'));
                 const arr = [mockDotThemes[1], mockDotThemes[4]];
                 spyOn(paginationService, 'getWithOffset').and.returnValue(of([...arr]));
                 searchable.triggerEventHandler('filterChange', 'test');
@@ -173,7 +193,7 @@ fdescribe('DotThemeSelectorDropdownComponent', () => {
             });
 
             it('should set value propagate change and toggle the overlay', () => {
-                const searchable = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
+                const searchable = de.query(By.css('dot-searchable-dropdown'));
                 spyOn(searchable.componentInstance, 'toggleOverlayPanel');
                 const value = mockDotThemes[0];
 
@@ -181,6 +201,42 @@ fdescribe('DotThemeSelectorDropdownComponent', () => {
                 expect(component.value).toEqual(value);
                 expect(component.propagateChange).toHaveBeenCalledWith(value.identifier);
                 expect(searchable.componentInstance.toggleOverlayPanel).toHaveBeenCalledTimes(1);
+            });
+        });
+
+        describe('filters', () => {
+            beforeEach(() => {
+                spyOn(paginationService, 'setExtraParams');
+                spyOn(paginationService, 'getWithOffset').and.returnValue(of([mockDotThemes[2]]));
+                spyOnProperty(paginationService, 'totalRecords').and.returnValue(1);
+
+                const searchableButton = de.query(By.css('dot-searchable-dropdown button'));
+                searchableButton.nativeElement.click();
+                fixture.detectChanges();
+            });
+
+            it('should update themes, totalRecords and call setExtraParams when site selector change', () => {
+                const siteSelector = de.query(By.css('dot-site-selector'));
+                siteSelector.triggerEventHandler('change', {
+                    identifier: '123'
+                });
+
+                expect(paginationService.setExtraParams).toHaveBeenCalledWith('hostId', '123');
+                expect(component.themes).toEqual([mockDotThemes[2]]);
+                expect(component.totalRecords).toBe(1);
+            });
+
+            it('should update themes, totalRecords and call setExtraParams when search input change', async () => {
+                const input = de.query(By.css('[data-testId="searchInput"]')).nativeElement;
+                input.value = 'hello';
+                const event = new KeyboardEvent('keyup');
+                input.dispatchEvent(event);
+
+                await fixture.whenStable();
+
+                expect(paginationService.searchParam).toBe('hello');
+                expect(component.themes).toEqual([mockDotThemes[2]]);
+                expect(component.totalRecords).toBe(1);
             });
         });
     });

@@ -160,6 +160,7 @@ export class DotThemeSelectorDropdownComponent
 
     private getFilteredThemes(filter = '', offset = 0): void {
         this.paginatorService.searchParam = filter;
+
         this.paginatorService
             .getWithOffset(this.currentOffset || offset)
             .pipe(take(1))
