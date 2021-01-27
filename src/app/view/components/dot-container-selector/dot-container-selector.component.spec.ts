@@ -26,9 +26,12 @@ import {
 } from 'dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+    PaginationEvent,
+    SearchableDropdownComponent
+} from '@components/_common/searchable-dropdown/component';
 
 describe('ContainerSelectorComponent', () => {
-    let comp: DotContainerSelectorComponent;
     let fixture: ComponentFixture<DotContainerSelectorComponent>;
     let de: DebugElement;
     let searchableDropdownComponent;
@@ -65,7 +68,6 @@ describe('ContainerSelectorComponent', () => {
         }).compileComponents();
 
         fixture = DOTTestBed.createComponent(DotContainerSelectorComponent);
-        comp = fixture.componentInstance;
         de = fixture.debugElement;
 
         searchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
@@ -165,10 +167,12 @@ describe('ContainerSelectorComponent', () => {
         fixture.detectChanges();
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(containers));
-        comp.handleFilterChange('');
-        comp.currentContainers.subscribe((items: DotContainer[]) => {
-            expect(items[0].identifier).toEqual('427c47a4-c380-439f');
-            expect(items[1].identifier).toEqual('container/path');
-        });
+        const searchable: SearchableDropdownComponent = de.query(
+            By.css('[data-testId="searchableDropdown"]')
+        ).componentInstance;
+        searchable.pageChange.emit({ filter: '', first: 0 } as PaginationEvent);
+        fixture.detectChanges();
+        expect(searchable.data[0].identifier).toEqual('427c47a4-c380-439f');
+        expect(searchable.data[1].identifier).toEqual('container/path');
     });
 });
