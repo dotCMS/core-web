@@ -11,6 +11,7 @@ import { DotTemplate } from '@shared/models/dot-edit-layout-designer/dot-templat
 import { DotTemplatePropsComponent } from './dot-template-props/dot-template-props.component';
 import { DotTemplateItem, DotTemplateState, DotTemplateStore } from './store/dot-template.store';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DynamicDialogRef } from 'primeng/dynamicdialog/dynamicdialog-ref';
 
 @Component({
     selector: 'dot-template-create-edit',
@@ -114,7 +115,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     }
 
     private createTemplate(): void {
-        this.dialogService.open(DotTemplatePropsComponent, {
+        const ref: DynamicDialogRef = this.dialogService.open(DotTemplatePropsComponent, {
             header: this.dotMessageService.get('templates.create.title'),
             width: '40rem',
             closable: false,
@@ -123,10 +124,12 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 template: this.form.value,
                 onSave: (value: DotTemplateItem) => {
                     this.store.createTemplate(value);
-                },
-                onCancel: () => {
-                    this.store.goToTemplateList();
                 }
+            }
+        });
+        ref.onClose.pipe(takeUntil(this.destroy$)).subscribe((goToListing: boolean) => {
+            if (goToListing || goToListing === undefined) {
+                this.cancelTemplate();
             }
         });
     }
