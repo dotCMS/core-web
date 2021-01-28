@@ -18,7 +18,7 @@ export class DotToolbarUserComponent implements OnInit {
     showLoginAs = false;
     showMyAccount = false;
 
-    logoutUrl = LOGOUT_URL;
+    logoutUrl = `${LOGOUT_URL}?r=${new Date().getTime()}`;
 
     constructor(
         @Inject(LOCATION_TOKEN) private location: Location,
@@ -42,6 +42,7 @@ export class DotToolbarUserComponent implements OnInit {
      * @memberof ToolbarUserComponent
      */
     logout(): boolean {
+        debugger;
         this.dotRouterService.doLogOut();
         return false;
     }
