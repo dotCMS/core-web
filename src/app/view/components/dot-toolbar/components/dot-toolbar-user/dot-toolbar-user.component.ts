@@ -42,7 +42,6 @@ export class DotToolbarUserComponent implements OnInit {
      * @memberof ToolbarUserComponent
      */
     logout(): boolean {
-        debugger;
         this.dotRouterService.doLogOut();
         return false;
     }

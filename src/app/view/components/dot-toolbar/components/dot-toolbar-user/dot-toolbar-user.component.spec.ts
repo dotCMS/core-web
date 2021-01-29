@@ -42,7 +42,7 @@ import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-tes
 import { FormatDateService } from '@services/format-date-service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 
-fdescribe('DotToolbarUserComponent', () => {
+describe('DotToolbarUserComponent', () => {
     let comp: DotToolbarUserComponent;
     let fixture: ComponentFixture<DotToolbarUserComponent>;
     let de: DebugElement;
@@ -103,6 +103,10 @@ fdescribe('DotToolbarUserComponent', () => {
             ]
         });
 
+        const mockDate = new Date(1466424490000);
+        jasmine.clock().install();
+        jasmine.clock().mockDate(mockDate);
+
         fixture = TestBed.createComponent(DotToolbarUserComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
@@ -112,10 +116,11 @@ fdescribe('DotToolbarUserComponent', () => {
         dotNavigationService = de.injector.get(DotNavigationService);
     });
 
+    afterEach(() => {
+        jasmine.clock().uninstall();
+    });
+
     it('should have correct href in logout link', () => {
-        const mockDate = new Date(1466424490000);
-        jasmine.clock().install();
-        jasmine.clock().mockDate(mockDate);
         comp.auth = {
             user: mockUser(),
             loginAsUser: null
@@ -127,8 +132,7 @@ fdescribe('DotToolbarUserComponent', () => {
         fixture.detectChanges();
 
         const logoutLink = de.query(By.css('#dot-toolbar-user-link-logout'));
-        expect(logoutLink.attributes.href).toBe('/dotAdmin/logoutr=1466424490000');
-        jasmine.clock().uninstall();
+        expect(logoutLink.attributes.href).toBe('/dotAdmin/logout?r=1466424490000');
     });
 
     it('should call "logoutAs" in "LoginService" on logout click', async () => {
