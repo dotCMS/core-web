@@ -161,7 +161,7 @@ describe('ContentTypesLayoutComponent', () => {
         expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
     });
 
-    it('should have dot-portlet-box', fakeAsync(() => {
+    fit('should have dot-portlet-box', fakeAsync(() => {
         const tabPanel = fixture.debugElement.query(By.css('p-tabpanel'));
         fixture.componentInstance.contentType = fakeContentType;
         fixture.detectChanges();
