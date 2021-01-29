@@ -92,20 +92,18 @@ async function makeFormValid(fixture) {
 
     title.dispatchEvent(event);
 
-    const theme: HTMLInputElement = document.querySelector(
+    await fixture.whenRenderingDone();
+
+    const themeButton: HTMLInputElement = document.querySelector(
         '[data-testid="templatePropsThemeField"] button'
     );
 
-    theme.click();
-
-    await fixture.whenRenderingDone();
-
+    themeButton.click();
     const item: HTMLElement = document.querySelector('.theme-selector__data-list-item');
-
     item.click();
 }
 
-describe('DotTemplateCreateEditComponent', () => {
+fdescribe('DotTemplateCreateEditComponent', () => {
     let fixture: ComponentFixture<DotTemplateCreateEditComponent>;
     let de: DebugElement;
     let component: DotTemplateCreateEditComponent;
@@ -296,12 +294,13 @@ describe('DotTemplateCreateEditComponent', () => {
                 expect(store.goToTemplateList).toHaveBeenCalledTimes(1);
             });
 
-            it('should save template when save dialog button is clicked', async () => {
+            fit('should save template when save dialog button is clicked', async () => {
                 await makeFormValid(fixture);
 
                 const button: HTMLButtonElement = document.querySelector(
                     '[data-testid="dotFormDialogSave"]'
                 );
+
                 button.click();
 
                 expect(store.createTemplate).toHaveBeenCalledWith({
