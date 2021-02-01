@@ -7,7 +7,7 @@ import { PaginatorService } from '@services/paginator';
 import { Site, SiteService } from 'dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
 import { fromEvent } from 'rxjs';
-import { debounceTime, mergeMap, pluck, take } from 'rxjs/operators';
+import { debounceTime, mergeMap, pluck, take, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-theme-selector-dropdown',
@@ -27,6 +27,7 @@ export class DotThemeSelectorDropdownComponent
     value: DotTheme = null;
     totalRecords: number = 0;
     currentOffset: number;
+    currentSiteIdentifier: string;
 
     @ViewChild('searchableDropdown', { static: true })
     searchableDropdown: SearchableDropdownComponent;
@@ -48,6 +49,10 @@ export class DotThemeSelectorDropdownComponent
             .getCurrentSite()
             .pipe(
                 pluck('identifier'),
+                tap((identifier) => {
+                    this.currentSiteIdentifier = identifier;
+                    return identifier;
+                }),
                 mergeMap((identifier: string) => {
                     this.paginatorService.setExtraParams('hostId', identifier);
                     return this.paginatorService.getWithOffset(0).pipe(take(1));
@@ -139,13 +144,14 @@ export class DotThemeSelectorDropdownComponent
      */
     handlePageChange(event: LazyLoadEvent): void {
         this.currentOffset = event.first;
-
-        this.paginatorService
-            .getWithOffset(event.first)
-            .pipe(take(1))
-            .subscribe((themes) => {
-                this.themes = themes;
-            });
+        if (this.currentSiteIdentifier) {
+            this.paginatorService
+                .getWithOffset(event.first)
+                .pipe(take(1))
+                .subscribe((themes) => {
+                    this.themes = themes;
+                });
+        }
     }
 
     private setHostThemes(identifier: string) {
