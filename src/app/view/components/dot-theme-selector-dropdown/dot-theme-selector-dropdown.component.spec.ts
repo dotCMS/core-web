@@ -192,7 +192,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
                 expect(paginationService.totalRecords).toEqual(5);
             });
 
-            fit('should call handlePageChange with right values', () => {
+            it('should call handlePageChange with right values', () => {
                 paginationService.totalRecords = 5;
                 const searchable = de.query(By.css('dot-searchable-dropdown'));
 
