@@ -1,6 +1,6 @@
 import { of, Observable } from 'rxjs';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -161,7 +161,7 @@ describe('ContentTypesLayoutComponent', () => {
         expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
     });
 
-    it('should have dot-portlet-box', fakeAsync(() => {
+    fit('should have dot-portlet-box', fakeAsync(() => {
         const tabPanel = fixture.debugElement.query(By.css('p-tabpanel'));
         fixture.componentInstance.contentType = fakeContentType;
         fixture.detectChanges();
@@ -173,7 +173,8 @@ describe('ContentTypesLayoutComponent', () => {
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            const pushRelationshipsTabPanel = de.query(By.css('#p-tabpanel-1'));
+            const pushRelationshipsTabPanel = de.query(By.css('.p-tabview-panel'));
+            console.log(de.nativeNode);
             const pushRelationshipsPortletBox = pushRelationshipsTabPanel.query(
                 By.css('dot-portlet-box')
             );
@@ -181,11 +182,13 @@ describe('ContentTypesLayoutComponent', () => {
         });
 
         const pushHistoryTab = de.query(By.css('.content-type__push_history'));
+        tick(1000);
         pushHistoryTab.componentInstance.selected = true;
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            const pushHistoryTabPanel = de.query(By.css('#p-tabpanel-2'));
+            const pushHistoryTabPanel = de.query(By.css('.p-tabview-panel'));
+            console.log(de.nativeNode);
             const pushHistoryPortletBox = pushHistoryTabPanel.query(By.css('dot-portlet-box'));
             expect(pushHistoryPortletBox).not.toBeNull();
         });
