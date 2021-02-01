@@ -7,7 +7,7 @@ import { PaginatorService } from '@services/paginator';
 import { Site, SiteService } from 'dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
 import { fromEvent } from 'rxjs';
-import { debounceTime, mergeMap, pluck, take, tap } from 'rxjs/operators';
+import { debounceTime, pluck, take, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-theme-selector-dropdown',
@@ -51,17 +51,18 @@ export class DotThemeSelectorDropdownComponent
                 pluck('identifier'),
                 tap((identifier) => {
                     this.currentSiteIdentifier = identifier;
-                    return identifier;
-                }),
-                mergeMap((identifier: string) => {
-                    this.paginatorService.setExtraParams('hostId', identifier);
-                    return this.paginatorService.getWithOffset(0).pipe(take(1));
                 }),
                 take(1)
             )
-            .subscribe((themes: DotTheme[]) => {
-                this.themes = themes;
-                this.setTotalRecords();
+            .subscribe((identifier) => {
+                this.paginatorService.setExtraParams('hostId', identifier);
+                this.paginatorService
+                    .getWithOffset(0)
+                    .pipe(take(1))
+                    .subscribe((themes: DotTheme[]) => {
+                        this.themes = themes;
+                        this.setTotalRecords();
+                    });
             });
     }
 

@@ -192,6 +192,17 @@ describe('DotThemeSelectorDropdownComponent', () => {
                 expect(paginationService.totalRecords).toEqual(5);
             });
 
+            fit('should call handlePageChange with right values', () => {
+                paginationService.totalRecords = 5;
+                const searchable = de.query(By.css('dot-searchable-dropdown'));
+
+                const arr = [mockDotThemes[1], mockDotThemes[4]];
+                spyOn(paginationService, 'getWithOffset').and.returnValue(of([...arr]));
+                searchable.triggerEventHandler('pageChange', { first: 1, rows: 5 });
+                expect(paginationService.getWithOffset).toHaveBeenCalledOnceWith(1);
+                expect(component.currentSiteIdentifier).not.toBeUndefined();
+            });
+
             it('should set value propagate change and toggle the overlay', () => {
                 const searchable = de.query(By.css('dot-searchable-dropdown'));
                 spyOn(searchable.componentInstance, 'toggleOverlayPanel');
