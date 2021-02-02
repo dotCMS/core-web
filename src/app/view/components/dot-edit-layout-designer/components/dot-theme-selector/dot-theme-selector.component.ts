@@ -122,8 +122,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
     siteChange(site: Site): void {
         this.searchInput.nativeElement.value = null;
         this.paginatorService.setExtraParams('hostId', site.identifier);
-        this.paginatorService.setExtraParams(this.SEARCH_PARAM, '');
-        this.paginate({ first: 0 });
+        this.filterThemes('');
     }
 
     /**
