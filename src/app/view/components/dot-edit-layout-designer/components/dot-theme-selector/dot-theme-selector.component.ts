@@ -80,6 +80,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
         };
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.setExtraParams('hostId', this.siteService.currentSite.identifier);
+        this.paginatorService.deleteExtraParams(this.SEARCH_PARAM);
         this.paginatorService.paginationPerPage = 8;
         this.current = this.value;
 
@@ -93,7 +94,6 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
-        this.paginatorService.deleteExtraParams(this.SEARCH_PARAM);
     }
 
     /**
