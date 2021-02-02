@@ -210,5 +210,11 @@ describe('DotThemeSelectorComponent', () => {
             expect(paginatorService.extraParams.get('searchParam')).toBe('test');
             expect(component.paginate).toHaveBeenCalled();
         }));
+
+        it('should clear searchParam onDestroy', () => {
+            spyOn(paginatorService, 'deleteExtraParams');
+            component.ngOnDestroy();
+            expect(paginatorService.deleteExtraParams).toHaveBeenCalledWith('searchParam');
+        });
     });
 });

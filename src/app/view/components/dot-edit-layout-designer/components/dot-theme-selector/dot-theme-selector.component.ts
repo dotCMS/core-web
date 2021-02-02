@@ -56,6 +56,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
     dialogActions: DotDialogActions;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
+    private SEARCH_PARAM = 'searchParam';
 
     constructor(
         private dotMessageService: DotMessageService,
@@ -92,6 +93,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
+        this.paginatorService.deleteExtraParams(this.SEARCH_PARAM);
     }
 
     /**
@@ -120,7 +122,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
     siteChange(site: Site): void {
         this.searchInput.nativeElement.value = null;
         this.paginatorService.setExtraParams('hostId', site.identifier);
-        this.paginatorService.setExtraParams('searchParam', '');
+        this.paginatorService.setExtraParams(this.SEARCH_PARAM, '');
         this.paginate({ first: 0 });
     }
 
@@ -160,7 +162,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
     }
 
     private filterThemes(searchCriteria?: string): void {
-        this.paginatorService.setExtraParams('searchParam', searchCriteria);
+        this.paginatorService.setExtraParams(this.SEARCH_PARAM, searchCriteria);
         this.paginate({ first: 0 });
     }
 }
