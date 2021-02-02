@@ -50,6 +50,7 @@
 <dot-searchable-dropdown
     #searchableDropdown
     (hide)="onHide()"
+    (show)="onShow()"
     [(ngModel)]="value"
     (filterChange)="handleFilterChange($event)"
     (change)="onChange($event)"

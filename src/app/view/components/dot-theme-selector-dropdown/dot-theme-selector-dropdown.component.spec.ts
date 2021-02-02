@@ -30,7 +30,9 @@ const messageServiceMock = new MockDotMessageService({
         <option>Fake site selector</option>
     </select>`
 })
-class MockDotSiteSelectorComponent {}
+class MockDotSiteSelectorComponent {
+    setCurrentSiteAsDefault() {}
+}
 
 @Component({
     selector: 'dot-fake-form',
@@ -68,7 +70,7 @@ class TestHostEmtpyComponent {
     }
 }
 
-describe('DotThemeSelectorDropdownComponent', () => {
+fdescribe('DotThemeSelectorDropdownComponent', () => {
     let paginationService: PaginatorService;
     let de: DebugElement;
 
@@ -119,6 +121,11 @@ describe('DotThemeSelectorDropdownComponent', () => {
                     provide: SiteService,
                     useValue: {
                         getCurrentSite() {
+                            return of({
+                                identifier: '123'
+                            });
+                        },
+                        getSiteById() {
                             return of({
                                 identifier: '123'
                             });

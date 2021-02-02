@@ -93,8 +93,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('changes', changes);
-
         if (changes.id && changes.id.currentValue) {
             this.selectCurrentSite(changes.id.currentValue);
         }
@@ -181,7 +179,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.getWithOffset(offset).subscribe((items) => {
             this.sitesCurrentPage = [...items];
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-            this.setCurrentSiteAsDefault();
+            this.setCurrentSiteAsDefault(this.siteService.currentSite);
         });
     }
 
@@ -199,8 +197,8 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      *
      * @memberof DotSiteSelectorComponent
      */
-    setCurrentSiteAsDefault() {
-        this.updateCurrentSite(this.siteService.currentSite);
+    setCurrentSiteAsDefault(currentSite) {
+        this.updateCurrentSite(currentSite);
     }
 
     private getSiteByIdFromCurrentPage(siteId: string): Site {
