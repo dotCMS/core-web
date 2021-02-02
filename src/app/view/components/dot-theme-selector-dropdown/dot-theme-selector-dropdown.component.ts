@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, forwardRef, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DotSiteSelectorComponent } from '@components/_common/dot-site-selector/dot-site-selector.component';
 import { SearchableDropdownComponent } from '@components/_common/searchable-dropdown/component';
 import { DotTheme } from '@models/dot-edit-layout-designer';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
@@ -28,11 +29,16 @@ export class DotThemeSelectorDropdownComponent
     totalRecords: number = 0;
     currentOffset: number;
 
+    id;
+
     @ViewChild('searchableDropdown', { static: true })
     searchableDropdown: SearchableDropdownComponent;
 
     @ViewChild('searchInput', { static: false })
     searchInput: ElementRef;
+
+    @ViewChild('siteSelector')
+    siteSelector: DotSiteSelectorComponent;
 
     constructor(
         public readonly paginatorService: PaginatorService,
@@ -68,6 +74,10 @@ export class DotThemeSelectorDropdownComponent
                     this.getFilteredThemes(keyboardEvent.target['value']);
                 });
         }
+    }
+
+    onHide(): void {
+        this.siteSelector.setCurrentSiteAsDefault();
     }
 
     propagateChange = (_: any) => {};

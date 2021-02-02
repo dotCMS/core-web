@@ -1,4 +1,4 @@
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import {
     Component,
     EventEmitter,
@@ -45,7 +45,8 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
 
-    currentSite: Observable<Site>;
+    currentSiteSub: Subject<Site> = new Subject();
+
     sitesCurrentPage: Site[];
     totalRecords: number;
 
@@ -56,6 +57,10 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         public paginationService: PaginatorService,
         private dotEventsService: DotEventsService
     ) {}
+
+    get currentSite(): Observable<Site> {
+        return this.currentSiteSub;
+    }
 
     ngOnInit(): void {
         this.paginationService.url = 'v1/site';
@@ -78,12 +83,18 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
                 });
         });
 
+        this.currentSite.subscribe((res) => {
+            console.log(res.hostname);
+        });
+
         this.siteService.switchSite$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.currentSite = of(this.siteService.currentSite);
+            this.updateCurrentSite(this.siteService.currentSite);
         });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('changes', changes);
+
         if (changes.id && changes.id.currentValue) {
             this.selectCurrentSite(changes.id.currentValue);
         }
@@ -170,10 +181,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.getWithOffset(offset).subscribe((items) => {
             this.sitesCurrentPage = [...items];
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-
-            if (!this.currentSite) {
-                this.setCurrentSiteAsDefault();
-            }
+            this.setCurrentSiteAsDefault();
         });
     }
 
@@ -186,6 +194,15 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.change.emit(site);
     }
 
+    /**
+     * Set default site as current
+     *
+     * @memberof DotSiteSelectorComponent
+     */
+    setCurrentSiteAsDefault() {
+        this.updateCurrentSite(this.siteService.currentSite);
+    }
+
     private getSiteByIdFromCurrentPage(siteId: string): Site {
         return (
             this.sitesCurrentPage &&
@@ -195,18 +212,27 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private selectCurrentSite(siteId: string): void {
         const selectedInCurrentPage = this.getSiteByIdFromCurrentPage(siteId);
-        this.currentSite = selectedInCurrentPage
-            ? of(selectedInCurrentPage)
-            : this.siteService.getSiteById(siteId);
-    }
 
-    private setCurrentSiteAsDefault() {
-        this.currentSite = of(this.siteService.currentSite);
+        if (selectedInCurrentPage) {
+            this.updateCurrentSite(selectedInCurrentPage);
+        } else {
+            this.siteService
+                .getSiteById(siteId)
+                .pipe(take(1))
+                .subscribe((site: Site) => {
+                    this.updateCurrentSite(site);
+                });
+        }
     }
 
     private updateValues(items: Site[]): void {
         this.sitesCurrentPage = [...items];
         this.totalRecords = this.paginationService.totalRecords;
-        this.currentSite = of(this.siteService.currentSite);
+        this.updateCurrentSite(this.siteService.currentSite);
+    }
+
+    private updateCurrentSite(site: Site): void {
+        const newSite = { ...site };
+        this.currentSiteSub.next(newSite);
     }
 }
