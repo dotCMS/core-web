@@ -48,7 +48,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     currentSiteSub$: Subject<Site> = new Subject();
 
     sitesCurrentPage: Site[];
-    totalRecords: number;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -174,7 +173,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe((items) => {
             this.sitesCurrentPage = [...items];
-            this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
             this.setCurrentSiteAsDefault(this.siteService.currentSite);
         });
     }
@@ -221,7 +219,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private updateValues(items: Site[]): void {
         this.sitesCurrentPage = [...items];
-        this.totalRecords = this.paginationService.totalRecords;
         this.updateCurrentSite(this.siteService.currentSite);
     }
 
