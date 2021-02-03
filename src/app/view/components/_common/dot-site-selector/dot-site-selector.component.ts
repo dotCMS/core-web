@@ -45,7 +45,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
 
-    currentSiteSub: Subject<Site> = new Subject();
+    currentSiteSub$: Subject<Site> = new Subject();
 
     sitesCurrentPage: Site[];
     totalRecords: number;
@@ -58,8 +58,8 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         private dotEventsService: DotEventsService
     ) {}
 
-    get currentSite(): Observable<Site> {
-        return this.currentSiteSub;
+    get currentSite$(): Observable<Site> {
+        return this.currentSiteSub$;
     }
 
     ngOnInit(): void {
@@ -81,10 +81,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
                 .subscribe(() => {
                     this.getSitesList();
                 });
-        });
-
-        this.currentSite.subscribe((res) => {
-            console.log(res.hostname);
         });
 
         this.siteService.switchSite$.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -231,6 +227,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private updateCurrentSite(site: Site): void {
         const newSite = { ...site };
-        this.currentSiteSub.next(newSite);
+        this.currentSiteSub$.next(newSite);
     }
 }

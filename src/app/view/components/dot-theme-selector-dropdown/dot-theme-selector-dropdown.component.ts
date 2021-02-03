@@ -66,9 +66,12 @@ export class DotThemeSelectorDropdownComponent
 
     onHide(): void {
         if (this.value) {
-            this.siteService.getSiteById(this.value.hostId).subscribe((site) => {
-                this.siteSelector.setCurrentSiteAsDefault(site);
-            });
+            this.siteService
+                .getSiteById(this.value.hostId)
+                .pipe(take(1))
+                .subscribe((site) => {
+                    this.siteSelector.setCurrentSiteAsDefault(site);
+                });
         }
 
         // Reset back to its original state
@@ -118,7 +121,11 @@ export class DotThemeSelectorDropdownComponent
         this.currentSiteIdentifier = event.identifier;
         this.setHostThemes(event.identifier);
     }
-
+    /**
+     * Sets the themes when the drop down is opened
+     *
+     * @memberof DotThemeSelectorDropdownComponent
+     */
     onShow(): void {
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.paginationPerPage = 5;
@@ -177,8 +184,8 @@ export class DotThemeSelectorDropdownComponent
         this.setHostThemes(this.currentSiteIdentifier, this.currentOffset || offset);
     }
 
-    private setHostThemes(identifier: string, offset: number = 0) {
-        this.paginatorService.setExtraParams('hostId', identifier);
+    private setHostThemes(hostId: string, offset: number = 0) {
+        this.paginatorService.setExtraParams('hostId', hostId);
         this.paginatorService
             .getWithOffset(offset)
             .pipe(take(1))
