@@ -8,7 +8,7 @@ import { PaginatorService } from '@services/paginator';
 import { Site, SiteService } from 'dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
 import { fromEvent } from 'rxjs';
-import { debounceTime, pluck, take } from 'rxjs/operators';
+import { debounceTime, filter, pluck, take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-theme-selector-dropdown',
@@ -130,12 +130,11 @@ export class DotThemeSelectorDropdownComponent
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.paginationPerPage = 5;
 
-        if (!this.value) {
-            this.setHostThemes(this.currentSiteIdentifier);
-        } else {
-            this.setHostThemes(this.value.hostId);
+        if (this.value) {
             this.currentSiteIdentifier = this.value.hostId;
         }
+
+        this.setHostThemes(this.currentSiteIdentifier);
     }
 
     /**
@@ -169,14 +168,19 @@ export class DotThemeSelectorDropdownComponent
      */
     handlePageChange(event: LazyLoadEvent): void {
         this.currentOffset = event.first;
-        if (this.currentSiteIdentifier) {
-            this.paginatorService
-                .getWithOffset(event.first)
-                .pipe(take(1))
-                .subscribe((themes) => {
-                    this.themes = themes;
-                });
-        }
+        this.paginatorService
+            .getWithOffset(event.first)
+            /*
+                We load the first page of themes (onShow) so we dont want to load them when the
+                first paginate event from the dataview inside <dot-searchable-dropdown> triggers
+            */
+            .pipe(
+                take(1),
+                filter(() => !!(this.currentSiteIdentifier && this.themes.length))
+            )
+            .subscribe((themes) => {
+                this.themes = themes;
+            });
     }
 
     private getFilteredThemes(filter = '', offset = 0): void {
