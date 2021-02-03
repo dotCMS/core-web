@@ -18,5 +18,5 @@
 </dot-searchable-dropdown>
 
 <span *ngIf="totalRecords == 1" class="site-selector__title">{{
-    (currentSite | async)?.hostname
+    (currentSite$ | async)?.hostname
 }}</span>
