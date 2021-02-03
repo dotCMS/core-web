@@ -68,7 +68,7 @@ class TestHostEmtpyComponent {
     }
 }
 
-fdescribe('DotThemeSelectorDropdownComponent', () => {
+describe('DotThemeSelectorDropdownComponent', () => {
     let paginationService: PaginatorService;
     let de: DebugElement;
 
