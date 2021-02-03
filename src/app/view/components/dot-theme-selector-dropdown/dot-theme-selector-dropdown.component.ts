@@ -106,7 +106,7 @@ export class DotThemeSelectorDropdownComponent
                 .subscribe((theme: DotTheme) => {
                     this.value = theme;
                     this.siteService.getSiteById(this.value.hostId).subscribe((site) => {
-                        this.siteSelector.setCurrentSiteAsDefault(site);
+                        this.siteSelector?.setCurrentSiteAsDefault(site);
                     });
                 });
         }
