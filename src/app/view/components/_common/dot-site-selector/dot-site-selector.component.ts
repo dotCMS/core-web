@@ -170,10 +170,10 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      */
     getSitesList(filter = '', offset = 0): void {
         // Set filter if undefined
+        Promise.resolve().then(() => this.updateCurrentSite(this.siteService.currentSite));
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe((items) => {
             this.sitesCurrentPage = [...items];
-            this.setCurrentSiteAsDefault(this.siteService.currentSite);
         });
     }
 
@@ -185,14 +185,15 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     siteChange(site: Site): void {
         this.change.emit(site);
     }
-
     /**
-     * Set default site as current
+     * Updates the current site
      *
+     * @param {Site} site
      * @memberof DotSiteSelectorComponent
      */
-    setCurrentSiteAsDefault(currentSite) {
-        this.updateCurrentSite(currentSite);
+    updateCurrentSite(site: Site): void {
+        const newSite = { ...site };
+        this.currentSiteSub$.next(newSite);
     }
 
     private getSiteByIdFromCurrentPage(siteId: string): Site {
@@ -220,10 +221,5 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     private updateValues(items: Site[]): void {
         this.sitesCurrentPage = [...items];
         this.updateCurrentSite(this.siteService.currentSite);
-    }
-
-    private updateCurrentSite(site: Site): void {
-        const newSite = { ...site };
-        this.currentSiteSub$.next(newSite);
     }
 }

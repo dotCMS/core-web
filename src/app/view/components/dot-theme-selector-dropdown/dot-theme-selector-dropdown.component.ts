@@ -70,7 +70,7 @@ export class DotThemeSelectorDropdownComponent
                 .getSiteById(this.value.hostId)
                 .pipe(take(1))
                 .subscribe((site) => {
-                    this.siteSelector.setCurrentSiteAsDefault(site);
+                    this.siteSelector.updateCurrentSite(site);
                 });
         }
 
@@ -106,7 +106,7 @@ export class DotThemeSelectorDropdownComponent
                 .subscribe((theme: DotTheme) => {
                     this.value = theme;
                     this.siteService.getSiteById(this.value.hostId).subscribe((site) => {
-                        this.siteSelector?.setCurrentSiteAsDefault(site);
+                        this.siteSelector?.updateCurrentSite(site);
                     });
                 });
         }
@@ -168,19 +168,21 @@ export class DotThemeSelectorDropdownComponent
      */
     handlePageChange(event: LazyLoadEvent): void {
         this.currentOffset = event.first;
-        this.paginatorService
-            .getWithOffset(event.first)
-            /*
+        if (this.currentSiteIdentifier) {
+            this.paginatorService
+                .getWithOffset(event.first)
+                /*
                 We load the first page of themes (onShow) so we dont want to load them when the
                 first paginate event from the dataview inside <dot-searchable-dropdown> triggers
             */
-            .pipe(
-                take(1),
-                filter(() => !!(this.currentSiteIdentifier && this.themes.length))
-            )
-            .subscribe((themes) => {
-                this.themes = themes;
-            });
+                .pipe(
+                    take(1),
+                    filter(() => !!(this.currentSiteIdentifier && this.themes.length))
+                )
+                .subscribe((themes) => {
+                    this.themes = themes;
+                });
+        }
     }
 
     private getFilteredThemes(filter = '', offset = 0): void {
