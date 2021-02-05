@@ -86,7 +86,7 @@ export class PushPublishService {
         }: DotPushPublishData
     ): string {
         let result = '';
-        result += `assetIdentifier=${assetIdentifier}`;
+        result += `assetIdentifier=${encodeURIComponent(assetIdentifier)}`;
         result += `&remotePublishDate=${moment(new Date(publishDate)).format('YYYY-MM-DD')}`;
         result += `&remotePublishTime=${moment(new Date(publishDate)).format('HH-mm')}`;
         result += `&remotePublishExpireDate=${moment(new Date(expireDate)).format('YYYY-MM-DD')}`;

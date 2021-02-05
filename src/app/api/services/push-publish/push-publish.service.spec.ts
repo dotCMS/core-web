@@ -103,9 +103,11 @@ describe('PushPublishService', () => {
     it(
         'should do a post request and push publish an asset',
         fakeAsync(() => {
+            const assetIdentifier = '1234567890 +0';
+            const assetIdentifierEncoded = encodeURIComponent(assetIdentifier);
             let result: any;
             pushPublishService
-                .pushPublishContent('1234567890', mockFormValue, false)
+                .pushPublishContent(assetIdentifier, mockFormValue, false)
                 .subscribe(res => {
                     result = res._body;
                 });
@@ -122,7 +124,7 @@ describe('PushPublishService', () => {
             );
             expect(lastConnection.request.getBody()).toBe(
                 // tslint:disable-next-line:max-line-length
-                'assetIdentifier=1234567890&remotePublishDate=2020-07-08&remotePublishTime=10-10&remotePublishExpireDate=2020-07-15&remotePublishExpireTime=22-10&iWantTo=publish&whoToSend=env1&bundleName=&bundleSelect=&filterKey=hol'
+                `assetIdentifier=${assetIdentifierEncoded}&remotePublishDate=2020-07-08&remotePublishTime=10-10&remotePublishExpireDate=2020-07-15&remotePublishExpireTime=22-10&iWantTo=publish&whoToSend=env1&bundleName=&bundleSelect=&filterKey=hol`
             );
             expect(result).toEqual(mockResponse);
         })
