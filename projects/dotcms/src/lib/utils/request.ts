@@ -28,7 +28,7 @@ async function getUrl(
 }
 
 function shouldAppendBody(params: DotAppHttpRequestParams): boolean {
-    return params.method === 'POST' && !!params.body;
+    return (params.method === 'POST' || params.method === 'PUT') && !!params.body;
 }
 
 function getOpts(
