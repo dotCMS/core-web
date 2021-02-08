@@ -20,7 +20,6 @@ export class DotRouterService {
         this.router.events
             .pipe(filter((event: Event) => event instanceof NavigationEnd))
             .subscribe((event: NavigationEnd) => {
-                debugger;
                 this.routeHistory = {
                     url: event.url,
                     previousUrl: this._routeHistory.url
