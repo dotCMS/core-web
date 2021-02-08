@@ -80,7 +80,7 @@ describe('DotRouterService', () => {
 
     it('should set previous & current url value', () => {
         router.triggerNavigationEnd('/newUrl');
-        expect(service.previousSavedURL).toEqual('/c/test');
+        expect(service.routeHistory).toEqual({ url: '/newUrl', previousUrl: '/c/test' });
         expect(service.currentSavedURL).toEqual('/newUrl');
     });
 
@@ -148,7 +148,7 @@ describe('DotRouterService', () => {
     });
 
     it('should go to previousSavedURL when goToMain() called', () => {
-        service.previousSavedURL = 'test/fake';
+        service.routeHistory = { previousUrl: 'test/fake', url: '/' };
         service.goToPreviousUrl();
         expect(router.navigate).toHaveBeenCalledWith(['test/fake']);
     });
