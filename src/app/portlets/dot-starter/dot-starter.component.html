@@ -17,12 +17,13 @@
             <div class="p-md-12 p-lg-7">
                 <div class="dot-starter-top-main__section">
                     <a
+                        *ngIf="showCreateDataModelLink"
                         class="dot-starter-top-main__block"
                         data-testId="starter.main.link.data.model"
                         routerLink="/content-types-angular/create/content"
                     >
                         <div class="dot-starter-top-main__link-number">
-                            <span>1</span>
+                            <span></span>
                         </div>
                         <div class="dot-starter-top-main__link-data">
                             <h4>{{ 'starter.main.link.data.model.title' | dm }}</h4>
@@ -33,12 +34,13 @@
                         </span>
                     </a>
                     <a
+                        *ngIf="showCreateContentLink"
                         data-testId="starter.main.link.content"
                         class="dot-starter-top-main__block"
                         routerLink="/c/content/new/webPageContent"
                     >
                         <div class="dot-starter-top-main__link-number">
-                            <span>2</span>
+                            <span></span>
                         </div>
                         <div class="dot-starter-top-main__link-data">
                             <h4>{{ 'starter.main.link.add.content.title' | dm }}</h4>
@@ -49,12 +51,13 @@
                         </span>
                     </a>
                     <a
+                        *ngIf="showCreateTemplateLink"
                         data-testId="starter.main.link.design.layout"
                         class="dot-starter-top-main__block"
                         routerLink="/templates/new/designer"
                     >
                         <div class="dot-starter-top-main__link-number">
-                            <span>3</span>
+                            <span></span>
                         </div>
                         <div class="dot-starter-top-main__link-data">
                             <h4>{{ 'starter.main.link.design.layout.title' | dm }}</h4>
@@ -65,12 +68,13 @@
                         </span>
                     </a>
                     <a
+                        *ngIf="showCreatePageLink"
                         data-testId="starter.main.link.create.page"
                         class="dot-starter-top-main__block"
                         routerLink="/c/content/new/htmlpageasset"
                     >
                         <div class="dot-starter-top-main__link-number">
-                            <span>4</span>
+                            <span></span>
                         </div>
                         <div class="dot-starter-top-main__link-data">
                             <h4>{{ 'starter.main.link.create.page.title' | dm }}</h4>

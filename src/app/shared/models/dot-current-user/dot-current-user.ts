@@ -10,3 +10,10 @@ export interface DotCurrentUser {
     surnaname: string;
     userId: string;
 }
+
+export interface DotPermissionsType {
+    [key: string]: {
+        canRead?: boolean;
+        canWrite?: boolean;
+    };
+}

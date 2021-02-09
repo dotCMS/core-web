@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, take } from 'rxjs/operators';
 import { DotToolGroupService } from '@services/dot-tool-group/dot-tool-group.service';
+import { DotCurrentUser, DotPermissionsType } from '@models/dot-current-user/dot-current-user';
+import { PermissionsType } from '@services/dot-current-user/dot-current-user.service';
 
 @Component({
     selector: 'dot-starter',
@@ -10,13 +12,23 @@ import { DotToolGroupService } from '@services/dot-tool-group/dot-tool-group.ser
 })
 export class DotStarterComponent implements OnInit {
     username: string;
+    showCreateContentLink: boolean;
+    showCreateDataModelLink: boolean;
+    showCreatePageLink: boolean;
+    showCreateTemplateLink: boolean;
 
     constructor(private route: ActivatedRoute, private dotToolGroupService: DotToolGroupService) {}
 
     ngOnInit() {
-        this.route.data.pipe(pluck('username'), take(1)).subscribe((username: string) => {
-            this.username = username;
-        });
+        this.route.data
+            .pipe(pluck('userData'), take(1))
+            .subscribe(([currentUser, userPermissions]: [DotCurrentUser, DotPermissionsType]) => {
+                this.username = currentUser.givenName;
+                this.showCreateContentLink = userPermissions[PermissionsType.CONTENTLETS].canWrite;
+                this.showCreateDataModelLink = userPermissions[PermissionsType.STRUCTURES].canWrite;
+                this.showCreatePageLink = userPermissions[PermissionsType.HTMLPAGES].canWrite;
+                this.showCreateTemplateLink = userPermissions[PermissionsType.TEMPLATES].canWrite;
+            });
     }
 
     /**
