@@ -11,7 +11,7 @@ import { filter } from 'rxjs/operators';
 @Injectable()
 export class DotRouterService {
     portletReload$ = new Subject();
-    private _previousSavedURL: string;
+    private _storedRedirectUrl: string;
     private _routeHistory: PortletNav = { url: '' };
     private CUSTOM_PORTLET_ID_PREFIX = 'c_';
 
@@ -38,12 +38,12 @@ export class DotRouterService {
         };
     }
 
-    set previousSavedURL(url: string) {
-        this._previousSavedURL = url;
+    set storedRedirectUrl(url: string) {
+        this._storedRedirectUrl = url;
     }
 
-    get previousSavedURL(): string {
-        return this._previousSavedURL;
+    get storedRedirectUrl(): string {
+        return this._storedRedirectUrl;
     }
 
     get routeHistory(): PortletNav {
@@ -116,7 +116,7 @@ export class DotRouterService {
     }
 
     /**
-     * Go to first porlet unless userEditPageRedirect is passed or previousSavedURL is set
+     * Go to first porlet unless userEditPageRedirect is passed or storedRedirectUrl is set
      *
      * @param string [userEditPageRedirect]
      * @returns Promise<boolean>
@@ -321,9 +321,9 @@ export class DotRouterService {
     }
 
     private redirectMain(): Promise<boolean> {
-        if (this.previousSavedURL) {
-            return this.router.navigate([this.previousSavedURL]).then((ok: boolean) => {
-                this.previousSavedURL = null;
+        if (this.storedRedirectUrl) {
+            return this.router.navigate([this.storedRedirectUrl]).then((ok: boolean) => {
+                this.storedRedirectUrl = null;
                 return ok;
             });
         } else {

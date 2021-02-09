@@ -141,13 +141,13 @@ describe('DotRouterService', () => {
         expect(router.navigate).toHaveBeenCalledWith(['/Form/edit/123']);
     });
 
-    it('should go to previousSavedURL', () => {
-        service.previousSavedURL = 'test/fake';
+    it('should go to storedRedirectUrl', () => {
+        service.storedRedirectUrl = 'test/fake';
         service.goToMain();
         expect(router.navigate).toHaveBeenCalledWith(['test/fake']);
     });
 
-    it('should go to previousSavedURL when goToMain() called', () => {
+    it('should go to previous URL when goToMain() called', () => {
         service.routeHistory = { previousUrl: 'test/fake', url: '/' };
         service.goToPreviousUrl();
         expect(router.navigate).toHaveBeenCalledWith(['test/fake']);
