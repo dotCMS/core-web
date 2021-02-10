@@ -3,7 +3,6 @@ import { CoreWebService } from 'dotcms-js';
 import { Observable } from 'rxjs';
 import { DotCurrentUser, DotPermissionsType } from '@models/dot-current-user/dot-current-user';
 import { map, pluck, take } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 export enum UserPermissions {
     READ = 'READ',
@@ -61,19 +60,11 @@ export class DotCurrentUserService {
         let permissionsUrl = this.userPermissionsUrl.replace('{0}', userId);
         permissionsUrl = permissionsUrl.replace('{1}', permissions.join(','));
         permissionsUrl = permissionsUrl.replace('{2}', permissionsType.join(','));
-        // return this.coreWebService
-        //     .requestView({
-        //         url: permissionsUrl
-        //     })
-        //     .pipe(take(1), pluck('entity'));
-        return of([
-            {
-                STRUCTURES: { canRead: true, canWrite: true },
-                HTMLPAGES: { canRead: true, canWrite: true },
-                TEMPLATES: { canRead: true, canWrite: true },
-                CONTENTLETS: { canRead: true, canWrite: true }
-            }
-        ]);
+        return this.coreWebService
+            .requestView({
+                url: permissionsUrl
+            })
+            .pipe(take(1), pluck('entity'));
     }
 
     /**
