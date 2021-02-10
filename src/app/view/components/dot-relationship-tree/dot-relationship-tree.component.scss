@@ -1,0 +1,114 @@
+@use "variables" as *;
+
+:host {
+    ul {
+        list-style: none;
+        padding-left: $spacing-5;
+        li {
+            span {
+                margin-left: $spacing-1;
+            }
+            .dot-tree__content {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+    ul.dot-tree {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: relative;
+        & > li::after {
+            background: $gray-light;
+            width: 1px;
+            height: 19px;
+            content: "•";
+            position: absolute;
+            top: 19px;
+            left: 11px;
+            color: $gray-light;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: end;
+            font-size: $font-size-x-large;
+            line-height: 1px;
+        }
+    }
+    ul.dot-tree--child {
+        position: relative;
+        & > li::after {
+            background: $gray-light;
+            width: 18px;
+            height: 1px;
+            content: "";
+            position: absolute;
+            left: 13px;
+            top: 11px;
+        }
+    }
+    ::ng-deep {
+        .dot-tree--active {
+            dot-icon {
+                position: relative;
+                &::after {
+                    background: $brand-primary;
+                    width: 7px;
+                    height: 7px;
+                    position: absolute;
+                    content: "";
+                    border-radius: 50%;
+                    right: 0;
+                    bottom: 0;
+                }
+            }
+        }
+        dot-icon-button {
+            padding: 0;
+            margin: 0;
+            background: none;
+            button.dot-icon-button {
+                padding: 0;
+                margin: 0;
+                background: none;
+                &:hover {
+                    background: none;
+                    padding: 0;
+                    margin: 0;
+                }
+                dot-icon {
+                    cursor: default;
+                    color: $gray-dark;
+                    &:hover {
+                        background: none;
+                    }
+                }
+            }
+            &:hover {
+                background: none;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+
+    border: 1px solid $gray-light;
+    display: block;
+    border-radius: 2px;
+    padding: 1rem;
+}
+
+.dot-tree-query {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h3 {
+        padding: 0;
+        margin-bottom: $spacing-1;
+        font-size: $font-size-medium;
+        font-weight: bold;
+    }
+    code {
+        color: $gray;
+    }
+}

@@ -13,4 +13,10 @@
         >
         </ng-container>
     </div>
+    <div *ngIf="formFieldData?.relationships">
+        <dot-relationship-tree
+            [contentType]="contentType"
+            [velocityVar]="formFieldData.relationships.velocityVar"
+        ></dot-relationship-tree>
+    </div>
 </form>
