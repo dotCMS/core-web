@@ -333,21 +333,10 @@ describe('DotStarterComponent', () => {
         });
 
         it('should hide links from the main container', () => {
-            expect(
-                de.query(By.css('[data-testId="starter.main.link.data.model"]')).nativeElement
-            ).toBeFalsy();
-
-            expect(
-                de.query(By.css('[data-testId="starter.main.link.content"]')).nativeElement
-            ).toBeFalsy();
-
-            expect(
-                de.query(By.css('[data-testId="starter.main.link.design.layout"]')).nativeElement
-            ).toBeFalsy();
-
-            expect(
-                de.query(By.css('[data-testId="starter.main.link.create.page"]')).nativeElement
-            ).toBeFalsy();
+            expect(de.query(By.css('[data-testId="starter.main.link.data.model"]'))).toBeFalsy();
+            expect(de.query(By.css('[data-testId="starter.main.link.content"]'))).toBeFalsy();
+            expect(de.query(By.css('[data-testId="starter.main.link.design.layout"]'))).toBeFalsy();
+            expect(de.query(By.css('[data-testId="starter.main.link.create.page"]'))).toBeFalsy();
         });
     });
 });
