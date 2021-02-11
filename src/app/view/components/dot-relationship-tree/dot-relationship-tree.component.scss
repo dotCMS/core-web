@@ -1,24 +1,32 @@
 @use "variables" as *;
 
 :host {
+    border: 1px solid $gray-light;
+    display: block;
+    border-radius: 2px;
+    padding: 1rem;
+
     ul {
         list-style: none;
         padding-left: $spacing-5;
+
         li {
             span {
                 margin-left: $spacing-1;
             }
+
             .dot-tree__content {
                 display: flex;
                 align-items: center;
             }
         }
     }
-    ul.dot-tree {
+    .dot-tree {
         list-style: none;
         padding: 0;
         margin: 0;
         position: relative;
+
         & > li::after {
             background: $gray-light;
             width: 1px;
@@ -35,8 +43,9 @@
             line-height: 1px;
         }
     }
-    ul.dot-tree--child {
+    .dot-tree--child {
         position: relative;
+
         & > li::after {
             background: $gray-light;
             width: 18px;
@@ -51,6 +60,7 @@
         .dot-tree--active {
             dot-icon {
                 position: relative;
+
                 &::after {
                     background: $brand-primary;
                     width: 7px;
@@ -67,10 +77,12 @@
             padding: 0;
             margin: 0;
             background: none;
+
             button.dot-icon-button {
                 padding: 0;
                 margin: 0;
                 background: none;
+
                 &:hover {
                     background: none;
                     padding: 0;
@@ -79,6 +91,7 @@
                 dot-icon {
                     cursor: default;
                     color: $gray-dark;
+
                     &:hover {
                         background: none;
                     }
@@ -91,23 +104,20 @@
             }
         }
     }
-
-    border: 1px solid $gray-light;
-    display: block;
-    border-radius: 2px;
-    padding: 1rem;
 }
 
 .dot-tree-query {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     h3 {
         padding: 0;
         margin-bottom: $spacing-1;
         font-size: $font-size-medium;
         font-weight: bold;
     }
+
     code {
         color: $gray;
     }

@@ -1,7 +1,10 @@
 <ul class="dot-tree">
     <li>
         <div class="dot-tree__content">
-            <dot-icon-button icon="wysiwyg"></dot-icon-button>
+            <dot-icon-button
+                icon="wysiwyg"
+                [class.dot-tree--active]="parent === contentType.name"
+            ></dot-icon-button>
             <span>{{ parent }}</span>
         </div>
         <ul class="dot-tree--child">
@@ -9,12 +12,9 @@
                 <div class="dot-tree__content">
                     <dot-icon-button
                         icon="wysiwyg"
-                        [ngClass]="'dot-tree--active'"
+                        [class.dot-tree--active]="child === contentType.name"
                     ></dot-icon-button>
-                    <span
-                        >{{ contentType.name
-                        }}{{ fieldName ? ' - ' + fieldName : ('' | titlecase) }}</span
-                    >
+                    <span>{{ child }}{{ fieldName ? ' - ' + fieldName : ('' | titlecase) }}</span>
                 </div>
             </li>
         </ul>
@@ -23,8 +23,8 @@
 
 <div *ngIf="isRelationshipChild" class="dot-tree-query">
     <div class="dot-tree-query__content">
-        <h3 class="dot-tree-query__title">Lucene Query</h3>
-        <code>+{{ parent }}.{{ fieldName }}::${{ parent }}.id</code>
+        <h3>{{ 'relationship.query.title' | dm }}</h3>
+        <code>+{{ child }}.{{ fieldName }}::${{ parent }}.id</code>
     </div>
-    <dot-copy-button copy="+blog.blogComments::$parent.id"></dot-copy-button>
+    <dot-copy-button copy="+{{ child }}.{{ fieldName }}::${{ parent }}.id"></dot-copy-button>
 </div>

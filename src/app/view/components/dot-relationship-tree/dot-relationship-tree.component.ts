@@ -12,25 +12,25 @@ export class DotRelationshipTreeComponent implements OnInit {
     @Input() contentType: DotCMSContentType;
 
     isRelationshipChild: boolean = false;
-    // currentContentTypeId: string;
-    parent: string;
+    relatedContentType: string;
     fieldName: string;
+    child: string;
+    parent: string;
 
-    // constructor(private route: ActivatedRoute) {}
     constructor() {}
 
     ngOnInit(): void {
         // If velocityVar has a dot it means it's the child of the relationship
         this.isRelationshipChild = this.velocityVar.indexOf('.') !== -1;
-        // this.currentContentTypeId = this.route.snapshot.paramMap.get('id');
-
-        const [parent, fieldName] = this.velocityVar.split('.');
+        const [relatedContentType, fieldName] = this.velocityVar.split('.');
 
         if (this.isRelationshipChild) {
-            this.parent = parent;
+            this.child = relatedContentType;
+            this.parent = this.contentType.name;
             this.fieldName = fieldName;
         } else {
-            this.parent = parent;
+            this.parent = relatedContentType;
+            this.child = this.contentType.name;
         }
     }
 }
