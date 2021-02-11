@@ -46,6 +46,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     currentFieldType: FieldType;
     dialogActions: DotDialogActions;
     fieldRows: DotCMSContentTypeLayoutRow[];
+    hideButtons = false;
 
     @ViewChild('fieldPropertiesForm', { static: true })
     propertiesForm: ContentTypeFieldsPropertiesFormComponent;
@@ -61,8 +62,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     @Output()
     removeFields = new EventEmitter<DotCMSContentTypeField[]>();
-
-    hideButtons = false;
 
     private _loading: boolean;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -353,7 +352,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param index
      */
     handleTabChange(index: number): void {
-        console.log('handleTabChange');
         this.hideButtons = index !== this.OVERVIEW_TAB_INDEX;
     }
 
