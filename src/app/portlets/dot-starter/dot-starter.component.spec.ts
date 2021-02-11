@@ -54,21 +54,21 @@ const messages = {
 };
 
 const routeDatamock = {
-    userData: [
-        {
+    userData: {
+        user: {
             email: 'admin@dotcms.com',
             givenName: 'Admin',
             roleId: 'e7d23sde-5127-45fc-8123-d424fd510e3',
             surnaname: 'User',
             userId: 'testId'
         },
-        {
+        permissions: {
             STRUCTURES: { canRead: true, canWrite: true },
             HTMLPAGES: { canRead: true, canWrite: true },
             TEMPLATES: { canRead: true, canWrite: true },
             CONTENTLETS: { canRead: true, canWrite: true }
         }
-    ]
+    }
 };
 class ActivatedRouteMock {
     get data() {
@@ -77,7 +77,6 @@ class ActivatedRouteMock {
 }
 
 describe('DotStarterComponent', () => {
-    let component: DotStarterComponent;
     let fixture: ComponentFixture<DotStarterComponent>;
     let de: DebugElement;
     const messageServiceMock = new MockDotMessageService(messages);
@@ -103,7 +102,6 @@ describe('DotStarterComponent', () => {
             });
 
             fixture = TestBed.createComponent(DotStarterComponent);
-            component = fixture.debugElement.componentInstance;
 
             de = fixture.debugElement;
             dotToolGroupService = TestBed.inject(DotToolGroupService);
@@ -115,10 +113,6 @@ describe('DotStarterComponent', () => {
         beforeEach(() => {
             spyOnProperty(activatedRoute, 'data').and.returnValue(of(routeDatamock));
             fixture.detectChanges();
-        });
-
-        it('should set username from resolver', () => {
-            expect(component.username).toBe('Admin');
         });
 
         it('should set proper labels to the main container', () => {
@@ -312,21 +306,21 @@ describe('DotStarterComponent', () => {
         beforeEach(() => {
             spyOnProperty(activatedRoute, 'data').and.returnValue(
                 of({
-                    userData: [
-                        {
+                    userData: {
+                        user: {
                             email: 'admin@dotcms.com',
                             givenName: 'Admin',
                             roleId: 'e7d23sde-5127-45fc-8123-d424fd510e3',
                             surnaname: 'User',
                             userId: 'testId'
                         },
-                        {
+                        permissions: {
                             STRUCTURES: { canRead: true, canWrite: false },
                             HTMLPAGES: { canRead: true, canWrite: false },
                             TEMPLATES: { canRead: true, canWrite: false },
                             CONTENTLETS: { canRead: true, canWrite: false }
                         }
-                    ]
+                    }
                 })
             );
             fixture.detectChanges();

@@ -1,15 +1,15 @@
 import { waitForAsync, TestBed } from '@angular/core/testing';
 import { DotStarterResolver } from './dot-starter-resolver.service';
-import {
-    DotCurrentUserService,
-    PermissionsType,
-    UserPermissions
-} from '@services/dot-current-user/dot-current-user.service';
+import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { CoreWebService } from 'dotcms-js';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable, of } from 'rxjs';
-import { DotPermissionsType } from '@models/dot-current-user/dot-current-user';
+import {
+    DotPermissionsType,
+    PermissionsType,
+    UserPermissions
+} from '@models/dot-current-user/dot-current-user';
 
 const userData = {
     email: 'admin@dotcms.com',
@@ -19,14 +19,12 @@ const userData = {
     userId: 'testId'
 };
 
-const permissionsData: DotPermissionsType[] = [
-    {
-        STRUCTURES: { canRead: true, canWrite: true },
-        HTMLPAGES: { canRead: true, canWrite: true },
-        TEMPLATES: { canRead: true, canWrite: true },
-        CONTENTLETS: { canRead: true, canWrite: true }
-    }
-];
+const permissionsData: DotPermissionsType = {
+    STRUCTURES: { canRead: true, canWrite: true },
+    HTMLPAGES: { canRead: true, canWrite: true },
+    TEMPLATES: { canRead: true, canWrite: true },
+    CONTENTLETS: { canRead: true, canWrite: true }
+};
 class DotCurrentUserServiceMock {
     getCurrentUser() {
         return of(userData);
@@ -36,7 +34,7 @@ class DotCurrentUserServiceMock {
         _userId: string,
         _permissions: UserPermissions[],
         _permissionsType: PermissionsType[]
-    ): Observable<DotPermissionsType[]> {
+    ): Observable<DotPermissionsType> {
         return of(permissionsData);
     }
 }
@@ -59,9 +57,9 @@ describe('DotStarterResolver', () => {
     );
 
     it('should get and return user & permissions data', () => {
-        dotStarterResolver.resolve().subscribe(([dotCurrentUser, dotPermissionsType]) => {
-            expect(dotCurrentUser).toEqual(userData);
-            expect(dotPermissionsType).toEqual(permissionsData[0]);
+        dotStarterResolver.resolve().subscribe(({ user, permissions }) => {
+            expect(user).toEqual(userData);
+            expect(permissions).toEqual(permissionsData);
         });
     });
 });

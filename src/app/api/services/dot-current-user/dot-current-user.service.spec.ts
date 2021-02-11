@@ -1,15 +1,13 @@
-import {
-    DotCurrentUserService,
-    PermissionsType,
-    UserPermissions
-} from './dot-current-user.service';
+import { DotCurrentUserService } from './dot-current-user.service';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { CoreWebService } from 'dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import {
     DotCurrentUser,
-    DotPermissionsType
+    DotPermissionsType,
+    PermissionsType,
+    UserPermissions
 } from '@shared/models/dot-current-user/dot-current-user';
 
 describe('DotCurrentUserService', () => {
@@ -63,23 +61,21 @@ describe('DotCurrentUserService', () => {
     });
 
     it('should get user Permissions data', () => {
-        const response = [
-            {
-                STRUCTURES: { canRead: true, canWrite: true },
-                HTMLPAGES: { canRead: true, canWrite: true },
-                TEMPLATES: { canRead: true, canWrite: true },
-                CONTENTLETS: { canRead: true, canWrite: true }
-            }
-        ];
+        const response = {
+            STRUCTURES: { canRead: true, canWrite: true },
+            HTMLPAGES: { canRead: true, canWrite: true },
+            TEMPLATES: { canRead: true, canWrite: true },
+            CONTENTLETS: { canRead: true, canWrite: true }
+        };
         const userId = 'test';
         dotCurrentUserService
             .getUserPermissions(userId)
-            .subscribe((permissions: DotPermissionsType[]) => {
+            .subscribe((permissions: DotPermissionsType) => {
                 expect(permissions).toEqual(response);
             });
 
         const req = httpMock.expectOne(
-            `v1/permissions/_bypermissiontype/userid=${userId}?permission=&permissiontype=`
+            `v1/permissions/_bypermissiontype?userid=${userId}&permission=&permissiontype=`
         );
         expect(req.request.method).toBe('GET');
         req.flush({
@@ -94,7 +90,7 @@ describe('DotCurrentUserService', () => {
             .subscribe();
 
         const req = httpMock.expectOne(
-            `v1/permissions/_bypermissiontype/userid=${userId}?permission=${UserPermissions.WRITE}&permissiontype=${PermissionsType.HTMLPAGES}`
+            `v1/permissions/_bypermissiontype?userid=${userId}&permission=${UserPermissions.WRITE}&permissiontype=${PermissionsType.HTMLPAGES}`
         );
         expect(req.request.method).toBe('GET');
         req.flush({});

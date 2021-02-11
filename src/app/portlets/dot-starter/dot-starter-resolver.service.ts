@@ -1,12 +1,13 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import {
-    DotCurrentUserService,
+    DotCurrentUser,
+    DotPermissionsType,
     PermissionsType,
     UserPermissions
-} from '@services/dot-current-user/dot-current-user.service';
-import { DotCurrentUser, DotPermissionsType } from '@models/dot-current-user/dot-current-user';
+} from '@models/dot-current-user/dot-current-user';
 import { map, mergeMap } from 'rxjs/operators';
 
 /**
@@ -14,33 +15,33 @@ import { map, mergeMap } from 'rxjs/operators';
  *
  * @export
  * @class DotStarterResolver
- * @implements {Resolve<Observable<[DotCurrentUser, DotPermissionsType]>>}
+ * @implements {Resolve<Observable<{ user: DotCurrentUser, permissions: DotPermissionsType }>>}
  */
 @Injectable()
 export class DotStarterResolver
-    implements Resolve<Observable<[DotCurrentUser, DotPermissionsType]>> {
+    implements Resolve<Observable<{ user: DotCurrentUser; permissions: DotPermissionsType }>> {
     constructor(private dotCurrentUserService: DotCurrentUserService) {}
 
-    resolve(): Observable<[DotCurrentUser, DotPermissionsType]> {
+    resolve(): Observable<{ user: DotCurrentUser; permissions: DotPermissionsType }> {
         return this.dotCurrentUserService.getCurrentUser().pipe(
-            map((user: DotCurrentUser) => {
+            mergeMap((user: DotCurrentUser) => {
                 return this.dotCurrentUserService
                     .getUserPermissions(
                         user.userId,
                         [UserPermissions.WRITE],
                         [
                             PermissionsType.HTMLPAGES,
+                            PermissionsType.STRUCTURES,
                             PermissionsType.TEMPLATES,
                             PermissionsType.CONTENTLETS
                         ]
                     )
                     .pipe(
-                        map((permissionsType: DotPermissionsType[]) => {
-                            return [user, permissionsType[0]];
+                        map((permissionsType: DotPermissionsType) => {
+                            return { user, permissions: permissionsType };
                         })
                     );
-            }),
-            mergeMap((data: Observable<[DotCurrentUser, DotPermissionsType]>) => data)
+            })
         );
     }
 }
