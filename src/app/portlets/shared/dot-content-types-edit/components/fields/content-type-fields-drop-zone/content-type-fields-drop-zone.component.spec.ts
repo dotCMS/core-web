@@ -47,6 +47,7 @@ import cleanUpDialog from '@tests/clean-up-dialog';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
+import { TabViewModule } from 'primeng/tabview';
 
 const COLUMN_BREAK_FIELD = FieldUtil.createColumnBreak();
 
@@ -181,7 +182,8 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                     DotFieldValidationMessageModule,
                     ReactiveFormsModule,
                     HttpClientTestingModule,
-                    DotMessagePipeModule
+                    DotMessagePipeModule,
+                    TabViewModule
                 ],
                 providers: [
                     { provide: Router, useValue: mockRouter },
@@ -405,7 +407,10 @@ describe('Load fields and drag and drop', () => {
                     DotIconButtonModule,
                     TableModule,
                     ContentTypeFieldsAddRowModule,
-                    DotDialogModule
+                    DotDialogModule,
+                    HttpClientTestingModule,
+                    DotMessagePipeModule,
+                    TabViewModule
                 ],
                 providers: [
                     DragulaService,
@@ -420,7 +425,9 @@ describe('Load fields and drag and drop', () => {
                     {
                         provide: DotLoadingIndicatorService,
                         useValue: dotLoadingIndicatorServiceMock
-                    }
+                    },
+                    { provide: CoreWebService, useClass: CoreWebServiceMock },
+                    DotEventsService
                 ]
             });
 
@@ -709,11 +716,7 @@ describe('Load fields and drag and drop', () => {
 
         const newlyField = fakeFields[2].columns[0].fields[0];
         delete newlyField.id;
-
         fixture.detectChanges();
-
-        spyOn(comp.propertiesForm, 'destroy');
-
         // select the fields[8] as the current field
         testFieldDragDropService._fieldDropFromSource.next({
             item: newlyField
@@ -762,7 +765,6 @@ describe('Load fields and drag and drop', () => {
         };
         comp.displayDialog = true;
         fixture.detectChanges();
-
         const tabLinks = de.queryAll(By.css('.p-tabview-nav li'));
         expect(tabLinks[1].nativeElement.classList.contains('p-disabled')).toBe(false);
     });
