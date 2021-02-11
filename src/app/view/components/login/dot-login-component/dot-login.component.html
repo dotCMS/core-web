@@ -17,7 +17,12 @@
 
         <h3 class="login__title">{{ loginInfo.i18nMessagesMap['welcome-login'] }}</h3>
 
-        <p class="p-invalid" [innerHTML]="message"></p>
+        <p
+            [ngClass]="{ 'p-invalid': isError, success: !isError }"
+            class="login__message"
+            data-testId="message"
+            [innerHTML]="message"
+        ></p>
         <div class="p-field form__group--validation">
             <label for="inputtext">{{ loginInfo.i18nMessagesMap['emailAddressLabel'] }}</label>
 
