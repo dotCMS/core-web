@@ -41,7 +41,6 @@ import * as _ from 'lodash';
 export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, OnDestroy {
     readonly OVERVIEW_TAB_INDEX = 0;
 
-    dialogActiveTab: number;
     displayDialog = false;
     currentField: DotCMSContentTypeField;
     currentFieldType: FieldType;
@@ -64,6 +63,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     removeFields = new EventEmitter<DotCMSContentTypeField[]>();
 
     hideButtons = false;
+
     private _loading: boolean;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -281,7 +281,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.hideButtons = false;
         this.displayDialog = false;
         this.currentField = null;
-        this.dialogActiveTab = null;
         this.setDialogOkButtonState(false);
     }
 
@@ -354,6 +353,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param index
      */
     handleTabChange(index: number): void {
+        console.log('handleTabChange');
         this.hideButtons = index !== this.OVERVIEW_TAB_INDEX;
     }
 
@@ -364,7 +364,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     private toggleDialog(): void {
         this.displayDialog = !this.displayDialog;
-        this.dialogActiveTab = 0;
     }
 
     private emitSaveFields(layout: DotCMSContentTypeLayoutRow[]): void {

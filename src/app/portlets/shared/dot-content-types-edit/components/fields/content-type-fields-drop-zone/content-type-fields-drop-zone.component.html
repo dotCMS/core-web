@@ -38,7 +38,7 @@
     (hide)="removeFieldsWithoutId()"
     [header]="currentFieldType?.label"
 >
-    <p-tabView [activeIndex]="dialogActiveTab" (onChange)="handleTabChange($event.index)">
+    <p-tabView *ngIf="displayDialog" #tabView (onChange)="handleTabChange($event.index)">
         <p-tabPanel [header]="'contenttypes.dropzone.tab.overview' | dm">
             <dot-content-type-fields-properties-form
                 [formFieldData]="currentField"
@@ -51,6 +51,7 @@
         <p-tabPanel
             [header]="'contenttypes.dropzone.tab.variables' | dm"
             [disabled]="!currentField?.id"
+            [selected]=""
         >
             <ng-template pTemplate="content">
                 <dot-content-type-fields-variables
