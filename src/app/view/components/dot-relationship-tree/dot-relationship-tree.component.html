@@ -1,20 +1,17 @@
 <ul class="dot-tree">
     <li>
         <div class="dot-tree__content">
-            <dot-icon-button
-                icon="wysiwyg"
-                [class.dot-tree--active]="parent === contentType.name"
-            ></dot-icon-button>
+            <dot-icon name="face" [class.dot-tree--active]="parent === contentType.name"></dot-icon>
             <span>{{ parent }}</span>
         </div>
         <ul class="dot-tree--child">
             <li>
                 <div class="dot-tree__content">
-                    <dot-icon-button
-                        icon="wysiwyg"
+                    <dot-icon
+                        name="child_care"
                         [class.dot-tree--active]="child === contentType.name"
-                    ></dot-icon-button>
-                    <span>{{ child }}{{ fieldName ? ' - ' + fieldName : ('' | titlecase) }}</span>
+                    ></dot-icon>
+                    <span>{{ child }}{{ fieldName ? ' - ' + (fieldName | titlecase) : '' }}</span>
                 </div>
             </li>
         </ul>

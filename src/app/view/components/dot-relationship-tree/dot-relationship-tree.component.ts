@@ -24,6 +24,8 @@ export class DotRelationshipTreeComponent implements OnInit {
         this.isRelationshipChild = this.velocityVar.indexOf('.') !== -1;
         const [relatedContentType, fieldName] = this.velocityVar.split('.');
 
+        console.log(this.contentType.baseType);
+
         if (this.isRelationshipChild) {
             this.child = relatedContentType;
             this.parent = this.contentType.name;
