@@ -50,6 +50,7 @@ describe('DotLoginComponent', () => {
     let de: DebugElement;
     let loginService: LoginService;
     let dotRouterService: DotRouterService;
+    let loginPageStateService: DotLoginPageStateService;
     let dotMessageService: DotMessageService;
     let signInButton: DebugElement;
     const credentials = {
@@ -97,7 +98,7 @@ describe('DotLoginComponent', () => {
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
         dotMessageService = de.injector.get(DotMessageService);
-        // subject.next(mockLoginInfo);
+        loginPageStateService = de.injector.get(DotLoginPageStateService);
         spyOn(dotMessageService, 'setRelativeDateMessages').and.callFake(() => {});
         spyOn(dotMessageService, 'init');
     });
@@ -140,7 +141,7 @@ describe('DotLoginComponent', () => {
             pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
             expect(dotMessageService.init).toHaveBeenCalledWith(true, 'es_ES');
-            // expect(loginPageStateService.update).toHaveBeenCalledWith('es_ES');
+            expect(loginPageStateService.update).toHaveBeenCalledWith('es_ES');
         });
 
         it('should navigate to the recover password screen', () => {
