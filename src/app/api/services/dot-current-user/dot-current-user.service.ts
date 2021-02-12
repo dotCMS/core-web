@@ -12,8 +12,7 @@ import { formatMessage } from '@shared/dot-utils';
 @Injectable()
 export class DotCurrentUserService {
     private currentUsersUrl = 'v1/users/current/';
-    private userPermissionsUrl =
-        'v1/permissions/_bypermissiontype?userid={0}&permission={1}&permissiontype={2}';
+    private userPermissionsUrl = 'v1/permissions/_bypermissiontype?userid={0}';
     private porletAccessUrl = 'v1/portlet/{0}/_doesuserhaveaccess';
 
     constructor(private coreWebService: CoreWebService) {}
@@ -45,7 +44,12 @@ export class DotCurrentUserService {
         permissions: UserPermissions[] = [],
         permissionsType: PermissionsType[] = []
     ): Observable<DotPermissionsType> {
-        const permissionsUrl = formatMessage(this.userPermissionsUrl, [
+        let url = permissions.length
+            ? `${this.userPermissionsUrl}&permission={1}`
+            : this.userPermissionsUrl;
+        url = permissionsType.length ? `${url}&permissiontype={2}` : url;
+
+        const permissionsUrl = formatMessage(url, [
             userId,
             permissions.join(','),
             permissionsType.join(',')

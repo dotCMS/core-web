@@ -74,9 +74,7 @@ describe('DotCurrentUserService', () => {
                 expect(permissions).toEqual(response);
             });
 
-        const req = httpMock.expectOne(
-            `v1/permissions/_bypermissiontype?userid=${userId}&permission=&permissiontype=`
-        );
+        const req = httpMock.expectOne(`v1/permissions/_bypermissiontype?userid=${userId}`);
         expect(req.request.method).toBe('GET');
         req.flush({
             entity: response

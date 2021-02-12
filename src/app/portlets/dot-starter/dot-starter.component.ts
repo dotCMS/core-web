@@ -52,17 +52,6 @@ export class DotStarterComponent implements OnInit {
                 }
             )
         );
-
-        // .subscribe(({user, permissions}: { user: DotCurrentUser, permissions: DotPermissionsType}) => {
-        //     console.log('***currentUser', user);
-        //     console.log('***userPermissions', permissions);
-        //     debugger
-        //     // this.username = currentUser.givenName;
-        //     // this.showCreateContentLink = userPermissions[PermissionsType.CONTENTLETS].canWrite;
-        //     // this.showCreateDataModelLink = userPermissions[PermissionsType.STRUCTURES].canWrite;
-        //     // this.showCreatePageLink = userPermissions[PermissionsType.HTMLPAGES].canWrite;
-        //     // this.showCreateTemplateLink = userPermissions[PermissionsType.TEMPLATES].canWrite;
-        // });
     }
 
     /**
