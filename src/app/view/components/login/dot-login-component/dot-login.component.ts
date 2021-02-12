@@ -71,7 +71,6 @@ export class DotLoginComponent implements OnInit, OnDestroy {
         this.setFromState(true);
         this.dotLoadingIndicatorService.show();
         this.setMessage('');
-
         this.loginService
             .loginUser(this.loginForm.value as DotLoginParams)
             .pipe(take(1))

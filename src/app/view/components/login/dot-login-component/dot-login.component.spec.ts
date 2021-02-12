@@ -1,9 +1,9 @@
 import { DotLoginComponent } from '@components/login/dot-login-component/dot-login.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement, Injectable } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreWebService, LoggerService, LoginService, StringUtils } from 'dotcms-js';
-import { LoginServiceMock, mockUser } from '@tests/login-service.mock';
+import { LoginServiceMock, mockLoginFormResponse, mockUser } from '@tests/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -13,22 +13,43 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { MockDotLoginPageStateService } from '@components/login/dot-login-page-resolver.service.spec';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { Dropdown, DropdownModule } from 'primeng/dropdown';
-import { of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { FormatDateService } from '@services/format-date-service';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotLoginInformation } from '@models/dot-login';
+import { ActivatedRoute, Params } from '@angular/router';
 
-fdescribe('DotLoginComponent', () => {
+const mockLoginInfo = {
+    ...mockLoginFormResponse,
+    i18nMessagesMap: {
+        ...mockLoginFormResponse.i18nMessagesMap,
+        emailAddressLabel: 'Email Address'
+    }
+};
+const subject = new BehaviorSubject<DotLoginInformation>(mockLoginInfo);
+const queryParams = new BehaviorSubject<Params>({});
+
+@Injectable()
+class MockDotLoginPageStateService {
+    update = jasmine.createSpy('update');
+    set = jasmine.createSpy('set').and.returnValue(of(mockLoginInfo));
+    get = () => subject;
+}
+
+class ActivatedRouteMock {
+    queryParams = queryParams;
+}
+
+describe('DotLoginComponent', () => {
     let component: DotLoginComponent;
     let fixture: ComponentFixture<DotLoginComponent>;
     let de: DebugElement;
     let loginService: LoginService;
     let dotRouterService: DotRouterService;
-    let loginPageStateService: DotLoginPageStateService;
     let dotMessageService: DotMessageService;
     let signInButton: DebugElement;
     const credentials = {
@@ -59,6 +80,7 @@ fdescribe('DotLoginComponent', () => {
                 { provide: LoginService, useClass: LoginServiceMock },
                 { provide: DotLoginPageStateService, useClass: MockDotLoginPageStateService },
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
+                { provide: ActivatedRoute, useClass: ActivatedRouteMock },
                 DotMessageService,
                 DotLoadingIndicatorService,
                 DotRouterService,
@@ -74,134 +96,156 @@ fdescribe('DotLoginComponent', () => {
 
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
-        loginPageStateService = de.injector.get(DotLoginPageStateService);
         dotMessageService = de.injector.get(DotMessageService);
-
-        spyOn(dotMessageService, 'init');
+        // subject.next(mockLoginInfo);
         spyOn(dotMessageService, 'setRelativeDateMessages').and.callFake(() => {});
-        fixture.detectChanges();
-
-        signInButton = de.query(By.css('button[pButton]'));
+        spyOn(dotMessageService, 'init');
     });
 
-    it('should load form labels correctly', () => {
-        const header: DebugElement = de.query(By.css('h3'));
-        const inputLabels: DebugElement[] = de.queryAll(By.css('label'));
-        const recoverPasswordLink: DebugElement = de.query(By.css('a[actionlink]'));
-        const rememberMe: DebugElement = de.query(By.css('p-checkbox label'));
-        const submitButton: DebugElement = de.query(By.css('.login__button'));
-        const productInformation: DebugElement[] = de.queryAll(By.css('.login__footer span'));
+    describe('Functionality', () => {
+        beforeEach(() => {
+            fixture.detectChanges();
+            signInButton = de.query(By.css('button[pButton]'));
+        });
 
-        expect(header.nativeElement.innerHTML).toEqual('Welcome!');
-        expect(inputLabels[0].nativeElement.innerHTML).toEqual('Email Address');
-        expect(inputLabels[1].nativeElement.innerHTML).toEqual('Password');
-        expect(recoverPasswordLink.nativeElement.innerHTML).toEqual('Recover Password');
-        expect(rememberMe.nativeElement.innerHTML).toEqual('Remember Me');
-        expect(submitButton.nativeElement.innerHTML).toContain('Sign In');
-        expect(productInformation[0].nativeElement.innerHTML).toEqual('Server: 860173b0');
-        expect(productInformation[1].nativeElement.innerHTML).toEqual(
-            'COMMUNITY EDITION: 5.0.0 - March 13, 2019'
-        );
-        expect(productInformation[2].nativeElement.innerHTML).toEqual(
-            ' - <a href="https://dotcms.com/features" target="_blank">upgrade</a>'
-        );
-    });
+        it('should load form labels correctly', () => {
+            const header: DebugElement = de.query(By.css('h3'));
+            const inputLabels: DebugElement[] = de.queryAll(By.css('label'));
+            const recoverPasswordLink: DebugElement = de.query(By.css('a[actionlink]'));
+            const rememberMe: DebugElement = de.query(By.css('p-checkbox label'));
+            const submitButton: DebugElement = de.query(By.css('.login__button'));
+            const productInformation: DebugElement[] = de.queryAll(By.css('.login__footer span'));
 
-    it('should init messages on page load with default language', () => {
-        expect(dotMessageService.init).toHaveBeenCalledWith(true);
-    });
+            expect(header.nativeElement.innerHTML).toEqual('Welcome!');
+            expect(inputLabels[0].nativeElement.innerHTML).toEqual('Email Address');
+            expect(inputLabels[1].nativeElement.innerHTML).toEqual('Password');
+            expect(recoverPasswordLink.nativeElement.innerHTML).toEqual('Recover Password');
+            expect(rememberMe.nativeElement.innerHTML).toEqual('Remember Me');
+            expect(submitButton.nativeElement.innerHTML).toContain('Sign In');
+            expect(productInformation[0].nativeElement.innerHTML).toEqual('Server: 860173b0');
+            expect(productInformation[1].nativeElement.innerHTML).toEqual(
+                'COMMUNITY EDITION: 5.0.0 - March 13, 2019'
+            );
+            expect(productInformation[2].nativeElement.innerHTML).toEqual(
+                ' - <a href="https://dotcms.com/features" target="_blank">upgrade</a>'
+            );
+        });
 
-    it('should call services on language change', () => {
-        const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
-        pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
+        it('should init messages on page load with default language', () => {
+            expect(dotMessageService.init).toHaveBeenCalledWith(true);
+        });
 
-        expect(dotMessageService.init).toHaveBeenCalledWith(true, 'es_ES');
-        expect(loginPageStateService.update).toHaveBeenCalledWith('es_ES');
-    });
+        it('should call services on language change', () => {
+            const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
+            pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
-    it('should navigate to the recover password screen', () => {
-        const forgotPasswordLink: DebugElement = de.query(By.css('a[actionLink]'));
-        spyOn(dotRouterService, 'goToForgotPassword');
-        forgotPasswordLink.triggerEventHandler('click', { value: '' });
-        expect(dotRouterService.goToForgotPassword).toHaveBeenCalledTimes(1);
-    });
+            expect(dotMessageService.init).toHaveBeenCalledWith(true, 'es_ES');
+            // expect(loginPageStateService.update).toHaveBeenCalledWith('es_ES');
+        });
 
-    it('should load initial value of the form', () => {
-        expect(component.loginForm.value).toEqual({
-            backEndLogin: true,
-            language: 'en_US',
-            login: '',
-            password: '',
-            rememberMe: false
+        it('should navigate to the recover password screen', () => {
+            const forgotPasswordLink: DebugElement = de.query(By.css('a[actionLink]'));
+            spyOn(dotRouterService, 'goToForgotPassword');
+            forgotPasswordLink.triggerEventHandler('click', { value: '' });
+            expect(dotRouterService.goToForgotPassword).toHaveBeenCalledTimes(1);
+        });
+
+        it('should load initial value of the form', () => {
+            expect(component.loginForm.value).toEqual({
+                backEndLogin: true,
+                language: 'en_US',
+                login: '',
+                password: '',
+                rememberMe: false
+            });
+        });
+
+        it('should make a login request correctly and redirect after login', () => {
+            component.loginForm.setValue(credentials);
+            spyOn(dotRouterService, 'goToMain');
+            spyOn<any>(loginService, 'loginUser').and.returnValue(
+                of({
+                    ...mockUser(),
+                    editModeUrl: 'redirect/to'
+                })
+            );
+            fixture.detectChanges();
+
+            expect(signInButton.nativeElement.disabled).toBeFalsy();
+            signInButton.triggerEventHandler('click', {});
+            expect(loginService.loginUser).toHaveBeenCalledWith(credentials);
+            expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
+            expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(
+                mockUser().languageId
+            );
+        });
+
+        it('should disable fields while waiting login response', () => {
+            component.loginForm.setValue(credentials);
+            spyOn(dotRouterService, 'goToMain');
+            spyOn(loginService, 'loginUser').and.callThrough();
+            signInButton.triggerEventHandler('click', {});
+
+            const languageDropdown: Dropdown = de.query(By.css('p-dropdown')).componentInstance;
+            const emailInput = de.query(By.css('input[pInputText][type="text"]'));
+            const passwordInput = de.query(By.css('input[type="password"]'));
+            const rememberCheckBox: Checkbox = de.query(By.css(' p-checkbox')).componentInstance;
+
+            fixture.detectChanges();
+
+            expect(languageDropdown.disabled).toBeTruthy();
+            expect(emailInput.nativeElement.disabled).toBeTruthy();
+            expect(passwordInput.nativeElement.disabled).toBeTruthy();
+            expect(rememberCheckBox.disabled).toBeTruthy();
+        });
+
+        it('should keep submit button disabled until the form is valid', () => {
+            expect(signInButton.nativeElement.disabled).toBeTruthy();
+        });
+
+        it('should show error message for required form fields', () => {
+            component.loginForm.get('login').markAsDirty();
+            component.loginForm.get('password').markAsDirty();
+
+            fixture.detectChanges();
+
+            const erroresMessages = de.queryAll(By.css('.p-field .p-invalid'));
+            expect(erroresMessages.length).toBe(2);
+        });
+
+        it('should show error messages if error comes from the server', () => {
+            component.loginForm.setValue(credentials);
+            spyOn(loginService, 'loginUser').and.returnValue(
+                throwError({ status: 400, error: { errors: [{ message: 'error message' }] } })
+            );
+            signInButton.triggerEventHandler('click', {});
+            fixture.detectChanges();
+            const message: HTMLParagraphElement = de.query(By.css('[data-testId="message"]'))
+                .nativeElement;
+            expect(message).toHaveClass('p-invalid');
+            expect(message.innerText).toEqual('error message');
         });
     });
 
-    it('should make a login request correctly and redirect after login', () => {
-        component.loginForm.setValue(credentials);
-        spyOn(dotRouterService, 'goToMain');
-        spyOn<any>(loginService, 'loginUser').and.returnValue(
-            of({
-                ...mockUser(),
-                editModeUrl: 'redirect/to'
-            })
-        );
-        fixture.detectChanges();
+    describe('Success messages', () => {
+        it('should show password changed', () => {
+            queryParams.next({ changedPassword: 'test' });
+            fixture.detectChanges();
+            const message: HTMLParagraphElement = de.query(By.css('[data-testId="message"]'))
+                .nativeElement;
+            expect(message).toHaveClass('success');
+            expect(message.innerText).toEqual('Your password has been successfully changed');
+        });
 
-        expect(signInButton.nativeElement.disabled).toBeFalsy();
-        signInButton.triggerEventHandler('click', {});
-        expect(loginService.loginUser).toHaveBeenCalledWith(credentials);
-        expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
-        expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(
-            mockUser().languageId
-        );
+        it('should show email reset notification', () => {
+            queryParams.next({ resetEmailSent: 'true', resetEmail: 'test@email.com' });
+            fixture.detectChanges();
+            const message: HTMLParagraphElement = de.query(By.css('[data-testId="message"]'))
+                .nativeElement;
+            expect(message).toHaveClass('success');
+            expect(message.innerText).toEqual(
+                'An Email with instructions has been sent to test@email.com.'
+            );
+        });
     });
-
-    it('should disable fields while waiting login response', () => {
-        component.loginForm.setValue(credentials);
-        spyOn(loginService, 'loginUser').and.callThrough();
-        signInButton.triggerEventHandler('click', {});
-
-        const languageDropdown: Dropdown = de.query(By.css('p-dropdown')).componentInstance;
-        const emailInput = de.query(By.css('input[pInputText][type="text"]'));
-        const passwordInput = de.query(By.css('input[type="password"]'));
-        const rememberCheckBox: Checkbox = de.query(By.css(' p-checkbox')).componentInstance;
-
-        fixture.detectChanges();
-
-        expect(languageDropdown.disabled).toBeTruthy();
-        expect(emailInput.nativeElement.disabled).toBeTruthy();
-        expect(passwordInput.nativeElement.disabled).toBeTruthy();
-        expect(rememberCheckBox.disabled).toBeTruthy();
-    });
-
-    it('should keep submit button disabled until the form is valid', () => {
-        expect(signInButton.nativeElement.disabled).toBeTruthy();
-    });
-
-    it('should show error message for required form fields', () => {
-        component.loginForm.get('login').markAsDirty();
-        component.loginForm.get('password').markAsDirty();
-
-        fixture.detectChanges();
-
-        const erroresMessages = de.queryAll(By.css('.p-field .p-invalid'));
-        expect(erroresMessages.length).toBe(2);
-    });
-
-    // fit('should show error messages if error comes from the server', () => {
-    //     component.loginPageStateService.get();
-    //     component;
-    //     component.message = 'Authentication failed. Please try again.';
-    //     fixture.detectChanges();
-    //     const messageElemement = de.query(By.css('.p-invalid'));
-    //     const message: HTMLDivElement = de.query(By.css(''));
-    //     expect(messageElemement).not.toBeNull();
-    // });
-    //
-    // fit('should notification messages', () => {
-    //     component.message = 'Authentication failed. Please try again.';
-    //     fixture.detectChanges();
-    //     const messageElemement = de.query(By.css('.p-invalid'));
-    //     expect(messageElemement).not.toBeNull();
-    // });
 });
