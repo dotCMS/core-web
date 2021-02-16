@@ -110,24 +110,29 @@ describe('DotLoginComponent', () => {
         });
 
         it('should load form labels correctly', () => {
-            const header: DebugElement = de.query(By.css('h3'));
-            const inputLabels: DebugElement[] = de.queryAll(By.css('label'));
-            const recoverPasswordLink: DebugElement = de.query(By.css('a[actionlink]'));
+            const header: DebugElement = de.query(By.css('[data-testId="header"]'));
+            const emailLabel: DebugElement = de.query(By.css('[data-testId="emailLabel"]'));
+            const passwordLabel: DebugElement = de.query(By.css('[data-testId="passwordLabel"]'));
+            const recoverPasswordLink: DebugElement = de.query(
+                By.css('[data-testId="actionLink"]')
+            );
             const rememberMe: DebugElement = de.query(By.css('p-checkbox label'));
-            const submitButton: DebugElement = de.query(By.css('.login__button'));
-            const productInformation: DebugElement[] = de.queryAll(By.css('.login__footer span'));
+            const submitButton: DebugElement = de.query(By.css('[data-testId="submitButton"]'));
+            const serverInformation: DebugElement = de.query(By.css('[data-testId="server"]'));
+            const versionInformation: DebugElement = de.query(By.css('[data-testId="version"]'));
+            const licenseInformation: DebugElement = de.query(By.css('[data-testId="license"]'));
 
             expect(header.nativeElement.innerHTML).toEqual('Welcome!');
-            expect(inputLabels[0].nativeElement.innerHTML).toEqual('Email Address');
-            expect(inputLabels[1].nativeElement.innerHTML).toEqual('Password');
+            expect(emailLabel.nativeElement.innerHTML).toEqual('Email Address');
+            expect(passwordLabel.nativeElement.innerHTML).toEqual('Password');
             expect(recoverPasswordLink.nativeElement.innerHTML).toEqual('Recover Password');
             expect(rememberMe.nativeElement.innerHTML).toEqual('Remember Me');
             expect(submitButton.nativeElement.innerHTML).toContain('Sign In');
-            expect(productInformation[0].nativeElement.innerHTML).toEqual('Server: 860173b0');
-            expect(productInformation[1].nativeElement.innerHTML).toEqual(
+            expect(serverInformation.nativeElement.innerHTML).toEqual('Server: 860173b0');
+            expect(versionInformation.nativeElement.innerHTML).toEqual(
                 'COMMUNITY EDITION: 5.0.0 - March 13, 2019'
             );
-            expect(productInformation[2].nativeElement.innerHTML).toEqual(
+            expect(licenseInformation.nativeElement.innerHTML).toEqual(
                 ' - <a href="https://dotcms.com/features" target="_blank">upgrade</a>'
             );
         });
@@ -137,7 +142,7 @@ describe('DotLoginComponent', () => {
         });
 
         it('should call services on language change', () => {
-            const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
+            const pDropDown: DebugElement = de.query(By.css('[data-testId="language"]'));
             pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
             expect(dotMessageService.init).toHaveBeenCalledWith(true, 'es_ES');
@@ -145,7 +150,7 @@ describe('DotLoginComponent', () => {
         });
 
         it('should navigate to the recover password screen', () => {
-            const forgotPasswordLink: DebugElement = de.query(By.css('a[actionLink]'));
+            const forgotPasswordLink: DebugElement = de.query(By.css('[data-testId="actionLink"]'));
             spyOn(dotRouterService, 'goToForgotPassword');
             forgotPasswordLink.triggerEventHandler('click', { value: '' });
             expect(dotRouterService.goToForgotPassword).toHaveBeenCalledTimes(1);
@@ -187,10 +192,12 @@ describe('DotLoginComponent', () => {
             spyOn(loginService, 'loginUser').and.callThrough();
             signInButton.triggerEventHandler('click', {});
 
-            const languageDropdown: Dropdown = de.query(By.css('p-dropdown')).componentInstance;
-            const emailInput = de.query(By.css('input[pInputText][type="text"]'));
-            const passwordInput = de.query(By.css('input[type="password"]'));
-            const rememberCheckBox: Checkbox = de.query(By.css(' p-checkbox')).componentInstance;
+            const languageDropdown: Dropdown = de.query(By.css('[data-testId="language"]'))
+                .componentInstance;
+            const emailInput = de.query(By.css('[data-testId="userNameInput"]'));
+            const passwordInput = de.query(By.css('[data-testId="password"]'));
+            const rememberCheckBox: Checkbox = de.query(By.css('[data-testId="rememberMe"]'))
+                .componentInstance;
 
             fixture.detectChanges();
 
@@ -210,8 +217,8 @@ describe('DotLoginComponent', () => {
 
             fixture.detectChanges();
 
-            const erroresMessages = de.queryAll(By.css('.p-field .p-invalid'));
-            expect(erroresMessages.length).toBe(2);
+            const errorsMessages = de.queryAll(By.css('.p-field .p-invalid'));
+            expect(errorsMessages.length).toBe(2);
         });
 
         it('should show error messages if error comes from the server', () => {

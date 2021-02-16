@@ -62,10 +62,10 @@ describe('ForgotPasswordComponent', () => {
     });
 
     it('should load form labels correctly', () => {
-        const header: DebugElement = de.query(By.css('h3'));
-        const inputLabel: DebugElement = de.query(By.css('.p-field label'));
-        const cancelButton: DebugElement = de.query(By.css('button'));
-        const submitButton: DebugElement = de.query(By.css('button[type="submit"]'));
+        const header: DebugElement = de.query(By.css('[data-testId="header"]'));
+        const inputLabel: DebugElement = de.query(By.css('[data-testId="usernameLabel"]'));
+        const cancelButton: DebugElement = de.query(By.css('[data-testId="cancelButton"]'));
+        const submitButton: DebugElement = de.query(By.css('[data-testId="submitButton"]'));
 
         expect(header.nativeElement.innerHTML).toEqual('Forgot Password');
         expect(inputLabel.nativeElement.innerHTML).toEqual('Email Address');
