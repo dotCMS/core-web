@@ -122,7 +122,7 @@ describe('DotLoginComponent', () => {
             const versionInformation: DebugElement = de.query(By.css('[data-testId="version"]'));
             const licenseInformation: DebugElement = de.query(By.css('[data-testId="license"]'));
 
-            expect(header.nativeElement.innerHTML).toEqual('Welcome!');
+            expect(header.nativeElement.innerHTML).toContain('Welcome!');
             expect(emailLabel.nativeElement.innerHTML).toEqual('Email Address');
             expect(passwordLabel.nativeElement.innerHTML).toEqual('Password');
             expect(recoverPasswordLink.nativeElement.innerHTML).toEqual('Recover Password');
