@@ -1,17 +1,22 @@
 <ul class="dot-tree">
     <li>
         <div class="dot-tree__content">
-            <dot-icon name="face" [class.dot-tree--active]="parent === contentType.name"></dot-icon>
-            <span>{{ parent }}</span>
+            <dot-icon
+                name="face"
+                [class.dot-tree--active]="parent === contentType?.name"
+            ></dot-icon>
+            <span data-testId="dot-tree-parent-text">{{ parent }}</span>
         </div>
         <ul class="dot-tree--child">
             <li>
                 <div class="dot-tree__content">
                     <dot-icon
                         name="child_care"
-                        [class.dot-tree--active]="child === contentType.name"
+                        [class.dot-tree--active]="child === contentType?.name"
                     ></dot-icon>
-                    <span>{{ child }}{{ fieldName ? ' - ' + (fieldName | titlecase) : '' }}</span>
+                    <span data-testId="dot-tree-child-text"
+                        >{{ child }}{{ fieldName ? ' - ' + (fieldName | titlecase) : '' }}</span
+                    >
                 </div>
             </li>
         </ul>
@@ -20,8 +25,8 @@
 
 <div *ngIf="isRelationshipChild" class="dot-tree-query">
     <div class="dot-tree-query__content">
-        <h3>{{ 'relationship.query.title' | dm }}</h3>
-        <code>+{{ child }}.{{ fieldName }}::${{ parent }}.id</code>
+        <h3 data-testId="query-title">{{ 'relationship.query.title' | dm }}</h3>
+        <code data-testId="query-code">+{{ child }}.{{ fieldName }}::${{ parent }}.id</code>
     </div>
     <dot-copy-button copy="+{{ child }}.{{ fieldName }}::${{ parent }}.id"></dot-copy-button>
 </div>
