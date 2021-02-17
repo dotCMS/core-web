@@ -5,7 +5,11 @@ import { ContentTypeFieldsDropZoneComponent } from '.';
 import { By } from '@angular/platform-browser';
 import { ContentTypeFieldsAddRowModule } from '..';
 
-import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from 'dotcms-models';
+import {
+    DotCMSContentType,
+    DotCMSContentTypeField,
+    DotCMSContentTypeLayoutRow
+} from 'dotcms-models';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
@@ -34,12 +38,21 @@ import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component'
 import {
     dotcmsContentTypeFieldBasicMock,
     fieldsWithBreakColumn,
-    fieldsBrokenWithColumns
+    fieldsBrokenWithColumns,
+    dotcmsContentTypeBasicMock
 } from '@tests/dot-content-types.mock';
 
 import cleanUpDialog from '@tests/clean-up-dialog';
 
 const COLUMN_BREAK_FIELD = FieldUtil.createColumnBreak();
+
+const fakeContentType: DotCMSContentType = {
+    ...dotcmsContentTypeBasicMock,
+    id: '1234567890',
+    name: 'ContentTypeName',
+    variable: 'helloVariable',
+    baseType: 'testBaseType'
+};
 
 @Component({
     selector: 'dot-content-type-fields-row',
@@ -63,6 +76,8 @@ class TestContentTypeFieldsPropertiesFormComponent {
     saveField: EventEmitter<any> = new EventEmitter();
     @Input()
     formFieldData: DotCMSContentTypeField;
+    @Input()
+    contentType: DotCMSContentType;
 
     public destroy(): void {}
 }
@@ -213,6 +228,18 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     it('should have a dialog', () => {
         const dialog = de.query(By.css('dot-dialog'));
         expect(dialog).not.toBeNull();
+    });
+
+    it('should pass contentType', () => {
+        comp.contentType = fakeContentType;
+        comp.displayDialog = true;
+        fixture.detectChanges();
+        const contentTypeFieldsPropertyForm = de.query(
+            By.css('dot-content-type-fields-properties-form')
+        );
+        expect(contentTypeFieldsPropertyForm.componentInstance.contentType.name).toBe(
+            'ContentTypeName'
+        );
     });
 
     it('should reset values when close dialog', () => {

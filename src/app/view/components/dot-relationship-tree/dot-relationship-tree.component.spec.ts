@@ -23,7 +23,7 @@ const fakeContentType: DotCMSContentType = {
     baseType: 'testBaseType'
 };
 
-fdescribe('DotRelationshipTreeComponent', () => {
+describe('DotRelationshipTreeComponent', () => {
     describe('with children', () => {
         let component: DotRelationshipTreeComponent;
         let fixture: ComponentFixture<DotRelationshipTreeComponent>;

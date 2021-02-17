@@ -22,14 +22,16 @@ export class DotRelationshipTreeComponent implements OnInit {
     ngOnInit(): void {
         this.setInitialValues();
     }
-
+    /**
+     * Sets initial values of the relationship tree component
+     *
+     * @memberof DotRelationshipTreeComponent
+     */
     setInitialValues(): void {
         // If velocityVar has a dot it means it's the child of the relationship
         this.isRelationshipChild = this.velocityVar?.indexOf('.') !== -1;
 
         const [relatedContentType, fieldName] = this.velocityVar?.split('.') || '';
-
-        console.log(this.velocityVar);
 
         if (this.isRelationshipChild) {
             this.child = relatedContentType;
