@@ -24,7 +24,7 @@ const fakeContentType: DotCMSContentType = {
 };
 
 describe('DotRelationshipTreeComponent', () => {
-    describe('with children', () => {
+    describe('with dot', () => {
         let component: DotRelationshipTreeComponent;
         let fixture: ComponentFixture<DotRelationshipTreeComponent>;
         let de: DebugElement;
@@ -51,27 +51,21 @@ describe('DotRelationshipTreeComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should have the lucene query section if it has a dot', () => {
-            const title = de.query(By.css('[data-testId="query-title"]'));
-            const code = de.query(By.css('[data-testId="query-code"]'));
-
-            expect(title.nativeElement.innerText).toBe('Lucene Query');
-            expect(code.nativeElement.innerText).toBe('+Parent.Children::$ContentTypeName.id');
-        });
-
         it('should have contentType with dot-icon and its active class', () => {
-            const parentText = de.query(By.css('[data-testId="dot-tree-parent-text"]'));
+            const parentText = de.query(By.css('[data-testId="dot-tree-nested-text"]'));
             const icon = parentText.nativeElement.previousSibling;
             expect(icon.classList).toContain('dot-tree--active');
         });
 
-        it('should set child and field name correctly', () => {
-            const children = de.query(By.css('[data-testId="dot-tree-child-text"]'));
-            expect(children.nativeElement.innerText).toBe('Parent - Children');
+        it('should set child correctly', () => {
+            const children = de.query(By.css('[data-testId="dot-tree-nested-text"]'));
+            const parent = de.query(By.css('[data-testId="dot-tree-upper-text"]'));
+            expect(children.nativeElement.innerText).toBe('ContentTypeName');
+            expect(parent.nativeElement.innerText).toBe('Parent');
         });
     });
 
-    describe('without children', () => {
+    describe('without dot', () => {
         let component: DotRelationshipTreeComponent;
         let fixture: ComponentFixture<DotRelationshipTreeComponent>;
         let de: DebugElement;
@@ -98,15 +92,18 @@ describe('DotRelationshipTreeComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should not have the lucene query section if velocityVar does not have a dot', () => {
-            const title = de.query(By.css('[data-testId="query-title"]'));
-            expect(title).toBeNull();
+        it('should have parent set as current content type', () => {
+            const child = de.query(By.css('[data-testId="dot-tree-upper-text"]'));
+            const currentContentType = de.query(By.css('[data-testId="dot-tree-nested-text"]'));
+
+            expect(child.nativeElement.innerText).toBe('ContentTypeName');
+            expect(currentContentType.nativeElement.innerText).toBe('Parent');
         });
 
-        it('should have contentType as active and as children of current selected field', () => {
-            const children = de.query(By.css('[data-testId="dot-tree-child-text"]'));
-            const dotIcon = children.nativeElement.previousSibling;
-            expect(dotIcon.classList).toContain('dot-tree--active');
+        it('should have dot-icon and its active class', () => {
+            const parentText = de.query(By.css('[data-testId="dot-tree-upper-text"]'));
+            const icon = parentText.nativeElement.previousSibling;
+            expect(icon.classList).toContain('dot-tree--active');
         });
     });
 });
