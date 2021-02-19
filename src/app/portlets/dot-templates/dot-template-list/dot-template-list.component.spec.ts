@@ -12,8 +12,8 @@ import {
     DotEventsSocket,
     DotEventsSocketURL,
     DotPushPublishDialogService,
-    LoggerService,
     LoginService,
+    SiteService,
     StringUtils
 } from 'dotcms-js';
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
@@ -43,10 +43,10 @@ import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-b
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DotBulkInformationComponent } from '@components/_common/dot-bulk-information/dot-bulk-information.component';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
-import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotContentState } from 'dotcms-models';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+import { mockSites } from '@tests/site-service.mock';
 
 const templatesMock: DotTemplate[] = [
     {
@@ -233,6 +233,7 @@ describe('DotTemplateListComponent', () => {
     const messageServiceMock = new MockDotMessageService(messages);
 
     const dialogRefClose = new Subject();
+    const switchSiteSubject = new Subject();
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -252,7 +253,18 @@ describe('DotTemplateListComponent', () => {
                         goToEditTemplate: jasmine.createSpy()
                     }
                 },
-                LoggerService,
+                {
+                    provide: SiteService,
+                    useValue: {
+                        get currentSite() {
+                            return undefined;
+                        },
+
+                        get switchSite$() {
+                            return switchSiteSubject.asObservable();
+                        }
+                    }
+                },
                 StringUtils,
                 DotTemplatesService,
                 DotHttpErrorManagerService,
@@ -278,7 +290,6 @@ describe('DotTemplateListComponent', () => {
                 DotAddToBundleModule,
                 HttpClientTestingModule,
                 DynamicDialogModule,
-                DotIconModule,
                 BrowserAnimationsModule
             ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -313,6 +324,13 @@ describe('DotTemplateListComponent', () => {
                 onClose: dialogRefClose
             });
         }));
+
+        it('should reload portlet only when the site change', () => {
+            switchSiteSubject.next(mockSites[0]); // setting the site
+            switchSiteSubject.next(mockSites[1]); // switching the site
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('templates');
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledTimes(1);
+        });
 
         it('should set attributes of dotListingDataTable', () => {
             expect(dotListingDataTable.columns).toEqual(columnsMock);
@@ -349,14 +367,10 @@ describe('DotTemplateListComponent', () => {
             lockedTemplate = fixture.debugElement.query(By.css('[data-testid="123Locked"]'))
                 .componentInstance;
             const stateIcon = fixture.debugElement.query(By.css('dot-state-icon'));
-            const lockIcon = fixture.debugElement.query(
-                By.css('p-table dot-icon[name="lock"][size="14"]')
-            );
 
             expect(stateIcon.attributes['size']).toEqual('14px');
             expect(stateIcon.nativeNode.state).toEqual(state);
             expect(stateIcon.nativeNode.labels).toEqual(labels);
-            expect(lockIcon).toBeDefined();
         });
 
         describe('row', () => {

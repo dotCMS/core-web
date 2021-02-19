@@ -10,6 +10,9 @@ const routes: Routes = [
         component: DotTemplateListComponent,
         resolve: {
             dotTemplateListResolverData: DotTemplateListResolver
+        },
+        data: {
+            reuseRoute: false
         }
     },
     {
@@ -35,6 +38,9 @@ const routes: Routes = [
             import(
                 '@portlets/dot-templates/dot-template-create-edit/dot-template-create-edit.module.ts'
             ).then((m) => m.DotTemplateCreateEditModule),
+        data: {
+            reuseRoute: false
+        },
         resolve: {
             template: DotTemplateCreateEditResolver
         }
