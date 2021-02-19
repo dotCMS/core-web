@@ -148,7 +148,7 @@ import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot
         SiteSelectorFieldModule,
         SplitButtonModule,
         TabViewModule,
-        DotRelationshipTreeModule
+        DotRelationshipTreeModule,
         DotPortletBoxModule
     ],
     providers: [
