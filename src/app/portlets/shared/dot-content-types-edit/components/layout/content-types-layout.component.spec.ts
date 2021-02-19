@@ -1,6 +1,6 @@
 import { of, Observable } from 'rxjs';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -133,6 +133,8 @@ describe('ContentTypesLayoutComponent', () => {
 
         fixture = TestBed.createComponent(TestHostComponent);
         de = fixture.debugElement.query(By.css('dot-content-type-layout'));
+        let dotCurrentUserService = fixture.debugElement.injector.get(DotCurrentUserService);
+        spyOn(dotCurrentUserService, 'hasAccessToPortlet').and.returnValue(of(true));
     });
 
     it('should have a tab-view', () => {
@@ -161,39 +163,78 @@ describe('ContentTypesLayoutComponent', () => {
         expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
     });
 
-    fit('should have dot-portlet-box', fakeAsync(() => {
-        const tabPanel = fixture.debugElement.query(By.css('p-tabpanel'));
+    it('should always have dot-portlet-box in the first tab', fakeAsync(() => {
         fixture.componentInstance.contentType = fakeContentType;
         fixture.detectChanges();
 
-        const dotPortletBox = tabPanel.query(By.css('dot-portlet-box'));
+        // We click a random tab and the first tab should always have the dot-portlet-box
+        const thirdTabLink = de.query(By.css('ul.p-tabview-nav li:nth-child(3) > a'));
+        thirdTabLink.nativeElement.click();
+        fixture.detectChanges();
 
-        const pushRelationshipsTab = de.query(By.css('.content-type__relationships'));
-        pushRelationshipsTab.componentInstance.selected = true;
+        fixture.whenStable().then(() => {
+            const firstTab = de.query(By.css('.content-type__properties'));
+            const firstTabPortletBox = firstTab.query(By.css('dot-portlet-box'));
+            expect(firstTabPortletBox).not.toBeNull();
+        });
+    }));
+
+    it('should have dot-portlet-box in the second tab after it has been clicked', fakeAsync(() => {
+        fixture.componentInstance.contentType = fakeContentType;
 
         fixture.detectChanges();
+
+        const contentTypeRelationshipsTabLink = de.query(
+            By.css('ul.p-tabview-nav li:nth-child(2) > a')
+        );
+        contentTypeRelationshipsTabLink.nativeElement.click();
+        fixture.detectChanges();
+
         fixture.whenStable().then(() => {
-            const pushRelationshipsTabPanel = de.query(By.css('.p-tabview-panel'));
-            console.log(de.nativeNode);
-            const pushRelationshipsPortletBox = pushRelationshipsTabPanel.query(
+            const contentTypeRelationships = de.query(By.css('.content-type__relationships'));
+            const contentTypeRelationshipsPortletBox = contentTypeRelationships.query(
                 By.css('dot-portlet-box')
             );
-            expect(pushRelationshipsPortletBox).not.toBeNull();
+            expect(contentTypeRelationshipsPortletBox).not.toBeNull();
         });
+    }));
 
-        const pushHistoryTab = de.query(By.css('.content-type__push_history'));
-        tick(1000);
-        pushHistoryTab.componentInstance.selected = true;
-
+    it('should have dot-portlet-box in the third tab after it has been clicked', fakeAsync(() => {
+        fixture.componentInstance.contentType = fakeContentType;
         fixture.detectChanges();
-        fixture.whenStable().then(() => {
-            const pushHistoryTabPanel = de.query(By.css('.p-tabview-panel'));
-            console.log(de.nativeNode);
-            const pushHistoryPortletBox = pushHistoryTabPanel.query(By.css('dot-portlet-box'));
-            expect(pushHistoryPortletBox).not.toBeNull();
-        });
 
-        expect(dotPortletBox).not.toBeNull();
+        const contentTypePermissionsTabLink = de.query(
+            By.css('ul.p-tabview-nav li:nth-child(3) > a')
+        );
+        contentTypePermissionsTabLink.nativeElement.click();
+        fixture.detectChanges();
+
+        fixture.whenStable().then(() => {
+            const contentTypePermissions = de.query(By.css('.content-type__permissions'));
+            const contentTypePermissionsPortletBox = contentTypePermissions.query(
+                By.css('dot-portlet-box')
+            );
+            expect(contentTypePermissionsPortletBox).not.toBeNull();
+        });
+    }));
+
+    it('should have dot-portlet-box in the fourth tab after it has been clicked', fakeAsync(() => {
+        fixture.componentInstance.contentType = fakeContentType;
+        fixture.detectChanges();
+
+        const contentTypePushHistoryTabLink = de.query(
+            By.css('ul.p-tabview-nav li:nth-child(4) > a')
+        );
+        contentTypePushHistoryTabLink.nativeElement.click();
+        fixture.detectChanges();
+
+        fixture.whenStable().then(() => {
+            const contentTypePushHistory = de.query(By.css('.content-type__push_history'));
+            const contentTypePushHistoryPortletBox = contentTypePushHistory.query(
+                By.css('dot-portlet-box')
+            );
+            expect(contentTypePushHistoryPortletBox).not.toBeNull();
+        });
     }));
 
     describe('Edit toolBar', () => {
