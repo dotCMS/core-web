@@ -133,8 +133,6 @@ describe('ContentTypesLayoutComponent', () => {
 
         fixture = TestBed.createComponent(TestHostComponent);
         de = fixture.debugElement.query(By.css('dot-content-type-layout'));
-        let dotCurrentUserService = fixture.debugElement.injector.get(DotCurrentUserService);
-        spyOn(dotCurrentUserService, 'hasAccessToPortlet').and.returnValue(of(true));
     });
 
     it('should have a tab-view', () => {
@@ -199,31 +197,12 @@ describe('ContentTypesLayoutComponent', () => {
         });
     }));
 
-    it('should have dot-portlet-box in the third tab after it has been clicked', fakeAsync(() => {
-        fixture.componentInstance.contentType = fakeContentType;
-        fixture.detectChanges();
-
-        const contentTypePermissionsTabLink = de.query(
-            By.css('ul.p-tabview-nav li:nth-child(3) > a')
-        );
-        contentTypePermissionsTabLink.nativeElement.click();
-        fixture.detectChanges();
-
-        fixture.whenStable().then(() => {
-            const contentTypePermissions = de.query(By.css('.content-type__permissions'));
-            const contentTypePermissionsPortletBox = contentTypePermissions.query(
-                By.css('dot-portlet-box')
-            );
-            expect(contentTypePermissionsPortletBox).not.toBeNull();
-        });
-    }));
-
     it('should have dot-portlet-box in the fourth tab after it has been clicked', fakeAsync(() => {
         fixture.componentInstance.contentType = fakeContentType;
         fixture.detectChanges();
 
         const contentTypePushHistoryTabLink = de.query(
-            By.css('ul.p-tabview-nav li:nth-child(4) > a')
+            By.css('ul.p-tabview-nav li:nth-child(3) > a')
         );
         contentTypePushHistoryTabLink.nativeElement.click();
         fixture.detectChanges();
