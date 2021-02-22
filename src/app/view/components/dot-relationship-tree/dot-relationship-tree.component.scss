@@ -4,15 +4,15 @@
     border: 1px solid $gray-light;
     display: block;
     border-radius: $border-radius;
-    padding: 1rem;
+    padding: $spacing-3;
 
     ::ng-deep {
         .dot-tree--active {
             position: relative;
             &::after {
                 background: $brand-primary;
-                width: 7px;
-                height: 7px;
+                width: $spacing-1;
+                height: $spacing-1;
                 position: absolute;
                 content: "";
                 border-radius: 50%;
@@ -32,11 +32,11 @@
     & > li::after {
         background: $gray-light;
         width: 1px;
-        height: 19px;
+        height: 1.4rem;
         content: "•";
         position: absolute;
-        top: 19px;
-        left: 11px;
+        top: 1.4rem;
+        left: 0.8rem;
         color: $gray-light;
         display: flex;
         justify-content: space-evenly;
@@ -54,12 +54,12 @@
 
     & > li::after {
         background: $gray-light;
-        width: 18px;
+        width: 1.3rem;
         height: 1px;
         content: "";
         position: absolute;
-        left: 11px;
-        top: 14px;
+        left: 0.8rem;
+        top: $spacing-3;
     }
 }
 

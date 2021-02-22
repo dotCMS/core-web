@@ -31,13 +31,9 @@ export class DotRelationshipTreeComponent implements OnInit {
         this.isRelationshipChild = this.velocityVar?.indexOf('.') !== -1;
 
         const [relatedContentType] = this.velocityVar?.split('.') || '';
+        const contentTypeName = this.contentType?.name;
 
-        if (this.isRelationshipChild) {
-            this.child = this.contentType?.name;
-            this.parent = relatedContentType;
-        } else {
-            this.parent = this.contentType?.name;
-            this.child = relatedContentType;
-        }
+        this.parent = this.isRelationshipChild ? relatedContentType : contentTypeName;
+        this.child = this.isRelationshipChild ? contentTypeName : relatedContentType;
     }
 }

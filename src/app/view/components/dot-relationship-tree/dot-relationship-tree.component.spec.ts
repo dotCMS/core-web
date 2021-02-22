@@ -57,6 +57,12 @@ describe('DotRelationshipTreeComponent', () => {
             expect(icon.classList).toContain('dot-tree--active');
         });
 
+        it('should have the parent icon', () => {
+            const parentText = de.query(By.css('[data-testId="dot-tree-upper-text"]'));
+            const icon = parentText.nativeElement.previousSibling;
+            expect(icon.getAttribute('name')).toBe('face');
+        });
+
         it('should set child correctly', () => {
             const children = de.query(By.css('[data-testId="dot-tree-nested-text"]'));
             const parent = de.query(By.css('[data-testId="dot-tree-upper-text"]'));
@@ -90,6 +96,12 @@ describe('DotRelationshipTreeComponent', () => {
             component.velocityVar = 'Parent';
             component.contentType = fakeContentType;
             fixture.detectChanges();
+        });
+
+        it('should have the child icon', () => {
+            const parentText = de.query(By.css('[data-testId="dot-tree-nested-text"]'));
+            const icon = parentText.nativeElement.previousSibling;
+            expect(icon.getAttribute('name')).toBe('child_care');
         });
 
         it('should have parent set as current content type', () => {
