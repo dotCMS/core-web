@@ -225,7 +225,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         })
     );
 
-    fit('should have propertiesForm', () => {
+    it('should have propertiesForm', () => {
         expect(comp.propertiesForm).not.toBeUndefined();
     });
 
