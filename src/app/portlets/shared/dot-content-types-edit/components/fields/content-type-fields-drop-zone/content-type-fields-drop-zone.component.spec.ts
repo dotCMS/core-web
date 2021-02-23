@@ -265,7 +265,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         );
     });
 
-    fit('should reset values when close dialog', () => {
+    it('should reset values when close dialog', () => {
         const fieldRow: DotCMSContentTypeLayoutRow = FieldUtil.createFieldRow(1);
         comp.fieldRows = [fieldRow];
 
