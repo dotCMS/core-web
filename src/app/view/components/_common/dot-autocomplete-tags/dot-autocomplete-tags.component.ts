@@ -30,13 +30,11 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     filteredOptions: DotTag[];
     disabled = false;
     inputReference: HTMLInputElement;
-    @ViewChild('autoComplete') autoComplete: AutoComplete;
+    @ViewChild('autoComplete', { static: true }) autoComplete: AutoComplete;
 
     private lastDeletedTag: DotTag;
 
-    constructor(
-        private dotTagsService: DotTagsService
-    ) {}
+    constructor(private dotTagsService: DotTagsService) {}
 
     propagateChange = (_: any) => {};
 

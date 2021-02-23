@@ -1,15 +1,18 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { DOTTestBed } from '@tests/dot-test-bed';
 import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
 import { DotAppsConfigurationItemModule } from './dot-apps-configuration-item/dot-apps-configuration-item.module';
 import { DotAppsConfigurationListComponent } from './dot-apps-configuration-list.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { ConfirmationService } from 'primeng/api';
 
 const messages = {
-    'apps.configurations.show.more': 'Show More'
+    'apps.configurations.show.more': 'SHOW MORE'
 };
 
 const sites = [
@@ -32,25 +35,29 @@ describe('DotAppsConfigurationListComponent', () => {
     const messageServiceMock = new MockDotMessageService(messages);
 
     beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
                 imports: [
                     CommonModule,
                     ButtonModule,
-                    DotAppsConfigurationItemModule
+                    DotAppsConfigurationItemModule,
+                    HttpClientTestingModule,
+                    DotPipesModule
                 ],
                 declarations: [DotAppsConfigurationListComponent],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    DotAlertConfirmService,
+                    ConfirmationService
+                ]
             });
+
+            fixture = TestBed.createComponent(DotAppsConfigurationListComponent);
+            component = fixture.debugElement.componentInstance;
+            component.itemsPerPage = 40;
+            component.siteConfigurations = sites;
         })
     );
-
-    beforeEach(() => {
-        fixture = DOTTestBed.createComponent(DotAppsConfigurationListComponent);
-        component = fixture.debugElement.componentInstance;
-        component.itemsPerPage = 40;
-        component.siteConfigurations = sites;
-    });
 
     describe('With more data to load', () => {
         beforeEach(() => {
@@ -66,7 +73,7 @@ describe('DotAppsConfigurationListComponent', () => {
             expect(
                 fixture.debugElement.query(By.css('.dot-apps-configuration-list__show-more'))
                     .nativeElement.outerText
-            ).toBe(messageServiceMock.get('apps.configurations.show.more').toUpperCase());
+            ).toBe(messageServiceMock.get('apps.configurations.show.more'));
         });
 
         it('should emit action for edit --> Site Item', () => {
@@ -76,6 +83,15 @@ describe('DotAppsConfigurationListComponent', () => {
 
             siteItem.edit.emit(sites[0]);
             expect(component.edit.emit).toHaveBeenCalledWith(sites[0]);
+        });
+
+        it('should emit action for export --> Site Item', () => {
+            spyOn(component.export, 'emit');
+            const siteItem = fixture.debugElement.queryAll(By.css('dot-apps-configuration-item'))[0]
+                .componentInstance;
+
+            siteItem.export.emit(sites[0]);
+            expect(component.export.emit).toHaveBeenCalledWith(sites[0]);
         });
 
         it('should emit action for delete --> Site Item', () => {

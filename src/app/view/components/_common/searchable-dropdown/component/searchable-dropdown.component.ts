@@ -14,12 +14,14 @@ import {
     TemplateRef,
     ContentChildren,
     QueryList,
-    AfterContentInit
+    AfterContentInit,
+    AfterViewInit
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent } from 'rxjs';
-import { OverlayPanel, PrimeTemplate } from 'primeng/primeng';
 import * as _ from 'lodash';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { PrimeTemplate } from 'primeng/api';
 
 /**
  * Dropdown with pagination and global search
@@ -40,7 +42,7 @@ import * as _ from 'lodash';
     templateUrl: './searchable-dropdown.component.html'
 })
 export class SearchableDropdownComponent
-    implements ControlValueAccessor, OnChanges, OnInit, AfterContentInit {
+    implements ControlValueAccessor, OnChanges, OnInit, AfterContentInit, AfterViewInit {
     @Input()
     data: any[];
 
@@ -70,17 +72,35 @@ export class SearchableDropdownComponent
     @Input()
     persistentPlaceholder: boolean;
 
+    /**
+     * Sets the width of the searchable-dropdown button
+     *
+     * The CSS unit is **required**.
+     * @memberof SearchableDropdownComponent
+     */
     @Input()
-    width = '300';
+    width = '300px';
 
+    /**
+     * Sets the width of the searchable-dropdown overlay
+     *
+     * The CSS unit is **required**.
+     * @memberof SearchableDropdownComponent
+     */
     @Input()
-    optionsWidth = '300';
+    overlayWidth = '300px';
 
     @Input()
     multiple: boolean;
 
     @Input()
     disabled = false;
+
+    @Input()
+    externalItemListTemplate: TemplateRef<any>;
+
+    @Input()
+    externalFilterTemplate: TemplateRef<any>;
 
     @Output()
     change: EventEmitter<any> = new EventEmitter();
@@ -97,10 +117,10 @@ export class SearchableDropdownComponent
     @Output()
     show: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('searchInput')
+    @ViewChild('searchInput', { static: false })
     searchInput: ElementRef;
 
-    @ViewChild('searchPanel')
+    @ViewChild('searchPanel', { static: true })
     searchPanelRef: OverlayPanel;
 
     @ViewChild('button')
@@ -114,11 +134,20 @@ export class SearchableDropdownComponent
     options: any[];
     label: string;
     externalSelectTemplate: TemplateRef<any>;
-    externalItemListTemplate: TemplateRef<any>;
+
+    keyMap: string[] = [
+        'Shift',
+        'Alt',
+        'Control',
+        'Meta',
+        'ArrowUp',
+        'ArrowDown',
+        'ArrowLeft',
+        'ArrowRight'
+    ];
 
     constructor() {}
 
-    // tslint:disable-next-line:no-shadowed-variable
     propagateChange = (_: any) => {};
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -128,15 +157,22 @@ export class SearchableDropdownComponent
         this.setOptions(changes);
     }
 
-    ngOnInit(): void {
-        fromEvent(this.searchInput.nativeElement, 'keyup')
-            .pipe(debounceTime(500))
-            .subscribe((keyboardEvent: Event) => {
-                this.filterChange.emit(keyboardEvent.target['value']);
-            });
+    ngOnInit(): void {}
+
+    ngAfterViewInit(): void {
+        if (this.searchInput) {
+            fromEvent(this.searchInput.nativeElement, 'keyup')
+                .pipe(debounceTime(500))
+                .subscribe((keyboardEvent: KeyboardEvent) => {
+                    if (!this.isModifierKey(keyboardEvent.key)) {
+                        this.filterChange.emit(keyboardEvent.target['value']);
+                    }
+                });
+        }
     }
 
     ngAfterContentInit() {
+        this.totalRecords = this.totalRecords || this.data?.length;
         this.templates.forEach((item: PrimeTemplate) => {
             if (item.getType() === 'listItem') {
                 this.externalItemListTemplate = item.template;
@@ -152,7 +188,7 @@ export class SearchableDropdownComponent
      * @memberof SearchableDropdownComponent
      */
     hideOverlayHandler(): void {
-        if (this.searchInput.nativeElement.value.length) {
+        if (this.searchInput?.nativeElement.value.length) {
             this.searchInput.nativeElement.value = '';
             this.paginate(null);
         }
@@ -166,10 +202,15 @@ export class SearchableDropdownComponent
      * @memberof SearchableDropdownComponent
      */
     showOverlayHandler(): void {
-        this.cssClass +=
+        const cssClass =
             this.totalRecords > this.rows
                 ? ' searchable-dropdown paginator'
                 : ' searchable-dropdown';
+        if (typeof this.cssClass === 'undefined') {
+            this.cssClass = cssClass;
+        } else {
+            this.cssClass += cssClass;
+        }
         setTimeout(() => {
             if (!this.overlayPanelMinHeight) {
                 this.overlayPanelMinHeight = this.searchPanelRef.container
@@ -188,7 +229,9 @@ export class SearchableDropdownComponent
      */
     paginate(event: PaginationEvent): void {
         const paginationEvent = Object.assign({}, event);
-        paginationEvent.filter = this.searchInput.nativeElement.value;
+        if (this.searchInput) {
+            paginationEvent.filter = this.searchInput.nativeElement.value;
+        }
         this.pageChange.emit(paginationEvent);
     }
 
@@ -305,6 +348,10 @@ export class SearchableDropdownComponent
                 return item;
             });
         }
+    }
+
+    private isModifierKey(key: string): boolean {
+        return this.keyMap.includes(key);
     }
 
     private usePlaceholder(placeholderChange: SimpleChange): boolean {

@@ -1,12 +1,12 @@
-import { RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { pluck, map } from 'rxjs/operators';
 
 import { CoreWebService } from 'dotcms-js';
-import { DotLayout, DotPageRender } from '@portlets/dot-edit-page/shared/models';
 
+import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
+import { DotLayout } from '@shared/models/dot-edit-layout-designer';
 
 /**
  * Provide util methods interact with layout API
@@ -30,12 +30,15 @@ export class DotPageLayoutService {
         return this.coreWebService
             .requestView({
                 body: dotLayout,
-                method: RequestMethod.Post,
+                method: 'POST',
                 url: `v1/page/${pageIdentifier}/layout`
             })
             .pipe(
                 pluck('entity'),
-                map((dotPageRenderResponse: DotPageRender.Parameters) => new DotPageRender(dotPageRenderResponse))
+                map(
+                    (dotPageRenderResponse: DotPageRender.Parameters) =>
+                        new DotPageRender(dotPageRenderResponse)
+                )
             );
     }
 }

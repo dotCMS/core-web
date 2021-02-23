@@ -1,4 +1,4 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, RouteReuseStrategy } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from '@components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacyComponent } from '@components/main-legacy/main-legacy.component';
@@ -13,19 +13,36 @@ import { PublicAuthGuardService } from '@services/guards/public-auth-guard.servi
 import { DotLoginPageComponent } from '@components/login/main/dot-login-page.component';
 import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
 import { DotIframePortletLegacyResolver } from '@components/_common/iframe/service/dot-iframe-porlet-legacy-resolver.service';
+import { DotCustomReuseStrategyService } from '@shared/dot-custom-reuse-strategy/dot-custom-reuse-strategy.service';
 
 const PORTLETS_ANGULAR = [
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
+        path: 'templates',
+        loadChildren: () =>
+            import('@portlets/dot-templates/dot-templates.module').then((m) => m.DotTemplatesModule)
+    },
+    {
+        canActivate: [MenuGuardService],
+        canActivateChild: [MenuGuardService],
         path: 'content-types-angular',
-        loadChildren: '@portlets/dot-content-types/dot-content-types.module#DotContentTypesModule'
+        data: {
+            reuseRoute: false
+        },
+        loadChildren: () =>
+            import('@portlets/dot-content-types/dot-content-types.module').then(
+                (m) => m.DotContentTypesModule
+            )
     },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'forms',
-        loadChildren: '@portlets/dot-form-builder/dot-form-builder.module#DotFormBuilderModule',
+        loadChildren: () =>
+            import('@portlets/dot-form-builder/dot-form-builder.module').then(
+                (m) => m.DotFormBuilderModule
+            ),
         data: {
             filterBy: 'FORM'
         }
@@ -34,32 +51,41 @@ const PORTLETS_ANGULAR = [
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'rules',
-        loadChildren: '@portlets/dot-rules/dot-rules.module#DotRulesModule'
+        loadChildren: () =>
+            import('@portlets/dot-rules/dot-rules.module').then((m) => m.DotRulesModule)
     },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'dot-browser',
-        loadChildren: '@portlets/dot-site-browser/dot-site-browser.module#DotSiteBrowserModule'
+        loadChildren: () =>
+            import('@portlets/dot-site-browser/dot-site-browser.module').then(
+                (m) => m.DotSiteBrowserModule
+            )
+    },
+    {
+        // canActivate: [MenuGuardService],
+        // canActivateChild: [MenuGuardService],
+        path: 'starter',
+        loadChildren: () =>
+            import('@portlets/dot-starter/dot-starter.module').then((m) => m.DotStarterModule)
     },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'apps',
-        loadChildren: '@portlets/dot-apps/dot-apps.module#DotAppsModule'
-    },
-    {
-        path: 'pl',
-        loadChildren:
-            '@components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
+        loadChildren: () =>
+            import('@portlets/dot-apps/dot-apps.module').then((m) => m.DotAppsModule)
     },
     {
         path: 'notLicensed',
-        loadChildren: '@components/not-licensed/not-licensed.module#NotLicensedModule'
+        loadChildren: () =>
+            import('@components/not-licensed/not-licensed.module').then((m) => m.NotLicensedModule)
     },
     {
         path: 'edit-page',
-        loadChildren: '@portlets/dot-edit-page/dot-edit-page.module#DotEditPageModule'
+        loadChildren: () =>
+            import('@portlets/dot-edit-page/dot-edit-page.module').then((m) => m.DotEditPageModule)
     },
     {
         canActivate: [MenuGuardService],
@@ -77,8 +103,17 @@ const PORTLETS_IFRAME = [
                 path: ':id',
                 children: [
                     {
-                        loadChildren:
-                            '@portlets/dot-porlet-detail/dot-portlet-detail.module#DotPortletDetailModule',
+                        loadChildren: () =>
+                            import(
+                                '@components/dot-contentlet-editor/dot-contentlet-editor.routing.module'
+                            ).then((m) => m.DotContentletEditorRoutingModule),
+                        path: 'new'
+                    },
+                    {
+                        loadChildren: () =>
+                            import('@portlets/dot-porlet-detail/dot-portlet-detail.module').then(
+                                (m) => m.DotPortletDetailModule
+                            ),
                         path: ':asset'
                     }
                 ],
@@ -116,14 +151,16 @@ const appRoutes: Routes = [
         resolve: {
             loginFormInfo: DotLoginPageResolver
         },
-        loadChildren: '@components/login/dot-login-page.module#DotLoginPageModule'
+        loadChildren: () =>
+            import('@components/login/dot-login-page.module').then((m) => m.DotLoginPageModule)
     },
     {
         canActivate: [AuthGuardService],
         children: [
             {
                 path: 'rules',
-                loadChildren: '@portlets/dot-rules/dot-rules.module#DotRulesModule',
+                loadChildren: () =>
+                    import('@portlets/dot-rules/dot-rules.module').then((m) => m.DotRulesModule),
                 canActivate: [AuthGuardService]
             }
         ],
@@ -151,8 +188,10 @@ const appRoutes: Routes = [
     exports: [RouterModule],
     imports: [
         RouterModule.forRoot(appRoutes, {
-            useHash: true
+            useHash: true,
+            onSameUrlNavigation: 'reload'
         })
-    ]
+    ],
+    providers: [{ provide: RouteReuseStrategy, useClass: DotCustomReuseStrategyService }]
 })
 export class AppRoutingModule {}

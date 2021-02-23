@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { debounceTime, pluck, takeUntil } from 'rxjs/operators';
+import { debounceTime, pluck, take, takeUntil } from 'rxjs/operators';
 import { fromEvent as observableFromEvent, Subject } from 'rxjs';
 import { DotApps, DotAppsListResolverData } from '@shared/models/dot-apps/dot-apps.model';
 import * as _ from 'lodash';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { ActivatedRoute } from '@angular/router';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
+import { DotAppsImportExportDialogComponent } from '../dot-apps-import-export-dialog/dot-apps-import-export-dialog.component';
 
 @Component({
     selector: 'dot-apps-list',
@@ -13,11 +14,13 @@ import { DotAppsService } from '@services/dot-apps/dot-apps.service';
     styleUrls: ['./dot-apps-list.component.scss']
 })
 export class DotAppsListComponent implements OnInit, OnDestroy {
-    @ViewChild('searchInput')
-    searchInput: ElementRef;
+    @ViewChild('searchInput') searchInput: ElementRef;
+    @ViewChild('importExportDialog') importExportDialog: DotAppsImportExportDialogComponent;
     apps: DotApps[];
     appsCopy: DotApps[];
     canAccessPortlet: boolean;
+    importExportDialogAction: string;
+    showDialog = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -51,6 +54,49 @@ export class DotAppsListComponent implements OnInit, OnDestroy {
      */
     goToApp(key: string): void {
         this.dotRouterService.goToAppsConfiguration(key);
+    }
+
+    /**
+     * Opens the Import/Export dialog for all configurations
+     *
+     * @memberof DotAppsConfigurationComponent
+     */
+    confirmImportExport(action: string): void {
+        this.showDialog = true;
+        this.importExportDialogAction = action;
+    }
+
+    /**
+     * Updates dialog show/hide state
+     *
+     * @memberof DotAppsConfigurationComponent
+     */
+    onClosedDialog(): void {
+        this.showDialog = false;
+    }
+
+    /**
+     * Checks if export button is disabled based on existing configurations
+     *
+     * @returns {boolean}
+     * @memberof DotAppsListComponent
+     */
+    isExportButtonDisabled(): boolean {
+        return this.apps.filter((app: DotApps) => app.configurationsCount).length > 0;
+    }
+
+    /**
+     * Reloads data of all apps configuration listing to update the UI
+     *
+     * @memberof DotAppsListComponent
+     */
+    reloadAppsData(): void {
+        this.dotAppsService
+            .get()
+            .pipe(take(1))
+            .subscribe((apps: DotApps[]) => {
+                this.getApps(apps);
+            });
     }
 
     private getApps(apps: DotApps[]): void {

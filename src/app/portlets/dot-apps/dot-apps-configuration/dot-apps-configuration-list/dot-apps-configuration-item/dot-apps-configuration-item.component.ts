@@ -13,6 +13,7 @@ export class DotAppsConfigurationItemComponent {
     @Input() site: DotAppsSites;
 
     @Output() edit = new EventEmitter<DotAppsSites>();
+    @Output() export = new EventEmitter<DotAppsSites>();
     @Output() delete = new EventEmitter<DotAppsSites>();
 
     constructor(
@@ -39,6 +40,18 @@ export class DotAppsConfigurationItemComponent {
     }
 
     /**
+     * Emits action to export configuration
+     *
+     * @param MouseEvent $event
+     * @param DotAppsSites site
+     * @memberof DotAppsConfigurationItemComponent
+     */
+    exportConfiguration($event: MouseEvent, site: DotAppsSites): void {
+        $event.stopPropagation();
+        this.export.emit(site);
+    }
+
+    /**
      * Display confirmation dialog to delete a specific configuration
      *
      * @param MouseEvent $event
@@ -53,9 +66,9 @@ export class DotAppsConfigurationItemComponent {
             },
             reject: () => {},
             header: this.dotMessageService.get('apps.confirmation.title'),
-            message: `${this.dotMessageService.get(
-                'apps.confirmation.delete.message'
-            )} <b>${site.name}</b> ?`,
+            message: `${this.dotMessageService.get('apps.confirmation.delete.message')} <b>${
+                site.name
+            }</b> ?`,
             footerLabel: {
                 accept: this.dotMessageService.get('apps.confirmation.accept')
             }

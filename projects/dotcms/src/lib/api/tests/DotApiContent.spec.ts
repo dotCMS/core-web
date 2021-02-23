@@ -69,8 +69,7 @@ describe('DotApiContent', () => {
             };
 
             const requestParams = {
-                url:
-                    `/api/content/query/+contentType:${params.contentType}%20/depth/${params.options.depth}`,
+                url: `/api/content/query/+contentType:${params.contentType}%20/depth/${params.options.depth}`,
                 method: 'GET',
                 body: ''
             };
@@ -84,7 +83,7 @@ describe('DotApiContent', () => {
             const requestParams = {
                 url: '/api/content/save/1',
                 method: 'POST',
-                body: JSON.stringify(contentParams)
+                body: contentParams
             };
             dotApiContent.save(contentParams).then((data) => {
                 expect(data).toEqual(responseExpected);
@@ -96,7 +95,7 @@ describe('DotApiContent', () => {
             const requestParams = {
                 url: '/api/content/publish/1',
                 method: 'POST',
-                body: JSON.stringify(contentParams)
+                body: contentParams
             };
             dotApiContent.publish(contentParams).then((data) => {
                 expect(data).toEqual(responseExpected);

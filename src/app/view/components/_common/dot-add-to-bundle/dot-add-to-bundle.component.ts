@@ -1,12 +1,20 @@
 import { Observable, Subject } from 'rxjs';
-import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ViewChild,
+    AfterViewInit,
+    OnInit,
+    OnDestroy
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { OnInit, OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { LoggerService } from 'dotcms-js';
 import { AddToBundleService } from '@services/add-to-bundle/add-to-bundle.service';
 import { DotBundle } from '@models/dot-bundle/dot-bundle';
-import { Dropdown } from 'primeng/primeng';
+import { Dropdown } from 'primeng/dropdown';
 import { map, tap, take, takeUntil } from 'rxjs/operators';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
@@ -28,9 +36,9 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit, OnDestroy
 
     @Output() cancel = new EventEmitter<boolean>();
 
-    @ViewChild('formEl') formEl: HTMLFormElement;
+    @ViewChild('formEl', { static: true }) formEl: HTMLFormElement;
 
-    @ViewChild('addBundleDropdown') addBundleDropdown: Dropdown;
+    @ViewChild('addBundleDropdown', { static: true }) addBundleDropdown: Dropdown;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -140,7 +148,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit, OnDestroy
     private getDefaultBundle(bundles: DotBundle[]): DotBundle {
         const lastBundle: DotBundle = JSON.parse(sessionStorage.getItem(LAST_BUNDLE_USED));
         // return lastBundle ? this.bundle$.find(bundle => bundle.name === lastBundle.name) : null;
-        return lastBundle ? bundles.find(bundle => bundle.name === lastBundle.name) : null;
+        return lastBundle ? bundles.find((bundle) => bundle.name === lastBundle.name) : null;
     }
 
     private setDialogConfig(form: FormGroup): void {

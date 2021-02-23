@@ -1,10 +1,9 @@
-@import "variables";
+@use "variables" as *;
 @import "mixins";
 
 :host {
     box-shadow: $md-shadow-2;
     display: block;
-    height: 192px;
     transition: box-shadow $basic-speed ease-in;
 
     &:hover {
@@ -22,7 +21,7 @@
         background-color: $white;
 
         ::ng-deep {
-            .ui-widget-content {
+            .p-widget-content {
                 background-color: $white;
             }
             .avatar__img {
@@ -38,7 +37,7 @@
         .avatar__img {
             filter: grayscale(1);
         }
-        .ui-widget-content {
+        .p-widget-content {
             background-color: $gray-bg;
         }
         .dot-apps-card__name {
@@ -49,13 +48,13 @@
 
 p-header {
     display: flex;
-    padding-top: $basic-padding * 3;
+    padding-top: $spacing-4;
 }
 
 dot-avatar {
     border-radius: 50%;
     box-shadow: $md-shadow-2;
-    margin: 0 $basic-padding * 2 0;
+    margin: 0 $spacing-3 0;
 }
 
 .dot-apps-card__name {
@@ -64,10 +63,11 @@ dot-avatar {
     flex: 1;
     font-size: $font-size-large;
     font-weight: bold;
-    height: $basic-padding * 2;
-    line-height: $basic-padding * 2;
+    height: $spacing-3;
+    line-height: $spacing-3;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color $basic-speed ease;
 }
 
 .dot-apps-card__label-container {
@@ -85,21 +85,19 @@ dot-avatar {
     color: $gray;
     display: block;
     font-size: $font-size-medium;
-    line-height: $basic-padding * 2;
-    margin-top: $basic-padding;
-    margin-right: $basic-padding * 3;
+    line-height: $spacing-3;
+    margin-top: $spacing-1;
+    margin-right: $spacing-4;
 }
 
-::ng-deep .ui-card-body {
+::ng-deep .p-card-body {
     color: $gray;
     padding: 0;
 
-    .ui-card-content > p {
-        height: 60px;
-        font-size: $font-size-large;
+    .p-card-content > p {
         line-height: 1.5rem;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin: $basic-padding * 3 $basic-padding * 2;
+        margin: 0 $spacing-3;
     }
 }

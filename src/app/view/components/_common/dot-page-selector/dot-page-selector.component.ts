@@ -33,7 +33,6 @@ const REPLACE_SPECIAL_CHAR = /[^a-zA-Z0-9._/-]/g;
 })
 export class DotPageSelectorComponent implements ControlValueAccessor {
     @Output() selected = new EventEmitter<DotPageAsset>();
-    @Input() style: any;
     @Input() label: string;
     @Input() floatingLabel = false;
 
@@ -181,8 +180,8 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     private getErrorMessage(): string {
         return this.results.data.length === 0
             ? this.results.type === 'site'
-              ? this.dotMessageService.get('page.selector.no.sites.results')
-              : this.dotMessageService.get('page.selector.no.page.results')
+                ? this.dotMessageService.get('page.selector.no.sites.results')
+                : this.dotMessageService.get('page.selector.no.page.results')
             : null;
     }
 

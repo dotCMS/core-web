@@ -1,6 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { CoreWebService } from 'dotcms-js';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { Injectable } from '@angular/core';
 import { Subject, Observable, of } from 'rxjs';
-import { mergeMap, map, filter } from 'rxjs/operators';
+import { mergeMap, map, filter, catchError, pluck, take } from 'rxjs/operators';
 
 interface DotAddEditEvents {
     load?: ($event: any) => void;
@@ -31,6 +34,8 @@ export class DotContentletEditorService {
     private _keyDown: ($event: KeyboardEvent) => void;
 
     constructor(
+        private coreWebService: CoreWebService,
+        private httpErrorManagerService: DotHttpErrorManagerService
     ) {}
 
     get addUrl$(): Observable<string> {
@@ -132,6 +137,28 @@ export class DotContentletEditorService {
         }
     }
 
+    /**
+     * Returns action url to display create contentlet dialog
+     * @param {string} contentTypeVariable
+     * @returns Observable<string>
+     * @memberof DotContentletEditorService
+     */
+    getActionUrl(contentTypeVariable: string): Observable<string> {
+        return this.coreWebService
+            .requestView({
+                url: `v1/portlet/_actionurl/${contentTypeVariable}`
+            })
+            .pipe(
+                pluck('entity'),
+                catchError((error: HttpErrorResponse) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
+            );
+    }
+
     private bindEvents(events: DotAddEditEvents): void {
         if (events.load) {
             this._load = events.load;
@@ -144,9 +171,7 @@ export class DotContentletEditorService {
     private geAddtUrl(action: DotEditorAction): string {
         return action === null
             ? ''
-            : `/html/ng-contentlet-selector.jsp?ng=true&container_id=${action.data.container}&add=${
-                  action.data.baseTypes
-              }`;
+            : `/html/ng-contentlet-selector.jsp?ng=true&container_id=${action.data.container}&add=${action.data.baseTypes}`;
     }
 
     private getCreateUrl(action: DotEditorAction): string {
@@ -154,16 +179,17 @@ export class DotContentletEditorService {
     }
 
     private getEditUrl(action: DotEditorAction): string {
-        return action === null ? '' :
-            [
-                `/c/portal/layout`,
-                `?p_p_id=content`,
-                `&p_p_action=1`,
-                `&p_p_state=maximized`,
-                `&p_p_mode=view`,
-                `&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`,
-                `&_content_cmd=edit&inode=${action.data.inode}`
-            ].join('');
+        return action === null
+            ? ''
+            : [
+                  `/c/portal/layout`,
+                  `?p_p_id=content`,
+                  `&p_p_action=1`,
+                  `&p_p_state=maximized`,
+                  `&p_p_mode=view`,
+                  `&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`,
+                  `&_content_cmd=edit&inode=${action.data.inode}`
+              ].join('');
     }
 
     private isAddUrl(action: DotEditorAction): boolean {

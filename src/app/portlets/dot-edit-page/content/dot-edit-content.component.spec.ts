@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -5,7 +6,6 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, tick, fakeAsync, TestBed } from '@angular/core/testing';
 import { Component, DebugElement, EventEmitter, Input, Output, ElementRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DialogModule, ButtonModule, ConfirmationService } from 'primeng/primeng';
 import {
     ApiRoot,
     CoreWebService,
@@ -19,6 +19,12 @@ import {
     StringUtils,
     UserModel
 } from 'dotcms-js';
+
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmationService } from 'primeng/api';
+import { DotCMSContentType } from 'dotcms-models';
+
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/index';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
 import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.service';
@@ -30,9 +36,8 @@ import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-re
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
+import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 import { DotEditContentComponent } from './dot-edit-content.component';
-import { DotCMSContentType } from 'dotcms-models';
 import { DotContentletEditorModule } from '@components/dot-contentlet-editor/dot-contentlet-editor.module';
 import { DotEditPageInfoModule } from '../components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
@@ -49,16 +54,16 @@ import { SiteServiceMock } from '@tests/site-service.mock';
 import { LoginServiceMock, mockUser } from '@tests/login-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
-import { mockDotRenderedPage, mockDotLayout } from '@tests/dot-page-render.mock';
+import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotPageMode, DotPageContainer, DotPageContent } from '../shared/models';
+import { DotPageContent } from '../shared/models';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { dotcmsContentletMock } from '@tests/dotcms-contentlet.mock';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotWizardModule } from '@components/_common/dot-wizard/dot-wizard.module';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
@@ -66,7 +71,8 @@ import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-tes
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
+import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 
 @Component({
     selector: 'dot-global-message',
@@ -100,8 +106,8 @@ export class MockDotFormSelectorComponent {
 }
 
 const mockRenderedPageState = new DotPageRenderState(
-    mockUser,
-    new DotPageRender(mockDotRenderedPage)
+    mockUser(),
+    new DotPageRender(mockDotRenderedPage())
 );
 
 describe('DotEditContentComponent', () => {
@@ -257,7 +263,7 @@ describe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderAddedForm').and.returnValue(
             of([{ identifier: '123', uuid: 'uui-1' }])
         );
-        spyOn(dotEditPageService, 'save').and.returnValue(of({}));
+        spyOn<any>(dotEditPageService, 'save').and.returnValue(of({}));
     });
 
     describe('elements', () => {
@@ -284,7 +290,7 @@ describe('DotEditContentComponent', () => {
                     });
                     fixture.detectChanges();
 
-                    expect(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
+                    expect<any>(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
                         baseType: 'string',
                         clazz: 'string'
                     });
@@ -373,7 +379,9 @@ describe('DotEditContentComponent', () => {
                 spyOn(dotCustomEventHandlerService, 'handle');
                 dotEditContentlet.triggerEventHandler('custom', { data: 'test' });
 
-                expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({ data: 'test' });
+                expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
+                    data: 'test'
+                });
             });
         });
 
@@ -387,12 +395,6 @@ describe('DotEditContentComponent', () => {
 
             it('should have', () => {
                 expect(dotReorderMenu).not.toBeNull();
-            });
-
-            xdescribe('events', () => {
-                component.reorderMenuUrl = 'some/test';
-                dotReorderMenu.triggerEventHandler('close', {});
-                expect(component.reorderMenuUrl).toBe('xxx');
             });
         });
 
@@ -418,7 +420,7 @@ describe('DotEditContentComponent', () => {
                 const iframeWrapper = deviceWrapper.query(By.css('.dot-edit__iframe-wrapper'));
 
                 expect(wrapper).not.toBeNull();
-                expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(false);
+                expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBeUndefined();
 
                 expect(deviceWrapper).not.toBeNull();
                 expect(iframeWrapper).not.toBeNull();
@@ -428,11 +430,11 @@ describe('DotEditContentComponent', () => {
                 beforeEach(() => {
                     route.parent.parent.data = of({
                         content: new DotPageRenderState(
-                            mockUser,
+                            mockUser(),
                             new DotPageRender({
-                                ...mockDotRenderedPage,
+                                ...mockDotRenderedPage(),
                                 viewAs: {
-                                    ...mockDotRenderedPage.viewAs,
+                                    ...mockDotRenderedPage().viewAs,
                                     device: {
                                         cssHeight: '100',
                                         cssWidth: '100',
@@ -451,26 +453,23 @@ describe('DotEditContentComponent', () => {
                     expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
                 });
 
-                it('should add inline styles to iframe', async () => {
-                    fixture.detectChanges();
-                    fixture.whenStable().then(() => {
-                        const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
+                xit('should add inline styles to iframe', (done) => {
+                    setTimeout(() => {
+                        const iframeEl = de.query(By.css('.dot-edit__iframe'));
                         expect(iframeEl.styles).toEqual({
                             position: '',
                             visibility: ''
                         });
-                    });
+                        done();
+                    }, 1000);
                 });
 
-                it('should add inline styles to device wrapper', async () => {
-                    fixture.detectChanges();
-                    fixture.whenStable().then(() => {
+                it('should add inline styles to device wrapper', (done) => {
+                    setTimeout(() => {
                         const deviceWraper = de.query(By.css('.dot-edit__device-wrapper'));
-                        expect(deviceWraper.styles).toEqual({
-                            width: '100px',
-                            height: '100px'
-                        });
-                    });
+                        expect(deviceWraper.styles.cssText).toEqual('width: 100px; height: 100px;');
+                        done();
+                    }, 100);
                 });
             });
         });
@@ -507,7 +506,7 @@ describe('DotEditContentComponent', () => {
             it('should have attr setted', fakeAsync(() => {
                 detectChangesForIframeRender(fixture);
                 const iframeEl = getIframe();
-                expect(iframeEl.attributes.class).toBe('dot-edit__iframe');
+                expect(iframeEl.attributes.class).toContain('dot-edit__iframe');
                 expect(iframeEl.attributes.frameborder).toBe('0');
                 expect(iframeEl.attributes.height).toBe('100%');
                 expect(iframeEl.attributes.width).toBe('100%');
@@ -531,11 +530,11 @@ describe('DotEditContentComponent', () => {
 
                 it('should render in edit mode', fakeAsync(() => {
                     const state = new DotPageRenderState(
-                        mockUser,
+                        mockUser(),
                         new DotPageRender({
-                            ...mockDotRenderedPage,
+                            ...mockDotRenderedPage(),
                             page: {
-                                ...mockDotRenderedPage.page,
+                                ...mockDotRenderedPage().page,
                                 lockedBy: null
                             },
                             viewAs: {
@@ -560,9 +559,9 @@ describe('DotEditContentComponent', () => {
                 beforeEach(() => {
                     route.parent.parent.data = of({
                         content: new DotPageRenderState(
-                            mockUser,
+                            mockUser(),
                             new DotPageRender({
-                                ...mockDotRenderedPage,
+                                ...mockDotRenderedPage(),
                                 viewAs: {
                                     mode: DotPageMode.EDIT
                                 }
@@ -574,14 +573,10 @@ describe('DotEditContentComponent', () => {
                 it('should handle load', fakeAsync(() => {
                     spyOn(dotLoadingIndicatorService, 'hide');
                     spyOn(dotUiColorsService, 'setColors');
-                    spyOn(dotEditContentHtmlService, 'setContaintersChangeHeightListener');
                     detectChangesForIframeRender(fixture);
 
                     expect(dotLoadingIndicatorService.hide).toHaveBeenCalled();
                     expect(dotUiColorsService.setColors).toHaveBeenCalled();
-                    expect(
-                        dotEditContentHtmlService.setContaintersChangeHeightListener
-                    ).toHaveBeenCalledWith(jasmine.objectContaining(mockDotLayout));
                 }));
 
                 describe('custom', () => {
@@ -630,14 +625,14 @@ describe('DotEditContentComponent', () => {
 
                         triggerIframeCustomEvent({
                             name: 'load-edit-mode-page',
-                            data: mockDotRenderedPage
+                            data: mockDotRenderedPage()
                         });
 
                         fixture.detectChanges();
 
                         const dotRenderedPageStateExpected = new DotPageRenderState(
-                            mockUser,
-                            mockDotRenderedPage
+                            mockUser(),
+                            mockDotRenderedPage()
                         );
 
                         expect(dotPageStateService.setLocalState).toHaveBeenCalledWith(
@@ -653,7 +648,7 @@ describe('DotEditContentComponent', () => {
 
                         detectChangesForIframeRender(fixture);
 
-                        const mockDotRenderedPageCopy = _.cloneDeep(mockDotRenderedPage);
+                        const mockDotRenderedPageCopy = mockDotRenderedPage();
                         mockDotRenderedPageCopy.page.pageURI = '/another/url/test';
 
                         triggerIframeCustomEvent({
@@ -664,7 +659,7 @@ describe('DotEditContentComponent', () => {
                         fixture.detectChanges();
 
                         const dotRenderedPageStateExpected = new DotPageRenderState(
-                            mockUser,
+                            mockUser(),
                             mockDotRenderedPageCopy
                         );
 
@@ -970,11 +965,11 @@ describe('DotEditContentComponent', () => {
             beforeEach(() => {
                 route.parent.parent.data = of({
                     content: new DotPageRenderState(
-                        mockUser,
+                        mockUser(),
                         new DotPageRender({
-                            ...mockDotRenderedPage,
+                            ...mockDotRenderedPage(),
                             viewAs: {
-                                ...mockDotRenderedPage.viewAs,
+                                ...mockDotRenderedPage().viewAs,
                                 persona: {
                                     ...dotcmsContentletMock,
                                     name: 'Super Persona',
@@ -996,22 +991,15 @@ describe('DotEditContentComponent', () => {
                 });
                 fixture.detectChanges();
 
-                expect(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
+                expect<any>(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
                     baseType: 'string',
                     clazz: 'string'
                 });
 
-                expect(dotEditPageService.save).toHaveBeenCalledWith('123', [
+                expect<any>(dotEditPageService.save).toHaveBeenCalledWith('123', [
                     { identifier: '123', uuid: 'uui-1', personaTag: 'SuperPersona' }
                 ]);
             });
         });
-    });
-
-    afterAll(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
     });
 });

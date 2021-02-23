@@ -1,7 +1,6 @@
 import {
     Directive,
     ElementRef,
-    Renderer,
     EventEmitter,
     ComponentFactoryResolver,
     ComponentRef,
@@ -10,7 +9,8 @@ import {
     OnInit,
     OnDestroy,
     DoCheck,
-    Output
+    Output,
+    Renderer2
 } from '@angular/core';
 import { Observable, Subscription, fromEvent as observableFromEvent } from 'rxjs';
 
@@ -180,7 +180,7 @@ export class NgGrid implements OnInit, DoCheck, OnDestroy {
     constructor(
         private _differs: KeyValueDiffers,
         private _ngEl: ElementRef,
-        private _renderer: Renderer,
+        private _renderer: Renderer2,
         private componentFactoryResolver: ComponentFactoryResolver
     ) {
         this._defineListeners();
@@ -188,9 +188,9 @@ export class NgGrid implements OnInit, DoCheck, OnDestroy {
 
     // 	Public methods
     public ngOnInit(): void {
-        this._renderer.setElementClass(this._ngEl.nativeElement, 'grid', true);
+        this._renderer.addClass(this._ngEl.nativeElement, 'grid');
         if (this.autoStyle)
-            this._renderer.setElementStyle(this._ngEl.nativeElement, 'position', 'relative');
+            this._renderer.setStyle(this._ngEl.nativeElement, 'position', 'relative');
         this.setConfig(this._config);
     }
 
@@ -792,11 +792,11 @@ export class NgGrid implements OnInit, DoCheck, OnDestroy {
     }
 
     private _zoomOut(): void {
-        this._renderer.setElementStyle(this._ngEl.nativeElement, 'transform', 'scale(0.5, 0.5)');
+        this._renderer.setStyle(this._ngEl.nativeElement, 'transform', 'scale(0.5, 0.5)');
     }
 
     private _resetZoom(): void {
-        this._renderer.setElementStyle(this._ngEl.nativeElement, 'transform', '');
+        this._renderer.setStyle(this._ngEl.nativeElement, 'transform', '');
     }
 
     private _drag(e: any): void {
@@ -876,13 +876,13 @@ export class NgGrid implements OnInit, DoCheck, OnDestroy {
         let newW = resizeRight
             ? mousePos.left - itemPos.left + 1
             : resizeLeft
-                ? endCorner.left - mousePos.left + 1
-                : itemDims.width;
+            ? endCorner.left - mousePos.left + 1
+            : itemDims.width;
         let newH = resizeBottom
             ? mousePos.top - itemPos.top + 1
             : resizeTop
-                ? endCorner.top - mousePos.top + 1
-                : itemDims.height;
+            ? endCorner.top - mousePos.top + 1
+            : itemDims.height;
 
         if (newW < this.minWidth) newW = this.minWidth;
         if (newH < this.minHeight) newH = this.minHeight;
@@ -1314,7 +1314,10 @@ export class NgGrid implements OnInit, DoCheck, OnDestroy {
                     // 	If not, try moving to the top of the column left of the smallest item in our way
                     newPos.col = Math.max(
                         newPos.col + 1,
-                        Math.min.apply(Math, itemsInPath.map((item) => item.col + item.sizex))
+                        Math.min.apply(
+                            Math,
+                            itemsInPath.map((item) => item.col + item.sizex)
+                        )
                     );
                     newPos.row = 1;
                 }
@@ -1341,7 +1344,10 @@ export class NgGrid implements OnInit, DoCheck, OnDestroy {
                     // 	If not, try moving to the left of the row below the smallest item in our way
                     newPos.row = Math.max(
                         newPos.row + 1,
-                        Math.min.apply(Math, itemsInPath.map((item) => item.row + item.sizey))
+                        Math.min.apply(
+                            Math,
+                            itemsInPath.map((item) => item.row + item.sizey)
+                        )
                     );
                     newPos.col = 1;
                 }
@@ -1538,9 +1544,9 @@ export class NgGrid implements OnInit, DoCheck, OnDestroy {
             this._curMaxRow = maxRow;
         }
 
-        this._renderer.setElementStyle(this._ngEl.nativeElement, 'width', '100%'); // (maxCol * (this.colWidth + this.marginLeft + this.marginRight))+'px');
+        this._renderer.setStyle(this._ngEl.nativeElement, 'width', '100%'); // (maxCol * (this.colWidth + this.marginLeft + this.marginRight))+'px');
         if (!this._elementBasedDynamicRowHeight) {
-            this._renderer.setElementStyle(
+            this._renderer.setStyle(
                 this._ngEl.nativeElement,
                 'height',
                 maxRow * (this.rowHeight + this.marginTop + this.marginBottom) + 'px'
@@ -1571,7 +1577,8 @@ export class NgGrid implements OnInit, DoCheck, OnDestroy {
     private _getMousePosition(e: any): NgGridRawPosition {
         if (
             ((window as any).TouchEvent && e instanceof TouchEvent) ||
-            (e.touches || e.changedTouches)
+            e.touches ||
+            e.changedTouches
         ) {
             e = e.touches.length > 0 ? e.touches[0] : e.changedTouches[0];
         }

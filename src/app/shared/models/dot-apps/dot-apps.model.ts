@@ -1,4 +1,9 @@
-import { SelectItem } from "primeng/primeng";
+import { SelectItem } from 'primeng/api';
+
+export enum dialogAction {
+    IMPORT = 'Import',
+    EXPORT = 'Export'
+}
 
 export interface DotApps {
     allowExtraParams: boolean;
@@ -42,4 +47,15 @@ export interface DotAppsSaveData {
 export interface DotAppsListResolverData {
     apps: DotApps[];
     isEnterpriseLicense: boolean;
+}
+
+export interface DotAppsExportConfiguration {
+    appKeysBySite?: { [key: string]: string[] };
+    exportAll: boolean;
+    password: string;
+}
+
+export interface DotAppsImportConfiguration {
+    file: File;
+    json: { password: string };
 }

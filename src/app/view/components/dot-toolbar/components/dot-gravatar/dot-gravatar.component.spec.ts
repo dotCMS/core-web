@@ -1,4 +1,4 @@
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { Component, Input, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DotGravatarComponent } from './dot-gravatar.component';
@@ -11,10 +11,7 @@ import * as md5 from 'md5';
 
 @Component({
     selector: 'dot-test-component',
-    template: `<dot-gravatar [email]='email'
-                           [size]='size'
-                >
-               </dot-gravatar>`
+    template: `<dot-gravatar [email]="email" [size]="size"> </dot-gravatar>`
 })
 class HostTestComponent {
     @Input()
@@ -35,15 +32,15 @@ describe('DotGravatarComponent', () => {
     let avatarComponent: DebugElement;
     let dotGravatarService: DotGravatarService;
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [HostTestComponent, DotGravatarComponent],
-            imports: [DotAvatarModule, CommonModule],
-            providers: [
-                { provide: DotGravatarService, useClass: DotGravatarServiceMock },
-            ]
-        });
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [HostTestComponent, DotGravatarComponent],
+                imports: [DotAvatarModule, CommonModule],
+                providers: [{ provide: DotGravatarService, useClass: DotGravatarServiceMock }]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(HostTestComponent);
@@ -76,6 +73,8 @@ describe('DotGravatarComponent', () => {
         fixture.detectChanges();
         expect(avatarComponent.componentInstance.url).toEqual('/avatar_url');
 
-        expect(dotGravatarService.getPhoto).toHaveBeenCalledWith(md5(fixture.componentInstance.email));
+        expect(dotGravatarService.getPhoto).toHaveBeenCalledWith(
+            md5(fixture.componentInstance.email)
+        );
     });
 });

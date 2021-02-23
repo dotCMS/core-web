@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 
 import { LoginService } from 'dotcms-js';
 
@@ -25,27 +25,29 @@ describe('DotWorkflowTaskDetailComponent', () => {
 
     let dotWorkflowTaskDetailService: DotWorkflowTaskDetailService;
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [DotWorkflowTaskDetailComponent],
-            providers: [
-                DotWorkflowTaskDetailService,
-                {
-                    provide: LoginService,
-                    useClass: LoginServiceMock
-                },
-                {
-                    provide: DotMenuService,
-                    useValue: {
-                        getDotMenuId() {
-                            return observableOf('999');
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [DotWorkflowTaskDetailComponent],
+                providers: [
+                    DotWorkflowTaskDetailService,
+                    {
+                        provide: LoginService,
+                        useClass: LoginServiceMock
+                    },
+                    {
+                        provide: DotMenuService,
+                        useValue: {
+                            getDotMenuId() {
+                                return observableOf('999');
+                            }
                         }
                     }
-                }
-            ],
-            imports: [DotIframeDialogModule, RouterTestingModule, BrowserAnimationsModule]
-        });
-    }));
+                ],
+                imports: [DotIframeDialogModule, RouterTestingModule, BrowserAnimationsModule]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotWorkflowTaskDetailComponent);

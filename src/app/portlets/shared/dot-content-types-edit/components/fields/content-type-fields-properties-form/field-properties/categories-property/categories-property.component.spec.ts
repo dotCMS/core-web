@@ -1,5 +1,5 @@
 import { CategoriesPropertyComponent } from './categories-property.component';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement, Injectable, Input, Output, EventEmitter, Component } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DOTTestBed } from '@tests/dot-test-bed';
@@ -68,25 +68,27 @@ describe('CategoriesPropertyComponent', () => {
     });
     let paginatorService: PaginatorService;
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                CategoriesPropertyComponent,
-                TestFieldValidationMessageComponent,
-                TestSearchableDropdownComponent
-            ],
-            imports: [],
-            providers: [
-                { provide: PaginatorService, useClass: TestPaginatorService },
-                { provide: DotMessageService, useValue: messageServiceMock }
-            ]
-        });
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [
+                    CategoriesPropertyComponent,
+                    TestFieldValidationMessageComponent,
+                    TestSearchableDropdownComponent
+                ],
+                imports: [],
+                providers: [
+                    { provide: PaginatorService, useClass: TestPaginatorService },
+                    { provide: DotMessageService, useValue: messageServiceMock }
+                ]
+            });
 
-        fixture = DOTTestBed.createComponent(CategoriesPropertyComponent);
-        de = fixture.debugElement;
-        comp = fixture.componentInstance;
-        paginatorService = de.injector.get(PaginatorService);
-    }));
+            fixture = DOTTestBed.createComponent(CategoriesPropertyComponent);
+            de = fixture.debugElement;
+            comp = fixture.componentInstance;
+            paginatorService = de.injector.get(PaginatorService);
+        })
+    );
 
     it('should have a form', () => {
         const group = new FormGroup({});
@@ -100,7 +102,7 @@ describe('CategoriesPropertyComponent', () => {
     it('should set PaginatorService url & placeholder empty label', () => {
         comp.property = {
             field: {
-                ...dotcmsContentTypeFieldBasicMock,
+                ...dotcmsContentTypeFieldBasicMock
             },
             name: 'categories',
             value: ''
@@ -113,7 +115,7 @@ describe('CategoriesPropertyComponent', () => {
     it('should set stored value in placeholder label', () => {
         comp.property = {
             field: {
-                ...dotcmsContentTypeFieldBasicMock,
+                ...dotcmsContentTypeFieldBasicMock
             },
             name: 'categories',
             value: {

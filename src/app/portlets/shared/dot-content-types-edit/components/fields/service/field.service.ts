@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { FieldType } from '../models';
 import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from 'dotcms-models';
 import { CoreWebService } from 'dotcms-js';
-import { RequestMethod } from '@angular/http';
 import { FIELD_ICONS } from '../content-types-fields-list/content-types-fields-icon-map';
 
 /**
@@ -17,7 +16,6 @@ export class FieldService {
     loadFieldTypes(): Observable<FieldType[]> {
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
                 url: 'v1/fieldTypes'
             })
             .pipe(pluck('entity'));
@@ -30,14 +28,16 @@ export class FieldService {
      * @returns Observable<any>
      * @memberof FieldService
      */
-    saveFields(contentTypeId: string, fields: DotCMSContentTypeLayoutRow[]): Observable<DotCMSContentTypeLayoutRow[]> {
-
+    saveFields(
+        contentTypeId: string,
+        fields: DotCMSContentTypeLayoutRow[]
+    ): Observable<DotCMSContentTypeLayoutRow[]> {
         return this.coreWebService
             .requestView({
                 body: {
                     layout: fields
                 },
-                method: RequestMethod.Put,
+                method: 'PUT',
                 url: `v3/contenttype/${contentTypeId}/fields/move`
             })
             .pipe(pluck('entity'));
@@ -60,7 +60,7 @@ export class FieldService {
                 body: {
                     fieldsID: fields.map((field: DotCMSContentTypeField) => field.id)
                 },
-                method: RequestMethod.Delete,
+                method: 'DELETE',
                 url: `v3/contenttype/${contentTypeId}/fields`
             })
             .pipe(pluck('entity'));
@@ -85,13 +85,16 @@ export class FieldService {
      * @returns {Observable<DotCMSContentTypeLayoutRow[]>}
      * @memberof FieldService
      */
-    updateField(contentTypeId: string, field: DotCMSContentTypeField): Observable<DotCMSContentTypeLayoutRow[]> {
+    updateField(
+        contentTypeId: string,
+        field: DotCMSContentTypeField
+    ): Observable<DotCMSContentTypeLayoutRow[]> {
         return this.coreWebService
             .requestView({
                 body: {
                     field: field
                 },
-                method: RequestMethod.Put,
+                method: 'PUT',
                 url: `v3/contenttype/${contentTypeId}/fields/${field.id}`
             })
             .pipe(pluck('entity'));

@@ -19,9 +19,7 @@ const messageServiceMock = new MockDotMessageService({
 
 @Component({
     selector: 'dot-test-host-component',
-    template: `
-        <dot-language-selector [value]="value"></dot-language-selector>
-    `
+    template: ` <dot-language-selector [value]="value"></dot-language-selector> `
 })
 class TestHostComponent {
     value: DotLanguage = mockDotLanguage;
@@ -85,7 +83,7 @@ describe('DotLanguageSelectorComponent', () => {
         const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
         expect(pDropDown.attributes.dataKey).toBe('id');
         expect(pDropDown.attributes.optionLabel).toBe('language');
-        expect(pDropDown.attributes.tiny).toBeDefined();
+        expect(pDropDown.classes['p-dropdown-sm']).toEqual(true);
     });
 
     it('should emit the selected language', () => {

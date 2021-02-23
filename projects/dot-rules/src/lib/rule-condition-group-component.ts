@@ -15,45 +15,55 @@ import { LoggerService } from 'dotcms-js';
 @Component({
     selector: 'condition-group',
     template: `<div class="cw-rule-group">
-  <div class="cw-condition-group-separator" *ngIf="groupIndex === 0">
-    {{rsrc('inputs.group.whenConditions.label') | async}}
-  </div>
-  <div class="cw-condition-group-separator" *ngIf="groupIndex !== 0">
-    <div class="ui basic icon buttons">
-      <button class="ui small button cw-group-operator" (click)="toggleGroupOperator()">
-        <div>{{group.operator}}</div>
-      </button>
-    </div>
-    <span flex class="cw-header-text">
-    {{rsrc('inputs.group.whenFurtherConditions.label') | async}}</span>
-  </div>
-  <div flex layout="column" class="cw-conditions">
-    <div layout="row"
-         class="cw-condition-row"
-         *ngFor="let condition of group?._conditions; trackBy: trackByFn; let i=index">
-      <rule-condition flex layout="row"
-                      [condition]="condition"
-                      [conditionTypes]="conditionTypes"
-                      [conditionTypePlaceholder]="conditionTypePlaceholder"
-                      [index]="i"
-                      (deleteCondition)="deleteCondition.emit($event)"
-                      (updateConditionType)="updateConditionType.emit($event)"
-                      (updateConditionParameter)="updateConditionParameter.emit($event)"
-                      (updateConditionOperator)="updateConditionOperator.emit($event)"
-                      ></rule-condition>
-      <div class="cw-btn-group cw-add-btn">
-        <div class="ui basic icon buttons" *ngIf="i === (group?._conditions.length - 1)">
-          <button class="cw-button-add-item ui button" arial-label="Add Condition"
-            (click)="onCreateCondition()" [disabled]="!condition.isPersisted()">
-            <i class="plus icon" aria-hidden="true"></i>
-          </button>
+        <div class="cw-condition-group-separator" *ngIf="groupIndex === 0">
+            {{ rsrc('inputs.group.whenConditions.label') | async }}
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-`
+        <div class="cw-condition-group-separator" *ngIf="groupIndex !== 0">
+            <button
+                pButton
+                tiny
+                class="p-button-secondary p-button-sm"
+                (click)="toggleGroupOperator()"
+                [label]="group.operator"
+            ></button>
+            <span flex class="cw-header-text">
+                {{ rsrc('inputs.group.whenFurtherConditions.label') | async }}
+            </span>
+        </div>
+        <div flex layout="column" class="cw-conditions">
+            <div
+                layout="row"
+                class="cw-condition-row"
+                *ngFor="let condition of group?._conditions; trackBy: trackByFn; let i = index"
+            >
+                <rule-condition
+                    flex
+                    layout="row"
+                    [condition]="condition"
+                    [conditionTypes]="conditionTypes"
+                    [conditionTypePlaceholder]="conditionTypePlaceholder"
+                    [index]="i"
+                    (deleteCondition)="deleteCondition.emit($event)"
+                    (updateConditionType)="updateConditionType.emit($event)"
+                    (updateConditionParameter)="updateConditionParameter.emit($event)"
+                    (updateConditionOperator)="updateConditionOperator.emit($event)"
+                ></rule-condition>
+                <div class="cw-btn-group cw-add-btn">
+                    <div class="ui basic icon buttons" *ngIf="i === group?._conditions.length - 1">
+                        <button
+                            pButton
+                            type="button"
+                            icon="pi pi-plus"
+                            class="p-button-rounded p-button-success p-button-text"
+                            arial-label="Add Condition"
+                            (click)="onCreateCondition()"
+                            [disabled]="!condition.isPersisted()"
+                        ></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> `
 })
 export class ConditionGroupComponent implements OnChanges {
     private static I8N_BASE = 'api.sites.ruleengine.rules';
@@ -100,30 +110,26 @@ export class ConditionGroupComponent implements OnChanges {
 
     onCreateCondition(): void {
         this.loggerService.info('ConditionGroupComponent', 'onCreateCondition');
-        this.createCondition.emit(
-            <ConditionActionEvent>{
-                payload: {
-                    conditionGroup: this.group,
-                    index: this.groupIndex,
-                    type: RULE_CONDITION_CREATE
-                }
+        this.createCondition.emit(<ConditionActionEvent>{
+            payload: {
+                conditionGroup: this.group,
+                index: this.groupIndex,
+                type: RULE_CONDITION_CREATE
             }
-        );
+        });
     }
 
     toggleGroupOperator(): void {
         // tslint:disable-next-line:prefer-const
         let value = this.group.operator === 'AND' ? 'OR' : 'AND';
-        this.updateConditionGroupOperator.emit(
-            <ConditionActionEvent>{
-                payload: {
-                    conditionGroup: this.group,
-                    index: this.groupIndex,
-                    type: RULE_CONDITION_GROUP_UPDATE_OPERATOR,
-                    value: value
-                }
+        this.updateConditionGroupOperator.emit(<ConditionActionEvent>{
+            payload: {
+                conditionGroup: this.group,
+                index: this.groupIndex,
+                type: RULE_CONDITION_GROUP_UPDATE_OPERATOR,
+                value: value
             }
-        );
+        });
     }
 
     trackByFn(index) {

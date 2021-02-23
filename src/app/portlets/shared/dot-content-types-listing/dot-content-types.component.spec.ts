@@ -5,7 +5,7 @@ import { DotListingDataTableModule } from '@components/dot-listing-data-table/do
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotContentTypesPortletComponent } from './dot-content-types.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
@@ -16,7 +16,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Injectable } from '@angular/core';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem } from 'primeng/api';
 import { ResponseView, HttpCode, DotPushPublishDialogService } from 'dotcms-js';
 import {
     DotHttpErrorHandled,
@@ -161,10 +161,11 @@ describe('DotContentTypesPortletComponent', () => {
         );
     });
 
-    it('should display a listing-data-table.component', () => {
-        const listingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'));
+    it('should display a listing-data-table.component', fakeAsync(() => {
         fixture.detectChanges();
-
+        tick(1);
+        fixture.detectChanges();
+        const listingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'));
         expect('v1/contenttype').toEqual(listingDataTable.nativeElement.getAttribute('url'));
 
         const columns = comp.contentTypeColumns;
@@ -189,7 +190,7 @@ describe('DotContentTypesPortletComponent', () => {
         expect('modDate').toEqual(columns[4].fieldName);
         expect('Last').toEqual(columns[4].header);
         expect('13%').toEqual(columns[4].width);
-    });
+    }));
 
     it('should remove the content type on click command function', () => {
         fixture.detectChanges();
@@ -209,7 +210,7 @@ describe('DotContentTypesPortletComponent', () => {
         };
 
         const dotDialogService = fixture.debugElement.injector.get(DotAlertConfirmService);
-        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
 
@@ -223,7 +224,7 @@ describe('DotContentTypesPortletComponent', () => {
 
     it('should have remove, push publish and Add to bundle actions to the list item', () => {
         fixture.detectChanges();
-        expect(comp.rowActions.map(action => action.menuItem.label)).toEqual([
+        expect(comp.rowActions.map((action) => action.menuItem.label)).toEqual([
             'Push Publish',
             'Add to bundle',
             'Delete'
@@ -235,7 +236,7 @@ describe('DotContentTypesPortletComponent', () => {
 
         fixture.detectChanges();
         expect(
-            comp.rowActions.map(action => {
+            comp.rowActions.map((action) => {
                 return {
                     label: action.menuItem.label,
                     icon: action.menuItem.icon
@@ -253,7 +254,7 @@ describe('DotContentTypesPortletComponent', () => {
         spyOn(pushPublishService, 'getEnvironments').and.returnValue(observableOf([]));
         fixture.detectChanges();
 
-        expect(comp.rowActions.map(action => action.menuItem.label)).toEqual([
+        expect(comp.rowActions.map((action) => action.menuItem.label)).toEqual([
             'Add to bundle',
             'Delete'
         ]);
@@ -359,7 +360,7 @@ describe('DotContentTypesPortletComponent', () => {
         };
 
         const dotDialogService = fixture.debugElement.injector.get(DotAlertConfirmService);
-        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
 
@@ -370,7 +371,7 @@ describe('DotContentTypesPortletComponent', () => {
 
         fixture.detectChanges();
 
-        expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(forbiddenError);
+        expect<any>(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(forbiddenError);
     });
 
     it('should show remove option', () => {
@@ -406,6 +407,7 @@ describe('DotContentTypesPortletComponent', () => {
         });
 
         it('should set filterBy params', () => {
+            fixture.detectChanges();
             expect(comp.filterBy).toBe('Form');
             expect(comp.listing.paginatorService.extraParams.get('type')).toBe('Form');
             expect(comp.actionHeaderOptions.primary.model).toBe(null);

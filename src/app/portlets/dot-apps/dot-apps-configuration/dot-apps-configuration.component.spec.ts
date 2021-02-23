@@ -1,13 +1,13 @@
 import { of, Observable } from 'rxjs';
-import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ActivatedRoute } from '@angular/router';
-import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotAppsConfigurationComponent } from './dot-apps-configuration.component';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
-import { InputTextModule, ButtonModule } from 'primeng/primeng';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { DotAppsConfigurationResolver } from './dot-apps-configuration-resolver.service';
 import { By } from '@angular/platform-browser';
@@ -19,6 +19,13 @@ import { CommonModule } from '@angular/common';
 import { DotAppsConfigurationListModule } from './dot-apps-configuration-list/dot-apps-configuration-list.module';
 import { PaginatorService } from '@services/paginator';
 import { DotAppsConfigurationHeaderModule } from '../dot-apps-configuration-header/dot-apps-configuration-header.module';
+import { MarkdownService } from 'ngx-markdown';
+import { DotAppsImportExportDialogModule } from '../dot-apps-import-export-dialog/dot-apps-import-export-dialog.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { ConfirmationService } from 'primeng/api';
+import { CoreWebService } from 'dotcms-js';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
 const messages = {
     'apps.key': 'Key',
@@ -30,7 +37,8 @@ const messages = {
     'apps.confirmation.description.show.less': 'Show Less',
     'apps.confirmation.delete.all.message': 'Delete all?',
     'apps.confirmation.accept': 'Ok',
-    'apps.search.placeholder': 'Search by name'
+    'apps.search.placeholder': 'Search by name',
+    'apps.confirmation.export.all.button': 'Export All'
 };
 
 const sites = [
@@ -86,8 +94,8 @@ describe('DotAppsConfigurationComponent', () => {
     const messageServiceMock = new MockDotMessageService(messages);
 
     beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
                 imports: [
                     RouterTestingModule.withRoutes([
                         {
@@ -100,7 +108,10 @@ describe('DotAppsConfigurationComponent', () => {
                     CommonModule,
                     DotActionButtonModule,
                     DotAppsConfigurationHeaderModule,
-                    DotAppsConfigurationListModule
+                    DotAppsImportExportDialogModule,
+                    DotAppsConfigurationListModule,
+                    HttpClientTestingModule,
+                    DotPipesModule
                 ],
                 declarations: [DotAppsConfigurationComponent],
                 providers: [
@@ -117,32 +128,49 @@ describe('DotAppsConfigurationComponent', () => {
                         provide: DotRouterService,
                         useClass: MockDotRouterService
                     },
+                    {
+                        provide: MarkdownService,
+                        useValue: {
+                            compile(text) {
+                                return text;
+                            },
+
+                            highlight() {}
+                        }
+                    },
+                    { provide: CoreWebService, useClass: CoreWebServiceMock },
                     DotAppsConfigurationResolver,
-                    PaginatorService
+                    PaginatorService,
+                    DotAlertConfirmService,
+                    ConfirmationService
                 ]
             });
+
+            fixture = TestBed.createComponent(DotAppsConfigurationComponent);
+            component = fixture.debugElement.componentInstance;
+            dialogService = TestBed.inject(DotAlertConfirmService);
+            paginationService = TestBed.inject(PaginatorService);
+            appsServices = TestBed.inject(DotAppsService);
+            routerService = TestBed.inject(DotRouterService);
         })
     );
-
-    beforeEach(() => {
-        fixture = DOTTestBed.createComponent(DotAppsConfigurationComponent);
-        component = fixture.debugElement.componentInstance;
-        dialogService = fixture.debugElement.injector.get(DotAlertConfirmService);
-        paginationService = fixture.debugElement.injector.get(PaginatorService);
-        appsServices = fixture.debugElement.injector.get(DotAppsService);
-        routerService = fixture.debugElement.injector.get(DotRouterService);
-    });
 
     describe('With integrations count', () => {
         beforeEach(() => {
             spyOn(paginationService, 'setExtraParams');
-            spyOn(paginationService, 'getWithOffset').and.returnValue(of(appData));
+            spyOn<any>(paginationService, 'getWithOffset').and.returnValue(of(appData));
             spyOn(component.searchInput.nativeElement, 'focus');
             fixture.detectChanges();
         });
 
         it('should set App from resolver', () => {
             expect(component.apps).toBe(appData);
+        });
+
+        it('should set params in export dialog attribute', () => {
+            const importExportDialog = fixture.debugElement.query(By.css('dot-apps-import-export-dialog'));
+            expect(importExportDialog.componentInstance.app).toEqual(appData);
+            expect(importExportDialog.componentInstance.action).toEqual('Export');
         });
 
         it('should set onInit Pagination Service with right values', () => {
@@ -168,8 +196,17 @@ describe('DotAppsConfigurationComponent', () => {
             ).toContain(messageServiceMock.get('apps.search.placeholder'));
 
             expect(
-                fixture.debugElement.query(By.css('.dot-apps-configuration__action_header button'))
-                    .nativeElement.innerText
+                fixture.debugElement.queryAll(
+                    By.css('.dot-apps-configuration__action_header button')
+                )[0].nativeElement.innerText
+            ).toContain(
+                messageServiceMock.get('apps.confirmation.export.all.button').toUpperCase()
+            );
+
+            expect(
+                fixture.debugElement.queryAll(
+                    By.css('.dot-apps-configuration__action_header button')
+                )[1].nativeElement.innerText
             ).toContain(
                 messageServiceMock.get('apps.confirmation.delete.all.button').toUpperCase()
             );
@@ -200,12 +237,21 @@ describe('DotAppsConfigurationComponent', () => {
             );
         });
 
-        it('should open confirm dialog and delete All configurations', () => {
-            const deleteAllBtn = fixture.debugElement.query(
-                By.css('.dot-apps-configuration__action_header button')
+        it('should open confirm dialog and export All configurations', () => {
+            const exportAllBtn = fixture.debugElement.query(
+                By.css('.dot-apps-configuration__action_export_button')
             );
+            exportAllBtn.triggerEventHandler('click', null);
+            expect(component.importExportDialog.show).toBe(true);
+            expect(component.importExportDialog.site).toBeUndefined();
+        });
 
-            spyOn(dialogService, 'confirm').and.callFake(conf => {
+        it('should open confirm dialog and delete All configurations', () => {
+            const deleteAllBtn = fixture.debugElement.queryAll(
+                By.css('.dot-apps-configuration__action_header button')
+            )[1];
+
+            spyOn(dialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
             });
 
@@ -214,6 +260,14 @@ describe('DotAppsConfigurationComponent', () => {
             deleteAllBtn.triggerEventHandler('click', null);
             expect(dialogService.confirm).toHaveBeenCalledTimes(1);
             expect(appsServices.deleteAllConfigurations).toHaveBeenCalledWith(component.apps.key);
+        });
+
+        it('should export a specific configuration', () => {
+            const listComp = fixture.debugElement.query(By.css('dot-apps-configuration-list'))
+                .componentInstance;
+            listComp.export.emit(sites[0]);
+            expect(component.importExportDialog.show).toBe(true);
+            expect(component.siteSelected).toBe(sites[0]);
         });
 
         it('should delete a specific configuration', () => {
@@ -228,15 +282,12 @@ describe('DotAppsConfigurationComponent', () => {
             );
         });
 
-        it(
-            'should call App filter on search',
-            fakeAsync(() => {
-                component.searchInput.nativeElement.value = 'test';
-                component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
-                tick(550);
-                expect(paginationService.setExtraParams).toHaveBeenCalledWith('filter', 'test');
-                expect(paginationService.getWithOffset).toHaveBeenCalled();
-            })
-        );
+        it('should call App filter on search', fakeAsync(() => {
+            component.searchInput.nativeElement.value = 'test';
+            component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
+            tick(550);
+            expect(paginationService.setExtraParams).toHaveBeenCalledWith('filter', 'test');
+            expect(paginationService.getWithOffset).toHaveBeenCalled();
+        }));
     });
 });

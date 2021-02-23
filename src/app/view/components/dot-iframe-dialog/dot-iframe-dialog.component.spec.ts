@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component } from '@angular/core';
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotIframeDialogComponent } from './dot-iframe-dialog.component';
@@ -77,9 +77,11 @@ describe('DotIframeDialogComponent', () => {
         let hostComponent: TestHostComponent;
         let hostFixture: ComponentFixture<TestHostComponent>;
 
-        beforeEach(async(() => {
-            DOTTestBed.configureTestingModule(getTestConfig(TestHostComponent));
-        }));
+        beforeEach(
+            waitForAsync(() => {
+                DOTTestBed.configureTestingModule(getTestConfig(TestHostComponent));
+            })
+        );
 
         beforeEach(() => {
             hostFixture = DOTTestBed.createComponent(TestHostComponent);
@@ -183,8 +185,10 @@ describe('DotIframeDialogComponent', () => {
                         });
 
                         expect(component.load.emit).toHaveBeenCalledWith(mockEvent);
-                        expect(component.keydown.emit).toHaveBeenCalledWith({ hello: 'world' });
-                        expect(component.custom.emit).toHaveBeenCalledWith({
+                        expect<any>(component.keydown.emit).toHaveBeenCalledWith({
+                            hello: 'world'
+                        });
+                        expect<any>(component.custom.emit).toHaveBeenCalledWith({
                             detail: {
                                 name: 'Hello World'
                             }
@@ -228,11 +232,11 @@ describe('DotIframeDialogComponent', () => {
         let hostFixture: ComponentFixture<TestHost2Component>;
         let hostComponent: TestHostComponent;
 
-        beforeEach(async(() => {
-            DOTTestBed.configureTestingModule(
-                getTestConfig(TestHost2Component)
-            );
-        }));
+        beforeEach(
+            waitForAsync(() => {
+                DOTTestBed.configureTestingModule(getTestConfig(TestHost2Component));
+            })
+        );
 
         beforeEach(() => {
             hostFixture = DOTTestBed.createComponent(TestHost2Component);

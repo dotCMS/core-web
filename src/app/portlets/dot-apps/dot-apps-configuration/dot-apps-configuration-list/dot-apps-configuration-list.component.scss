@@ -1,4 +1,4 @@
-@import "variables";
+@use "variables" as *;
 
 :host {
     display: flex;
@@ -6,7 +6,7 @@
 }
 
 dot-apps-configuration-item {
-    margin: $basic-padding * 2 0 $basic-padding * 3;
+    margin: $spacing-3 0 $spacing-4;
     overflow: auto;
 
     &.dot-apps-configuration-item__not-configured {

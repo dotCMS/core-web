@@ -1,4 +1,4 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DebugElement } from '@angular/core';
 import { ContentTypesFieldDragabbleItemComponent } from './content-type-field-dragabble-item.component';
@@ -25,17 +25,22 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
         'contenttypes.field.atributes.listed': 'Show on list'
     });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [ContentTypesFieldDragabbleItemComponent],
-            imports: [DotIconButtonTooltipModule, DotIconModule, DotCopyButtonModule],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }, FieldService]
-        });
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [ContentTypesFieldDragabbleItemComponent],
+                imports: [DotIconButtonTooltipModule, DotIconModule, DotCopyButtonModule],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    FieldService
+                ]
+            });
 
-        fixture = DOTTestBed.createComponent(ContentTypesFieldDragabbleItemComponent);
-        comp = fixture.componentInstance;
-        de = fixture.debugElement;
-    }));
+            fixture = DOTTestBed.createComponent(ContentTypesFieldDragabbleItemComponent);
+            comp = fixture.componentInstance;
+            de = fixture.debugElement;
+        })
+    );
 
     it('should have a name & variable', () => {
         const field = {

@@ -1,22 +1,33 @@
 import { Observable } from 'rxjs';
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { MenuItem } from 'primeng/primeng';
+import {
+    Component,
+    Input,
+    OnChanges,
+    SimpleChanges,
+    Output,
+    EventEmitter,
+    ChangeDetectionStrategy
+} from '@angular/core';
+import { tap, map, mergeMap, catchError, pluck, take } from 'rxjs/operators';
+import { MenuItem } from 'primeng/api';
+
 import { DotCMSWorkflowAction } from 'dotcms-models';
+
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { DotPage } from '../../../shared/models/dot-page.model';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
-import { tap, map, mergeMap, catchError, pluck, take } from 'rxjs/operators';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 import { DotWizardService } from '@services/dot-wizard/dot-wizard.service';
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
+import { DotPage } from '@models/dot-page/dot-page.model';
 
 @Component({
     selector: 'dot-edit-page-workflows-actions',
     templateUrl: './dot-edit-page-workflows-actions.component.html',
-    styleUrls: ['./dot-edit-page-workflows-actions.component.scss']
+    styleUrls: ['./dot-edit-page-workflows-actions.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DotEditPageWorkflowsActionsComponent implements OnChanges {
     @Input() page: DotPage;
@@ -125,7 +136,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                     this.fired.emit();
                     return this.getWorkflowActions(newInode);
                 }),
-                catchError(error => {
+                catchError((error) => {
                     this.httpErrorManagerService.handle(error);
                     return currentMenuActions;
                 })

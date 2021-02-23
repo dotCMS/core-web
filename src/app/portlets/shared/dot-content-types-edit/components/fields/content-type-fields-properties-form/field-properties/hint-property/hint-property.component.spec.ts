@@ -1,5 +1,5 @@
 import { HintPropertyComponent } from './index';
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -15,16 +15,18 @@ describe('HintPropertyComponent', () => {
         Hint: 'Hint'
     });
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [HintPropertyComponent],
-            imports: [ReactiveFormsModule, DotPipesModule],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        }).compileComponents();
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [HintPropertyComponent],
+                imports: [ReactiveFormsModule, DotPipesModule],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            }).compileComponents();
 
-        fixture = TestBed.createComponent(HintPropertyComponent);
-        comp = fixture.componentInstance;
-    }));
+            fixture = TestBed.createComponent(HintPropertyComponent);
+            comp = fixture.componentInstance;
+        })
+    );
 
     it('should have a form', () => {
         const group = new FormGroup({});

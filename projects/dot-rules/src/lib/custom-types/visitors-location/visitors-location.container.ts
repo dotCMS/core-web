@@ -21,40 +21,21 @@ interface VisitorsLocationParams {
     preferredDisplayUnits: Param<string>;
 }
 
-// tslint:disable-next-line:no-unused-variable
-const UNITS = {
-    km: {
-        toKm: len => len,
-        toMeters: len => len * 1000,
-        toMiles: len => len / 1.60934
-    },
-    m: {
-        toKm: len => len / 1000,
-        toMeters: len => len,
-        toMiles: len => len / 1609.34
-    },
-    mi: {
-        toKm: len => len / 1.60934,
-        toMeters: len => len * 1609.34,
-        toMiles: len => len
-    }
-};
 const I8N_BASE = 'api.sites.ruleengine';
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [DecimalPipe],
     selector: 'cw-visitors-location-container',
     template: `<cw-visitors-location-component
-    [circle]="circle$ | async"
-    [preferredUnit]="preferredUnit"
-    [comparisonValue]="comparisonValue"
-    [comparisonControl]="comparisonControl"
-    [comparisonOptions]="comparisonOptions"
-    [fromLabel]="fromLabel"
-    (comparisonChange)="onComparisonChange($event)"
-    (areaChange)="onUpdate($event)"
-></cw-visitors-location-component>
-`
+        [circle]="circle$ | async"
+        [preferredUnit]="preferredUnit"
+        [comparisonValue]="comparisonValue"
+        [comparisonControl]="comparisonControl"
+        [comparisonOptions]="comparisonOptions"
+        [fromLabel]="fromLabel"
+        (comparisonChange)="onComparisonChange($event)"
+        (areaChange)="onUpdate($event)"
+    ></cw-visitors-location-component> `
 })
 export class VisitorsLocationContainer {
     @Input() componentInstance: ServerSideFieldModel;
@@ -86,12 +67,12 @@ export class VisitorsLocationContainer {
         public decimalPipe: DecimalPipe,
         private loggerService: LoggerService
     ) {
-        resources.get(I8N_BASE).subscribe(rsrc => {});
+        resources.get(I8N_BASE).subscribe((_rsrc) => {});
         this._rsrcCache = {};
 
         this.circle$.subscribe(
-            e => {},
-            e => {
+            (_e) => {},
+            (e) => {
                 loggerService.error('VisitorsLocationContainer', 'Error updating area', e);
             },
             () => {}
@@ -116,7 +97,7 @@ export class VisitorsLocationContainer {
             const opts = comparisonDef.inputType['options'];
             const i18nBaseKey = comparisonDef.i18nBaseKey || this.componentInstance.type.i18nKey;
             const rsrcKey = i18nBaseKey + '.inputs.comparison.';
-            const optsAry = Object.keys(opts).map(key => {
+            const optsAry = Object.keys(opts).map((key) => {
                 const sOpt = opts[key];
                 return {
                     value: sOpt.value,

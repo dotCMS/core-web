@@ -1,4 +1,4 @@
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { Component, Input, DebugElement } from '@angular/core';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotDropdownComponent } from './dot-dropdown.component';
@@ -8,10 +8,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @Component({
     selector: 'dot-test-host-component',
     template: `<dot-dropdown-component
-            [gravatar]="gravatar"
-            [icon]="icon"
-            [title]="title"
-            [disabled]="disabled"></dot-dropdown-component>`
+        [gravatar]="gravatar"
+        [icon]="icon"
+        [title]="title"
+        [disabled]="disabled"
+    ></dot-dropdown-component>`
 })
 class DotTestHostComponent {
     disabled: boolean;
@@ -75,24 +76,26 @@ describe('DotDropdownComponent', () => {
     let comp: DotDropdownComponent;
     let de: DebugElement;
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                DotDropdownComponent,
-                MockGravatarComponent,
-                MockDotIconButtonComponent,
-                DotTestHostComponent
-            ],
-            imports: [BrowserAnimationsModule]
-        });
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [
+                    DotDropdownComponent,
+                    MockGravatarComponent,
+                    MockDotIconButtonComponent,
+                    DotTestHostComponent
+                ],
+                imports: [BrowserAnimationsModule]
+            });
 
-        hostFixture = DOTTestBed.createComponent(DotTestHostComponent);
-        hostComp = hostFixture.debugElement.componentInstance;
-        hostDe = hostFixture.debugElement;
+            hostFixture = DOTTestBed.createComponent(DotTestHostComponent);
+            hostComp = hostFixture.debugElement.componentInstance;
+            hostDe = hostFixture.debugElement;
 
-        de = hostDe.query(By.css('dot-dropdown-component'));
-        comp = de.componentInstance;
-    }));
+            de = hostDe.query(By.css('dot-dropdown-component'));
+            comp = de.componentInstance;
+        })
+    );
 
     describe('Enabled', () => {
         let button: DebugElement;
@@ -110,7 +113,7 @@ describe('DotDropdownComponent', () => {
 
         it(`should dot-icon button be displayed & emit`, () => {
             executeEnabled(button, hostFixture, de, comp);
-            expect(button.attributes.disabled).toBe(null);
+            expect(button.attributes.disabled).not.toBeDefined();
         });
 
         it(`should title button be displayed & emit`, () => {

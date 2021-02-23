@@ -1,9 +1,9 @@
 import { pluck, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { RequestMethod } from '@angular/http';
 import { CoreWebService } from 'dotcms-js';
 import { DotLocalstorageService } from '@services/dot-localstorage/dot-localstorage.service';
 import { FormatDateService } from '@services/format-date-service';
+import { formatMessage } from '@shared/dot-utils';
 
 @Injectable({
     providedIn: 'root'
@@ -49,7 +49,9 @@ export class DotMessageService {
      */
     get(key: string, ...args: string[]): string {
         return this.messageMap[key]
-            ? args.length ? this.formatMessage(this.messageMap[key], args) : this.messageMap[key]
+            ? args.length
+                ? formatMessage(this.messageMap[key], args)
+                : this.messageMap[key]
             : key;
     }
 
@@ -72,7 +74,7 @@ export class DotMessageService {
 
         const relativeDateMessages = Object.assign(
             {},
-            ...relativeDateKeys.map(p => ({ [p.split('.')[1]]: this.messageMap[p] }))
+            ...relativeDateKeys.map((p) => ({ [p.split('.')[1]]: this.messageMap[p] }))
         );
         this.formatDateService.setLang(languageId.split('_')[0], relativeDateMessages);
     }
@@ -80,7 +82,6 @@ export class DotMessageService {
     private getAll(lang: string): void {
         this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
                 url: this.geti18nURL(lang)
             })
             .pipe(take(1), pluck('entity'))
@@ -95,12 +96,5 @@ export class DotMessageService {
 
     private geti18nURL(lang: string): string {
         return `/api/v2/languages/${lang ? lang : 'default'}/keys`;
-    }
-
-    // Replace {n} in the string with the strings in the args array
-    private formatMessage(message: string, args: string[]): string {
-        return message.replace(/{(\d+)}/g, (match, number) => {
-            return typeof args[number] !== 'undefined' ? args[number] : match;
-        });
     }
 }

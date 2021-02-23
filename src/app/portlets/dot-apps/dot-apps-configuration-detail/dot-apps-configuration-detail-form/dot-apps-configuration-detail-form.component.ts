@@ -25,10 +25,11 @@ const getFieldValueFn = {
     styleUrls: ['./dot-apps-configuration-detail-form.component.scss']
 })
 export class DotAppsConfigurationDetailFormComponent implements OnInit {
-    @ViewChild('form') public form: NgForm;
-    @ViewChild('formContainer') public formContainer: ElementRef;
+    @ViewChild('form', { static: true }) public form: NgForm;
+    @ViewChild('formContainer', { static: true }) public formContainer: ElementRef;
 
     @Input() formFields: DotAppsSecrets[];
+    @Input() appConfigured = false;
     @Output() data = new EventEmitter<{ [key: string]: string }>();
     @Output() valid = new EventEmitter<boolean>();
     myFormGroup: FormGroup;
@@ -54,6 +55,15 @@ export class DotAppsConfigurationDetailFormComponent implements OnInit {
         setTimeout(() => {
             this.formContainer.nativeElement.querySelector(`#${this.formFields[0].name}`).focus();
         }, 0);
+    }
+
+    /**
+     * Handle integration action of third parties in a new window
+     * @param {string} url
+     * @memberof DotAppsConfigurationDetailFormComponent
+     */
+    onIntegrate(url: string): void {
+        window.open(url, '_blank');
     }
 
     private getFieldValue(field: DotAppsSecrets): string | boolean {

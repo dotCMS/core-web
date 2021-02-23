@@ -1,9 +1,9 @@
 import { DotEditPageService } from './dot-edit-page.service';
-import { DotPageContainer } from '../../../portlets/dot-edit-page/shared/models/dot-page-container.model';
+import { DotPageContainer } from '../../../shared/models/dot-page-container/dot-page-container.model';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
 describe('DotEditPageService', () => {
     let injector: TestBed;

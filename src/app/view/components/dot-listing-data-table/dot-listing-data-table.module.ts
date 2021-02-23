@@ -6,12 +6,14 @@ import { FormsModule } from '@angular/forms';
 import { FormatDateService } from '@services/format-date-service';
 import { DotListingDataTableComponent } from './dot-listing-data-table.component';
 import { NgModule } from '@angular/core';
-import { DataTableModule, InputTextModule } from 'primeng/primeng';
+import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
-import { ActionMenuButtonModule } from '../_common/action-menu-button/action-menu-button.module';
+import { DotActionMenuButtonModule } from '../_common/dot-action-menu-button/dot-action-menu-button.module';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { RouterModule } from '@angular/router';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
 @NgModule({
     declarations: [DotListingDataTableComponent],
@@ -19,14 +21,15 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
     imports: [
         ActionHeaderModule,
         CommonModule,
-        DataTableModule,
         TableModule,
         FormsModule,
         InputTextModule,
-        ActionMenuButtonModule,
+        DotActionMenuButtonModule,
         DotIconModule,
         RouterModule,
-        DotPipesModule
+        DotPipesModule,
+        CheckboxModule,
+        ContextMenuModule
     ],
     providers: [DotCrudService, FormatDateService, DotcmsConfigService, LoggerService]
 })

@@ -2,10 +2,8 @@
  * Created by oswaldogallango on 7/11/16.
  */
 import { CoreWebService } from './core-web.service';
-import { RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
-import { Router } from '@angular/router';
 import { LoggerService } from './logger.service';
 import { HttpCode } from './util/http-code';
 import { pluck, tap, map } from 'rxjs/operators';
@@ -18,6 +16,8 @@ export interface DotLoginParams {
     language: string;
     backEndLogin: boolean;
 }
+
+export const LOGOUT_URL = '/dotAdmin/logout';
 
 /**
  * This Service get the server configuration to display in the login component
@@ -34,7 +34,6 @@ export class LoginService {
     private urls: any;
 
     constructor(
-        private router: Router,
         private coreWebService: CoreWebService,
         private dotcmsEventsService: DotcmsEventsService,
         private loggerService: LoggerService
@@ -60,7 +59,7 @@ export class LoginService {
                 this.loggerService.debug('User Logged In Date: ', this.auth.user.loggedInDate);
                 // if the destroyed event happens after the logged in date, so proceed!
                 if (!this.auth.user.loggedInDate || this.isLogoutAfterLastLogin(date)) {
-                    this.logOutUser().subscribe(() => {});
+                    this.logOutUser();
                 }
             });
     }
@@ -96,7 +95,6 @@ export class LoginService {
     public loadAuth(): Observable<Auth> {
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
                 url: this.urls.getAuth
             })
             .pipe(
@@ -121,7 +119,7 @@ export class LoginService {
 
         return this.coreWebService.requestView({
             body: body,
-            method: RequestMethod.Post,
+            method: 'POST',
             url: this.urls.changePassword
         });
     }
@@ -137,7 +135,7 @@ export class LoginService {
 
         return this.coreWebService.requestView({
             body: { messagesKey: i18nKeys, language: this.lang, country: this.country },
-            method: RequestMethod.Post,
+            method: 'POST',
             url: this.urls.serverInfo
         });
     }
@@ -156,7 +154,7 @@ export class LoginService {
                     password: userData.password,
                     userId: userData.user.userId
                 },
-                method: RequestMethod.Post,
+                method: 'POST',
                 url: this.urls.loginAs
             })
             .pipe(
@@ -203,7 +201,7 @@ export class LoginService {
                     country: this.country,
                     backEndLogin: backEndLogin
                 },
-                method: RequestMethod.Post,
+                method: 'POST',
                 url: this.urls.userAuth
             })
             .pipe(
@@ -216,8 +214,10 @@ export class LoginService {
 
                     this.setAuth(auth);
                     this.coreWebService
-                        .subscribeTo(HttpCode.UNAUTHORIZED)
-                        .subscribe(() => this.logOutUser().subscribe(() => {}));
+                        .subscribeToHttpError(HttpCode.UNAUTHORIZED)
+                        .subscribe(() => {
+                            this.logOutUser();
+                        });
                     return response.entity;
                 })
             );
@@ -230,7 +230,7 @@ export class LoginService {
     public logoutAs(): Observable<any> {
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Put,
+                method: 'PUT',
                 url: `${this.urls.logoutAs}`
             })
             .pipe(
@@ -246,37 +246,6 @@ export class LoginService {
     }
 
     /**
-     * Call the logout rest api
-     * @returns Observable<any>
-     */
-    public logOutUser(): Observable<any> {
-        return this.coreWebService
-            .requestView({
-                method: RequestMethod.Get,
-                url: this.urls.logout
-            })
-            .pipe(
-                map((_response) => {
-                    const nullAuth = {
-                        loginAsUser: null,
-                        user: null,
-                        isLoginAs: false
-                    };
-
-                    this.loggerService.debug('Processing the logOutUser');
-                    this.setAuth(nullAuth);
-
-                    // on logout close the websocket
-                    this.dotcmsEventsService.destroy();
-
-                    this.loggerService.debug('Navigating to Public Login');
-
-                    this.router.navigate(['/public/login']);
-                })
-            );
-    }
-
-    /**
      * Executes the call to the recover passwrod rest api
      * @param email User email address
      * @returns an array with message indicating if the recover password was successfull
@@ -285,7 +254,7 @@ export class LoginService {
     public recoverPassword(login: string): Observable<any> {
         return this.coreWebService.requestView({
             body: { userId: login },
-            method: RequestMethod.Post,
+            method: 'POST',
             url: this.urls.recoverPassword
         });
     }
@@ -324,8 +293,7 @@ export class LoginService {
 
     private isLogoutAfterLastLogin(date): boolean {
         return (
-            this.auth.user &&
-            this.auth.user.loggedInDate &&
+            this.auth?.user?.loggedInDate &&
             date &&
             Number(date) > Number(this.auth.user.loggedInDate)
         );
@@ -347,17 +315,12 @@ export class LoginService {
     }
 
     /**
-     * Request and store the login as _auth list.
+     * Call the logout rest api
+     * @returns Observable<any>
      */
-    // private loadLoginAsUsersList(includeNUsers: boolean, filter: string): Observable<any> {
-    //     return this.coreWebService
-    //         .requestView({
-    //             method: RequestMethod.Get,
-    //             url: `${this.urls
-    //                 .loginAsUserList}?includeUsersCount=${includeNUsers}&filter=${filter}`
-    //         })
-    //         .pluck('entity');
-    // }
+    private logOutUser(): void {
+        window.location.href = `${LOGOUT_URL}?r=${new Date().getTime()}`;
+    }
 }
 
 export interface User {

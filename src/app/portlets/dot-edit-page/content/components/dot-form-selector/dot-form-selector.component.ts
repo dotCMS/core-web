@@ -9,7 +9,8 @@ import {
     SimpleChanges
 } from '@angular/core';
 import { DotCMSContentType } from 'dotcms-models';
-import { LazyLoadEvent, DataTable } from 'primeng/primeng';
+import { LazyLoadEvent } from 'primeng/api';
+import { Table } from 'primeng/table';
 import { take } from 'rxjs/operators';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 import { PaginatorService } from '@services/paginator';
@@ -27,9 +28,9 @@ export class DotFormSelectorComponent implements OnInit, OnChanges {
 
     @Output() close = new EventEmitter<any>();
 
-    @ViewChild('datatable') datatable: DataTable;
+    @ViewChild('datatable', { static: true }) datatable: Table;
 
-    @ViewChild('dialog') dotDialog: DotDialogComponent;
+    @ViewChild('dialog', { static: true }) dotDialog: DotDialogComponent;
 
     items: DotCMSContentType[];
     contentMinHeight: string;
@@ -45,9 +46,11 @@ export class DotFormSelectorComponent implements OnInit, OnChanges {
             if (changes.show.currentValue) {
                 this.contentMinHeight =
                     this.paginatorService.totalRecords > this.paginatorService.paginationPerPage
-                        ? `${this.dotDialog.dialog.nativeElement
-                              .querySelector('.ui-datatable')
-                              .getBoundingClientRect().height}px`
+                        ? `${
+                              this.dotDialog.dialog.nativeElement
+                                  .querySelector('.p-datatable')
+                                  .getBoundingClientRect().height
+                          }px`
                         : '';
             }
         }, 0);

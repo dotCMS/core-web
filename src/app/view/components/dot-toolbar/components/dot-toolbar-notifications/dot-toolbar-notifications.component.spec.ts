@@ -1,5 +1,5 @@
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync, TestBed } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable } from '@angular/core';
 import { DotToolbarNotificationsComponent } from './dot-toolbar-notifications.component';
 import { INotification } from '@shared/models/notifications';
@@ -32,9 +32,7 @@ class MockDotNotificationsListComponent {
 }
 
 @Injectable()
-class MockIframeOverlayService {
-
-}
+class MockIframeOverlayService {}
 
 @Injectable()
 class MockDotcmsEventsService {
@@ -57,57 +55,57 @@ class MockLoginService {
 @Injectable()
 class MockNotificationsService {
     getLastNotifications(): Observable<any> {
-
-        return observableOf(
-            {
-                entity: {
-                    totalUnreadNotifications: 1,
-                    notifications: [
-                        {
-                            id: '1',
-                            title: 'Notification Title',
-                            message: 'Notification message',
-                        }
-                    ],
-                    total: 1
-                }
+        return observableOf({
+            entity: {
+                totalUnreadNotifications: 1,
+                notifications: [
+                    {
+                        id: '1',
+                        title: 'Notification Title',
+                        message: 'Notification message'
+                    }
+                ],
+                total: 1
             }
-        );
+        });
     }
 }
-
 
 describe('DotToolbarNotificationsComponent', () => {
     let fixture: ComponentFixture<DotToolbarNotificationsComponent>;
     const messageServiceMock = new MockDotMessageService({
-        'notifications_dismissall': 'Dismiss all',
-        'notifications_title': 'Notifications',
-        'notifications_load_more': 'More'
+        notifications_dismissall: 'Dismiss all',
+        notifications_title: 'Notifications',
+        notifications_load_more: 'More'
     });
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [
-                DotToolbarNotificationsComponent,
-                MockDotDropDownComponent,
-                MockDotNotificationsListComponent
-            ],
-            imports: [DotPipesModule, ButtonModule],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock},
-                { provide: IframeOverlayService, useClass: MockIframeOverlayService },
-                { provide: DotcmsEventsService, useClass: MockDotcmsEventsService },
-                { provide: LoginService, useClass: MockLoginService },
-                { provide: NotificationsService, useClass: MockNotificationsService },
-            ]
-        }).compileComponents();
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [
+                    DotToolbarNotificationsComponent,
+                    MockDotDropDownComponent,
+                    MockDotNotificationsListComponent
+                ],
+                imports: [DotPipesModule, ButtonModule],
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    { provide: IframeOverlayService, useClass: MockIframeOverlayService },
+                    { provide: DotcmsEventsService, useClass: MockDotcmsEventsService },
+                    { provide: LoginService, useClass: MockLoginService },
+                    { provide: NotificationsService, useClass: MockNotificationsService }
+                ]
+            }).compileComponents();
 
-        fixture = TestBed.createComponent(DotToolbarNotificationsComponent);
-    }));
+            fixture = TestBed.createComponent(DotToolbarNotificationsComponent);
+        })
+    );
 
     it(`should has a badge`, () => {
         fixture.detectChanges();
-        const badge: DebugElement = fixture.debugElement.query(By.css('#dot-toolbar-notifications-badge'));
+        const badge: DebugElement = fixture.debugElement.query(
+            By.css('#dot-toolbar-notifications-badge')
+        );
         expect(badge).not.toBeNull();
     });
 });

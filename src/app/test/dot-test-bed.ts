@@ -1,5 +1,4 @@
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
-import { NotLicensedService } from './../api/services/not-licensed-service';
 import { DotHttpErrorManagerService } from './../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotIframeService } from './../view/components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { TestBed, TestModuleMetadata, ComponentFixture } from '@angular/core/testing';
@@ -17,7 +16,7 @@ import {
     DotEventsSocket,
     DotPushPublishDialogService
 } from 'dotcms-js';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/api';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NGFACES_MODULES } from '../modules';
 import { CommonModule } from '@angular/common';
@@ -30,7 +29,7 @@ import { DotRouterService } from '../api/services/dot-router/dot-router.service'
 import { DotLicenseService } from '../api/services/dot-license/dot-license.service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotUiColorsService } from '../api/services/dot-ui-colors/dot-ui-colors.service';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
@@ -61,7 +60,6 @@ export class DOTTestBed {
             { provide: DotUiColorsService, useClass: MockDotUiColorsService },
             { provide: LOCALE_ID, useValue: {} },
             { provide: CoreWebService, useClass: CoreWebServiceMock },
-            { provide: NotLicensedService, useValue: { init() {} } },
             { provide: DotRouterService, useClass: MockDotRouterService },
             ApiRoot,
             BrowserUtil,
@@ -93,8 +91,8 @@ export class DOTTestBed {
         for (const property in DOTTestBed.DEFAULT_CONFIG) {
             if (config[property]) {
                 DOTTestBed.DEFAULT_CONFIG[property]
-                    .filter(provider => !config[property].includes(provider))
-                    .forEach(item => config[property].unshift(item));
+                    .filter((provider) => !config[property].includes(provider))
+                    .forEach((item) => config[property].unshift(item));
             } else {
                 config[property] = DOTTestBed.DEFAULT_CONFIG[property];
             }
@@ -113,9 +111,9 @@ export class DOTTestBed {
     public static resolveAndCreate(providers: Provider[], parent?: Injector): ReflectiveInjector {
         const finalProviders = [];
 
-        DOTTestBed.DEFAULT_CONFIG.providers.forEach(provider => finalProviders.push(provider));
+        DOTTestBed.DEFAULT_CONFIG.providers.forEach((provider) => finalProviders.push(provider));
 
-        providers.forEach(provider => finalProviders.push(provider));
+        providers.forEach((provider) => finalProviders.push(provider));
 
         return ReflectiveInjector.resolveAndCreate(finalProviders, parent);
     }

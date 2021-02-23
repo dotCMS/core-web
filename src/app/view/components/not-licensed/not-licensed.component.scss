@@ -1,4 +1,4 @@
-@import "variables";
+@use "variables" as *;
 
 :host {
     align-items: center;
@@ -8,7 +8,7 @@
     flex-direction: column;
     height: calc(100vh - 48px - #{$toolbar-height});
     justify-content: center;
-    padding: $basic-padding * 4;
+    padding: $spacing-9;
     width: 100%;
 }
 

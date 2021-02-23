@@ -1,5 +1,5 @@
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async, TestBed } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
 import { DotContentletWrapperComponent } from '../dot-contentlet-wrapper/dot-contentlet-wrapper.component';
@@ -24,13 +24,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
 import { FormatDateService } from '@services/format-date-service';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import cleanUpDialog from '@tests/clean-up-dialog';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 describe('DotAddContentletComponent', () => {
     let component: DotAddContentletComponent;
@@ -41,7 +43,7 @@ describe('DotAddContentletComponent', () => {
     let dotContentletEditorService: DotContentletEditorService;
 
     beforeEach(
-        async(() => {
+        waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [DotAddContentletComponent, DotContentletWrapperComponent],
                 providers: [
@@ -54,6 +56,7 @@ describe('DotAddContentletComponent', () => {
                     DotAlertConfirmService,
                     ConfirmationService,
                     FormatDateService,
+                    DotHttpErrorManagerService,
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
                     { provide: DotRouterService, useClass: MockDotRouterService },
                     ApiRoot,
@@ -67,7 +70,12 @@ describe('DotAddContentletComponent', () => {
                     StringUtils,
                     UserModel
                 ],
-                imports: [DotIframeDialogModule, BrowserAnimationsModule, RouterTestingModule, HttpClientTestingModule]
+                imports: [
+                    DotIframeDialogModule,
+                    BrowserAnimationsModule,
+                    RouterTestingModule,
+                    HttpClientTestingModule
+                ]
             });
         })
     );
@@ -130,9 +138,6 @@ describe('DotAddContentletComponent', () => {
     });
 
     afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
+        cleanUpDialog(fixture);
     });
 });

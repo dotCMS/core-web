@@ -16,8 +16,9 @@ import { Subject } from 'rxjs';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotcmsConfigService, LoginService, User, Auth } from 'dotcms-js';
-import { StringFormat } from 'src/app/api/util/stringFormat';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotMenuService } from '@services/dot-menu.service';
+import { Observable } from 'rxjs';
 
 interface AccountUserForm extends AccountUser {
     confirmPassword?: string;
@@ -28,7 +29,7 @@ interface AccountUserForm extends AccountUser {
     templateUrl: 'dot-my-account.component.html'
 })
 export class DotMyAccountComponent implements OnInit, OnDestroy {
-    @ViewChild('myAccountForm') form: NgForm;
+    @ViewChild('myAccountForm', { static: true }) form: NgForm;
 
     @Output() close = new EventEmitter<any>();
 
@@ -49,6 +50,7 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
     message = null;
     changePasswordOption = false;
     dialogActions: DotDialogActions;
+    showStarter: Observable<boolean>;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -57,13 +59,13 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
         private accountService: AccountService,
         private dotcmsConfigService: DotcmsConfigService,
         private loginService: LoginService,
-        private stringFormat: StringFormat,
-        private dotRouterService: DotRouterService
+        private dotRouterService: DotRouterService,
+        private dotMenuService: DotMenuService
     ) {
         this.passwordMatch = false;
         this.changePasswordOption = false;
         this.loginService.watchUser(this.loadUser.bind(this));
-        this.dotcmsConfigService.getConfig().subscribe(res => {
+        this.dotcmsConfigService.getConfig().subscribe((res) => {
             this.emailRegex = res.emailRegex;
         });
     }
@@ -81,6 +83,8 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
                 label: this.dotMessageService.get('modes.Close')
             }
         };
+
+        this.showStarter = this.dotMenuService.isPortletInMenu('starter');
 
         this.form.valueChanges
             .pipe(takeUntil(this.destroy$))
@@ -117,16 +121,27 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
         this.changePasswordOption = !this.changePasswordOption;
     }
 
-    getRequiredMessage(item): string {
-        return this.stringFormat.formatMessage(
-            this.dotMessageService.get('error.form.mandatory'),
-            item
-        );
+    /**
+     * Calls Api based on checked input to add/remove starter portlet from menu
+     *
+     * @param {boolean} checked
+     * @memberof DotMyAccountComponent
+     */
+    toggleShowStarter(checked: boolean): void {
+        if (checked) {
+            this.accountService.addStarterPage().subscribe();
+        } else {
+            this.accountService.removeStarterPage().subscribe();
+        }
+    }
+
+    getRequiredMessage(...args: string[]): string {
+        return this.dotMessageService.get('error.form.mandatory', ...args);
     }
 
     save(): void {
         this.accountService.updateUser(this.accountUser).subscribe(
-            response => {
+            (response) => {
                 // TODO: replace the alert with a Angular components
                 alert(this.dotMessageService.get('message.createaccount.success'));
                 this.close.emit();
@@ -140,7 +155,7 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
                     });
                 }
             },
-            response => {
+            (response) => {
                 // TODO: We have to define how must be the user feedback in case of error
                 this.message = response.errorsMessages;
             }

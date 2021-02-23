@@ -1,7 +1,8 @@
+@use "dotcms-theme/utils/theme-variables" as *;
+@use "variables" as *;
 @import "mixins";
-@import "variables";
 
-::ng-deep .basetype-content.ui-dialog .ui-dialog-content .ui-autocomplete-panel {
+::ng-deep .basetype-content.p-dialog .p-dialog-content .p-autocomplete-panel {
     bottom: 36px !important;
     top: auto !important;
 }

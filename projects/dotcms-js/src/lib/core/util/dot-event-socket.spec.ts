@@ -6,13 +6,11 @@ import { DotEventsSocketURL } from './models/dot-event-socket-url';
 import { ConfigParams, DotcmsConfigService } from '../dotcms-config.service';
 import { CoreWebService } from '../core-web.service';
 import { Server } from 'mock-socket';
-import { RequestMethod } from '@angular/http';
 import { DotEventMessage } from './models/dot-event-message';
 import { ReflectiveInjector, Injectable } from '@angular/core';
 
 @Injectable()
-class CoreWebServiceMock  extends CoreWebService {
-
+class CoreWebServiceMock extends CoreWebService {
     constructor() {
         super(null, null, null, null, null);
     }
@@ -22,24 +20,21 @@ class CoreWebServiceMock  extends CoreWebService {
     }
 }
 
-
 @Injectable()
 class DotcmsConfigMock {
     getConfig(): Observable<ConfigParams> {
-        return of(
-            {
-                colors: {},
-                emailRegex: '',
-                license: {},
-                menu: [],
-                paginatorLinks: 1,
-                paginatorRows: 2,
-                websocket: {
-                    websocketReconnectTime: 0,
-                    disabledWebsockets: false,
-                }
+        return of({
+            colors: {},
+            emailRegex: '',
+            license: {},
+            menu: [],
+            paginatorLinks: 1,
+            paginatorRows: 2,
+            websocket: {
+                websocketReconnectTime: 0,
+                disabledWebsockets: false
             }
-        );
+        });
     }
 }
 
@@ -83,10 +78,8 @@ describe('DotEventsSocket', () => {
                 payload: 'message'
             };
 
-            mockwebSocketServer.on('connection', socket => {
-                socket.send(
-                    JSON.stringify(expectedMessage)
-                );
+            mockwebSocketServer.on('connection', (socket) => {
+                socket.send(JSON.stringify(expectedMessage));
                 done();
             });
 
@@ -102,9 +95,7 @@ describe('DotEventsSocket', () => {
     });
 
     describe('LongPolling', () => {
-
         const requestOpts = {
-            method: RequestMethod.Get,
             url: 'http://localhost/testing',
             params: {}
         };

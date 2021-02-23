@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -6,7 +6,7 @@ import { DotAutofocusDirective } from './dot-autofocus.directive';
 
 @Component({
     template: `
-        <input type="text" dotAutofocus disabled *ngIf="disabled;else not" />
+        <input type="text" dotAutofocus disabled *ngIf="disabled; else not" />
         <ng-template #not>
             <input type="text" dotAutofocus />
         </ng-template>

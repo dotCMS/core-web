@@ -1,12 +1,12 @@
 import { DotContainerContentletService } from './dot-container-contentlet.service';
-import { DotPageContainer } from '../../../dot-edit-page/shared/models/dot-page-container.model';
+import { DotPageContainer } from '../../../../shared/models/dot-page-container/dot-page-container.model';
 import { DotPageContent } from '../../../dot-edit-page/shared/models/dot-page-content.model';
 import { DotCMSContentType } from 'dotcms-models';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
 describe('DotContainerContentletService', () => {
     let injector: TestBed;

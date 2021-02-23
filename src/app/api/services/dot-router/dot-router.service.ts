@@ -1,18 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params, Event, NavigationEnd } from '@angular/router';
 
 import { PortletNav } from '@models/navigation';
 import { Subject } from 'rxjs';
 import { DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
-import { NavigationExtras } from '@angular/router/src/router';
+import { NavigationExtras } from '@angular/router';
+import { LOGOUT_URL } from 'dotcms-js';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class DotRouterService {
     portletReload$ = new Subject();
-    private _previousSavedURL: string;
+    private _storedRedirectUrl: string;
+    private _routeHistory: PortletNav = { url: '' };
     private CUSTOM_PORTLET_ID_PREFIX = 'c_';
 
-    constructor(private router: Router, private route: ActivatedRoute) {}
+    constructor(private router: Router, private route: ActivatedRoute) {
+        this._routeHistory.url = this.router.url;
+        this.router.events
+            .pipe(filter((event: Event) => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                this.routeHistory = {
+                    url: event.url,
+                    previousUrl: this._routeHistory.url
+                };
+            });
+    }
+
+    get currentSavedURL(): string {
+        return this._routeHistory.url;
+    }
 
     get currentPortlet(): PortletNav {
         return {
@@ -21,9 +38,35 @@ export class DotRouterService {
         };
     }
 
+    set storedRedirectUrl(url: string) {
+        this._storedRedirectUrl = url;
+    }
+
+    get storedRedirectUrl(): string {
+        return this._storedRedirectUrl;
+    }
+
+    get routeHistory(): PortletNav {
+        return this._routeHistory;
+    }
+
+    set routeHistory(value: PortletNav) {
+        this._routeHistory = value;
+    }
+
     get queryParams(): Params {
         const nav = this.router.getCurrentNavigation();
+
         return nav ? nav.finalUrl.queryParams : this.route.snapshot.queryParams;
+    }
+
+    /**
+     * Redirect to previous url
+     *
+     * @memberof DotRouterService
+     */
+    goToPreviousUrl(): void {
+        this.router.navigate([this.routeHistory.previousUrl]);
     }
 
     /**
@@ -73,7 +116,7 @@ export class DotRouterService {
     }
 
     /**
-     * Go to first porlet unless userEditPageRedirect is passed or previousSavedURL is set
+     * Go to first porlet unless userEditPageRedirect is passed or storedRedirectUrl is set
      *
      * @param string [userEditPageRedirect]
      * @returns Promise<boolean>
@@ -101,8 +144,48 @@ export class DotRouterService {
         this.router.navigate(['/c/site-browser']);
     }
 
+    /**
+     * Redirect to Starter page
+     *
+     * @memberof DotRouterService
+     */
+    goToStarter(): void {
+        this.router.navigate(['/starter']);
+    }
+
+    /**
+     * Redirect to Content page
+     *
+     * @memberof DotRouterService
+     */
+    goToContent(): void {
+        this.router.navigate(['/c/content']);
+    }
+
+    /**
+     * Redirect to Content page
+     *
+     * @memberof DotRouterService
+     */
+    goToCreateContent(variableName: string): void {
+        this.router.navigate([`/c/content/new/${variableName}`]);
+    }
+
     goToEditContentType(id: string, portlet: string): void {
         this.router.navigate([`/${portlet}/edit/${id}`]);
+    }
+
+    /**
+     * Redirect to edit the template.
+     * If the inode is paased, load a specific version of the template
+     *
+     * @param {string} id
+     * @memberof DotRouterService
+     */
+    goToEditTemplate(id: string, inode?: string): void {
+        this.router.navigate([
+            inode ? `/templates/edit/${id}/inode/${inode}` : `/templates/edit/${id}`
+        ]);
     }
 
     goToURL(url: string): void {
@@ -115,7 +198,7 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     doLogOut(): void {
-        window.location.href = '/dotAdmin/logout';
+        this.router.navigate([LOGOUT_URL], this.addCacheBusting());
     }
 
     /**
@@ -194,16 +277,8 @@ export class DotRouterService {
 
         const urlSegments = url
             .split('/')
-            .filter(item => item !== '' && item !== '#' && item !== 'c');
+            .filter((item) => item !== '' && item !== '#' && item !== 'c');
         return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
-    }
-
-    set previousSavedURL(url: string) {
-        this._previousSavedURL = url;
-    }
-
-    get previousSavedURL(): string {
-        return this._previousSavedURL;
     }
 
     isPublicPage(): boolean {
@@ -246,9 +321,9 @@ export class DotRouterService {
     }
 
     private redirectMain(): Promise<boolean> {
-        if (this._previousSavedURL) {
-            return this.router.navigate([this.previousSavedURL]).then((ok: boolean) => {
-                this.previousSavedURL = null;
+        if (this.storedRedirectUrl) {
+            return this.router.navigate([this.storedRedirectUrl]).then((ok: boolean) => {
+                this.storedRedirectUrl = null;
                 return ok;
             });
         } else {
@@ -256,7 +331,7 @@ export class DotRouterService {
         }
     }
 
-    private addCacheBusting(navExtras: NavigationExtras): NavigationExtras {
+    private addCacheBusting(navExtras?: NavigationExtras): NavigationExtras {
         if (navExtras) {
             navExtras.queryParams['r'] = new Date().getTime();
         } else {

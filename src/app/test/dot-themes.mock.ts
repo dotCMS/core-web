@@ -1,4 +1,4 @@
-import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model';
+import { DotTheme } from '@models/dot-edit-layout-designer';
 
 export const mockDotThemes: DotTheme[] = [
     {
@@ -6,6 +6,8 @@ export const mockDotThemes: DotTheme[] = [
         title: 'Theme tittle',
         inode: '1234g',
         themeThumbnail: null,
+        identifier: 'test',
+        hostId: 'test',
         host: {
             hostName: 'Test',
             inode: '1',
@@ -17,6 +19,8 @@ export const mockDotThemes: DotTheme[] = [
         title: 'Theme tittle',
         inode: '13r3fd234g',
         themeThumbnail: null,
+        identifier: 'test',
+        hostId: 'test',
         host: {
             hostName: 'Test',
             inode: '2',
@@ -28,6 +32,8 @@ export const mockDotThemes: DotTheme[] = [
         title: 'Theme tittle',
         inode: '123dedw4g',
         themeThumbnail: 'test',
+        identifier: 'test',
+        hostId: 'test',
         host: {
             hostName: 'Test',
             inode: '3',

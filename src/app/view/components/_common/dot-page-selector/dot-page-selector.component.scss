@@ -1,19 +1,22 @@
-@import "variables";
+@use "variables" as *;
 @import "mixins";
 
 :host {
+    position: relative;
+    display: block;
+
     ::ng-deep {
-        .ui-autocomplete-panel {
+        .p-autocomplete-panel {
             width: auto !important;
         }
 
-        .ui-autocomplete-list-item {
+        .p-autocomplete-list-item {
             white-space: nowrap;
         }
 
-        .ui-autocomplete-input {
+        .p-autocomplete-input {
             // important because p-autocomplete can add inline styles.
-            padding-right: $basic-padding * 4 !important;
+            padding-right: $spacing-9 !important;
         }
     }
 
@@ -37,6 +40,6 @@
     }
 
     &-host {
-        padding-left: $basic-padding / 2;
+        padding-left: $spacing-1;
     }
 }

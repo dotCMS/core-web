@@ -8,6 +8,25 @@
                 type="text"
                 [placeholder]="('apps.search.placeholder' | dm) || ''"
             />
+            <div>
+                <button
+                    pButton
+                    link
+                    icon="pi pi-upload"
+                    class="dot-apps-configuration__action_import_button"
+                    [label]="'apps.confirmation.import.button' | dm"
+                    (click)="confirmImportExport('Import')"
+                ></button>
+                <button
+                    pButton
+                    link
+                    icon="pi pi-download"
+                    class="dot-apps-configuration__action_export_button"
+                    [label]="'apps.confirmation.export.all.button' | dm"
+                    [disabled]="!isExportButtonDisabled()"
+                    (click)="confirmImportExport('Export')"
+                ></button>
+            </div>
         </div>
         <div class="dot-apps__body">
             <dot-apps-card
@@ -18,3 +37,11 @@
         </div>
     </div>
 </ng-template>
+
+<dot-apps-import-export-dialog
+    #importExportDialog
+    [action]="importExportDialogAction"
+    [show]="showDialog"
+    (resolved)="reloadAppsData()"
+    (onClose)="onClosedDialog()"
+></dot-apps-import-export-dialog>

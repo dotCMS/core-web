@@ -1,17 +1,18 @@
+@use "variables" as *;
+@use "dotcms-theme/utils/theme-variables" as *;
 @import "mixins";
-@import "variables";
 
 :host {
     display: block;
 
     ::ng-deep {
-        .ui-multiselect,
-        searchable-dropdown .ui-button {
+        .p-multiselect,
+        searchable-dropdown .p-button {
             width: 100%;
         }
     }
 }
 
 .content-type__form {
-    width: 380px;
+    width: 522px;
 }

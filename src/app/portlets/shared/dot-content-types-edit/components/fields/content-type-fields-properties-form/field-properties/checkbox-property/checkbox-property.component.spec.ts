@@ -1,7 +1,6 @@
 import { CheckboxPropertyComponent } from '.';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { async } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { By } from '@angular/platform-browser';
@@ -20,16 +19,18 @@ describe('CheckboxPropertyComponent', () => {
         'contenttypes.field.properties.unique.label': 'unique'
     });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [CheckboxPropertyComponent],
-            imports: [],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [CheckboxPropertyComponent],
+                imports: [],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            });
 
-        fixture = DOTTestBed.createComponent(CheckboxPropertyComponent);
-        comp = fixture.componentInstance;
-    }));
+            fixture = DOTTestBed.createComponent(CheckboxPropertyComponent);
+            comp = fixture.componentInstance;
+        })
+    );
 
     it('should have a form', () => {
         const group = new FormGroup({});
@@ -48,7 +49,7 @@ describe('CheckboxPropertyComponent', () => {
             name: 'indexed',
             value: 'value',
             field: {
-                ...dotcmsContentTypeFieldBasicMock,
+                ...dotcmsContentTypeFieldBasicMock
             }
         };
 

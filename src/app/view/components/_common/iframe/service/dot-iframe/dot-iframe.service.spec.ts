@@ -4,7 +4,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
 @Injectable()
 export class DotRouterServiceMock {
@@ -22,37 +22,31 @@ describe('DotIframeService', () => {
                 DotIframeService,
                 DotUiColorsService,
                 { provide: DotRouterService, useClass: DotRouterServiceMock },
-                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                { provide: CoreWebService, useClass: CoreWebServiceMock }
             ]
         });
 
         service = TestBed.get(DotIframeService);
     });
 
-    it(
-        'should trigger reload action',
-        async(() => {
-            service.reloaded().subscribe(res => {
-                expect(res).toEqual({ name: 'reload' });
-            });
+    it('should trigger reload action', async(() => {
+        service.reloaded().subscribe((res) => {
+            expect(res).toEqual({ name: 'reload' });
+        });
 
-            service.reload();
-        })
-    );
+        service.reload();
+    }));
 
-    it(
-        'should trigger reload colors action',
-        async(() => {
-            service.reloadedColors().subscribe(res => {
-                expect(res).toEqual({ name: 'colors' });
-            });
+    it('should trigger reload colors action', async(() => {
+        service.reloadedColors().subscribe((res) => {
+            expect(res).toEqual({ name: 'colors' });
+        });
 
-            service.reloadColors();
-        })
-    );
+        service.reloadColors();
+    }));
 
     it('should trigger ran action', () => {
-        service.ran().subscribe(res => {
+        service.ran().subscribe((res) => {
             expect(res).toEqual({ name: 'functionName' });
         });
 

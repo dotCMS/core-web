@@ -17,7 +17,7 @@ import { filter } from 'rxjs/operators';
     styleUrls: ['./dot-iframe-dialog.component.scss']
 })
 export class DotIframeDialogComponent implements OnChanges, OnInit {
-    @ViewChild('dialog')
+    @ViewChild('dialog', { static: true })
     dotDialog: DotDialogComponent;
 
     @Input()
@@ -51,9 +51,7 @@ export class DotIframeDialogComponent implements OnChanges, OnInit {
         if (this.beforeClose.observers.length) {
             this.dotDialog.beforeClose
                 .pipe(filter(() => this.show))
-                .subscribe((event: {
-                    close: () => void;
-                }) => {
+                .subscribe((event: { close: () => void }) => {
                     this.beforeClose.emit(event);
                 });
         }

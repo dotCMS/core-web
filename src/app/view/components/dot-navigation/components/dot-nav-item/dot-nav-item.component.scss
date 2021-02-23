@@ -1,6 +1,6 @@
+@use "variables" as *;
 @import "mixins";
-@import "variables";
-@import "primeng-theme/utils/theme-variables";
+@import "dotcms-theme/utils/theme-variables";
 
 :host {
     display: block;
@@ -10,7 +10,7 @@
         transition: background-color $basic-speed ease;
 
         &:hover {
-            background-color: rgba(var(--color-white_rgb), 0.1);
+            background-color: rgba($white_rgb, 0.1);
 
             dot-sub-nav {
                 height: auto !important;
@@ -77,7 +77,7 @@
 
 .dot-nav__item-label {
     flex: 1;
-    margin-left: $basic-padding * 2;
+    margin-left: $spacing-3;
     word-break: break-word;
     transition: opacity $basic-speed ease;
 }
@@ -85,7 +85,7 @@
 dot-icon {
     opacity: 1;
     position: absolute;
-    right: $basic-padding;
+    right: $spacing-1;
     top: 50%;
     transform: translateY(-50%);
     transition: opacity $basic-speed ease;
@@ -94,5 +94,4 @@ dot-icon {
 dot-nav-icon {
     flex-shrink: 0;
     pointer-events: none;
-
 }

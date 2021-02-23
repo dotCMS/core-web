@@ -2,10 +2,10 @@ import { PaginatorService, OrderDirection } from './';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpHeaders } from '@angular/common/http';
 
-describe('PaginatorService setting', () => {
+describe('PaginatorService', () => {
     let injector: TestBed;
     let paginatorService: PaginatorService;
     let httpMock: HttpTestingController;
@@ -33,7 +33,7 @@ describe('PaginatorService setting', () => {
         paginatorService.sortField = 'name';
         paginatorService.sortOrder = OrderDirection.DESC;
         paginatorService.get().subscribe();
-        httpMock.expectOne('v1/urldemo?filter=test&orderby=name&direction=DESC');
+        httpMock.expectOne('v1/urldemo?filter=test&orderby=name&direction=DESC&per_page=40');
     });
 
     it('should do a request with extra params', () => {
@@ -41,14 +41,14 @@ describe('PaginatorService setting', () => {
         paginatorService.setExtraParams('system', 'true');
         paginatorService.setExtraParams('live', null);
         paginatorService.get().subscribe();
-        httpMock.expectOne('v1/urldemo?archive=false&system=true');
+        httpMock.expectOne('v1/urldemo?per_page=40&archive=false&system=true');
     });
 
     it('should remove extra parameters', () => {
         paginatorService.setExtraParams('name', 'John');
         paginatorService.deleteExtraParams('name');
 
-        expect(paginatorService.extraParams.get('name')).toBeNull();
+        expect(paginatorService.extraParams.get('name')).toBeUndefined();
     });
 
     afterEach(() => {

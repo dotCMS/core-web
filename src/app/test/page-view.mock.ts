@@ -1,5 +1,5 @@
-import { of as observableOf } from 'rxjs';
-import { DotPageView } from '@portlets/dot-edit-page/shared/models/dot-page-view.model';
+import { of } from 'rxjs';
+import { DotPageView } from '@models/dot-page/dot-page-view.model';
 import {
     mockDotPage,
     mockDotLayout,
@@ -8,15 +8,15 @@ import {
 } from './dot-page-render.mock';
 
 export const fakePageView: DotPageView = {
-    containers: mockDotContainers,
-    page: mockDotPage,
-    layout: mockDotLayout,
-    template: mockDotTemplate,
+    containers: mockDotContainers(),
+    page: mockDotPage(),
+    layout: mockDotLayout(),
+    template: mockDotTemplate(),
     canEditTemplate: true
 };
 
 export class PageViewServiceMock {
     get() {
-        return observableOf(fakePageView);
+        return of(fakePageView);
     }
 }

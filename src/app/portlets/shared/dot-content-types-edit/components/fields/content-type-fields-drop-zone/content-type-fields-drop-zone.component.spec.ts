@@ -1,5 +1,11 @@
-import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { DOTTestBed } from '@tests/dot-test-bed';
+import {
+    waitForAsync,
+    ComponentFixture,
+    fakeAsync,
+    tick,
+    async,
+    TestBed
+} from '@angular/core/testing';
 import { DebugElement, Component, Input, Output, EventEmitter, Injectable } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from '.';
 import { By } from '@angular/platform-browser';
@@ -10,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { LoginService, DotEventsSocket } from 'dotcms-js';
+import { LoginService, DotEventsSocket, CoreWebService } from 'dotcms-js';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, Subject } from 'rxjs';
@@ -21,8 +27,6 @@ import { FieldPropertyService } from '../service/field-properties.service';
 import { FieldService } from '../service/field.service';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-import { HotkeysService } from 'angular2-hotkeys';
-import { TestHotkeysMock } from '@tests/hotkeys-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import * as _ from 'lodash';
@@ -38,6 +42,12 @@ import {
     fieldsWithBreakColumn,
     fieldsBrokenWithColumns
 } from '@tests/dot-content-types.mock';
+
+import cleanUpDialog from '@tests/clean-up-dialog';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
+import { TabViewModule } from 'primeng/tabview';
 
 const COLUMN_BREAK_FIELD = FieldUtil.createColumnBreak();
 
@@ -141,55 +151,64 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
     let dragDropService: TestFieldDragDropService;
 
-    beforeEach(async(() => {
-        dragDropService = new TestFieldDragDropService();
+    beforeEach(
+        waitForAsync(() => {
+            dragDropService = new TestFieldDragDropService();
 
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                ContentTypeFieldsDropZoneComponent,
-                TestContentTypeFieldsPropertiesFormComponent,
-                TestContentTypeFieldsRowComponent,
-                TestDotContentTypeFieldsTabComponent,
-                TestDotLoadingIndicatorComponent
-            ],
-            imports: [
-                RouterTestingModule.withRoutes([
+            TestBed.configureTestingModule({
+                declarations: [
+                    ContentTypeFieldsDropZoneComponent,
+                    TestContentTypeFieldsPropertiesFormComponent,
+                    TestContentTypeFieldsRowComponent,
+                    TestDotContentTypeFieldsTabComponent,
+                    TestDotLoadingIndicatorComponent
+                ],
+                imports: [
+                    RouterTestingModule.withRoutes([
+                        {
+                            component: ContentTypeFieldsDropZoneComponent,
+                            path: 'test'
+                        }
+                    ]),
+                    BrowserAnimationsModule,
+                    ContentTypeFieldsAddRowModule,
+                    DotContentTypeFieldsVariablesModule,
+                    DotDialogModule,
+                    DotActionButtonModule,
+                    DotIconButtonModule,
+                    DotIconModule,
+                    DragulaModule,
+                    TableModule,
+                    DotFieldValidationMessageModule,
+                    ReactiveFormsModule,
+                    HttpClientTestingModule,
+                    DotMessagePipeModule,
+                    TabViewModule
+                ],
+                providers: [
+                    { provide: Router, useValue: mockRouter },
+                    { provide: FieldDragDropService, useValue: dragDropService },
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     {
-                        component: ContentTypeFieldsDropZoneComponent,
-                        path: 'test'
-                    }
-                ]),
-                BrowserAnimationsModule,
-                ContentTypeFieldsAddRowModule,
-                DotContentTypeFieldsVariablesModule,
-                DotDialogModule,
-                DotActionButtonModule,
-                DotIconButtonModule,
-                DotIconModule,
-                DragulaModule,
-                TableModule,
-                DotFieldValidationMessageModule,
-                ReactiveFormsModule
-            ],
-            providers: [
-                { provide: Router, useValue: mockRouter },
-                { provide: HotkeysService, useClass: TestHotkeysMock },
-                { provide: FieldDragDropService, useValue: dragDropService },
-                { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: DotLoadingIndicatorService, useValue: dotLoadingIndicatorServiceMock },
-                DotEventsSocket,
-                LoginService,
-                FormatDateService,
-                FieldService,
-                FieldPropertyService,
-                DragulaService
-            ]
-        });
+                        provide: DotLoadingIndicatorService,
+                        useValue: dotLoadingIndicatorServiceMock
+                    },
+                    { provide: CoreWebService, useClass: CoreWebServiceMock },
+                    DotEventsSocket,
+                    LoginService,
+                    FormatDateService,
+                    FieldService,
+                    FieldPropertyService,
+                    DragulaService,
+                    DotEventsService
+                ]
+            });
 
-        fixture = DOTTestBed.createComponent(ContentTypeFieldsDropZoneComponent);
-        comp = fixture.componentInstance;
-        de = fixture.debugElement;
-    }));
+            fixture = TestBed.createComponent(ContentTypeFieldsDropZoneComponent);
+            comp = fixture.componentInstance;
+            de = fixture.debugElement;
+        })
+    );
 
     it('should have fieldsContainer', () => {
         const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
@@ -224,7 +243,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         expect(comp.displayDialog).toBe(false);
         expect(comp.hideButtons).toBe(false);
         expect(comp.currentField).toBe(null);
-        expect(comp.dialogActiveTab).toBe(null);
         expect(comp.setDialogOkButtonState).toHaveBeenCalledWith(false);
     });
 
@@ -318,10 +336,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
+        cleanUpDialog(fixture);
     });
 });
 
@@ -362,157 +377,166 @@ describe('Load fields and drag and drop', () => {
 
     let testFieldDragDropService: TestFieldDragDropService;
 
-    beforeEach(async(() => {
-        testFieldDragDropService = new TestFieldDragDropService();
+    beforeEach(
+        waitForAsync(() => {
+            testFieldDragDropService = new TestFieldDragDropService();
 
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                ContentTypeFieldsDropZoneComponent,
-                TestContentTypeFieldsRowComponent,
-                TestContentTypeFieldsPropertiesFormComponent,
-                TestDotContentTypeFieldsTabComponent,
-                TestHostComponent,
-                TestDotLoadingIndicatorComponent
-            ],
-            imports: [
-                RouterTestingModule.withRoutes([
+            TestBed.configureTestingModule({
+                declarations: [
+                    ContentTypeFieldsDropZoneComponent,
+                    TestContentTypeFieldsRowComponent,
+                    TestContentTypeFieldsPropertiesFormComponent,
+                    TestDotContentTypeFieldsTabComponent,
+                    TestHostComponent,
+                    TestDotLoadingIndicatorComponent
+                ],
+                imports: [
+                    RouterTestingModule.withRoutes([
+                        {
+                            component: ContentTypeFieldsDropZoneComponent,
+                            path: 'test'
+                        }
+                    ]),
+                    DragulaModule,
+                    DotFieldValidationMessageModule,
+                    DotContentTypeFieldsVariablesModule,
+                    ReactiveFormsModule,
+                    BrowserAnimationsModule,
+                    DotActionButtonModule,
+                    DotIconModule,
+                    DotIconButtonModule,
+                    TableModule,
+                    ContentTypeFieldsAddRowModule,
+                    DotDialogModule,
+                    HttpClientTestingModule,
+                    DotMessagePipeModule,
+                    TabViewModule
+                ],
+                providers: [
+                    DragulaService,
+                    FieldPropertyService,
+                    FieldService,
+                    FormatDateService,
+                    LoginService,
+                    DotEventsSocket,
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    { provide: FieldDragDropService, useValue: testFieldDragDropService },
+                    { provide: Router, useValue: mockRouter },
                     {
-                        component: ContentTypeFieldsDropZoneComponent,
-                        path: 'test'
-                    }
-                ]),
-                DragulaModule,
-                DotFieldValidationMessageModule,
-                DotContentTypeFieldsVariablesModule,
-                ReactiveFormsModule,
-                BrowserAnimationsModule,
-                DotActionButtonModule,
-                DotIconModule,
-                DotIconButtonModule,
-                TableModule,
-                ContentTypeFieldsAddRowModule,
-                DotDialogModule
-            ],
-            providers: [
-                DragulaService,
-                FieldPropertyService,
-                FieldService,
-                FormatDateService,
-                LoginService,
-                DotEventsSocket,
-                { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: FieldDragDropService, useValue: testFieldDragDropService },
-                { provide: HotkeysService, useClass: TestHotkeysMock },
-                { provide: Router, useValue: mockRouter },
-                { provide: DotLoadingIndicatorService, useValue: dotLoadingIndicatorServiceMock }
-            ]
-        });
-
-        fixture = DOTTestBed.createComponent(TestHostComponent);
-        hostComp = fixture.componentInstance;
-        hostDe = fixture.debugElement;
-        de = hostDe.query(By.css('dot-content-type-fields-drop-zone'));
-        comp = de.componentInstance;
-
-        fakeFields = [
-            {
-                divider: {
-                    ...dotcmsContentTypeFieldBasicMock,
-                    name: 'field 1',
-                    id: '1',
-                    clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                    sortOrder: 0,
-                    contentTypeId: '1b'
-                },
-                columns: [
-                    {
-                        columnDivider: {
-                            ...dotcmsContentTypeFieldBasicMock,
-                            name: 'field 2',
-                            id: '2',
-                            clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                            sortOrder: 1,
-                            contentTypeId: '2b'
-                        },
-                        fields: [
-                            {
-                                ...dotcmsContentTypeFieldBasicMock,
-                                clazz: 'text',
-                                id: '3',
-                                name: 'field 3',
-                                sortOrder: 2,
-                                contentTypeId: '3b'
-                            }
-                        ]
+                        provide: DotLoadingIndicatorService,
+                        useValue: dotLoadingIndicatorServiceMock
                     },
-                    {
-                        columnDivider: {
-                            ...dotcmsContentTypeFieldBasicMock,
-                            clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                            id: '4',
-                            name: 'field 4',
-                            sortOrder: 3,
-                            contentTypeId: '4b'
-                        },
-                        fields: [
-                            {
-                                ...dotcmsContentTypeFieldBasicMock,
-                                clazz: 'text',
-                                id: '5',
-                                name: 'field 5',
-                                sortOrder: 4,
-                                contentTypeId: '5b'
-                            }
-                        ]
-                    }
+                    { provide: CoreWebService, useClass: CoreWebServiceMock },
+                    DotEventsService
                 ]
-            },
-            {
-                divider: {
-                    ...dotcmsContentTypeFieldBasicMock,
-                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
-                    id: '6',
-                    name: 'field 6',
-                    sortOrder: 5,
-                    contentTypeId: '6b'
-                }
-            },
-            {
-                divider: {
-                    ...dotcmsContentTypeFieldBasicMock,
-                    clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                    id: '7',
-                    name: 'field 7',
-                    sortOrder: 6,
-                    contentTypeId: '7b'
-                },
-                columns: [
-                    {
-                        columnDivider: {
-                            ...dotcmsContentTypeFieldBasicMock,
-                            clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                            id: '8',
-                            name: 'field 8',
-                            sortOrder: 7,
-                            contentTypeId: '8b'
-                        },
-                        fields: [
-                            {
-                                ...dotcmsContentTypeFieldBasicMock,
-                                clazz: 'text',
-                                id: '9',
-                                name: 'field 9',
-                                sortOrder: 8,
-                                contentTypeId: '9b'
-                            }
-                        ]
-                    }
-                ]
-            }
-        ];
+            });
 
-        hostComp.layout = fakeFields;
-    }));
+            fixture = TestBed.createComponent(TestHostComponent);
+            hostComp = fixture.componentInstance;
+            hostDe = fixture.debugElement;
+            de = hostDe.query(By.css('dot-content-type-fields-drop-zone'));
+            comp = de.componentInstance;
+
+            fakeFields = [
+                {
+                    divider: {
+                        ...dotcmsContentTypeFieldBasicMock,
+                        name: 'field 1',
+                        id: '1',
+                        clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
+                        sortOrder: 0,
+                        contentTypeId: '1b'
+                    },
+                    columns: [
+                        {
+                            columnDivider: {
+                                ...dotcmsContentTypeFieldBasicMock,
+                                name: 'field 2',
+                                id: '2',
+                                clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
+                                sortOrder: 1,
+                                contentTypeId: '2b'
+                            },
+                            fields: [
+                                {
+                                    ...dotcmsContentTypeFieldBasicMock,
+                                    clazz: 'text',
+                                    id: '3',
+                                    name: 'field 3',
+                                    sortOrder: 2,
+                                    contentTypeId: '3b'
+                                }
+                            ]
+                        },
+                        {
+                            columnDivider: {
+                                ...dotcmsContentTypeFieldBasicMock,
+                                clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
+                                id: '4',
+                                name: 'field 4',
+                                sortOrder: 3,
+                                contentTypeId: '4b'
+                            },
+                            fields: [
+                                {
+                                    ...dotcmsContentTypeFieldBasicMock,
+                                    clazz: 'text',
+                                    id: '5',
+                                    name: 'field 5',
+                                    sortOrder: 4,
+                                    contentTypeId: '5b'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    divider: {
+                        ...dotcmsContentTypeFieldBasicMock,
+                        clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
+                        id: '6',
+                        name: 'field 6',
+                        sortOrder: 5,
+                        contentTypeId: '6b'
+                    }
+                },
+                {
+                    divider: {
+                        ...dotcmsContentTypeFieldBasicMock,
+                        clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
+                        id: '7',
+                        name: 'field 7',
+                        sortOrder: 6,
+                        contentTypeId: '7b'
+                    },
+                    columns: [
+                        {
+                            columnDivider: {
+                                ...dotcmsContentTypeFieldBasicMock,
+                                clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
+                                id: '8',
+                                name: 'field 8',
+                                sortOrder: 7,
+                                contentTypeId: '8b'
+                            },
+                            fields: [
+                                {
+                                    ...dotcmsContentTypeFieldBasicMock,
+                                    clazz: 'text',
+                                    id: '9',
+                                    name: 'field 9',
+                                    sortOrder: 8,
+                                    contentTypeId: '9b'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ];
+
+            hostComp.layout = fakeFields;
+        })
+    );
 
     it('should handler editField event', () => {
         const field = {
@@ -526,7 +550,7 @@ describe('Load fields and drag and drop', () => {
         const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
         const fieldRows = fieldsContainer.queryAll(By.css('dot-content-type-fields-row'));
         fieldRows[0].componentInstance.editField.emit(field);
-        expect(spy).toHaveBeenCalledWith(field);
+        expect<any>(spy).toHaveBeenCalledWith(field);
     });
 
     it('should save all updated fields', fakeAsync(() => {
@@ -692,11 +716,7 @@ describe('Load fields and drag and drop', () => {
 
         const newlyField = fakeFields[2].columns[0].fields[0];
         delete newlyField.id;
-
         fixture.detectChanges();
-
-        spyOn(comp.propertiesForm, 'destroy');
-
         // select the fields[8] as the current field
         testFieldDragDropService._fieldDropFromSource.next({
             item: newlyField
@@ -723,7 +743,7 @@ describe('Load fields and drag and drop', () => {
         const fieldRows = fieldsContainer.queryAll(By.css('dot-content-type-fields-row'));
         fieldRows[0].componentInstance.removeField.emit(field);
 
-        expect(spy).toHaveBeenCalledWith(field);
+        expect<any>(spy).toHaveBeenCalledWith(field);
     });
 
     it('should disable field variable tab', () => {
@@ -733,8 +753,9 @@ describe('Load fields and drag and drop', () => {
         comp.displayDialog = true;
         fixture.detectChanges();
 
-        const tabLinks = de.queryAll(By.css('.ui-tabview-nav li'));
-        expect(tabLinks[1].nativeElement.classList.contains('ui-state-disabled')).toBe(true);
+        const tabLinks = de.queryAll(By.css('.p-tabview-nav li'));
+        console.log(tabLinks[1].nativeElement.classList);
+        expect(tabLinks[1].nativeElement.classList.contains('p-disabled')).toBe(true);
     });
 
     it('should NOT disable field variable tab', () => {
@@ -744,26 +765,27 @@ describe('Load fields and drag and drop', () => {
         };
         comp.displayDialog = true;
         fixture.detectChanges();
-
-        const tabLinks = de.queryAll(By.css('.ui-tabview-nav li'));
-        expect(tabLinks[1].nativeElement.classList.contains('ui-state-disabled')).toBe(false);
+        const tabLinks = de.queryAll(By.css('.p-tabview-nav li'));
+        expect(tabLinks[1].nativeElement.classList.contains('p-disabled')).toBe(false);
     });
 
     describe('Edit Field Dialog', () => {
-        beforeEach(async(() => {
-            fixture.detectChanges();
+        beforeEach(
+            waitForAsync(() => {
+                fixture.detectChanges();
 
-            const fieldToEdit: DotCMSContentTypeField = fakeFields[2].columns[0].fields[0];
-            testFieldDragDropService._fieldDropFromSource.next({
-                item: fieldToEdit,
-                target: {
-                    columnId: '8',
-                    model: [fieldToEdit]
-                }
-            });
+                const fieldToEdit: DotCMSContentTypeField = fakeFields[2].columns[0].fields[0];
+                testFieldDragDropService._fieldDropFromSource.next({
+                    item: fieldToEdit,
+                    target: {
+                        columnId: '8',
+                        model: [fieldToEdit]
+                    }
+                });
 
-            fixture.detectChanges();
-        }));
+                fixture.detectChanges();
+            })
+        );
 
         it('should display dialog if a drop event happen from source', () => {
             expect(comp.displayDialog).toBe(true);
@@ -807,9 +829,6 @@ describe('Load fields and drag and drop', () => {
     });
 
     afterEach(() => {
-        // Removes dirty DOM after tests have finished
-        if (fixture.nativeElement && 'remove' in fixture.nativeElement) {
-            (fixture.nativeElement as HTMLElement).remove();
-        }
+        cleanUpDialog(fixture);
     });
 });

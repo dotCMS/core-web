@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
 
-import { LazyLoadEvent } from 'primeng/primeng';
+import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
     selector: 'dot-apps-configuration-list',
@@ -17,6 +17,7 @@ export class DotAppsConfigurationListComponent {
 
     @Output() loadData = new EventEmitter<LazyLoadEvent>();
     @Output() edit = new EventEmitter<DotAppsSites>();
+    @Output() export = new EventEmitter<DotAppsSites>();
     @Output() delete = new EventEmitter<DotAppsSites>();
 
     constructor() {}

@@ -14,7 +14,7 @@ import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { StructureTypeView } from '@models/contentlet/structure-type-view.model';
 import { ButtonModel } from '@models/action-header/button.model';
-import { DotDataTableAction } from '@models/data-table/dot-data-table-action';
+import { DotActionMenuItem } from '@shared/models/dot-action-menu/dot-action-menu-item.model';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
@@ -35,12 +35,14 @@ import { DotPushPublishDialogService } from 'dotcms-js';
     templateUrl: 'dot-content-types.component.html'
 })
 export class DotContentTypesPortletComponent implements OnInit {
-    @ViewChild('listing') listing: DotListingDataTableComponent;
+    @ViewChild('listing', { static: false }) listing: DotListingDataTableComponent;
     filterBy: string;
+    showTable = false;
+    paginatorExtraParams: { [key: string]: string };
     public contentTypeColumns: DataTableColumn[];
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
-    public rowActions: DotDataTableAction[];
+    public rowActions: DotActionMenuItem[];
     public addToBundleIdentifier: string;
 
     constructor(
@@ -61,11 +63,12 @@ export class DotContentTypesPortletComponent implements OnInit {
         forkJoin(
             this.dotContentTypeService.getAllContentTypes(),
             this.dotLicenseService.isEnterprise(),
-            this.pushPublishService
-                .getEnvironments()
-                .pipe(map((environments: DotEnvironment[]) => !!environments.length), take(1)),
+            this.pushPublishService.getEnvironments().pipe(
+                map((environments: DotEnvironment[]) => !!environments.length),
+                take(1)
+            ),
             this.route.data.pipe(pluck('filterBy'), take(1))
-        ).subscribe(([ contentTypes, isEnterprise, environments, filterBy]) => {
+        ).subscribe(([contentTypes, isEnterprise, environments, filterBy]) => {
             const baseTypes: StructureTypeView[] = contentTypes;
             const rowActionsMap = {
                 pushPublish: isEnterprise && environments,
@@ -83,11 +86,12 @@ export class DotContentTypesPortletComponent implements OnInit {
             if (filterBy) {
                 this.setFilterByContentType(filterBy as string);
             }
+            this.showTable = true;
         });
     }
 
-    editContentType($event): void {
-        this.router.navigate([`edit/${$event.data.id}`], {
+    editContentType(item: any): void {
+        this.router.navigate([`edit/${item.id}`], {
             relativeTo: this.route
         });
     }
@@ -101,16 +105,15 @@ export class DotContentTypesPortletComponent implements OnInit {
 
     private setFilterByContentType(contentType: string) {
         this.filterBy = _.startCase(_.toLower(contentType));
-        this.listing.paginatorService.setExtraParams('type', this.filterBy);
-
-        this.actionHeaderOptions.primary.command = $event => {
+        this.paginatorExtraParams = { type: this.filterBy };
+        this.actionHeaderOptions.primary.command = ($event) => {
             this.createContentType(null, $event);
         };
         this.actionHeaderOptions.primary.model = null;
     }
 
-    private getPublishActions(pushPublish: boolean, addToBundle: boolean): DotDataTableAction[] {
-        const actions: DotDataTableAction[] = [];
+    private getPublishActions(pushPublish: boolean, addToBundle: boolean): DotActionMenuItem[] {
+        const actions: DotActionMenuItem[] = [];
         /*
             Only show Push Publish action if DotCMS instance have the appropriate license and there are
             push publish environments created.
@@ -119,7 +122,7 @@ export class DotContentTypesPortletComponent implements OnInit {
             actions.push({
                 menuItem: {
                     label: this.dotMessageService.get('contenttypes.content.push_publish'),
-                    command: item => this.pushPublishContentType(item)
+                    command: (item) => this.pushPublishContentType(item)
                 }
             });
         }
@@ -128,7 +131,7 @@ export class DotContentTypesPortletComponent implements OnInit {
             actions.push({
                 menuItem: {
                     label: this.dotMessageService.get('contenttypes.content.add_to_bundle'),
-                    command: item => this.addToBundleContentType(item)
+                    command: (item) => this.addToBundleContentType(item)
                 }
             });
         }
@@ -136,18 +139,18 @@ export class DotContentTypesPortletComponent implements OnInit {
         return actions;
     }
 
-    private createRowActions(rowActionsMap: any): DotDataTableAction[] {
-        const listingActions: DotDataTableAction[] = [
+    private createRowActions(rowActionsMap: any): DotActionMenuItem[] {
+        const listingActions: DotActionMenuItem[] = [
             ...this.getPublishActions(rowActionsMap.pushPublish, rowActionsMap.addToBundle)
         ];
 
         listingActions.push({
             menuItem: {
                 label: this.dotMessageService.get('contenttypes.action.delete'),
-                command: item => this.removeConfirmation(item),
+                command: (item) => this.removeConfirmation(item),
                 icon: 'delete'
             },
-            shouldShow: item => !item.fixed && !item.defaultType
+            shouldShow: (item) => !item.fixed && !item.defaultType
         });
 
         /*
@@ -158,7 +161,7 @@ export class DotContentTypesPortletComponent implements OnInit {
             : listingActions;
     }
 
-    private removeIconsFromMenuItem(action: DotDataTableAction): DotDataTableAction {
+    private removeIconsFromMenuItem(action: DotActionMenuItem): DotActionMenuItem {
         const { icon, ...noIconMenuItem } = action.menuItem;
         return {
             ...action,
@@ -169,7 +172,7 @@ export class DotContentTypesPortletComponent implements OnInit {
     private setContentTypes(s: StructureTypeView[]): ButtonModel[] {
         return s.map((structureTypeView: StructureTypeView) => {
             return {
-                command: $event => {
+                command: ($event) => {
                     this.createContentType(structureTypeView.name.toLocaleLowerCase(), $event);
                 },
                 icon: this.contentTypesInfoService.getIcon(`${structureTypeView.name}_old`),
@@ -248,11 +251,7 @@ export class DotContentTypesPortletComponent implements OnInit {
                 () => {
                     this.listing.loadCurrentPage();
                 },
-                error =>
-                    this.httpErrorManagerService
-                        .handle(error)
-                        .pipe(take(1))
-                        .subscribe()
+                (error) => this.httpErrorManagerService.handle(error).pipe(take(1)).subscribe()
             );
     }
 

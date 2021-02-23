@@ -1,5 +1,5 @@
+@use "variables" as *;
 @import "mixins";
-@import "variables";
 
 .workflow__archive-label {
     color: $gray;
@@ -9,5 +9,5 @@
 .workflow__archive-message {
     color: $gray;
     font-size: $font-size-small;
-    margin-left: $basic-padding;
+    margin-left: $spacing-1;
 }

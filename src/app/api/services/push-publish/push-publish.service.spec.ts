@@ -1,10 +1,10 @@
-import { of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 import { PushPublishService } from './push-publish.service';
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
 import { ApiRoot, CoreWebService, LoggerService, StringUtils, UserModel } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 const mockResponse = {
@@ -25,7 +25,6 @@ const mockFormValue: DotPushPublishData = {
 describe('PushPublishService', () => {
     let dotCurrentUserService: DotCurrentUserService;
 
-    let injector: TestBed;
     let pushPublishService: PushPublishService;
     let httpMock: HttpTestingController;
 
@@ -42,15 +41,14 @@ describe('PushPublishService', () => {
                 StringUtils
             ]
         });
-        injector = getTestBed();
-        pushPublishService = injector.get(PushPublishService);
-        dotCurrentUserService = injector.get(DotCurrentUserService);
-        httpMock = injector.get(HttpTestingController);
+        pushPublishService = TestBed.inject(PushPublishService);
+        dotCurrentUserService = TestBed.inject(DotCurrentUserService);
+        httpMock = TestBed.inject(HttpTestingController);
     });
 
     it('should get push publish environments', () => {
-        spyOn(dotCurrentUserService, 'getCurrentUser').and.returnValue(
-            observableOf({
+        spyOn<any>(dotCurrentUserService, 'getCurrentUser').and.returnValue(
+            of({
                 roleId: '1234'
             })
         );
@@ -74,14 +72,16 @@ describe('PushPublishService', () => {
             expect(items).toEqual(response.splice(1));
         });
 
-        const req = httpMock.expectOne('environment/loadenvironments/roleId/1234/name=0');
+        const req = httpMock.expectOne('/api/environment/loadenvironments/roleId/1234/name=0');
         expect(req.request.method).toBe('GET');
         req.flush(response);
     });
 
     it('should do a post request and push publish an asset', () => {
+        const assetIdentifier = '1234567890 +0';
+        const assetIdentifierEncoded = encodeURIComponent(assetIdentifier);
         pushPublishService
-            .pushPublishContent('1234567890', mockFormValue, false)
+            .pushPublishContent(assetIdentifier, mockFormValue, false)
             .subscribe((items: any) => {
                 expect(items).toEqual(mockResponse);
             });
@@ -89,12 +89,12 @@ describe('PushPublishService', () => {
         const req = httpMock.expectOne(() => true);
         expect(
             req.request.url.indexOf(
-                'DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish'
+                '/DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish'
             )
         ).toBeGreaterThan(-1);
         expect(req.request.method).toBe('POST');
         expect(req.request.body).toBe(
-            'assetIdentifier=1234567890&remotePublishDate=2020-07-08&remotePublishTime=10-10&remotePublishExpireDate=2020-07-15&remotePublishExpireTime=22-10&iWantTo=publish&whoToSend=env1&bundleName=&bundleSelect=&filterKey=hol'
+            `assetIdentifier=${assetIdentifierEncoded}&remotePublishDate=2020-07-08&remotePublishTime=10-10&remotePublishExpireDate=2020-07-15&remotePublishExpireTime=22-10&iWantTo=publish&whoToSend=env1&bundleName=&bundleSelect=&filterKey=hol`
         );
         req.flush(mockResponse);
     });

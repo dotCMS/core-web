@@ -1,8 +1,7 @@
 import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RequestMethod } from '@angular/http';
-import { DotPageContainer } from '../../shared/models/dot-page-container.model';
+import { DotPageContainer } from '../../../../shared/models/dot-page-container/dot-page-container.model';
 import { DotPageContent } from '../../shared/models/dot-page-content.model';
 import { DotCMSContentType } from 'dotcms-models';
 import { CoreWebService } from 'dotcms-js';
@@ -25,7 +24,6 @@ export class DotContainerContentletService {
     ): Observable<string> {
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
                 url: `v1/containers/content/${content.identifier}?containerId=${container.identifier}`
             })
             .pipe(pluck('entity', 'render'));
@@ -45,7 +43,6 @@ export class DotContainerContentletService {
     ): Observable<{ render: string; content: any }> {
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
                 url: `v1/containers/form/${form.id}?containerId=${container.identifier}`
             })
             .pipe(pluck('entity'));

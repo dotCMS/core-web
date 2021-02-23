@@ -1,19 +1,18 @@
 <dot-searchable-dropdown
+    data-testId="searchableDropdown"
     (change)="containerChange($event)"
     (filterChange)="handleFilterChange($event)"
     (pageChange)="handlePageChange($event)"
-    [data]="currentContainers"
+    [data]="currentContainers | async"
     [pageLinkSize]="5"
     [rows]="paginationService.paginationPerPage"
     [totalRecords]="paginationService.totalRecords"
     [labelPropertyName]="['name', 'parentPermissionable.hostname']"
     placeholder="{{ 'editpage.container.add.label' | dm }}"
     persistentPlaceholder="true"
-    [multiple]="multiple">
+    width="172px"
+    overlayWidth="440px"
+    [class]="innerClass"
+    [multiple]="true"
+>
 </dot-searchable-dropdown>
-<ul class="container-selector__list">
-    <li *ngFor="let dotContainerColumnBox of data; let i = index" class="container-selector__list-item">
-        <button pButton icon="fa fa-trash" type="button" (click)="removeContainerItem(i)"></button>
-        <span>{{ dotContainerColumnBox.container?.name }} ({{ dotContainerColumnBox.container?.parentPermissionable.hostname }})</span>
-    </li>
-</ul>

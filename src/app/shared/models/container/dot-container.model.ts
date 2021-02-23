@@ -14,9 +14,10 @@ export interface DotContainer {
     source: CONTAINER_SOURCE;
     parentPermissionable: {
         hostname: string;
-    }
+    };
 }
 
+// The template endpoint returns DotContainer but the page endpoint returns {container}
 export interface DotContainerMap {
-    [key: string]: { container: DotContainer };
+    [key: string]: DotContainer;
 }

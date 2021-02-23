@@ -1,7 +1,6 @@
 import {
     Directive,
     ElementRef,
-    Renderer,
     EventEmitter,
     KeyValueDiffer,
     KeyValueDiffers,
@@ -9,7 +8,8 @@ import {
     OnDestroy,
     ViewContainerRef,
     Output,
-    DoCheck
+    DoCheck,
+    Renderer2
 } from '@angular/core';
 import {
     NgGridItemConfig,
@@ -106,7 +106,7 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
     private _zIndex = 0;
 
     set zIndex(zIndex: number) {
-        this._renderer.setElementStyle(this._ngEl.nativeElement, 'z-index', zIndex.toString());
+        this._renderer.setStyle(this._ngEl.nativeElement, 'z-index', zIndex.toString());
         this._zIndex = zIndex;
     }
 
@@ -169,7 +169,7 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
     constructor(
         private _differs: KeyValueDiffers,
         private _ngEl: ElementRef,
-        private _renderer: Renderer,
+        private _renderer: Renderer2,
         private _ngGrid: NgGrid,
         public containerRef: ViewContainerRef
     ) {}
@@ -225,9 +225,9 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
     }
 
     public ngOnInit(): void {
-        this._renderer.setElementClass(this._ngEl.nativeElement, 'grid-item', true);
+        this._renderer.addClass(this._ngEl.nativeElement, 'grid-item');
         if (this._ngGrid.autoStyle)
-            this._renderer.setElementStyle(this._ngEl.nativeElement, 'position', 'absolute');
+            this._renderer.setStyle(this._ngEl.nativeElement, 'position', 'absolute');
         this._recalculateDimensions();
         this._recalculatePosition();
 
@@ -325,11 +325,11 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
                         break;
                 }
 
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'cursor', cursor);
+                this._renderer.setStyle(this._ngEl.nativeElement, 'cursor', cursor);
             } else if (this._ngGrid.dragEnable && this.canDrag(e)) {
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'cursor', 'move');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'cursor', 'move');
             } else {
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'cursor', 'default');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'cursor', 'default');
             }
         }
     }
@@ -455,16 +455,16 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
             case 'up':
             case 'left':
             default:
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'left', x + 'px');
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'top', y + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'left', x + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'top', y + 'px');
                 break;
             case 'right':
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'right', x + 'px');
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'top', y + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'right', x + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'top', y + 'px');
                 break;
             case 'down':
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'left', x + 'px');
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'bottom', y + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'left', x + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'bottom', y + 'px');
                 break;
         }
 
@@ -478,46 +478,22 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
             case 'up':
             case 'left':
             default:
-                this._renderer.setElementStyle(
-                    this._ngEl.nativeElement,
-                    'left',
-                    this._elemLeft + 'px'
-                );
-                this._renderer.setElementStyle(
-                    this._ngEl.nativeElement,
-                    'top',
-                    this._elemTop + 'px'
-                );
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'right', null);
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'bottom', null);
+                this._renderer.setStyle(this._ngEl.nativeElement, 'left', this._elemLeft + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'top', this._elemTop + 'px');
+                this._renderer.removeStyle(this._ngEl.nativeElement, 'right');
+                this._renderer.removeStyle(this._ngEl.nativeElement, 'bottom');
                 break;
             case 'right':
-                this._renderer.setElementStyle(
-                    this._ngEl.nativeElement,
-                    'right',
-                    this._elemLeft + 'px'
-                );
-                this._renderer.setElementStyle(
-                    this._ngEl.nativeElement,
-                    'top',
-                    this._elemTop + 'px'
-                );
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'left', null);
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'bottom', null);
+                this._renderer.setStyle(this._ngEl.nativeElement, 'right', this._elemLeft + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'top', this._elemTop + 'px');
+                this._renderer.removeStyle(this._ngEl.nativeElement, 'left');
+                this._renderer.removeStyle(this._ngEl.nativeElement, 'bottom');
                 break;
             case 'down':
-                this._renderer.setElementStyle(
-                    this._ngEl.nativeElement,
-                    'left',
-                    this._elemLeft + 'px'
-                );
-                this._renderer.setElementStyle(
-                    this._ngEl.nativeElement,
-                    'bottom',
-                    this._elemTop + 'px'
-                );
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'right', null);
-                this._renderer.setElementStyle(this._ngEl.nativeElement, 'top', null);
+                this._renderer.setStyle(this._ngEl.nativeElement, 'left', this._elemLeft + 'px');
+                this._renderer.setStyle(this._ngEl.nativeElement, 'bottom', this._elemTop + 'px');
+                this._renderer.removeStyle(this._ngEl.nativeElement, 'right');
+                this._renderer.removeStyle(this._ngEl.nativeElement, 'top');
                 break;
         }
     }
@@ -526,18 +502,18 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
         if (w < this.minWidth) w = this.minWidth;
         if (h < this.minHeight) h = this.minHeight;
 
-        this._renderer.setElementStyle(this._ngEl.nativeElement, 'width', w + 'px');
-        this._renderer.setElementStyle(this._ngEl.nativeElement, 'height', h + 'px');
+        this._renderer.setStyle(this._ngEl.nativeElement, 'width', w + 'px');
+        this._renderer.setStyle(this._ngEl.nativeElement, 'height', h + 'px');
 
         this._elemWidth = w;
         this._elemHeight = h;
     }
 
     public startMoving(): void {
-        this._renderer.setElementClass(this._ngEl.nativeElement, 'moving', true);
+        this._renderer.addClass(this._ngEl.nativeElement, 'moving');
         const style: any = window.getComputedStyle(this._ngEl.nativeElement);
         if (this._ngGrid.autoStyle)
-            this._renderer.setElementStyle(
+            this._renderer.setStyle(
                 this._ngEl.nativeElement,
                 'z-index',
                 (parseInt(style.getPropertyValue('z-index'), 10) + 1).toString()
@@ -545,10 +521,10 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
     }
 
     public stopMoving(): void {
-        this._renderer.setElementClass(this._ngEl.nativeElement, 'moving', false);
+        this._renderer.removeClass(this._ngEl.nativeElement, 'moving');
         const style: any = window.getComputedStyle(this._ngEl.nativeElement);
         if (this._ngGrid.autoStyle)
-            this._renderer.setElementStyle(
+            this._renderer.setStyle(
                 this._ngEl.nativeElement,
                 'z-index',
                 (parseInt(style.getPropertyValue('z-index'), 10) - 1).toString()
@@ -648,8 +624,8 @@ export class NgGridItem implements OnInit, OnDestroy, DoCheck {
             e = oe.touches.length
                 ? oe.touches[0]
                 : oe.changedTouches.length
-                    ? oe.changedTouches[0]
-                    : e;
+                ? oe.changedTouches[0]
+                : e;
         } else if (e.touches) {
             e = e.touches.length ? e.touches[0] : e.changedTouches.length ? e.changedTouches[0] : e;
         }

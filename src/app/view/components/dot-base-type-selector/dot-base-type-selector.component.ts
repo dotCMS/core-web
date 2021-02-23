@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { StructureTypeView } from '@models/contentlet/structure-type-view.model';
 import { Observable } from 'rxjs';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem } from 'primeng/api';
 import { map, take } from 'rxjs/operators';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
 
@@ -23,9 +23,10 @@ export class DotBaseTypeSelectorComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.options = this.dotContentTypeService
-            .getAllContentTypes()
-            .pipe(take(1), map((structures: StructureTypeView[]) => this.setOptions(structures)));
+        this.options = this.dotContentTypeService.getAllContentTypes().pipe(
+            take(1),
+            map((structures: StructureTypeView[]) => this.setOptions(structures))
+        );
     }
 
     change(item: SelectItem) {

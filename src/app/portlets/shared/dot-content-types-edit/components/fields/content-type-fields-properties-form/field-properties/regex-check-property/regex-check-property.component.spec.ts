@@ -2,8 +2,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { RegexCheckPropertyComponent, RegexTemplate } from './index';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { RegexCheckPropertyComponent } from './index';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DOTTestBed } from '@tests/dot-test-bed';
@@ -26,27 +26,29 @@ describe('RegexCheckPropertyComponent', () => {
         'contenttypes.field.properties.validation_regex.values.no_html': 'No HTML'
     });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [RegexCheckPropertyComponent],
-            imports: [NoopAnimationsModule],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [RegexCheckPropertyComponent],
+                imports: [NoopAnimationsModule],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            });
 
-        fixture = DOTTestBed.createComponent(RegexCheckPropertyComponent);
-        comp = fixture.componentInstance;
+            fixture = DOTTestBed.createComponent(RegexCheckPropertyComponent);
+            comp = fixture.componentInstance;
 
-        comp.group = new FormGroup({
-            regexCheck: new FormControl('')
-        });
-        comp.property = {
-            name: 'regexCheck',
-            value: 'value',
-            field: {
-                ...dotcmsContentTypeFieldBasicMock
-            }
-        };
-    }));
+            comp.group = new FormGroup({
+                regexCheck: new FormControl('')
+            });
+            comp.property = {
+                name: 'regexCheck',
+                value: 'value',
+                field: {
+                    ...dotcmsContentTypeFieldBasicMock
+                }
+            };
+        })
+    );
 
     it('should have a form', () => {
         const group = new FormGroup({});
@@ -82,15 +84,5 @@ describe('RegexCheckPropertyComponent', () => {
         expect('^([a-zA-Z0-9]+[a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,4})$').toBe(
             comp.group.get('regexCheck').value
         );
-    });
-
-
-    it('Should compile all the regex pattern', () => {
-        comp.regexCheckTempletes
-            .map((regex: RegexTemplate) => regex.value)
-            .forEach((pattern: string) => {
-                new RegExp(pattern).compile();
-            });
-
     });
 });

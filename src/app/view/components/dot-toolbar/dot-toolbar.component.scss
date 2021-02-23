@@ -1,11 +1,10 @@
+@use "variables" as *;
 @import "mixins";
-@import "variables";
 
 :host {
     ::ng-deep {
         dot-site-selector {
-
-            span.ui-button-text{
+            span.p-button-text {
                 max-width: 300px;
                 @include truncate-text;
             }
@@ -16,22 +15,22 @@
 p-toolbar::ng-deep {
     z-index: 1004; // Menu and dropdown options in primeng use 1003.
 
-    dot-toolbar-user,
-    dot-toolbar-notifications {
-        width: 32px;
-    }
-
-    .ui-toolbar {
+    .p-toolbar {
         background-color: $toolbar-background;
         color: $toolbar-color;
         height: $toolbar-height;
-        padding-left: 0;
+        padding: 0 $spacing-3 0 0;
         box-shadow: $md-shadow-1;
     }
 
-    .ui-toolbar-group-right > * {
-        margin-left: $basic-padding * 2;
+    .p-toolbar-group-right > * {
+        margin-left: $spacing-3;
     }
+}
+
+dot-toolbar-user,
+dot-toolbar-notifications {
+    width: 32px;
 }
 
 .toolbar__button-wrapper {
@@ -44,7 +43,7 @@ p-toolbar::ng-deep {
 }
 
 .toolbar__crumbtrail {
-    margin-left: $basic-padding * 3;
+    margin-left: $spacing-4;
 }
 
 .toolbar__logo {
@@ -88,7 +87,7 @@ p-toolbar::ng-deep {
 
 .toolbar__sep {
     border-left: solid 1px $gray-bg;
-    margin: 0 $basic-padding 0 $basic-padding * 3 !important;
+    margin: 0 $spacing-1 0 $spacing-4 !important;
     display: block;
     height: 40px;
 }

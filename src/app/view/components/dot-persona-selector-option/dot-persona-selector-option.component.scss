@@ -1,4 +1,4 @@
-@import "variables";
+@use "variables" as *;
 
 :host {
     align-items: center;
@@ -8,15 +8,14 @@
     width: 100%;
 
     &:hover {
-        background-color: $gray-bg;
+        background-color: $bg-hover;
     }
 
     dot-avatar {
-        margin: 0 $basic-padding * 2;
+        margin: 0 $spacing-3;
     }
 
     .dot-persona-selector-option__label {
-        color: $gray;
         display: -webkit-box;
         display: -moz-box;
         flex: 1;
@@ -32,12 +31,10 @@
             color: $black;
             font-weight: $font-weight-semi-bold;
         }
-    
     }
 
     button {
-        margin-left: $basic-padding * 3;
-        margin-right: $basic-padding * 2;
+        margin-left: $spacing-4;
+        margin-right: $spacing-3;
     }
-
 }

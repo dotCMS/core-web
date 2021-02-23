@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { ContentTypesFieldsListComponent } from './content-types-fields-list.component';
 import { By } from '@angular/platform-browser';
@@ -43,7 +43,7 @@ describe('ContentTypesFieldsListComponent', () => {
     let items: DebugElement[];
 
     beforeEach(
-        async(() => {
+        waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [ContentTypesFieldsListComponent],
                 imports: [DragulaModule, DotIconModule],

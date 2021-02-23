@@ -4,7 +4,7 @@ import { DebugElement, Component, Input } from '@angular/core';
 import { DotSiteSelectorFieldComponent } from './dot-site-selector-field.component';
 import { SiteService } from 'dotcms-js';
 import { SiteServiceMock } from '../../../../test/site-service.mock';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -30,7 +30,6 @@ class FakeFormComponent {
     }
 }
 
-
 @Component({
     selector: 'dot-site-selector',
     template: ''
@@ -52,15 +51,21 @@ describe('SiteSelectorFieldComponent', () => {
     let de: DebugElement;
     const siteServiceMock = new SiteServiceMock();
 
-    beforeEach(async(() => {
-        siteServiceMock.setFakeCurrentSite();
+    beforeEach(
+        waitForAsync(() => {
+            siteServiceMock.setFakeCurrentSite();
 
-        DOTTestBed.configureTestingModule({
-            declarations: [FakeFormComponent, SiteSelectorComponent, DotSiteSelectorFieldComponent],
-            imports: [],
-            providers: [{ provide: SiteService, useValue: siteServiceMock }]
-        });
-    }));
+            DOTTestBed.configureTestingModule({
+                declarations: [
+                    FakeFormComponent,
+                    SiteSelectorComponent,
+                    DotSiteSelectorFieldComponent
+                ],
+                imports: [],
+                providers: [{ provide: SiteService, useValue: siteServiceMock }]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = TestBed.createComponent(FakeFormComponent);

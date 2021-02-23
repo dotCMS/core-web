@@ -4,17 +4,24 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
     {
         path: 'forgotPassword',
-        loadChildren:
-            '@components/login/forgot-password-component/forgot-password.module#ForgotPasswordModule'
+        loadChildren: () =>
+            import('@components/login/forgot-password-component/forgot-password.module').then(
+                (m) => m.ForgotPasswordModule
+            )
     },
     {
         path: 'login',
-        loadChildren: '@components/login/dot-login-component/dot-login.module#DotLoginModule'
+        loadChildren: () =>
+            import('@components/login/dot-login-component/dot-login.module').then(
+                (m) => m.DotLoginModule
+            )
     },
     {
         path: 'resetPassword/:token',
-        loadChildren:
-            '@components/login/reset-password-component/reset-password.module#ResetPasswordModule'
+        loadChildren: () =>
+            import('@components/login/reset-password-component/reset-password.module').then(
+                (m) => m.ResetPasswordModule
+            )
     },
     {
         path: '',

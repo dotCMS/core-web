@@ -1,5 +1,5 @@
 import { of as observableOf } from 'rxjs';
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { DotAppsConfigurationResolver } from './dot-apps-configuration-resolver.service';
@@ -18,22 +18,22 @@ describe('DotAppsConfigurationListResolver', () => {
     let dotAppsServices: DotAppsService;
     let dotAppsConfigurationListResolver: DotAppsConfigurationResolver;
 
-    beforeEach(async(() => {
-        const testbed = TestBed.configureTestingModule({
-            providers: [
-                DotAppsConfigurationResolver,
-                { provide: DotAppsService, useClass: AppsServicesMock },
-                {
-                    provide: ActivatedRouteSnapshot,
-                    useValue: activatedRouteSnapshotMock
-                }
-            ]
-        });
-        dotAppsServices = testbed.get(DotAppsService);
-        dotAppsConfigurationListResolver = testbed.get(
-            DotAppsConfigurationResolver
-        );
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            const testbed = TestBed.configureTestingModule({
+                providers: [
+                    DotAppsConfigurationResolver,
+                    { provide: DotAppsService, useClass: AppsServicesMock },
+                    {
+                        provide: ActivatedRouteSnapshot,
+                        useValue: activatedRouteSnapshotMock
+                    }
+                ]
+            });
+            dotAppsServices = testbed.get(DotAppsService);
+            dotAppsConfigurationListResolver = testbed.get(DotAppsConfigurationResolver);
+        })
+    );
 
     it('should get and return apps with configurations', () => {
         const response = {
@@ -57,7 +57,7 @@ describe('DotAppsConfigurationListResolver', () => {
         };
 
         activatedRouteSnapshotMock.paramMap.get = () => '123';
-        spyOn(dotAppsServices, 'getConfigurationList').and.returnValue(observableOf(response));
+        spyOn<any>(dotAppsServices, 'getConfigurationList').and.returnValue(observableOf(response));
 
         dotAppsConfigurationListResolver
             .resolve(activatedRouteSnapshotMock)

@@ -1,8 +1,7 @@
 import { take, map } from 'rxjs/operators';
-import { CoreWebService } from 'dotcms-js';
+import { CoreWebService, ResponseView } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RequestMethod, URLSearchParams } from '@angular/http';
 
 export enum OrderDirection {
     ASC = 1,
@@ -24,16 +23,17 @@ export class PaginatorService {
 
     public links: Links = {};
 
-    public paginationPerPage: number;
+    public paginationPerPage = 40;
     public currentPage: number;
     public maxLinksPage: number;
     public totalRecords: number;
 
     private _url: string;
     private _filter: string;
+    private _searchParam: string;
     private _sortField: string;
     private _sortOrder: OrderDirection;
-    private _extraParams: URLSearchParams = new URLSearchParams();
+    private _extraParams: Map<string, any> = new Map();
 
     constructor(private coreWebService: CoreWebService) {}
 
@@ -57,6 +57,17 @@ export class PaginatorService {
             this.links = {};
             this._filter = filter;
         }
+    }
+
+    set searchParam(searchParam: string) {
+        if (this._searchParam !== searchParam) {
+            this.links = searchParam.length > 0 ? {} : this.links;
+            this._searchParam = searchParam;
+        }
+    }
+
+    get searchParam(): string {
+        return this._searchParam;
     }
 
     /**
@@ -83,7 +94,7 @@ export class PaginatorService {
         this.extraParams.delete(name);
     }
 
-    get extraParams(): URLSearchParams {
+    get extraParams(): Map<string, any> {
         return this._extraParams;
     }
 
@@ -118,36 +129,19 @@ export class PaginatorService {
      * @param url base url
      */
     // tslint:disable-next-line:cyclomatic-complexity
-    public get(url?: string): Observable<any[]> {
-        const params: URLSearchParams = new URLSearchParams();
-        if (this.filter) {
-            params.set('filter', `${this.filter}`);
-        }
-
-        if (this.sortField) {
-            params.set('orderby', this.sortField);
-        }
-
-        if (this.sortOrder) {
-            params.set('direction', OrderDirection[this.sortOrder]);
-        }
-
-        if (this.paginationPerPage) {
-            params.set('per_page', String(this.paginationPerPage));
-        }
-
-        if (this.extraParams) {
-            params.appendAll(this.extraParams);
-        }
+    public get(url?: string): Observable<any> {
+        const params = {
+            ...this.getParams(),
+            ...this.getObjectFromMap(this.extraParams)
+        };
 
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
-                search: params,
+                params,
                 url: url || this.url
             })
             .pipe(
-                map((response) => {
+                map((response: ResponseView<any>) => {
                     this.setLinks(response.header(PaginatorService.LINK_HEADER_NAME));
                     this.paginationPerPage = parseInt(
                         response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME),
@@ -254,6 +248,40 @@ export class PaginatorService {
             const rel = relSplit[1].substring(1, relSplit[1].length - 1);
             this.links[rel] = url.trim();
         });
+    }
+
+    private getParams(): { [key: string]: any } {
+        const params = new Map();
+
+        if (this.filter) {
+            params.set('filter', this.filter);
+        }
+
+        if (this.searchParam) {
+            params.set('searchParam', this.searchParam);
+        }
+
+        if (this.sortField) {
+            params.set('orderby', this.sortField);
+        }
+
+        if (this.sortOrder) {
+            params.set('direction', OrderDirection[this.sortOrder]);
+        }
+
+        if (this.paginationPerPage) {
+            params.set('per_page', String(this.paginationPerPage));
+        }
+        return this.getObjectFromMap(params);
+    }
+
+    private getObjectFromMap(map: Map<string, any>): { [key: string]: any } {
+        let result = Array.from(map).reduce(
+            (obj, [key, value]) => Object.assign(obj, { [key]: value }),
+            {}
+        );
+
+        return result;
     }
 }
 

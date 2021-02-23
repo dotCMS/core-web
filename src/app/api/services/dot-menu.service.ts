@@ -12,7 +12,6 @@ import {
 import { CoreWebService } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RequestMethod } from '@angular/http';
 import { DotMenu, DotMenuItem } from '@models/navigation';
 
 @Injectable()
@@ -64,14 +63,9 @@ export class DotMenuService {
         if (!this.menu$) {
             this.menu$ = this.coreWebService
                 .requestView({
-                    method: RequestMethod.Get,
                     url: this.urlMenus
                 })
-                .pipe(
-                    publishLast(),
-                    refCount(),
-                    pluck('entity')
-                );
+                .pipe(publishLast(), refCount(), pluck('entity'));
         }
 
         return this.menu$;

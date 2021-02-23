@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
@@ -11,9 +11,7 @@ import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.ser
 
 @Component({
     selector: 'dot-test-host-component',
-    template: `
-        <dot-large-message-display></dot-large-message-display>
-    `
+    template: ` <dot-large-message-display></dot-large-message-display> `
 })
 class TestHostComponent {}
 
@@ -22,18 +20,21 @@ describe('DotLargeMessageDisplayComponent', () => {
     let dialog: DebugElement;
     let dotcmsEventsServiceMock;
 
-    beforeEach(async(() =>
-        TestBed.configureTestingModule({
-            imports: [DotDialogModule],
-            declarations: [DotLargeMessageDisplayComponent, TestHostComponent],
-            providers: [
-                {
-                    provide: DotcmsEventsService,
-                    useClass: DotcmsEventsServiceMock
-                },
-                DotParseHtmlService
-            ]
-        }).compileComponents()));
+    beforeEach(
+        waitForAsync(() =>
+            TestBed.configureTestingModule({
+                imports: [DotDialogModule],
+                declarations: [DotLargeMessageDisplayComponent, TestHostComponent],
+                providers: [
+                    {
+                        provide: DotcmsEventsService,
+                        useClass: DotcmsEventsServiceMock
+                    },
+                    DotParseHtmlService
+                ]
+            }).compileComponents()
+        )
+    );
 
     beforeEach(() => {
         fixture = TestBed.createComponent(TestHostComponent);

@@ -1,21 +1,27 @@
-@import "variables";
+@use "variables" as *;
+
+::ng-deep {
+    .dot-language-selector__dialog,
+    .dot-device-selector__dialog {
+        display: none !important;
+    }
+
+    @media only screen and (max-width: $screen-device-container-max) {
+        .dot-language-selector__dialog,
+        .dot-device-selector__dialog {
+            display: inline-block !important;
+        }
+    }
+}
 
 :host {
     display: flex;
 
     & > * {
-        margin-left: $basic-padding * 6;
+        margin-left: 3.5rem;
 
         &:first-child {
             margin-left: 0;
-        }
-    }
-
-    dot-language-selector,
-    dot-device-selector,
-    dot-persona-selector {
-        ::ng-deep .ui-tooltip {
-            display: none !important;
         }
     }
 
@@ -23,34 +29,28 @@
         dot-language-selector,
         dot-device-selector,
         dot-persona-selector {
-            margin-left: $basic-padding * 2;
-
-            ::ng-deep .ui-tooltip {
-                display: inline-block !important;
-            }
+            margin-left: $spacing-3;
         }
     }
 
     ::ng-deep {
-        .ui-dropdown {
-            &:not(.ui-state-disabled) {
-                .ui-dropdown-label,
-                .ui-dropdown-trigger {
+        .p-dropdown {
+            &:not(.p-state-disabled) {
+                .p-dropdown-label,
+                .p-dropdown-trigger {
                     color: $gray;
                 }
             }
         }
 
-        .ui-chkbox:not(.ui-state-disabled) {
-            .ui-chkbox-box.ui-state-default {
+        .p-chkbox:not(.p-state-disabled) {
+            .p-chkbox-box.p-state-default {
                 border-color: $gray;
             }
         }
 
-        .ui-chkbox-label {
+        .p-chkbox-label {
             color: $gray;
         }
     }
 }
-
-

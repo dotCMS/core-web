@@ -5,7 +5,7 @@ import {
     EventEmitter,
     HostBinding,
     ElementRef,
-    ViewChild,
+    ViewChild
 } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DotMenu, DotMenuItem } from '@models/navigation';
@@ -35,7 +35,7 @@ import { DotMenu, DotMenuItem } from '@models/navigation';
     styleUrls: ['./dot-sub-nav.component.scss']
 })
 export class DotSubNavComponent {
-    @ViewChild('ul') ul: ElementRef;
+    @ViewChild('ul', { static: true }) ul: ElementRef;
 
     @Input() data: DotMenu;
 

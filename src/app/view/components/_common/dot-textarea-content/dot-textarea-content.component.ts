@@ -1,7 +1,16 @@
-import { Component, Input, OnInit, forwardRef, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    forwardRef,
+    ChangeDetectionStrategy,
+    Output,
+    EventEmitter,
+    HostBinding
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SelectItem } from 'primeng/primeng';
-import { AceEditorComponent } from 'ng2-ace-editor';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { SelectItem } from 'primeng/api';
 
 @Component({
     selector: 'dot-textarea-content',
@@ -13,12 +22,10 @@ import { AceEditorComponent } from 'ng2-ace-editor';
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => DotTextareaContentComponent)
         }
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DotTextareaContentComponent implements OnInit, ControlValueAccessor {
-    @ViewChild('ace')
-    ace: AceEditorComponent;
-
     @Input()
     code: any = {
         mode: 'text',
@@ -37,39 +44,60 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
     @Input()
     width: string;
 
+    @Output()
+    monacoInit = new EventEmitter<any>();
+
+    @Input() set language(value: string) {
+        this.editorOptions = {
+            ...this.editorOptions,
+            language: value
+        };
+    }
+
+    @HostBinding('style')
+    get myStyle(): SafeStyle {
+        return this.sanitizer.bypassSecurityTrustStyle(this.styles);
+    }
+
     selectOptions: SelectItem[] = [];
     selected: string;
     styles: any;
+    editorOptions = {
+        theme: 'vs-light',
+        minimap: {
+            enabled: false
+        },
+        cursorBlinking: 'solid',
+        overviewRulerBorder: false,
+        mouseWheelZoom: false,
+        LineNumbersType: 'on',
+        selectionHighlight: false,
+        roundedSelection: false,
+        selectOnLineNumbers: false,
+        columnSelection: false,
+        language: 'text/plain'
+    };
 
     private DEFAULT_OPTIONS: SelectItem[] = [
         { label: 'Plain', value: 'plain' },
-        { label: 'Code', value: 'code' },
-        { label: 'WYSIWYG', value: 'wysiwyg' }
+        { label: 'Code', value: 'code' }
     ];
 
-    constructor() {}
+    constructor(private sanitizer: DomSanitizer) {}
 
     propagateChange = (_: any) => {};
 
     ngOnInit() {
-        this.selectOptions = this.show
-            ? this.show
-                  .map((item) => {
-                      return this.DEFAULT_OPTIONS.find((option) => option.value === item);
-                  })
-                  .filter((item) => item) // Remove undefined values in the array
-            : this.DEFAULT_OPTIONS;
-
-        this.selected = this.selectOptions[0].value;
+        this.selectOptions = this.getSelectOptions();
+        this.selected = this.selectOptions[0]?.value;
 
         this.propagateChange(this.value);
 
         this.styles = {
             width: this.width || '100%',
-            height: this.height || '300px'
+            height: this.height || '21.42rem'
         };
     }
-
 
     /**
      * Prevent enter to propagate
@@ -85,6 +113,15 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
         */
         $event.stopPropagation();
     }
+    /**
+     * Initializes the Monaco Editor
+     *
+     * @param {*} editor
+     * @memberof DotTextareaContentComponent
+     */
+    onInit(editor: any): void {
+        this.monacoInit.emit(editor);
+    }
 
     /**
      * Update the value and form control
@@ -92,16 +129,9 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
      * @param any value
      * @memberof DotTextareaContentComponent
      */
-    onModelChange(value) {
+    onModelChange(value: string) {
         this.value = value;
-        this.propagateChange(
-            value
-                ? value
-                      .replace(/\r/g, '')
-                      .split('\n')
-                      .join('\r\n')
-                : value
-        );
+        this.propagateChange(value ? value.replace(/\r/g, '').split('\n').join('\r\n') : value);
     }
 
     /**
@@ -127,4 +157,14 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
     }
 
     registerOnTouched(): void {}
+
+    private getSelectOptions() {
+        return this.show
+            ? this.show
+                  .map((item) => {
+                      return this.DEFAULT_OPTIONS.find((option) => option.value === item);
+                  })
+                  .filter((item) => item) // Remove undefined values in the array
+            : this.DEFAULT_OPTIONS;
+    }
 }

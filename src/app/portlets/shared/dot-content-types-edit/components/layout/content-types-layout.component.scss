@@ -1,75 +1,57 @@
+@use "variables" as *;
 @import "mixins";
-@import "variables";
-@import "primeng-theme/utils/theme-variables";
+@import "dotcms-theme/utils/theme-variables";
 
 $top-height: ($toolbar-height + $tabview-nav-height + $dot-secondary-toolbar-main-height);
 
 :host {
     ::ng-deep {
-        .ui-tabview-nav {
+        .p-tabview-nav {
             position: relative;
             z-index: 1;
         }
 
-        > p-tabview > .ui-tabview > .ui-tabview-nav {
+        > p-tabview > .p-tabview > .p-tabview-nav {
             background-color: $gray-bg;
         }
 
         .content-type__fields-sidebar {
-            p-splitbutton {
-                border-bottom: solid 1px $gray-light;
-                height: 48px;
+            background-color: $white;
 
-                .ui-splitbutton {
-                    display: flex;
-                    justify-content: space-between;
-                    height: 48px;
-                    border: 0;
-                    background: transparent;
-                    cursor: pointer;
-                    border-radius: 0;
+            .p-splitbutton {
+                border-bottom: solid 1px $gray-lighter;
+                display: flex;
 
-                    .ui-button-text-icon-left span {
-                        color: $gray;
-                        left: $basic-padding * 2;
-                        font-size: $font-size-x-large;
+                &:hover {
+                    background-color: $bg-hover;
+                }
+
+                .p-splitbutton-defaultbutton,
+                .p-splitbutton-menubutton {
+                    padding: $spacing-2 $spacing-3;
+                    background: none;
+                    color: $body-font-color;
+                }
+
+                .p-splitbutton-defaultbutton {
+                    .p-button-label {
+                        text-align: left;
+                        text-transform: none;
                         font-weight: normal;
                     }
-
-                    .ui-button-text-icon-left .ui-button-text {
-                        padding-left: 50px;
-                        text-transform: none;
-                        font-size: $font-size-medium;
-                        color:$black;
-                    }
-
-                    button {
-                        height: 48px;
-
-                        &.ui-corner-right {
-                            margin: 0 $basic-padding * 2 0 0;
-
-                            span {
-                                color: $gray;
-                            }
-                        }
-                    }
                 }
-            }
 
-            p-splitbutton:hover {
-                background-color: $gray-bg;
-
-                .ui-button.ui-button-icon-only span.pi-caret-down,
-                .ui-button-text-icon-left span.ui-button-icon-left {
-                    color: $black;
+                .p-button-icon-left {
+                    color: $gray;
+                    width: 18px;
+                    margin-right: $spacing-3;
                 }
             }
         }
     }
 
     dot-iframe {
-        padding: $basic-padding * 2 0;
+        padding: $spacing-3 0;
         height: calc(100vh - #{$top-height});
     }
 
@@ -85,7 +67,7 @@ $top-height: ($toolbar-height + $tabview-nav-height + $dot-secondary-toolbar-mai
         flex-direction: column;
         flex-grow: 1;
         overflow: auto;
-        padding: $basic-padding * 2;
+        padding: $spacing-3;
     }
 
     .content-type__fields-sidebar {
@@ -109,7 +91,7 @@ $top-height: ($toolbar-height + $tabview-nav-height + $dot-secondary-toolbar-mai
     }
 
     dot-api-link {
-        margin-left: $basic-padding * 2;
+        margin-left: $spacing-3;
     }
 
     .content-type__title {
@@ -140,10 +122,10 @@ $top-height: ($toolbar-height + $tabview-nav-height + $dot-secondary-toolbar-mai
         color: $gray;
         display: flex;
         font-size: $font-size-small;
-        margin-left: $basic-padding * 3;
+        margin-left: $spacing-4;
 
         dot-copy-button {
-            margin-left: $basic-padding / 4;
+            margin-left: 0.25rem;
         }
     }
 }

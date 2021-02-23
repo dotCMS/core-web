@@ -2,9 +2,10 @@ import { pluck } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RequestMethod } from '@angular/http';
-import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
+
+import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
+import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
+
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { DotDevice } from '@shared/models/dot-device/dot-device.model';
 import { Params } from '@angular/router';
@@ -33,7 +34,6 @@ export class DotPageRenderService {
         const params: DotPageRenderRequestParams = this.getOptionalViewAsParams(viewAs, mode);
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Get,
                 url: `v1/page/render/${url.replace(/^\//, '')}`,
                 params: { ...extraParams, ...params }
             })

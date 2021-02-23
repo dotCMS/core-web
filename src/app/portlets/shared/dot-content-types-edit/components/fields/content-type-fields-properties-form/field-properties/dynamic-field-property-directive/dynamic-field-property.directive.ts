@@ -37,6 +37,7 @@ export class DynamicFieldPropertyDirective implements OnChanges {
         const componentRef: ComponentRef<any> = this.viewContainerRef.createComponent(
             componentFactory
         );
+
         componentRef.instance.property = {
             field: this.field,
             name: this.propertyName,

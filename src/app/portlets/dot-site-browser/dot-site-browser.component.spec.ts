@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotSiteBrowserComponent } from './dot-site-browser.component';
 
@@ -7,7 +7,7 @@ describe('DotSiteBrowserComponent', () => {
     let fixture: ComponentFixture<DotSiteBrowserComponent>;
 
     beforeEach(
-        async(() => {
+        waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [DotSiteBrowserComponent]
             }).compileComponents();

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { DotApps, DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
+import { dialogAction, DotApps, DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
 import { ActivatedRoute } from '@angular/router';
 import { pluck, take, debounceTime, takeUntil } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
@@ -7,9 +7,10 @@ import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { fromEvent as observableFromEvent, Subject } from 'rxjs';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
-import { LazyLoadEvent } from 'primeng/primeng';
+import { LazyLoadEvent } from 'primeng/api';
 import { PaginatorService } from '@services/paginator';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotAppsImportExportDialogComponent } from '../dot-apps-import-export-dialog/dot-apps-import-export-dialog.component';
 
 @Component({
     selector: 'dot-apps-configuration',
@@ -17,8 +18,12 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
     styleUrls: ['./dot-apps-configuration.component.scss']
 })
 export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
-    @ViewChild('searchInput') searchInput: ElementRef;
+    @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
+    @ViewChild('importExportDialog') importExportDialog: DotAppsImportExportDialogComponent;
     apps: DotApps;
+    siteSelected: DotAppsSites;
+    importExportDialogAction = dialogAction.EXPORT;
+    showDialog = false;
 
     hideLoadDataButton: boolean;
     paginationPerPage = 40;
@@ -29,14 +34,13 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     constructor(
         private dotAlertConfirmService: DotAlertConfirmService,
         private dotAppsService: DotAppsService,
+        private dotMessageService: DotMessageService,
         private dotRouterService: DotRouterService,
         private route: ActivatedRoute,
-        private dotMessageService: DotMessageService,
         public paginationService: PaginatorService
     ) {}
 
     ngOnInit() {
-
         this.route.data.pipe(pluck('data'), take(1)).subscribe((app: DotApps) => {
             this.apps = app;
             this.apps.sites = [];
@@ -93,13 +97,33 @@ export class DotAppsConfigurationComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Updates dialog show/hide state
+     *
+     * @memberof DotAppsConfigurationComponent
+     */
+    onClosedDialog(): void {
+        this.showDialog = false;
+    }
+
+    /**
      * Redirects to app configuration listing page
      *
      * @param string key
-     * @memberof DotAppsConfigurationDetailComponent
+     * @memberof DotAppsConfigurationComponent
      */
     goToApps(key: string): void {
         this.dotRouterService.gotoPortlet(`/apps/${key}`);
+    }
+
+    /**
+     * Opens the dialog and set Export actions based on a single/all sites
+     *
+     * @param DotAppsSites [site]
+     * @memberof DotAppsConfigurationComponent
+     */
+    confirmExport(site?: DotAppsSites): void {
+        this.importExportDialog.show = true;
+        this.siteSelected = site;
     }
 
     /**

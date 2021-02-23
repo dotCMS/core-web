@@ -1,8 +1,12 @@
-import { DotContainer } from '@models/container/dot-container.model';
-import { PaginatorService } from '@services/paginator/paginator.service';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { DotContainerColumnBox } from '@portlets/dot-edit-page/shared/models/dot-container-column-box.model';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+
+import { PaginatorService } from '@services/paginator/paginator.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
+
+import { DotContainerColumnBox } from '@models/dot-edit-layout-designer';
+import { DotContainer } from '@models/container/dot-container.model';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-container-selector',
@@ -10,20 +14,22 @@ import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template
     styleUrls: ['./dot-container-selector.component.scss']
 })
 export class DotContainerSelectorComponent implements OnInit {
+    @Output() change: EventEmitter<DotContainer> = new EventEmitter();
+
     @Input() data: DotContainerColumnBox[] = [];
-    @Input() multiple: boolean;
-    @Output() change: EventEmitter<DotContainerColumnBox[]> = new EventEmitter();
+    @Input() innerClass = '';
 
     totalRecords: number;
-    currentContainers: DotContainer[] = [];
+    currentContainers: Observable<DotContainer[]>;
 
     constructor(
         public paginationService: PaginatorService,
-        private templateContainersCacheService: TemplateContainersCacheService
+        private templateContainersCacheService: DotTemplateContainersCacheService
     ) {}
 
     ngOnInit(): void {
         this.paginationService.url = 'v1/containers';
+        this.paginationService.paginationPerPage = 5;
     }
 
     /**
@@ -33,12 +39,7 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     containerChange(container: DotContainer): void {
-        if (this.multiple || !this.isContainerSelected(container)) {
-            this.data.push({
-                container: container
-            });
-            this.change.emit(this.data);
-        }
+        this.change.emit(container);
     }
 
     /**
@@ -60,39 +61,16 @@ export class DotContainerSelectorComponent implements OnInit {
         this.getContainersList(event.filter, event.first);
     }
 
-    /**
-     * Remove container item from selected containers and emit selected containers
-     * @param number i
-     * @memberof DotContainerSelectorComponent
-     */
-    removeContainerItem(i: number): void {
-        this.data.splice(i, 1);
-        this.change.emit(this.data);
-    }
-
-    /**
-     * Check if a container was already added to the list
-     *
-     * @param DotContainer container
-     * @returns boolean
-     * @memberof DotContainerSelectorComponent
-     */
-    isContainerSelected(dotContainer: DotContainer): boolean {
-        return this.data.some(
-            containerItem => containerItem.container.identifier === dotContainer.identifier
+    private getContainersList(filter = '', offset = 0): void {
+        this.paginationService.filter = filter;
+        this.currentContainers = this.paginationService.getWithOffset(offset).pipe(
+            take(1),
+            map((items: DotContainer[]) => this.setIdentifierReference(items.splice(0)))
         );
     }
 
-    private getContainersList(filter = '', offset = 0): void {
-        this.paginationService.filter = filter;
-        this.paginationService.getWithOffset(offset).subscribe(items => {
-            this.currentContainers = this.setIdentifierReference(items.splice(0));
-            this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-        });
-    }
-
     private setIdentifierReference(items: DotContainer[]): any {
-        return items.map(dotContainer => {
+        return items.map((dotContainer) => {
             dotContainer.identifier = this.templateContainersCacheService.getContainerReference(
                 dotContainer
             );

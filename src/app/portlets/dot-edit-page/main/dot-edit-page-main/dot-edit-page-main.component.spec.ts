@@ -2,7 +2,7 @@ import { of as observableOf, Subject } from 'rxjs';
 import { mockUser } from './../../../../test/login-service.mock';
 import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotEditPageMainComponent } from './dot-edit-page-main.component';
 import { DotEditPageNavModule } from '../dot-edit-page-nav/dot-edit-page-nav.module';
@@ -18,7 +18,7 @@ import { Injectable, Component, Output, EventEmitter } from '@angular/core';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
-import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
+import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
@@ -35,7 +35,7 @@ import {
     StringUtils,
     UserModel
 } from 'dotcms-js';
-import { CoreWebServiceMock } from '../../../../../../projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '../../../../test/core-web.service.mock';
 import { FormatDateService } from '@services/format-date-service';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
@@ -65,7 +65,9 @@ class MockDotPageStateService {
     state$ = new Subject();
     get(): void {}
     reload(): void {
-        this.reload$.next(new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage)));
+        this.reload$.next(
+            new DotPageRenderState(mockUser(), new DotPageRender(mockDotRenderedPage()))
+        );
     }
 }
 
@@ -78,13 +80,13 @@ class MockDotEditContentletComponent {
 }
 
 describe('DotEditPageMainComponent', () => {
-    let component: DotEditPageMainComponent;
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;
     let dotContentletEditorService: DotContentletEditorService;
     let dotPageStateService: DotPageStateService;
     let dotRouterService: DotRouterService;
     let dotCustomEventHandlerService: DotCustomEventHandlerService;
+    let editContentlet: MockDotEditContentletComponent;
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
@@ -93,12 +95,12 @@ describe('DotEditPageMainComponent', () => {
     });
 
     const mockDotRenderedPageState: DotPageRenderState = new DotPageRenderState(
-        mockUser,
-        new DotPageRender(mockDotRenderedPage)
+        mockUser(),
+        new DotPageRender(mockDotRenderedPage())
     );
 
     beforeEach(
-        async(() => {
+        waitForAsync(() => {
             TestBed.configureTestingModule({
                 imports: [
                     RouterTestingModule.withRoutes([
@@ -170,7 +172,6 @@ describe('DotEditPageMainComponent', () => {
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DotEditPageMainComponent);
-        component = fixture.debugElement.componentInstance;
         route = fixture.debugElement.injector.get(ActivatedRoute);
         route.data = observableOf({
             content: mockDotRenderedPageState
@@ -181,6 +182,8 @@ describe('DotEditPageMainComponent', () => {
         dotCustomEventHandlerService = fixture.debugElement.injector.get(
             DotCustomEventHandlerService
         );
+        editContentlet = fixture.debugElement.query(By.css('dot-edit-contentlet'))
+            .componentInstance;
         fixture.detectChanges();
     });
 
@@ -198,32 +201,54 @@ describe('DotEditPageMainComponent', () => {
         expect(nav.pageState).toEqual(mockDotRenderedPageState);
     });
 
-    it('should call reload pageSte when IframeClose evt happens', () => {
+    it('should not call goToEditPage if the dialog is closed without new page properties', () => {
         spyOn(dotPageStateService, 'get').and.callThrough();
 
-        component.pageState$.subscribe(res => {
-            expect(res).toEqual(
-                new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage))
-            );
+        dotContentletEditorService.close$.next(true);
+        expect(dotRouterService.goToEditPage).not.toHaveBeenCalled();
+        expect(dotPageStateService.get).not.toHaveBeenCalled();
+    });
+
+    it('should call goToEditPage if page properties were saved with different URLs', () => {
+        spyOn(dotPageStateService, 'get').and.callThrough();
+        editContentlet.custom.emit({
+            detail: {
+                name: 'save-page',
+                payload: {
+                    htmlPageReferer: '/index'
+                }
+            }
+        });
+
+        dotContentletEditorService.close$.next(true);
+        expect(dotRouterService.goToEditPage).toHaveBeenCalledWith({
+            url: '/index',
+            language_id: '1'
+        });
+        dotContentletEditorService.close$.next(true);
+        expect(dotRouterService.goToEditPage).toHaveBeenCalledTimes(1);
+        expect(dotPageStateService.get).not.toHaveBeenCalled();
+    });
+
+    it('should call get if page properties were saved with equal URLs', () => {
+        spyOn(dotPageStateService, 'get').and.callThrough();
+        editContentlet.custom.emit({
+            detail: {
+                name: 'save-page',
+                payload: {
+                    htmlPageReferer: '/about-us/index'
+                }
+            }
         });
 
         dotContentletEditorService.close$.next(true);
         expect(dotPageStateService.get).toHaveBeenCalledWith({
             url: '/about-us/index',
-            viewAs: {
-                language: mockDotRenderedPage.page.languageId
-            }
+            viewAs: { language: 1 }
         });
     });
 
     describe('handle custom events from contentlet editor', () => {
-        let editContentlet: MockDotEditContentletComponent;
-
-        beforeEach(() => {
-            editContentlet = fixture.debugElement.query(By.css('dot-edit-contentlet'))
-                .componentInstance;
-        });
-
         it('should reload page when url attribute in dialog has been changed', () => {
             editContentlet.custom.emit({
                 detail: {
@@ -235,9 +260,10 @@ describe('DotEditPageMainComponent', () => {
                 }
             });
             dotContentletEditorService.close$.next(true);
+
             expect(dotRouterService.goToEditPage).toHaveBeenCalledWith({
                 url: '/about-us/index2',
-                language_id: mockDotRenderedPage.page.languageId.toString()
+                language_id: mockDotRenderedPage().page.languageId.toString()
             });
         });
 
@@ -257,7 +283,7 @@ describe('DotEditPageMainComponent', () => {
                     name: 'random'
                 }
             });
-            expect(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
+            expect<any>(dotCustomEventHandlerService.handle).toHaveBeenCalledWith({
                 detail: {
                     name: 'random'
                 }

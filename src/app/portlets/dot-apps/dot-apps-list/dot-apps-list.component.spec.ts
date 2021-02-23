@@ -1,23 +1,22 @@
-import { of } from 'rxjs';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MockDotMessageService } from '@tests/dot-message-service.mock';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ActivatedRoute } from '@angular/router';
-import { DotAppsListComponent } from './dot-apps-list.component';
-import { InputTextModule } from 'primeng/primeng';
-import { DotAppsListResolver } from './dot-apps-list-resolver.service';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { MockDotRouterService } from '@tests/dot-router-service.mock';
-import { DotAppsCardModule } from './dot-apps-card/dot-apps-card.module';
 import { By } from '@angular/platform-browser';
-import { DotAppsCardComponent } from './dot-apps-card/dot-apps-card.component';
-import { DotAppsService } from '@services/dot-apps/dot-apps.service';
-import { NotLicensedModule } from '@components/not-licensed/not-licensed.module';
-import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreWebService } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { of } from 'rxjs';
+
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+import { DotAppsListComponent } from './dot-apps-list.component';
+import { DotAppsService } from '@services/dot-apps/dot-apps.service';
+import { DotMessagePipe } from '@pipes/dot-message/dot-message.pipe';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { MockDotRouterService } from '@tests/dot-router-service.mock';
+import { MockDotNotLicensedComponent } from '@tests/dot-not-licensed.component.mock';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DotApps } from '@shared/models/dot-apps/dot-apps.model';
+import { ButtonModule } from 'primeng/button';
 
 export class AppsServicesMock {
     get() {}
@@ -42,6 +41,25 @@ export const appsResponse = [
     }
 ];
 
+@Component({
+    selector: 'dot-apps-card',
+    template: ''
+})
+class MockDotAppsCardComponent {
+    @Input() app: DotApps;
+    @Output() actionFired = new EventEmitter<string>();
+}
+
+@Component({
+    selector: 'dot-apps-import-export-dialog',
+    template: ''
+})
+class MockDotAppsImportExportDialogComponent {
+    @Input() action: string;
+    @Input() show: boolean;
+    @Output() resolved = new EventEmitter<boolean>();
+}
+
 let canAccessPortletResponse = {
     dotAppsListResolverData: {
         apps: appsResponse,
@@ -59,29 +77,26 @@ describe('DotAppsListComponent', () => {
     let component: DotAppsListComponent;
     let fixture: ComponentFixture<DotAppsListComponent>;
     let routerService: DotRouterService;
+    let route: ActivatedRoute;
     let dotAppsService: DotAppsService;
 
     const messageServiceMock = new MockDotMessageService({
-        'apps.search.placeholder': 'Search'
+        'apps.search.placeholder': 'Search',
+        'apps.confirmation.import.button': 'Import',
+        'apps.confirmation.export.all.button': 'Export'
     });
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule.withRoutes([
-                    {
-                        component: DotAppsListComponent,
-                        path: ''
-                    }
-                ]),
-                DotAppsCardModule,
-                InputTextModule,
-                NotLicensedModule,
-                DotPipesModule
+            declarations: [
+                DotAppsListComponent,
+                MockDotAppsCardComponent,
+                MockDotNotLicensedComponent,
+                DotMessagePipe,
+                MockDotAppsImportExportDialogComponent
             ],
-            declarations: [DotAppsListComponent],
+            imports: [ButtonModule],
             providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 {
                     provide: ActivatedRoute,
@@ -92,20 +107,25 @@ describe('DotAppsListComponent', () => {
                     useClass: MockDotRouterService
                 },
                 { provide: DotAppsService, useClass: AppsServicesMock },
-                DotAppsListResolver,
-                DotLicenseService
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                }
             ]
         }).compileComponents();
 
         fixture = TestBed.createComponent(DotAppsListComponent);
         component = fixture.debugElement.componentInstance;
-        routerService = TestBed.get(DotRouterService);
-        dotAppsService = TestBed.get(DotAppsService);
+        routerService = TestBed.inject(DotRouterService);
+        route = TestBed.inject(ActivatedRoute);
+        dotAppsService = TestBed.inject(DotAppsService);
     });
 
     describe('With access to portlet', () => {
         beforeEach(() => {
-            spyOn(dotAppsService, 'get').and.returnValue(of(appsResponse));
+            spyOnProperty(route, 'data').and.returnValue(
+                of({ dotAppsListResolverData: { apps: appsResponse, isEnterpriseLicense: true } })
+            );
             fixture.detectChanges();
         });
 
@@ -130,8 +150,42 @@ describe('DotAppsListComponent', () => {
             ).toEqual(appsResponse[0]);
         });
 
+        it('should export All button be enabled', () => {
+            const exportAllBtn = fixture.debugElement.query(
+                By.css('.dot-apps-configuration__action_export_button')
+            );
+            expect(exportAllBtn.nativeElement.disabled).toBe(false);
+        });
+
+        it('should open confirm dialog and export All configurations', () => {
+            const exportAllBtn = fixture.debugElement.query(
+                By.css('.dot-apps-configuration__action_export_button')
+            );
+            exportAllBtn.triggerEventHandler('click', 'Export');
+            expect(component.showDialog).toBe(true);
+            expect(component.importExportDialogAction).toBe('Export');
+        });
+
+        it('should open confirm dialog and import configurations', () => {
+            const importBtn = fixture.debugElement.query(
+                By.css('.dot-apps-configuration__action_import_button')
+            );
+            importBtn.triggerEventHandler('click', 'Import');
+            expect(component.showDialog).toBe(true);
+            expect(component.importExportDialogAction).toBe('Import');
+        });
+
+        it('should reload apps data when resolve action from Import/Export dialog', () => {
+            spyOn(dotAppsService, 'get').and.returnValue(of(appsResponse));
+            const importExportDialog = fixture.debugElement.query(
+                By.css('dot-apps-import-export-dialog')
+            );
+            importExportDialog.componentInstance.resolved.emit(true);
+            expect(dotAppsService.get).toHaveBeenCalledTimes(1);
+        });
+
         it('should redirect to detail configuration list page when app Card clicked', () => {
-            const card: DotAppsCardComponent = fixture.debugElement.queryAll(
+            const card: MockDotAppsCardComponent = fixture.debugElement.queryAll(
                 By.css('dot-apps-card')
             )[0].componentInstance;
             card.actionFired.emit(component.apps[0].key);

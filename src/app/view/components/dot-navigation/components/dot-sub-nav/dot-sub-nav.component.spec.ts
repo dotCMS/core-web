@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -26,12 +26,14 @@ describe('DotSubNavComponent', () => {
     let fixture: ComponentFixture<DotSubNavComponent>;
     let de: DebugElement;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [DotSubNavComponent],
-            imports: [RouterTestingModule, BrowserAnimationsModule]
-        }).compileComponents();
-    }));
+    beforeEach(
+        waitForAsync(() => {
+            TestBed.configureTestingModule({
+                declarations: [DotSubNavComponent],
+                imports: [RouterTestingModule, BrowserAnimationsModule]
+            }).compileComponents();
+        })
+    );
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DotSubNavComponent);
@@ -74,7 +76,7 @@ describe('DotSubNavComponent', () => {
 
         component.itemClick.subscribe((event) => {
             expect(event).toEqual({
-                originalEvent: { hello: 'world' },
+                originalEvent: ({ hello: 'world' } as unknown) as MouseEvent,
                 data: data.menuItems[0]
             });
         });

@@ -1,8 +1,7 @@
 import { DataTypePropertyComponent } from '.';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
-import { async } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -24,30 +23,34 @@ describe('DataTypePropertyComponent', () => {
         'contenttypes.field.properties.data_type.values.system': 'System-Field'
     });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [DataTypePropertyComponent],
-            imports: [],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-        });
+    let group;
 
-        fixture = DOTTestBed.createComponent(DataTypePropertyComponent);
-        comp = fixture.componentInstance;
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [DataTypePropertyComponent],
+                imports: [],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            });
 
-        this.group = new FormGroup({
-            name: new FormControl('')
-        });
+            fixture = DOTTestBed.createComponent(DataTypePropertyComponent);
+            comp = fixture.componentInstance;
 
-        comp.group = this.group;
-        comp.property = {
-            field: {
-                ...dotcmsContentTypeFieldBasicMock,
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableRadioField'
-            },
-            name: 'name',
-            value: 'value'
-        };
-    }));
+            group = new FormGroup({
+                name: new FormControl('')
+            });
+
+            comp.group = group;
+            comp.property = {
+                field: {
+                    ...dotcmsContentTypeFieldBasicMock,
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableRadioField'
+                },
+                name: 'name',
+                value: 'value'
+            };
+        })
+    );
 
     it('should have a form', () => {
         fixture.detectChanges();
@@ -55,7 +58,7 @@ describe('DataTypePropertyComponent', () => {
         const divForm: DebugElement = fixture.debugElement.query(By.css('div'));
 
         expect(divForm).not.toBeNull();
-        expect(this.group).toEqual(divForm.componentInstance.group);
+        expect(group).toEqual(divForm.componentInstance.group);
     });
 
     it('should have 4 values for Radio Field', () => {

@@ -1,8 +1,9 @@
-<div [formGroup]="group">
+<div [formGroup]="group" class="p-field-checkbox">
     <p-checkbox
         [label]="setCheckboxLabel(property.name) | dm"
         [value]="property.value"
         [formControlName]="property.name"
-        binary="true">
+        binary="true"
+    >
     </p-checkbox>
 </div>

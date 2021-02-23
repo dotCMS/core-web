@@ -5,7 +5,7 @@
         width: width,
         height: height
     }"
-    class="dialog {{cssClass}}"
+    class="dialog {{ cssClass }}"
 >
     <header
         class="dialog__header"
@@ -28,9 +28,8 @@
     >
         <button
             *ngIf="actions.cancel"
-            class="dialog__button-cancel"
             pButton
-            secondary
+            class="dialog__button-cancel p-button-secondary"
             (click)="cancelAction()"
             [disabled]="actions.cancel.disabled"
             [label]="actions.cancel.label"

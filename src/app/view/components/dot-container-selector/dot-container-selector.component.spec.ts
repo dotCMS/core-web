@@ -11,7 +11,7 @@ import { ComponentFixture, fakeAsync, tick, TestBed } from '@angular/core/testin
 import { DebugElement } from '@angular/core';
 import { DotContainerSelectorComponent } from './dot-container-selector.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TemplateContainersCacheService } from '@portlets/dot-edit-page/template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
@@ -24,11 +24,14 @@ import {
     StringUtils,
     BrowserUtil
 } from 'dotcms-js';
-import { CoreWebServiceMock } from 'projects/dotcms-js/src/lib/core/core-web.service.mock';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+    PaginationEvent,
+    SearchableDropdownComponent
+} from '@components/_common/searchable-dropdown/component';
 
 describe('ContainerSelectorComponent', () => {
-    let comp: DotContainerSelectorComponent;
     let fixture: ComponentFixture<DotContainerSelectorComponent>;
     let de: DebugElement;
     let searchableDropdownComponent;
@@ -55,7 +58,7 @@ describe('ContainerSelectorComponent', () => {
                 BrowserUtil,
                 IframeOverlayService,
                 PaginatorService,
-                TemplateContainersCacheService,
+                DotTemplateContainersCacheService,
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 ApiRoot,
                 UserModel,
@@ -65,7 +68,6 @@ describe('ContainerSelectorComponent', () => {
         }).compileComponents();
 
         fixture = DOTTestBed.createComponent(DotContainerSelectorComponent);
-        comp = fixture.componentInstance;
         de = fixture.debugElement;
 
         searchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
@@ -99,22 +101,28 @@ describe('ContainerSelectorComponent', () => {
         ];
     });
 
-    it('should show the hots name and container name', () => {
-        comp.data = [
-            {
-                container: containers[0],
-                uuid: '1'
-            }
-        ];
-
+    it('should pass all the right attr', () => {
         fixture.detectChanges();
-
-        const dataItem = de.query(By.css('.container-selector__list-item span'));
-        expect(dataItem.nativeElement.textContent).toEqual('Container 1 (demo.dotcms.com)');
+        const searchable = de.query(By.css('[data-testId="searchableDropdown"]'));
+        expect(searchable.attributes).toEqual(
+            jasmine.objectContaining({
+                'ng-reflect-label-property-name': 'name,parentPermissionable.host',
+                'ng-reflect-multiple': 'true',
+                'ng-reflect-page-link-size': '5',
+                'ng-reflect-persistent-placeholder': 'true',
+                'ng-reflect-placeholder': 'editpage.container.add.label',
+                'ng-reflect-rows': '5',
+                'ng-reflect-width': '172px',
+                overlayWidth: '440px',
+                persistentPlaceholder: 'true',
+                width: '172px'
+            })
+        );
     });
 
     it('should change Page', fakeAsync(() => {
         const filter = 'filter';
+
         const page = 1;
 
         fixture.detectChanges();
@@ -155,62 +163,16 @@ describe('ContainerSelectorComponent', () => {
         expect(paginatorService.filter).toEqual(filter);
     }));
 
-    it('should add containers to containers list and emit a change event', () => {
-        comp.currentContainers = containers;
-
-        searchableDropdownComponent.change.emit(containers[0]);
-
-        expect(comp.data[0].container).toEqual(containers[0]);
-        expect(comp.data[0].uuid).not.toBeNull();
-        expect(comp.data.length).toEqual(1);
-    });
-
-    it('should remove containers after click on trash icon', () => {
-        const bodySelectorList = de.query(By.css('.container-selector__list'));
-        const bodySelectorListItems = bodySelectorList.nativeElement.children;
-
-        comp.currentContainers = containers;
-
-        searchableDropdownComponent.change.emit(containers[0]);
-
-        fixture.detectChanges();
-
-        bodySelectorListItems[0].children[0].click();
-        expect(comp.data.length).toEqual(0);
-    });
-
-    it('should not add duplicated containers to the list when multiple false', () => {
-        comp.currentContainers = containers;
-
-        searchableDropdownComponent.change.emit(containers[0]);
-        fixture.detectChanges();
-
-        expect(comp.data.length).toEqual(1);
-
-        searchableDropdownComponent.change.emit(containers[0]);
-        fixture.detectChanges();
-
-        expect(comp.data.length).toEqual(1);
-    });
-
-    it('should add duplicated containers to the list when multiple true', () => {
-        comp.currentContainers = containers;
-        comp.multiple = true;
-
-        searchableDropdownComponent.change.emit(containers[0]);
-        searchableDropdownComponent.change.emit(containers[0]);
-        fixture.detectChanges();
-
-        expect(comp.data.length).toEqual(2);
-    });
-
     it('should set container list replacing the identifier for the path, if needed', () => {
         fixture.detectChanges();
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(containers));
-        comp.handleFilterChange('');
-
-        expect(comp.currentContainers[0].identifier).toEqual('427c47a4-c380-439f');
-        expect(comp.currentContainers[1].identifier).toEqual('container/path');
+        const searchable: SearchableDropdownComponent = de.query(
+            By.css('[data-testId="searchableDropdown"]')
+        ).componentInstance;
+        searchable.pageChange.emit({ filter: '', first: 0 } as PaginationEvent);
+        fixture.detectChanges();
+        expect(searchable.data[0].identifier).toEqual('427c47a4-c380-439f');
+        expect(searchable.data[1].identifier).toEqual('container/path');
     });
 });

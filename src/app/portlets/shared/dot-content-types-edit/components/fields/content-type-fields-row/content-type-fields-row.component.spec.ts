@@ -1,4 +1,4 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
 import { ContentTypeFieldsRowComponent } from '.';
@@ -80,32 +80,34 @@ describe('ContentTypeFieldsRowComponent', () => {
         'dot.common.dialog.reject': 'No'
     });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                ContentTypeFieldsRowComponent,
-                TestContentTypeFieldDraggableItemComponent,
-                DotTestHostComponent
-            ],
-            imports: [DragulaModule, DotIconButtonTooltipModule],
-            providers: [
-                FieldDragDropService,
-                DotAlertConfirmService,
-                DragulaService,
-                {
-                    provide: DotMessageService,
-                    useValue: messageServiceMock
-                }
-            ]
-        });
+    beforeEach(
+        waitForAsync(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [
+                    ContentTypeFieldsRowComponent,
+                    TestContentTypeFieldDraggableItemComponent,
+                    DotTestHostComponent
+                ],
+                imports: [DragulaModule, DotIconButtonTooltipModule],
+                providers: [
+                    FieldDragDropService,
+                    DotAlertConfirmService,
+                    DragulaService,
+                    {
+                        provide: DotMessageService,
+                        useValue: messageServiceMock
+                    }
+                ]
+            });
 
-        hostFixture = DOTTestBed.createComponent(DotTestHostComponent);
-        hostComp = hostFixture.componentInstance;
-        hostDe = hostFixture.debugElement;
-        de = hostDe.query(By.css('dot-content-type-fields-row'));
-        comp = de.componentInstance;
-        dotDialogService = de.injector.get(DotAlertConfirmService);
-    }));
+            hostFixture = DOTTestBed.createComponent(DotTestHostComponent);
+            hostComp = hostFixture.componentInstance;
+            hostDe = hostFixture.debugElement;
+            de = hostDe.query(By.css('dot-content-type-fields-row'));
+            comp = de.componentInstance;
+            dotDialogService = de.injector.get(DotAlertConfirmService);
+        })
+    );
 
     describe('setting rows and columns', () => {
         beforeEach(() => {
