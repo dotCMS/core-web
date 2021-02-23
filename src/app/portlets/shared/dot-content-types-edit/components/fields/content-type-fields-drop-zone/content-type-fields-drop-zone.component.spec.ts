@@ -225,6 +225,10 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         })
     );
 
+    fit('should have propertiesForm', () => {
+        expect(comp.propertiesForm).not.toBeUndefined();
+    });
+
     it('should have fieldsContainer', () => {
         const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
         expect(fieldsContainer).not.toBeNull();
