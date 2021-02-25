@@ -227,21 +227,46 @@ describe('DotMyAccountComponent', () => {
 
     it(`should call to add starter method in account service`, async () => {
         spyOn<any>(accountService, 'addStarterPage').and.returnValue(of({ entity: {} }));
+        spyOn<any>(accountService, 'updateUser').and.returnValue(
+            of({ entity: { user: mockUser() } })
+        );
         fixture.detectChanges();
-        const toggleShowStarter = de.query(By.css('[data-testid="showStarterBtn"]'));
-        toggleShowStarter.triggerEventHandler('onChange', {
-            checked: true
-        });
+        await fixture.whenStable();
+        const user = {
+            givenName: 'Admin',
+            surname: 'Admin',
+            email: 'admin@dotcms.com',
+            password: 'admin',
+            newPassword: 'newPassword',
+            confirmPassword: 'newPassword'
+        };
+        comp.form.setValue(user);
+
+        de.query(By.css('[data-testid="showStarterBtn"]')).triggerEventHandler('click', {});
+        fixture.detectChanges();
+        de.query(By.css('.dialog__button-accept')).triggerEventHandler('click', {});
         expect(accountService.addStarterPage).toHaveBeenCalledTimes(1);
     });
 
     it(`should call to remove starter method in account service`, async () => {
         spyOn<any>(accountService, 'removeStarterPage').and.returnValue(of({ entity: {} }));
+        spyOn<any>(accountService, 'updateUser').and.returnValue(
+            of({ entity: { user: mockUser() } })
+        );
         fixture.detectChanges();
-        const toggleShowStarter = de.query(By.css('[data-testid="showStarterBtn"]'));
-        toggleShowStarter.triggerEventHandler('onChange', {
-            checked: false
-        });
+        await fixture.whenStable();
+        const user = {
+            givenName: 'Admin',
+            surname: 'Admin',
+            email: 'admin@dotcms.com',
+            password: 'admin',
+            newPassword: 'newPassword',
+            confirmPassword: 'newPassword'
+        };
+        comp.form.setValue(user);
+        comp.showStarterCheckbox.checked = false;
+        fixture.detectChanges();
+        de.query(By.css('.dialog__button-accept')).triggerEventHandler('click', {});
         expect(accountService.removeStarterPage).toHaveBeenCalledTimes(1);
     });
 

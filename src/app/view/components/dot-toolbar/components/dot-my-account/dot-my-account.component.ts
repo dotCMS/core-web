@@ -12,6 +12,7 @@ import {
 import { NgForm } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Checkbox as PCheckbox } from 'primeng/checkbox';
 
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
@@ -30,6 +31,7 @@ interface AccountUserForm extends AccountUser {
 })
 export class DotMyAccountComponent implements OnInit, OnDestroy {
     @ViewChild('myAccountForm', { static: true }) form: NgForm;
+    @ViewChild('showStarterCheckbox', { static: true }) showStarterCheckbox: PCheckbox;
 
     @Output() close = new EventEmitter<any>();
 
@@ -124,11 +126,10 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
     /**
      * Calls Api based on checked input to add/remove starter portlet from menu
      *
-     * @param {boolean} checked
      * @memberof DotMyAccountComponent
      */
-    toggleShowStarter(checked: boolean): void {
-        if (checked) {
+    setShowStarter(): void {
+        if (this.showStarterCheckbox.checked) {
             this.accountService.addStarterPage().subscribe();
         } else {
             this.accountService.removeStarterPage().subscribe();
@@ -144,6 +145,7 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
             (response) => {
                 // TODO: replace the alert with a Angular components
                 alert(this.dotMessageService.get('message.createaccount.success'));
+                this.setShowStarter();
                 this.close.emit();
 
                 if (response.entity.reauthenticate) {

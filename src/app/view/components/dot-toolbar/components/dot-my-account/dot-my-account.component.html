@@ -69,8 +69,8 @@
 
         <div class="p-field">
             <p-checkbox
+                #showStarterCheckbox
                 data-testid="showStarterBtn"
-                (onChange)="toggleShowStarter($event.checked)"
                 [ngModel]="showStarter | async"
                 [ngModelOptions]="{ standalone: true }"
                 binary="true"
