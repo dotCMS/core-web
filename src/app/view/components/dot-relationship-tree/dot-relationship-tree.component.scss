@@ -32,7 +32,7 @@
     & > li::after {
         background: $gray-light;
         width: 1px;
-        height: 1.4rem;
+        height: 1.3rem;
         content: "•";
         position: absolute;
         top: 1.4rem;
@@ -40,7 +40,7 @@
         color: $gray-light;
         display: flex;
         justify-content: space-evenly;
-        align-items: end;
+        align-items: flex-end;
         font-size: $font-size-x-large;
         line-height: 1px;
     }
