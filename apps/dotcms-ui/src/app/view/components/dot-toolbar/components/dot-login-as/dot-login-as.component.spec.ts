@@ -21,7 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LOCATION_TOKEN } from 'src/app/providers';
+import { LOCATION_TOKEN } from '@dotcms/app/providers';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 import { DotMenuService } from '@services/dot-menu.service';
 

@@ -19,7 +19,7 @@ import { take, takeUntil } from 'rxjs/operators';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { PaginatorService } from '@services/paginator';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { LOCATION_TOKEN } from 'src/app/providers';
+import { LOCATION_TOKEN } from '@dotcms/app/providers';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 
 @Component({

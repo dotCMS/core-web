@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DotClipboardUtil } from 'src/app/api/util/clipboard/ClipboardUtil';
+import { DotClipboardUtil } from '@dotcms/app/api/util/clipboard/ClipboardUtil';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 /**

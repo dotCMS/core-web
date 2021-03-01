@@ -13,8 +13,10 @@ import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolb
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotPageContent, DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
 import { getEditPageCss } from '../html/libraries/iframe-edit-mode.css';
-import { GOOGLE_FONTS } from '../html/libraries/iframe-edit-mode.js.js';
-import { MODEL_VAR_NAME } from '../html/libraries/iframe-edit-mode.js.js';
+import {
+  GOOGLE_FONTS,
+  MODEL_VAR_NAME,
+} from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/iframe-edit-mode.js';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {

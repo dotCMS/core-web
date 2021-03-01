@@ -90,7 +90,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "dotcms-ui:build"
+            "browserTarget": "dotcms-ui:build",
+            "proxyConfig": "apps/dotcms-ui/proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -228,7 +229,7 @@
       "projectType": "library",
       "root": "libs/dotcms-models",
       "sourceRoot": "libs/dotcms-models/src",
-      "prefix": "dotcms",
+      "prefix": "dot",
       "architect": {
         "build": {
           "builder": "@nrwl/angular:ng-packagr-lite",
@@ -265,7 +266,7 @@
       "projectType": "library",
       "root": "libs/dotcms",
       "sourceRoot": "libs/dotcms/src",
-      "prefix": "dotcms",
+      "prefix": "dot",
       "architect": {
         "build": {
           "builder": "@nrwl/angular:ng-packagr-lite",
