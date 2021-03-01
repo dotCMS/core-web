@@ -32,7 +32,7 @@
             "dotcms-js/*": ["projects/dotcms-js/src/public_api.ts"],
             "dotcms": ["projects/dotcms/src/public_api.ts"],
             "dotcms/*": ["projects/dotcms/src/public_api.ts"],
-            "dotcms-models": ["projects/dotcms-models/src/public_api.ts"],
+            //            "dotcms-models": ["projects/dotcms-models/src/public_api.ts"],
             "dotcms-models/*": ["projects/dotcms-models/src/public_api.ts"]
         }
     }

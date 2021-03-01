@@ -1,7 +1,7 @@
 {
     "name": "dotcms-models",
     "dependencies": {
-        "tslib": "^2.0.0"
+        "tslib": "^2.1.0"
     },
     "version": "0.0.12"
 }
