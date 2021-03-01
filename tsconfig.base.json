@@ -27,7 +27,7 @@
       "@tests/*": ["apps/dotcms-ui/src/app/test/*"],
       "@portlets/*": ["apps/dotcms-ui/src/app/portlets/*"],
       "@dotcms/dot-layout-grid": ["libs/dot-layout-grid/src/public_api.ts"],
-      "@dotcms/dotcms-models": ["libs/dotcms-models/src/index.ts"],
+      "@dotcms/dotcms-models": ["libs/dotcms-models/src/public_api.ts"],
       "@dotcms/dotcms": ["libs/dotcms/src/public_api.ts"]
     }
   },
