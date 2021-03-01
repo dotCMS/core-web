@@ -10,16 +10,14 @@ import {
     OnDestroy
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Checkbox as PCheckbox } from 'primeng/checkbox';
 
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotcmsConfigService, LoginService, User, Auth } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotMenuService } from '@services/dot-menu.service';
-import { Observable } from 'rxjs';
 
 interface AccountUserForm extends AccountUser {
     confirmPassword?: string;
@@ -31,7 +29,6 @@ interface AccountUserForm extends AccountUser {
 })
 export class DotMyAccountComponent implements OnInit, OnDestroy {
     @ViewChild('myAccountForm', { static: true }) form: NgForm;
-    @ViewChild('showStarterCheckbox', { static: true }) showStarterCheckbox: PCheckbox;
 
     @Output() close = new EventEmitter<any>();
 
@@ -52,7 +49,7 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
     message = null;
     changePasswordOption = false;
     dialogActions: DotDialogActions;
-    showStarter: Observable<boolean>;
+    showStarter: boolean;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -86,7 +83,12 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
             }
         };
 
-        this.showStarter = this.dotMenuService.isPortletInMenu('starter');
+        this.dotMenuService
+            .isPortletInMenu('starter')
+            .pipe(take(1))
+            .subscribe((showStarter: boolean) => {
+                this.showStarter = showStarter;
+            });
 
         this.form.valueChanges
             .pipe(takeUntil(this.destroy$))
@@ -129,7 +131,7 @@ export class DotMyAccountComponent implements OnInit, OnDestroy {
      * @memberof DotMyAccountComponent
      */
     setShowStarter(): void {
-        if (this.showStarterCheckbox.checked) {
+        if (this.showStarter) {
             this.accountService.addStarterPage().subscribe();
         } else {
             this.accountService.removeStarterPage().subscribe();

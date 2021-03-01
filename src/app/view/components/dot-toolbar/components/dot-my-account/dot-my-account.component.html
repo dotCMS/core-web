@@ -71,7 +71,7 @@
             <p-checkbox
                 #showStarterCheckbox
                 data-testid="showStarterBtn"
-                [ngModel]="showStarter | async"
+                [(ngModel)]="showStarter"
                 [ngModelOptions]="{ standalone: true }"
                 binary="true"
                 label="{{ 'starter.show.getting.started' | dm }}"

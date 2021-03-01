@@ -264,7 +264,8 @@ describe('DotMyAccountComponent', () => {
             confirmPassword: 'newPassword'
         };
         comp.form.setValue(user);
-        comp.showStarterCheckbox.checked = false;
+        comp.showStarter = false;
+
         fixture.detectChanges();
         de.query(By.css('.dialog__button-accept')).triggerEventHandler('click', {});
         expect(accountService.removeStarterPage).toHaveBeenCalledTimes(1);
