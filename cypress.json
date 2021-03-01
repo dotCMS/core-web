@@ -1,5 +1,6 @@
 {
     "baseUrl": "http://localhost:8080",
     "adminUsername": "admin@dotcms.com",
-    "adminPassword": "admin"
+    "adminPassword": "admin",
+    "chromeWebSecurity": false
 }

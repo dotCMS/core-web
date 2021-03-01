@@ -3,7 +3,7 @@ class Page {
         if (typeof selector === 'string') {
             cy.get(selector).click();
         } else {
-            selector.click();
+            selector.click({ force: true });
         }
     }
 
@@ -21,10 +21,16 @@ class Page {
         return cy.get(selector).contains(text);
     }
 
-    static assertElementSize(selector: string, size: number) {
-        return cy.get(selector).should(($div) => {
-            expect($div).to.have.length(size);
-        });
+    static assertElementSize(selector: string | Cypress.Chainable, size: number) {
+        if (typeof selector === 'string') {
+            return cy.get(selector).should(($div) => {
+                expect($div).to.have.length(size);
+            });
+        } else {
+            return selector.should(($div) => {
+                expect($div).to.have.length(size);
+            });
+        }
     }
 }
 

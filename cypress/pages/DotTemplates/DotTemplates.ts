@@ -32,12 +32,12 @@ class DotTemplates {
         Page.assertElementContains('dot-dot-template-selector button', 'Next').click();
     };
 
-    static fillCreateTemplateForm = (data) => {
+    static fillCreateTemplateForm = ({ title, theme }: { title: string; theme: string }) => {
         // TODO: Complete to fill extra fields (not required)
-        Form.fill('input[data-testid="templatePropsTitleField"]', data.title);
+        Form.fill('input[data-testid="templatePropsTitleField"]', title);
         Page.click('dot-theme-selector-dropdown[data-testid="templatePropsThemeField"]');
         Page.click(
-            cy.get('.theme-selector__data-list-item .dot-theme-item__label').contains(data.theme)
+            cy.get('.theme-selector__data-list-item .dot-theme-item__label').contains(theme)
         );
     };
 
@@ -54,13 +54,17 @@ class DotTemplates {
         Page.assertElementContains('dot-searchable-dropdown button', `Add a Container`); // Add container select
     };
 
-    static addContainer = (data) => {
-        Page.click('dot-searchable-dropdown button');
+    static addContainer = ({ type }: { type: string }) => {
+        Page.click('dot-container-selector-layout dot-searchable-dropdown button');
         Page.click(
             cy
                 .get('.searchable-dropdown__data-list .searchable-dropdown__data-list-item')
-                .contains(data.type)
+                .contains(type)
         );
+    };
+
+    static saveEditTemplate = () => {
+        Page.click('.dot-edit-layout__toolbar-save');
     };
 }
 
