@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotAppsImportExportDialogComponent } from './dot-apps-import-export-dialog.component';
-import { DotAutofocusModule } from '@dotcms/dot-rules';
+import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import {
     DotApps,
@@ -45,7 +45,7 @@ class HostTestComponent {
     @Input() action?: string;
     @Input() app?: DotApps;
     @Input() site?: DotAppsSites;
-    resolveHandler(_$event) {}
+    resolveHandler(_$event) {return;}
 }
 
 describe('DotAppsImportExportDialogComponent', () => {
