@@ -19,13 +19,13 @@
     "@nrwl/angular:application": {
       "style": "scss",
       "linter": "eslint",
-      "unitTestRunner": "jest",
+      "unitTestRunner": "karma",
       "e2eTestRunner": "cypress"
     },
     "@nrwl/angular:library": {
       "style": "scss",
       "linter": "eslint",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "karma"
     },
     "@nrwl/angular:component": {
       "style": "scss"
@@ -115,11 +115,15 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/dotcms-ui"],
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "jestConfig": "apps/dotcms-ui/jest.config.js",
-            "passWithNoTests": true
+            "main": "apps/dotcms-ui/src/test.ts",
+            "tsConfig": "apps/dotcms-ui/tsconfig.spec.json",
+            "karmaConfig": "apps/dotcms-ui/karma.conf.js",
+            "polyfills": "apps/dotcms-ui/src/polyfills.ts",
+            "styles": [],
+            "scripts": [],
+            "assets": []
           }
         }
       }
