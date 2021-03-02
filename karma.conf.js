@@ -9,6 +9,7 @@ module.exports = () => {
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
+      require('karma-html-reporter'),
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
@@ -23,12 +24,24 @@ module.exports = () => {
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true,
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'kjhtml', 'html'],
     port: 9876,
     colors: true,
     logLevel: constants.LOG_INFO,
     autoWatch: true,
+    browsers: ['ChromeHeadlessCI'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox'],
+      },
+    },
+    htmlReporter: {
+      namedFiles: true,
+      reportName: 'report',
+    },
     browsers: ['Chrome'],
-    singleRun: true,
+    singleRun: false,
+    browserDisconnectTimeout: 20000,
   };
 };

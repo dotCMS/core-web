@@ -17,7 +17,7 @@ const cardinalities = [
     }
 ];
 
-describe('DotRelationshipService', () => {
+fdescribe('DotRelationshipService', () => {
     let dotRelationshipService: DotRelationshipService;
     let injector: TestBed;
     let httpMock: HttpTestingController;
