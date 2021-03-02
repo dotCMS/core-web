@@ -23,6 +23,7 @@ module.exports = () => {
       dir: join(__dirname, '../../coverage'),
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true,
+      
     },
     reporters: ['progress', 'kjhtml', 'html'],
     port: 9876,
