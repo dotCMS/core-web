@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotAppsImportExportDialogComponent } from './dot-apps-import-export-dialog.component';
-import { DotAutofocusModule } from 'projects/dot-rules/src/lib/directives/dot-autofocus/dot-autofocus.module';
+import { DotAutofocusModule } from '@dotcms/dot-rules';
 import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import {
     DotApps,

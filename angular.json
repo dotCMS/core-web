@@ -121,10 +121,11 @@
             "tsConfig": "apps/dotcms-ui/tsconfig.spec.json",
             "karmaConfig": "apps/dotcms-ui/karma.conf.js",
             "polyfills": "apps/dotcms-ui/src/polyfills.ts",
-            "styles": [],
+            "styles": ["apps/dotcms-ui/src/styles.scss"],
             "scripts": [],
-            "assets": []
-          }
+            "stylePreprocessorOptions": {
+              "includePaths": ["apps/dotcms-ui/src/styles"]
+            }          }
         }
       }
     },

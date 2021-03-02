@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
-import { ResponseView } from '../../../projects/dotcms-js/src/lib/core/util/response-view';
+import { ResponseView } from '@dotcms/dotcms-js';
 import {
     HttpClient,
     HttpRequest,
