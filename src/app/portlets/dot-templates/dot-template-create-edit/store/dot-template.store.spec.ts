@@ -7,6 +7,14 @@ import { DotTemplateContainersCacheService } from '@services/dot-template-contai
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
 import { DotTemplateStore } from './dot-template.store';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+
+const messageServiceMock = new MockDotMessageService({
+    'dot.common.message.saved': 'saved',
+    'dot.common.message.saving': 'saving'
+});
 
 function getTemplate({ identifier, name, body }) {
     return {
@@ -86,6 +94,17 @@ const BASIC_PROVIDERS = [
         useValue: {
             set: cacheSetSpy
         }
+    },
+    {
+        provide: DotMessageService,
+        useValue: messageServiceMock
+    },
+    {
+        provide: DotGlobalMessageService,
+        useValue: {
+            loading: jasmine.createSpy(),
+            success: jasmine.createSpy()
+        }
     }
 ];
 
@@ -94,6 +113,7 @@ describe('DotTemplateStore', () => {
     let dotTemplateContainersCacheService: DotTemplateContainersCacheService;
     let dotRouterService: DotRouterService;
     let dotTemplatesService: DotTemplatesService;
+    let dotGlobalMessageService: DotGlobalMessageService;
 
     afterEach(() => {
         cacheSetSpy.calls.reset();
@@ -121,6 +141,7 @@ describe('DotTemplateStore', () => {
             dotTemplateContainersCacheService = TestBed.inject(DotTemplateContainersCacheService);
             dotRouterService = TestBed.inject(DotRouterService);
             dotTemplatesService = TestBed.inject(DotTemplatesService);
+            dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         });
 
         it('should have basic state', (done) => {
@@ -317,7 +338,8 @@ describe('DotTemplateStore', () => {
                     title: 'string'
                 });
 
-                expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('templates');
+                expect(dotGlobalMessageService.loading).toHaveBeenCalledWith('saving');
+                expect(dotGlobalMessageService.success).toHaveBeenCalledWith('saved');
 
                 service.state$.subscribe((res) => {
                     expect(res).toEqual({
