@@ -1,7 +1,7 @@
 import { DotMessageDisplayService } from './dot-message-display.service';
 import { DotMessage, DotMessageSeverity, DotMessageType } from '../model';
 import { DotcmsEventsService } from '@dotcms/dotcms-js';
-import { DotcmsEventsServiceMock } from 'src/app/test/dotcms-events-service.mock';
+import { DotcmsEventsServiceMock } from '@dotcms/app/test/dotcms-events-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { TestBed } from '@angular/core/testing';
 

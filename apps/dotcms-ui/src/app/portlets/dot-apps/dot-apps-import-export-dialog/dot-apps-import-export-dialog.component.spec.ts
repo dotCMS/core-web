@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
+import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

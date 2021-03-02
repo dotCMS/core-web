@@ -28,7 +28,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { MenuItem, ConfirmationService } from 'primeng/api';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotEditContentTypeCacheService } from './components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
-import { SiteServiceMock } from 'src/app/test/site-service.mock';
+import { SiteServiceMock } from '@dotcms/app/test/site-service.mock';
 import * as _ from 'lodash';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';

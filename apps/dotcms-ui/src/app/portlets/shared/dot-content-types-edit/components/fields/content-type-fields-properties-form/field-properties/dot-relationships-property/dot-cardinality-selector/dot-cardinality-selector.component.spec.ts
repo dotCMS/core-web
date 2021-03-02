@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, Injectable, DebugElement } from '@angular/core';
-import { DOTTestBed } from 'src/app/test/dot-test-bed';
+import { DOTTestBed } from '@dotcms/app/test/dot-test-bed';
 import { DotCardinalitySelectorComponent } from './dot-cardinality-selector.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
+import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
 import { DotRelationshipCardinality } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/model/dot-relationship-cardinality.model';
 import { Observable, of } from 'rxjs';
 import { DotRelationshipService } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-relationship.service';

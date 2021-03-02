@@ -23,7 +23,7 @@ import {
     StringUtils,
     UserModel
 } from '@dotcms/dotcms-js';
-import { LoginServiceMock } from 'src/app/test/login-service.mock';
+import { LoginServiceMock } from '@dotcms/app/test/login-service.mock';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';

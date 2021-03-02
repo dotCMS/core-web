@@ -11,8 +11,8 @@ import {
     forwardRef
 } from '@angular/core';
 import { PaginatorService } from '@services/paginator';
-import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
-import { DOTTestBed } from 'src/app/test/dot-test-bed';
+import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
+import { DOTTestBed } from '@dotcms/app/test/dot-test-bed';
 import { PaginationEvent } from '@components/_common/searchable-dropdown/component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotRelationshipService } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-relationship.service';

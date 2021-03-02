@@ -1,9 +1,9 @@
-import { DOTTestBed } from 'src/app/test/dot-test-bed';
+import { DOTTestBed } from '@dotcms/app/test/dot-test-bed';
 import { DotEditRelationshipsComponent } from './dot-edit-relationships.component';
 import { Component, Input, Output, EventEmitter, Injectable, DebugElement } from '@angular/core';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { PaginationEvent } from '@components/_common/searchable-dropdown/component';
-import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
+import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
 import { DotEditContentTypeCacheService } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { PaginatorService } from '@services/paginator';
 import { DotRelationshipService } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-relationship.service';

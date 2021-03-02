@@ -4,8 +4,8 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotCopyButtonComponent } from './dot-copy-button.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
-import { DotClipboardUtil } from 'src/app/api/util/clipboard/ClipboardUtil';
+import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
+import { DotClipboardUtil } from '@dotcms/app/api/util/clipboard/ClipboardUtil';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { TooltipModule } from 'primeng/tooltip';
 

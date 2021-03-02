@@ -9,7 +9,7 @@ import { DotcmsEventsService, LoginService } from '@dotcms/dotcms-js';
 import { NotificationsService } from '@services/notifications-service';
 import { Observable, Subject } from 'rxjs';
 import { of as observableOf } from 'rxjs';
-import { MockDotMessageService } from 'src/app/test/dot-message-service.mock';
+import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { ButtonModule } from 'primeng/button';
 
