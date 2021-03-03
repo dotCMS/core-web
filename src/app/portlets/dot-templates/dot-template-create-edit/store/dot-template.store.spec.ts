@@ -222,6 +222,7 @@ describe('DotTemplateStore', () => {
             dotTemplateContainersCacheService = TestBed.inject(DotTemplateContainersCacheService);
             dotRouterService = TestBed.inject(DotRouterService);
             dotTemplatesService = TestBed.inject(DotTemplatesService);
+            dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         });
 
         it('should have basic state', (done) => {
