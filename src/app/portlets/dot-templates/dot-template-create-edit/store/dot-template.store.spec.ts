@@ -141,7 +141,6 @@ describe('DotTemplateStore', () => {
             dotTemplateContainersCacheService = TestBed.inject(DotTemplateContainersCacheService);
             dotRouterService = TestBed.inject(DotRouterService);
             dotTemplatesService = TestBed.inject(DotTemplatesService);
-            dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         });
 
         it('should have basic state', (done) => {
@@ -213,7 +212,12 @@ describe('DotTemplateStore', () => {
                             }),
                             params: of({
                                 type: undefined
-                            })
+                            }),
+                            snapshot: {
+                                params: {
+                                    inode: 'test'
+                                }
+                            }
                         }
                     }
                 ]
@@ -341,6 +345,9 @@ describe('DotTemplateStore', () => {
 
                 expect(dotGlobalMessageService.loading).toHaveBeenCalledWith('saving');
                 expect(dotGlobalMessageService.success).toHaveBeenCalledWith('saved');
+                expect(dotRouterService.goToEditTemplate).toHaveBeenCalledWith(
+                    '222-3000-333---30303-394'
+                );
 
                 service.state$.subscribe((res) => {
                     expect(res).toEqual({
