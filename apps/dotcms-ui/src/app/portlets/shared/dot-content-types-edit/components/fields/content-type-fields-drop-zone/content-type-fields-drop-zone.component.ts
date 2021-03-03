@@ -47,6 +47,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     dialogActions: DotDialogActions;
     fieldRows: DotCMSContentTypeLayoutRow[];
     hideButtons = false;
+    activeTab: number = 0;
 
     @ViewChild('fieldPropertiesForm', { static: true })
     propertiesForm: ContentTypeFieldsPropertiesFormComponent;
@@ -281,6 +282,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             }
         });
         this.hideButtons = false;
+        this.activeTab = 0;
         this.displayDialog = false;
         this.currentField = null;
         this.setDialogOkButtonState(false);
