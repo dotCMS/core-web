@@ -265,7 +265,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         );
     });
 
-    it('should reset values when close dialog', () => {
+    it('should reset values when close dialog', async(() => {
         const fieldRow: DotCMSContentTypeLayoutRow = FieldUtil.createFieldRow(1);
         comp.fieldRows = [fieldRow];
 
@@ -285,7 +285,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             expect(comp.activeTab).toBe(0);
             expect(comp.setDialogOkButtonState).toHaveBeenCalledWith(false);
         });
-    });
+    }));
 
     it('should emit removeFields event', () => {
         let fieldsToRemove;
