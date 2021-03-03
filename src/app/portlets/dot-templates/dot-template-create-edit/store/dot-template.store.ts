@@ -123,6 +123,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 this.dotGlobalMessageService.success(
                     this.dotMessageService.get('dot.common.message.saved')
                 );
+                this.dotRouterService.goToEditTemplate(template.identifier);
             })
         );
     });
