@@ -40,7 +40,6 @@ module.exports = () => {
       namedFiles: true,
       reportName: 'report',
     },
-    browsers: ['Chrome'],
     singleRun: false,
     browserDisconnectTimeout: 20000,
   };
