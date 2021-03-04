@@ -125,7 +125,8 @@
             "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": ["apps/dotcms-ui/src/styles"]
-            }          }
+            }
+          }
         }
       }
     },
@@ -174,7 +175,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "outputs": ["coverage/libs/dot-rules"],
           "options": {
-            "main": "apps/dotcms-ui/src/test.ts",
+            "main": "libs/dot-rules/src/test.ts",
             "karmaConfig": "libs/dot-rules/karma.conf.js",
             "tsConfig": "libs/dot-rules/tsconfig.spec.json"
           }
@@ -197,11 +198,12 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "builder": "@angular-devkit/build-angular:karma",
           "outputs": ["coverage/libs/dotcms-js"],
           "options": {
-            "jestConfig": "libs/dotcms-js/jest.config.js",
-            "passWithNoTests": true
+            "main": "libs/dotcms-js/src/test.ts",
+            "karmaConfig": "libs/dotcms-js/karma.conf.js",
+            "tsConfig": "libs/dotcms-js/tsconfig.spec.json"
           }
         }
       }
@@ -222,11 +224,12 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "builder": "@angular-devkit/build-angular:karma",
           "outputs": ["coverage/libs/dot-layout-grid"],
           "options": {
-            "jestConfig": "libs/dot-layout-grid/jest.config.js",
-            "passWithNoTests": true
+            "main": "libs/dot-layout-grid/src/test.ts",
+            "karmaConfig": "libs/dot-layout-grid/karma.conf.js",
+            "tsConfig": "libs/dot-layout-grid/tsconfig.spec.json"
           }
         }
       }
@@ -259,11 +262,12 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "builder": "@angular-devkit/build-angular:karma",
           "outputs": ["coverage/libs/dotcms-models"],
           "options": {
-            "jestConfig": "libs/dotcms-models/jest.config.js",
-            "passWithNoTests": true
+            "main": "libs/dotcms-models/src/test.ts",
+            "karmaConfig": "libs/dotcms-models/karma.conf.js",
+            "tsConfig": "libs/dotcms-models/tsconfig.spec.json"
           }
         }
       }
@@ -296,11 +300,12 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "builder": "@angular-devkit/build-angular:karma",
           "outputs": ["coverage/libs/dotcms"],
           "options": {
-            "jestConfig": "libs/dotcms/jest.config.js",
-            "passWithNoTests": true
+            "main": "libs/dotcms/src/test.ts",
+            "karmaConfig": "libs/dotcms/karma.conf.js",
+            "tsConfig": "libs/dotcms/tsconfig.spec.json"
           }
         }
       }
