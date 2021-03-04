@@ -39,7 +39,7 @@ jobs:
             - name: Running tests
               id: test_run
               run: |
-                  if ! (npm run nx test dotcms-ui) then
+                  if ! (npm run nx test --target=dotcms-ui --prod --parallel --maxParallel=5) then
                     echo "::set-output name=status::failure";
                     echo "::set-output name=color::#ff2400";
                     exit 1;

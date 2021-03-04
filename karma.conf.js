@@ -40,7 +40,7 @@ module.exports = () => {
       namedFiles: true,
       reportName: 'report',
     },
-    singleRun: false,
+    singleRun: true,
     browserDisconnectTimeout: 20000,
   };
 };

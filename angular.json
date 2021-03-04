@@ -38,6 +38,16 @@
       "sourceRoot": "apps/dotcms-ui/src",
       "prefix": "dot",
       "architect": {
+        "test-prod": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "npm run test:release:dotcms-ui"
+              }
+            ]
+          }
+        },
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
