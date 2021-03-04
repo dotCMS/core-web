@@ -171,11 +171,12 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "builder": "@angular-devkit/build-angular:karma",
           "outputs": ["coverage/libs/dot-rules"],
           "options": {
-            "jestConfig": "libs/dot-rules/jest.config.js",
-            "passWithNoTests": true
+            "main": "apps/dotcms-ui/src/test.ts",
+            "karmaConfig": "libs/dot-rules/karma.conf.js",
+            "tsConfig": "libs/dot-rules/tsconfig.spec.json"
           }
         }
       }
