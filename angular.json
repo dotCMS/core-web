@@ -41,6 +41,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "baseHref": "./",
                         "outputPath": "dist/apps/dotcms-ui",
                         "index": "apps/dotcms-ui/src/index.html",
                         "main": "apps/dotcms-ui/src/main.ts",
@@ -105,6 +106,7 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
+                        "baseHref": "/",
                         "browserTarget": "dotcms-ui:build",
                         "proxyConfig": "apps/dotcms-ui/proxy.conf.json"
                     },
