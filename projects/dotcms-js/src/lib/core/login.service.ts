@@ -56,7 +56,7 @@ export class LoginService {
             this.loggerService.debug('User Logged In Date: ', this.auth.user.loggedInDate);
 
             // if the destroyed event happens after the logged in date, so proceed!
-            if (this.auth.user.loggedInDate && !this.isLogoutAfterLastLogin(date)) {
+            if (this.auth.user.loggedInDate && this.isLogoutAfterLastLogin(date)) {
                 this.logOutUser();
             }
         });
@@ -278,6 +278,7 @@ export class LoginService {
      * @param _auth
      */
     public setAuth(auth: Auth): void {
+        auth.user.loggedInDate = new Date().getTime();
         this._auth = auth;
         this._auth$.next(auth);
 
@@ -317,6 +318,7 @@ export class LoginService {
      * @returns Observable<any>
      */
     private logOutUser(): void {
+        this.auth.user.loggedInDate = undefined;
         window.location.href = `${LOGOUT_URL}?r=${new Date().getTime()}`;
     }
 }
