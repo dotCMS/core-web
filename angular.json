@@ -47,10 +47,7 @@
                         "polyfills": "apps/dotcms-ui/src/polyfills.ts",
                         "tsConfig": "apps/dotcms-ui/tsconfig.app.json",
                         "aot": true,
-                        "assets": [
-                            "apps/dotcms-ui/src/favicon.ico",
-                            "apps/dotcms-ui/src/assets"
-                        ],
+                        "assets": ["apps/dotcms-ui/src/favicon.ico", "apps/dotcms-ui/src/assets"],
                         "styles": ["apps/dotcms-ui/src/styles.scss"],
                         "scripts": [],
                         "stylePreprocessorOptions": {
@@ -293,10 +290,7 @@
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": [
-                            "libs/dotcms/src/**/*.ts",
-                            "libs/dotcms/src/**/*.html"
-                        ]
+                        "lintFilePatterns": ["libs/dotcms/src/**/*.ts", "libs/dotcms/src/**/*.html"]
                     }
                 },
                 "test": {
