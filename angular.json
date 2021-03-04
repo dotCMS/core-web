@@ -47,7 +47,20 @@
                         "polyfills": "apps/dotcms-ui/src/polyfills.ts",
                         "tsConfig": "apps/dotcms-ui/tsconfig.app.json",
                         "aot": true,
-                        "assets": ["apps/dotcms-ui/src/favicon.ico", "apps/dotcms-ui/src/assets"],
+                        "assets": [
+                            "apps/dotcms-ui/src/favicon.ico", 
+                            "apps/dotcms-ui/src/assets",
+                            {
+                                "glob": "**/*",
+                                "input": "./node_modules/ngx-monaco-editor/assets/monaco",
+                                "output": "./assets/monaco/"
+                            },
+                            {
+                                "glob": "index.jsp",
+                                "input": "src/tomcat",
+                                "output": "./"
+                            } 
+                        ],
                         "styles": ["apps/dotcms-ui/src/styles.scss"],
                         "scripts": [],
                         "stylePreprocessorOptions": {
