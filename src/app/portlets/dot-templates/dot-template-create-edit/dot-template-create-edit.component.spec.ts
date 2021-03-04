@@ -480,7 +480,8 @@ describe('DotTemplateCreateEditComponent', () => {
                             body: {
                                 rows: []
                             }
-                        }
+                        },
+                        themeId: '123'
                     });
 
                     expect(store.saveTemplate).toHaveBeenCalledWith({
@@ -497,7 +498,7 @@ describe('DotTemplateCreateEditComponent', () => {
                         },
                         identifier: '123',
                         friendlyName: '',
-                        theme: '',
+                        theme: '123',
                         image: ''
                     });
                 });
