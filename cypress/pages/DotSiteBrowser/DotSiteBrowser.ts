@@ -1,7 +1,6 @@
 import Form from '../../support/utils/Form';
 import Navigation from '../../support/utils/Navigation';
 import Page from '../../support/utils/Page';
-import 'cypress-iframe';
 
 const URL = '/dotAdmin/#/c/site-browser';
 const CREATE_PAGE_BUTTON = '#addNewDropDownButtonDiv span.dijitButtonNode';
@@ -14,14 +13,17 @@ class DotSiteBrowser {
     }
 
     static checkSiteBrowserPageLoaded() {
+        cy.intercept('GET', 'user/getloggedinuser').as('getLoggedinUser');
+        cy.wait('@getLoggedinUser');
         Page.assertElementContains('.p-breadcrumb > ul > :nth-child(3)', `Browser`); // Header
-        cy.frameLoaded(IFRAME);
-        Page.assertElementSize(cy.iframe().find('#borderContainer'), 1); // File tree container
-        Page.assertElementSize(cy.iframe().find(CREATE_PAGE_BUTTON), 1); // Add action button
+        cy.get(IFRAME).iframe(() => {
+            Page.assertElementSize(cy.get('#borderContainer'), 1); // File tree container
+            Page.assertElementSize(cy.get(CREATE_PAGE_BUTTON), 1); // Add action button
+        });
     }
 
     static openCreatePageDialog({ type }: { type: string }) {
-        cy.get(IFRAME).iframeObj().as('iframeContent');
+        cy.get(IFRAME).iframe().as('iframeContent');
         cy.get('@iframeContent').then(() => {
             Page.click(cy.get('@iframeContent').find(CREATE_PAGE_BUTTON));
             Page.click(
@@ -41,9 +43,7 @@ class DotSiteBrowser {
 
     static fillCreatePageForm({ title, template }: { title: string; template: string }) {
         // TODO: Complete to fill extra fields (not required)
-        cy.wait(1000);
-
-        cy.get(IFRAME).iframeObj().as('iframeContent');
+        cy.get(IFRAME).iframe().as('iframeContent');
         cy.get('@iframeContent').then(() => {
             Form.fill(cy.get('@iframeContent').find('input#titleBox'), title);
             // .type(title);
@@ -55,39 +55,11 @@ class DotSiteBrowser {
                     .contains(template)
             );
         });
-
-        // Page.click('dot-theme-selector-dropdown[data-testid="templatePropsThemeField"]');
-        // Page.click(
-        //     cy.get('.theme-selector__data-list-item .dot-theme-item__label').contains(template)
-        // );
     }
-    /*
-    static submitCreateTemplateForm = () => {
-        Page.click('button[data-testid="dotFormDialogSave"');
-    };
 
-    static checkEditTemplatesPageLoaded = () => {
-        // TODO: Check other components loaded on Edit Template page
-        Page.assertElementContains('#p-tabpanel-0-label .p-tabview-title', `design`); // Secondary Menu bar
-        Page.assertElementContains('#p-tabpanel-1-label .p-tabview-title', `Permissions`); // Secondary Menu bar
-        Page.assertElementContains('#p-tabpanel-2-label .p-tabview-title', `History`); // Secondary Menu bar
-        Page.assertElementContains('.dot-edit-layout__toolbar-save', `Save`); // Save button
-        Page.assertElementContains('dot-searchable-dropdown button', `Add a Container`); // Add container select
-    };
-
-    static addContainer = (data) => {
-        Page.click('dot-searchable-dropdown button');
-        Page.click(
-            cy
-                .get('.searchable-dropdown__data-list .searchable-dropdown__data-list-item')
-                .contains(data.type)
-        );
-    };
-
-    static saveEditTemplate = () => {
-        Page.click('.dot-edit-layout__toolbar-save');
-    };
-    */
+    static submitCreatePageForm({ action }: { action: string }) {
+        Page.click(cy.get('@iframeContent').find('#contentletActionsHanger a').contains(action));
+    }
 }
 
 export default DotSiteBrowser;

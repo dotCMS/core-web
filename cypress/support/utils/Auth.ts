@@ -1,5 +1,5 @@
 class Auth {
-    static login = (username?: string, password?: string) => {
+    static login(username?: string, password?: string) {
         cy.request({
             method: 'POST',
             url: '/api/v1/authentication/api-token',
@@ -10,6 +10,6 @@ class Auth {
         }).then((response: Cypress.Response) => {
             localStorage.setItem('token', response.body.entity.token);
         });
-    };
+    }
 }
 export default Auth;
