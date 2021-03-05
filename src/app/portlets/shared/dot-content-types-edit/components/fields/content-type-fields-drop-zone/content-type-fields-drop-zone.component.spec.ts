@@ -167,6 +167,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     let dragDropService: TestFieldDragDropService;
+
     beforeEach(
         waitForAsync(() => {
             dragDropService = new TestFieldDragDropService();
@@ -217,7 +218,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                     FieldPropertyService,
                     DragulaService,
                     DotEventsService,
-                    autoScroll,
                     { provide: DotMessageDisplayService, useValue: {} },
                     { provide: DotHttpErrorManagerService, useValue: {} }
                 ]
