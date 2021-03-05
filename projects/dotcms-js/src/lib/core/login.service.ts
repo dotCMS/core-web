@@ -4,7 +4,6 @@
 import { CoreWebService } from './core-web.service';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
-import { LoggerService } from './logger.service';
 import { HttpCode } from './util/http-code';
 import { pluck, tap, map } from 'rxjs/operators';
 import { DotcmsEventsService } from './dotcms-events.service';
@@ -35,8 +34,7 @@ export class LoginService {
 
     constructor(
         private coreWebService: CoreWebService,
-        private dotcmsEventsService: DotcmsEventsService,
-        private loggerService: LoggerService
+        private dotcmsEventsService: DotcmsEventsService
     ) {
         this._loginAsUsersList$ = <Subject<User[]>>new Subject();
         this.urls = {
@@ -51,15 +49,7 @@ export class LoginService {
         };
 
         // when the session is expired/destroyed
-        dotcmsEventsService.subscribeTo('SESSION_DESTROYED').subscribe((date) => {
-            this.loggerService.debug('Processing session destroyed: ', date);
-            this.loggerService.debug('User Logged In Date: ', this.auth.user.loggedInDate);
-
-            // if the destroyed event happens after the logged in date, so proceed!
-            if (this.auth.user.loggedInDate && this.isLogoutAfterLastLogin(date)) {
-                this.logOutUser();
-            }
-        });
+        dotcmsEventsService.subscribeTo('SESSION_DESTROYED').subscribe(() => this.logOutUser());
     }
 
     get loginAsUsersList$(): Observable<User[]> {
@@ -278,7 +268,6 @@ export class LoginService {
      * @param _auth
      */
     public setAuth(auth: Auth): void {
-        auth.user.loggedInDate = new Date().getTime();
         this._auth = auth;
         this._auth$.next(auth);
 
@@ -288,14 +277,6 @@ export class LoginService {
         } else {
             this.dotcmsEventsService.start();
         }
-    }
-
-    private isLogoutAfterLastLogin(date): boolean {
-        return (
-            this.auth?.user?.loggedInDate &&
-            date &&
-            Number(date) > Number(this.auth.user.loggedInDate)
-        );
     }
 
     /**
@@ -318,7 +299,6 @@ export class LoginService {
      * @returns Observable<any>
      */
     private logOutUser(): void {
-        this.auth.user.loggedInDate = undefined;
         window.location.href = `${LOGOUT_URL}?r=${new Date().getTime()}`;
     }
 }
@@ -352,7 +332,6 @@ export interface User {
     type?: string;
     userId: string;
     password?: string;
-    loggedInDate: number; // Timestamp
 }
 
 export interface Auth {
