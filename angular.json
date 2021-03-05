@@ -17,7 +17,12 @@
                         "outputPath": "dist",
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "src/tsconfig.app.json",
-                        "allowedCommonJsDependencies": ["lodash", "dragula", "md5"],
+                        "allowedCommonJsDependencies": [
+                            "lodash",
+                            "dragula",
+                            "md5",
+                            "dom-autoscroller"
+                        ],
                         "stylePreprocessorOptions": {
                             "includePaths": ["src/styles"]
                         },

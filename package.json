@@ -41,6 +41,7 @@
         "@angular/router": "~11.0.3",
         "@ctrl/tinycolor": "^3.1.7",
         "@ngrx/component-store": "^10.0.1",
+        "dom-autoscroller": "^2.3.4",
         "dotcms-webcomponents": "0.0.18",
         "font-awesome": "^4.7.0",
         "lodash": "^4.17.20",
