@@ -58,7 +58,7 @@
                             },
                             {
                                 "glob": "index.jsp",
-                                "input": "src/tomcat",
+                                "input": "apps/dotcms-ui/src/tomcat",
                                 "output": "./"
                             } 
                         ],
