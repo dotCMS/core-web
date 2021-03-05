@@ -55,7 +55,6 @@ import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module
 import { TabViewModule } from 'primeng/tabview';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
-import * as autoScroll from 'dom-autoscroller';
 
 const COLUMN_BREAK_FIELD = FieldUtil.createColumnBreak();
 
@@ -152,7 +151,7 @@ function becomeNewField(field) {
     delete field.sortOrder;
 }
 
-fdescribe('ContentTypeFieldsDropZoneComponent', () => {
+describe('ContentTypeFieldsDropZoneComponent', () => {
     const dotLoadingIndicatorServiceMock = new TestDotLoadingIndicatorService();
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
@@ -218,6 +217,7 @@ fdescribe('ContentTypeFieldsDropZoneComponent', () => {
                     FieldPropertyService,
                     DragulaService,
                     DotEventsService,
+                    autoScroll,
                     { provide: DotMessageDisplayService, useValue: {} },
                     { provide: DotHttpErrorManagerService, useValue: {} }
                 ]
@@ -246,24 +246,6 @@ fdescribe('ContentTypeFieldsDropZoneComponent', () => {
     it('should set Save button disable on load', () => {
         fixture.detectChanges();
         expect(comp.dialogActions.accept.disabled).toBeTruthy();
-    });
-
-    fit('should set Save button disable on load', () => {
-        // Setup
-        const mockedOpen = jest.fn();
-        // Without making a copy, you will have a circular dependency problem
-        const originalWindow = { ...window };
-        const windowSpy = jasmine.spyOn(global, 'window', 'get');
-        windowSpy.mockImplementation(() => ({
-            ...originalWindow, // In case you need other window properties to be in place
-            open: mockedOpen
-        }));
-
-        debugger;
-        spyOn(global, 'autoScroll');
-        // var autoScroll = jasmine.createSpy();
-        fixture.detectChanges();
-        expect(autoScroll).toHaveBeenCalled();
     });
 
     it('should have a dialog', () => {
