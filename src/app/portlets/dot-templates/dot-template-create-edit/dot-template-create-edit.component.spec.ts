@@ -109,7 +109,7 @@ async function makeFormValid(fixture) {
     item.click();
 }
 
-fdescribe('DotTemplateCreateEditComponent', () => {
+describe('DotTemplateCreateEditComponent', () => {
     let fixture: ComponentFixture<DotTemplateCreateEditComponent>;
     let de: DebugElement;
     let component: DotTemplateCreateEditComponent;
