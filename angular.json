@@ -185,7 +185,7 @@
                                 "command": "nx build-storybook"
                             },
                             {
-                                "command": "npm run publish-storybook-to-ghpages -- --existing-output-dir={options.outputPath}"
+                                "command": "npm run publish-storybook-to-ghpages -- --existing-output-dir=storybook/dotcms-ui"
                             }
                         ],
                         "parallel": false
