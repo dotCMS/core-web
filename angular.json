@@ -179,9 +179,13 @@
                 "publish-storybook": {
                     "builder": "@nrwl/workspace:run-commands",
                     "options": {
+                        "outputPath": "storybook/dotcms-ui",
                         "commands": [
                             {
                                 "command": "nx build-storybook"
+                            },
+                            {
+                                "command": "npm run publish-storybook-to-ghpages -- --existing-output-dir={options.outputPath}"
                             }
                         ]
                     }
