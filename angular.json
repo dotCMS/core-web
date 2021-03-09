@@ -165,7 +165,7 @@
                     "outputs": ["{options.outputPath}"],
                     "options": {
                         "uiFramework": "@storybook/angular",
-                        "outputPath": "dist/storybook/dotcms-ui",
+                        "outputPath": "storybook/dotcms-ui",
                         "config": {
                             "configFolder": "apps/dotcms-ui/.storybook"
                         }
@@ -174,6 +174,16 @@
                         "ci": {
                             "quiet": true
                         }
+                    }
+                },
+                "publish-storybook": {
+                    "builder": "@nrwl/workspace:run-commands",
+                    "options": {
+                        "commands": [
+                            {
+                                "command": "nx build-storybook"
+                            }
+                        ]
                     }
                 }
             }
