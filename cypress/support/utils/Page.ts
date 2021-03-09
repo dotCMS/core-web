@@ -7,16 +7,6 @@ class Page {
         }
     }
 
-    static clickElement(selector: string, text: string) {
-        let e = cy.get(selector);
-
-        if (text !== null) {
-            e = e.contains(text);
-        }
-
-        e.click();
-    }
-
     static assertElementContains(selector: string, text: string) {
         return cy.get(selector).contains(text);
     }

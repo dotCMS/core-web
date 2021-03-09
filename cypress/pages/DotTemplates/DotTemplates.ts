@@ -66,7 +66,9 @@ class DotTemplates {
     }
 
     static saveEditTemplate() {
+        cy.intercept('GET', 'api/v1/containers').as('containers');
         Page.click('.dot-edit-layout__toolbar-save');
+        cy.wait('@containers');
     }
 }
 

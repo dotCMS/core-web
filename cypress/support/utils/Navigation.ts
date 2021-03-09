@@ -4,7 +4,7 @@ class Navigation {
     }
 
     static assertPageUrlIs(url: string) {
-        cy.location()
+        cy.location({ timeout: 10000 })
             .its('href')
             .should('eq', `${Cypress.config('baseUrl')}${url}`);
     }

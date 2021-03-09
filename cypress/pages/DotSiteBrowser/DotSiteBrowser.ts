@@ -35,7 +35,7 @@ class DotSiteBrowser {
                 cy
                     .get('@iframeContent')
                     .find('#widget_defaultPageType_dropdown .dijitMenuItem')
-                    .contains(/^Page$/)
+                    .contains(type)
             );
             Page.click(cy.get('@iframeContent').find('#selectedPageAssetButton'));
         });
@@ -45,8 +45,8 @@ class DotSiteBrowser {
         // TODO: Complete to fill extra fields (not required)
         cy.get(IFRAME).iframe().as('iframeContent');
         cy.get('@iframeContent').then(() => {
+            cy.intercept('POST', 'TemplateAjax.fetchTemplateImage.dwr').as('setTemplateOnForm');
             Form.fill(cy.get('@iframeContent').find('input#titleBox'), title);
-            // .type(title);
             Page.click(cy.get('@iframeContent').find('#widget_templateSel .dijitArrowButton'));
             Page.click(
                 cy
@@ -54,6 +54,7 @@ class DotSiteBrowser {
                     .find('#templateSel_popup .dijitMenuItem')
                     .contains(template)
             );
+            cy.wait('@setTemplateOnForm');
         });
     }
 
