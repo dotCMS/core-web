@@ -187,7 +187,8 @@
                             {
                                 "command": "npm run publish-storybook-to-ghpages -- --existing-output-dir={options.outputPath}"
                             }
-                        ]
+                        ],
+                        "parallel": false
                     }
                 }
             }
