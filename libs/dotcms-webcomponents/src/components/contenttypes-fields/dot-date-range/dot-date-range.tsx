@@ -34,47 +34,47 @@ export class DotDateRangeComponent {
     el: HTMLElement;
 
     /** (optional) Value formatted with start and end date splitted with a comma */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = 'daterange';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     hint = '';
 
     /** (optional) Max value that the field will allow to set */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     max = '';
 
     /** (optional) Min value that the field will allow to set */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     min = '';
 
     /** (optional) Determine if it is needed */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     requiredMessage = 'This field is required';
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) Date format used by the field when displayed */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     displayFormat = 'Y-m-d';
 
     /** (optional) Array of date presets formatted as [{ label: 'PRESET_LABEL', days: NUMBER }] */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     presets = [
         {
             label: 'Date Presets',
@@ -99,7 +99,7 @@ export class DotDateRangeComponent {
     ];
 
     /** (optional) Text to be rendered next to presets field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     presetLabel = 'Presets';
 
     @State()

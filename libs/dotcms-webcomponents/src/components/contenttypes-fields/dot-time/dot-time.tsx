@@ -30,47 +30,47 @@ export class DotTimeComponent {
     el: HTMLElement;
 
     /** Value format hh:mm:ss e.g., 15:22:00 */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when min or max are set and condition not met */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) Min, minimum value that the field will allow to set. Format should be hh:mm:ss */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     min = '';
 
     /** (optional) Max, maximum value that the field will allow to set. Format should be  hh:mm:ss */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     max = '';
 
     /** (optional) Step specifies the legal number intervals for the input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     step = '1';
 
     @State()

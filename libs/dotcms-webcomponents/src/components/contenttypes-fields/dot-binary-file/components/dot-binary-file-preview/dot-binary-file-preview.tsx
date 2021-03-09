@@ -15,15 +15,15 @@ export class DotBinaryFilePreviewComponent {
     el: HTMLElement;
 
     /** file name to be displayed */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     fileName = '';
 
     /** (optional) file URL to be displayed */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     previewUrl = '';
 
     /** (optional) Delete button's label */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     deleteLabel = 'Delete';
 
     /** Emit when the file is deleted */

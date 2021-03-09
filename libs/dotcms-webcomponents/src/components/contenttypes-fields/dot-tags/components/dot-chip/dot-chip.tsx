@@ -9,15 +9,15 @@ export class DotChipComponent {
     el: HTMLElement;
 
     /** Chip's label */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     label = '';
 
     /** (optional) Delete button's label */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     deleteLabel = 'Delete';
 
     /** (optional) If is true disabled the delete button */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     @Event()

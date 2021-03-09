@@ -24,23 +24,23 @@ export class DotAutocompleteComponent {
     el: HTMLElement;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) text to show when no value is set */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     placeholder = '';
 
     /** (optional)  Min characters to start search in the autocomplete input */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     threshold = 0;
 
     /** (optional)  Max results to show after a autocomplete search */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     maxResults = 0;
 
     /** (optional) Duraction in ms to start search into the autocomplete */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     debounce = 300;
 
     /** Function or array of string to get the data to use for the autocomplete search */

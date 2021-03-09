@@ -45,35 +45,35 @@ export class DotRadioComponent {
     el: HTMLElement;
 
     /** Value set from the ratio option */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     required = false;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     disabled = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     requiredMessage = '';
 
     /** Value/Label ratio options separated by comma, to be formatted as: Value|Label */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     options = '';
 
     @State()

@@ -47,19 +47,19 @@ export class DotTextfieldComponent {
     name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     label = '';
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     placeholder = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
@@ -71,15 +71,15 @@ export class DotTextfieldComponent {
     validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     disabled = false;
 
     /** (optional) Regular expresion that is checked against the value to determine if is valid  */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     regexCheck = '';
 
     /** type specifies the type of <input> element to display */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     type = 'text';
 
     @State()

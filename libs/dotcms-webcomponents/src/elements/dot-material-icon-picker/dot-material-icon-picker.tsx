@@ -24,32 +24,32 @@ export class DotMaterialIcon {
     @State() selectedSuggestionIndex: number;
 
     /** Value for input placeholder */
-    @Prop({ reflectToAttr: true }) placeholder: string = '';
+    @Prop({ reflect: true }) placeholder: string = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = '';
 
     /** Value set from the dropdown option */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     value = '';
 
     /** Size value set for font-size */
-    @Prop({ mutable: true, reflectToAttr: true }) size: string = null;
+    @Prop({ mutable: true, reflect: true }) size: string = null;
 
     /** Show/Hide color picker */
-    @Prop({ mutable: true, reflectToAttr: true }) showColor: string = null;
+    @Prop({ mutable: true, reflect: true }) showColor: string = null;
 
     /** Color value set from the input */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     colorValue = '#000';
 
     /** Label set for the input color */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     colorLabel = 'Color';
 
     /** Values that the auto-complete textbox should search for */
-    @Prop({ reflectToAttr: true }) suggestionlist: string[] = MaterialIconClasses;
+    @Prop({ reflect: true }) suggestionlist: string[] = MaterialIconClasses;
 
     @Event()
     dotValueChange: EventEmitter<{ name: string; value: string; colorValue: string }>;

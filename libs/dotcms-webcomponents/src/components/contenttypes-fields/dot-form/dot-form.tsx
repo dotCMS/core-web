@@ -9,7 +9,7 @@ import {
     DotCMSTempFile,
     DotCMSContentlet
 } from 'dotcms-models';
-import {DotUploadService, fallbackErrorMessages} from './services/dot-upload.service';
+import { DotUploadService, fallbackErrorMessages } from './services/dot-upload.service';
 import { DotHttpErrorResponse } from '../../../models/dot-http-error-response.model';
 import { DotBinaryFileComponent } from '../dot-binary-file/dot-binary-file';
 
@@ -28,19 +28,19 @@ export class DotFormComponent {
     fieldsToShow: string;
 
     /** (optional) Text to be rendered on Reset button */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     resetLabel = 'Reset';
 
     /** (optional) Text to be rendered on Submit button */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     submitLabel = 'Submit';
 
     /** Layout metada to be rendered */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     layout: DotCMSContentTypeLayoutRow[] = [];
 
     /** Content type variable name */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     variable = '';
 
     @State()
@@ -179,7 +179,7 @@ export class DotFormComponent {
     private runSuccessCallback(contentlet: DotCMSContentlet): void {
         const successCallback = this.getSuccessCallback();
         if (successCallback) {
-            return function() {
+            return function () {
                 // tslint:disable-next-line:no-eval
                 return eval(successCallback);
             }.call({ contentlet });

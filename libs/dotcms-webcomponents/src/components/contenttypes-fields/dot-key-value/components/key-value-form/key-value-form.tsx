@@ -12,36 +12,36 @@ export class DotKeyValueComponent {
     el: HTMLElement;
 
     /** (optional) Disables all form interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) Label for the add item button */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     addButtonLabel = 'Add';
 
     /** (optional) Placeholder for the key input text */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     keyPlaceholder = '';
 
     /** (optional) Placeholder for the value input text */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     valuePlaceholder = '';
 
     /** (optional) The string to use in the key input label */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     keyLabel = 'Key';
 
     /** (optional) The string to use in the value input label */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     valueLabel = 'Value';
 
@@ -96,7 +96,7 @@ export class DotKeyValueComponent {
     }
 
     private isButtonDisabled(): boolean {
-        return !this.isFormValid() || (this.disabled || null);
+        return !this.isFormValid() || this.disabled || null;
     }
 
     private isFormValid(): boolean {

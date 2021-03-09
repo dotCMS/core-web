@@ -17,23 +17,23 @@ export class DotBinaryUploadButtonComponent {
     el: HTMLElement;
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     required = false;
 
     /** (optional) Describes a type of file that may be selected by the user, separated by comma  eg: .pdf,.jpg  */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     accept: string;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) Text that be shown in the browse file button */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     buttonLabel = '';
 
     @Event()

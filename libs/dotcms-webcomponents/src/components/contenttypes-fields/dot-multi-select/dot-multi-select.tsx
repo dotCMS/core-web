@@ -45,39 +45,39 @@ export class DotMultiSelectComponent {
     el: HTMLElement;
 
     /** Value set from the dropdown option */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     hint = '';
 
     /** Value/Label dropdown options separated by comma, to be formatted as: Value|Label */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     options = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     requiredMessage = `This field is required`;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) Size number of the multi-select dropdown (default=3) */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     size = '3';
 
     @State()

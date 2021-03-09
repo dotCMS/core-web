@@ -10,18 +10,18 @@ export class KeyValueTableComponent {
     items: DotKeyValueField[] = [];
 
     /** (optional) Disables all form interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) Label for the delete button in each item list */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     buttonLabel = 'Delete';
 
     /** (optional) Message to show when the list of items is empty */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     emptyMessage = 'No values';
 

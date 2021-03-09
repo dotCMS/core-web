@@ -48,23 +48,23 @@ export class DotBinaryFileComponent {
     el: HTMLElement;
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     label = '';
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     placeholder = 'Drop or paste a file or url';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
@@ -80,31 +80,31 @@ export class DotBinaryFileComponent {
     URLValidationMessage = 'The specified URL is not valid';
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) Describes a type of file that may be selected by the user, separated by comma  eg: .pdf,.jpg  */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     accept = '';
 
     /** (optional) Set the max file size limit  */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     maxFileLength = '';
 
     /** (optional) Text that be shown in the browse file button */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     buttonLabel = 'Browse';
 
     /** (optional) Text that be shown in the browse file button */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     errorMessage = '';
 
     /** (optional) Name of the file uploaded */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     previewImageName = '';
 
     /** (optional) URL of the file uploaded */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     previewImageUrl = '';
 
     @State()
@@ -191,7 +191,7 @@ export class DotBinaryFileComponent {
             arr = this.accept.split(',');
 
             if (arr.length === 0) {
-                arr = [this.accept]
+                arr = [this.accept];
             }
         }
 
@@ -276,24 +276,24 @@ export class DotBinaryFileComponent {
                             previewUrl={this.previewImageUrl}
                         />
                     ) : (
-                            <div class="dot-binary__container">
-                                <dot-binary-text-field
-                                    placeholder={this.placeholder}
-                                    required={this.required}
-                                    disabled={this.disabled}
-                                    accept={this.allowedFileTypes.join(',')}
-                                    hint={this.hint}
-                                    onLostFocus={this.lostFocusEventHandler.bind(this)}
-                                />
-                                <dot-binary-upload-button
-                                    name={this.name}
-                                    accept={this.allowedFileTypes.join(',')}
-                                    disabled={this.disabled}
-                                    required={this.required}
-                                    buttonLabel={this.buttonLabel}
-                                />
-                            </div>
-                        )}
+                        <div class="dot-binary__container">
+                            <dot-binary-text-field
+                                placeholder={this.placeholder}
+                                required={this.required}
+                                disabled={this.disabled}
+                                accept={this.allowedFileTypes.join(',')}
+                                hint={this.hint}
+                                onLostFocus={this.lostFocusEventHandler.bind(this)}
+                            />
+                            <dot-binary-upload-button
+                                name={this.name}
+                                accept={this.allowedFileTypes.join(',')}
+                                disabled={this.disabled}
+                                required={this.required}
+                                buttonLabel={this.buttonLabel}
+                            />
+                        </div>
+                    )}
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
@@ -348,7 +348,7 @@ export class DotBinaryFileComponent {
             });
             this.binaryTextField.value = data === null ? '' : this.binaryTextField.value;
         } catch (error) {
-            console.warn(error)
+            console.warn(error);
         }
 
         this.emitValueChange();

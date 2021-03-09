@@ -46,78 +46,78 @@ export class DotKeyValueComponent {
     el: HTMLElement;
 
     /** Value of the field */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     value = '';
 
     /** Name that will be used as ID */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     name = '';
 
     /** (optional) Text to be rendered next to input field */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     hint = '';
 
     /** (optional) Determine if it is mandatory */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     requiredMessage = 'This field is required';
 
     /** (optional) Disables field's interaction */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     disabled = false;
 
     /** (optional) Placeholder for the key input text in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formKeyPlaceholder: string;
 
     /** (optional) Placeholder for the value input text in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formValuePlaceholder: string;
 
     /** (optional) The string to use in the key label in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formKeyLabel: string;
 
     /** (optional) The string to use in the value label in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formValueLabel: string;
 
     /** (optional) Label for the add button in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formAddButtonLabel: string;
 
     /** (optional) The string to use in the delete button of a key/value item */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     listDeleteLabel: string;
 

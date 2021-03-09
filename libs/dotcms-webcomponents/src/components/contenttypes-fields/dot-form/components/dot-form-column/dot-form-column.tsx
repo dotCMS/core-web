@@ -12,7 +12,7 @@ export class DotFormColumnComponent {
     column: DotCMSContentTypeLayoutColumn;
 
     /** (optional) List of fields (variableName) separated by comma, to be shown */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     fieldsToShow: string;
 
     render() {
