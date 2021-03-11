@@ -40,7 +40,8 @@
         "update": "nx migrate latest",
         "workspace-generator": "nx workspace-generator",
         "dep-graph": "nx dep-graph",
-        "help": "nx help"
+        "help": "nx help",
+        "prepare": "husky install"
     },
     "private": false,
     "dependencies": {
@@ -116,7 +117,7 @@
         "eslint-config-prettier": "6.0.0",
         "eslint-plugin-cypress": "^2.10.3",
         "gh-pages": "^3.1.0",
-        "husky": "^4.3.5",
+        "husky": "^5.1.3",
         "jasmine-core": "^3.6.0",
         "jasmine-spec-reporter": "~6.0.0",
         "karma": "^5.2.3",
