@@ -41,7 +41,8 @@
         "workspace-generator": "nx workspace-generator",
         "dep-graph": "nx dep-graph",
         "help": "nx help",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "pretty-quick": "pretty-quick"
     },
     "private": false,
     "dependencies": {
