@@ -7,7 +7,9 @@ module.exports = {
                 loader: 'ts-loader',
                 options: {
                     compilerOptions: {
-                        target: 'ES2019'
+                        target: 'es5',
+                        lib: ['es5', 'dom'],
+                        types: ['cypress']
                     }
                 },
                 exclude: [/node_modules/]

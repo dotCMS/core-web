@@ -29,6 +29,8 @@ class DotEditPage {
     }
 
     static addElementToContainer({ elementNumber }: { elementNumber: number }) {
+        cy.intercept('POST', 'ContentletAjax.searchContentlets.dwr').as('searchContentlets');
+        cy.wait('@searchContentlets');
         cy.get(DIALOG_IFRAME)
             .iframe()
             .then((iframe) => {

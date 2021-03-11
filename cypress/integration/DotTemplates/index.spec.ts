@@ -1,21 +1,17 @@
 import DotEditPage from '../../pages/DotSiteBrowser/DotEditPage';
 import DotSiteBrowser from '../../pages/DotSiteBrowser/DotSiteBrowser';
 import Templates from '../../pages/DotTemplates/DotTemplates';
-import Utils from '../../support/utils/Auth';
+import Utils from '../../support/utils/Utils';
 
-const PAGE_NAME = 'Cypress Page1';
+const PAGE_NAME = `Cypress Page ${Date.now()}`;
 
 describe('Templates', () => {
-    before(() => {
-        Utils.login();
-        Utils.DBSeed();
-    });
-    beforeEach(() => {
-        Utils.login();
+    beforeEach(async () => {
+        await Utils.login();
     });
 
-    it('Create Template and create Page with content using previous template - Part 1/2', () => {
-        // // Load Page
+    it('Create Template and create Page with content using previous template', () => {
+        // Load Page
         Templates.openPage();
         Templates.checkTemplatesPageLoaded();
 
@@ -31,8 +27,8 @@ describe('Templates', () => {
 
         // Site Browser
         cy.log('Opening DotSiteBrowser');
+
         DotSiteBrowser.openPage();
-        cy.wait(1000);
         DotSiteBrowser.checkSiteBrowserPageLoaded();
         DotSiteBrowser.openCreatePageDialog({ type: 'Page' });
 
@@ -42,11 +38,6 @@ describe('Templates', () => {
         });
 
         DotSiteBrowser.submitCreatePageForm({ action: 'Save' });
-    });
-
-    it('Create Template and create Page with content using previous template - Part 2/2', () => {
-        // Edit Page
-        DotEditPage.openPage(PAGE_NAME);
 
         DotEditPage.goToMode({ type: 'Edit' });
         DotEditPage.openAddToContainerDialog({ type: 'Content' });

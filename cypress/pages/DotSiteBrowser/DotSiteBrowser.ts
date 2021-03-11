@@ -8,13 +8,13 @@ const IFRAME = 'iframe#detailFrame';
 
 class DotSiteBrowser {
     static openPage() {
+        cy.intercept('POST', 'BrowserAjax.openFolderContent.dwr').as('getLoggedinUser');
         Navigation.visit(URL);
         Navigation.assertPageUrlIs(URL);
+        cy.wait('@getLoggedinUser');
     }
 
     static checkSiteBrowserPageLoaded() {
-        cy.intercept('GET', 'user/getloggedinuser').as('getLoggedinUser');
-        cy.wait('@getLoggedinUser');
         Page.assertElementContains('.p-breadcrumb > ul > :nth-child(3)', `Browser`); // Header
         cy.get(IFRAME).iframe(() => {
             Page.assertElementSize(cy.get('#borderContainer'), 1); // File tree container

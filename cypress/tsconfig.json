@@ -2,11 +2,7 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "baseUrl": "../node_modules",
-        "types": ["node", "cypress", "../node_modules/cypress"],
-        "paths": {
-            "@pages/*": ["pages/*"],
-            "@commands/*": ["support/*"]
-        }
+        "types": ["node", "cypress", "../node_modules/cypress"]
     },
     "files": ["./index.d.ts"],
     "include": ["**/*.*"],
