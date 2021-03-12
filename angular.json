@@ -48,7 +48,12 @@
                         "polyfills": "apps/dotcms-ui/src/polyfills.ts",
                         "tsConfig": "apps/dotcms-ui/tsconfig.app.json",
                         "aot": true,
-                        "allowedCommonJsDependencies": ["lodash", "dragula", "md5", "dom-autoscroller"],
+                        "allowedCommonJsDependencies": [
+                            "lodash",
+                            "dragula",
+                            "md5",
+                            "dom-autoscroller"
+                        ],
                         "assets": [
                             "apps/dotcms-ui/src/favicon.ico",
                             "apps/dotcms-ui/src/assets",
@@ -367,6 +372,79 @@
                         "main": "libs/dotcms/src/test.ts",
                         "karmaConfig": "libs/dotcms/karma.conf.js",
                         "tsConfig": "libs/dotcms/tsconfig.spec.json"
+                    }
+                }
+            }
+        },
+        "dotcms-webcomponents": {
+            "projectType": "library",
+            "schematics": {
+                "@nxext/stencil:component": {
+                    "style": "scss",
+                    "storybook": true
+                }
+            },
+            "root": "libs/dotcms-webcomponents",
+            "sourceRoot": "libs/dotcms-webcomponents/src",
+            "architect": {
+                "test": {
+                    "builder": "@nxext/stencil:test",
+                    "options": {
+                        "projectType": "library",
+                        "configPath": "libs/dotcms-webcomponents/stencil.config.ts"
+                    }
+                },
+                "e2e": {
+                    "builder": "@nxext/stencil:e2e",
+                    "options": {
+                        "projectType": "library",
+                        "configPath": "libs/dotcms-webcomponents/stencil.config.ts"
+                    }
+                },
+                "build": {
+                    "builder": "@nxext/stencil:build",
+                    "options": {
+                        "projectType": "library",
+                        "configPath": "libs/dotcms-webcomponents/stencil.config.ts"
+                    }
+                },
+                "serve": {
+                    "builder": "@nxext/stencil:build",
+                    "options": {
+                        "projectType": "library",
+                        "configPath": "libs/dotcms-webcomponents/stencil.config.ts",
+                        "serve": true,
+                        "watch": true
+                    }
+                },
+                "storybook": {
+                    "builder": "@nrwl/storybook:storybook",
+                    "options": {
+                        "uiFramework": "@storybook/html",
+                        "port": 4400,
+                        "config": {
+                            "configFolder": "libs/dotcms-webcomponents/.storybook"
+                        }
+                    },
+                    "configurations": {
+                        "ci": {
+                            "quiet": true
+                        }
+                    }
+                },
+                "build-storybook": {
+                    "builder": "@nrwl/storybook:build",
+                    "options": {
+                        "uiFramework": "@storybook/html",
+                        "outputPath": "dist/storybook/dotcms-webcomponents",
+                        "config": {
+                            "configFolder": "libs/dotcms-webcomponents/.storybook"
+                        }
+                    },
+                    "configurations": {
+                        "ci": {
+                            "quiet": true
+                        }
                     }
                 }
             }
