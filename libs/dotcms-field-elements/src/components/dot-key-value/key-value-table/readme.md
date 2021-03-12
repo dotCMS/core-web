@@ -17,6 +17,20 @@
 | -------- | ------------------------------------------------ | --------------------- |
 | `delete` | Emit the index of the item deleted from the list | `CustomEvent<number>` |
 
+## Dependencies
+
+### Used by
+
+-   [dot-key-value](..)
+
+### Graph
+
+```mermaid
+graph TD;
+  dot-key-value --> key-value-table
+  style key-value-table fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ---
 
 _Built with [StencilJS](https://stenciljs.com/)_

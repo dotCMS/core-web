@@ -11,14 +11,14 @@ export class DotFormColumnComponent {
     @Prop() column: DotCMSContentTypeLayoutColumn;
 
     /** (optional) List of fields (variableName) separated by comma, to be shown */
-    @Prop({ reflectToAttr: true }) fieldsToShow: string;
+    @Prop({ reflect: true }) fieldsToShow: string;
 
     render() {
         return this.column.fields.map((field: DotCMSContentTypeField) => this.getField(field));
     }
 
     private getField(field: DotCMSContentTypeField): JSX.Element {
-        return shouldShowField(field, this.fieldsToShow) ? this.getFieldTag(field) : '';
+        return shouldShowField(field, this.fieldsToShow) ? this.getFieldTag(field) : null;
     }
 
     private getFieldTag(field: DotCMSContentTypeField): JSX.Element {

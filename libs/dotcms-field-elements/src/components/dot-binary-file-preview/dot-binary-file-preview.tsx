@@ -1,5 +1,4 @@
-import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import { Component, Element, Event, EventEmitter, Prop, Host, h } from '@stencil/core';
 
 /**
  * Represent a dotcms text field for the binary file preview.
@@ -15,15 +14,15 @@ export class DotBinaryFilePreviewComponent {
     @Element() el: HTMLElement;
 
     /** file name to be displayed */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     fileName = '';
 
     /** (optional) file URL to be displayed */
-    @Prop({ reflectToAttr: true, mutable: true })
+    @Prop({ reflect: true, mutable: true })
     previewUrl = '';
 
     /** (optional) Delete button's label */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     deleteLabel = 'Delete';
 
     /** Emit when the file is deleted */
@@ -31,7 +30,7 @@ export class DotBinaryFilePreviewComponent {
 
     render() {
         return this.fileName ? (
-            <Fragment>
+            <Host>
                 {this.getPreviewElement()}
                 <div class="dot-file-preview__info">
                     <span class="dot-file-preview__name">{this.fileName}</span>
@@ -39,7 +38,7 @@ export class DotBinaryFilePreviewComponent {
                         {this.deleteLabel}
                     </button>
                 </div>
-            </Fragment>
+            </Host>
         ) : null;
     }
 

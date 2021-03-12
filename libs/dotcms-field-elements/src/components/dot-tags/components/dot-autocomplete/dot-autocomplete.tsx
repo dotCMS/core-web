@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element, Watch } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Watch, h } from '@stencil/core';
 import autoComplete from '@tarekraafat/autocomplete.js/dist/js/autoComplete';
 
 interface SelectionItem {
@@ -23,19 +23,19 @@ export class DotAutocompleteComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true }) disabled = false;
+    @Prop({ reflect: true }) disabled = false;
 
     /** (optional) text to show when no value is set */
-    @Prop({ reflectToAttr: true }) placeholder = '';
+    @Prop({ reflect: true }) placeholder = '';
 
     /** (optional)  Min characters to start search in the autocomplete input */
-    @Prop({ reflectToAttr: true }) threshold = 0;
+    @Prop({ reflect: true }) threshold = 0;
 
     /** (optional)  Max results to show after a autocomplete search */
-    @Prop({ reflectToAttr: true }) maxResults = 0;
+    @Prop({ reflect: true }) maxResults = 0;
 
     /** (optional) Duraction in ms to start search into the autocomplete */
-    @Prop({ reflectToAttr: true }) debounce = 300;
+    @Prop({ reflect: true }) debounce = 300;
 
     /** Function or array of string to get the data to use for the autocomplete search */
     @Prop() data: () => Promise<string[]> | string[] = null;

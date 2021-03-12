@@ -7,9 +7,10 @@ import {
     EventEmitter,
     Method,
     Listen,
-    Watch
+    Watch,
+    Host,
+    h
 } from '@stencil/core';
-import Fragment from 'stencil-fragment';
 import {
     DotFieldStatus,
     DotFieldValueEvent,
@@ -45,78 +46,78 @@ export class DotKeyValueComponent {
 
     /** (optional) Placeholder for the key input text in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formKeyPlaceholder: string;
 
     /** (optional) Placeholder for the value input text in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formValuePlaceholder: string;
 
     /** (optional) The string to use in the key label in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formKeyLabel: string;
 
     /** (optional) The string to use in the value label in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formValueLabel: string;
 
     /** (optional) Label for the add button in the <key-value-form> */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     formAddButtonLabel: string;
 
     /** (optional) The string to use in the delete button of a key/value item */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     listDeleteLabel: string;
 
     /** (optional) Disables field's interaction */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     disabled = false;
 
     /** (optional) Hint text that suggest a clue of the field */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     hint = '';
 
     /** (optional) Text to be rendered next to input field */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     label = '';
 
     /** Name that will be used as ID */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     name = '';
 
     /** (optional) Determine if it is mandatory */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     requiredMessage = 'This field is required';
 
     /** Value of the field */
-    @Prop({ reflectToAttr: true, mutable: true }) value = '';
+    @Prop({ reflect: true, mutable: true }) value = '';
 
     @State() status: DotFieldStatus;
     @State() items: DotKeyValueField[] = [];
@@ -173,7 +174,7 @@ export class DotKeyValueComponent {
 
     render() {
         return (
-            <Fragment>
+            <Host>
                 <dot-label
                     aria-describedby={getHintId(this.hint)}
                     tabIndex={this.hint ? 0 : null}
@@ -201,7 +202,7 @@ export class DotKeyValueComponent {
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
-            </Fragment>
+            </Host>
         );
     }
 

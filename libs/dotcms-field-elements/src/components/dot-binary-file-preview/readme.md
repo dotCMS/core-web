@@ -12,9 +12,23 @@
 
 ## Events
 
-| Event    | Description                   | Type                |
-| -------- | ----------------------------- | ------------------- |
-| `delete` | Emit when the file is deleted | `CustomEvent<void>` |
+| Event    | Description                   | Type               |
+| -------- | ----------------------------- | ------------------ |
+| `delete` | Emit when the file is deleted | `CustomEvent<any>` |
+
+## Dependencies
+
+### Used by
+
+-   [dot-binary-file](../dot-binary-file)
+
+### Graph
+
+```mermaid
+graph TD;
+  dot-binary-file --> dot-binary-file-preview
+  style dot-binary-file-preview fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 

@@ -1,5 +1,15 @@
-import { Component, Prop, State, Element, Event, EventEmitter, Method, Watch } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import {
+    Component,
+    Prop,
+    State,
+    Element,
+    Event,
+    EventEmitter,
+    Method,
+    Watch,
+    Host,
+    h
+} from '@stencil/core';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent } from '../../models';
 import {
     checkProp,
@@ -22,37 +32,37 @@ export class DotDateRangeComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Value formatted with start and end date splitted with a comma */
-    @Prop({ mutable: true, reflectToAttr: true }) value = '';
+    @Prop({ mutable: true, reflect: true }) value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true }) name = 'daterange';
+    @Prop({ reflect: true }) name = 'daterange';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true }) label = '';
+    @Prop({ reflect: true }) label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true }) hint = '';
+    @Prop({ reflect: true }) hint = '';
 
     /** (optional) Max value that the field will allow to set */
-    @Prop({ reflectToAttr: true }) max = '';
+    @Prop({ reflect: true }) max = '';
 
     /** (optional) Min value that the field will allow to set */
-    @Prop({ reflectToAttr: true }) min = '';
+    @Prop({ reflect: true }) min = '';
 
     /** (optional) Determine if it is needed */
-    @Prop({ reflectToAttr: true }) required = false;
+    @Prop({ reflect: true }) required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop({ reflectToAttr: true }) requiredMessage = 'This field is required';
+    @Prop({ reflect: true }) requiredMessage = 'This field is required';
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true }) disabled = false;
+    @Prop({ reflect: true }) disabled = false;
 
     /** (optional) Date format used by the field when displayed */
-    @Prop({ reflectToAttr: true }) displayFormat = 'Y-m-d';
+    @Prop({ reflect: true }) displayFormat = 'Y-m-d';
 
     /** (optional) Array of date presets formatted as [{ label: 'PRESET_LABEL', days: NUMBER }] */
-    @Prop({ mutable: true, reflectToAttr: true }) presets = [
+    @Prop({ mutable: true, reflect: true }) presets = [
         {
             label: 'Date Presets',
             days: 0
@@ -76,7 +86,7 @@ export class DotDateRangeComponent {
     ];
 
     /** (optional) Text to be rendered next to presets field */
-    @Prop({ reflectToAttr: true }) presetLabel = 'Presets';
+    @Prop({ reflect: true }) presetLabel = 'Presets';
 
     @State() status: DotFieldStatus;
 
@@ -158,7 +168,7 @@ export class DotDateRangeComponent {
 
     render() {
         return (
-            <Fragment>
+            <Host>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <div
                         aria-describedby={getHintId(this.hint)}
@@ -188,7 +198,7 @@ export class DotDateRangeComponent {
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
-            </Fragment>
+            </Host>
         );
     }
 

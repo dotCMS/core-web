@@ -1,4 +1,4 @@
-import { Component, Prop, State, Element, Event, EventEmitter } from '@stencil/core';
+import { Component, Prop, State, Element, Event, EventEmitter, h } from '@stencil/core';
 import { DotKeyValueField } from '../../../models';
 
 const DEFAULT_VALUE = { key: '', value: '' };
@@ -11,35 +11,35 @@ export class DotKeyValueComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Disables all form interaction */
-    @Prop({ reflectToAttr: true }) disabled = false;
+    @Prop({ reflect: true }) disabled = false;
 
     /** (optional) Label for the add item button */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     addButtonLabel = 'Add';
 
     /** (optional) Placeholder for the key input text */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     keyPlaceholder = '';
 
     /** (optional) Placeholder for the value input text */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     valuePlaceholder = '';
 
     /** (optional) The string to use in the key input label */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     keyLabel = 'Key';
 
     /** (optional) The string to use in the value input label */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     valueLabel = 'Value';
 

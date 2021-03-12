@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, h } from '@stencil/core';
 import { DotKeyValueField } from '../../../models';
 
 @Component({
@@ -9,17 +9,17 @@ export class KeyValueTableComponent {
     @Prop() items: DotKeyValueField[] = [];
 
     /** (optional) Disables all form interaction */
-    @Prop({ reflectToAttr: true }) disabled = false;
+    @Prop({ reflect: true }) disabled = false;
 
     /** (optional) Label for the delete button in each item list */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     buttonLabel = 'Delete';
 
     /** (optional) Message to show when the list of items is empty */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     emptyMessage = 'No values';
 
@@ -59,7 +59,9 @@ export class KeyValueTableComponent {
     }
 
     private renderRows(items: DotKeyValueField[]): JSX.Element {
-        return this.isValidItems(items) ? items.map(this.getRow.bind(this)) : this.getEmptyRow();
+        return this.isValidItems(items)
+            ? ((items.map(this.getRow.bind(this)) as unknown) as JSX.Element)
+            : this.getEmptyRow();
     }
 
     private getEmptyRow(): JSX.Element {

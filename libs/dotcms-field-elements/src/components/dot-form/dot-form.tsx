@@ -1,5 +1,4 @@
-import { Component, Element, Listen, Prop, State, Watch } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import { Component, Element, Listen, Prop, State, Watch, h, Host } from '@stencil/core';
 
 import { DotFieldStatus } from '../../models';
 import { fieldCustomProcess, getFieldsFromLayout, getErrorMessage } from './utils';
@@ -32,19 +31,19 @@ export class DotFormComponent {
     @Prop() fieldsToShow: string;
 
     /** (optional) Text to be rendered on Reset button */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     resetLabel = 'Reset';
 
     /** (optional) Text to be rendered on Submit button */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     submitLabel = 'Submit';
 
     /** Layout metada to be rendered */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     layout: DotCMSContentTypeLayoutRow[] = [];
 
     /** Content type variable name */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     variable = '';
 
     @State() status: DotFieldStatus = getOriginalStatus();
@@ -113,7 +112,7 @@ export class DotFormComponent {
 
     render() {
         return (
-            <Fragment>
+            <Host>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     {this.layout.map((row: DotCMSContentTypeLayoutRow) => (
                         <dot-form-row row={row} fields-to-show={this.fieldsToShow} />
@@ -131,7 +130,7 @@ export class DotFormComponent {
                     </div>
                 </form>
                 <dot-error-message>{this.errorMessage}</dot-error-message>
-            </Fragment>
+            </Host>
         );
     }
 

@@ -1,4 +1,5 @@
 import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotKeyValueField } from '../models';
+import { h } from '@stencil/core';
 
 /**
  * Returns CSS classes object based on field Status values

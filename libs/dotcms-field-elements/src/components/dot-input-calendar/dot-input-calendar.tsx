@@ -1,5 +1,14 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, State } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import {
+    Component,
+    Element,
+    Event,
+    EventEmitter,
+    Method,
+    Prop,
+    State,
+    Host,
+    h
+} from '@stencil/core';
 import { DotFieldStatus, DotFieldValueEvent, DotInputCalendarStatusEvent } from '../../models';
 import { getErrorClass, getId, getOriginalStatus, updateStatus } from '../../utils';
 
@@ -11,35 +20,35 @@ export class DotInputCalendarComponent {
     @Element() el: HTMLElement;
 
     /** Value specifies the value of the <input> element */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     required = false;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     /** (optional) Min, minimum value that the field will allow to set, expect a Date Format. */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     min = '';
 
     /** (optional) Max, maximum value that the field will allow to set, expect a Date Format */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     max = '';
 
     /** (optional) Step specifies the legal number intervals for the input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     step = '1';
 
     /** type specifies the type of <input> element to display */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     type = '';
 
     @State() status: DotFieldStatus;
@@ -64,7 +73,7 @@ export class DotInputCalendarComponent {
 
     render() {
         return (
-            <Fragment>
+            <Host>
                 <input
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.disabled || null}
@@ -78,7 +87,7 @@ export class DotInputCalendarComponent {
                     max={this.max}
                     step={this.step}
                 />
-            </Fragment>
+            </Host>
         );
     }
 

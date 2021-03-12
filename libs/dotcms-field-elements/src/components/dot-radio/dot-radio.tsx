@@ -1,5 +1,15 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import {
+    Component,
+    Element,
+    Event,
+    EventEmitter,
+    Method,
+    Prop,
+    State,
+    Watch,
+    Host,
+    h
+} from '@stencil/core';
 import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent, DotOption } from '../../models';
 import {
     getClassNames,
@@ -29,28 +39,28 @@ export class DotRadioComponent {
     @Element() el: HTMLElement;
 
     /** Value set from the ratio option */
-    @Prop({ mutable: true, reflectToAttr: true }) value = '';
+    @Prop({ mutable: true, reflect: true }) value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true }) name = '';
+    @Prop({ reflect: true }) name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true }) label = '';
+    @Prop({ reflect: true }) label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true }) hint = '';
+    @Prop({ reflect: true }) hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true }) required = false;
+    @Prop({ reflect: true }) required = false;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true, mutable: true }) disabled = false;
+    @Prop({ reflect: true, mutable: true }) disabled = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop({ reflectToAttr: true }) requiredMessage = '';
+    @Prop({ reflect: true }) requiredMessage = '';
 
     /** Value/Label ratio options separated by comma, to be formatted as: Value|Label */
-    @Prop({ reflectToAttr: true }) options = '';
+    @Prop({ reflect: true }) options = '';
 
     @State() _options: DotOption[];
     @State() status: DotFieldStatus;
@@ -109,7 +119,7 @@ export class DotRadioComponent {
 
     render() {
         return (
-            <Fragment>
+            <Host>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <div
                         class="dot-radio__items"
@@ -138,7 +148,7 @@ export class DotRadioComponent {
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
-            </Fragment>
+            </Host>
         );
     }
 

@@ -1,5 +1,15 @@
-import { Component, Prop, State, Method, Element, Event, EventEmitter, Watch } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import {
+    Component,
+    Prop,
+    State,
+    Method,
+    Element,
+    Event,
+    EventEmitter,
+    Watch,
+    Host,
+    h
+} from '@stencil/core';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent } from '../../models';
 import {
     getClassNames,
@@ -28,39 +38,39 @@ export class DotTextareaComponent {
     @Element() el: HTMLElement;
 
     /** Value specifies the value of the <textarea> element */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     name = '';
 
     /** (optional) Text to be rendered next to <textarea> element */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     disabled = false;
 
     /** (optional) Regular expresion that is checked against the value to determine if is valid  */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     regexCheck = '';
 
     @State() status: DotFieldStatus;
@@ -114,7 +124,7 @@ export class DotTextareaComponent {
 
     render() {
         return (
-            <Fragment>
+            <Host>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <textarea
                         aria-describedby={getHintId(this.hint)}
@@ -130,7 +140,7 @@ export class DotTextareaComponent {
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
-            </Fragment>
+            </Host>
         );
     }
 

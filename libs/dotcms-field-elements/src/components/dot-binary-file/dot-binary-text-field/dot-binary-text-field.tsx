@@ -1,5 +1,4 @@
-import { Component, Element, Event, EventEmitter, Prop, State } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import { Component, Element, Event, EventEmitter, Prop, State, Host, h } from '@stencil/core';
 import { DotBinaryFileEvent, DotBinaryMessageError, DotFieldStatus } from '../../../models';
 import { getErrorClass, getHintId, isFileAllowed, isValidURL } from '../../../utils';
 
@@ -17,27 +16,27 @@ export class DotBinaryTextFieldComponent {
     @Element() el: HTMLElement;
 
     /** Value specifies the value of the <input> element */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true, reflect: true })
     value = null;
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     hint = '';
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     placeholder = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     required = false;
 
     /** (optional) Describes a type of file that may be selected by the user, separated by comma  eg: .pdf,.jpg  */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     accept: string;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflect: true })
     disabled = false;
 
     @State() status: DotFieldStatus;
@@ -47,7 +46,7 @@ export class DotBinaryTextFieldComponent {
 
     render() {
         return (
-            <Fragment>
+            <Host>
                 <input
                     type="text"
                     aria-describedby={getHintId(this.hint)}
@@ -59,7 +58,7 @@ export class DotBinaryTextFieldComponent {
                     onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
                     onPaste={(event: ClipboardEvent) => this.pasteHandler(event)}
                 />
-            </Fragment>
+            </Host>
         );
     }
 

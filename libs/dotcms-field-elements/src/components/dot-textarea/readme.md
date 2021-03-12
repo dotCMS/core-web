@@ -25,13 +25,27 @@
 
 ## Methods
 
-### `reset() => void`
+### `reset() => Promise<void>`
 
 Reset properties of the field, clear value and emit events.
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
+
+## Dependencies
+
+### Depends on
+
+-   [dot-label](../dot-label)
+
+### Graph
+
+```mermaid
+graph TD;
+  dot-textarea --> dot-label
+  style dot-textarea fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 

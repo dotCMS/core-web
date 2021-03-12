@@ -1,5 +1,15 @@
-import { Component, Prop, State, Element, Method, Event, EventEmitter, Watch } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import {
+    Component,
+    Prop,
+    State,
+    Element,
+    Method,
+    Event,
+    EventEmitter,
+    Watch,
+    Host,
+    h
+} from '@stencil/core';
 import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent } from '../../models';
 import {
     getClassNames,
@@ -29,31 +39,31 @@ export class DotMultiSelectComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true }) disabled = false;
+    @Prop({ reflect: true }) disabled = false;
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true }) name = '';
+    @Prop({ reflect: true }) name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop({ reflectToAttr: true }) label = '';
+    @Prop({ reflect: true }) label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop({ reflectToAttr: true }) hint = '';
+    @Prop({ reflect: true }) hint = '';
 
     /** Value/Label dropdown options separated by comma, to be formatted as: Value|Label */
-    @Prop({ reflectToAttr: true }) options = '';
+    @Prop({ reflect: true }) options = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true }) required = false;
+    @Prop({ reflect: true }) required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop({ reflectToAttr: true }) requiredMessage = `This field is required`;
+    @Prop({ reflect: true }) requiredMessage = `This field is required`;
 
     /** (optional) Size number of the multi-select dropdown (default=3) */
-    @Prop({ reflectToAttr: true }) size = '3';
+    @Prop({ reflect: true }) size = '3';
 
     /** Value set from the dropdown option */
-    @Prop({ mutable: true, reflectToAttr: true }) value = '';
+    @Prop({ mutable: true, reflect: true }) value = '';
 
     @State() _options: DotOption[];
     @State() status: DotFieldStatus;
@@ -107,7 +117,7 @@ export class DotMultiSelectComponent {
 
     render() {
         return (
-            <Fragment>
+            <Host>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <select
                         multiple
@@ -132,7 +142,7 @@ export class DotMultiSelectComponent {
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(!this.isValid(), this.requiredMessage)}
-            </Fragment>
+            </Host>
         );
     }
 

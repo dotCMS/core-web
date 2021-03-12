@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 import { getLabelId } from '../../utils';
 
 /**
@@ -14,19 +14,19 @@ import { getLabelId } from '../../utils';
 export class DotLabelComponent {
     /** (optional) Field name */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     name = '';
 
     /** (optional) Text to be rendered */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     label = '';
 
     /** (optional) Determine if it is mandatory */
     @Prop({
-        reflectToAttr: true
+        reflect: true
     })
     required = false;
 

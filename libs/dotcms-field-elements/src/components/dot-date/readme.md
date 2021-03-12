@@ -27,13 +27,29 @@
 
 ## Methods
 
-### `reset() => void`
+### `reset() => Promise<void>`
 
 Reset properties of the field, clear value and emit events.
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
+
+## Dependencies
+
+### Depends on
+
+-   [dot-label](../dot-label)
+-   [dot-input-calendar](../dot-input-calendar)
+
+### Graph
+
+```mermaid
+graph TD;
+  dot-date --> dot-label
+  dot-date --> dot-input-calendar
+  style dot-date fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 

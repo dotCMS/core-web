@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 import { DotCMSContentTypeLayoutColumn, DotCMSContentTypeLayoutRow } from 'dotcms-models';
 
 @Component({
@@ -10,7 +10,7 @@ export class DotFormRowComponent {
     @Prop() row: DotCMSContentTypeLayoutRow;
 
     /** (optional) List of fields (variableName) separated by comma, to be shown */
-    @Prop({ reflectToAttr: true }) fieldsToShow: string;
+    @Prop({ reflect: true }) fieldsToShow: string;
 
     render() {
         return this.row.columns.map((fieldColumn: DotCMSContentTypeLayoutColumn) => {

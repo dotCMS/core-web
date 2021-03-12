@@ -18,7 +18,21 @@
 | Event        | Description | Type                              |
 | ------------ | ----------- | --------------------------------- |
 | `fileChange` |             | `CustomEvent<DotBinaryFileEvent>` |
-| `lostFocus`  |             | `CustomEvent<void>`               |
+| `lostFocus`  |             | `CustomEvent<any>`                |
+
+## Dependencies
+
+### Used by
+
+-   [dot-binary-file](..)
+
+### Graph
+
+```mermaid
+graph TD;
+  dot-binary-file --> dot-binary-text-field
+  style dot-binary-text-field fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ---
 

@@ -1,5 +1,4 @@
-import { Component, Prop, Element, Event, EventEmitter } from '@stencil/core';
-import Fragment from 'stencil-fragment';
+import { Component, Prop, Element, Event, EventEmitter, Host, h } from '@stencil/core';
 
 @Component({
     tag: 'dot-chip',
@@ -9,20 +8,20 @@ export class DotChipComponent {
     @Element() el: HTMLElement;
 
     /** Chip's label */
-    @Prop({ reflectToAttr: true }) label = '';
+    @Prop({ reflect: true }) label = '';
 
     /** (optional) Delete button's label */
-    @Prop({ reflectToAttr: true }) deleteLabel = 'Delete';
+    @Prop({ reflect: true }) deleteLabel = 'Delete';
 
     /** (optional) If is true disabled the delete button */
-    @Prop({ reflectToAttr: true }) disabled = false;
+    @Prop({ reflect: true }) disabled = false;
 
     @Event() remove: EventEmitter<String>;
 
     render() {
         const label = this.label ? `${this.deleteLabel} ${this.label}` : null;
         return (
-            <Fragment>
+            <Host>
                 <span>{this.label}</span>
                 <button
                     type="button"
@@ -32,7 +31,7 @@ export class DotChipComponent {
                 >
                     {this.deleteLabel}
                 </button>
-            </Fragment>
+            </Host>
         );
     }
 }
