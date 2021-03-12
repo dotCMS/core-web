@@ -1,6 +1,6 @@
-import Form from '../../support/shared/Form';
-import Navigation from '../../support/shared/Navigation';
-import Page from '../../support/shared/Page';
+import Form from '@e2e/shared/Form';
+import Navigation from '@e2e/shared/Navigation';
+import Page from '@e2e/shared/Page';
 
 const URL = '/dotAdmin/#/c/site-browser';
 const CREATE_PAGE_BUTTON = '#addNewDropDownButtonDiv span.dijitButtonNode';

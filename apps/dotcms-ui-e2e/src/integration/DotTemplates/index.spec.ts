@@ -1,7 +1,7 @@
-import DotEditPage from '../../pages/DotSiteBrowser/DotEditPage';
-import DotSiteBrowser from '../../pages/DotSiteBrowser/DotSiteBrowser';
-import Templates from '../../pages/DotTemplates/DotTemplates';
-import Utils from '../../support/shared/Utils';
+import DotEditPage from '@e2e/pages/DotSiteBrowser/DotEditPage';
+import DotSiteBrowser from '@e2e/pages/DotSiteBrowser/DotSiteBrowser';
+import Templates from '@e2e/pages/DotTemplates/DotTemplates';
+import Utils from '@e2e/shared/Utils';
 
 const PAGE_NAME = `Cypress Page ${Date.now()}`;
 

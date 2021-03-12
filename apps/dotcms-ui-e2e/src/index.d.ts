@@ -6,6 +6,7 @@ declare namespace Cypress {
             formData: FormData,
             callback: Function
         ): Chainable<any>;
+
         iframe(callback?: Function): Chainable<any>;
     }
 }

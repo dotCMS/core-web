@@ -1,5 +1,5 @@
-import Navigation from '../../support/shared/Navigation';
-import Page from '../../support/shared/Page';
+import Navigation from '@e2e/shared/Navigation';
+import Page from '@e2e/shared/Page';
 
 const URL = '/dotAdmin/#/edit-page/content';
 const IFRAME = 'iframe.dot-edit__iframe';
