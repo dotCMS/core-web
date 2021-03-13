@@ -45,12 +45,12 @@ declare namespace Cypress {
  *
  * @param $iframe - The iframe element
  */
- const isIframeLoaded = ($iframe) => {
+const isIframeLoaded = ($iframe) => {
     const contentWindow = $iframe.contentWindow;
 
-    const src = $iframe.attributes.src;
-    const href = contentWindow.location.href;
     if (contentWindow.document.readyState === 'complete') {
+        const src = $iframe.attributes.src;
+        const href = contentWindow.location.href;
         return href !== 'about:blank' || src === 'about:blank' || src === '';
     }
 

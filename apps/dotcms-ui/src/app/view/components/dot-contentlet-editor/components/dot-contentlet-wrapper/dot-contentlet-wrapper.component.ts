@@ -43,7 +43,6 @@ export class DotContentletWrapperComponent {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
                 close: ({ detail: { data } }: CustomEvent) => {
-                    debugger
                     this.onClose();
                     if (data?.redirectUrl) {
                         this.dotRouterService.goToEditPage({
