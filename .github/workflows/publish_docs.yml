@@ -19,7 +19,7 @@ jobs:
             - name: Installing dependencies
               run: |
                   npm install
-            - name: Run NX Commands
+            - name: Run NX Commands # The order of these scripts is important!
               run: |
                   npm run nx build dotcms-webcomponents
                   npm run nx run-many -- --target=build-storybook --parallel --projects=dotcms-ui,dotcms-webcomponents
