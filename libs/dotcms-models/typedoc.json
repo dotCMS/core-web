@@ -1,6 +1,6 @@
 {
     "name": "DotCMS Models",
-    "out": "./dist-docs/dotcms-models",
+    "out": "./docs/dotcms-models",
     "readme": "./libs/dotcms-models/README.md",
     "excludePrivate": true,
     "tsconfig": "./libs/dotcms-models/tsconfig.lib.json",
