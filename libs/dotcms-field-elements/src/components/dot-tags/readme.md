@@ -2,6 +2,7 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property          | Attribute          | Description                                                                    | Type                                  | Default                    |
@@ -18,12 +19,14 @@
 | `threshold`       | `threshold`        | Min characters to start search in the autocomplete input                       | `number`                              | `0`                        |
 | `value`           | `value`            | Value formatted splitted with a comma, for example: tag-1,tag-2                | `string`                              | `''`                       |
 
+
 ## Events
 
 | Event          | Description | Type                               |
 | -------------- | ----------- | ---------------------------------- |
 | `statusChange` |             | `CustomEvent<DotFieldStatusEvent>` |
 | `valueChange`  |             | `CustomEvent<DotFieldValueEvent>`  |
+
 
 ## Methods
 
@@ -35,16 +38,18 @@ Reset properties of the filed, clear value and emit events.
 
 Type: `Promise<void>`
 
+
+
+
 ## Dependencies
 
 ### Depends on
 
--   [dot-label](../dot-label)
--   [dot-autocomplete](./components/dot-autocomplete)
--   [dot-chip](./components/dot-chip)
+- [dot-label](../dot-label)
+- [dot-autocomplete](./components/dot-autocomplete)
+- [dot-chip](./components/dot-chip)
 
 ### Graph
-
 ```mermaid
 graph TD;
   dot-tags --> dot-label
@@ -53,6 +58,6 @@ graph TD;
   style dot-tags fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*

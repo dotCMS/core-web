@@ -2,6 +2,7 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property            | Attribute            | Description                                                                                 | Type      | Default                                                |
@@ -16,7 +17,8 @@
 | `requiredMessage`   | `required-message`   | (optional) Text that be shown when required is set and condition not met                    | `string`  | `'This field is required'`                             |
 | `step`              | `step`               | (optional) Step specifies the legal number intervals for the input field                    | `string`  | `'1'`                                                  |
 | `validationMessage` | `validation-message` | (optional) Text that be shown when min or max are set and condition not met                 | `string`  | `"The field doesn't comply with the specified format"` |
-| `value`             | `value`              | Value format yyyy-mm-dd e.g., 2005-12-01                                                    | `string`  | `''`                                                   |
+| `value`             | `value`              | Value format yyyy-mm-dd  e.g., 2005-12-01                                                   | `string`  | `''`                                                   |
+
 
 ## Events
 
@@ -24,6 +26,7 @@
 | -------------- | ----------- | ---------------------------------- |
 | `statusChange` |             | `CustomEvent<DotFieldStatusEvent>` |
 | `valueChange`  |             | `CustomEvent<DotFieldValueEvent>`  |
+
 
 ## Methods
 
@@ -35,15 +38,17 @@ Reset properties of the field, clear value and emit events.
 
 Type: `Promise<void>`
 
+
+
+
 ## Dependencies
 
 ### Depends on
 
--   [dot-label](../dot-label)
--   [dot-input-calendar](../dot-input-calendar)
+- [dot-label](../dot-label)
+- [dot-input-calendar](../dot-input-calendar)
 
 ### Graph
-
 ```mermaid
 graph TD;
   dot-date --> dot-label
@@ -51,6 +56,6 @@ graph TD;
   style dot-date fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*

@@ -2,6 +2,7 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property   | Attribute  | Description                                                                           | Type      | Default |
@@ -15,12 +16,14 @@
 | `type`     | `type`     | type specifies the type of <input> element to display                                 | `string`  | `''`    |
 | `value`    | `value`    | Value specifies the value of the <input> element                                      | `string`  | `''`    |
 
+
 ## Events
 
 | Event           | Description | Type                                       |
 | --------------- | ----------- | ------------------------------------------ |
 | `_statusChange` |             | `CustomEvent<DotInputCalendarStatusEvent>` |
 | `_valueChange`  |             | `CustomEvent<DotFieldValueEvent>`          |
+
 
 ## Methods
 
@@ -32,16 +35,18 @@ Reset properties of the field, clear value and emit events.
 
 Type: `Promise<void>`
 
+
+
+
 ## Dependencies
 
 ### Used by
 
--   [dot-date](../dot-date)
--   [dot-date-time](../dot-date-time)
--   [dot-time](../dot-time)
+ - [dot-date](../dot-date)
+ - [dot-date-time](../dot-date-time)
+ - [dot-time](../dot-time)
 
 ### Graph
-
 ```mermaid
 graph TD;
   dot-date --> dot-input-calendar
@@ -50,6 +55,6 @@ graph TD;
   style dot-input-calendar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*
