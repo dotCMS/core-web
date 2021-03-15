@@ -1,9 +1,9 @@
-name: Docs and Storybook
+name: Publish Docs & Storybook
 on:
+    workflow_dispatch:
     push:
         branches:
             - master
-            - issue-*
 jobs:
     publish:
         runs-on: ubuntu-latest
