@@ -175,21 +175,6 @@
                             "quiet": true
                         }
                     }
-                },
-                "publish-storybook": {
-                    "builder": "@nrwl/workspace:run-commands",
-                    "options": {
-                        "outputPath": "storybook/dotcms-ui",
-                        "commands": [
-                            {
-                                "command": "nx run dotcms-ui:build-storybook"
-                            },
-                            {
-                                "command": "npm run publish-storybook-to-ghpages -- --existing-output-dir=storybook/dotcms-ui"
-                            }
-                        ],
-                        "parallel": false
-                    }
                 }
             }
         },
