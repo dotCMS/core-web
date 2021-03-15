@@ -2,7 +2,7 @@ name: Docs and Storybook
 on:
     push:
         branches:
-            - issue-*
+            - issue-20056-publish-docs
 jobs:
     publish:
         runs-on: ubuntu-latest
