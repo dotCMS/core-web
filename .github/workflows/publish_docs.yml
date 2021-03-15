@@ -1,0 +1,24 @@
+name: Docs and Storybook
+on:
+    pull_request:
+        types: [synchronize, opened, reopened, ready_for_review]
+        branches:
+            - issue-*
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 1
+            - name: Configuring Node.js
+              uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '10.15.3'
+            - name: Installing dependencies
+              run: npm install
+            - name: Run NX Commands
+              run: |
+                  npm install -g nx
+                  nx format:check
