@@ -150,9 +150,9 @@ describe('getStringFromDotKeyArray', () => {
 describe('getTagError', () => {
     it('should return error tag', () => {
         const message = 'Error Msg';
-        const jsxTag: any = getTagError(true, message);
-        expect(jsxTag.vattrs).toEqual({ class: 'dot-field__error-message' });
-        expect(jsxTag.vchildren).toEqual([{ vtext: message }]);
+        const jsxTag: JSX.Element = getTagError(true, message);
+        expect(jsxTag['$attrs$']).toEqual({ class: 'dot-field__error-message' });
+        expect(jsxTag['$children$'][0]['$text$']).toEqual(message);
     });
     it('should not return Error tag', () => {
         expect(getTagError(false, 'Error Msg')).toEqual(null);
@@ -161,9 +161,11 @@ describe('getTagError', () => {
 
 describe('getTagHint', () => {
     it('should return Hint tag', () => {
-        const jsxTag: any = getTagHint('this is a hint');
-        expect(jsxTag.vattrs).toEqual({ class: 'dot-field__hint', id: 'hint-this-is-a-hint' });
-        expect(jsxTag.vchildren).toEqual([{ vtext: 'this is a hint' }]);
+        const meessage = 'this is a hint';
+        const jsxTag: any = getTagHint(meessage);
+        console.log(jsxTag);
+        expect(jsxTag['$attrs$']).toEqual({ class: 'dot-field__hint', id: 'hint-this-is-a-hint' });
+        expect(jsxTag['$children$'][0]['$text$']).toEqual(meessage);
     });
     it('should not return Hint tag', () => {
         expect(getTagHint('')).toBeNull();
