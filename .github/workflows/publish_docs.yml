@@ -2,7 +2,6 @@ name: Docs and Storybook
 on:
     push:
         branches:
-            - master
             - issue-*
 jobs:
     publish:
@@ -19,7 +18,7 @@ jobs:
             - name: Installing dependencies
               run: |
                   npm install
-            - name: Run NX Commands # The order of these scripts is important!
+            - name: Run NX Commands
               run: |
                   npm run nx build dotcms-webcomponents
                   npm run nx run-many -- --target=build-storybook --parallel --projects=dotcms-ui,dotcms-webcomponents
