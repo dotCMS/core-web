@@ -67,6 +67,5 @@ jobs:
                   SLACK_FOOTER: ${{ env.PULL_REQUEST_URL }}
             - name: Publish Typedoc Docs
               if: success() || failure()
-              run:
-                  npm run build:doc:docms;
+              run: npm run build:doc:docms;
                   npm run build:doc:docms-models;
