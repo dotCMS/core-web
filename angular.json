@@ -48,6 +48,12 @@
                         "polyfills": "apps/dotcms-ui/src/polyfills.ts",
                         "tsConfig": "apps/dotcms-ui/tsconfig.app.json",
                         "aot": true,
+                        "allowedCommonJsDependencies": [
+                            "lodash",
+                            "dragula",
+                            "md5",
+                            "dom-autoscroller"
+                        ],
                         "assets": [
                             "apps/dotcms-ui/src/favicon.ico",
                             "apps/dotcms-ui/src/assets",
