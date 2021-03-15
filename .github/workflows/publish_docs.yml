@@ -16,8 +16,15 @@ jobs:
               with:
                   node-version: '10.15.3'
             - name: Installing dependencies
-              run: npm install
+              run: |
+                  npm install
+                  npm install -g nx
             - name: Run NX Commands
               run: |
-                  npm install -g nx
-                  nx format:check
+                  nx run dotcms-webcomponents:build
+                  nx run-many --target=build-docs --parallel --projects=dotcms,dotcms-models
+                  nx run-many --target=build-storybook --parallel --projects=dotcms-ui,dotcms-webcomponents
+            - name: Publish All
+              run: npm run publish:docs
+
+

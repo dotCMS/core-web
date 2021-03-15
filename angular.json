@@ -175,7 +175,7 @@
           ],
           "options": {
             "uiFramework": "@storybook/angular",
-            "outputPath": "storybook/dotcms-ui",
+            "outputPath": "dist-docs/storybook/dotcms-ui",
             "config": {
               "configFolder": "apps/dotcms-ui/.storybook"
             }
@@ -192,7 +192,7 @@
             "outputPath": "storybook/dotcms-ui",
             "commands": [
               {
-                "command": "nx build-storybook"
+                "command": "nx run dotcms-ui:build-storybook"
               },
               {
                 "command": "npm run publish-storybook-to-ghpages -- --existing-output-dir=storybook/dotcms-ui"
@@ -352,6 +352,16 @@
             "karmaConfig": "libs/dotcms-models/karma.conf.js",
             "tsConfig": "libs/dotcms-models/tsconfig.spec.json"
           }
+        },
+        "build-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "npm run build:docs:dotcms-models"
+              }
+            ]
+          }
         }
       }
     },
@@ -391,6 +401,16 @@
             "main": "libs/dotcms/src/test.ts",
             "karmaConfig": "libs/dotcms/karma.conf.js",
             "tsConfig": "libs/dotcms/tsconfig.spec.json"
+          }
+        },
+        "build-docs": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "npm run build:docs:dotcms"
+              }
+            ]
           }
         }
       }
@@ -455,7 +475,7 @@
           "builder": "@nrwl/storybook:build",
           "options": {
             "uiFramework": "@storybook/html",
-            "outputPath": "dist/storybook/dotcms-webcomponents",
+            "outputPath": "dist-docs/storybook/dotcms-webcomponents",
             "config": {
               "configFolder": "libs/dotcms-webcomponents/.storybook"
             }
