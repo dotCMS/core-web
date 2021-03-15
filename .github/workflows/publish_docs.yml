@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - master
+            - issue-*
 jobs:
     publish:
         runs-on: ubuntu-latest
@@ -18,12 +19,11 @@ jobs:
             - name: Installing dependencies
               run: |
                   npm install
-                  npm install -g nx
             - name: Run NX Commands
               run: |
-                  nx run dotcms-webcomponents:build
-                  nx run-many --target=build-docs --parallel --projects=dotcms,dotcms-models
-                  nx run-many --target=build-storybook --parallel --projects=dotcms-ui,dotcms-webcomponents
+                  npm run nx build dotcms-webcomponents
+                  npm run nx run-many --target=build-docs --parallel --projects=dotcms,dotcms-models
+                  npm run nx run-many --target=build-storybook --parallel --projects=dotcms-ui,dotcms-webcomponents
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@4.1.0
               with:

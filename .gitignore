@@ -2,7 +2,6 @@
 
 # compiled output
 /dist
-/dist-docs
 /dist-lib
 /docs
 /tmp
