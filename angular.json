@@ -437,7 +437,7 @@
                         }
                     }
                 },
-                
+
                 "build-storybook": {
                     "builder": "@nrwl/storybook:build",
                     "options": {
