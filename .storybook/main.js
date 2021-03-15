@@ -4,7 +4,7 @@ module.exports = {
     refs: {
         dotcmsWebComponents: {
             title: 'DotCMS Web Components',
-            url: 'https://dotcms.github.io/core-web/storybook/dotcms-webcomponents'
+            url: 'https://dotcms.github.io/core-web/dotcms-webcomponents'
         }
     }
 };

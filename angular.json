@@ -441,7 +441,7 @@
                     "builder": "@nrwl/storybook:build",
                     "options": {
                         "uiFramework": "@storybook/html",
-                        "outputPath": "docs/storybook/dotcms-webcomponents",
+                        "outputPath": "docs/dotcms-webcomponents",
                         "config": {
                             "configFolder": "libs/dotcms-webcomponents/.storybook"
                         }
