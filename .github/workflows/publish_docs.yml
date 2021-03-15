@@ -26,5 +26,3 @@ jobs:
                   nx run-many --target=build-storybook --parallel --projects=dotcms-ui,dotcms-webcomponents
             - name: Publish All
               run: npm run publish:docs
-
-
