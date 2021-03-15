@@ -2,7 +2,6 @@
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
 | Property            | Attribute            | Description                                                                             | Type      | Default                                                |
@@ -17,14 +16,12 @@
 | `validationMessage` | `validation-message` | (optional) Text that be shown when the Regular Expression condition not met             | `string`  | `"The field doesn't comply with the specified format"` |
 | `value`             | `value`              | Value specifies the value of the <textarea> element                                     | `string`  | `''`                                                   |
 
-
 ## Events
 
 | Event          | Description | Type                               |
 | -------------- | ----------- | ---------------------------------- |
 | `statusChange` |             | `CustomEvent<DotFieldStatusEvent>` |
 | `valueChange`  |             | `CustomEvent<DotFieldValueEvent>`  |
-
 
 ## Methods
 
@@ -36,22 +33,20 @@ Reset properties of the field, clear value and emit events.
 
 Type: `Promise<void>`
 
-
-
-
 ## Dependencies
 
 ### Depends on
 
-- [dot-label](../dot-label)
+-   [dot-label](../dot-label)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dot-textarea --> dot-label
   style dot-textarea fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

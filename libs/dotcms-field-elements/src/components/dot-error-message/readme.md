@@ -2,15 +2,15 @@
 
 <!-- Auto Generated Below -->
 
-
 ## Dependencies
 
 ### Used by
 
- - [dot-binary-file](../dot-binary-file)
- - [dot-form](../dot-form)
+-   [dot-binary-file](../dot-binary-file)
+-   [dot-form](../dot-form)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dot-binary-file --> dot-error-message
@@ -18,6 +18,6 @@ graph TD;
   style dot-error-message fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

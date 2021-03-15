@@ -2,7 +2,6 @@
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
 | Property               | Attribute                | Description                                                                      | Type      | Default                    |
@@ -21,14 +20,12 @@
 | `requiredMessage`      | `required-message`       | (optional) Text that will be shown when required is set and condition is not met | `string`  | `'This field is required'` |
 | `value`                | `value`                  | Value of the field                                                               | `string`  | `''`                       |
 
-
 ## Events
 
 | Event          | Description | Type                               |
 | -------------- | ----------- | ---------------------------------- |
 | `statusChange` |             | `CustomEvent<DotFieldStatusEvent>` |
 | `valueChange`  |             | `CustomEvent<DotFieldValueEvent>`  |
-
 
 ## Methods
 
@@ -40,18 +37,16 @@ Reset properties of the field, clear value and emit events.
 
 Type: `Promise<void>`
 
-
-
-
 ## Dependencies
 
 ### Depends on
 
-- [dot-label](../dot-label)
-- [key-value-form](key-value-form)
-- [key-value-table](key-value-table)
+-   [dot-label](../dot-label)
+-   [key-value-form](key-value-form)
+-   [key-value-table](key-value-table)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dot-key-value --> dot-label
@@ -60,6 +55,6 @@ graph TD;
   style dot-key-value fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
