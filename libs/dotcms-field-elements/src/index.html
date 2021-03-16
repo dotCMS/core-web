@@ -191,7 +191,8 @@
                 <dot-binary-file-preview></dot-binary-file-preview>
             </div>
         </div>
-        <script src="/build/dotcmsfields.js"></script>
+        <script type="module" src="/build/dotcms-field-elements.esm.js"></script>
+        <script nomodule src="/build/dotcms-field-elements.js"></script>
         <script>
             const tags = document.querySelector('dot-tags');
             const binaryPreview = document.querySelector('dot-binary-file-preview');

@@ -25,7 +25,8 @@
     </head>
     <body>
         <dot-form></dot-form>
-        <script src="/build/dotcmsfields.js"></script>
+        <script type="module" src="/build/dotcms-field-elements.esm.js"></script>
+        <script nomodule src="/build/dotcms-field-elements.js"></script>
         <script>
             const dotFormEl = document.querySelector('dot-form');
             const dataFields = [
