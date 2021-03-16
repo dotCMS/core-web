@@ -100,19 +100,15 @@ export class DotFormComponent {
         this.value = this.getUpdateValue();
     }
 
-    hostData() {
-        return {
-            class: getClassNames(this.status, this.status.dotValid)
-        };
-    }
-
     componentWillLoad() {
         this.value = this.getUpdateValue();
     }
 
     render() {
+        var classes = getClassNames(this.status, this.status.dotValid);
+
         return (
-            <Host>
+            <Host class={{ ...classes }}>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     {this.layout.map((row: DotCMSContentTypeLayoutRow) => (
                         <dot-form-row row={row} fields-to-show={this.fieldsToShow} />

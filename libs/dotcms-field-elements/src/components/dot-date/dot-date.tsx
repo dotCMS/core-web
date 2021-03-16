@@ -136,15 +136,9 @@ export class DotDateComponent {
         });
     }
 
-    hostData() {
-        return {
-            class: this.classNames
-        };
-    }
-
     render() {
         return (
-            <Host>
+            <Host class={{ ...this.classNames }}>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <dot-input-calendar
                         aria-describedby={getHintId(this.hint)}

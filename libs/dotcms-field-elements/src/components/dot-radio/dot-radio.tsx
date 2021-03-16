@@ -111,15 +111,11 @@ export class DotRadioComponent {
         this.value = this.value || '';
     }
 
-    hostData() {
-        return {
-            class: getClassNames(this.status, this.isValid(), this.required)
-        };
-    }
-
     render() {
+        const classes = getClassNames(this.status, this.isValid(), this.required);
+
         return (
-            <Host>
+            <Host class={{ ...classes }}>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <div
                         class="dot-radio__items"

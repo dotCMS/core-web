@@ -95,12 +95,6 @@ export class DotCheckboxComponent {
         this.value = this.value || '';
     }
 
-    hostData() {
-        return {
-            class: getClassNames(this.status, this.isValid(), this.required)
-        };
-    }
-
     /**
      * Reset properties of the field, clear value and emit events.
      *
@@ -115,8 +109,10 @@ export class DotCheckboxComponent {
     }
 
     render() {
+        const classes = getClassNames(this.status, this.isValid(), this.required);
+
         return (
-            <Host>
+            <Host class={{ ...classes }}>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <div
                         aria-describedby={getHintId(this.hint)}

@@ -1,5 +1,4 @@
-import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
-import { EventSpy } from '@stencil/core/dist/declarations';
+import { newE2EPage, E2EElement, E2EPage, EventSpy } from '@stencil/core/testing';
 import { dotTestUtil } from '../../utils';
 
 const getOptions = (page: E2EPage) => page.findAll('input');
@@ -173,7 +172,7 @@ describe('dot-radio', () => {
                 element.setProperty('label', wrongValue);
                 await page.waitForChanges();
                 const labelElement = await dotTestUtil.getDotLabel(page);
-                expect(labelElement.getAttribute('label')).toEqual('1,2,3');
+                expect(labelElement.getAttribute('label')).toEqual('');
             });
         });
 

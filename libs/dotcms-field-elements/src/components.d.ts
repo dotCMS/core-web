@@ -56,7 +56,7 @@ export namespace Components {
         /**
          * Clear value of selected file, when the endpoint fails.
          */
-        clearValue: () => Promise<void>;
+        clearValue: () => void;
         /**
          * (optional) Disables field's interaction
          */
@@ -104,7 +104,7 @@ export namespace Components {
         /**
          * Reset properties of the field, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * (optional) Text that be shown when the Regular Expression condition not met
          */
@@ -205,7 +205,7 @@ export namespace Components {
          * Reset properties of the field, clear value and emit events.
          * @memberof DotSelectComponent
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * Value set from the checkbox option
          */
@@ -261,7 +261,7 @@ export namespace Components {
         /**
          * Reset properties of the field, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * (optional) Step specifies the legal number intervals for the input field
          */
@@ -323,7 +323,7 @@ export namespace Components {
         /**
          * Reset properties of the field, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * (optional) Value formatted with start and end date splitted with a comma
          */
@@ -369,7 +369,7 @@ export namespace Components {
         /**
          * Reset properties of the filed, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * (optional) Step specifies the legal number intervals for the input fields date && time e.g., 2,10
          */
@@ -454,7 +454,7 @@ export namespace Components {
         /**
          * Reset properties of the field, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * (optional) Step specifies the legal number intervals for the input field
          */
@@ -520,7 +520,7 @@ export namespace Components {
         /**
          * Reset properties of the field, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * Value of the field
          */
@@ -573,7 +573,7 @@ export namespace Components {
          * Reset properties of the field, clear value and emit events.
          * @memberof DotSelectComponent
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * (optional) Size number of the multi-select dropdown (default=3)
          */
@@ -615,7 +615,7 @@ export namespace Components {
         /**
          * Reset properties of the field, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * Value set from the ratio option
          */
@@ -654,7 +654,7 @@ export namespace Components {
          * Reset properties of the field, clear value and emit events.
          * @memberof DotSelectComponent
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * Value set from the dropdown option
          */
@@ -700,7 +700,7 @@ export namespace Components {
         /**
          * Reset properties of the filed, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * Min characters to start search in the autocomplete input
          */
@@ -743,7 +743,7 @@ export namespace Components {
          * Reset properties of the field, clear value and emit events.
          * @memberof DotTextareaComponent
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * (optional) Text that be shown when the Regular Expression condition not met
          */
@@ -789,7 +789,7 @@ export namespace Components {
         /**
          * Reset properties of the field, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * type specifies the type of <input> element to display
          */
@@ -839,7 +839,7 @@ export namespace Components {
         /**
          * Reset properties of the field, clear value and emit events.
          */
-        reset: () => Promise<void>;
+        reset: () => void;
         /**
          * (optional) Step specifies the legal number intervals for the input field
          */

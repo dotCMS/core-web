@@ -1,5 +1,4 @@
-import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
-import { EventSpy } from '@stencil/core/dist/declarations';
+import { newE2EPage, E2EPage, E2EElement, EventSpy } from '@stencil/core/testing';
 import { dotTestUtil } from '../../utils';
 import { fieldMockNotRequired, dotFormLayoutMock } from '../../test';
 

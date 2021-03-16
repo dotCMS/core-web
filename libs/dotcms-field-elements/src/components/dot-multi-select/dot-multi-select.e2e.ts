@@ -1,5 +1,4 @@
-import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
-import { EventSpy } from '@stencil/core/dist/declarations';
+import { newE2EPage, E2EElement, E2EPage, EventSpy } from '@stencil/core/testing';
 import { dotTestUtil } from '../../utils';
 
 const getSelect = (page: E2EPage) => page.find('select');

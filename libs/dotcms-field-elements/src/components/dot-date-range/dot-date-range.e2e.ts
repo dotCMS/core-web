@@ -1,5 +1,4 @@
-import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
-import { EventSpy } from '@stencil/core/dist/declarations';
+import { newE2EPage, E2EElement, E2EPage, EventSpy } from '@stencil/core/testing';
 import { dotTestUtil } from '../../utils';
 
 const getDays = (page: E2EPage) => page.findAll('.flatpickr-day');

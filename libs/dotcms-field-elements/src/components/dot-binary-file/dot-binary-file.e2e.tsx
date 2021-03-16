@@ -1,5 +1,4 @@
-import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
-import { EventSpy } from '@stencil/core/dist/declarations';
+import { E2EElement, E2EPage, newE2EPage, EventSpy } from '@stencil/core/testing';
 import { dotTestUtil } from '../../utils';
 import { DotBinaryMessageError } from '../../models';
 
@@ -139,7 +138,7 @@ describe('dot-binary-file', () => {
             it('should not break hint with invalid value', async () => {
                 element.setProperty('hint', { test: 'hint' });
                 await page.waitForChanges();
-                expect((await dotTestUtil.getHint(page)).innerText).toBe('[object Object]');
+                expect(await dotTestUtil.getHint(page)).toBeNull();
             });
         });
 
@@ -147,11 +146,11 @@ describe('dot-binary-file', () => {
             it('should display Error message', async () => {
                 element.setProperty('errorMessage', 'Error');
                 await page.waitForChanges();
-                expect((await page.find('.dot-binary__error-message')).innerText).toBe('Error');
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('Error');
             });
 
             it('should not display Error message', async () => {
-                expect(await page.find('.dot-binary__error-message')).toBeNull();
+                expect(await dotTestUtil.getErrorMessage(page)).toBeNull();
             });
         });
 

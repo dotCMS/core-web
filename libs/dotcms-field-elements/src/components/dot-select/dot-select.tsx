@@ -84,12 +84,6 @@ export class DotSelectComponent {
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
-    hostData() {
-        return {
-            class: getClassNames(this.status, this.isValid(), this.required)
-        };
-    }
-
     /**
      * Reset properties of the field, clear value and emit events.
      *
@@ -113,8 +107,10 @@ export class DotSelectComponent {
     }
 
     render() {
+        const classes = getClassNames(this.status, this.isValid(), this.required);
+
         return (
-            <Host>
+            <Host class={{ ...classes }}>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <select
                         aria-describedby={getHintId(this.hint)}

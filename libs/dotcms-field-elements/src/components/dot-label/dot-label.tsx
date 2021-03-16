@@ -33,10 +33,12 @@ export class DotLabelComponent {
     render() {
         return (
             <label class="dot-label" id={getLabelId(this.name)}>
-                <span class="dot-label__text">
-                    {this.label}
-                    {this.required ? <span class="dot-label__required-mark">*</span> : null}
-                </span>
+                {this.label && (
+                    <span class="dot-label__text">
+                        {this.label}
+                        {this.required ? <span class="dot-label__required-mark">*</span> : null}
+                    </span>
+                )}
                 <slot />
             </label>
         );

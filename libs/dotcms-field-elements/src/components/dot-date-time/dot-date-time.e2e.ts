@@ -1,5 +1,4 @@
-import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
-import { EventSpy } from '@stencil/core/dist/declarations';
+import { E2EElement, E2EPage, newE2EPage, EventSpy } from '@stencil/core/testing';
 import { dotTestUtil } from '../../utils';
 
 describe('dot-date-time', () => {

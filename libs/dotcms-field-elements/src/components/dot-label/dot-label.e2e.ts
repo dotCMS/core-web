@@ -13,7 +13,7 @@ describe('dot-label', () => {
         beforeEach(async () => {
             page = await newE2EPage({
                 html: `
-                <dot-label labe="hello world">
+                <dot-label label="hello world">
                     <h1>into the slot</h1>
                 </dot-label>`
             });
@@ -49,19 +49,21 @@ describe('dot-label', () => {
                 element.setProperty('label', {});
                 await page.waitForChanges();
                 const text = await getText();
-                expect(text.innerText).toBe('[object Object]');
+                expect(text.innerText).toBe('undefined');
             });
 
-            it('should render empty string with no value', async () => {
+            it('should not render label text', async () => {
                 element.setProperty('label', undefined);
                 await page.waitForChanges();
                 const text = await getText();
-                expect(text.innerText).toBe('');
+                console.log(text);
+                expect(text).toBeNull();
             });
         });
 
         describe('required', () => {
             it('should show mark on true', async () => {
+                element.setProperty('label', 'Something');
                 element.setProperty('required', true);
                 await page.waitForChanges();
                 const mark = await getMark();

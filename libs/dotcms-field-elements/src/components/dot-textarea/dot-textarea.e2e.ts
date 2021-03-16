@@ -1,5 +1,4 @@
-import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
-import { EventSpy } from '@stencil/core/dist/declarations';
+import { E2EElement, E2EPage, newE2EPage, EventSpy } from '@stencil/core/testing';
 import { dotTestUtil } from '../../utils';
 
 describe('dot-textarea', () => {
@@ -137,7 +136,7 @@ describe('dot-textarea', () => {
             it('should not break hint with invalid hint value', async () => {
                 element.setProperty('hint', { test: 'hint' });
                 await page.waitForChanges();
-                expect((await dotTestUtil.getHint(page)).innerText).toBe('[object Object]');
+                expect(await dotTestUtil.getHint(page)).toBeNull();
             });
         });
 
@@ -193,7 +192,7 @@ describe('dot-textarea', () => {
                 await textarea.press('a');
                 await textarea.press('Backspace');
                 await page.waitForChanges();
-                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('[object Object]');
+                expect(await dotTestUtil.getErrorMessage(page)).toBeNull();
             });
         });
 

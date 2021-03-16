@@ -1,5 +1,4 @@
-import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
-import { EventSpy } from '@stencil/core/dist/declarations';
+import { newE2EPage, E2EElement, E2EPage, EventSpy } from '@stencil/core/testing';
 
 describe('key-value-table', () => {
     let page: E2EPage;

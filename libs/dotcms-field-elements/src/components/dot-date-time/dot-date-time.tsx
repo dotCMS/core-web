@@ -176,19 +176,13 @@ export class DotDateTimeComponent {
         }
     }
 
-    hostData() {
-        return {
-            class: this.classNames
-        };
-    }
-
     componentDidLoad(): void {
         this.setDotAttributes();
     }
 
     render() {
         return (
-            <Host>
+            <Host class={{ ...this.classNames }}>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <div
                         class="dot-date-time__body"

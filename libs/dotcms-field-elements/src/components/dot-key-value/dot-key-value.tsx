@@ -166,15 +166,11 @@ export class DotKeyValueComponent {
         this.emitStatusChange();
     }
 
-    hostData() {
-        return {
-            class: getClassNames(this.status, this.isValid(), this.required)
-        };
-    }
-
     render() {
+        const classes = getClassNames(this.status, this.isValid(), this.required);
+
         return (
-            <Host>
+            <Host class={{ ...classes }}>
                 <dot-label
                     aria-describedby={getHintId(this.hint)}
                     tabIndex={this.hint ? 0 : null}

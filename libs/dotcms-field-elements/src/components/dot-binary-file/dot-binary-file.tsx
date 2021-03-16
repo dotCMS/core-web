@@ -226,15 +226,11 @@ export class DotBinaryFileComponent {
         this.clearPreviewData();
     }
 
-    hostData() {
-        return {
-            class: getClassNames(this.status, this.isValid(), this.required)
-        };
-    }
-
     render() {
+        const classes = getClassNames(this.status, this.isValid(), this.required);
+
         return (
-            <Host>
+            <Host class={{ ...classes }}>
                 <dot-label
                     label={this.label}
                     required={this.required}
