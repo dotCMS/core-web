@@ -50,7 +50,7 @@ export namespace Components {
         /**
           * Clear value of selected file, when the endpoint fails.
          */
-        "clearValue": () => void;
+        "clearValue": () => Promise<void>;
         /**
           * (optional) Disables field's interaction
          */
