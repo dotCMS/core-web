@@ -87,7 +87,7 @@ export class DotTextfieldComponent {
      * Reset properties of the field, clear value and emit events.
      */
     @Method()
-    reset(): void {
+    async reset(): Promise<void> {
         this.value = '';
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();

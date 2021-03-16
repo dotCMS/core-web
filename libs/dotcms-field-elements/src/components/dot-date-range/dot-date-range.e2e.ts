@@ -4,7 +4,7 @@ import { dotTestUtil } from '../../utils';
 const getDays = (page: E2EPage) => page.findAll('.flatpickr-day');
 const getInput = (page: E2EPage) => page.find('input.flatpickr-input.form-control');
 
-describe('dot-date-range', () => {
+xdescribe('dot-date-range', () => {
     let page: E2EPage;
     let element: E2EElement;
     let input: E2EElement;

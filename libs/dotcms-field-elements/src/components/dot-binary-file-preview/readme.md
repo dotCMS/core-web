@@ -2,6 +2,7 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property      | Attribute      | Description                         | Type     | Default    |
@@ -10,26 +11,27 @@
 | `fileName`    | `file-name`    | file name to be displayed           | `string` | `''`       |
 | `previewUrl`  | `preview-url`  | (optional) file URL to be displayed | `string` | `''`       |
 
+
 ## Events
 
 | Event    | Description                   | Type               |
 | -------- | ----------------------------- | ------------------ |
 | `delete` | Emit when the file is deleted | `CustomEvent<any>` |
 
+
 ## Dependencies
 
 ### Used by
 
--   [dot-binary-file](../dot-binary-file)
+ - [dot-binary-file](../dot-binary-file)
 
 ### Graph
-
 ```mermaid
 graph TD;
   dot-binary-file --> dot-binary-file-preview
   style dot-binary-file-preview fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*

@@ -117,7 +117,7 @@ export class DotBinaryFileComponent {
      * Reset properties of the field, clear value and emit events.
      */
     @Method()
-    reset(): void {
+    async reset(): Promise<void> {
         this.file = '';
         this.binaryTextField.value = '';
         this.errorMessage = '';

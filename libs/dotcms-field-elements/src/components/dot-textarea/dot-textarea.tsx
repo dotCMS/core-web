@@ -84,7 +84,7 @@ export class DotTextareaComponent {
      * @memberof DotTextareaComponent
      */
     @Method()
-    reset(): void {
+    async reset(): Promise<void> {
         this.value = '';
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();

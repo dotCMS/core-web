@@ -2,6 +2,7 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property            | Attribute            | Description                                                                                                                    | Type      | Default                                                |
@@ -20,12 +21,14 @@
 | `validationMessage` | `validation-message` | (optional) Text that be shown when min or max are set and condition not met                                                    | `string`  | `"The field doesn't comply with the specified format"` |
 | `value`             | `value`              | Value format yyyy-mm-dd hh:mm:ss e.g., 2005-12-01 15:22:00                                                                     | `string`  | `''`                                                   |
 
+
 ## Events
 
 | Event          | Description | Type                               |
 | -------------- | ----------- | ---------------------------------- |
 | `statusChange` |             | `CustomEvent<DotFieldStatusEvent>` |
 | `valueChange`  |             | `CustomEvent<DotFieldValueEvent>`  |
+
 
 ## Methods
 
@@ -37,15 +40,17 @@ Reset properties of the filed, clear value and emit events.
 
 Type: `Promise<void>`
 
+
+
+
 ## Dependencies
 
 ### Depends on
 
--   [dot-label](../dot-label)
--   [dot-input-calendar](../dot-input-calendar)
+- [dot-label](../dot-label)
+- [dot-input-calendar](../dot-input-calendar)
 
 ### Graph
-
 ```mermaid
 graph TD;
   dot-date-time --> dot-label
@@ -53,6 +58,6 @@ graph TD;
   style dot-date-time fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
----
+----------------------------------------------
 
-_Built with [StencilJS](https://stenciljs.com/)_
+*Built with [StencilJS](https://stenciljs.com/)*

@@ -202,7 +202,7 @@ describe('dot-key-value', () => {
                 await page.waitForChanges();
 
                 const hint = await dotTestUtil.getHint(page);
-                expect(hint.innerText).toBe('[object Object]');
+                expect(hint).toBeNull();
             });
         });
 
@@ -225,7 +225,7 @@ describe('dot-key-value', () => {
                 await page.waitForChanges();
 
                 const dotLabel = await dotTestUtil.getDotLabel(page);
-                expect(dotLabel.getAttribute('label')).toBe('some,array');
+                expect(dotLabel.getAttribute('label')).toBe('');
             });
         });
 

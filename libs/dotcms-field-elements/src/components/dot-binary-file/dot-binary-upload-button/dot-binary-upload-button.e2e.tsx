@@ -91,7 +91,7 @@ describe('dot-binary-upload-button', () => {
             it('should render when is a unexpected value', async () => {
                 element.setProperty('buttonLabel', { input: 'test' });
                 await page.waitForChanges();
-                expect(button.innerText).toBe('[object Object]');
+                expect(button.innerText).toBe('undefined');
             });
         });
     });

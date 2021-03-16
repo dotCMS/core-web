@@ -121,7 +121,7 @@ export class DotDateRangeComponent {
      * Reset properties of the field, clear value and emit events.
      */
     @Method()
-    reset(): void {
+    async reset(): Promise<void> {
         this.value = '';
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
@@ -161,10 +161,8 @@ export class DotDateRangeComponent {
     }
 
     render() {
-        const classes = getClassNames(this.status, this.isValid(), this.required);
-
         return (
-            <Host class={{ ...classes }}>
+            <Host class={{ ...getClassNames(this.status, this.isValid(), this.required) }}>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <div
                         aria-describedby={getHintId(this.hint)}

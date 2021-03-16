@@ -113,7 +113,7 @@ export class DotDateTimeComponent {
      * Reset properties of the filed, clear value and emit events.
      */
     @Method()
-    reset(): void {
+    async reset(): Promise<void> {
         this._status.date = null;
         this._status.time = null;
         const inputs = this.el.querySelectorAll('dot-input-calendar');

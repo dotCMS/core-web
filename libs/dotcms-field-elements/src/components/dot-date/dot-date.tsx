@@ -81,7 +81,7 @@ export class DotDateComponent {
      * Reset properties of the field, clear value and emit events.
      */
     @Method()
-    reset(): void {
+    async reset(): Promise<void> {
         const input = this.el.querySelector('dot-input-calendar');
         input.reset();
     }
