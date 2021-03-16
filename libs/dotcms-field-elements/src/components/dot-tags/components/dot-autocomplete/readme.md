@@ -2,7 +2,6 @@
 
 <!-- Auto Generated Below -->
 
-
 ## Properties
 
 | Property      | Attribute     | Description                                                                    | Type                                  | Default |
@@ -10,10 +9,9 @@
 | `data`        | --            | Function or array of string to get the data to use for the autocomplete search | `() => string[] \| Promise<string[]>` | `null`  |
 | `debounce`    | `debounce`    | (optional) Duraction in ms to start search into the autocomplete               | `number`                              | `300`   |
 | `disabled`    | `disabled`    | (optional) Disables field's interaction                                        | `boolean`                             | `false` |
-| `maxResults`  | `max-results` | (optional)  Max results to show after a autocomplete search                    | `number`                              | `0`     |
+| `maxResults`  | `max-results` | (optional) Max results to show after a autocomplete search                     | `number`                              | `0`     |
 | `placeholder` | `placeholder` | (optional) text to show when no value is set                                   | `string`                              | `''`    |
-| `threshold`   | `threshold`   | (optional)  Min characters to start search in the autocomplete input           | `number`                              | `0`     |
-
+| `threshold`   | `threshold`   | (optional) Min characters to start search in the autocomplete input            | `number`                              | `0`     |
 
 ## Events
 
@@ -23,20 +21,20 @@
 | `lostFocus` |             | `CustomEvent<FocusEvent>` |
 | `selection` |             | `CustomEvent<string>`     |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dot-tags](../..)
+-   [dot-tags](../..)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dot-tags --> dot-autocomplete
   style dot-autocomplete fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_
