@@ -40,7 +40,7 @@ class DotEditPage {
 
     static checkToastMessage({ message }: { message: string }) {
         Page.assertElementSize('p-toastitem', 1);
-        Page.assertElementContains('p-toastitem dot-icon + span', message);
+        Page.assertElementContainsText('p-toastitem dot-icon + span', message);
     }
 
     static checkContainerMustHaveElements({

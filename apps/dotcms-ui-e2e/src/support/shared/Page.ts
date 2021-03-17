@@ -7,8 +7,8 @@ class Page {
         }
     }
 
-    static assertElementContains(selector: string, text: string) {
-        return cy.get(selector).contains(text);
+    static assertElementContainsText(selector: string, text: string) {
+        return cy.get(selector, { timeout: 10000 }).contains(text);
     }
 
     static assertElementSize(selector: string | Cypress.Chainable, size: number) {

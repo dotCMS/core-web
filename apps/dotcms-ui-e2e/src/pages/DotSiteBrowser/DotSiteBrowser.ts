@@ -15,7 +15,7 @@ class DotSiteBrowser {
     }
 
     static checkSiteBrowserPageLoaded() {
-        Page.assertElementContains('.p-breadcrumb > ul > :nth-child(3)', `Browser`); // Header
+        Page.assertElementContainsText('.p-breadcrumb > ul > :nth-child(3)', `Browser`); // Header
         cy.get(IFRAME).iframe(() => {
             Page.assertElementSize(cy.get('#borderContainer'), 1); // File tree container
             Page.assertElementSize(cy.get(CREATE_PAGE_BUTTON), 1); // Add action button
@@ -25,11 +25,12 @@ class DotSiteBrowser {
     static openCreatePageDialog({ type }: { type: string }) {
         cy.get(IFRAME).iframe().as('iframeContent');
         cy.get('@iframeContent').then(() => {
+            cy.intercept('POST', '/StructureAjax.fetchByIdentity.dwr').as('fetchByIdentity');
             Page.click(cy.get('@iframeContent').find(CREATE_PAGE_BUTTON));
             Page.click(
                 cy.get('@iframeContent').find('.dijitMenuPopup .dijitMenuItemLabel').contains(type)
             );
-
+            cy.wait('@fetchByIdentity');
             Page.click(cy.get('@iframeContent').find('#addPageAssetDialog .dijitArrowButton'));
             Page.click(
                 cy

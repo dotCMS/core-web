@@ -14,24 +14,24 @@ class DotTemplates {
     }
 
     static checkTemplatesPageLoaded() {
-        Page.assertElementContains('.p-breadcrumb > ul > :nth-child(3)', `Templates`); // Header
+        Page.assertElementContainsText('.p-breadcrumb > ul > :nth-child(3)', `Templates`); // Header
         Page.assertElementSize('p-table', 1); // Table
         Page.assertElementSize('.action-header__global-search input[type="text"]', 1); // Global Search Input
-        Page.assertElementContains('.template-listing__header-options p-checkbox', `Show Archived`); // Show Archived button
-        Page.assertElementContains('.template-listing__header-options .p-button-label', `Actions`); // BulkAction button
-        Page.assertElementContains(CREATE_TEMPLATE_BUTTON, `add`); // Action button
+        Page.assertElementContainsText('.template-listing__header-options p-checkbox', `Show Archived`); // Show Archived button
+        Page.assertElementContainsText('.template-listing__header-options .p-button-label', `Actions`); // BulkAction button
+        Page.assertElementContainsText(CREATE_TEMPLATE_BUTTON, `add`); // Action button
     }
 
     static openCreateTemplateDialog() {
         Page.click(CREATE_TEMPLATE_BUTTON);
-        Page.assertElementContains('.p-dialog-title', 'Create a template');
-        Page.assertElementContains('label[data-testid="designer"] span', 'Designer');
-        Page.assertElementContains('label[data-testid="advanced"] span', 'Advanced');
-        Page.assertElementContains(
+        Page.assertElementContainsText('.p-dialog-title', 'Create a template');
+        Page.assertElementContainsText('label[data-testid="designer"] span', 'Designer');
+        Page.assertElementContainsText('label[data-testid="advanced"] span', 'Advanced');
+        Page.assertElementContainsText(
             'p[data-testid="description"]',
             'Template Designer create reusable templates using a drag and drop interface and tools.'
         );
-        Page.assertElementContains('dot-dot-template-selector button', 'Next').click();
+        Page.assertElementContainsText('dot-dot-template-selector button', 'Next').click();
     }
 
     static fillCreateTemplateForm({ title, theme }: { title: string; theme: string }) {
@@ -49,11 +49,11 @@ class DotTemplates {
 
     static checkEditTemplatesPageLoaded() {
         // TODO: Check other components loaded on Edit Template page
-        Page.assertElementContains('#p-tabpanel-0-label .p-tabview-title', `design`); // Secondary Menu bar
-        Page.assertElementContains('#p-tabpanel-1-label .p-tabview-title', `Permissions`); // Secondary Menu bar
-        Page.assertElementContains('#p-tabpanel-2-label .p-tabview-title', `History`); // Secondary Menu bar
-        Page.assertElementContains('.dot-edit-layout__toolbar-save', `Save`); // Save button
-        Page.assertElementContains('dot-searchable-dropdown button', `Add a Container`); // Add container select
+        Page.assertElementContainsText('#p-tabpanel-0-label .p-tabview-title', `design`); // Secondary Menu bar
+        Page.assertElementContainsText('#p-tabpanel-1-label .p-tabview-title', `Permissions`); // Secondary Menu bar
+        Page.assertElementContainsText('#p-tabpanel-2-label .p-tabview-title', `History`); // Secondary Menu bar
+        Page.assertElementContainsText('.dot-edit-layout__toolbar-save', `Save`); // Save button
+        Page.assertElementContainsText('dot-searchable-dropdown button', `Add a Container`); // Add container select
     }
 
     static addContainer({ type }: { type: string }) {
