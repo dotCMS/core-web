@@ -1,4 +1,3 @@
-import fetch, { Response } from 'node-fetch';
 import { DotCMSAuthorizationLoginParams, DotCMSError } from '../models';
 
 function getErrorMessage(data: { [key: string]: any }) {

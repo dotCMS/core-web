@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { DotCMSConfigurationParams, DotAppHttpRequestParams } from '../models';
 
 function getQueryParams(language: string, hostId: string): string {
