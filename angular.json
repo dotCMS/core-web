@@ -459,7 +459,7 @@
             "prefix": "dotcms",
             "architect": {
                 "build": {
-                    "builder": "@nrwl/angular:ng-packagr-lite",
+                    "builder": "@angular-devkit/build-ng-packagr:build",
                     "options": {
                         "tsConfig": "libs/dotcms/tsconfig.lib.json",
                         "project": "libs/dotcms/ng-package.json"
