@@ -110,12 +110,11 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
      * @memberof DotThemeSelectorComponent
      */
     paginate($event: LazyLoadEvent): void {
-        debugger;
         this.paginatorService
             .getWithOffset($event.first)
             .pipe(take(1))
             .subscribe((themes: DotTheme[]) => {
-                if (this.isSitesWithoutThemes(themes, $event)) {
+                if (this.noThemesInInitialLoad(themes, $event)) {
                     this.siteService.getSiteById('SYSTEM_HOST').subscribe((site: Site) => {
                         this.siteSelector.searchableDropdown.handleClick(site);
                         this.cd.detectChanges();
@@ -181,7 +180,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
         this.paginate({ first: 0 });
     }
 
-    private isSitesWithoutThemes(themes: DotTheme[], $event: LazyLoadEvent): boolean {
+    private noThemesInInitialLoad(themes: DotTheme[], $event: LazyLoadEvent): boolean {
         return this.initialLoad && !themes.length && !$event.first;
     }
 }
