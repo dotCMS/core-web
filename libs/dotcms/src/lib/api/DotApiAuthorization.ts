@@ -1,4 +1,6 @@
 import { DotCMSAuthorizationLoginParams, DotCMSError } from '../models';
+import fetch from 'cross-fetch';
+import { Response } from 'cross-fetch';
 
 function getErrorMessage(data: { [key: string]: any }) {
     if (data.errors) {
@@ -18,6 +20,7 @@ export class DotApiAuthorization {
     /**
      * Given user, password and expiration date to get a DotCMS Autorization Token
      */
+
     getToken(params: DotCMSAuthorizationLoginParams): Promise<Response> {
         const { user, password, expirationDays, host } = params;
 
@@ -31,7 +34,7 @@ export class DotApiAuthorization {
                 password: password,
                 expirationDays: expirationDays || 10
             })
-        }).then(async (res: Response) => {
+        }).then(async (res) => {
             const data = await res.json();
 
             if (res.status === 200) {

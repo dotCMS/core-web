@@ -1,4 +1,5 @@
 import { DotCMSConfigurationParams, DotAppHttpRequestParams } from '../models';
+import fetch from 'cross-fetch';
 
 function getQueryParams(language: string, hostId: string): string {
     let result = language || hostId ? '?' : '';
