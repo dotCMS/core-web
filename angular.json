@@ -453,14 +453,27 @@
             }
         },
         "dotcms": {
+            "projectType": "library",
             "root": "libs/dotcms",
             "sourceRoot": "libs/dotcms/src",
-            "projectType": "library",
+            "prefix": "dotcms",
             "architect": {
+                "build": {
+                    "builder": "@nrwl/angular:ng-packagr-lite",
+                    "options": {
+                        "tsConfig": "libs/dotcms/tsconfig.lib.json",
+                        "project": "libs/dotcms/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "libs/dotcms/tsconfig.lib.prod.json"
+                        }
+                    }
+                },
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": ["libs/dotcms/**/*.ts"]
+                        "lintFilePatterns": ["libs/dotcms/src/**/*.ts", "libs/dotcms/src/**/*.html"]
                     }
                 },
                 "test": {
@@ -469,17 +482,6 @@
                     "options": {
                         "jestConfig": "libs/dotcms/jest.config.js",
                         "passWithNoTests": true
-                    }
-                },
-                "build": {
-                    "builder": "@nrwl/node:package",
-                    "outputs": ["{options.outputPath}"],
-                    "options": {
-                        "outputPath": "dist/libs/dotcms",
-                        "tsConfig": "libs/dotcms/tsconfig.lib.json",
-                        "packageJson": "libs/dotcms/package.json",
-                        "main": "libs/dotcms/src/index.ts",
-                        "assets": ["libs/dotcms/*.md"]
                     }
                 }
             }
