@@ -31,35 +31,53 @@ describe('DotApiPage', () => {
         );
     });
 
-    it('should make request with the correct params when come a language code', () => {
-        dotApiPage.get({ url: '/test', language: 'en' }).then(() => {
+    it('should make request with the correct params when come a language code', async () => {
+        try {
+            await dotApiPage.get({ url: '/test', language: 'en' })
             expect(httpClient.request).toHaveBeenCalledWith({
                 url: '/api/v1/page/json/test',
                 language: '1'
             });
-        });
+        } catch (error) {
+            console.log(error)
+        }
+
+
+
     });
 
-    it('should make request with the correct params when come the language id', () => {
-        dotApiPage.get({ url: '/test', language: '2' }).then(() => {
+    it('should make request with the correct params when come the language id', async () => {
+        try {
+            dotApiPage.get({ url: '/test', language: '2' });
             expect(httpClient.request).toHaveBeenCalledWith({
                 url: '/api/v1/page/json/test',
                 language: '2'
             });
-        });
+        } catch (error) {
+            console.log(error)
+        }
+
     });
 
     it('should make request with the correct format', async () => {
-        await dotApiPage.get({ url: '/test' }, DotCMSPageFormat.JSON).then(() => {
+        try {
+            await dotApiPage.get({ url: '/test' }, DotCMSPageFormat.JSON)
             expect(httpClient.request).toHaveBeenCalledWith({
                 url: '/api/v1/page/json/test'
             });
-        });
+        } catch (error) {
+            console.log(error)
 
-        await dotApiPage.get({ url: '/test' }, DotCMSPageFormat.Render).then(() => {
+        }
+
+        try {
+            dotApiPage.get({ url: '/test' }, DotCMSPageFormat.Render)
             expect(httpClient.request).toHaveBeenCalledWith({
                 url: '/api/v1/page/render/test'
             });
-        });
+        } catch (error) {
+            console.log(error)
+
+        }
     });
 });
