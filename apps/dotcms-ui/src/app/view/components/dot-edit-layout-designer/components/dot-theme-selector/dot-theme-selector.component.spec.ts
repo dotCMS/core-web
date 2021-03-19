@@ -250,14 +250,12 @@ describe('DotThemeSelectorComponent', () => {
 
         it(' should set system host ', () => {
             spyOn(siteService, 'getSiteById').and.returnValue(of({} as Site));
-            component.siteChange(mockSites[0]);
             fixture.detectChanges();
-            expect(siteService.getSiteById).toHaveBeenCalledWith('SYSTEM_HOST');
+            expect(siteService.getSiteById).toHaveBeenCalledOnceWith('SYSTEM_HOST');
         });
 
-        xit(' should set system host just once ', () => {
+        it(' should set system host just once ', () => {
             spyOn(siteService, 'getSiteById').and.returnValue(of({} as Site));
-            component.siteChange(mockSites[0]);
             fixture.detectChanges();
             setTimeout(() => component.siteChange({ identifier: '123' } as Site), 0); // simulate user site change.
             expect(siteService.getSiteById).toHaveBeenCalledOnceWith('SYSTEM_HOST');
