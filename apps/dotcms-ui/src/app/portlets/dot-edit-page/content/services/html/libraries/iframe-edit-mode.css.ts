@@ -344,6 +344,18 @@ export const getEditPageCss = (timestampId: string): string => {
         z-index: 1 !important;
     }
 
+    [contenteditable="true"] {
+        cursor: text;
+        border: 1px solid #53c2f9 !important;
+        display: block;
+    }
+
+    [contenteditable="true"]:focus {
+         background: white;
+        border: 1px solid black !important;
+        outline: none;
+    }
+
     @keyframes load8 {
         0% {
             transform: rotate(0deg);

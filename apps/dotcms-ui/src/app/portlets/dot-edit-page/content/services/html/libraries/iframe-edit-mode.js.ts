@@ -3,6 +3,7 @@ export const MODEL_VAR_NAME = 'dotNgModel';
 
 export const EDIT_PAGE_JS = `
 (function () {
+
     var forbiddenTarget;
     let currentModel;
 
@@ -63,6 +64,7 @@ export const EDIT_PAGE_JS = `
                     forbiddenTarget.classList.add('no')
                 }
             }
+            console.log(canDrop)
             return canDrop;
         },
         invalid: function(el, handle) {
@@ -85,6 +87,7 @@ export const EDIT_PAGE_JS = `
         });
 
         currentModel = getDotNgModel();
+
     })
 
     drake.on('over', function(el, container, source) {
@@ -104,6 +107,7 @@ export const EDIT_PAGE_JS = `
     });
 
     drake.on('drop', function(el, target, source, sibling) {
+        console.log(el)
         const updatedModel = getDotNgModel();
 
         if (JSON.stringify(updatedModel) !== JSON.stringify(currentModel)) {

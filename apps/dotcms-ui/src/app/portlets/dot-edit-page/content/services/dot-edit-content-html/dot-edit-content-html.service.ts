@@ -43,6 +43,7 @@ export class DotEditContentHtmlService {
     iframeActions$: Subject<any> = new Subject();
     pageModel$: Subject<PageModelChangeEvent> = new Subject();
     mutationConfig = { attributes: false, childList: true, characterData: false };
+    innerContentText: string;
 
     private currentAction: DotContentletAction;
     private docClickSubscription: Subscription;
@@ -402,6 +403,56 @@ export class DotEditContentHtmlService {
         this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
     }
 
+    private initInlineEditing(): void {
+        const doc = this.getEditPageDocument();
+        doc.addEventListener(
+            'load',
+            () => {
+                const editableItems = doc.querySelectorAll('[contenteditable=\'true\']');
+                Array.from(editableItems).forEach((item: Element) => {
+                    
+                    item.addEventListener('click', (e: Event) => {
+                        e.preventDefault();
+                    });
+
+                    item.addEventListener('dragstart', (event) => {
+                        event.preventDefault();
+                    });
+
+                    item.parentElement.addEventListener('dragstart', (event) => {
+                        event.preventDefault();
+                    });
+
+                    // If the parent of the element is an anchor and it does not have contentEditable set to true
+                    // then we add it to prevent issues with the cursor
+                    if (
+                        item.parentElement.tagName === 'A' &&
+                        item.parentElement.contentEditable !== 'true'
+                    ) {
+                        item.removeAttribute('contenteditable');
+                        item.parentElement.contentEditable = 'true';
+                    }
+
+                    console.log(item.innerHTML)
+
+                    item.addEventListener('input', this.handleInnerContentChange);
+                    item.addEventListener('blur', this.handleInnerContentBlur);
+
+                    item.classList.add('dot-edit--is-editable');
+                });
+            },
+            true
+        );
+    }
+
+    private handleInnerContentChange(e) {
+        this.innerContentText = e.target.innerHTML;
+    }
+
+    private handleInnerContentBlur(e) {
+        console.log(this.innerContentText, e);
+    }
+
     private createScriptTag(node: HTMLScriptElement): HTMLScriptElement {
         const doc = this.getEditPageDocument();
         const script = doc.createElement('script');
@@ -593,6 +644,7 @@ export class DotEditContentHtmlService {
     private setEditMode(): void {
         this.setEditContentletStyles();
         this.addContentToolBars();
+        this.initInlineEditing();
         this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
     }
 
