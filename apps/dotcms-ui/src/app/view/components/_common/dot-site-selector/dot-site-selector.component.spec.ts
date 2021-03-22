@@ -215,7 +215,7 @@ describe('SiteSelectorComponent', () => {
         expect(result).toEqual({ fake: 'site' });
     });
 
-    it('should set current site correctly', async () => {
+    it('should set current site correctly', () => {
         paginatorService.filter = 'filter';
         paginatorService.totalRecords = 2;
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
@@ -224,7 +224,6 @@ describe('SiteSelectorComponent', () => {
             expect(res).toEqual(mockSites[0]);
         });
         fixture.detectChanges();
-        await fixture.whenStable();
     });
 
     it('should set site based on passed id', async () => {
