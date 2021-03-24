@@ -1,12 +1,16 @@
-# DotCMS Javascript Library
+# JavaScript SDK for DotCMS API's
 
-Client and node library that allows easy interaction with several [DotCMS Rest APIS](https://dotcms.com/docs/latest/rest-api).
+This library allows you to interact with DotCMS API's easily from the browser, nodejs and React Native.
 
 ## Install
 
-`npm install dotcms node-fetch --save`
+`npm install dotcms --save`
 
-## Use
+or
+
+`yarn install dotcms`
+
+## Usage
 
 ```javascript
 import { initDotCMS } from 'dotcms';
