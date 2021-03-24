@@ -6,15 +6,20 @@ import { renderPlaygroundPage } from 'graphql-playground-html';
     templateUrl: './dot-graphql.component.html',
     styleUrls: ['./dot-graphql.component.scss']
 })
-export class DotGraphqlComponent implements OnInit {
-    @ViewChild('iframe', { static: true }) iframe: ElementRef<HTMLIFrameElement>;
+export class DotGraphqlComponent {
+    private iframe: ElementRef<HTMLIFrameElement>;
+
+    @ViewChild('iframe') set content(content: ElementRef<HTMLIFrameElement>) {
+        if (content) {
+            debugger;
+            this.iframe = content;
+            this.writeDocument();
+        }
+    }
+
     private API_URL = '/api/v1/graphql';
 
     constructor() {}
-
-    ngOnInit(): void {
-        this.writeDocument();
-    }
 
     private writeDocument(): void {
         const doc = this.iframe.nativeElement.contentWindow.document;
