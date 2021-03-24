@@ -17,8 +17,8 @@ import { DotCustomReuseStrategyService } from '@shared/dot-custom-reuse-strategy
 
 const PORTLETS_ANGULAR = [
     {
-        // canActivate: [MenuGuardService],
-        // canActivateChild: [MenuGuardService],
+        canActivate: [MenuGuardService],
+        canActivateChild: [MenuGuardService],
         path: 'graphql',
         loadChildren: () =>
             import('@portlets/dot-graphql/dot-graphql.module').then((m) => m.DotGraphqlModule)
