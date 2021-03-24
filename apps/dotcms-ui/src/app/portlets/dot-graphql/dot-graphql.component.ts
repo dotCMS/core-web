@@ -11,7 +11,6 @@ export class DotGraphqlComponent {
 
     @ViewChild('iframe') set content(content: ElementRef<HTMLIFrameElement>) {
         if (content) {
-            debugger;
             this.iframe = content;
             this.writeDocument();
         }
