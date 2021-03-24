@@ -43,7 +43,7 @@ export class DotEditContentHtmlService {
     iframeActions$: Subject<any> = new Subject();
     pageModel$: Subject<PageModelChangeEvent> = new Subject();
     mutationConfig = { attributes: false, childList: true, characterData: false };
-    innerContentText: string;
+    inlineInnerHTML: string;
 
     private currentAction: DotContentletAction;
     private docClickSubscription: Subscription;
@@ -403,12 +403,106 @@ export class DotEditContentHtmlService {
         this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
     }
 
+    private injectInlineEditingScripts(): void {
+        const doc = this.getEditPageDocument();
+        const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
+        const tinyMceScript: HTMLScriptElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
+            TINYMCE
+        );
+
+        tinyMceScript.addEventListener('load', () => {
+            this.initInlineEditing()
+        })
+
+        doc.body.append(tinyMceScript);
+    }
+
     private initInlineEditing(): void {
         const doc = this.getEditPageDocument();
+
+        const script = `
+
+            function handleBlurEvent(editor, subjectEvent) {
+                    editor.on('focus blur', (e) => {
+
+                        const content = tinymce.get(e.target.id).getContent();
+                        const dataset = tinymce.get(e.target.id).targetElm.dataset;
+                        const dataSetObj = {...dataset};
+
+                        if(e.type === "focus") {
+                            window.contentletEvents.next({
+                                name: subjectEvent + "Focus",
+                                data: {
+                                    dataset: dataSetObj,
+                                    content
+                                }
+                            })
+                        }
+
+
+                        window.contentletEvents.next({
+                            name: subjectEvent + "Blur",
+                            data: {
+                                dataset: dataSetObj,
+                                content
+                            }
+                        })
+                    });
+                }
+
+            const minimalConfig = {
+                selector: '[data-mode="minimal"]',
+                menubar: true,
+                inline: true,
+                plugins: ['link'],
+                toolbar: 'undo redo | bold italic underline',
+                valid_elements: 'strong,em,span[style],a[href]',
+                valid_styles: {
+                    '*': 'font-size,font-family,color,text-decoration,text-align'
+                },
+                powerpaste_word_import: 'clean',
+                powerpaste_html_import: 'clean',
+                content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i'],
+                setup: (editor) => handleBlurEvent(editor, "tinyMceMinimalOn")
+            };
+
+            const fullEditConfig = {
+                selector: '[data-mode="full"]',
+                menubar: false,
+                inline: true,
+                plugins: [
+                    'link',
+                    'lists',
+                    'autolink',
+                ],
+                toolbar: [
+                    'undo redo | bold italic underline | fontselect fontsizeselect',
+                    'forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent'
+                ],
+                valid_elements: 'p[style],strong,em,span[style],a[href],ul,ol,li',
+                valid_styles: {
+                    '*': 'font-size,font-family,color,text-decoration,text-align'
+                },
+                powerpaste_word_import: 'clean',
+                powerpaste_html_import: 'clean',
+                setup: (editor) => handleBlurEvent(editor, "tinyMceFullOn")
+            };
+
+            tinymce.init(minimalConfig);
+            tinymce.init(fullEditConfig);
+        `;
+
+        const tinyMceInit: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
+            script
+        );
+
+        doc.body.append(tinyMceInit);
+
         doc.addEventListener(
             'load',
             () => {
-                const editableItems = doc.querySelectorAll("[contenteditable='true']");
+                const editableItems = doc.querySelectorAll('[data-mode]');
+                console.log(editableItems);
                 Array.from(editableItems).forEach((item: Element) => {
                     item.addEventListener('click', (e: Event) => {
                         e.preventDefault();
@@ -422,22 +516,9 @@ export class DotEditContentHtmlService {
                         event.preventDefault();
                     });
 
-                    // If the parent of the element is an anchor and it does not have contentEditable set to true
-                    // then we add it to prevent issues with the cursor
-                    if (
-                        item.parentElement.tagName === 'A' &&
-                        item.parentElement.contentEditable !== 'true'
-                    ) {
-                        item.removeAttribute('contenteditable');
-                        item.parentElement.contentEditable = 'true';
-                    }
-
-                    console.log(item.innerHTML);
-
                     item.addEventListener('input', this.handleInnerContentChange);
                     item.addEventListener('blur', this.handleInnerContentBlur);
 
-                    item.classList.add('dot-edit--is-editable');
                 });
             },
             true
@@ -445,11 +526,11 @@ export class DotEditContentHtmlService {
     }
 
     private handleInnerContentChange(e) {
-        this.innerContentText = e.target.innerHTML;
+        this.inlineInnerHTML = e.target.innerHTML;
     }
 
     private handleInnerContentBlur(e) {
-        console.log(this.innerContentText, e);
+        console.log(this.inlineInnerHTML);
     }
 
     private createScriptTag(node: HTMLScriptElement): HTMLScriptElement {
@@ -567,6 +648,18 @@ export class DotEditContentHtmlService {
                     this.renderEditedContentlet(this.currentContentlet);
                 }
             },
+            tinyMceMinimalOnBlur: (content: DotPageContent) => {
+                console.log(content);
+            },
+            tinyMceFullOnBlur: (content: DotPageContent) => {
+                console.log(content);
+            },
+            tinyMceMinimalOnFocus: (content: DotPageContent) => {
+                console.log(content);
+            },
+            tinyMceFullOnFocus: (content: DotPageContent) => {
+                console.log(content);
+            },
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {
                 this.renderAddedContentlet(contentlet);
@@ -643,7 +736,7 @@ export class DotEditContentHtmlService {
     private setEditMode(): void {
         this.setEditContentletStyles();
         this.addContentToolBars();
-        this.initInlineEditing();
+        this.injectInlineEditingScripts();
         this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
     }
 
