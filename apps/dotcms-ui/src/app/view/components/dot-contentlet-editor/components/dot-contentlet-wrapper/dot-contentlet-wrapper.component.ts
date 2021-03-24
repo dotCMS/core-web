@@ -42,14 +42,8 @@ export class DotContentletWrapperComponent {
     ) {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
-                close: ({ detail: { data } }: CustomEvent) => {
+                close: () => {
                     this.onClose();
-                    if (data?.redirectUrl) {
-                        this.dotRouterService.goToEditPage({
-                            url: data.redirectUrl,
-                            language_id: data.languageId
-                        });
-                    }
                 },
                 'edit-page': ({ detail: { data } }: CustomEvent<DotCMSEditPageEvent>) => {
                     this.dotRouterService.goToEditPage({
