@@ -1,6 +1,6 @@
 # JavaScript SDK for DotCMS API's
 
-This library allows you to interact with DotCMS API's easily from the browser, nodejs and React Native.
+This library allows you to interact with DotCMS API's easily from the browser, nodejs and React Native. [Full Documentation](https://dotcms.github.io/core-web/dotcms/)
 
 ## Install
 
@@ -84,9 +84,7 @@ export async function getServerSideProps(context) {
 }
 ```
 
-## Documentation
-
-[Full Documentation](https://dotcms.github.io/core-web/dotcms/)
+More about [data fetching](https://nextjs.org/docs/basic-features/data-fetching) in Nextjs.
 
 ## Running unit tests
 
