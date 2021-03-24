@@ -1,7 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { renderPlaygroundPage } from 'graphql-playground-html';
-import { Table } from 'primeng/table';
-import { CursorShape, Theme } from 'graphql-playground-html/dist/render-playground-page';
 
 @Component({
     selector: 'dot-dot-graphql',
