@@ -411,8 +411,8 @@ export class DotEditContentHtmlService {
         );
 
         tinyMceScript.addEventListener('load', () => {
-            this.initInlineEditing()
-        })
+            this.initInlineEditing();
+        });
 
         doc.body.append(tinyMceScript);
     }
@@ -518,7 +518,6 @@ export class DotEditContentHtmlService {
 
                     item.addEventListener('input', this.handleInnerContentChange);
                     item.addEventListener('blur', this.handleInnerContentBlur);
-
                 });
             },
             true
