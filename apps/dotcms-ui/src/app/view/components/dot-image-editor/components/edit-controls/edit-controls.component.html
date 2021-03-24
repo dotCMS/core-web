@@ -1,0 +1,77 @@
+<label for="format" class="title">Format</label>
+<select [(ngModel)]="params.format" id="format" class="select-input">
+    <option value="auto">Auto</option>
+    <option value="filter/Png">png</option>
+    <option value="jpeg">jpeg</option>
+    <option value="jpegp">jpegp</option>
+    <option value="webp">webp</option>
+</select>
+<br>
+<label for="quality" class="title">Quality</label>
+<div class="range-control-group">
+    <input  [(ngModel)]="params.quality" type="range" value="100" id="quality" min="0" max="100">
+    <span class="input-value">100%</span>
+</div>
+<br>
+
+<label for="zoom" class="title">Zoom</label>
+<div class="range-control-group">
+    <input  [(ngModel)]="params.resize" type="range" id="zoom" value="1" min="0.1" max="2" step="0.1">
+    <span class="input-value">100%</span>
+</div>
+<br>
+<div class="focal-control-group">
+    <div class="coordinates">
+        <span class="coordinate">50 <small>X</small></span>
+        <span class="coordinate">50 <small>Y</small></span>
+    </div>
+    <button (click)="setFocalPoint()" class="btn-api-img" id="set">Set</button>
+    <!-- <i class="fas fa-undo-alt cursor undo" id="undo-set"></i> -->
+</div>
+<br>
+<span class="title">Crop</span>
+<div class="crop-control-group">
+    <div class="crop-group">
+        <div class="crop-width">
+            <input type="text" class="crop-input" id="crop-x" value="250">
+            <small>W</small>
+        </div>
+        <div class="crop-height">
+            <input type="text" class="crop-input" id="crop-y" value="250">
+            <small>Y</small>
+        </div>
+    </div>
+    <button class="btn-api-img btn-crop" id="crop">Crop</button>
+        <!-- <i class="fas fa-undo-alt cursor undo" id="undo-crop"></i> -->
+</div>
+<br>
+<div class="range-control-group">
+    <label for="brightness" class="title">{{params.brightness}}</label>
+    <input [(ngModel)]="params.brightness" type="range" id="brightness" value="0" min="-100" max="100">
+    <span class="input-value">0%</span>
+</div>
+<div class="range-control-group">
+    <label for="hue" class="title">Hue</label>
+    <input [(ngModel)]="params.hue" type="range" id="hue" value="0" min="-100" max="100">
+    <span class="input-value">0%</span>
+</div>
+<div class="range-control-group">
+    <label for="saturation" class="title">Saturation</label>
+    <input [(ngModel)]="params.saturation" type="range" id="saturation" min="-100" max="100">
+    <span class="input-value">0%</span>
+</div>
+<br>
+<button (click)="changeURL()">Cambia la URL</button>
+
+<!-- 
+<form (input)="changeURL()" #forma="ngForm">
+    <label for="quality" class="title">Quality</label>
+<div class="range-control-group">
+    <input name="quality" #quality="ngModel" [(ngModel)]="params.quality" type="range" value="100" id="quality" min="0" max="100">
+    <span class="input-value">100%</span>
+</div>
+<br>
+</form>
+
+
+ -->

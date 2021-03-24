@@ -1,1 +1,11 @@
-<p>dot-image-editor works!</p>
+
+
+
+
+<ng-container *ngIf="editorState | async as es">
+    <pre><code>
+        {{es | json}}
+    </code></pre>
+</ng-container>
+
+<dot-edit-controls [params]="params"></dot-edit-controls>
