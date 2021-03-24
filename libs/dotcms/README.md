@@ -33,6 +33,7 @@ dotcms.page
     });
 ```
 
+## Examples
 
 ### Next.js
 Next.js gives you the best developer experience with all the features you need for production. [Read more](https://nextjs.org/)
