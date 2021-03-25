@@ -12,6 +12,8 @@ import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.servic
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotPageContent, DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { getEditPageCss } from '../html/libraries/iframe-edit-mode.css';
 import {
     GOOGLE_FONTS,
@@ -26,10 +28,18 @@ import {
     DotRelocatePayload
 } from './models/dot-contentlets-events.model';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
+import { MessageService } from 'primeng/api';
 
 export enum DotContentletAction {
     EDIT,
     ADD
+}
+
+//TODO: Rename
+interface DotPageContentExtra {
+    innerHTML: string;
+    dataset: { mode: string; inode: string; fieldName: string; language: string };
+    element: HTMLElement
 }
 
 @Injectable()
@@ -43,8 +53,10 @@ export class DotEditContentHtmlService {
     iframeActions$: Subject<any> = new Subject();
     pageModel$: Subject<PageModelChangeEvent> = new Subject();
     mutationConfig = { attributes: false, childList: true, characterData: false };
-    inlineInnerHTML: string;
+    datasetMissing: string[];
 
+    private inlineCurrentContent: string;
+    private inlineContent: string;
     private currentAction: DotContentletAction;
     private docClickSubscription: Subscription;
     private updateContentletInode = false;
@@ -58,7 +70,10 @@ export class DotEditContentHtmlService {
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
         private dotDialogService: DotAlertConfirmService,
-        private dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService,
+        private messageService: MessageService,
+        private dotGlobalMessageService: DotGlobalMessageService,
+        public dotWorkflowActionsFireService: DotWorkflowActionsFireService
     ) {
         this.contentletEvents$.subscribe(
             (
@@ -278,6 +293,10 @@ export class DotEditContentHtmlService {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
     }
 
+    getDatasetMissing(): string[] {
+        return this.datasetMissing;
+    }
+
     private updateContainerToolbar(dotIdentifier: string) {
         const doc = this.getEditPageDocument();
         const target = <HTMLElement>(
@@ -421,30 +440,31 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
 
         const script = `
-
-            function handleBlurEvent(editor, subjectEvent) {
+            function handleTinyMCEEvents(editor) {
                     editor.on('focus blur', (e) => {
 
                         const content = tinymce.get(e.target.id).getContent();
                         const dataset = tinymce.get(e.target.id).targetElm.dataset;
+                        const element = tinymce.get(e.target.id).targetElm;
                         const dataSetObj = {...dataset};
 
                         if(e.type === "focus") {
                             window.contentletEvents.next({
-                                name: subjectEvent + "Focus",
+                                name: "tinyMceOnFocus",
                                 data: {
                                     dataset: dataSetObj,
-                                    content
+                                    innerHTML: content
                                 }
                             })
                         }
 
 
                         window.contentletEvents.next({
-                            name: subjectEvent + "Blur",
+                            name: "tinyMceOnBlur",
                             data: {
                                 dataset: dataSetObj,
-                                content
+                                innerHTML: content,
+                                element: element
                             }
                         })
                     });
@@ -463,7 +483,7 @@ export class DotEditContentHtmlService {
                 powerpaste_word_import: 'clean',
                 powerpaste_html_import: 'clean',
                 content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i'],
-                setup: (editor) => handleBlurEvent(editor, "tinyMceMinimalOn")
+                setup: (editor) => handleTinyMCEEvents(editor)
             };
 
             const fullEditConfig = {
@@ -485,7 +505,7 @@ export class DotEditContentHtmlService {
                 },
                 powerpaste_word_import: 'clean',
                 powerpaste_html_import: 'clean',
-                setup: (editor) => handleBlurEvent(editor, "tinyMceFullOn")
+                setup: (editor) => handleTinyMCEEvents(editor)
             };
 
             tinymce.init(minimalConfig);
@@ -502,7 +522,6 @@ export class DotEditContentHtmlService {
             'load',
             () => {
                 const editableItems = doc.querySelectorAll('[data-mode]');
-                console.log(editableItems);
                 Array.from(editableItems).forEach((item: Element) => {
                     item.addEventListener('click', (e: Event) => {
                         e.preventDefault();
@@ -515,21 +534,10 @@ export class DotEditContentHtmlService {
                     item.parentElement.addEventListener('dragstart', (event) => {
                         event.preventDefault();
                     });
-
-                    item.addEventListener('input', this.handleInnerContentChange);
-                    item.addEventListener('blur', this.handleInnerContentBlur);
                 });
             },
             true
         );
-    }
-
-    private handleInnerContentChange(e) {
-        this.inlineInnerHTML = e.target.innerHTML;
-    }
-
-    private handleInnerContentBlur(e) {
-        console.log(this.inlineInnerHTML);
     }
 
     private createScriptTag(node: HTMLScriptElement): HTMLScriptElement {
@@ -647,17 +655,33 @@ export class DotEditContentHtmlService {
                     this.renderEditedContentlet(this.currentContentlet);
                 }
             },
-            tinyMceMinimalOnBlur: (content: DotPageContent) => {
-                console.log(content);
+            tinyMceOnFocus: (content: DotPageContent & DotPageContentExtra) => {
+                const requiredDatasetKeys = ['mode', 'inode', 'fieldName', 'language'];
+                const datasetMissing = requiredDatasetKeys.filter(function (key) {
+                    return !Object.keys(content.dataset).includes(key);
+                });
+
+                this.datasetMissing = datasetMissing;
+
+                // TODO: Fix
+                this.dotGlobalMessageService.success('Hello World');
+
+                this.inlineCurrentContent = content.innerHTML;
             },
-            tinyMceFullOnBlur: (content: DotPageContent) => {
-                console.log(content);
-            },
-            tinyMceMinimalOnFocus: (content: DotPageContent) => {
-                console.log(content);
-            },
-            tinyMceFullOnFocus: (content: DotPageContent) => {
-                console.log(content);
+            tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
+                if (this.inlineCurrentContent !== content.innerHTML) {
+                    const contentlet = '[data-dot-object="contentlet"][data-dot-inode]';
+                    const element: HTMLElement = content.element.closest(contentlet)
+                    const contentletDataset = { ...element.dataset };
+
+                    this.dotWorkflowActionsFireService
+                        .saveContentlet(
+                            'Banner',
+                            { body: content.innerHTML },
+                            contentletDataset.dotInode
+                        )
+                        .subscribe(console.log);
+                }
             },
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {

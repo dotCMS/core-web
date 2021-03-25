@@ -10,11 +10,13 @@ interface DotActionRequestOptions {
     contentType: string;
     data: { [key: string]: any };
     action: ActionToFire;
+    inode?: string
 }
 
 enum ActionToFire {
     NEW = 'NEW',
-    PUBLISH = 'PUBLISH'
+    PUBLISH = 'PUBLISH',
+    EDIT = 'EDIT'
 }
 
 @Injectable()
@@ -91,6 +93,15 @@ export class DotWorkflowActionsFireService {
         });
     }
 
+    saveContentlet<T>(contentType: string, data: { [key: string]: any }, inode: string): Observable<T> {
+        return this.request<T>({
+            contentType,
+            data,
+            action: ActionToFire.EDIT,
+            inode
+        });
+    }
+
     /**
      * Fire a "PUBLISH" action over the content type received and append the wait for index attr
      *
@@ -110,11 +121,11 @@ export class DotWorkflowActionsFireService {
         });
     }
 
-    private request<T>({ contentType, data, action }: DotActionRequestOptions): Observable<T> {
+    private request<T>({ contentType, data, action, inode }: DotActionRequestOptions): Observable<T> {
         return this.coreWebService
             .requestView({
                 method: 'PUT',
-                url: `v1/workflow/actions/default/fire/${action}`,
+                url: `v1/workflow/actions/default/fire/${action}${inode && `?inode=${inode}`}`,
                 body: { contentlet: { contentType: contentType, ...data } }
             })
             .pipe(take(1), pluck('entity'));
