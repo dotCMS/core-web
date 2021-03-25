@@ -17,7 +17,7 @@ This repository contains the frontend infrastructure for the DotCMS admin system
 | [dotcms-models](https://github.com/dotCMS/core-web/tree/master/libs/dotcms-models)                 | lib  | `libs/dotcms-models`         | Typescript | DotCMS interfaces and types                  |
 
 
-## NX Monrepo
+## NX Monorepo
 This project was generated using [Nx](https://nx.dev).
 
 🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
