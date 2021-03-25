@@ -17,7 +17,7 @@
         "build:docs:dotcms": "typedoc --options libs/dotcms/typedoc.json ./libs/dotcms --exclude '**/*.spec.ts';",
         "build:docs:dotcms-models": "typedoc --options libs/dotcms-models/typedoc.json ./libs/dotcms-models --exclude '**/*.spec.ts';",
         "publish:docs": "gh-pages --dist ./docs --dest ./",
-        "build:dev": "nx build dotcms-ui",
+        "build:dev": "nx build dotcms-ui --with-deps",
         "build:prod": "nx build dotcms-ui --prod --with-deps",
         "docker:test": "npm run docker:build;IMAGE_BASE_NAME=core-web docker-compose -f docker-compose-running-test.yml up",
         "docker:build": "docker build -t core-web .",
