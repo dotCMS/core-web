@@ -135,7 +135,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.subscribeIframeActions();
         this.subscribePageModelChange();
         this.subscribeOverlayService();
-        this.displayDatasetMissingToast()
+        this.displayDatasetMissingToast();
     }
 
     ngOnDestroy(): void {

@@ -10,7 +10,7 @@ interface DotActionRequestOptions {
     contentType: string;
     data: { [key: string]: any };
     action: ActionToFire;
-    inode?: string
+    inode?: string;
 }
 
 enum ActionToFire {
@@ -93,7 +93,11 @@ export class DotWorkflowActionsFireService {
         });
     }
 
-    saveContentlet<T>(contentType: string, data: { [key: string]: any }, inode: string): Observable<T> {
+    saveContentlet<T>(
+        contentType: string,
+        data: { [key: string]: any },
+        inode: string
+    ): Observable<T> {
         return this.request<T>({
             contentType,
             data,
@@ -121,7 +125,12 @@ export class DotWorkflowActionsFireService {
         });
     }
 
-    private request<T>({ contentType, data, action, inode }: DotActionRequestOptions): Observable<T> {
+    private request<T>({
+        contentType,
+        data,
+        action,
+        inode
+    }: DotActionRequestOptions): Observable<T> {
         return this.coreWebService
             .requestView({
                 method: 'PUT',

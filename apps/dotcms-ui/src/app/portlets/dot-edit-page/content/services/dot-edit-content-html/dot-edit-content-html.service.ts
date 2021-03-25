@@ -39,7 +39,7 @@ export enum DotContentletAction {
 interface DotPageContentExtra {
     innerHTML: string;
     dataset: { mode: string; inode: string; fieldName: string; language: string };
-    element: HTMLElement
+    element: HTMLElement;
 }
 
 @Injectable()
@@ -671,7 +671,7 @@ export class DotEditContentHtmlService {
             tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
                 if (this.inlineCurrentContent !== content.innerHTML) {
                     const contentlet = '[data-dot-object="contentlet"][data-dot-inode]';
-                    const element: HTMLElement = content.element.closest(contentlet)
+                    const element: HTMLElement = content.element.closest(contentlet);
                     const contentletDataset = { ...element.dataset };
 
                     this.dotWorkflowActionsFireService
