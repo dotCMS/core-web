@@ -4,6 +4,9 @@ import { EMPTY, Observable } from 'rxjs';
 // NgRx
 import { ComponentStore } from '@ngrx/component-store';
 
+// Services
+import { UrlValidatorService } from './service/url-validator.service';
+
 // Models
 import { EditorState, Params } from './model/image-editor.model';
 import { catchError, tap, finalize } from 'rxjs/operators';
@@ -13,20 +16,25 @@ import { catchError, tap, finalize } from 'rxjs/operators';
 })
 export class StoreImageService extends ComponentStore<EditorState> {
 
-  constructor() { 
+  constructor(
+    private urlValidatorService: UrlValidatorService,
+  ) { 
     super({
       params: {
-        cropFlipRotate: '',
-        format: '_q/100',
-        fp: '',
-        HBS: '',
         brightness: '',
-        hue: '', 
+        cropFlipRotate: '',
+        cropX   : '',
+        cropY   : '',
+        format  : '',
+        fpX     : '',
+        fpY     : '',
+        hue     : '', 
+        quality : '',
+        resize  : '',
+        rotate  : '',
         saturation: '',
-        quality: '/quality',
-        resize: '',
       },
-      url: '_q/100/quality',
+      url: '',
       loading: false,
     });
   }
@@ -43,7 +51,7 @@ export class StoreImageService extends ComponentStore<EditorState> {
   })
 
   readonly updateURL = this.updater((state: EditorState, params: Params) => {
-    const url = params.cropFlipRotate + params.HBS + params.format + params.quality + params.fp;
+    const url = this.urlValidatorService.buildULR(params);
     return {
       ...state,
       url
@@ -51,7 +59,6 @@ export class StoreImageService extends ComponentStore<EditorState> {
   });
 
   readonly updateParams = this.updater((state: EditorState, params: Params) => {
-    console.log('UpdateParam',params);
     return {
       ...state,
       params

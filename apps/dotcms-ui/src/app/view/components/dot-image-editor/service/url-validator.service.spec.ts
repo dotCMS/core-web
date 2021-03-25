@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ImageEditorService } from './image-editor.service';
+import { UrlValidatorService } from './url-validator.service';
 
-describe('ImageEditorService', () => {
-  let service: ImageEditorService;
+describe('UrlValidatorService', () => {
+  let service: UrlValidatorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ImageEditorService);
+    service = TestBed.inject(UrlValidatorService);
   });
 
   it('should be created', () => {

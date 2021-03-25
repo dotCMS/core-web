@@ -15,22 +15,20 @@ export class EditControlsComponent implements OnInit {
 
   @Input() params: Params;
 
+  // Do not change url
+  public noChangeUrl = ['cropX', 'cropY', 'fpX', 'fpY'];
+
   constructor(
     private storeImage: StoreImageService
   ) { }
 
   ngOnInit(): void {
-    console.log('Init - Component')
+    console.log('Init - Component');
   }
 
-  changeURL() {
+  changeURL(e: Event) {
+    if (this.noChangeUrl.includes(e.target['id'])) {return;}
     this.storeImage.changeURL(this.params);
   }
-
-  setFocalPoint() {
-    console.log('Here');
-    this.params.fp = '50|50'
-  }
-
 
 }

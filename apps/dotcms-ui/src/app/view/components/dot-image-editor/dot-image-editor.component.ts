@@ -17,15 +17,18 @@ export class DotImageEditorComponent implements OnInit {
   public editorState = this.storeImage.state;
 
   public params: Params = {
+    brightness: '0',
     cropFlipRotate: '',
-    format: 'auto',
-    fp: '',
-    HBS: '',
-    brightness: '',
-    hue: '', 
-    saturation: '',
-    quality: '',
-    resize: '',
+    cropX   : '',
+    cropY   : '',
+    format  : 'auto',
+    fpX     : '500',
+    fpY     : '500',
+    hue     : '0', 
+    quality : '100',
+    resize  : '',
+    rotate  : '0',
+    saturation: '0',
   };
 
   constructor(
