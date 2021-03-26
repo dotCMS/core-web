@@ -639,10 +639,10 @@ export class DotEditContentHtmlService {
     }
 
     private resetInlineCurrentContent(content) {
-       return this.inlineCurrentContent.filter((element) => {
-           const currentElementKey = Object.keys(element)[0];
-           return currentElementKey !== content.element.id;
-       });
+        return this.inlineCurrentContent.filter((element) => {
+            const currentElementKey = Object.keys(element)[0];
+            return currentElementKey !== content.element.id;
+        });
     }
 
     private handlerContentletEvents(
@@ -679,19 +679,16 @@ export class DotEditContentHtmlService {
                 ];
 
                 console.log(this.inlineCurrentContent);
-                
             },
             tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
-              
                 // Find the element in the array that has the current content ID
-               const [elementFiltered] = this.inlineCurrentContent.filter((element) => {
-                   const currentElementKey = Object.keys(element)[0];
-                   return currentElementKey === content.element.id
-               });
+                const [elementFiltered] = this.inlineCurrentContent.filter((element) => {
+                    const currentElementKey = Object.keys(element)[0];
+                    return currentElementKey === content.element.id;
+                });
 
                 // If the content doesn't match then we proceed with the request
                 if (elementFiltered[content.element.id] !== content.innerHTML) {
-
                     // Add the loading indicator to the field
                     content.element.classList.add('inline-editing--saving');
 
@@ -705,19 +702,19 @@ export class DotEditContentHtmlService {
                         .subscribe(
                             () => {
                                 // on success
-                                 content.element.classList.remove('inline-editing--saving');
-                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content)
+                                content.element.classList.remove('inline-editing--saving');
+                                this.inlineCurrentContent = this.resetInlineCurrentContent(content);
                             },
                             () => {
                                 // on error
                                 content.element.classList.remove('inline-editing--saving');
                                 content.element.innerHTML = elementFiltered[content.element.id];
-                                this.inlineCurrentContent = this.resetInlineCurrentContent(content);                               
+                                this.inlineCurrentContent = this.resetInlineCurrentContent(content);
                             }
                         );
                 } else {
                     // No changes, reset back the array
-                   this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+                    this.inlineCurrentContent = this.resetInlineCurrentContent(content);
                 }
             },
             // When a user select a content from the search jsp
