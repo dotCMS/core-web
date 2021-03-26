@@ -1,0 +1,15 @@
+
+
+
+
+<div class="p-d-flex p-jc-between p-p-2" [style]="{'max-width': '1250px'}">
+    <dot-edit-controls [params]="params"></dot-edit-controls>
+    <dot-image-container></dot-image-container>
+</div>
+
+
+<ng-container *ngIf="editorState | async as es">
+    <pre><code>
+        {{es | json}}
+    </code></pre>
+</ng-container>

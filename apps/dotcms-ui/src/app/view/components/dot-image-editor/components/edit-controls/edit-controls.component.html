@@ -1,0 +1,134 @@
+<!-- FORMAT -->
+
+<form (change)="changeURL($event)" 
+      (submit)="changeURL($event)"
+      #forma="ngForm">
+    
+    <!-- FORMAT -->
+    <label for="format" class="title">Format</label>
+    <select [(ngModel)]="params.format"
+            name="format"
+            id="format">
+        <option value="auto">Auto</option>
+        <option value="filter/Png">png</option>
+        <option value="jpeg">jpeg</option>
+        <option value="jpegp">jpegp</option>
+        <option value="webp">webp</option>
+    </select>
+    <br>
+    <label for="quality">Quality</label>
+    <input [(ngModel)]="params.quality" 
+            name="quality"
+            type="range" 
+            id="quality"
+            value="100"
+            min="0"
+            max="100">
+    <span>{{params.quality}}</span>
+    <br>
+
+    <!-- ZOOM -->
+    <label for="resize" class="title">Zoom</label>
+    <input  [(ngModel)]="params.resize"
+            name="resize"
+            type="range" 
+            id="resize" 
+            value="1" 
+            min="0.1" 
+            max="2" 
+            step="0.1">
+    <span class="input-value">{{params.resize}}</span>
+    <br>
+
+    <!-- COORDINATE -->
+    <span class="coordinate">50 <small>X</small></span>
+    <span class="coordinate">50 <small>Y</small></span>
+    <br>
+    <button (click)="toggleCrop()" [style]="{'padding': '.5rem 1rem'}" pButton label="Set"></button>
+    <br>
+    <br>
+
+    <!-- CROP -->
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+                <input type="text"
+                [(ngModel)]="params.cropX"
+                name="cropX"
+                id="cropX"
+                value="250" 
+                pInputText>
+                <small>W</small>
+        </div>
+        <div class="p-field p-col">
+                <input type="text"
+                [(ngModel)]="params.cropY"
+                name="cropY"
+                id="cropY"
+                value="250"
+                pInputText>
+                <small>Y</small>
+        </div>
+     </div>
+        <button (click)="toggleCrop()" [style]="{'padding': '.5rem 1rem'}" pButton label="Crop"></button>
+        <button (click)="restoreCrop()" [style]="{'background': 'transparent', 'color': '#333', 'font-size': '1em'}" pButton icon="pi pi-replay"></button>
+
+    <br>
+
+    <!-- Rotate  -->
+    <input type="text" 
+        [(ngModel)]="params.rotate"        
+        name="rotate"
+        id="rotate"
+        value="0">
+    <span class="deg-icon">&deg;</span>
+    
+    <!-- FLIP-->
+    <button (click)="toggleFlip()" id="flip">Flip</button>
+    <br>
+    
+    <!-- Brightness -->
+    <label for="brightness">Brightness</label>
+    <input [(ngModel)]="params.brightness" 
+            name="brightness"
+            type="range" 
+            id="brightness" 
+            value="0" 
+            min="-100" 
+            max="100">
+    <span>{{params.brightness}}</span>
+    <br>
+
+    <!-- Hue -->
+    <label for="hue">Hue</label>
+    <input [(ngModel)]="params.hue"
+            name="hue"
+            type="range"
+            id="hue"
+            value="0"
+            min="-100"
+            max="100">
+    <span>{{params.hue}}</span>
+    <br>
+
+    <!-- Saturation -->
+    <label for="saturation">Saturation</label>
+    <input [(ngModel)]="params.saturation"
+            name="saturation"
+            type="range"
+            id="saturation"
+            min="-100"
+            max="100">
+    <span>{{params.saturation}}</span>
+
+    
+<div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+            <label for="firstname1">Firstname</label>
+            <input id="firstname1" type="text" pInputText> 
+        </div>
+        <div class="p-field p-col">
+            <label for="lastname1">Lastname</label>
+            <input id="lastname1" type="text" pInputText> 
+        </div>
+    </div>
+</form>

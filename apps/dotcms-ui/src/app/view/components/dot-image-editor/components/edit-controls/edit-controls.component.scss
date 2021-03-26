@@ -1,0 +1,36 @@
+/* RANGE INPUT */
+input[type="range"]{
+    -webkit-appearance: none;
+    background: #F5F8FA;
+    border-radius: 10px;
+    border: 1px solid #D4DDE7;
+    color: #fff;
+    height: 8px;
+    width: 180px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 1px solid #D4DDE7;;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0,.4);
+    height: 20px;
+    width: 20px;
+}
+input[type="range"].lock{
+    background-color: #f2f2f2;
+    cursor: not-allowed;
+    /* color: #000; */
+}
+
+input[type=range].lock::-webkit-slider-thumb{
+    background-color: #f2f2f2;
+    border: 1px solid #f2f2f2;
+}
+
+input:focus{
+    outline:none;
+}

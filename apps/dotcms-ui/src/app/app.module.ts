@@ -22,6 +22,8 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { MarkdownModule } from 'ngx-markdown';
 
+// IMAGE EDITOR MODULE
+import { DotImageEditorModule } from './view/components/dot-image-editor/dot-image-editor.module';
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
@@ -39,6 +41,7 @@ import { MarkdownModule } from 'ngx-markdown';
         ReactiveFormsModule,
         AppRoutingModule,
         DotDirectivesModule,
+        DotImageEditorModule,
         DotPipesModule,
         SharedModule.forRoot(),
         MonacoEditorModule.forRoot(),
