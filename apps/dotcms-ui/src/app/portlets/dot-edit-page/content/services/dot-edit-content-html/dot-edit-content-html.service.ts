@@ -55,7 +55,7 @@ export class DotEditContentHtmlService {
     mutationConfig = { attributes: false, childList: true, characterData: false };
     datasetMissing: string[];
 
-    private inlineCurrentContent: { [key: string]: HTMLElement }[] = [];
+    private inlineCurrentContent: { [key: string]: string }[] = [];
     private inlineContent: string;
     private currentAction: DotContentletAction;
     private docClickSubscription: Subscription;
@@ -441,76 +441,73 @@ export class DotEditContentHtmlService {
 
         const script = `
             function handleTinyMCEEvents(editor) {
-                    editor.on('focus blur', (e) => {
+                editor.on("focus blur", (e) => {
+                    const content = tinymce.get(e.target.id).getContent();
+                    const dataset = tinymce.get(e.target.id).targetElm.dataset;
+                    const element = tinymce.get(e.target.id).targetElm;
+                    const dataSetObj = { ...dataset };
 
-                        const content = tinymce.get(e.target.id).getContent();
-                        const dataset = tinymce.get(e.target.id).targetElm.dataset;
-                        const element = tinymce.get(e.target.id).targetElm;
-                        const dataSetObj = {...dataset};
-
-                        if(e.type === "focus") {
-                            window.contentletEvents.next({
-                                name: "tinyMceOnFocus",
-                                data: {
-                                    dataset: dataSetObj,
-                                    innerHTML: content,
-                                    element: element,
-                                }
-                            })
-                        }
-
-
-                        window.contentletEvents.next({
-                            name: "tinyMceOnBlur",
-                            data: {
-                                dataset: dataSetObj,
-                                innerHTML: content,
-                                element: element,
-                            }
-                        })
+                    if (e.type === "focus") {
+                    window.contentletEvents.next({
+                        name: "tinyMceOnFocus",
+                        data: {
+                        dataset: dataSetObj,
+                        innerHTML: content,
+                        element: element,
+                        },
                     });
-                }
+                    }
+
+                    if (e.type === "blur") {
+                    window.contentletEvents.next({
+                        name: "tinyMceOnBlur",
+                        data: {
+                        dataset: dataSetObj,
+                        innerHTML: content,
+                        element: element,
+                        },
+                    });
+                    }
+                });
+            }
 
             const minimalConfig = {
-                selector: '[data-mode="minimal"]',
-                menubar: true,
-                inline: true,
-                plugins: ['link'],
-                toolbar: 'undo redo | bold italic underline',
-                valid_elements: 'strong,em,span[style],a[href]',
-                valid_styles: {
-                    '*': 'font-size,font-family,color,text-decoration,text-align'
-                },
-                powerpaste_word_import: 'clean',
-                powerpaste_html_import: 'clean',
-                content_css: ['//fonts.googleapis.com/css?family=Lato:300,300i,400,400i'],
-                setup: (editor) => handleTinyMCEEvents(editor)
+            selector: '[data-mode="minimal"]',
+            menubar: true,
+            inline: true,
+            plugins: ["link"],
+            toolbar: "undo redo | bold italic underline",
+            valid_elements: "strong,em,span[style],a[href]",
+            valid_styles: {
+                "*": "font-size,font-family,color,text-decoration,text-align",
+            },
+            powerpaste_word_import: "clean",
+            powerpaste_html_import: "clean",
+            content_css: ["//fonts.googleapis.com/css?family=Lato:300,300i,400,400i"],
+            setup: (editor) => handleTinyMCEEvents(editor),
             };
 
             const fullEditConfig = {
-                selector: '[data-mode="full"]',
-                menubar: false,
-                inline: true,
-                plugins: [
-                    'link',
-                    'lists',
-                    'autolink',
-                ],
-                toolbar: [
-                    'undo redo | bold italic underline | fontselect fontsizeselect',
-                    'forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent'
-                ],
-                valid_elements: 'p[style],strong,em,span[style],a[href],ul,ol,li',
-                valid_styles: {
-                    '*': 'font-size,font-family,color,text-decoration,text-align'
-                },
-                powerpaste_word_import: 'clean',
-                powerpaste_html_import: 'clean',
-                setup: (editor) => handleTinyMCEEvents(editor)
+            selector: '[data-mode="full"]',
+            menubar: false,
+            inline: true,
+            plugins: ["link", "lists", "autolink"],
+            toolbar: [
+                "undo redo | bold italic underline | fontselect fontsizeselect",
+                "forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent",
+            ],
+            valid_elements: "p[style],strong,em,span[style],a[href],ul,ol,li",
+            valid_styles: {
+                "*": "font-size,font-family,color,text-decoration,text-align",
+            },
+            powerpaste_word_import: "clean",
+            powerpaste_html_import: "clean",
+            setup: (editor) => handleTinyMCEEvents(editor),
             };
 
             tinymce.init(minimalConfig);
             tinymce.init(fullEditConfig);
+
         `;
 
         const tinyMceInit: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
@@ -641,12 +638,11 @@ export class DotEditContentHtmlService {
         );
     }
 
-    private fakeAsyncEndpoint() {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                reject(false);
-            }, 500);
-        });
+    private resetInlineCurrentContent(content) {
+       return this.inlineCurrentContent.filter((element) => {
+           const currentElementKey = Object.keys(element)[0];
+           return currentElementKey !== content.element.id;
+       });
     }
 
     private handlerContentletEvents(
@@ -678,41 +674,51 @@ export class DotEditContentHtmlService {
                 this.inlineCurrentContent = [
                     ...this.inlineCurrentContent,
                     {
-                        [content.element.id]: content.element
+                        [content.element.id]: content.element.innerHTML
                     }
                 ];
+
+                console.log(this.inlineCurrentContent);
+                
             },
             tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
-                console.log(this.inlineCurrentContent);
+              
+                // Find the element in the array that has the current content ID
+               const [elementFiltered] = this.inlineCurrentContent.filter((element) => {
+                   const currentElementKey = Object.keys(element)[0];
+                   return currentElementKey === content.element.id
+               });
 
-                // if (this.inlineCurrentContent !== content.innerHTML) {
-                //     content.element.classList.add('inline-editing--saving');
+                // If the content doesn't match then we proceed with the request
+                if (elementFiltered[content.element.id] !== content.innerHTML) {
 
-                //     this.fakeAsyncEndpoint().then((response) => {
-                //         if(response) {
-                //             content.element.classList.remove('inline-editing--saving');
-                //         }
-                //     }).catch(error => {
-                //         content.element.classList.remove('inline-editing--saving');
-                //         content.element.classList.add('inline-editing--error');
-                //         setTimeout(() => {
-                //             content.element.innerHTML = this.inlineCurrentContent;
-                //             content.element.classList.remove('inline-editing--error');
-                //         }, 1000)
-                //     })
+                    // Add the loading indicator to the field
+                    content.element.classList.add('inline-editing--saving');
 
-                //     // this.dotWorkflowActionsFireService
-                //     //     .saveContentlet(
-                //     //         'Banner',
-                //     //         { body: content.innerHTML },
-                //     //         content.dataset.inode
-                //     //     )
-                //     //     .subscribe((response) => {
-                //     //         if (response) {
-                //     //             content.element.classList.remove('inline-editing--saving');
-                //     //         }
-                //     //     });
-                // }
+                    // All good, initiate the request
+                    this.dotWorkflowActionsFireService
+                        .saveContentlet(
+                            'Banner',
+                            { body: content.innerHTML },
+                            content.dataset.inode
+                        )
+                        .subscribe(
+                            () => {
+                                // on success
+                                 content.element.classList.remove('inline-editing--saving');
+                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content)
+                            },
+                            () => {
+                                // on error
+                                content.element.classList.remove('inline-editing--saving');
+                                content.element.innerHTML = elementFiltered[content.element.id];
+                                this.inlineCurrentContent = this.resetInlineCurrentContent(content);                               
+                            }
+                        );
+                } else {
+                    // No changes, reset back the array
+                   this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+                }
             },
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {
