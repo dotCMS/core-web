@@ -11,7 +11,8 @@ export class UrlValidatorService {
   public rotateControler = '';
   public flipControler = '0';
   public crop = '';
-  // constructor() { }
+  
+  constructor() { }
 
   buildULR(params: Params) {  
     params.crop   = (params.crop.length > 0)?'': this.buildCrop({ ...params });

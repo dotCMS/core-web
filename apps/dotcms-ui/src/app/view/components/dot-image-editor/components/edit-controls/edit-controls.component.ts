@@ -22,9 +22,7 @@ export class EditControlsComponent implements OnInit {
     private storeImage: StoreImageService
   ) { }
 
-  ngOnInit(): void {
-    console.log('Init - Component');
-  }
+  ngOnInit(): void {}
 
   changeURL(e: Event) {
     if (this.noChangeUrl.includes(e.target['id'])) {return;}

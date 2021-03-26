@@ -36,12 +36,9 @@ export class DotImageEditorComponent implements OnInit {
 
   constructor(
     private storeImage: StoreImageService
-  ) { 
-    console.log('Constructor');
-  }
+  ) { }
 
   ngOnInit(): void {
-    console.log('Init');
     this.storeImage.updateParams(this.params);
   }
 
