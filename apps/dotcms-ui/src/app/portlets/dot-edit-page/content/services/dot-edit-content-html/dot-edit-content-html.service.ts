@@ -1,7 +1,7 @@
 import { fromEvent, of, Observable, Subject, Subscription } from 'rxjs';
 
 import { map, take } from 'rxjs/operators';
-import { Injectable, ElementRef } from '@angular/core';
+import { Injectable, ElementRef, NgZone } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -73,7 +73,8 @@ export class DotEditContentHtmlService {
         private dotMessageService: DotMessageService,
         private messageService: MessageService,
         private dotGlobalMessageService: DotGlobalMessageService,
-        public dotWorkflowActionsFireService: DotWorkflowActionsFireService
+        public dotWorkflowActionsFireService: DotWorkflowActionsFireService,
+        private ngZone: NgZone,
     ) {
         this.contentletEvents$.subscribe(
             (
@@ -82,7 +83,9 @@ export class DotEditContentHtmlService {
                     | DotContentletEventSelect
                     | DotContentletEventSave
             ) => {
-                this.handlerContentletEvents(contentletEvent.name)(contentletEvent.data);
+                this.ngZone.run(() => {
+                    this.handlerContentletEvents(contentletEvent.name)(contentletEvent.data);
+                })
             }
         );
 
@@ -668,8 +671,8 @@ export class DotEditContentHtmlService {
 
                 this.datasetMissing = datasetMissing;
 
-                // TODO: Fix
-                // this.dotGlobalMessageService.success('Hello World');
+               
+                this.dotGlobalMessageService.success('Hello World');
 
                 this.inlineCurrentContent = [
                     ...this.inlineCurrentContent,
