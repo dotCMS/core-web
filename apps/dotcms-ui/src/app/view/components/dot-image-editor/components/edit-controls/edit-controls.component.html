@@ -64,7 +64,9 @@
                 value="250" #cropY>
         <small>Y</small>
     </div>
-    <button id="crop">Crop</button>
+    <button (click)="toggleCrop()" id="crop">Crop</button>
+    <button (click)="restoreCrop()">restore</button>
+
     <br>
 
     <!-- Rotate  -->
@@ -74,8 +76,11 @@
         id="rotate"
         value="0">
     <span class="deg-icon">&deg;</span>
+    
+    <!-- FLIP-->
+    <button (click)="toggleFlip()" id="flip">Flip</button>
     <br>
-
+    
     <!-- Brightness -->
     <label for="brightness">Brightness</label>
     <input [(ngModel)]="params.brightness" 

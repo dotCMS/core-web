@@ -31,4 +31,14 @@ export class EditControlsComponent implements OnInit {
     this.storeImage.changeURL(this.params);
   }
 
+  toggleFlip() {
+    this.params.flip = (this.params.flip) ? '' : '1';
+  }
+
+  toggleCrop() {
+    this.params.cropped = !this.params.cropped
+  }
+  restoreCrop() {
+    this.params.cropped = true;
+  }
 }

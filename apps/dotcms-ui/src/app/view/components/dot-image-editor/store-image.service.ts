@@ -23,6 +23,7 @@ export class StoreImageService extends ComponentStore<EditorState> {
       params: {
         brightness: '',
         cropFlipRotate: '',
+        crop    : '',
         cropX   : '',
         cropY   : '',
         format  : '',
@@ -32,6 +33,8 @@ export class StoreImageService extends ComponentStore<EditorState> {
         quality : '',
         resize  : '',
         rotate  : '',
+        flip    : '',
+        cropped : false,
         saturation: '',
       },
       url: '',

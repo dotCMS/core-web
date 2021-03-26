@@ -19,6 +19,7 @@ export class DotImageEditorComponent implements OnInit {
   public params: Params = {
     brightness: '0',
     cropFlipRotate: '',
+    crop    : '',
     cropX   : '',
     cropY   : '',
     format  : 'auto',
@@ -28,6 +29,8 @@ export class DotImageEditorComponent implements OnInit {
     quality : '100',
     resize  : '',
     rotate  : '0',
+    flip    : '',
+    cropped : false,
     saturation: '0',
   };
 
