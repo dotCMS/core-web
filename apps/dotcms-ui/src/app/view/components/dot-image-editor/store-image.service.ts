@@ -5,7 +5,7 @@ import { EMPTY, Observable } from 'rxjs';
 import { ComponentStore } from '@ngrx/component-store';
 
 // Services
-import { UrlValidatorService } from './service/url-validator.service';
+import { UrlValidatorService } from './services/url-validator.service';
 
 // Models
 import { EditorState, Params } from './model/image-editor.model';
