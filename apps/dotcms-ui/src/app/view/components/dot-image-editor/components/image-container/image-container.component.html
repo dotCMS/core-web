@@ -1,0 +1,6 @@
+<ng-container *ngIf="editorState | async as es">
+    <div class="url-container">
+        https://demo.dotcms.com/contentAsset/image/f67e0a14-b16b-47fc-ae5c-f711333b04c1/image<span class="params" id="params">{{es.url}}</span>
+    </div>
+    <img (load)="ready(imag)" [src]="BASEURL+es.url" alt="dotCMS" id="img" #imag>
+</ng-container>

@@ -43,29 +43,32 @@
     <!-- COORDINATE -->
     <span class="coordinate">50 <small>X</small></span>
     <span class="coordinate">50 <small>Y</small></span>
-    <button class="btn-api-img" id="set">Set</button>
+    <button (click)="toggleCrop()" pButton label="Set"></button>
     <br>
 
     <!-- CROP -->
-    <span class="title">Crop</span>
-    <div>
-        <input type="text"
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+                <input type="text"
                 [(ngModel)]="params.cropX"
                 name="cropX"
                 id="cropX"
-                value="250" #cropX>
-        <small>W</small>
-    </div>
-    <div>
-        <input type="text"
+                value="250" 
+                pInputText>
+                <small>W</small>
+        </div>
+        <div class="p-field p-col">
+                <input type="text"
                 [(ngModel)]="params.cropY"
                 name="cropY"
                 id="cropY"
-                value="250" #cropY>
-        <small>Y</small>
+                value="250"
+                pInputText>
+                <small>Y</small>
+        </div>
     </div>
-    <button (click)="toggleCrop()" id="crop">Crop</button>
-    <button (click)="restoreCrop()">restore</button>
+    <button (click)="toggleCrop()" pButton label="Crop"></button>
+    <button (click)="restoreCrop()" [style]="{'background': 'transparent', 'color': '#333', 'font-size': '1em'}" pButton icon="pi pi-replay"></button>
 
     <br>
 
@@ -115,4 +118,15 @@
             max="100">
     <span>{{params.saturation}}</span>
 
+    
+<div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+            <label for="firstname1">Firstname</label>
+            <input id="firstname1" type="text" pInputText> 
+        </div>
+        <div class="p-field p-col">
+            <label for="lastname1">Lastname</label>
+            <input id="lastname1" type="text" pInputText> 
+        </div>
+    </div>
 </form>

@@ -14,7 +14,7 @@ import { Params } from '../../model/image-editor.model';
 export class EditControlsComponent implements OnInit {
 
   @Input() params: Params;
-
+  
   // Do not change url
   public noChangeUrl = ['cropX', 'cropY', 'fpX', 'fpY'];
 
@@ -38,6 +38,7 @@ export class EditControlsComponent implements OnInit {
   toggleCrop() {
     this.params.cropped = !this.params.cropped
   }
+  
   restoreCrop() {
     this.params.cropped = true;
   }
