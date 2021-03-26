@@ -39,7 +39,7 @@ export enum DotContentletAction {
 interface DotPageContentExtra {
     innerHTML: string;
     dataset: { mode: string; inode: string; fieldName: string; language: string };
-    element: HTMLElement;
+    element?: HTMLElement;
 }
 
 @Injectable()
@@ -55,7 +55,7 @@ export class DotEditContentHtmlService {
     mutationConfig = { attributes: false, childList: true, characterData: false };
     datasetMissing: string[];
 
-    private inlineCurrentContent: string;
+    private inlineCurrentContent: { [key: string]: HTMLElement }[] = [];
     private inlineContent: string;
     private currentAction: DotContentletAction;
     private docClickSubscription: Subscription;
@@ -453,7 +453,8 @@ export class DotEditContentHtmlService {
                                 name: "tinyMceOnFocus",
                                 data: {
                                     dataset: dataSetObj,
-                                    innerHTML: content
+                                    innerHTML: content,
+                                    element: element,
                                 }
                             })
                         }
@@ -464,7 +465,7 @@ export class DotEditContentHtmlService {
                             data: {
                                 dataset: dataSetObj,
                                 innerHTML: content,
-                                element: element
+                                element: element,
                             }
                         })
                     });
@@ -640,6 +641,14 @@ export class DotEditContentHtmlService {
         );
     }
 
+    private fakeAsyncEndpoint() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject(false);
+            }, 500);
+        });
+    }
+
     private handlerContentletEvents(
         event: string
     ): (contentletEvent: DotPageContent | DotRelocatePayload) => void {
@@ -664,24 +673,46 @@ export class DotEditContentHtmlService {
                 this.datasetMissing = datasetMissing;
 
                 // TODO: Fix
-                this.dotGlobalMessageService.success('Hello World');
+                // this.dotGlobalMessageService.success('Hello World');
 
-                this.inlineCurrentContent = content.innerHTML;
+                this.inlineCurrentContent = [
+                    ...this.inlineCurrentContent,
+                    {
+                        [content.element.id]: content.element
+                    }
+                ];
             },
             tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
-                if (this.inlineCurrentContent !== content.innerHTML) {
-                    const contentlet = '[data-dot-object="contentlet"][data-dot-inode]';
-                    const element: HTMLElement = content.element.closest(contentlet);
-                    const contentletDataset = { ...element.dataset };
+                console.log(this.inlineCurrentContent);
 
-                    this.dotWorkflowActionsFireService
-                        .saveContentlet(
-                            'Banner',
-                            { body: content.innerHTML },
-                            contentletDataset.dotInode
-                        )
-                        .subscribe(console.log);
-                }
+                // if (this.inlineCurrentContent !== content.innerHTML) {
+                //     content.element.classList.add('inline-editing--saving');
+
+                //     this.fakeAsyncEndpoint().then((response) => {
+                //         if(response) {
+                //             content.element.classList.remove('inline-editing--saving');
+                //         }
+                //     }).catch(error => {
+                //         content.element.classList.remove('inline-editing--saving');
+                //         content.element.classList.add('inline-editing--error');
+                //         setTimeout(() => {
+                //             content.element.innerHTML = this.inlineCurrentContent;
+                //             content.element.classList.remove('inline-editing--error');
+                //         }, 1000)
+                //     })
+
+                //     // this.dotWorkflowActionsFireService
+                //     //     .saveContentlet(
+                //     //         'Banner',
+                //     //         { body: content.innerHTML },
+                //     //         content.dataset.inode
+                //     //     )
+                //     //     .subscribe((response) => {
+                //     //         if (response) {
+                //     //             content.element.classList.remove('inline-editing--saving');
+                //     //         }
+                //     //     });
+                // }
             },
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {

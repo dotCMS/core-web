@@ -344,6 +344,26 @@ export const getEditPageCss = (timestampId: string): string => {
         z-index: 1 !important;
     }
 
+    ${timestampId} .inline-editing--saving::before {
+        background: rgba(200,200,200, .6);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        content: "";
+        left: 0;
+    }
+
+    ${timestampId} .inline-editing--error::before {
+        background: rgba(255, 0, 0, 0.2);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        content: "";
+        left: 0;
+    }
+
+
+
     [contenteditable="true"] {
         cursor: text;
         border: 1px solid #53c2f9 !important;
