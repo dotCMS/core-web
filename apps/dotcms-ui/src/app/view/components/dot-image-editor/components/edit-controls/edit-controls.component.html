@@ -85,6 +85,7 @@
     <!-- FLIP-->
     <button (click)="toggleFlip()" id="flip">Flip</button>
     <br>
+    <br>
     
     <!-- Brightness -->
     <label for="brightness">Brightness</label>
@@ -96,6 +97,7 @@
             min="-100" 
             max="100">
     <span>{{params.brightness}}</span>
+    <br>
     <br>
 
     <!-- Hue -->
@@ -109,6 +111,7 @@
             max="100">
     <span>{{params.hue}}</span>
     <br>
+    <br>
 
     <!-- Saturation -->
     <label for="saturation">Saturation</label>
@@ -119,16 +122,3 @@
             min="-100"
             max="100">
     <span>{{params.saturation}}</span>
-
-    
-<div class="p-fluid p-formgrid p-grid">
-        <div class="p-field p-col">
-            <label for="firstname1">Firstname</label>
-            <input id="firstname1" type="text" pInputText> 
-        </div>
-        <div class="p-field p-col">
-            <label for="lastname1">Lastname</label>
-            <input id="lastname1" type="text" pInputText> 
-        </div>
-    </div>
-</form>
