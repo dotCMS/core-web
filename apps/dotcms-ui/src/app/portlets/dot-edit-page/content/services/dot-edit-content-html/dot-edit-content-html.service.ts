@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { fromEvent, of, Observable, Subject, Subscription } from 'rxjs';
 
 import { map, take } from 'rxjs/operators';
@@ -475,37 +476,46 @@ export class DotEditContentHtmlService {
             }
 
             const minimalConfig = {
-            selector: '[data-mode="minimal"]',
-            menubar: true,
-            inline: true,
-            plugins: ["link"],
-            toolbar: "undo redo | bold italic underline",
-            valid_elements: "strong,em,span[style],a[href]",
-            valid_styles: {
-                "*": "font-size,font-family,color,text-decoration,text-align",
-            },
-            powerpaste_word_import: "clean",
-            powerpaste_html_import: "clean",
-            content_css: ["//fonts.googleapis.com/css?family=Lato:300,300i,400,400i"],
-            setup: (editor) => handleTinyMCEEvents(editor),
+                selector: '[data-mode="minimal"]',
+                menubar: false,
+                inline: true,
+                plugins: ["link"],
+                toolbar: "bold italic underline | link",
+                valid_elements: "strong,em,span[style],a[href]",
+                valid_styles: {
+                    "*": "font-size,font-family,color,text-decoration,text-align",
+                },
+                powerpaste_word_import: "clean",
+                powerpaste_html_import: "clean",
+                content_css: ["//fonts.googleapis.com/css?family=Lato:300,300i,400,400i"],
+                setup: (editor) => handleTinyMCEEvents(editor),
             };
 
             const fullEditConfig = {
-            selector: '[data-mode="full"]',
-            menubar: false,
-            inline: true,
-            plugins: ["link", "lists", "autolink"],
-            toolbar: [
-                "undo redo | bold italic underline | fontselect fontsizeselect",
-                "forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent",
-            ],
-            valid_elements: "p[style],strong,em,span[style],a[href],ul,ol,li",
-            valid_styles: {
-                "*": "font-size,font-family,color,text-decoration,text-align",
-            },
-            powerpaste_word_import: "clean",
-            powerpaste_html_import: "clean",
-            setup: (editor) => handleTinyMCEEvents(editor),
+                selector: '[data-mode="full"]',
+                menubar: false,
+                inline: true,
+                plugins: ["link", "lists", "autolink", "hr", "charmap"],
+                style_formats: [
+                    {title: "Paragraph",format: "p"},
+                    {title: "Header 1",format: "h1"},
+                    {title: "Header 2",format: "h2"},
+                    {title: "Header 3",format: "h3"},
+                    {title: "Header 4",format: "h4"},
+                    {title: "Header 5",format: "h5"},
+                    {title: "Header 6",format: "h6"},
+                    {title: "Pre",format: "pre"},
+                    {title: "Code",format: "code"},
+                ],
+                toolbar: [
+                    "styleselect | undo redo | bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent | hr charmap removeformat | link",
+                ],
+                valid_styles: {
+                    "*": "font-size,font-family,color,text-decoration,text-align",
+                },
+                powerpaste_word_import: "clean",
+                powerpaste_html_import: "clean",
+                setup: (editor) => handleTinyMCEEvents(editor),
             };
 
             tinymce.init(minimalConfig);
@@ -648,6 +658,14 @@ export class DotEditContentHtmlService {
         });
     }
 
+    private trimHTML(content: string) {
+        return content
+            .replace(/\n/g, '')
+            .replace(/[\t ]+\</g, '<')
+            .replace(/\>[\t ]+\</g, '><')
+            .replace(/\>[\t ]+$/g, '>');
+    }
+
     private handlerContentletEvents(
         event: string
     ): (contentletEvent: DotPageContent | DotRelocatePayload) => void {
@@ -671,7 +689,6 @@ export class DotEditContentHtmlService {
 
                 this.datasetMissing = datasetMissing;
 
-               
                 this.dotGlobalMessageService.success('Hello World');
 
                 this.inlineCurrentContent = [
@@ -690,8 +707,12 @@ export class DotEditContentHtmlService {
                     return currentElementKey === content.element.id;
                 });
 
+                // We need 
+                const previousContentTrimmed = this.trimHTML(elementFiltered[content.element.id]);
+                const newContentTrimmed = this.trimHTML(content.innerHTML);
+
                 // If the content doesn't match then we proceed with the request
-                if (elementFiltered[content.element.id] !== content.innerHTML) {
+                if (previousContentTrimmed !== newContentTrimmed) {
                     // Add the loading indicator to the field
                     content.element.classList.add('inline-editing--saving');
 
