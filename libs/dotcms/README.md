@@ -36,13 +36,13 @@ dotcms.page
 ## Examples
 
 ### Next.js
-Next.js gives you the best developer experience with all the features you need for production. [Read more](https://nextjs.org/)
 
+Next.js gives you the best developer experience with all the features you need for production. [Read more](https://nextjs.org/)
 
 #### Fetching data in the client
 
 ```javascript
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { initDotCMS } from 'dotcms';
 
 const dotcms = initDotCMS({
@@ -56,18 +56,18 @@ export default function Home() {
     useEffect(async () => {
         const page = await dotcms.page.get({
             url: '/index'
-        })
-        setState(page)
-    }, [])
+        });
+        setState(page);
+    }, []);
 
-    return state && <h1>{state.page.title}</h1>
+    return state && <h1>{state.page.title}</h1>;
 }
 ```
 
 #### Fetching data in the server
 
 ```javascript
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { initDotCMS } from 'dotcms';
 
 export default function Home(props) {
@@ -76,11 +76,11 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
     const page = await dotcms.page.get({
-        url: context.req.url, // you can map the urls with dotcms
+        url: context.req.url // you can map the urls with dotcms
     });
 
     return {
-        props: page, // will be passed to the page component as props
+        props: page // will be passed to the page component as props
     };
 }
 ```

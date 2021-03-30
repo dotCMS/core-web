@@ -75,7 +75,7 @@ export class DotEditContentHtmlService {
         private messageService: MessageService,
         private dotGlobalMessageService: DotGlobalMessageService,
         public dotWorkflowActionsFireService: DotWorkflowActionsFireService,
-        private ngZone: NgZone,
+        private ngZone: NgZone
     ) {
         this.contentletEvents$.subscribe(
             (
@@ -86,7 +86,7 @@ export class DotEditContentHtmlService {
             ) => {
                 this.ngZone.run(() => {
                     this.handlerContentletEvents(contentletEvent.name)(contentletEvent.data);
-                })
+                });
             }
         );
 
@@ -707,7 +707,7 @@ export class DotEditContentHtmlService {
                     return currentElementKey === content.element.id;
                 });
 
-                // We need 
+                // We need
                 const previousContentTrimmed = this.trimHTML(elementFiltered[content.element.id]);
                 const newContentTrimmed = this.trimHTML(content.innerHTML);
 
