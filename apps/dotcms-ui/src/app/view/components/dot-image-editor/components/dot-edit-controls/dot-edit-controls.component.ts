@@ -1,28 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 // Services
-import { StoreImageService } from '../../store-image.service';
+import { DotStoreImageService } from '../../dot-store-image.service';
 
 // Models
 import { Params } from '../../model/image-editor.model';
 
 @Component({
   selector: 'dot-edit-controls',
-  templateUrl: './edit-controls.component.html',
-  styleUrls: ['./edit-controls.component.scss']
+  templateUrl: './dot-edit-controls.component.html',
+  styleUrls: ['./dot-edit-controls.component.scss']
 })
-export class EditControlsComponent implements OnInit {
+export class DotEditControlsComponent {
 
   @Input() params: Params;
+  public val = 2;
   
   // Do not change url
   public noChangeUrl = ['cropX', 'cropY', 'fpX', 'fpY'];
 
   constructor(
-    private storeImage: StoreImageService
+    private storeImage: DotStoreImageService
   ) { }
-
-  ngOnInit(): void {}
 
   changeURL(e: Event) {
     if (this.noChangeUrl.includes(e.target['id'])) {return;}

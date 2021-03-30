@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImageContainerComponent } from './image-container.component';
+import { DotImageContainerComponent } from './dot-image-container.component';
 
-describe('ImageContainerComponent', () => {
-  let component: ImageContainerComponent;
-  let fixture: ComponentFixture<ImageContainerComponent>;
+describe('DotImageContainerComponent', () => {
+  let component: DotImageContainerComponent;
+  let fixture: ComponentFixture<DotImageContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImageContainerComponent ]
+      declarations: [ DotImageContainerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImageContainerComponent);
+    fixture = TestBed.createComponent(DotImageContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

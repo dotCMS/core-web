@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 // Services
-import { StoreImageService } from './store-image.service';
+import { DotStoreImageService } from './dot-store-image.service';
 
 // Models
 import { Params } from './model/image-editor.model';
@@ -35,7 +35,7 @@ export class DotImageEditorComponent implements OnInit {
   };
 
   constructor(
-    private storeImage: StoreImageService
+    private storeImage: DotStoreImageService
   ) { }
 
   ngOnInit(): void {

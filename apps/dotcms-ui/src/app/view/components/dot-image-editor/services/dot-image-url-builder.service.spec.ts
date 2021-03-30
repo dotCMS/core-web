@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UrlValidatorService } from './url-validator.service';
+import { DotImageUrlBuilder } from './dot-image-url-builder.service';
 
-describe('UrlValidatorService', () => {
-  let service: UrlValidatorService;
+describe('DotImageUrlBuilder', () => {
+  let service: DotImageUrlBuilder;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(UrlValidatorService);
+    service = TestBed.inject(DotImageUrlBuilder);
   });
 
   it('should be created', () => {

@@ -5,7 +5,7 @@ import { EMPTY, Observable } from 'rxjs';
 import { ComponentStore } from '@ngrx/component-store';
 
 // Services
-import { UrlValidatorService } from './services/url-validator.service';
+import { DotImageUrlBuilder } from './services/dot-image-url-builder.service';
 
 // Models
 import { EditorState, Params } from './model/image-editor.model';
@@ -14,10 +14,10 @@ import { catchError, tap, finalize } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class StoreImageService extends ComponentStore<EditorState> {
+export class DotStoreImageService extends ComponentStore<EditorState> {
 
   constructor(
-    private urlValidatorService: UrlValidatorService,
+    private _dotUB: DotImageUrlBuilder,
   ) { 
     super({
       params: {
@@ -54,7 +54,7 @@ export class StoreImageService extends ComponentStore<EditorState> {
   })
 
   readonly updateURL = this.updater((state: EditorState, params: Params) => {
-    const url = this.urlValidatorService.buildULR(params);
+    const url = this._dotUB.buildULR(params);
     return {
       ...state,
       url

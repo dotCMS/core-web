@@ -6,13 +6,13 @@ import { Params } from '../model/image-editor.model';
 @Injectable({
   providedIn: 'root'
 })
-export class UrlValidatorService {
+export class DotImageUrlBuilder {
 
   public rotateControler = '';
   public flipControler = '0';
   public crop = '';
   
-  constructor() { }
+  // constructor() { }
 
   buildULR(params: Params) {  
     params.crop   = (params.crop.length > 0)?'': this.buildCrop({ ...params });
