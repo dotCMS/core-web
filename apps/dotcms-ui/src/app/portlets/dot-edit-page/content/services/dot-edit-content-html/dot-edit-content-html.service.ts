@@ -732,7 +732,7 @@ export class DotEditContentHtmlService {
                                 content.element.classList.remove('inline-editing--saving');
                                 content.element.innerHTML = elementFiltered[content.element.id];
                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content);
-                                this.dotGlobalMessageService.error('Unable to save')
+                                this.dotGlobalMessageService.error('Unable to save');
                             }
                         );
                 } else {
