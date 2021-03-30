@@ -689,8 +689,6 @@ export class DotEditContentHtmlService {
 
                 this.datasetMissing = datasetMissing;
 
-                this.dotGlobalMessageService.success('Hello World');
-
                 this.inlineCurrentContent = [
                     ...this.inlineCurrentContent,
                     {
@@ -734,6 +732,7 @@ export class DotEditContentHtmlService {
                                 content.element.classList.remove('inline-editing--saving');
                                 content.element.innerHTML = elementFiltered[content.element.id];
                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+                                this.dotGlobalMessageService.error('Unable to save')
                             }
                         );
                 } else {
