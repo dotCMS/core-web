@@ -32,7 +32,7 @@ export class AccountService {
         return this.coreWebService
             .requestView({
                 method: 'PUT',
-                url: '/api/v1/toolgroups/gettingstarted/_addtocurrentuser'
+                url: '/api/v1/toolgroups/gettingstarted/_addtouser'
             })
             .pipe(take(1), pluck('entity'));
     }
@@ -47,7 +47,7 @@ export class AccountService {
         return this.coreWebService
             .requestView({
                 method: 'PUT',
-                url: '/api/v1/toolgroups/gettingstarted/_removefromcurrentuser'
+                url: '/api/v1/toolgroups/gettingstarted/_removefromuser'
             })
             .pipe(take(1), pluck('entity'));
     }
