@@ -10,10 +10,30 @@ svg{
     z-index: -1;
 }
 
+label{
+    color: #333;
+}
+
 .control-group{
-    height: 32px;
+    height: 58px;
     margin-bottom: 20px;
-    max-height: 32px;
+    max-height: 58px;
+    
+    &.slider-group{
+        height: 55px;
+        max-height: 55px;
+    }
+
+    &.dropdown-group{
+        height: 70px;
+        max-height: 70px;
+    }
+
+    .inputs-group{
+        height: 32px;
+        max-height: 32px;
+    }
+
     .crop-input-container{
         align-items: center;
         background-color: $dot-image-input-background;
@@ -71,7 +91,21 @@ svg{
                 margin: 0px 5px;
             }
         }
-    }    
+    }
+
+    .range-value{
+        background-color: $dot-image-input-background;
+        border-radius: 5px;
+        border: 1px solid $dot-image-input-border;
+        color: $dot-image-input-font-color;
+        display: inline-block;
+        font-size: 12px;
+        min-width: 45px !important;
+        padding: 2px 3px;
+        text-align: center;
+        text-align: right;
+    }
+
 }
 
 
@@ -96,7 +130,8 @@ svg{
 }
 
 .btn-controls{
-    width: 4em !important;
+    width: 55px !important;
+    padding: 0px;
     height: 100%;
     font-size: 1em;
     display: flex;
@@ -117,37 +152,3 @@ svg{
         background: transparent;
     }
 }
-
-// p-slider{
-//     width: 200px !important;
-//     height: 20px !important;
-// }
-
-// .p-slider{
-//     height: 4px !important;
-//     background-color: #dee2e6 !important;
-// }
-
-// .p-slider.p-slider-horizontal {
-//     height: 0.286rem !important;
-// }
-
-// .p-slider-horizontal .p-slider-range {
-//     height: 100% !important;
-//     left: 0;
-//     top: 0;
-//     background: #2196F3 !important; 
-// }
-
-// .p-slider.p-slider-horizontal .p-slider-handle {
-//     margin-top: -0.5715rem !important;
-//     margin-left: -0.5715rem !important;
-// }
-// .p-slider .p-slider-handle {
-//     height: 1.143rem !important;
-//     width: 1.143rem !important;
-//     background: #ffffff !important;
-//     border: 2px solid #2196F3 !important;
-//     border-radius: 50% !important;
-//     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s !important;
-// }

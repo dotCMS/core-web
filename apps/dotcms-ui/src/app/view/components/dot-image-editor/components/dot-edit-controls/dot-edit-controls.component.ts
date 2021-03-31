@@ -14,17 +14,15 @@ import { Params } from '../../model/image-editor.model';
 export class DotEditControlsComponent {
 
   @Input() params: Params;
+  
   public formatOption = [
     { label: 'Auto', value: 'auto' },
     { label: 'png', value: 'Png' },
-    { label: 'jpg', value: 'jpg' },
     { label: 'jpeg', value: 'jpeg' },
     { label: 'jpegp', value: 'jpegp' },
     { label: 'webp', value: 'webp' },
   ];
-  
-  val: number;
-  
+  public val = 0;
   // Do not change url
   public noChangeUrl = ['cropX', 'cropY', 'fpX', 'fpY'];
 

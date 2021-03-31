@@ -1,60 +1,105 @@
 <!-- FORMAT -->
 
 
-<div class="p-grid p-fluid" [style]="{'width': '280px', 'padding':'12px', 'height':'500px','background':'#fff'}">
+<div class="p-grid p-fluid" [style]="{'width': '280px', 'padding':'12px', 'height':'750px','background':'#fff'}">
     <div class="p-col-12 p-md-12">
-        <div class="control-group">
+        <div class="control-group dropdown-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Format</label>
             <p-dropdown [options]="formatOption" optionLabel="label" optionValue="value" [style]="{'border': '1px solid #D4DDE7', 'border-radius': '5px'}"></p-dropdown>
         </div>
 
-        <div class="p-inputgroup p-d-flex p-jc-between control-group">
-            <div class="coordinates-container">
-                <span class="coordinate">50 <small>X</small></span>
-                <span class="coordinate">50 <small>Y</small></span>
+        <div class="control-group slider-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Quality</label>
+            <div class="p-inputgroup p-pl-2 p-d-flex p-jc-between">
+                <p-slider [(ngModel)]="val"></p-slider>
+                <span class="range-value">{{val}}</span>
             </div>
-            <button (click)="toggleCrop()" class="btn-controls" pButton label="Crop"></button>
-            <button (click)="restoreCrop()" class="btn-undo" pButton icon="pi pi-replay"></button>    
         </div>
 
-        <div class="p-inputgroup p-d-flex p-jc-between control-group">   
-            <div class="crop-group p-d-flex p-jc-between" [style]="{'width': '150px', 'padding': '0px'}">
-                <div class="crop-input-container" [style]="{'margin-right': '10px'}">
-                    <input class="crop-input" type="text" pInputText value="250">
-                    <small>W</small>
-                </div>
-                <div class="crop-input-container">
-                    <input class="crop-input" type="text" pInputText value="250">
-                    <small>Y</small>
-                </div>
+        <div class="control-group slider-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Zoom</label>
+            <div class="p-inputgroup p-pl-2 p-d-flex p-jc-between">
+                <p-slider [(ngModel)]="val"></p-slider>
+                <span class="range-value">{{val}}</span>
             </div>
-            <button (click)="toggleCrop()" class="btn-controls" pButton label="Crop"></button>
-            <button (click)="restoreCrop()" class="btn-undo" pButton icon="pi pi-replay"></button>    
         </div>
-        
-        <div class="p-inputgroup p-d-flex p-jc-between control-group">
-            <div [style]="{'width': '90px'}">
-                <div class="rotate-input-container">
-                    <input type="text" [style]="{'background': '#F5F8FA', 'border': 'none', 'width': '55px', 'padding': '4px 5px'}" id="rotate" value="0">
-                    <span [style]="{'display': 'inline-block', 'font-size': '20px'}">°</span>
+
+        <div class="control-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Focal Point</label>
+            <div class="p-inputgroup p-d-flex p-jc-between inputs-group">
+                <div class="coordinates-container p-mr-2">
+                    <span class="coordinate">50 <small>X</small></span>
+                    <span class="coordinate">50 <small>Y</small></span>
                 </div>
+                <button class="btn-controls p-mr-1" pButton label="SET"></button>
+                <button class="btn-undo" pButton icon="pi pi-replay"></button>    
             </div>
-            <button class="btn-rotate">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33" fill="none">
-                    <path d="M0 32.5L14.6667 0.5V32.5H0Z" fill="#9A9999"/>
-                    <path d="M32 32.5L17.3333 0.5V32.5H32Z" fill="#D8D8D8"/>
-                </svg>
-            </button>
-            <button class="btn-rotate">
-                <svg [style]="{'transform': 'rotate(90deg)'}" xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33" fill="none">
-                    <path d="M0 32.5L14.6667 0.5V32.5H0Z" fill="#9A9999"/>
-                    <path d="M32 32.5L17.3333 0.5V32.5H32Z" fill="#D8D8D8"/>
-                </svg>
-            </button>
-            <button (click)="restoreCrop()" class="btn-undo" pButton icon="pi pi-replay"></button>    
+        </div>
+        <div class="control-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Crop</label>
+            <div class="p-inputgroup p-d-flex p-jc-between inputs-group">   
+                <div class="crop-group p-d-flex p-jc-between p-mr-2" [style]="{'width': '150px', 'padding': '0px'}">
+                    <div class="crop-input-container" [style]="{'margin-right': '10px'}">
+                        <input class="crop-input" type="text" pInputText value="250">
+                        <small>W</small>
+                    </div>
+                    <div class="crop-input-container">
+                        <input class="crop-input" type="text" pInputText value="250">
+                        <small>Y</small>
+                    </div>
+                </div>
+                <button (click)="toggleCrop()" class="btn-controls p-mr-1" pButton label="Crop"></button>
+                <button (click)="restoreCrop()" class="btn-undo" pButton icon="pi pi-replay"></button>    
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Rotate</label>
+            <div class="p-inputgroup p-d-flex p-jc-between inputs-group">
+                <div [style]="{'width': '90px'}">
+                    <div class="rotate-input-container">
+                        <input type="text" [style]="{'background': '#F5F8FA', 'border': 'none', 'width': '55px', 'padding': '4px 5px'}" id="rotate" value="0">
+                        <span [style]="{'display': 'inline-block', 'font-size': '20px'}">°</span>
+                    </div>
+                </div>
+                <button class="btn-rotate">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33" fill="none">
+                        <path d="M0 32.5L14.6667 0.5V32.5H0Z" fill="#9A9999"/>
+                        <path d="M32 32.5L17.3333 0.5V32.5H32Z" fill="#D8D8D8"/>
+                    </svg>
+                </button>
+                <button class="btn-rotate">
+                    <svg [style]="{'transform': 'rotate(90deg)'}" xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33" fill="none">
+                        <path d="M0 32.5L14.6667 0.5V32.5H0Z" fill="#9A9999"/>
+                        <path d="M32 32.5L17.3333 0.5V32.5H32Z" fill="#D8D8D8"/>
+                    </svg>
+                </button>
+                <button (click)="restoreCrop()" class="btn-undo" pButton icon="pi pi-replay"></button>    
+            </div>
+        </div>
+
+        <div class="control-group slider-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Brightness</label>
+            <div class="p-inputgroup p-pl-2 p-d-flex p-jc-between">
+                <p-slider [(ngModel)]="val"></p-slider>
+                <span class="range-value">{{val}}</span>
+            </div>
+        </div>
+
+        <div class="control-group slider-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Hue</label>
+            <div class="p-inputgroup p-pl-2 p-d-flex p-jc-between">
+                <p-slider [(ngModel)]="val"></p-slider>
+                <span class="range-value">{{val}}</span>
+            </div>
+        </div>
+
+        <div class="control-group slider-group">
+            <label class="p-d-inline-block p-mb-3 p-ml-1 p-text-bold">Saturation</label>
+            <div class="p-inputgroup p-pl-2 p-d-flex p-jc-between">
+                <p-slider [(ngModel)]="val"></p-slider>
+                <span class="range-value">{{val}}</span>
+            </div>
         </div>
     </div>
-</div>
-<div style="width: 200px; height: 20px;">
-    {{val}}
-    <p-slider [(ngModel)]="val"></p-slider>
 </div>
