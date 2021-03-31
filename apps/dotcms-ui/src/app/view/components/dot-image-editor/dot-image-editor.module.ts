@@ -9,6 +9,7 @@ import { DotImageContainerComponent } from './components/dot-image-container/dot
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SliderModule } from 'primeng/slider';
     FormsModule,
     ButtonModule,
     DropdownModule,
-    SliderModule
+    SliderModule,
+    InputTextModule,
   ],
   exports: [
     DotImageEditorComponent

@@ -1,121 +1,60 @@
 <!-- FORMAT -->
 
-<form (change)="changeURL($event)" 
-      (submit)="changeURL($event)"
-      #forma="ngForm">
-    
-    <!-- FORMAT -->
-    <label for="format" class="title">Format</label>
-    <select [(ngModel)]="params.format"
-            name="format"
-            id="format">
-        <option value="auto">Auto</option>
-        <option value="filter/Png">png</option>
-        <option value="jpeg">jpeg</option>
-        <option value="jpegp">jpegp</option>
-        <option value="webp">webp</option>
-    </select>
-    <br>
-    <label for="quality">Quality</label>
-    <input [(ngModel)]="params.quality" 
-            name="quality"
-            type="range" 
-            id="quality"
-            value="100"
-            min="0"
-            max="100">
-    <span>{{params.quality}}</span>
-    <br>
 
-    <!-- ZOOM -->
-    <label for="resize" class="title">Zoom</label>
-    <input  [(ngModel)]="params.resize"
-            name="resize"
-            type="range" 
-            id="resize" 
-            value="1" 
-            min="0.1" 
-            max="2" 
-            step="0.1">
-    <span class="input-value">{{params.resize}}</span>
-    <br>
-
-    <!-- COORDINATE -->
-    <span class="coordinate">50 <small>X</small></span>
-    <span class="coordinate">50 <small>Y</small></span>
-    <br>
-    <button (click)="toggleCrop()" [style]="{'padding': '.5rem 1rem'}" pButton label="Set"></button>
-    <br>
-    <br>
-
-    <!-- CROP -->
-    <div class="p-fluid p-formgrid p-grid">
-        <div class="p-field p-col">
-                <input type="text"
-                [(ngModel)]="params.cropX"
-                name="cropX"
-                id="cropX"
-                value="250" 
-                pInputText>
-                <small>W</small>
+<div class="p-grid p-fluid" [style]="{'width': '280px', 'padding':'12px', 'height':'500px','background':'#fff'}">
+    <div class="p-col-12 p-md-12">
+        <div class="control-group">
+            <p-dropdown [options]="formatOption" optionLabel="label" optionValue="value" [style]="{'border': '1px solid #D4DDE7', 'border-radius': '5px'}"></p-dropdown>
         </div>
-        <div class="p-field p-col">
-                <input type="text"
-                [(ngModel)]="params.cropY"
-                name="cropY"
-                id="cropY"
-                value="250"
-                pInputText>
-                <small>Y</small>
+
+        <div class="p-inputgroup p-d-flex p-jc-between control-group">
+            <div class="coordinates-container">
+                <span class="coordinate">50 <small>X</small></span>
+                <span class="coordinate">50 <small>Y</small></span>
+            </div>
+            <button (click)="toggleCrop()" class="btn-controls" pButton label="Crop"></button>
+            <button (click)="restoreCrop()" class="btn-undo" pButton icon="pi pi-replay"></button>    
         </div>
-     </div>
-        <button (click)="toggleCrop()" [style]="{'padding': '.5rem 1rem'}" pButton label="Crop"></button>
-        <button (click)="restoreCrop()" [style]="{'background': 'transparent', 'color': '#333', 'font-size': '1em'}" pButton icon="pi pi-replay"></button>
 
-    <br>
-
-    <!-- Rotate  -->
-    <input type="text" 
-        [(ngModel)]="params.rotate"        
-        name="rotate"
-        id="rotate"
-        value="0">
-    <span class="deg-icon">&deg;</span>
-    
-    <!-- FLIP-->
-    <button (click)="toggleFlip()" id="flip">Flip</button>
-    <br>
-    <br>
-    
-    <!-- Brightness -->
-    <label for="brightness">Brightness</label>
-    <input [(ngModel)]="params.brightness" 
-            name="brightness"
-            type="range" 
-            id="brightness" 
-            value="0" 
-            min="-100" 
-            max="100">
-    <span>{{params.brightness}}</span>
-    <br>
-    <br>
-
-    <!-- Hue -->
-    <label for="hue">Hue</label>
-    <input [(ngModel)]="params.hue"
-            name="hue"
-            type="range"
-            id="hue"
-            value="0"
-            min="-100"
-            max="100">
-    <span>{{params.hue}}</span>
-    <br>
-    <br>
-
-    <!-- Saturation -->
-    <label for="saturation">Saturation</label>
-
+        <div class="p-inputgroup p-d-flex p-jc-between control-group">   
+            <div class="crop-group p-d-flex p-jc-between" [style]="{'width': '150px', 'padding': '0px'}">
+                <div class="crop-input-container" [style]="{'margin-right': '10px'}">
+                    <input class="crop-input" type="text" pInputText value="250">
+                    <small>W</small>
+                </div>
+                <div class="crop-input-container">
+                    <input class="crop-input" type="text" pInputText value="250">
+                    <small>Y</small>
+                </div>
+            </div>
+            <button (click)="toggleCrop()" class="btn-controls" pButton label="Crop"></button>
+            <button (click)="restoreCrop()" class="btn-undo" pButton icon="pi pi-replay"></button>    
+        </div>
+        
+        <div class="p-inputgroup p-d-flex p-jc-between control-group">
+            <div [style]="{'width': '90px'}">
+                <div class="rotate-input-container">
+                    <input type="text" [style]="{'background': '#F5F8FA', 'border': 'none', 'width': '55px', 'padding': '4px 5px'}" id="rotate" value="0">
+                    <span [style]="{'display': 'inline-block', 'font-size': '20px'}">°</span>
+                </div>
+            </div>
+            <button class="btn-rotate">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33" fill="none">
+                    <path d="M0 32.5L14.6667 0.5V32.5H0Z" fill="#9A9999"/>
+                    <path d="M32 32.5L17.3333 0.5V32.5H32Z" fill="#D8D8D8"/>
+                </svg>
+            </button>
+            <button class="btn-rotate">
+                <svg [style]="{'transform': 'rotate(90deg)'}" xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33" fill="none">
+                    <path d="M0 32.5L14.6667 0.5V32.5H0Z" fill="#9A9999"/>
+                    <path d="M32 32.5L17.3333 0.5V32.5H32Z" fill="#D8D8D8"/>
+                </svg>
+            </button>
+            <button (click)="restoreCrop()" class="btn-undo" pButton icon="pi pi-replay"></button>    
+        </div>
+    </div>
+</div>
+<div style="width: 200px; height: 20px;">
+    {{val}}
     <p-slider [(ngModel)]="val"></p-slider>
-</form>
-HERE: 
+</div>
