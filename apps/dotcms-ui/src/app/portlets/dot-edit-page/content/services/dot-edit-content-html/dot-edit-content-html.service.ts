@@ -446,7 +446,7 @@ export class DotEditContentHtmlService {
         // TODO:
         // 1. init based on inode and fieldName
         // 2. remove editor on blur
-        // 3. add pointerEvents on focus 
+        // 3. add pointerEvents on focus
         // 4. resolve dble-click issue. re: pointer events
         // 5. fix request on full if no changes were made
         // 6. En vez de click set active con setActive
@@ -554,8 +554,6 @@ export class DotEditContentHtmlService {
                 }
             })
         `;
-
-
 
         const tinyMceInit: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
             script
@@ -709,8 +707,7 @@ export class DotEditContentHtmlService {
         datasetMissing.forEach((dataset) => {
             this.dotGlobalMessageService.error(`${dataset} ${message}`);
         });
-
-    }
+    };
 
     private handlerContentletEvents(
         event: string
