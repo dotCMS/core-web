@@ -4,17 +4,17 @@ import { CoreWebService, ResponseView } from '@dotcms/dotcms-js';
 import { take, pluck } from 'rxjs/operators';
 
 @Injectable()
-export class AccountService {
+export class DotAccountService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
      * Updates user data
      *
-     * @param {AccountUser} user
+     * @param {DotAccountUser} user
      * @returns {Observable<ResponseView>}
-     * @memberof AccountService
+     * @memberof DotAccountService
      */
-    updateUser(user: AccountUser): Observable<ResponseView> {
+    updateUser(user: DotAccountUser): Observable<ResponseView> {
         return this.coreWebService.requestView({
             body: user,
             method: 'PUT',
@@ -26,7 +26,7 @@ export class AccountService {
      * Put request to add the getting starter portlet to menu
      *
      * @returns {Observable<string>}
-     * @memberof AccountService
+     * @memberof DotAccountService
      */
     addStarterPage(): Observable<string> {
         return this.coreWebService
@@ -41,7 +41,7 @@ export class AccountService {
      * put request to remove the getting starter portlet to menu
      *
      * @returns {Observable<string>}
-     * @memberof AccountService
+     * @memberof DotAccountService
      */
     removeStarterPage(): Observable<string> {
         return this.coreWebService
@@ -53,7 +53,7 @@ export class AccountService {
     }
 }
 
-export interface AccountUser {
+export interface DotAccountUser {
     userId: string;
     givenName: string;
     surname: string;

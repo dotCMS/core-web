@@ -5,9 +5,9 @@ import {
     DotPermissionsType,
     PermissionsType
 } from '@models/dot-current-user/dot-current-user';
+import { DotAccountService } from '@services/dot-account-service';
 import { Observable } from 'rxjs';
 import { pluck, take, map } from 'rxjs/operators';
-import { AccountService } from '@services/account-service';
 
 @Component({
     selector: 'dot-starter',
@@ -28,7 +28,7 @@ export class DotStarterComponent implements OnInit {
     showCreatePageLink: boolean;
     showCreateTemplateLink: boolean;
 
-    constructor(private route: ActivatedRoute, private accountService: AccountService) {}
+    constructor(private route: ActivatedRoute, private dotAccountService: DotAccountService) {}
 
     ngOnInit() {
         this.userData$ = this.route.data.pipe(
@@ -62,7 +62,7 @@ export class DotStarterComponent implements OnInit {
     handleVisibility(hide: boolean): void {
         const layoutId = 'gettingstarted';
         hide
-            ? this.accountService.removeStarterPage().subscribe()
-            : this.accountService.addStarterPage().subscribe();
+            ? this.dotAccountService.removeStarterPage().subscribe()
+            : this.dotAccountService.addStarterPage().subscribe();
     }
 }

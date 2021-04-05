@@ -1,30 +1,30 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AccountService, AccountUser } from './account-service';
+import {  DotAccountUser, DotAccountService } from './dot-account-service';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
-describe('AccountService', () => {
-    let service: AccountService;
+describe('DotAccountService', () => {
+    let service: DotAccountService;
     let httpTestingController: HttpTestingController;
 
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 providers: [
-                    AccountService,
+                    DotAccountService,
                     { provide: CoreWebService, useClass: CoreWebServiceMock }
                 ],
                 imports: [HttpClientTestingModule]
             });
 
-            service = TestBed.inject(AccountService);
+            service = TestBed.inject(DotAccountService);
             httpTestingController = TestBed.inject(HttpTestingController);
         })
     );
 
     it('Should update user data', () => {
-        const user: AccountUser = {
+        const user: DotAccountUser = {
             userId: '1',
             givenName: 'Test',
             surname: 'test',

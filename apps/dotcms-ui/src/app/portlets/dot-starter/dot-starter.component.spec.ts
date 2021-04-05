@@ -10,12 +10,11 @@ import { DotStarterResolver } from './dot-starter-resolver.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
-import { DotToolGroupService } from '@services/dot-tool-group/dot-tool-group.service';
 import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { AccountService } from '@services/account-service';
+import { DotAccountService } from '@services/dot-account-service';
 
 const messages = {
     'starter.title': 'Welcome!',
@@ -81,7 +80,7 @@ describe('DotStarterComponent', () => {
     let fixture: ComponentFixture<DotStarterComponent>;
     let de: DebugElement;
     const messageServiceMock = new MockDotMessageService(messages);
-    let dotAccountService: AccountService;
+    let dotAccountService: DotAccountService;
     let activatedRoute: ActivatedRoute;
 
     beforeEach(
@@ -98,14 +97,14 @@ describe('DotStarterComponent', () => {
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
                     { provide: DotRouterService, useClass: MockDotRouterService },
                     DotStarterResolver,
-                    AccountService
+                    DotAccountService
                 ]
             });
 
             fixture = TestBed.createComponent(DotStarterComponent);
 
             de = fixture.debugElement;
-            dotAccountService = TestBed.inject(AccountService);
+            dotAccountService = TestBed.inject(DotAccountService);
             activatedRoute = TestBed.inject(ActivatedRoute);
         })
     );
