@@ -443,6 +443,15 @@ export class DotEditContentHtmlService {
     private initInlineEditing(): void {
         const doc = this.getEditPageDocument();
 
+        // TODO:
+        // 1. init based on inode and fieldName
+        // 2. remove editor on blur
+        // 3. add pointerEvents on focus 
+        // 4. resolve dble-click issue. re: pointer events
+        // 5. fix request on full if no changes were made
+        // 6. En vez de click set active con setActive
+        // 7. tests
+
         const script = `
             function handleTinyMCEEvents(editor) {
                 editor.on("focus blur", (e) => {
@@ -451,26 +460,31 @@ export class DotEditContentHtmlService {
                     const element = tinymce.get(e.target.id).targetElm;
                     const dataSetObj = { ...dataset };
 
+                    console.log(editor.remove)
+
                     if (e.type === "focus") {
-                    window.contentletEvents.next({
-                        name: "tinyMceOnFocus",
-                        data: {
-                        dataset: dataSetObj,
-                        innerHTML: content,
-                        element: element,
-                        },
-                    });
+
+                        element.style.pointerEvents = 'auto'
+
+                        window.contentletEvents.next({
+                            name: "tinyMceOnFocus",
+                            data: {
+                                dataset: dataSetObj,
+                                innerHTML: content,
+                                element: element,
+                            },
+                        });
                     }
 
                     if (e.type === "blur") {
-                    window.contentletEvents.next({
-                        name: "tinyMceOnBlur",
-                        data: {
-                        dataset: dataSetObj,
-                        innerHTML: content,
-                        element: element,
-                        },
-                    });
+                        window.contentletEvents.next({
+                            name: "tinyMceOnBlur",
+                            data: {
+                                dataset: dataSetObj,
+                                innerHTML: content,
+                                element: element,
+                            },
+                        });
                     }
                 });
             }
@@ -492,7 +506,6 @@ export class DotEditContentHtmlService {
             };
 
             const fullEditConfig = {
-                selector: '[data-mode="full"]',
                 menubar: false,
                 inline: true,
                 plugins: ["link", "lists", "autolink", "hr", "charmap"],
@@ -518,10 +531,31 @@ export class DotEditContentHtmlService {
                 setup: (editor) => handleTinyMCEEvents(editor),
             };
 
-            tinymce.init(minimalConfig);
-            tinymce.init(fullEditConfig);
+            // tinymce.init(minimalConfig);
+            tinymce.init(fullEditConfig);   
+            
+            // Array.from(document.querySelectorAll('[data-mode="full"]')).forEach(element => element.addEventListener('mouseenter', function() {
+            //     tinymce.init(fullEditConfig);
+            // }))
 
+            document.addEventListener('mouseover', function(e) {
+                console.log('running')
+
+                const dataset = {...e.target.dataset};
+                if(dataset.mode === 'minimal') {
+                //      tinymce.init(minimalConfig);
+                }
+
+                if(dataset.mode === 'full') {
+                   tinymce.init({
+                       ...fullEditConfig,
+                       selector: '[data-mode="full"]'
+                   });
+                }
+            })
         `;
+
+
 
         const tinyMceInit: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
             script
@@ -666,6 +700,18 @@ export class DotEditContentHtmlService {
             .replace(/\>[\t ]+$/g, '>');
     }
 
+    private handleDatasetMissingErrors = (content) => {
+        const requiredDatasetKeys = ['mode', 'inode', 'fieldName', 'language'];
+        const datasetMissing = requiredDatasetKeys.filter(function (key) {
+            return !Object.keys(content.dataset).includes(key);
+        });
+        const message = this.dotMessageService.get('editpage.inline.attribute.error');
+        datasetMissing.forEach((dataset) => {
+            this.dotGlobalMessageService.error(`${dataset} ${message}`);
+        });
+
+    }
+
     private handlerContentletEvents(
         event: string
     ): (contentletEvent: DotPageContent | DotRelocatePayload) => void {
@@ -682,21 +728,13 @@ export class DotEditContentHtmlService {
                 }
             },
             tinyMceOnFocus: (content: DotPageContent & DotPageContentExtra) => {
-                const requiredDatasetKeys = ['mode', 'inode', 'fieldName', 'language'];
-                const datasetMissing = requiredDatasetKeys.filter(function (key) {
-                    return !Object.keys(content.dataset).includes(key);
-                });
-
-                this.datasetMissing = datasetMissing;
-
+                this.handleDatasetMissingErrors(content);
                 this.inlineCurrentContent = [
                     ...this.inlineCurrentContent,
                     {
                         [content.element.id]: content.element.innerHTML
                     }
                 ];
-
-                console.log(this.inlineCurrentContent);
             },
             tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
                 // Find the element in the array that has the current content ID
@@ -704,8 +742,7 @@ export class DotEditContentHtmlService {
                     const currentElementKey = Object.keys(element)[0];
                     return currentElementKey === content.element.id;
                 });
-
-                // We need
+                // We need to trim down the HTML strings to avoid mismatch
                 const previousContentTrimmed = this.trimHTML(elementFiltered[content.element.id]);
                 const newContentTrimmed = this.trimHTML(content.innerHTML);
 
@@ -718,7 +755,7 @@ export class DotEditContentHtmlService {
                     this.dotWorkflowActionsFireService
                         .saveContentlet(
                             'Banner',
-                            { body: content.innerHTML },
+                            { [content.dataset.fieldName]: content.innerHTML },
                             content.dataset.inode
                         )
                         .subscribe(
@@ -732,7 +769,8 @@ export class DotEditContentHtmlService {
                                 content.element.classList.remove('inline-editing--saving');
                                 content.element.innerHTML = elementFiltered[content.element.id];
                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content);
-                                this.dotGlobalMessageService.error('Unable to save');
+                                const message = this.dotMessageService.get('editpage.inline.error');
+                                this.dotGlobalMessageService.error(message);
                             }
                         );
                 } else {

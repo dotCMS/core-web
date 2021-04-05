@@ -361,15 +361,17 @@ export const getEditPageCss = (timestampId: string): string => {
         left: 0;
     }
 
+    [data-mode="full"] > * {
+        pointer-events: none;
+    }
 
-
-    [contenteditable="true"] {
+    [data-mode] {
         cursor: text;
         border: 1px solid #53c2f9 !important;
         display: block;
     }
 
-    [contenteditable="true"]:focus {
+    [data-mode]:focus {
          background: white;
         border: 1px solid black !important;
         outline: none;
