@@ -44,7 +44,7 @@ describe('DotAccountService', () => {
         service.addStarterPage().subscribe();
 
         const reqMock = httpTestingController.expectOne((req) => {
-            return req.url === '/api/v1/toolgroups/gettingstarted/_addtocurrentuser';
+            return req.url === '/api/v1/toolgroups/gettingstarted/_addtouser';
         });
         expect(reqMock.request.method).toBe('PUT');
         reqMock.flush({});
@@ -54,7 +54,7 @@ describe('DotAccountService', () => {
         service.removeStarterPage().subscribe();
 
         const reqMock = httpTestingController.expectOne((req) => {
-            return req.url === '/api/v1/toolgroups/gettingstarted/_removefromcurrentuser';
+            return req.url === '/api/v1/toolgroups/gettingstarted/_removefromuser';
         });
         expect(reqMock.request.method).toBe('PUT');
         reqMock.flush({});
