@@ -444,48 +444,48 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
 
         // TODO:
-        // 1. init based on inode and fieldName
-        // 2. remove editor on blur
-        // 3. add pointerEvents on focus
-        // 4. resolve dble-click issue. re: pointer events
+        // 1. init based on inode and fieldName [x]
+        // 2. remove editor on blur []
+        // 3. add pointerEvents on focus [x]
+        // 4. resolve dble-click issue. re: pointer events [x]
         // 5. fix request on full if no changes were made
-        // 6. En vez de click set active con setActive
-        // 7. tests
+        // 6. En vez de click set active con setActive [x]
+        // 7. tests 
+        // 8. enterprise check 
+        // 9. fix: on white text contrast
 
         const script = `
             function handleTinyMCEEvents(editor) {
-                editor.on("focus blur", (e) => {
-                    const content = tinymce.get(e.target.id).getContent();
-                    const dataset = tinymce.get(e.target.id).targetElm.dataset;
-                    const element = tinymce.get(e.target.id).targetElm;
-                    const dataSetObj = { ...dataset };
+                editor.on("focus blur", ({ target: editor, type: eventType }) => {
 
-                    console.log(editor.remove)
+                    const content = editor.getContent();
+                    const dataset = editor.targetElm.dataset;
+                    const element = editor.targetElm;
 
-                    if (e.type === "focus") {
+                    const eventName = eventType === "focus" && "tinyMceOnFocus" || eventType === "blur" && "tinyMceOnBlur";
 
-                        element.style.pointerEvents = 'auto'
+                    const dataSelector = '[data-inode="'+dataset.inode+'"][data-field-name="'+ dataset.fieldName +'"]'
 
-                        window.contentletEvents.next({
-                            name: "tinyMceOnFocus",
-                            data: {
-                                dataset: dataSetObj,
-                                innerHTML: content,
-                                element: element,
-                            },
-                        });
+                    if(eventType === "blur") {
+                        console.log({ dataSelector })
+                        // tinymce.execCommand('mceRemoveControl', true, dataSelector);
+                        // tinymce.remove(dataSelector)
                     }
 
-                    if (e.type === "blur") {
-                        window.contentletEvents.next({
-                            name: "tinyMceOnBlur",
-                            data: {
-                                dataset: dataSetObj,
-                                innerHTML: content,
-                                element: element,
-                            },
-                        });
+                    // Fixes the pointerEvents issue
+                    if(eventType === "focus" && dataset.mode === "full") {
+                        editor.bodyElement.classList.add('active')
                     }
+
+                    window.contentletEvents.next({
+                        name: eventName,
+                        data: {
+                            dataset,
+                            innerHTML: content,
+                            element: element,
+                        },
+                    });
+
                 });
             }
 
@@ -530,27 +530,33 @@ export class DotEditContentHtmlService {
                 powerpaste_html_import: "clean",
                 setup: (editor) => handleTinyMCEEvents(editor),
             };
-
-            // tinymce.init(minimalConfig);
-            tinymce.init(fullEditConfig);   
             
-            // Array.from(document.querySelectorAll('[data-mode="full"]')).forEach(element => element.addEventListener('mouseenter', function() {
-            //     tinymce.init(fullEditConfig);
-            // }))
 
-            document.addEventListener('mouseover', function(e) {
-                console.log('running')
+            document.addEventListener('click', function(e) {
 
                 const dataset = {...e.target.dataset};
-                if(dataset.mode === 'minimal') {
-                //      tinymce.init(minimalConfig);
-                }
+                const dataSelector = '[data-inode="'+dataset.inode+'"][data-field-name="'+ dataset.fieldName +'"]'
 
+
+                // TODO: Refactor below
+                const isFullEditor = dataset.mode === 'full'
+
+                if(dataset.mode === 'minimal') {
+                     tinymce.init({
+                       ...minimalConfig,
+                       selector: dataSelector
+                    }).then(([ed]) => {
+                        ed.editorCommands.execCommand('mceFocus')
+                    });
+                }
+                
                 if(dataset.mode === 'full') {
                    tinymce.init({
                        ...fullEditConfig,
-                       selector: '[data-mode="full"]'
-                   });
+                       selector: dataSelector
+                   }).then(([ed]) => {
+                        ed.editorCommands.execCommand('mceFocus')
+                    });
                 }
             })
         `;

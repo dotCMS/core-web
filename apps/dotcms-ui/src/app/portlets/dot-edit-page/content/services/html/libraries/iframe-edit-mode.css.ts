@@ -365,6 +365,10 @@ export const getEditPageCss = (timestampId: string): string => {
         pointer-events: none;
     }
 
+    [data-mode="full"].active > * {
+        pointer-events: auto;
+    }
+
     [data-mode] {
         cursor: text;
         border: 1px solid #53c2f9 !important;
