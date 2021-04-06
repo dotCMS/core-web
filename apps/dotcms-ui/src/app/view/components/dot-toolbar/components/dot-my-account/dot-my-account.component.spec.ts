@@ -27,7 +27,13 @@ import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotMenuService } from '@services/dot-menu.service';
-import { DotAccountService } from '@services/dot-account-service';
+import { DotAccountService, DotAccountUser } from '@services/dot-account-service';
+
+class DotAccountServiceMock {
+    addStarterPage() {}
+    removeStarterPage() {}
+    updateUser(user: DotAccountUser) {}
+}
 
 describe('DotMyAccountComponent', () => {
     let fixture: ComponentFixture<DotMyAccountComponent>;
@@ -77,7 +83,7 @@ describe('DotMyAccountComponent', () => {
                         useClass: LoginServiceMock
                     },
                     { provide: DotMessageService, useValue: messageServiceMock },
-                    DotAccountService,
+                    { provide: DotAccountService, useClass: DotAccountServiceMock },
                     StringFormat,
                     { provide: DotRouterService, useClass: MockDotRouterService },
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
@@ -278,6 +284,8 @@ describe('DotMyAccountComponent', () => {
     });
 
     it(`should SAVE form and sethAuth when no reauthentication`, async () => {
+        spyOn<any>(dotAccountService, 'addStarterPage').and.returnValue(of({}));
+        spyOn<any>(dotAccountService, 'removeStarterPage').and.returnValue(of({}));
         spyOn<any>(dotAccountService, 'updateUser').and.returnValue(
             of({ entity: { user: mockUser() } })
         );
@@ -315,6 +323,8 @@ describe('DotMyAccountComponent', () => {
     });
 
     it(`should SAVE form and reauthenticate`, async () => {
+        spyOn<any>(dotAccountService, 'addStarterPage').and.returnValue(of({}));
+        spyOn<any>(dotAccountService, 'removeStarterPage').and.returnValue(of({}));
         spyOn<any>(dotAccountService, 'updateUser').and.returnValue(
             of({ entity: { reauthenticate: true } })
         );

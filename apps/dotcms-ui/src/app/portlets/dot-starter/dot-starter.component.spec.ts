@@ -76,6 +76,11 @@ class ActivatedRouteMock {
     }
 }
 
+class DotAccountServiceMock {
+    addStarterPage() {}
+    removeStarterPage() {}
+}
+
 describe('DotStarterComponent', () => {
     let fixture: ComponentFixture<DotStarterComponent>;
     let de: DebugElement;
@@ -97,7 +102,7 @@ describe('DotStarterComponent', () => {
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
                     { provide: DotRouterService, useClass: MockDotRouterService },
                     DotStarterResolver,
-                    DotAccountService
+                    { provide: DotAccountService, useClass: DotAccountServiceMock }
                 ]
             });
 
