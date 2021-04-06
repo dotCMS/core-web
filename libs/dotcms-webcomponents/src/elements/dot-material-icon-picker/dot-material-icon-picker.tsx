@@ -141,7 +141,7 @@ export class DotMaterialIcon {
     };
 
     onTextChange = (e: Event) => {
-        const value = (e.target as any).value;
+        const value = (e.target as HTMLInputElement).value;
         if (this.suggestionlist.includes(value)) {
             this.onSelect(value);
         }
