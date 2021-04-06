@@ -456,7 +456,8 @@ export class DotEditContentHtmlService {
 
         const script = `
             function handleTinyMCEEvents(editor) {
-                editor.on("focus blur", ({ target: editor, type: eventType }) => {
+                editor.on("focus blur", (e) => {
+                    const { target: editor, type: eventType } = e
 
                     const content = editor.getContent();
                     const dataset = editor.targetElm.dataset;
@@ -464,17 +465,15 @@ export class DotEditContentHtmlService {
 
                     const eventName = eventType === "focus" && "tinyMceOnFocus" || eventType === "blur" && "tinyMceOnBlur";
 
-                    const dataSelector = '[data-inode="'+dataset.inode+'"][data-field-name="'+ dataset.fieldName +'"]'
-
-                    if(eventType === "blur") {
-                        console.log({ dataSelector })
-                        // tinymce.execCommand('mceRemoveControl', true, dataSelector);
-                        // tinymce.remove(dataSelector)
-                    }
-
                     // Fixes the pointerEvents issue
                     if(eventType === "focus" && dataset.mode === "full") {
                         editor.bodyElement.classList.add('active')
+                    }
+
+                    if(eventType === "blur") {
+                        e.stopImmediatePropagation();
+                        editor.destroy(false);
+                        // editor.remove();
                     }
 
                     window.contentletEvents.next({
@@ -485,6 +484,8 @@ export class DotEditContentHtmlService {
                             element: element,
                         },
                     });
+
+
 
                 });
             }
@@ -546,6 +547,7 @@ export class DotEditContentHtmlService {
                        ...minimalConfig,
                        selector: dataSelector
                     }).then(([ed]) => {
+                        console.log(ed)
                         ed.editorCommands.execCommand('mceFocus')
                     });
                 }
