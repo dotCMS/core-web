@@ -1,11 +1,16 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { CoreWebService, ResponseView } from '@dotcms/dotcms-js';
-import { take, pluck } from 'rxjs/operators';
+import { take, pluck, catchError, map } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DotHttpErrorManagerService } from './dot-http-error-manager/dot-http-error-manager.service';
 
 @Injectable()
 export class DotAccountService {
-    constructor(private coreWebService: CoreWebService) {}
+    constructor(
+        private coreWebService: CoreWebService,
+        private httpErrorManagerService: DotHttpErrorManagerService
+    ) {}
 
     /**
      * Updates user data
@@ -34,7 +39,16 @@ export class DotAccountService {
                 method: 'PUT',
                 url: '/api/v1/toolgroups/gettingstarted/_addtouser'
             })
-            .pipe(take(1), pluck('entity'));
+            .pipe(
+                take(1),
+                pluck('entity'),
+                catchError((error: HttpErrorResponse) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
+            );
     }
 
     /**
@@ -49,7 +63,16 @@ export class DotAccountService {
                 method: 'PUT',
                 url: '/api/v1/toolgroups/gettingstarted/_removefromuser'
             })
-            .pipe(take(1), pluck('entity'));
+            .pipe(
+                take(1),
+                pluck('entity'),
+                catchError((error: HttpErrorResponse) => {
+                    return this.httpErrorManagerService.handle(error).pipe(
+                        take(1),
+                        map(() => null)
+                    );
+                })
+            );
     }
 }
 
