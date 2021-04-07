@@ -558,15 +558,18 @@ export class DotEditContentHtmlService {
             script
         );
 
-        this.dotLicenseService.isEnterprise().pipe(take(1)).subscribe((isEnterprise) => {
-            if(isEnterprise) {
-                doc.body.append(tinyMceInit);
-                const editModeNode = doc.querySelectorAll('[data-mode]');
-                editModeNode.forEach(node => {
-                    node.classList.add('edit-mode')
-                })
-            }
-        });
+        this.dotLicenseService
+            .isEnterprise()
+            .pipe(take(1))
+            .subscribe((isEnterprise) => {
+                if (isEnterprise) {
+                    doc.body.append(tinyMceInit);
+                    const editModeNode = doc.querySelectorAll('[data-mode]');
+                    editModeNode.forEach((node) => {
+                        node.classList.add('edit-mode');
+                    });
+                }
+            });
 
         doc.addEventListener(
             'load',

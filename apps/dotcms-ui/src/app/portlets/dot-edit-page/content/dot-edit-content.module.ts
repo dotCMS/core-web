@@ -60,7 +60,7 @@ const routes: Routes = [
         DotEditPageViewAsControllerModule,
         DotEditPageStateControllerModule,
         DotOverlayMaskModule,
-        ToastModule,
+        ToastModule
     ],
     exports: [DotEditContentComponent],
     providers: [
