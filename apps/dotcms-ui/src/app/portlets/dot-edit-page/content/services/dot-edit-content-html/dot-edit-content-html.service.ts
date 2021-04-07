@@ -587,12 +587,12 @@ export class DotEditContentHtmlService {
                 '[data-dot-object="contentlet"]'
             );
 
-            const contentTypeName: string = contentTypeNode.dataset.dotType;
+            const { dotType, fieldName } = contentTypeNode.dataset;
 
             // All good, initiate the request
             this.dotWorkflowActionsFireService
-                .saveContentlet(contentTypeName, {
-                    [content.dataset.fieldName]: content.innerHTML,
+                .saveContentlet(dotType, {
+                    [fieldName]: content.innerHTML,
                     inode: 'content.dataset.inode'
                 })
                 .subscribe(
