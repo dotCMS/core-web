@@ -739,10 +739,12 @@ export class DotEditContentHtmlService {
             },
             tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
                 // We need to filter here to make sure innerHTML returns to its original content on error
-                const [elementFilteredFromNodesObject] = this.inlineCurrentContent.filter((element) => {
-                    const currentElementKey = Object.keys(element)[0];
-                    return currentElementKey === content.element.id;
-                });
+                const [elementFilteredFromNodesObject] = this.inlineCurrentContent.filter(
+                    (element) => {
+                        const currentElementKey = Object.keys(element)[0];
+                        return currentElementKey === content.element.id;
+                    }
+                );
 
                 // If editor is dirty then we continue making the request
                 if (!this.inlineContentIsNotDirty) {
@@ -753,7 +755,7 @@ export class DotEditContentHtmlService {
                         '[data-dot-object="contentlet"]'
                     );
 
-                    const contentTypeName: string = contentTypeNode.dataset.dotType
+                    const contentTypeName: string = contentTypeNode.dataset.dotType;
 
                     // All good, initiate the request
                     this.dotWorkflowActionsFireService
@@ -771,7 +773,8 @@ export class DotEditContentHtmlService {
                             () => {
                                 // on error
                                 content.element.classList.remove('inline-editing--saving');
-                                content.element.innerHTML = elementFilteredFromNodesObject[content.element.id];
+                                content.element.innerHTML =
+                                    elementFilteredFromNodesObject[content.element.id];
                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content);
                                 const message = this.dotMessageService.get('editpage.inline.error');
                                 this.dotGlobalMessageService.error(message);

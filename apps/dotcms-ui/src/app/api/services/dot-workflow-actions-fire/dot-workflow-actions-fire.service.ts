@@ -101,14 +101,11 @@ export class DotWorkflowActionsFireService {
      * @return {*}  {Observable<T>}
      * @memberof DotWorkflowActionsFireService
      */
-    saveContentlet<T>(
-        contentType: string,
-        data: { [key: string]: any },
-    ): Observable<T> {
+    saveContentlet<T>(contentType: string, data: { [key: string]: any }): Observable<T> {
         return this.request<T>({
             contentType,
             data,
-            action: ActionToFire.EDIT,
+            action: ActionToFire.EDIT
         });
     }
 
@@ -131,15 +128,13 @@ export class DotWorkflowActionsFireService {
         });
     }
 
-    private request<T>({
-        contentType,
-        data,
-        action,
-    }: DotActionRequestOptions): Observable<T> {
+    private request<T>({ contentType, data, action }: DotActionRequestOptions): Observable<T> {
         return this.coreWebService
             .requestView({
                 method: 'PUT',
-                url: `v1/workflow/actions/default/fire/${action}${data.inode && `?inode=${data.inode}`}`,
+                url: `v1/workflow/actions/default/fire/${action}${
+                    data.inode && `?inode=${data.inode}`
+                }`,
                 body: { contentlet: { contentType: contentType, ...data } }
             })
             .pipe(take(1), pluck('entity'));
