@@ -64,7 +64,6 @@ export const EDIT_PAGE_JS = `
                     forbiddenTarget.classList.add('no')
                 }
             }
-            console.log(canDrop)
             return canDrop;
         },
         invalid: function(el, handle) {
@@ -107,7 +106,6 @@ export const EDIT_PAGE_JS = `
     });
 
     drake.on('drop', function(el, target, source, sibling) {
-        console.log(el)
         const updatedModel = getDotNgModel();
 
         if (JSON.stringify(updatedModel) !== JSON.stringify(currentModel)) {

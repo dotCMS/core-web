@@ -60,7 +60,6 @@ const routes: Routes = [
         DotEditPageViewAsControllerModule,
         DotEditPageStateControllerModule,
         DotOverlayMaskModule,
-        ToastModule
     ],
     exports: [DotEditContentComponent],
     providers: [
@@ -74,7 +73,6 @@ const routes: Routes = [
         DotWorkflowService,
         IframeOverlayService,
         DotCustomEventHandlerService,
-        MessageService,
         DotWorkflowActionsFireService,
         DotLicenseService
     ]

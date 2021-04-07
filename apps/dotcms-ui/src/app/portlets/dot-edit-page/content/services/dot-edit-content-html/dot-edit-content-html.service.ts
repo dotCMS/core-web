@@ -75,7 +75,6 @@ export class DotEditContentHtmlService {
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
         private dotDialogService: DotAlertConfirmService,
         private dotMessageService: DotMessageService,
-        private messageService: MessageService,
         private dotGlobalMessageService: DotGlobalMessageService,
         public dotWorkflowActionsFireService: DotWorkflowActionsFireService,
         private ngZone: NgZone,
@@ -494,7 +493,7 @@ export class DotEditContentHtmlService {
                         data: {
                             dataset,
                             innerHTML: content,
-                            element: element,
+                            element,
                         },
                     });
                 });
@@ -739,24 +738,29 @@ export class DotEditContentHtmlService {
                 this.inlineContentIsNotDirty = content.idDirty;
             },
             tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
-                // Find the element in the array that has the current content ID
-                const [elementFiltered] = this.inlineCurrentContent.filter((element) => {
+                // We need to filter here to make sure innerHTML returns to its original content on error
+                const [elementFilteredFromNodesObject] = this.inlineCurrentContent.filter((element) => {
                     const currentElementKey = Object.keys(element)[0];
                     return currentElementKey === content.element.id;
                 });
 
-                // If the content doesn't match then we proceed with the request
+                // If editor is dirty then we continue making the request
                 if (!this.inlineContentIsNotDirty) {
                     // Add the loading indicator to the field
                     content.element.classList.add('inline-editing--saving');
 
+                    const contentTypeNode: HTMLElement = content.element.closest(
+                        '[data-dot-object="contentlet"]'
+                    );
+
+                    const contentTypeName: string = contentTypeNode.dataset.dotType
+
                     // All good, initiate the request
                     this.dotWorkflowActionsFireService
-                        .saveContentlet(
-                            'Banner',
-                            { [content.dataset.fieldName]: content.innerHTML },
-                            content.dataset.inode
-                        )
+                        .saveContentlet(contentTypeName, {
+                            [content.dataset.fieldName]: content.innerHTML,
+                            inode: content.inode
+                        })
                         .subscribe(
                             () => {
                                 // on success
@@ -767,7 +771,7 @@ export class DotEditContentHtmlService {
                             () => {
                                 // on error
                                 content.element.classList.remove('inline-editing--saving');
-                                content.element.innerHTML = elementFiltered[content.element.id];
+                                content.element.innerHTML = elementFilteredFromNodesObject[content.element.id];
                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content);
                                 const message = this.dotMessageService.get('editpage.inline.error');
                                 this.dotGlobalMessageService.error(message);

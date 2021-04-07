@@ -10,7 +10,6 @@ interface DotActionRequestOptions {
     contentType: string;
     data: { [key: string]: any };
     action: ActionToFire;
-    inode?: string;
 }
 
 enum ActionToFire {
@@ -92,17 +91,24 @@ export class DotWorkflowActionsFireService {
             action: ActionToFire.PUBLISH
         });
     }
-
+    /**
+     * Fire an "EDIT" action over the content type received with the specified data
+     *
+     * @template T
+     * @param {string} contentType
+     * @param {{ [key: string]: any }} data
+     * @param {string} inode
+     * @return {*}  {Observable<T>}
+     * @memberof DotWorkflowActionsFireService
+     */
     saveContentlet<T>(
         contentType: string,
         data: { [key: string]: any },
-        inode: string
     ): Observable<T> {
         return this.request<T>({
             contentType,
             data,
             action: ActionToFire.EDIT,
-            inode
         });
     }
 
@@ -129,12 +135,11 @@ export class DotWorkflowActionsFireService {
         contentType,
         data,
         action,
-        inode
     }: DotActionRequestOptions): Observable<T> {
         return this.coreWebService
             .requestView({
                 method: 'PUT',
-                url: `v1/workflow/actions/default/fire/${action}${inode && `?inode=${inode}`}`,
+                url: `v1/workflow/actions/default/fire/${action}${data.inode && `?inode=${data.inode}`}`,
                 body: { contentlet: { contentType: contentType, ...data } }
             })
             .pipe(take(1), pluck('entity'));

@@ -42,10 +42,6 @@ dot-whats-changed,
     flex-direction: column;
 }
 
-.dot-edit--is-editable {
-    background: red;
-}
-
 .dot-edit__page-wrapper:after {
     content: "";
     display: block;
