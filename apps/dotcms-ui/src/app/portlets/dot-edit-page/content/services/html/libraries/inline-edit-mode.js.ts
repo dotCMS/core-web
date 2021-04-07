@@ -1,46 +1,39 @@
 export const INLINE_TINYMCE_SCRIPTS = `
-    function handleTinyMCEEvents(editor) {
-    editor.on("change", ({ type: eventType }) => {
-        window.contentletEvents.next({
-        name: "tinyMceEvents",
-        data: {
-            eventType,
-            isNotDirty: editor.isNotDirty,
-        },
+    function handleInlineEditEvents(editor) {
+        editor.on("focus blur", (e) => {
+            const { target: ed, type: eventType } = e;
+
+            const content = ed.getContent();
+            const dataset = ed.targetElm.dataset;
+            const element = ed.targetElm;
+
+            const data = {
+                dataset,
+                innerHTML: content,
+                element,
+                eventType,
+                isNotDirty: ed.isNotDirty,
+            }
+
+            // Fixes the pointerEvents issue
+            if (eventType === "focus" && dataset.mode === "full") {
+                ed.bodyElement.classList.add("active");
+            }
+
+            if (eventType === "blur" && ed.bodyElement.classList.contains("active")) {
+                ed.bodyElement.classList.remove("active");
+            }
+
+            if (eventType === "blur") {
+                e.stopImmediatePropagation();
+                ed.destroy(false);
+            }
+
+            window.contentletEvents.next({
+                name: "inlineEdit",
+                data,
+            });
         });
-    });
-
-    editor.on("focus blur", (e) => {
-        const { target: ed, type: eventType } = e;
-
-        const content = ed.getContent();
-        const dataset = ed.targetElm.dataset;
-        const element = ed.targetElm;
-
-        // Fixes the pointerEvents issue
-        if (eventType === "focus" && dataset.mode === "full") {
-        ed.bodyElement.classList.add("active");
-        }
-
-        if (eventType === "blur" && ed.bodyElement.classList.contains("active")) {
-        ed.bodyElement.classList.remove("active");
-        }
-
-        if (eventType === "blur") {
-        e.stopImmediatePropagation();
-        ed.destroy(false);
-        }
-
-        window.contentletEvents.next({
-        name: "tinyMceEvents",
-        data: {
-            dataset,
-            innerHTML: content,
-            element,
-            eventType,
-        },
-        });
-    });
     }
 
     const defaultConfig = {
@@ -51,7 +44,7 @@ export const INLINE_TINYMCE_SCRIPTS = `
     },
     powerpaste_word_import: "clean",
     powerpaste_html_import: "clean",
-    setup: (editor) => handleTinyMCEEvents(editor),
+    setup: (editor) => handleInlineEditEvents(editor),
     };
 
     const tinyMCEConfig = {

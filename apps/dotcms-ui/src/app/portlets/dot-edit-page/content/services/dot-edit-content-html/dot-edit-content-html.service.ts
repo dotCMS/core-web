@@ -36,12 +36,12 @@ export enum DotContentletAction {
     ADD
 }
 
-interface DotPageContentExtra {
+interface DotInlineEditContent {
     innerHTML: string;
     dataset: { mode: string; inode: string; fieldName: string; language: string };
-    element?: HTMLElement;
-    isNotDirty?: boolean;
-    eventType?: string;
+    element: HTMLElement;
+    isNotDirty: boolean;
+    eventType: string;
 }
 @Injectable()
 export class DotEditContentHtmlService {
@@ -56,9 +56,7 @@ export class DotEditContentHtmlService {
     mutationConfig = { attributes: false, childList: true, characterData: false };
     datasetMissing: string[];
 
-    private inlineContentIsNotDirty = true;
-    private inlineCurrentContent: { [key: string]: string }[] = [];
-    private inlineContent: string;
+    private inlineCurrentContent: { [key: string]: string } = {};
     private currentAction: DotContentletAction;
     private docClickSubscription: Subscription;
     private updateContentletInode = false;
@@ -213,6 +211,7 @@ export class DotEditContentHtmlService {
     renderAddedContentlet(contentlet: DotPageContent): void {
         const doc = this.getEditPageDocument();
         const containerEl: HTMLElement = doc.querySelector(
+            // eslint-disable-next-line max-len
             `[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
         );
 
@@ -555,10 +554,7 @@ export class DotEditContentHtmlService {
     }
 
     private resetInlineCurrentContent(content) {
-        return this.inlineCurrentContent.filter((element) => {
-            const currentElementKey = Object.keys(element)[0];
-            return currentElementKey !== content.element.id;
-        });
+        return this.inlineCurrentContent[content.element.id];
     }
 
     private handleDatasetMissingErrors = (content) => {
@@ -572,25 +568,18 @@ export class DotEditContentHtmlService {
         });
     };
 
-    private handleTinyMCEOnFocusEvent(content: DotPageContentExtra) {
+    private handleTinyMCEOnFocusEvent(content: DotInlineEditContent) {
         this.handleDatasetMissingErrors(content);
-        this.inlineCurrentContent = [
+
+        this.inlineCurrentContent = {
             ...this.inlineCurrentContent,
-            {
-                [content.element.id]: content.element.innerHTML
-            }
-        ];
+            [content.element.id]: content.element.innerHTML
+        };
     }
 
-    private handleTinyMCEOnBlurEvent(content: DotPageContentExtra) {
+    private handleTinyMCEOnBlurEvent(content: DotInlineEditContent) {
         // If editor is dirty then we continue making the request
-        if (!this.inlineContentIsNotDirty) {
-            // We need to filter here to make sure innerHTML returns to its original content on error
-            const [elementFilteredFromNodesObject] = this.inlineCurrentContent.filter((element) => {
-                const currentElementKey = Object.keys(element)[0];
-                return currentElementKey === content.element?.id;
-            });
-
+        if (!content.isNotDirty) {
             // Add the loading indicator to the field
             content.element.classList.add('inline-editing--saving');
 
@@ -604,29 +593,26 @@ export class DotEditContentHtmlService {
             this.dotWorkflowActionsFireService
                 .saveContentlet(contentTypeName, {
                     [content.dataset.fieldName]: content.innerHTML,
-                    inode: content.dataset.inode
+                    inode: 'content.dataset.inode'
                 })
                 .subscribe(
                     () => {
                         // on success
                         content.element.classList.remove('inline-editing--saving');
-                        this.inlineCurrentContent = this.resetInlineCurrentContent(content);
-                        this.inlineContentIsNotDirty = true;
+                        delete this.inlineCurrentContent[content.element.id];
                     },
                     () => {
                         // on error
                         content.element.classList.remove('inline-editing--saving');
-                        content.element.innerHTML =
-                            elementFilteredFromNodesObject[content.element.id];
-                        this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+                        content.element.innerHTML = this.resetInlineCurrentContent(content);
+                        delete this.inlineCurrentContent[content.element.id];
                         const message = this.dotMessageService.get('editpage.inline.error');
                         this.dotGlobalMessageService.error(message);
-                        this.inlineContentIsNotDirty = true;
                     }
                 );
         } else {
-            // No changes, reset back the array
-            this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+            // No changes, reset back the object
+            this.inlineCurrentContent[content.element.id] = this.resetInlineCurrentContent(content);
         }
     }
 
@@ -645,12 +631,7 @@ export class DotEditContentHtmlService {
                     this.renderEditedContentlet(this.currentContentlet);
                 }
             },
-            tinyMceEvents: (content: DotPageContent & DotPageContentExtra) => {
-                if (content.eventType === 'change') {
-                    if (typeof content.isNotDirty !== 'undefined') {
-                        this.inlineContentIsNotDirty = content.isNotDirty;
-                    }
-                }
+            inlineEdit: (content: DotInlineEditContent) => {
                 if (content.eventType === 'focus') {
                     this.handleTinyMCEOnFocusEvent(content);
                 }
