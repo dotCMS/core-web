@@ -41,6 +41,7 @@ interface DotPageContentExtra {
     innerHTML: string;
     dataset: { mode: string; inode: string; fieldName: string; language: string };
     element?: HTMLElement;
+    idDirty?: boolean
 }
 
 @Injectable()
@@ -56,6 +57,7 @@ export class DotEditContentHtmlService {
     mutationConfig = { attributes: false, childList: true, characterData: false };
     datasetMissing: string[];
 
+    private inlineContentIsNotDirty = true;
     private inlineCurrentContent: { [key: string]: string }[] = [];
     private inlineContent: string;
     private currentAction: DotContentletAction;
@@ -445,36 +447,52 @@ export class DotEditContentHtmlService {
 
         // TODO:
         // 1. init based on inode and fieldName [x]
-        // 2. remove editor on blur []
+        // 2. remove editor on blur [x]
         // 3. add pointerEvents on focus [x]
         // 4. resolve dble-click issue. re: pointer events [x]
         // 6. En vez de click set active con setActive [x]
 
         // 5. fix request on full if no changes were made [ ]
+        // 9. fix: on white text contrast [ ]
         // 7. tests
         // 8. enterprise check [ ]
-        // 9. fix: on white text contrast [ ]
 
         const script = `
             function handleTinyMCEEvents(editor) {
-                editor.on("focus blur", (e) => {
-                    const { target: editor, type: eventType } = e
 
-                    const content = editor.getContent();
-                    const dataset = editor.targetElm.dataset;
-                    const element = editor.targetElm;
+                editor.on('change', (e) => {
+                    window.contentletEvents.next({
+                        name: "tinyMceIsNotDirty",
+                        data: {
+                            isNotDirty: editor.isNotDirty
+                        },
+                    });
+                })
+
+                editor.on("focus blur", (e) => {
+                    
+                    const { target: ed, type: eventType } = e
+
+                    const content = ed.getContent();
+                    const dataset = ed.targetElm.dataset;
+                    const element = ed.targetElm;
 
                     const eventName = eventType === "focus" && "tinyMceOnFocus" || eventType === "blur" && "tinyMceOnBlur";
 
                     // Fixes the pointerEvents issue
                     if(eventType === "focus" && dataset.mode === "full") {
-                        editor.bodyElement.classList.add('active')
+                        ed.bodyElement.classList.add('active')
                     }
+
+
+                    if(eventType === "blur" && ed.bodyElement.classList.contains('active')) {
+                        ed.bodyElement.classList.remove('active')
+                    }
+                    
 
                     if(eventType === "blur") {
                         e.stopImmediatePropagation();
-                        editor.destroy(false);
-                        // editor.remove();
+                        ed.destroy(false);
                     }
 
                     window.contentletEvents.next({
@@ -699,14 +717,6 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private trimHTML(content: string) {
-        return content
-            .replace(/\n/g, '')
-            .replace(/[\t ]+\</g, '<')
-            .replace(/\>[\t ]+\</g, '><')
-            .replace(/\>[\t ]+$/g, '>');
-    }
-
     private handleDatasetMissingErrors = (content) => {
         const requiredDatasetKeys = ['mode', 'inode', 'fieldName', 'language'];
         const datasetMissing = requiredDatasetKeys.filter(function (key) {
@@ -734,6 +744,8 @@ export class DotEditContentHtmlService {
                 }
             },
             tinyMceOnFocus: (content: DotPageContent & DotPageContentExtra) => {
+                console.log('saved HTML', content.element.innerHTML);
+
                 this.handleDatasetMissingErrors(content);
                 this.inlineCurrentContent = [
                     ...this.inlineCurrentContent,
@@ -742,18 +754,20 @@ export class DotEditContentHtmlService {
                     }
                 ];
             },
+            tinyMceIsNotDirty: (content: DotPageContent & DotPageContentExtra) => {
+                this.inlineContentIsNotDirty = content.idDirty;
+            },
             tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
                 // Find the element in the array that has the current content ID
                 const [elementFiltered] = this.inlineCurrentContent.filter((element) => {
                     const currentElementKey = Object.keys(element)[0];
                     return currentElementKey === content.element.id;
                 });
-                // We need to trim down the HTML strings to avoid mismatch
-                const previousContentTrimmed = this.trimHTML(elementFiltered[content.element.id]);
-                const newContentTrimmed = this.trimHTML(content.innerHTML);
 
+                console.log({ isDirty: !this.inlineContentIsNotDirty });
+    
                 // If the content doesn't match then we proceed with the request
-                if (previousContentTrimmed !== newContentTrimmed) {
+                if (!this.inlineContentIsNotDirty) {
                     // Add the loading indicator to the field
                     content.element.classList.add('inline-editing--saving');
 
@@ -769,6 +783,7 @@ export class DotEditContentHtmlService {
                                 // on success
                                 content.element.classList.remove('inline-editing--saving');
                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+                                this.inlineContentIsNotDirty = true;
                             },
                             () => {
                                 // on error
@@ -777,6 +792,7 @@ export class DotEditContentHtmlService {
                                 this.inlineCurrentContent = this.resetInlineCurrentContent(content);
                                 const message = this.dotMessageService.get('editpage.inline.error');
                                 this.dotGlobalMessageService.error(message);
+                                this.inlineContentIsNotDirty = true;
                             }
                         );
                 } else {
