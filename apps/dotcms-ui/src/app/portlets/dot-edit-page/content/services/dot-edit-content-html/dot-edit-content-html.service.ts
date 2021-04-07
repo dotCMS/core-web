@@ -495,9 +495,6 @@ export class DotEditContentHtmlService {
                             element: element,
                         },
                     });
-
-
-
                 });
             }
 

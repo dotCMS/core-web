@@ -142,10 +142,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    displayDatasetMissingToast(): void {
-        console.log(this.dotEditContentHtmlService.getDatasetMissing());
-    }
-
     /**
      * Close Reorder Menu Dialog
      * @memberof DotEditContentComponent
