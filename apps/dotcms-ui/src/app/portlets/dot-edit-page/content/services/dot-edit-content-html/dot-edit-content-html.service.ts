@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { fromEvent, of, Observable, Subject, Subscription } from 'rxjs';
 
-import { map, take } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { Injectable, ElementRef, NgZone } from '@angular/core';
 
 import * as _ from 'lodash';
@@ -30,6 +30,7 @@ import {
 } from './models/dot-contentlets-events.model';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { MessageService } from 'primeng/api';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
 export enum DotContentletAction {
     EDIT,
@@ -77,7 +78,8 @@ export class DotEditContentHtmlService {
         private messageService: MessageService,
         private dotGlobalMessageService: DotGlobalMessageService,
         public dotWorkflowActionsFireService: DotWorkflowActionsFireService,
-        private ngZone: NgZone
+        private ngZone: NgZone,
+        private dotLicenseService: DotLicenseService
     ) {
         this.contentletEvents$.subscribe(
             (
@@ -556,7 +558,15 @@ export class DotEditContentHtmlService {
             script
         );
 
-        doc.body.append(tinyMceInit);
+        this.dotLicenseService.isEnterprise().pipe(take(1)).subscribe((isEnterprise) => {
+            if(isEnterprise) {
+                doc.body.append(tinyMceInit);
+                const editModeNode = doc.querySelectorAll('[data-mode]');
+                editModeNode.forEach(node => {
+                    node.classList.add('edit-mode')
+                })
+            }
+        });
 
         doc.addEventListener(
             'load',

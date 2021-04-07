@@ -31,6 +31,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
 const routes: Routes = [
     {
@@ -59,7 +60,7 @@ const routes: Routes = [
         DotEditPageViewAsControllerModule,
         DotEditPageStateControllerModule,
         DotOverlayMaskModule,
-        ToastModule
+        ToastModule,
     ],
     exports: [DotEditContentComponent],
     providers: [
@@ -74,7 +75,8 @@ const routes: Routes = [
         IframeOverlayService,
         DotCustomEventHandlerService,
         MessageService,
-        DotWorkflowActionsFireService
+        DotWorkflowActionsFireService,
+        DotLicenseService
     ]
 })
 export class DotEditContentModule {}

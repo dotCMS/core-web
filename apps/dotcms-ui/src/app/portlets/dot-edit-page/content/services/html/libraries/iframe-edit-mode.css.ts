@@ -389,7 +389,7 @@ export const getEditPageCss = (timestampId: string): string => {
         color: black !important;
     }
 
-    [data-mode] {
+    [data-mode].edit-mode {
         cursor: text;
         border: 1px solid #53c2f9 !important;
         display: block;
