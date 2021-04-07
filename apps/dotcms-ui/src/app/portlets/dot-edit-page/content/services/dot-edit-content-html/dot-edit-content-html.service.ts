@@ -593,7 +593,7 @@ export class DotEditContentHtmlService {
             this.dotWorkflowActionsFireService
                 .saveContentlet(dotType, {
                     [fieldName]: content.innerHTML,
-                    inode: 'content.dataset.inode'
+                    inode: content.dataset.inode
                 })
                 .subscribe(
                     () => {
