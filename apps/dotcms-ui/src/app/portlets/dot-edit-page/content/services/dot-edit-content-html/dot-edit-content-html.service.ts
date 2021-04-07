@@ -40,7 +40,7 @@ interface DotPageContentExtra {
     dataset: { mode: string; inode: string; fieldName: string; language: string };
     element?: HTMLElement;
     isNotDirty?: boolean;
-    eventType?: string
+    eventType?: string;
 }
 @Injectable()
 export class DotEditContentHtmlService {
@@ -757,7 +757,7 @@ export class DotEditContentHtmlService {
                 }
 
                 if (content.eventType === 'blur') {
-                    this.handleTinyMCEOnBlurEvent(content)
+                    this.handleTinyMCEOnBlurEvent(content);
                 }
             },
             // When a user select a content from the search jsp
