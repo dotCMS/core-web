@@ -448,11 +448,12 @@ export class DotEditContentHtmlService {
         // 2. remove editor on blur []
         // 3. add pointerEvents on focus [x]
         // 4. resolve dble-click issue. re: pointer events [x]
-        // 5. fix request on full if no changes were made
         // 6. En vez de click set active con setActive [x]
+
+        // 5. fix request on full if no changes were made [ ]
         // 7. tests
-        // 8. enterprise check
-        // 9. fix: on white text contrast
+        // 8. enterprise check [ ]
+        // 9. fix: on white text contrast [ ]
 
         const script = `
             function handleTinyMCEEvents(editor) {
