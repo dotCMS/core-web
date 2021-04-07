@@ -1,7 +1,6 @@
-/* eslint-disable max-len */
 import { fromEvent, of, Observable, Subject, Subscription } from 'rxjs';
 
-import { map, take, tap } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Injectable, ElementRef, NgZone } from '@angular/core';
 
 import * as _ from 'lodash';
@@ -29,7 +28,6 @@ import {
     DotRelocatePayload
 } from './models/dot-contentlets-events.model';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
-import { MessageService } from 'primeng/api';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
 export enum DotContentletAction {
@@ -37,14 +35,13 @@ export enum DotContentletAction {
     ADD
 }
 
-//TODO: Rename
 interface DotPageContentExtra {
     innerHTML: string;
     dataset: { mode: string; inode: string; fieldName: string; language: string };
     element?: HTMLElement;
-    idDirty?: boolean;
+    isNotDirty?: boolean;
+    eventType?: string
 }
-
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<
@@ -76,7 +73,7 @@ export class DotEditContentHtmlService {
         private dotDialogService: DotAlertConfirmService,
         private dotMessageService: DotMessageService,
         private dotGlobalMessageService: DotGlobalMessageService,
-        public dotWorkflowActionsFireService: DotWorkflowActionsFireService,
+        private dotWorkflowActionsFireService: DotWorkflowActionsFireService,
         private ngZone: NgZone,
         private dotLicenseService: DotLicenseService
     ) {
@@ -300,10 +297,6 @@ export class DotEditContentHtmlService {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
     }
 
-    getDatasetMissing(): string[] {
-        return this.datasetMissing;
-    }
-
     private updateContainerToolbar(dotIdentifier: string) {
         const doc = this.getEditPageDocument();
         const target = <HTMLElement>(
@@ -436,27 +429,20 @@ export class DotEditContentHtmlService {
             TINYMCE
         );
 
-        tinyMceScript.addEventListener('load', () => {
-            this.initInlineEditing();
-        });
-
+        this.initInlineEditing();
         doc.body.append(tinyMceScript);
     }
 
     private initInlineEditing(): void {
         const doc = this.getEditPageDocument();
-
-        // TODO:
-        // 1. tests
-        // 2. enterprise check [ ]
-
         const script = `
             function handleTinyMCEEvents(editor) {
 
-                editor.on('change', (e) => {
+                editor.on('change', ({ type: eventType }) => {
                     window.contentletEvents.next({
-                        name: "tinyMceIsNotDirty",
+                        name: "tinyMceEvents",
                         data: {
+                            eventType,
                             isNotDirty: editor.isNotDirty
                         },
                     });
@@ -470,8 +456,6 @@ export class DotEditContentHtmlService {
                     const dataset = ed.targetElm.dataset;
                     const element = ed.targetElm;
 
-                    const eventName = eventType === "focus" && "tinyMceOnFocus" || eventType === "blur" && "tinyMceOnBlur";
-
                     // Fixes the pointerEvents issue
                     if(eventType === "focus" && dataset.mode === "full") {
                         ed.bodyElement.classList.add('active')
@@ -482,18 +466,18 @@ export class DotEditContentHtmlService {
                         ed.bodyElement.classList.remove('active')
                     }
                     
-
                     if(eventType === "blur") {
                         e.stopImmediatePropagation();
                         ed.destroy(false);
                     }
 
                     window.contentletEvents.next({
-                        name: eventName,
+                        name: "tinyMceEvents",
                         data: {
                             dataset,
                             innerHTML: content,
                             element,
+                            eventType
                         },
                     });
                 });
@@ -550,7 +534,7 @@ export class DotEditContentHtmlService {
                         ed.editorCommands.execCommand('mceFocus')
                     });
                 }
-            })
+            });
         `;
 
         const tinyMceInit: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
@@ -569,27 +553,6 @@ export class DotEditContentHtmlService {
                     });
                 }
             });
-
-        doc.addEventListener(
-            'load',
-            () => {
-                const editableItems = doc.querySelectorAll('[data-mode]');
-                Array.from(editableItems).forEach((item: Element) => {
-                    item.addEventListener('click', (e: Event) => {
-                        e.preventDefault();
-                    });
-
-                    item.addEventListener('dragstart', (event) => {
-                        event.preventDefault();
-                    });
-
-                    item.parentElement.addEventListener('dragstart', (event) => {
-                        event.preventDefault();
-                    });
-                });
-            },
-            true
-        );
     }
 
     private createScriptTag(node: HTMLScriptElement): HTMLScriptElement {
@@ -710,6 +673,64 @@ export class DotEditContentHtmlService {
         });
     };
 
+    private handleTinyMCEOnFocusEvent(content: DotPageContentExtra) {
+        this.handleDatasetMissingErrors(content);
+        this.inlineCurrentContent = [
+            ...this.inlineCurrentContent,
+            {
+                [content.element.id]: content.element.innerHTML
+            }
+        ];
+    }
+
+    private handleTinyMCEOnBlurEvent(content: DotPageContentExtra) {
+        // If editor is dirty then we continue making the request
+        if (!this.inlineContentIsNotDirty) {
+            // We need to filter here to make sure innerHTML returns to its original content on error
+            const [elementFilteredFromNodesObject] = this.inlineCurrentContent.filter((element) => {
+                const currentElementKey = Object.keys(element)[0];
+                return currentElementKey === content.element?.id;
+            });
+
+            // Add the loading indicator to the field
+            content.element.classList.add('inline-editing--saving');
+
+            const contentTypeNode: HTMLElement = content.element.closest(
+                '[data-dot-object="contentlet"]'
+            );
+
+            const contentTypeName: string = contentTypeNode.dataset.dotType;
+
+            // All good, initiate the request
+            this.dotWorkflowActionsFireService
+                .saveContentlet(contentTypeName, {
+                    [content.dataset.fieldName]: content.innerHTML,
+                    inode: content.dataset.inode
+                })
+                .subscribe(
+                    () => {
+                        // on success
+                        content.element.classList.remove('inline-editing--saving');
+                        this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+                        this.inlineContentIsNotDirty = true;
+                    },
+                    () => {
+                        // on error
+                        content.element.classList.remove('inline-editing--saving');
+                        content.element.innerHTML =
+                            elementFilteredFromNodesObject[content.element.id];
+                        this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+                        const message = this.dotMessageService.get('editpage.inline.error');
+                        this.dotGlobalMessageService.error(message);
+                        this.inlineContentIsNotDirty = true;
+                    }
+                );
+        } else {
+            // No changes, reset back the array
+            this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+        }
+    }
+
     private handlerContentletEvents(
         event: string
     ): (contentletEvent: DotPageContent | DotRelocatePayload) => void {
@@ -725,65 +746,18 @@ export class DotEditContentHtmlService {
                     this.renderEditedContentlet(this.currentContentlet);
                 }
             },
-            tinyMceOnFocus: (content: DotPageContent & DotPageContentExtra) => {
-                this.handleDatasetMissingErrors(content);
-                this.inlineCurrentContent = [
-                    ...this.inlineCurrentContent,
-                    {
-                        [content.element.id]: content.element.innerHTML
+            tinyMceEvents: (content: DotPageContent & DotPageContentExtra) => {
+                if (content.eventType === 'change') {
+                    if (typeof content.isNotDirty !== 'undefined') {
+                        this.inlineContentIsNotDirty = content.isNotDirty;
                     }
-                ];
-            },
-            tinyMceIsNotDirty: (content: DotPageContent & DotPageContentExtra) => {
-                this.inlineContentIsNotDirty = content.idDirty;
-            },
-            tinyMceOnBlur: (content: DotPageContent & DotPageContentExtra) => {
-                // We need to filter here to make sure innerHTML returns to its original content on error
-                const [elementFilteredFromNodesObject] = this.inlineCurrentContent.filter(
-                    (element) => {
-                        const currentElementKey = Object.keys(element)[0];
-                        return currentElementKey === content.element.id;
-                    }
-                );
+                }
+                if (content.eventType === 'focus') {
+                    this.handleTinyMCEOnFocusEvent(content);
+                }
 
-                // If editor is dirty then we continue making the request
-                if (!this.inlineContentIsNotDirty) {
-                    // Add the loading indicator to the field
-                    content.element.classList.add('inline-editing--saving');
-
-                    const contentTypeNode: HTMLElement = content.element.closest(
-                        '[data-dot-object="contentlet"]'
-                    );
-
-                    const contentTypeName: string = contentTypeNode.dataset.dotType;
-
-                    // All good, initiate the request
-                    this.dotWorkflowActionsFireService
-                        .saveContentlet(contentTypeName, {
-                            [content.dataset.fieldName]: content.innerHTML,
-                            inode: content.inode
-                        })
-                        .subscribe(
-                            () => {
-                                // on success
-                                content.element.classList.remove('inline-editing--saving');
-                                this.inlineCurrentContent = this.resetInlineCurrentContent(content);
-                                this.inlineContentIsNotDirty = true;
-                            },
-                            () => {
-                                // on error
-                                content.element.classList.remove('inline-editing--saving');
-                                content.element.innerHTML =
-                                    elementFilteredFromNodesObject[content.element.id];
-                                this.inlineCurrentContent = this.resetInlineCurrentContent(content);
-                                const message = this.dotMessageService.get('editpage.inline.error');
-                                this.dotGlobalMessageService.error(message);
-                                this.inlineContentIsNotDirty = true;
-                            }
-                        );
-                } else {
-                    // No changes, reset back the array
-                    this.inlineCurrentContent = this.resetInlineCurrentContent(content);
+                if (content.eventType === 'blur') {
+                    this.handleTinyMCEOnBlurEvent(content)
                 }
             },
             // When a user select a content from the search jsp

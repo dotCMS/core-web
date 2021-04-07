@@ -97,7 +97,6 @@ export class DotWorkflowActionsFireService {
      * @template T
      * @param {string} contentType
      * @param {{ [key: string]: any }} data
-     * @param {string} inode
      * @return {*}  {Observable<T>}
      * @memberof DotWorkflowActionsFireService
      */
