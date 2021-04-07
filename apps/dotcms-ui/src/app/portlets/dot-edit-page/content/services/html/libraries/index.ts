@@ -10,7 +10,7 @@ ${EDIT_PAGE_JS}
 `;
 
 export const EDIT_PAGE_JS_DOJO_REQUIRE = `
-require(['/html/js/dragula-3.7.2/dragula.min.js', '/html/js/tinymce/js/tinymce/tinymce.min.js'], function(dragula) { 
+require(['/html/js/dragula-3.7.2/dragula.min.js'], function(dragula) { 
     ${EDIT_MODE_DRAG_DROP}
 });
 `;

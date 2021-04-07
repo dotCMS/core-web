@@ -3,7 +3,6 @@ export const MODEL_VAR_NAME = 'dotNgModel';
 
 export const EDIT_PAGE_JS = `
 (function () {
-
     var forbiddenTarget;
     let currentModel;
 
