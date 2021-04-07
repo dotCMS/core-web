@@ -446,17 +446,8 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
 
         // TODO:
-        // 1. init based on inode and fieldName [x]
-        // 2. remove editor on blur [x]
-        // 3. add pointerEvents on focus [x]
-        // 4. resolve dble-click issue. re: pointer events [x]
-        // 6. En vez de click set active con setActive [x]
-
-        // 5. fix request on full if no changes were made [x]
-        // 9. fix: on white text contrast [x]
-        
-        // 7. tests
-        // 8. enterprise check [ ]
+        // 1. tests
+        // 2. enterprise check [ ]
 
         const script = `
             function handleTinyMCEEvents(editor) {
