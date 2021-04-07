@@ -41,7 +41,7 @@ interface DotPageContentExtra {
     innerHTML: string;
     dataset: { mode: string; inode: string; fieldName: string; language: string };
     element?: HTMLElement;
-    idDirty?: boolean
+    idDirty?: boolean;
 }
 
 @Injectable()
@@ -452,8 +452,9 @@ export class DotEditContentHtmlService {
         // 4. resolve dble-click issue. re: pointer events [x]
         // 6. En vez de click set active con setActive [x]
 
-        // 5. fix request on full if no changes were made [ ]
-        // 9. fix: on white text contrast [ ]
+        // 5. fix request on full if no changes were made [x]
+        // 9. fix: on white text contrast [x]
+        
         // 7. tests
         // 8. enterprise check [ ]
 
@@ -509,73 +510,54 @@ export class DotEditContentHtmlService {
                 });
             }
 
-            const minimalConfig = {
-                selector: '[data-mode="minimal"]',
+            const defaultConfig = {
                 menubar: false,
                 inline: true,
-                plugins: ["link"],
-                toolbar: "bold italic underline | link",
-                valid_elements: "strong,em,span[style],a[href]",
                 valid_styles: {
                     "*": "font-size,font-family,color,text-decoration,text-align",
                 },
                 powerpaste_word_import: "clean",
                 powerpaste_html_import: "clean",
-                content_css: ["//fonts.googleapis.com/css?family=Lato:300,300i,400,400i"],
                 setup: (editor) => handleTinyMCEEvents(editor),
-            };
+                
+            }
 
-            const fullEditConfig = {
-                menubar: false,
-                inline: true,
+            const tinyMCEConfig = {
+            minimal: {
+                plugins: ["link"],
+                toolbar: "bold italic underline | link",
+                valid_elements: "strong,em,span[style],a[href]",
+                content_css: ["//fonts.googleapis.com/css?family=Lato:300,300i,400,400i"],
+                ...defaultConfig,
+            },
+            full: {
                 plugins: ["link", "lists", "autolink", "hr", "charmap"],
                 style_formats: [
-                    {title: "Paragraph",format: "p"},
-                    {title: "Header 1",format: "h1"},
-                    {title: "Header 2",format: "h2"},
-                    {title: "Header 3",format: "h3"},
-                    {title: "Header 4",format: "h4"},
-                    {title: "Header 5",format: "h5"},
-                    {title: "Header 6",format: "h6"},
-                    {title: "Pre",format: "pre"},
-                    {title: "Code",format: "code"},
+                { title: "Paragraph", format: "p" },
+                { title: "Header 1", format: "h1" },
+                { title: "Header 2", format: "h2" },
+                { title: "Header 3", format: "h3" },
+                { title: "Header 4", format: "h4" },
+                { title: "Header 5", format: "h5" },
+                { title: "Header 6", format: "h6" },
+                { title: "Pre", format: "pre" },
+                { title: "Code", format: "code" },
                 ],
                 toolbar: [
                     "styleselect | undo redo | bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignfull | numlist bullist outdent indent | hr charmap removeformat | link",
                 ],
-                valid_styles: {
-                    "*": "font-size,font-family,color,text-decoration,text-align",
-                },
-                powerpaste_word_import: "clean",
-                powerpaste_html_import: "clean",
-                setup: (editor) => handleTinyMCEEvents(editor),
+                ...defaultConfig,
+            },
             };
-            
 
-            document.addEventListener('click', function(e) {
-
-                const dataset = {...e.target.dataset};
-                const dataSelector = '[data-inode="'+dataset.inode+'"][data-field-name="'+ dataset.fieldName +'"]'
-
-
-                // TODO: Refactor below
-                const isFullEditor = dataset.mode === 'full'
-
-                if(dataset.mode === 'minimal') {
-                     tinymce.init({
-                       ...minimalConfig,
-                       selector: dataSelector
+            document.addEventListener('click', function({ target: { dataset } }) {
+                const dataSelector = '[data-inode="' + dataset.inode + '"][data-field-name="' + dataset.fieldName + '"]'
+                // if the mode is truthy we initialize tinymce
+                if(dataset.mode) {
+                    tinymce.init({
+                        ...tinyMCEConfig[dataset.mode],
+                        selector: dataSelector
                     }).then(([ed]) => {
-                        console.log(ed)
-                        ed.editorCommands.execCommand('mceFocus')
-                    });
-                }
-                
-                if(dataset.mode === 'full') {
-                   tinymce.init({
-                       ...fullEditConfig,
-                       selector: dataSelector
-                   }).then(([ed]) => {
                         ed.editorCommands.execCommand('mceFocus')
                     });
                 }
@@ -744,8 +726,6 @@ export class DotEditContentHtmlService {
                 }
             },
             tinyMceOnFocus: (content: DotPageContent & DotPageContentExtra) => {
-                console.log('saved HTML', content.element.innerHTML);
-
                 this.handleDatasetMissingErrors(content);
                 this.inlineCurrentContent = [
                     ...this.inlineCurrentContent,
@@ -764,8 +744,6 @@ export class DotEditContentHtmlService {
                     return currentElementKey === content.element.id;
                 });
 
-                console.log({ isDirty: !this.inlineContentIsNotDirty });
-    
                 // If the content doesn't match then we proceed with the request
                 if (!this.inlineContentIsNotDirty) {
                     // Add the loading indicator to the field

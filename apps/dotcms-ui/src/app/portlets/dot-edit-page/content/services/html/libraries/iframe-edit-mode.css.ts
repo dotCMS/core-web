@@ -369,6 +369,26 @@ export const getEditPageCss = (timestampId: string): string => {
         pointer-events: auto;
     }
 
+    p.mce-edit-focus, 
+    h1.mce-edit-focus, 
+    h2.mce-edit-focus, 
+    h3.mce-edit-focus, 
+    h4.mce-edit-focus, 
+    h5.mce-edit-focus, 
+    h6.mce-edit-focus {
+        color: black !important;
+    }
+
+    .mce-edit-focus p,
+    .mce-edit-focus h1, 
+    .mce-edit-focus h2, 
+    .mce-edit-focus h3, 
+    .mce-edit-focus h4, 
+    .mce-edit-focus h5, 
+    .mce-edit-focus h6 {
+        color: black !important;
+    }
+
     [data-mode] {
         cursor: text;
         border: 1px solid #53c2f9 !important;
