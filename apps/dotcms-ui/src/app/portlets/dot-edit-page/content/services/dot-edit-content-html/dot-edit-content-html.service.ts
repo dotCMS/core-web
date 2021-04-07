@@ -599,15 +599,16 @@ export class DotEditContentHtmlService {
                     () => {
                         // on success
                         content.element.classList.remove('inline-editing--saving');
-                        delete this.inlineCurrentContent[content.element.id];
                     },
                     () => {
                         // on error
                         content.element.classList.remove('inline-editing--saving');
                         content.element.innerHTML = this.resetInlineCurrentContent(content);
-                        delete this.inlineCurrentContent[content.element.id];
                         const message = this.dotMessageService.get('editpage.inline.error');
                         this.dotGlobalMessageService.error(message);
+                    },
+                    () => {
+                        delete this.inlineCurrentContent[content.element.id];
                     }
                 );
         } else {
