@@ -425,34 +425,31 @@ export class DotEditContentHtmlService {
     private injectInlineEditingScripts(): void {
         const doc = this.getEditPageDocument();
         const editModeNodes = doc.querySelectorAll('[data-mode]');
+        
+        if (editModeNodes.length) {
+            const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
+            const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(TINYMCE);
+            const tinyMceInitScript: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
+                INLINE_TINYMCE_SCRIPTS
+            );
 
-        // If we don't have [data-mode] nodes in the DOM then we bail early
-        if (editModeNodes.length === 0) {
-            return;
-        }
+            this.dotLicenseService
+                .isEnterprise()
+                .pipe(
+                    take(1),
+                    filter((isEnterprise: boolean) => isEnterprise === true)
+                )
+                .subscribe(() => {
+                    // We have elements in the DOM and we're on enterprise plan
 
-        const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
-        const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(TINYMCE);
-        const tinyMceInitScript: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
-            INLINE_TINYMCE_SCRIPTS
-        );
+                    doc.body.append(tinyMceInitScript);
+                    doc.body.append(tinyMceScript);
 
-        this.dotLicenseService
-            .isEnterprise()
-            .pipe(
-                take(1),
-                filter((isEnterprise: boolean) => isEnterprise === true)
-            )
-            .subscribe(() => {
-                // We have elements in the DOM and we're on enterprise plan
-
-                doc.body.append(tinyMceInitScript);
-                doc.body.append(tinyMceScript);
-
-                editModeNodes.forEach((node) => {
-                    node.classList.add('dotcms__inline-edit-field');
+                    editModeNodes.forEach((node) => {
+                        node.classList.add('dotcms__inline-edit-field');
+                    });
                 });
-            });
+        }
     }
 
     private createScriptTag(node: HTMLScriptElement): HTMLScriptElement {
