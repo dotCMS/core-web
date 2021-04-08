@@ -1,6 +1,6 @@
 import { fromEvent, of, Observable, Subject, Subscription } from 'rxjs';
 
-import { map, take } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import { Injectable, ElementRef, NgZone } from '@angular/core';
 
 import * as _ from 'lodash';
@@ -441,15 +441,16 @@ export class DotEditContentHtmlService {
 
         this.dotLicenseService
             .isEnterprise()
-            .pipe(take(1))
-            .subscribe((isEnterprise) => {
-                if (isEnterprise) {
-                    doc.body.append(tinyMceInit);
-                    const editModeNode = doc.querySelectorAll('[data-mode]');
-                    editModeNode.forEach((node) => {
-                        node.classList.add('edit-mode');
-                    });
-                }
+            .pipe(
+                take(1),
+                filter((isEnterprise: boolean) => isEnterprise === true)
+            )
+            .subscribe(() => {
+                doc.body.append(tinyMceInit);
+                const editModeNode = doc.querySelectorAll('[data-mode]');
+                editModeNode.forEach((node) => {
+                    node.classList.add('dotcms__inline-edit-field');
+                });
             });
     }
 
@@ -553,11 +554,11 @@ export class DotEditContentHtmlService {
         );
     }
 
-    private resetInlineCurrentContent(content) {
-        return this.inlineCurrentContent[content.element.id];
+    private resetInlineCurrentContent(id: string) {
+        return this.inlineCurrentContent[id];
     }
 
-    private handleDatasetMissingErrors = (content) => {
+    private handleDatasetMissingErrors = (content: DotInlineEditContent) => {
         const requiredDatasetKeys = ['mode', 'inode', 'fieldName', 'language'];
         const datasetMissing = requiredDatasetKeys.filter(function (key) {
             return !Object.keys(content.dataset).includes(key);
@@ -595,6 +596,7 @@ export class DotEditContentHtmlService {
                     [fieldName]: content.innerHTML,
                     inode: content.dataset.inode
                 })
+                .pipe(take(1))
                 .subscribe(
                     () => {
                         // on success
@@ -603,7 +605,9 @@ export class DotEditContentHtmlService {
                     () => {
                         // on error
                         content.element.classList.remove('inline-editing--saving');
-                        content.element.innerHTML = this.resetInlineCurrentContent(content);
+                        content.element.innerHTML = this.resetInlineCurrentContent(
+                            content.element.id
+                        );
                         const message = this.dotMessageService.get('editpage.inline.error');
                         this.dotGlobalMessageService.error(message);
                     },
@@ -613,7 +617,9 @@ export class DotEditContentHtmlService {
                 );
         } else {
             // No changes, reset back the object
-            this.inlineCurrentContent[content.element.id] = this.resetInlineCurrentContent(content);
+            this.inlineCurrentContent[content.element.id] = this.resetInlineCurrentContent(
+                content.element.id
+            );
         }
     }
 

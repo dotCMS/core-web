@@ -361,26 +361,26 @@ export const getEditPageCss = (timestampId: string): string => {
         left: 0;
     }
 
-    [data-mode="full"] > * {
+    ${timestampId} [data-mode="full"] > * {
         pointer-events: none;
     }
 
-    [data-mode="full"].active > * {
+    ${timestampId} [data-mode="full"].active > * {
         pointer-events: auto;
     }
 
-    .mce-edit-focus * {
+    ${timestampId} .mce-edit-focus * {
         color: black !important;
     }
 
-    .mce-edit-focus {
+    ${timestampId} .mce-edit-focus {
         background: white;
         border: 1px solid black !important;
         outline: none;
         color: black !important;
     }
 
-    [data-mode].edit-mode {
+    ${timestampId} [data-mode].dotcms__inline-edit-field {
         cursor: text;
         border: 1px solid #53c2f9 !important;
         display: block;
