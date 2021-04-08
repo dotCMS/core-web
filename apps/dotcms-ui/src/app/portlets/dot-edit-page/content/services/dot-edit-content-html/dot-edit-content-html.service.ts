@@ -427,14 +427,12 @@ export class DotEditContentHtmlService {
         const editModeNodes = doc.querySelectorAll('[data-mode]');
 
         // If we don't have [data-mode] nodes in the DOM then we bail early
-        if (editModeNodes.length === 0){
+        if (editModeNodes.length === 0) {
             return;
         }
 
         const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
-        const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(
-            TINYMCE
-        );
+        const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(TINYMCE);
         const tinyMceInitScript: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
             INLINE_TINYMCE_SCRIPTS
         );
@@ -450,7 +448,7 @@ export class DotEditContentHtmlService {
 
                 doc.body.append(tinyMceInitScript);
                 doc.body.append(tinyMceScript);
-                
+
                 editModeNodes.forEach((node) => {
                     node.classList.add('dotcms__inline-edit-field');
                 });
