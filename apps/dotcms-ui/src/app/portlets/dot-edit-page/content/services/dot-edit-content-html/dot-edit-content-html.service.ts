@@ -424,18 +424,18 @@ export class DotEditContentHtmlService {
 
     private injectInlineEditingScripts(): void {
         const doc = this.getEditPageDocument();
+        const editModeNodes = doc.querySelectorAll('[data-mode]');
+
+        // If we don't have [data-mode] nodes in the DOM then we bail early
+        if (editModeNodes.length === 0){
+            return;
+        }
+
         const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
-        const tinyMceScript: HTMLScriptElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
+        const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(
             TINYMCE
         );
-
-        this.initInlineEditing();
-        doc.body.append(tinyMceScript);
-    }
-
-    private initInlineEditing(): void {
-        const doc = this.getEditPageDocument();
-        const tinyMceInit: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
+        const tinyMceInitScript: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
             INLINE_TINYMCE_SCRIPTS
         );
 
@@ -446,9 +446,12 @@ export class DotEditContentHtmlService {
                 filter((isEnterprise: boolean) => isEnterprise === true)
             )
             .subscribe(() => {
-                doc.body.append(tinyMceInit);
-                const editModeNode = doc.querySelectorAll('[data-mode]');
-                editModeNode.forEach((node) => {
+                // We have elements in the DOM and we're on enterprise plan
+
+                doc.body.append(tinyMceInitScript);
+                doc.body.append(tinyMceScript);
+                
+                editModeNodes.forEach((node) => {
                     node.classList.add('dotcms__inline-edit-field');
                 });
             });
