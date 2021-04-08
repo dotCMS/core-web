@@ -556,7 +556,7 @@ export class DotEditContentHtmlService {
         return this.inlineCurrentContent[id];
     }
 
-    private handleDatasetMissingErrors = (content: DotInlineEditContent) => {
+    private handleDatasetMissingErrors(content: DotInlineEditContent): void {
         const requiredDatasetKeys = ['mode', 'inode', 'fieldName', 'language'];
         const datasetMissing = requiredDatasetKeys.filter(function (key) {
             return !Object.keys(content.dataset).includes(key);
@@ -565,7 +565,7 @@ export class DotEditContentHtmlService {
         datasetMissing.forEach((dataset) => {
             this.dotGlobalMessageService.error(`${dataset} ${message}`);
         });
-    };
+    }
 
     private handleTinyMCEOnFocusEvent(content: DotInlineEditContent) {
         this.handleDatasetMissingErrors(content);
