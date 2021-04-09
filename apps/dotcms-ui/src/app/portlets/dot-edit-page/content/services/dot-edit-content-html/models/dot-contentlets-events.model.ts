@@ -15,9 +15,16 @@ export interface DotRelocatePayload {
     contentlet: DotPageContent;
 }
 
+export interface DotInlineDataset {
+    mode: string;
+    inode: string;
+    fieldName: string;
+    language: string;
+}
+
 export interface DotInlineEditContent {
     innerHTML: string;
-    dataset: { mode: string; inode: string; fieldName: string; language: string };
+    dataset: DotInlineDataset;
     element: HTMLElement;
     isNotDirty: boolean;
     eventType: string;

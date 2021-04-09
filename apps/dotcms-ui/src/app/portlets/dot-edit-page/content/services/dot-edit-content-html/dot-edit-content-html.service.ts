@@ -32,15 +32,24 @@ import {
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { INLINE_TINYMCE_SCRIPTS } from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/inline-edit-mode.js';
+import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
 
 export enum DotContentletAction {
     EDIT,
     ADD
 }
+
+const messageServiceMock = new MockDotMessageService({
+    'editpage.inline.error': 'An error occured',
+});
+
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<
-        DotContentletEventRelocate | DotContentletEventSelect | DotContentletEventSave
+        | DotContentletEventRelocate
+        | DotContentletEventSelect
+        | DotContentletEventSave
+        | DotContentletEvent<DotInlineEditContent>
     > = new Subject();
     currentContainer: DotPageContainer;
     currentContentlet: DotPageContent;
@@ -561,56 +570,54 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private handleTinyMCEOnFocusEvent(content: DotContentletEvent<DotInlineEditContent>) {
-        this.handleDatasetMissingErrors(content.data);
+    private handleTinyMCEOnFocusEvent(contentlet: DotInlineEditContent) {
+        this.handleDatasetMissingErrors(contentlet);
         this.inlineCurrentContent = {
             ...this.inlineCurrentContent,
-            [content.data.element.id]: content.data.innerHTML
+            [contentlet.element.id]: contentlet.innerHTML
         };
+
+        console.log(this.inlineCurrentContent);
+        
     }
 
-    private handleTinyMCEOnBlurEvent(content: DotContentletEvent<DotInlineEditContent>) {
-        // If editor is dirty then we continue making the request
-        if (!content.data.isNotDirty) {
-            // Add the loading indicator to the field
-            content.data.element.classList.add('inline-editing--saving');
+    private handleTinyMCEOnBlurEvent(content: DotInlineEditContent) {
 
-            const contentTypeNode: HTMLElement = content.data.element.closest(
+        // If editor is dirty then we continue making the request
+        if (!content.isNotDirty) {
+            // Add the loading indicator to the field
+            content.element.classList.add('inline-editing--saving');
+
+            const contentTypeNode: HTMLElement = content.element.closest(
                 '[data-dot-object="contentlet"]'
             );
 
-            const { dotType, fieldName } = contentTypeNode.dataset;
+            const { dotType } = contentTypeNode.dataset;  
 
             // All good, initiate the request
             this.dotWorkflowActionsFireService
                 .saveContentlet(dotType, {
-                    [fieldName]: content.data.innerHTML,
-                    inode: content.data.dataset.inode
+                    [content.dataset.fieldName]: content.innerHTML,
+                    inode: content.dataset.inode
                 })
                 .pipe(take(1))
                 .subscribe(
                     () => {
                         // on success
-                        content.data.element.classList.remove('inline-editing--saving');
                     },
                     () => {
-                        // on error
-                        content.data.element.classList.remove('inline-editing--saving');
-                        content.data.element.innerHTML = this.resetInlineCurrentContent(
-                            content.data.element.id
-                        );
+                        // on error      
+                        content.element.innerHTML = this.inlineCurrentContent[content.element.id];
                         const message = this.dotMessageService.get('editpage.inline.error');
                         this.dotGlobalMessageService.error(message);
                     },
-                    () => {
-                        delete this.inlineCurrentContent[content.data.element.id];
+                    () => {       
+                        content.element.classList.remove('inline-editing--saving');        
+                        delete this.inlineCurrentContent[content.element.id];
                     }
                 );
         } else {
-            // No changes, reset back the object
-            this.inlineCurrentContent[content.data.element.id] = this.resetInlineCurrentContent(
-                content.data.element.id
-            );
+            delete this.inlineCurrentContent[content.element.id];
         }
     }
 
@@ -629,13 +636,13 @@ export class DotEditContentHtmlService {
                     this.renderEditedContentlet(this.currentContentlet);
                 }
             },
-            inlineEdit: (content: DotContentletEvent<DotInlineEditContent>) => {
-                if (content.data.eventType === 'focus') {
-                    this.handleTinyMCEOnFocusEvent(content);
+            inlineEdit: (contentlet: DotInlineEditContent) => {
+                if (contentlet.eventType === 'focus') {
+                    this.handleTinyMCEOnFocusEvent(contentlet);
                 }
 
-                if (content.data.eventType === 'blur') {
-                    this.handleTinyMCEOnBlurEvent(content);
+                if (contentlet.eventType === 'blur') {
+                    this.handleTinyMCEOnBlurEvent(contentlet);
                 }
             },
             // When a user select a content from the search jsp
