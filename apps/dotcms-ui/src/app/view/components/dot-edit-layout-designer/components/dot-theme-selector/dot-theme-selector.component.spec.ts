@@ -181,7 +181,7 @@ describe('DotThemeSelectorComponent', () => {
                 title: 'Theme tittle',
                 inode: '1',
                 themeThumbnail: '/system/theme/url',
-                identifier: '1',
+                identifier: 'SYSTEM_THEME',
                 hostId: '1',
                 host: {
                     hostName: 'Test',

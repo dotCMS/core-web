@@ -69,7 +69,7 @@
                         class="dot-theme-iteme__image"
                         data-testId="themeImage"
                         [src]="
-                            theme.themeThumbnail.includes('/')
+                            theme.identifier === 'SYSTEM_THEME'
                                 ? theme.themeThumbnail
                                 : '/dA/' + theme.themeThumbnail + '/130w/130h/thumbnail.png'
                         "

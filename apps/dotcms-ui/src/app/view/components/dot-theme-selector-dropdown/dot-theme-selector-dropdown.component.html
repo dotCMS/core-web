@@ -8,7 +8,7 @@
             *ngIf="item?.themeThumbnail; else imageFallback"
             class="dot-theme-item__image"
             [src]="
-                item.themeThumbnail.includes('/')
+                item.identifier === 'SYSTEM_THEME'
                     ? item.themeThumbnail
                     : '/dA/' + item.themeThumbnail + '/48w/48h/thumbnail.png'
             "
