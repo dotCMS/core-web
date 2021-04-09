@@ -7,7 +7,7 @@
         <img
             *ngIf="item?.themeThumbnail; else imageFallback"
             class="dot-theme-item__image"
-            src="/dA/{{ item.themeThumbnail }}/48w/48h/thumbnail.png"
+            [src]="item.themeThumbnail.includes('/') ? item.themeThumbnail : '/dA/' + item.themeThumbnail + '/48w/48h/thumbnail.png'"
         />
 
         <ng-template #imageFallback>

@@ -195,12 +195,12 @@ describe('DotThemeSelectorComponent', () => {
             );
             component.siteChange(mockSites[0]);
             fixture.detectChanges();
-            const themeImage = de.queryAll(By.css('[data-testId="themeImage"]'));
-            console.log(themeImage[0]);
-            expect(themeImage[0].nativeElement.src).toContain(
+            const themeImages = de.queryAll(By.css('[data-testId="themeImage"]'));
+            console.log(themeImages[0]);
+            expect(themeImages[0].nativeElement.src).toContain(
                 `/dA/${mockDotThemes[2].themeThumbnail}/130w/130h/thumbnail.png`
             );
-            expect(themeImage[1].nativeElement.src).toContain(systemTheme.themeThumbnail);
+            expect(themeImages[1].nativeElement.src).toContain(systemTheme.themeThumbnail);
         });
     });
 
