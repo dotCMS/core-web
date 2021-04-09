@@ -22,9 +22,11 @@ import {
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {
+    DotContentletEvent,
     DotContentletEventRelocate,
     DotContentletEventSave,
     DotContentletEventSelect,
+    DotInlineEditContent,
     DotRelocatePayload
 } from './models/dot-contentlets-events.model';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
@@ -34,14 +36,6 @@ import { INLINE_TINYMCE_SCRIPTS } from '@dotcms/app/portlets/dot-edit-page/conte
 export enum DotContentletAction {
     EDIT,
     ADD
-}
-
-interface DotInlineEditContent {
-    innerHTML: string;
-    dataset: { mode: string; inode: string; fieldName: string; language: string };
-    element: HTMLElement;
-    isNotDirty: boolean;
-    eventType: string;
 }
 @Injectable()
 export class DotEditContentHtmlService {
@@ -425,7 +419,7 @@ export class DotEditContentHtmlService {
     private injectInlineEditingScripts(): void {
         const doc = this.getEditPageDocument();
         const editModeNodes = doc.querySelectorAll('[data-mode]');
-        
+
         if (editModeNodes.length) {
             const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
             const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(TINYMCE);
@@ -556,10 +550,10 @@ export class DotEditContentHtmlService {
         return this.inlineCurrentContent[id];
     }
 
-    private handleDatasetMissingErrors(content: DotInlineEditContent): void {
+    private handleDatasetMissingErrors({ dataset }: Pick<DotInlineEditContent, 'dataset'>): void {
         const requiredDatasetKeys = ['mode', 'inode', 'fieldName', 'language'];
         const datasetMissing = requiredDatasetKeys.filter(function (key) {
-            return !Object.keys(content.dataset).includes(key);
+            return !Object.keys(dataset).includes(key);
         });
         const message = this.dotMessageService.get('editpage.inline.attribute.error');
         datasetMissing.forEach((dataset) => {
@@ -567,22 +561,21 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private handleTinyMCEOnFocusEvent(content: DotInlineEditContent) {
-        this.handleDatasetMissingErrors(content);
-
+    private handleTinyMCEOnFocusEvent(content: DotContentletEvent<DotInlineEditContent>) {
+        this.handleDatasetMissingErrors(content.data);
         this.inlineCurrentContent = {
             ...this.inlineCurrentContent,
-            [content.element.id]: content.element.innerHTML
+            [content.data.element.id]: content.data.innerHTML
         };
     }
 
-    private handleTinyMCEOnBlurEvent(content: DotInlineEditContent) {
+    private handleTinyMCEOnBlurEvent(content: DotContentletEvent<DotInlineEditContent>) {
         // If editor is dirty then we continue making the request
-        if (!content.isNotDirty) {
+        if (!content.data.isNotDirty) {
             // Add the loading indicator to the field
-            content.element.classList.add('inline-editing--saving');
+            content.data.element.classList.add('inline-editing--saving');
 
-            const contentTypeNode: HTMLElement = content.element.closest(
+            const contentTypeNode: HTMLElement = content.data.element.closest(
                 '[data-dot-object="contentlet"]'
             );
 
@@ -591,32 +584,32 @@ export class DotEditContentHtmlService {
             // All good, initiate the request
             this.dotWorkflowActionsFireService
                 .saveContentlet(dotType, {
-                    [fieldName]: content.innerHTML,
-                    inode: content.dataset.inode
+                    [fieldName]: content.data.innerHTML,
+                    inode: content.data.dataset.inode
                 })
                 .pipe(take(1))
                 .subscribe(
                     () => {
                         // on success
-                        content.element.classList.remove('inline-editing--saving');
+                        content.data.element.classList.remove('inline-editing--saving');
                     },
                     () => {
                         // on error
-                        content.element.classList.remove('inline-editing--saving');
-                        content.element.innerHTML = this.resetInlineCurrentContent(
-                            content.element.id
+                        content.data.element.classList.remove('inline-editing--saving');
+                        content.data.element.innerHTML = this.resetInlineCurrentContent(
+                            content.data.element.id
                         );
                         const message = this.dotMessageService.get('editpage.inline.error');
                         this.dotGlobalMessageService.error(message);
                     },
                     () => {
-                        delete this.inlineCurrentContent[content.element.id];
+                        delete this.inlineCurrentContent[content.data.element.id];
                     }
                 );
         } else {
             // No changes, reset back the object
-            this.inlineCurrentContent[content.element.id] = this.resetInlineCurrentContent(
-                content.element.id
+            this.inlineCurrentContent[content.data.element.id] = this.resetInlineCurrentContent(
+                content.data.element.id
             );
         }
     }
@@ -636,12 +629,12 @@ export class DotEditContentHtmlService {
                     this.renderEditedContentlet(this.currentContentlet);
                 }
             },
-            inlineEdit: (content: DotInlineEditContent) => {
-                if (content.eventType === 'focus') {
+            inlineEdit: (content: DotContentletEvent<DotInlineEditContent>) => {
+                if (content.data.eventType === 'focus') {
                     this.handleTinyMCEOnFocusEvent(content);
                 }
 
-                if (content.eventType === 'blur') {
+                if (content.data.eventType === 'blur') {
                     this.handleTinyMCEOnBlurEvent(content);
                 }
             },
