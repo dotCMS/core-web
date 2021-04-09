@@ -19,7 +19,6 @@ async function getUrl(
     }
 
     if (hostId) {
-        console.log('adding host id')
         newUrl.searchParams.append('host_id', hostId);
     }
 
