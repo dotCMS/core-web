@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 
-import { of, Observable, noop, throwError } from 'rxjs';
+import { of, Observable, throwError } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
 
 import { DotEditContentHtmlService } from './dot-edit-content-html.service';
