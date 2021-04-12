@@ -184,7 +184,7 @@ describe('DotEditContentHtmlService', () => {
                     DotEventsService,
                     DotWorkflowActionsFireService,
                     { provide: DotMessageService, useValue: messageServiceMock },
-                    { provide: DotLicenseService, useClass: MockDotLicenseService },
+                    { provide: DotLicenseService, useClass: MockDotLicenseService }
                 ]
             });
             service = TestBed.inject(DotEditContentHtmlService);
@@ -816,7 +816,7 @@ describe('DotEditContentHtmlService', () => {
             );
 
             const events = ['focus', 'blur'];
-            events.forEach(event => {
+            events.forEach((event) => {
                 service.contentletEvents$.next({
                     name: 'inlineEdit',
                     data: {
@@ -832,7 +832,7 @@ describe('DotEditContentHtmlService', () => {
                         element: fakeElem
                     }
                 });
-            })
+            });
 
             expect(fakeElem.innerHTML).toBe('Hello World');
         });
@@ -886,7 +886,6 @@ describe('DotEditContentHtmlService', () => {
                     element: fakeElem
                 }
             });
-
 
             expect(dotWorkflowActionsFireService.saveContentlet).not.toHaveBeenCalled();
         });

@@ -423,13 +423,13 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         const editModeNodes = doc.querySelectorAll('[data-mode]');
 
-        editModeNodes.forEach(node => {
-            if(node.tagName === 'A') {
+        editModeNodes.forEach((node) => {
+            if (node.tagName === 'A') {
                 node.addEventListener('click', (e) => {
-                    e.preventDefault()
-                })
+                    e.preventDefault();
+                });
             }
-        })
+        });
 
         if (editModeNodes.length) {
             const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
@@ -577,11 +577,10 @@ export class DotEditContentHtmlService {
         this.inlineCurrentContent = {
             ...this.inlineCurrentContent,
             [contentlet.element.id]: contentlet.innerHTML
-        };        
+        };
     }
 
     private handleTinyMCEOnBlurEvent(content: DotInlineEditContent) {
-
         // If editor is dirty then we continue making the request
         if (!content.isNotDirty) {
             // Add the loading indicator to the field
@@ -591,7 +590,7 @@ export class DotEditContentHtmlService {
                 '[data-dot-object="contentlet"]'
             );
 
-            const { dotType } = contentTypeNode.dataset;  
+            const { dotType } = contentTypeNode.dataset;
 
             // All good, initiate the request
             this.dotWorkflowActionsFireService
@@ -605,14 +604,14 @@ export class DotEditContentHtmlService {
                         // on success
                     },
                     () => {
-                        // on error      
+                        // on error
                         content.element.innerHTML = this.inlineCurrentContent[content.element.id];
                         const message = this.dotMessageService.get('editpage.inline.error');
                         this.dotGlobalMessageService.error(message);
                     },
                     () => {
-                        // finally       
-                        content.element.classList.remove('inline-editing--saving');        
+                        // finally
+                        content.element.classList.remove('inline-editing--saving');
                         delete this.inlineCurrentContent[content.element.id];
                     }
                 );
