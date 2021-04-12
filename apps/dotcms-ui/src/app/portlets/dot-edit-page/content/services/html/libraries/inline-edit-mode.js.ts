@@ -77,7 +77,10 @@ export const INLINE_TINYMCE_SCRIPTS = `
     },
     };
 
-    document.addEventListener("click", function ({ target: { dataset } }) {
+    document.addEventListener("click", function (event) {
+
+    const { target: { dataset } } = event;
+
     const dataSelector =
         '[data-inode="' +
         dataset.inode +
@@ -86,6 +89,10 @@ export const INLINE_TINYMCE_SCRIPTS = `
         '"]';
     // if the mode is truthy we initialize tinymce
     if (dataset.mode) {
+
+        event.stopPropagation();
+        event.preventDefault();
+
         tinymce
         .init({
             ...tinyMCEConfig[dataset.mode],

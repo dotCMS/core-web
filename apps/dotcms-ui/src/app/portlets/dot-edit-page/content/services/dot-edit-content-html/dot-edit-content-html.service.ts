@@ -422,15 +422,7 @@ export class DotEditContentHtmlService {
     private injectInlineEditingScripts(): void {
         const doc = this.getEditPageDocument();
         const editModeNodes = doc.querySelectorAll('[data-mode]');
-
-        editModeNodes.forEach((node) => {
-            if (node.tagName === 'A') {
-                node.addEventListener('click', (e) => {
-                    e.preventDefault();
-                });
-            }
-        });
-
+        
         if (editModeNodes.length) {
             const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
             const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(TINYMCE);
