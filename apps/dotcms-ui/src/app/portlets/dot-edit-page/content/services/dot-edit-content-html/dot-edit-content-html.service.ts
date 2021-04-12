@@ -575,10 +575,7 @@ export class DotEditContentHtmlService {
         this.inlineCurrentContent = {
             ...this.inlineCurrentContent,
             [contentlet.element.id]: contentlet.innerHTML
-        };
-
-        console.log(this.inlineCurrentContent);
-        
+        };        
     }
 
     private handleTinyMCEOnBlurEvent(content: DotInlineEditContent) {
@@ -611,7 +608,8 @@ export class DotEditContentHtmlService {
                         const message = this.dotMessageService.get('editpage.inline.error');
                         this.dotGlobalMessageService.error(message);
                     },
-                    () => {       
+                    () => {
+                        // finally       
                         content.element.classList.remove('inline-editing--saving');        
                         delete this.inlineCurrentContent[content.element.id];
                     }

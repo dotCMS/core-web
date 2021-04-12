@@ -796,7 +796,7 @@ describe('DotEditContentHtmlService', () => {
         });
     });
 
-    fdescribe('inline editing', () => {
+    describe('inline editing', () => {
         let dotWorkflowActionsFireService: DotWorkflowActionsFireService;
         let dotGlobalMessageService: DotGlobalMessageService;
 

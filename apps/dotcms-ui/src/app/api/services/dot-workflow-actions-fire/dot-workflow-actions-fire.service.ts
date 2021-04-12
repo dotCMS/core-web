@@ -132,7 +132,7 @@ export class DotWorkflowActionsFireService {
             .requestView({
                 method: 'PUT',
                 url: `v1/workflow/actions/default/fire/${action}${
-                    data.inode && `?inode=${data.inode}`
+                    data.inode ? `?inode=${data.inode}` : ''
                 }`,
                 body: { contentlet: { contentType: contentType, ...data } }
             })
