@@ -32,17 +32,11 @@ import {
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { INLINE_TINYMCE_SCRIPTS } from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/inline-edit-mode.js';
-import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
 
 export enum DotContentletAction {
     EDIT,
     ADD
 }
-
-const messageServiceMock = new MockDotMessageService({
-    'editpage.inline.error': 'An error occured',
-});
-
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<
@@ -428,6 +422,14 @@ export class DotEditContentHtmlService {
     private injectInlineEditingScripts(): void {
         const doc = this.getEditPageDocument();
         const editModeNodes = doc.querySelectorAll('[data-mode]');
+
+        editModeNodes.forEach(node => {
+            if(node.tagName === 'A') {
+                node.addEventListener('click', (e) => {
+                    e.preventDefault()
+                })
+            }
+        })
 
         if (editModeNodes.length) {
             const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;

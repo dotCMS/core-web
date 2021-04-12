@@ -805,6 +805,38 @@ describe('DotEditContentHtmlService', () => {
             dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         });
 
+        it('should return the content if an error occurs', () => {
+            const fakeElem: HTMLElement = fakeDocument.querySelector(
+                '[data-test-id="inline-edit-element-title"]'
+            );
+
+            const error404 = mockResponseView(404);
+            spyOn(dotWorkflowActionsFireService, 'saveContentlet').and.returnValue(
+                throwError(error404)
+            );
+
+            const events = ['focus', 'blur'];
+            events.forEach(event => {
+                service.contentletEvents$.next({
+                    name: 'inlineEdit',
+                    data: {
+                        eventType: event,
+                        innerHTML: event === 'focus' ? fakeElem.innerHTML : '<div>hello</div>',
+                        isNotDirty: false,
+                        dataset: {
+                            fieldName: 'title',
+                            inode: '999',
+                            language: '1',
+                            mode: 'full'
+                        },
+                        element: fakeElem
+                    }
+                });
+            })
+
+            expect(fakeElem.innerHTML).toBe('Hello World');
+        });
+
         it('should call saveContentlet and save the content', () => {
             spyOn(dotWorkflowActionsFireService, 'saveContentlet').and.returnValue(of({}));
             const fakeElem: HTMLElement = fakeDocument.querySelector(

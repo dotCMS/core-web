@@ -15,7 +15,9 @@ export const INLINE_TINYMCE_SCRIPTS = `
                 isNotDirty: ed.isNotDirty,
             }
 
-            // For full editor we are adding pointer-events: none to all it children, this is the way we can capture the click to init in the editor itself, after the editor is initialized and clicked we set the pointer-events: auto so users can use the editor as intended.
+            // For full editor we are adding pointer-events: none to all it children, 
+            // this is the way we can capture the click to init in the editor itself, after the editor 
+            // is initialized and clicked we set the pointer-events: auto so users can use the editor as intended.
             if (eventType === "focus" && dataset.mode === "full") {
                 ed.bodyElement.classList.add("active");
             }
@@ -37,19 +39,19 @@ export const INLINE_TINYMCE_SCRIPTS = `
     }
 
     const defaultConfig = {
-    menubar: false,
-    inline: true,
-    valid_styles: {
-        "*": "font-size,font-family,color,text-decoration,text-align",
-    },
-    powerpaste_word_import: "clean",
-    powerpaste_html_import: "clean",
-    setup: (editor) => handleInlineEditEvents(editor),
+        menubar: false,
+        inline: true,
+        valid_styles: {
+            "*": "font-size,font-family,color,text-decoration,text-align",
+        },
+        powerpaste_word_import: "clean",
+        powerpaste_html_import: "clean",
+        setup: (editor) => handleInlineEditEvents(editor)
     };
 
     const tinyMCEConfig = {
     minimal: {
-        plugins: ["link"],
+        plugins: ["link", "autolink"],
         toolbar: "bold italic underline | link",
         valid_elements: "strong,em,span[style],a[href]",
         content_css: ["//fonts.googleapis.com/css?family=Lato:300,300i,400,400i"],
