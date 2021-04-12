@@ -1,0 +1,40 @@
+name: Publish GitHub Release
+
+on:
+  push:
+    branches:
+      - release-*
+jobs:
+  publish-release:
+    name: Publish GitHub Release
+    runs-on: ubuntu-18.04
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SSH_RSA_KEY: ${{ secrets.DOTCMS_BUILD_RSA_KEY  }}
+      DEBUG: false
+    steps:
+      - name: Get commit message
+        id: get-commit-message
+        uses: dotcms/get-commit-message@master
+        with:
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare
+        if: ${{ steps.get-commit-message.outputs.commit_message == 'Publish Release'}}
+        run: |
+          COMMIT_MESSG="${{ steps.get-commit-message.outputs.commit_message }}"
+          echo "COMMIT_MESSG: ${COMMIT_MESSG}"
+          BRANCH=$(basename "${{ github.ref }}")
+          echo "BRANCH=${BRANCH}" >> $GITHUB_ENV
+          IFS='-' read -r -a tokens <<< "${BRANCH}"
+          RELEASE_VERSION="${tokens[1]}"
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        if: ${{ steps.get-commit-message.outputs.commit_message == 'Publish Release'}}
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{env.RELEASE_VERSION}} Release
+          commit: ${{env.BRANCH}}
+          tag: v${{env.RELEASE_VERSION}}
