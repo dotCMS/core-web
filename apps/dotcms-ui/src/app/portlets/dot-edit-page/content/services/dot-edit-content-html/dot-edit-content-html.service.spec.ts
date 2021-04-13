@@ -890,7 +890,7 @@ describe('DotEditContentHtmlService', () => {
             expect(dotWorkflowActionsFireService.saveContentlet).not.toHaveBeenCalled();
         });
 
-        fit('should display a toast on error', () => {
+        it('should display a toast on error', () => {
             const error404 = mockResponseView(404);
             spyOn(dotWorkflowActionsFireService, 'saveContentlet').and.returnValue(
                 throwError(error404)
