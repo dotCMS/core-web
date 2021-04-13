@@ -895,7 +895,7 @@ describe('DotEditContentHtmlService', () => {
             spyOn(dotWorkflowActionsFireService, 'saveContentlet').and.returnValue(
                 throwError(error404)
             );
-            spyOn(dotGlobalMessageService, 'error').and.callThrough()
+            spyOn(dotGlobalMessageService, 'error').and.callThrough();
 
             const fakeElem: HTMLElement = fakeDocument.querySelector(
                 '[data-test-id="inline-edit-element-title"]'
