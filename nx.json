@@ -27,7 +27,7 @@
         "dotcms-field-elements": { "tags": [] },
         "dotcms": { "tags": [] },
         "dotcms-models": { "tags": [] },
-        "styles": { "tags": [] },
+        "dot-primeng-theme-styles": { "tags": [] },
         "dot-cdn": { "tags": [] },
         "dot-cdn-e2e": { "tags": [], "implicitDependencies": ["dot-cdn"] }
     }

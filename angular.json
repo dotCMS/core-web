@@ -76,7 +76,7 @@
                         ],
                         "scripts": ["node_modules/marked/lib/marked.js"],
                         "stylePreprocessorOptions": {
-                            "includePaths": ["libs/styles/src/scss"]
+                            "includePaths": ["libs/dot-primeng-theme-styles/src/scss"]
                         }
                     },
                     "configurations": {
@@ -467,16 +467,19 @@
                 }
             }
         },
-        "styles": {
+        "dot-primeng-theme-styles": {
             "projectType": "library",
-            "root": "libs/styles",
-            "sourceRoot": "libs/styles/src",
+            "root": "libs/dot-primeng-theme-styles",
+            "sourceRoot": "libs/dot-primeng-theme-styles/src",
             "prefix": "dotcms",
             "architect": {
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": ["libs/styles/src/**/*.ts", "libs/styles/src/**/*.html"]
+                        "lintFilePatterns": [
+                            "libs/dot-primeng-theme-styles/src/**/*.ts",
+                            "libs/dot-primeng-theme-styles/src/**/*.html"
+                        ]
                     }
                 }
             }
@@ -505,7 +508,7 @@
                             "apps/dot-cdn/src/styles.scss"
                         ],
                         "stylePreprocessorOptions": {
-                            "includePaths": ["libs/styles/src/scss"]
+                            "includePaths": ["libs/dot-primeng-theme-styles/src/scss"]
                         }
                     },
                     "configurations": {
