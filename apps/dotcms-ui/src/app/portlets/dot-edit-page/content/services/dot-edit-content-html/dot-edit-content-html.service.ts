@@ -26,6 +26,7 @@ import {
     DotContentletEventRelocate,
     DotContentletEventSave,
     DotContentletEventSelect,
+    DotInlineDataset,
     DotInlineEditContent,
     DotRelocatePayload
 } from './models/dot-contentlets-events.model';
@@ -559,7 +560,7 @@ export class DotEditContentHtmlService {
             return !Object.keys(dataset).includes(key);
         });
         const message = this.dotMessageService.get('editpage.inline.attribute.error');
-        datasetMissing.forEach((dataset) => {
+        datasetMissing.forEach((dataset: string) => {
             this.dotGlobalMessageService.error(`${dataset} ${message}`);
         });
     }

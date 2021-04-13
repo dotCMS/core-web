@@ -890,12 +890,12 @@ describe('DotEditContentHtmlService', () => {
             expect(dotWorkflowActionsFireService.saveContentlet).not.toHaveBeenCalled();
         });
 
-        it('should display a toast on error', () => {
+        fit('should display a toast on error', () => {
             const error404 = mockResponseView(404);
             spyOn(dotWorkflowActionsFireService, 'saveContentlet').and.returnValue(
                 throwError(error404)
             );
-            spyOn(dotGlobalMessageService, 'error').and.returnValue(undefined);
+            spyOn(dotGlobalMessageService, 'error')
 
             const fakeElem: HTMLElement = fakeDocument.querySelector(
                 '[data-test-id="inline-edit-element-title"]'
