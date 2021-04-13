@@ -50,6 +50,9 @@
         },
         "dotcms-models": {
             "tags": []
+        },
+        "styles": {
+            "tags": []
         }
     }
 }

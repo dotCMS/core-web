@@ -76,7 +76,7 @@
                         ],
                         "scripts": ["node_modules/marked/lib/marked.js"],
                         "stylePreprocessorOptions": {
-                            "includePaths": ["apps/dotcms-ui/src/styles"]
+                            "includePaths": ["libs/styles/src/scss"]
                         }
                     },
                     "configurations": {
@@ -463,6 +463,20 @@
                             "libs/dotcms-models/src/**/*.ts",
                             "libs/dotcms-models/src/**/*.html"
                         ]
+                    }
+                }
+            }
+        },
+        "styles": {
+            "projectType": "library",
+            "root": "libs/styles",
+            "sourceRoot": "libs/styles/src",
+            "prefix": "dotcms",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/styles/src/**/*.ts", "libs/styles/src/**/*.html"]
                     }
                 }
             }
