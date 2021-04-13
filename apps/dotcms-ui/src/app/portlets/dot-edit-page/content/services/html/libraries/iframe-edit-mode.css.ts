@@ -361,11 +361,11 @@ export const getEditPageCss = (timestampId: string): string => {
         left: 0;
     }
 
-    ${timestampId} [data-mode="full"] > * {
+    ${timestampId} [data-mode] > * {
         pointer-events: none;
     }
 
-    ${timestampId} [data-mode="full"].active > * {
+    ${timestampId} [data-mode].active > * {
         pointer-events: auto;
     }
 

@@ -18,7 +18,7 @@ export const INLINE_TINYMCE_SCRIPTS = `
             // For full editor we are adding pointer-events: none to all it children, 
             // this is the way we can capture the click to init in the editor itself, after the editor 
             // is initialized and clicked we set the pointer-events: auto so users can use the editor as intended.
-            if (eventType === "focus" && dataset.mode === "full") {
+            if (eventType === "focus" && dataset.mode) {
                 ed.bodyElement.classList.add("active");
             }
 
@@ -78,7 +78,7 @@ export const INLINE_TINYMCE_SCRIPTS = `
     };
 
     document.addEventListener("click", function (event) {
-
+        
     const { target: { dataset } } = event;
 
     const dataSelector =
@@ -87,20 +87,21 @@ export const INLINE_TINYMCE_SCRIPTS = `
         '"][data-field-name="' +
         dataset.fieldName +
         '"]';
+
     // if the mode is truthy we initialize tinymce
-    if (dataset.mode) {
+        if (dataset.mode) {
 
-        event.stopPropagation();
-        event.preventDefault();
+            event.stopPropagation();
+            event.preventDefault();
 
-        tinymce
-        .init({
-            ...tinyMCEConfig[dataset.mode],
-            selector: dataSelector,
-        })
-        .then(([ed]) => {
-            ed?.editorCommands.execCommand("mceFocus");
-        });
-    }
+            tinymce
+            .init({
+                ...tinyMCEConfig[dataset.mode],
+                selector: dataSelector,
+            })
+            .then(([ed]) => {
+                ed?.editorCommands.execCommand("mceFocus");
+            });
+        }
     });
 `;
