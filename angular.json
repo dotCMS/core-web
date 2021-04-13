@@ -69,7 +69,7 @@
                             }
                         ],
                         "styles": [
-                            "apps/dotcms-ui/src/styles.scss",
+                            "libs/dot-primeng-theme-styles/src/scss/styles.scss",
                             "node_modules/primeicons/primeicons.css",
                             "node_modules/primeflex/primeflex.css",
                             "node_modules/primeng/resources/primeng.min.css"
@@ -144,7 +144,7 @@
                         "tsConfig": "apps/dotcms-ui/tsconfig.spec.json",
                         "karmaConfig": "apps/dotcms-ui/karma.conf.js",
                         "polyfills": "apps/dotcms-ui/src/polyfills.ts",
-                        "styles": ["apps/dotcms-ui/src/styles.scss"],
+                        "styles": ["libs/dot-primeng-theme-styles/src/scss/styles.scss"],
                         "scripts": [],
                         "stylePreprocessorOptions": {
                             "includePaths": ["apps/dotcms-ui/src/styles"]
@@ -501,7 +501,7 @@
                         "aot": true,
                         "assets": ["apps/dot-cdn/src/favicon.ico", "apps/dot-cdn/src/assets"],
                         "styles": [
-                            "apps/dotcms-ui/src/styles.scss",
+                            "libs/dot-primeng-theme-styles/src/scss/styles.scss",
                             "node_modules/primeicons/primeicons.css",
                             "node_modules/primeflex/primeflex.css",
                             "node_modules/primeng/resources/primeng.min.css",
