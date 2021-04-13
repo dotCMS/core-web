@@ -147,7 +147,7 @@
                         "styles": ["libs/dot-primeng-theme-styles/src/scss/styles.scss"],
                         "scripts": [],
                         "stylePreprocessorOptions": {
-                            "includePaths": ["apps/dotcms-ui/src/styles"]
+                            "includePaths": ["libs/dot-primeng-theme-styles/src/scss"]
                         }
                     }
                 },
