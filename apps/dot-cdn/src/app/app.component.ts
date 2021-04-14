@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 export class AppComponent implements OnInit {
     @ViewChild('chart', { static: true }) chart: any;
     content$: Observable<{ label: string; value: string }[]>;
-    
+
     values = [
         { name: 'Last 30 days', value: 'last_30' },
         { name: 'Last 60 days', value: 'last_60' }
