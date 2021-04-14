@@ -10,6 +10,9 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { TabViewModule } from 'primeng/tabview';
+import { ChartModule } from 'primeng/chart';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,7 +23,10 @@ import { TabViewModule } from 'primeng/tabview';
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot([]),
-        TabViewModule
+        TabViewModule,
+        ChartModule,
+        InputTextareaModule,
+        ButtonModule
     ],
     providers: [CoreWebService, LoggerService, StringUtils],
     bootstrap: [AppComponent]
