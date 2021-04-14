@@ -9,6 +9,8 @@ import { CoreWebService, LoggerService, StringUtils } from '@dotcms/dotcms-js';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
+import { TabViewModule } from 'primeng/tabview';
+
 @NgModule({
     declarations: [AppComponent],
     imports: [
@@ -17,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
         DropdownModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        RouterModule.forRoot([])
+        RouterModule.forRoot([]),
+        TabViewModule
     ],
     providers: [CoreWebService, LoggerService, StringUtils],
     bootstrap: [AppComponent]

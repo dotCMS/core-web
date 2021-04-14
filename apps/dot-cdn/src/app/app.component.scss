@@ -1,0 +1,23 @@
+@use "variables" as *;
+
+:host {
+  background:#F1F3F4;
+  display: block;
+  box-sizing: border-box;
+  padding: 1rem 0;
+}
+
+.dot-cdn__container {
+  box-shadow: $md-shadow-1;
+  background: white;
+  margin: 1rem 2rem;
+  display: block;
+}
+
+.dot-cdn__tab-content {
+  padding: 1rem;
+}
+
+h1 {
+  margin: 0;
+}

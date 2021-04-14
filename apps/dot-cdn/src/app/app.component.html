@@ -1,9 +1,23 @@
-<input type="text" pInputText />
 
-<p-dropdown [options]="cities"  optionLabel="name" optionValue="code"></p-dropdown>
 
-<ul>
-    <li *ngFor="let item of content$ | async; index as i">
-      {{ item.name }}
-    </li>
-  </ul>
+
+<!-- 
+<input type="text" pInputText /> -->
+
+<!-- <p-dropdown [options]="cities"  optionLabel="name" optionValue="code"></p-dropdown> -->
+<div class="dot-cdn__container">
+  <p-tabView>
+    <p-tabPanel header="Overview">
+        <div class="dot-cdn__tab-content">
+          <h1>Overview</h1>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Flush Cache">
+        <div class="dot-cdn__tab-content">
+          <h1>Flush Cache</h1>
+        </div>
+    </p-tabPanel>
+  </p-tabView>
+  
+</div>
+
