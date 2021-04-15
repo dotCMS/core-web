@@ -10,9 +10,8 @@ import { DotMessage } from './model';
 import { DotMessageSeverity } from './model';
 import { DotMessageType } from './model';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule, DotIconComponent } from '@dotcms/dot-icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotIconComponent } from '@components/_common/dot-icon/dot-icon.component';
 
 @Injectable()
 export class DotMessageDisplayServiceMock {

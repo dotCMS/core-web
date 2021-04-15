@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DotNavIconComponent } from './dot-nav-icon.component';
 import { DotIconModule } from '@dotcms/dot-icon';
-import { DotIconComponent } from '../../../_common/dot-icon/dot-icon.component';
+import { DotIconComponent } from '@dotcms/dot-icon';
 import { By } from '@angular/platform-browser';
 
 describe('DotNavIconComponent', () => {
