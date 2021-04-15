@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';     
+import { map } from 'rxjs/operators';
 import { ChartData, ChartOptions, SelectValues } from './app.interface';
 
 @Component({

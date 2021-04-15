@@ -21,6 +21,6 @@ export interface ChartOptions {
 }
 
 export interface SelectValues {
-  name: string;
-  value: string;
+    name: string;
+    value: string;
 }
