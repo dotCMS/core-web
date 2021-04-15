@@ -26,7 +26,7 @@ import { FieldDragDropService } from '../service/index';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { FieldService } from '../service/field.service';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@dotcms/dot-icon';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import * as _ from 'lodash';

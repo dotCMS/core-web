@@ -9,7 +9,7 @@ import { IFrameModule } from './view/components/_common/iframe';
 
 import { TableModule } from 'primeng/table';
 
-import { DotIconModule } from './view/components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@dotcms/dot-icon';
 import { DotIconButtonModule } from './view/components/_common/dot-icon-button/dot-icon-button.module';
 import { DotTextareaContentModule } from './view/components/_common/dot-textarea-content/dot-textarea-content.module';
 import { DotContentletEditorModule } from './view/components/dot-contentlet-editor/dot-contentlet-editor.module';

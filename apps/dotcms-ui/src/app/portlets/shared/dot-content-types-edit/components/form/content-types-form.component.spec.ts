@@ -32,7 +32,7 @@ import { DotWorkflowsSelectorFieldModule } from '@components/_common/dot-workflo
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageSelectorModule } from '@components/_common/dot-page-selector/dot-page-selector.module';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
-import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@dotcms/dot-icon';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
 import {

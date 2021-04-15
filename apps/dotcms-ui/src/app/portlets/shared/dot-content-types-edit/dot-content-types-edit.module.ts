@@ -42,7 +42,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DotContentTypeFieldsVariablesModule } from '@portlets/shared/dot-content-types-edit/components/fields/dot-content-type-fields-variables/dot-content-type-fields-variables.module';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
-import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@dotcms/dot-icon';
 import { DynamicFieldPropertyDirective } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
 import { DotContentTypesEditRoutingModule } from './dot-content-types-edit-routing.module';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';

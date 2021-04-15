@@ -20,7 +20,7 @@ import {
 import { LoginServiceMock, mockAuth, mockUser } from '../../../../../test/login-service.mock';
 import { DotToolbarUserComponent } from './dot-toolbar-user.component';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@dotcms/dot-icon';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LOCATION_TOKEN } from '@dotcms/app/providers';
