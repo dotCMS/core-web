@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';     
+import { ChartData, ChartOptions, SelectValues } from './app.interface';
 
 @Component({
     selector: 'dotcms-root',
@@ -12,23 +13,13 @@ export class AppComponent implements OnInit {
     @ViewChild('chart', { static: true }) chart: any;
     content$: Observable<{ label: string; value: string }[]>;
 
-    values = [
+    values: SelectValues[] = [
         { name: 'Last 30 days', value: 'last_30' },
         { name: 'Last 60 days', value: 'last_60' }
     ];
 
-    data = {};
-
-    options = {
-        title: {
-            display: true,
-            text: 'My Title',
-            fontSize: 16
-        },
-        legend: {
-            position: 'bottom'
-        }
-    };
+    data: ChartData | Record<string, unknown> = {};
+    options: ChartOptions | Record<string, unknown> = {};
 
     constructor(private coreWebService: CoreWebService) {
         this.content$ = this.coreWebService
@@ -39,6 +30,24 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.setData();
+        this.setOptions();
+    }
+
+    private setOptions(): void {
+        this.options = {
+            title: {
+                display: true,
+                text: 'My Title',
+                fontSize: 16
+            },
+            legend: {
+                position: 'bottom'
+            }
+        };
+    }
+
+    private setData(): void {
         this.data = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             datasets: [

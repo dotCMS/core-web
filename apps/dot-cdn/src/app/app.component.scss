@@ -74,7 +74,7 @@ h1 {
     margin-bottom: $spacing-8;
 }
 
-@media (min-width: 768px) {
+@media (min-width: $screen-md-min) {
     .dot-cdn {
         &__tab-content {
             padding: $spacing-4;

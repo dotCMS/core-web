@@ -15,7 +15,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActionHeaderComponent } from './action-header/action-header.component';
 import { DotActionMenuItem } from '@shared/models/dot-action-menu/dot-action-menu-item.model';
 import { DotMenuModule } from '../_common/dot-menu/dot-menu.module';
-import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@dotcms/dot-icon';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 import { DotStringFormatPipe } from '@pipes/dot-string-format/dot-string-format.pipe';
 import { ConfirmationService, SharedModule } from 'primeng/api';
