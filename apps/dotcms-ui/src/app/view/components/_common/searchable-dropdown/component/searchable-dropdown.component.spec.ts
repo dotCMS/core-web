@@ -6,7 +6,7 @@ import { MockDotMessageService } from '../../../../../test/dot-message-service.m
 import { SEARCHABLE_NGFACES_MODULES } from '../searchable-dropdown.module';
 import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotIconModule } from '../@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/dot-icon';
 import * as _ from 'lodash';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
