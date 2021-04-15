@@ -604,6 +604,30 @@
                     }
                 }
             }
+        },
+        "dot-icon": {
+            "projectType": "library",
+            "root": "libs/dot-icon",
+            "sourceRoot": "libs/dot-icon/src",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "libs/dot-icon/src/**/*.ts",
+                            "libs/dot-icon/src/**/*.html"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "libs/dot-icon/src/test.ts",
+                        "tsConfig": "libs/dot-icon/tsconfig.spec.json",
+                        "karmaConfig": "libs/dot-icon/karma.conf.js"
+                    }
+                }
+            }
         }
     }
 }

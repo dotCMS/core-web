@@ -13,6 +13,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { ChartModule } from 'primeng/chart';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
+import { DotIconModule } from '@dotcms/dot-icon';
 
 @NgModule({
     declarations: [AppComponent],
@@ -26,7 +27,8 @@ import { ButtonModule } from 'primeng/button';
         TabViewModule,
         ChartModule,
         InputTextareaModule,
-        ButtonModule
+        ButtonModule,
+        DotIconModule
     ],
     providers: [CoreWebService, LoggerService, StringUtils],
     bootstrap: [AppComponent]

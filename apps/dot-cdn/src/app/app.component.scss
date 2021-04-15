@@ -43,12 +43,22 @@ h1 {
 }
 
 .dot-cdn__col {
+    color: $brand-primary_mod;
     margin-bottom: $spacing-3;
+    display: grid;
+    column-gap: 1rem;
+    grid-template-columns: repeat(2, 7rem);
+    dot-icon {
+        align-self: center;
+    }
 }
+
 .dot-cdn__stats-label {
     text-transform: uppercase;
     color: gray;
     font-size: $font-size-small;
+    grid-column: 1/3;
+    display: inline-block;
 }
 
 .dot-cdn__chart {
@@ -87,6 +97,7 @@ h1 {
     }
 
     .dot-cdn__col {
+        grid-template-columns: repeat(2, 1fr);
         margin-bottom: 0;
     }
 }
