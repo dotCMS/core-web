@@ -156,7 +156,9 @@ export class SiteService {
                 method: 'PUT',
                 url: `${this.urls.switchSiteUrl}/${site.identifier}`
             })
-            .subscribe();
+            .subscribe(() => {
+                this.setCurrentSite(site);
+            });
     }
 
     /**
@@ -180,8 +182,10 @@ export class SiteService {
     }
 
     private setCurrentSite(site: Site): void {
-        this.selectedSite = site;
-        this._switchSite$.next({ ...site });
+        if (this.selectedSite?.identifier !== site.identifier) {
+            this.selectedSite = site;
+            this._switchSite$.next({ ...site });
+        }
     }
 
     private loadCurrentSite(): void {
