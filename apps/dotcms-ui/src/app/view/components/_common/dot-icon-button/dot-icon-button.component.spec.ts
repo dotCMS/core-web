@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { UiDotIconButtonComponent } from './dot-icon-button.component';
 import { By } from '@angular/platform-browser';
 

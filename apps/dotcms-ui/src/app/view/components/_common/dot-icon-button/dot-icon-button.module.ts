@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { UiDotIconButtonComponent } from './dot-icon-button.component';
 
 @NgModule({

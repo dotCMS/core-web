@@ -12,7 +12,7 @@ import { SiteServiceMock, mockSites } from '../../../test/site-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { UiDotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 
 @Injectable()
 class MockDotNavigationService {

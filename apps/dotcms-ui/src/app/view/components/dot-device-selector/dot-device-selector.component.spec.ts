@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
 import { mockDotDevices } from '../../../test/dot-device.mock';
 import { DotDevice } from '@models/dot-device/dot-device.model';
 import { of } from 'rxjs/internal/observable/of';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 
 @Component({
     selector: 'dot-test-host-component',

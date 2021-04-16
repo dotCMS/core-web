@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { DotAppsConfigurationItemComponent } from './dot-apps-configuration-item.component';
 import { UiDotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { By } from '@angular/platform-browser';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { TooltipModule } from 'primeng/tooltip';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfirmationService } from 'primeng/api';

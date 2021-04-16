@@ -8,7 +8,7 @@ import { UiDotIconButtonTooltipModule } from '@components/_common/dot-icon-butto
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { FieldService } from '../service';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 

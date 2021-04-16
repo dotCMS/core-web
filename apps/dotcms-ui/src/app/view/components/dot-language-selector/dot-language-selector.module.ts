@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { DotLanguageSelectorComponent } from './dot-language-selector.component';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { DotLanguagesService } from '@services/dot-languages/dot-languages.service';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 

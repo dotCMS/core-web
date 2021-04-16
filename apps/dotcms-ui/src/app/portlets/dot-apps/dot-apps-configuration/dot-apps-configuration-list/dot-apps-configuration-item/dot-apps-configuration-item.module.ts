@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DotAppsConfigurationItemComponent } from './dot-apps-configuration-item.component';
 import { UiDotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { TooltipModule } from 'primeng/tooltip';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotCopyButtonModule } from '@dotcms/app/view/components/dot-copy-button/dot-copy-button.module';

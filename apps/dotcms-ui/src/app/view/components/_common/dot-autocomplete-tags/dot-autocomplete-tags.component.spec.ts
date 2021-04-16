@@ -9,7 +9,7 @@ import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { Observable, of } from 'rxjs';
 import { DotTag } from '@models/dot-tag';
 import { By } from '@angular/platform-browser';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotPipesModule } from '@pipes/dot-pipes.module';

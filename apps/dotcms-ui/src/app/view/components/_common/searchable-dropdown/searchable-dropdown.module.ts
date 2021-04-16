@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { DataViewModule } from 'primeng/dataview';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { UiDotIconButtonModule } from '../dot-icon-button/dot-icon-button.module';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 import { ButtonModule } from 'primeng/button';

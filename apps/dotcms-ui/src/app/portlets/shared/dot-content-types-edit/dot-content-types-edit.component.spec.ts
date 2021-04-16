@@ -23,7 +23,7 @@ import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotMenuService } from '@services/dot-menu.service';
 import { mockResponseView } from '../../../test/response-view.mock';
-import { DotIconModule } from '@dotcms/ui/dot-icon';
+import { DotIconModule } from '@dotcms/ui';
 import { UiDotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { MenuItem, ConfirmationService } from 'primeng/api';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
