@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotUnlicensedPorletComponent } from './dot-unlicensed-porlet.component';
 import { ButtonModule } from 'primeng/button';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 @NgModule({

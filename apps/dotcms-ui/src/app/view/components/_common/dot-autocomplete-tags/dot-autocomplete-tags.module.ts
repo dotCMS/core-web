@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DotAutocompleteTagsComponent } from './dot-autocomplete-tags.component';
 import { FormsModule } from '@angular/forms';
 import { DotTagsService } from '@services/dot-tags/dot-tags.service';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { ChipsModule } from 'primeng/chips';
 import { AutoCompleteModule } from 'primeng/autocomplete';

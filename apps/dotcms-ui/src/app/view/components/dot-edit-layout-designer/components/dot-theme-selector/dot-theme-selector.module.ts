@@ -5,7 +5,7 @@ import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 
 import { FormsModule } from '@angular/forms';
 import { DotSiteSelectorModule } from '@components/_common/dot-site-selector/dot-site-selector.module';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { PaginatorService } from '@services/paginator';
 import { DotPipesModule } from '@pipes/dot-pipes.module';

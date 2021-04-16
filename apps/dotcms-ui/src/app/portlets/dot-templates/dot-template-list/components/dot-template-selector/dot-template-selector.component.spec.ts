@@ -8,7 +8,7 @@ import { DotTemplateSelectorComponent } from './dot-template-selector.component'
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 

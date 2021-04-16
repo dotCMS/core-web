@@ -4,7 +4,7 @@ import { DotUnlicensedPorletComponent } from '.';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { By } from '@angular/platform-browser';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 
 describe('DotUnlicensedPorletComponent', () => {

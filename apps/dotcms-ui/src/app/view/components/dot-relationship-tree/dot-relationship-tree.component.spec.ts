@@ -2,7 +2,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';

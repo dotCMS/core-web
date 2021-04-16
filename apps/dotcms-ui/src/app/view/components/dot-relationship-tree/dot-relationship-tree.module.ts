@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DotRelationshipTreeComponent } from './dot-relationship-tree.component';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 
 @NgModule({
     declarations: [DotRelationshipTreeComponent],

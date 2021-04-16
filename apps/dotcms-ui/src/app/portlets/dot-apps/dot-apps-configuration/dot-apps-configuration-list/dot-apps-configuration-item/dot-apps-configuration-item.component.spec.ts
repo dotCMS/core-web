@@ -4,9 +4,9 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { CommonModule } from '@angular/common';
 import { DotAppsConfigurationItemComponent } from './dot-apps-configuration-item.component';
-import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { UiDotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { By } from '@angular/platform-browser';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { TooltipModule } from 'primeng/tooltip';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfirmationService } from 'primeng/api';
@@ -54,7 +54,7 @@ describe('DotAppsConfigurationItemComponent', () => {
                 imports: [
                     CommonModule,
                     DotCopyButtonModule,
-                    DotIconButtonModule,
+                    UiDotIconButtonModule,
                     DotIconModule,
                     TooltipModule,
                     HttpClientTestingModule,

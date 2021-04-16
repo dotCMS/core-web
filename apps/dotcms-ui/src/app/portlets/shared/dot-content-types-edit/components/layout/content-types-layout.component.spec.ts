@@ -7,7 +7,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { By } from '@angular/platform-browser';
 import { DotMenuService } from '@services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';

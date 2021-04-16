@@ -61,7 +61,7 @@
             "tags": [],
             "implicitDependencies": ["dot-cdn"]
         },
-        "dot-icon": {
+        "ui-dot-icon": {
             "tags": []
         }
     }

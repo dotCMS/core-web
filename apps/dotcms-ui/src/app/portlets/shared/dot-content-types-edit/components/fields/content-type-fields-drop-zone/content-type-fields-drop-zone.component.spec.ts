@@ -29,8 +29,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FieldDragDropService } from '../service/index';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { FieldService } from '../service/field.service';
-import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { UiDotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import * as _ from 'lodash';
@@ -199,7 +199,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                     DotContentTypeFieldsVariablesModule,
                     DotDialogModule,
                     DotActionButtonModule,
-                    DotIconButtonModule,
+                    UiDotIconButtonModule,
                     DotIconModule,
                     DragulaModule,
                     TableModule,
@@ -454,7 +454,7 @@ describe('Load fields and drag and drop', () => {
                     BrowserAnimationsModule,
                     DotActionButtonModule,
                     DotIconModule,
-                    DotIconButtonModule,
+                    UiDotIconButtonModule,
                     TableModule,
                     ContentTypeFieldsAddRowModule,
                     DotDialogModule,

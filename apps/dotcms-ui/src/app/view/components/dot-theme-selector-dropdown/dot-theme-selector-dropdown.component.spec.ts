@@ -19,7 +19,7 @@ import {
     SearchableDropdownComponent
 } from '@components/_common/searchable-dropdown/component/searchable-dropdown.component';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
-import { DotIconModule } from '@dotcms/dot-icon';
+import { DotIconModule } from '@dotcms/ui/dot-icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { mockSites } from '@tests/site-service.mock';
 

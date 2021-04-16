@@ -605,26 +605,26 @@
                 }
             }
         },
-        "dot-icon": {
+        "ui-dot-icon": {
             "projectType": "library",
-            "root": "libs/dot-icon",
-            "sourceRoot": "libs/dot-icon/src",
+            "root": "libs/ui/dot-icon",
+            "sourceRoot": "libs/ui/dot-icon/src",
             "architect": {
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
                         "lintFilePatterns": [
-                            "libs/dot-icon/src/**/*.ts",
-                            "libs/dot-icon/src/**/*.html"
+                            "libs/ui/dot-icon/src/**/*.ts",
+                            "libs/ui/dot-icon/src/**/*.html"
                         ]
                     }
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "libs/dot-icon/src/test.ts",
-                        "tsConfig": "libs/dot-icon/tsconfig.spec.json",
-                        "karmaConfig": "libs/dot-icon/karma.conf.js"
+                        "main": "libs/ui/dot-icon/src/test.ts",
+                        "tsConfig": "libs/ui/dot-icon/tsconfig.spec.json",
+                        "karmaConfig": "libs/ui/dot-icon/karma.conf.js"
                     }
                 }
             }
