@@ -32,7 +32,12 @@ describe('DotMessageDisplayComponent', () => {
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
-                imports: [ToastModule, DotIconModule, UiDotIconButtonModule, BrowserAnimationsModule],
+                imports: [
+                    ToastModule,
+                    DotIconModule,
+                    UiDotIconButtonModule,
+                    BrowserAnimationsModule
+                ],
                 declarations: [DotMessageDisplayComponent],
                 providers: [
                     { provide: DotMessageDisplayService, useValue: dotMessageDisplayServiceMock }
