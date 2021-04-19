@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { CoreWebService, SiteService } from '@dotcms/dotcms-js';
-import { filter, pluck, mergeMap, catchError } from 'rxjs/operators';
-import { DotCDNStats } from './app.interface';
+import { pluck, mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
