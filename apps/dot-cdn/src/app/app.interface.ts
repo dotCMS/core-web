@@ -20,7 +20,22 @@ export interface ChartOptions {
     };
 }
 
-export interface SelectValues {
-    name: string;
+export interface SelectValue {
+    name?: string;
     value: string;
+}
+
+type DotCDNDate = { epochSecond: number; nano: number };
+export interface DotCDNStats {
+    stats: {
+        bandwidthPretty: string;
+        bandwidthUsedChart: { [key: string]: number };
+        cacheHitRate: number;
+        dateFrom: DotCDNDate;
+        dateTo: DotCDNDate;
+        geographicDistribution: unknown;
+        id: number;
+        totalBandwidthUsed: number;
+        totalRequestsServed: number;
+    };
 }
