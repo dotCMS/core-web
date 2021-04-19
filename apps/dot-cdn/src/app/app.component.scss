@@ -72,19 +72,17 @@ h1 {
 }
 
 @media (min-width: $screen-md-min) {
-    .dot-cdn {
-        &__tab-content {
-            padding: $spacing-4;
+    .dot-cdn__tab-content {
+        padding: $spacing-4;
+    }
 
-            &--contained {
-                padding: $spacing-4;
-                max-width: 70%;
+    .dot-cdn__tab-content--contained {
+        padding: $spacing-4;
+        max-width: 70%;
 
-                p {
-                    line-height: 1.5;
-                    margin-bottom: $spacing-4;
-                }
-            }
+        p {
+            line-height: 1.5;
+            margin-bottom: $spacing-4;
         }
     }
 
