@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CoreWebService } from '@dotcms/dotcms-js';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ChartData, ChartOptions, SelectValues } from './app.interface';
 
 @Component({
@@ -20,14 +18,6 @@ export class AppComponent implements OnInit {
 
     data: ChartData | Record<string, unknown> = {};
     options: ChartOptions | Record<string, unknown> = {};
-
-    constructor(private coreWebService: CoreWebService) {
-        this.content$ = this.coreWebService
-            .requestView({
-                url: '/api/v1/contenttype/basetypes'
-            })
-            .pipe(map((res) => res.entity));
-    }
 
     ngOnInit(): void {
         this.setData();

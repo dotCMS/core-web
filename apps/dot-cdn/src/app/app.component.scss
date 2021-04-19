@@ -1,7 +1,6 @@
 @use "variables" as *;
 
 :host {
-    background: #f1f3f4; // temporary
     display: block;
     box-sizing: border-box;
     padding: $spacing-3 0;
@@ -18,17 +17,15 @@ h1 {
     display: block;
 }
 
-.dot-cdn {
-    &__tab-content {
-        padding: $spacing-4;
+.dot-cdn__tab-content {
+    padding: $spacing-4;
+}
 
-        &--contained {
-            padding: $spacing-4;
-            textarea {
-                width: 100%;
-                margin-bottom: $spacing-4;
-            }
-        }
+.dot-cdn__tab-content--contained {
+    padding: $spacing-4;
+    textarea {
+        width: 100%;
+        margin-bottom: $spacing-4;
     }
 }
 
@@ -46,7 +43,7 @@ h1 {
     color: $brand-primary_mod;
     margin-bottom: $spacing-3;
     display: grid;
-    column-gap: 1rem;
+    column-gap: $spacing-3;
     grid-template-columns: repeat(2, 7rem);
     dot-icon {
         align-self: center;
