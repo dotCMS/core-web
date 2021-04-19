@@ -4,16 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { AppComponent } from './app.component';
-import { 
-    CoreWebService, 
-    DotcmsConfigService, 
-    DotcmsEventsService, 
-    DotEventsSocket, 
-    DotEventsSocketURL, 
-    LoggerService, 
-    LoginService, 
-    SiteService, 
-    StringUtils 
+import {
+    CoreWebService,
+    DotcmsConfigService,
+    DotcmsEventsService,
+    DotEventsSocket,
+    DotEventsSocketURL,
+    LoggerService,
+    LoginService,
+    SiteService,
+    StringUtils
 } from '@dotcms/dotcms-js';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,7 +25,6 @@ import { ButtonModule } from 'primeng/button';
 import { DotIconModule } from '@dotcms/ui';
 import { DotCDNService } from './dotcdn.service';
 import { FormsModule } from '@angular/forms';
-
 
 const dotEventSocketURLFactory = () => {
     return new DotEventsSocketURL(

@@ -2,29 +2,36 @@
     <p-tabView>
         <p-tabPanel header="Overview">
             <div class="dot-cdn__tab-content">
-                <p-dropdown [options]="periodValues" (onChange)="changePeriod($event)" optionLabel="name" optionValue="value" dataKey="value" [(ngModel)]="selectedPeriod.value"></p-dropdown>
+                <p-dropdown
+                    [options]="periodValues"
+                    (onChange)="changePeriod($event)"
+                    optionLabel="name"
+                    optionValue="value"
+                    dataKey="value"
+                    [(ngModel)]="selectedPeriod.value"
+                ></p-dropdown>
 
                 <div class="dot-cdn__stats">
                     <div class="dot-cdn__col">
                         <span class="dot-cdn__stats-label">Bandwidth Used</span>
-                        <h3 class="dot-cdn__stats-value">1.1GB</h3>
-                        <dot-icon name="insert_chart_outlined" size="32"></dot-icon>
+                        <h3 class="dot-cdn__stats-value">{{ data.stats?.bandwidthPretty }}</h3>
+                        <dot-icon name="insert_chart_outlined" size="32" *ngIf="data.stats"></dot-icon>
                     </div>
                     <div class="dot-cdn__col">
                         <span class="dot-cdn__stats-label">Requests Served</span>
-                        <h3 class="dot-cdn__stats-value">53,393</h3>
-                        <dot-icon name="file_download" size="32"></dot-icon>
+                        <h3 class="dot-cdn__stats-value">{{ data.stats?.totalRequestsServed }}</h3>
+                        <dot-icon name="file_download" size="32" *ngIf="data.stats"></dot-icon>
                     </div>
                     <div class="dot-cdn__col">
                         <span class="dot-cdn__stats-label">Cache Hit Rate</span>
-                        <h3 class="dot-cdn__stats-value">83.13%</h3>
-                        <dot-icon name="file_download" size="32"></dot-icon>
+                        <h3 class="dot-cdn__stats-value">{{ data.stats?.cacheHitRate | number: '1.0-2' }}%</h3>
+                        <dot-icon name="file_download" size="32"  *ngIf="data.stats"></dot-icon>
                     </div>
                 </div>
 
                 <div class="dot-cdn__chart">
                     <h3 class="dot-cdn__tab-content-label">Bandwidth Served</h3>
-                    <p-chart #chart type="line" [data]="data" width="100%" height="50vh"></p-chart>
+                    <p-chart #chart type="line" [data]="chartData" width="100%" height="50vh"></p-chart>
                 </div>
             </div>
         </p-tabPanel>

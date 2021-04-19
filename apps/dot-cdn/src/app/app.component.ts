@@ -1,7 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ChartData, ChartOptions, SelectValue, DotCDNStats } from './app.interface';
+import { ChartData, ChartOptions, DotCDNStats, SelectValue } from './app.interface';
 import { DotCDNService } from './dotcdn.service';
+import * as moment from 'moment';
+
+enum ChartPeriod {
+    Last30Days = '30',
+    Last60Days = '60'
+}
 
 @Component({
     selector: 'dotcms-root',
@@ -15,21 +21,23 @@ export class AppComponent implements OnInit {
     content$: Observable<{ label: string; value: string }[]>;
 
     periodValues: SelectValue[] = [
-        { name: 'Last 30 days', value: '30' },
-        { name: 'Last 60 days', value: '60' }
+        { name: 'Last 30 days', value: ChartPeriod.Last30Days },
+        { name: 'Last 60 days', value: ChartPeriod.Last60Days }
     ];
-    selectedPeriod: Pick<SelectValue, 'value'> = { value: '30' };
+    selectedPeriod: Pick<SelectValue, 'value'> = { value: ChartPeriod.Last30Days };
 
-    data: ChartData | Record<string, unknown> = {};
+    chartData: ChartData | Record<string, unknown> = {};
+    data: Partial<DotCDNStats> = {};
     options: ChartOptions | Record<string, unknown> = {};
 
     ngOnInit(): void {
         this.setOptions();
-        this.setData();
+        this.setData(this.selectedPeriod.value);
     }
 
-    changePeriod(e) {
-        console.log(e);
+    // TODO: Missing type
+    changePeriod(event) {
+        this.setData(event.value);
     }
 
     private setOptions(): void {
@@ -45,10 +53,13 @@ export class AppComponent implements OnInit {
         };
     }
 
-    private setData(): void {
-        this.dotCdnService.requestStats(this.selectedPeriod.value).subscribe((data) => {
-            this.data = {
-                labels: Object.keys(data.stats.bandwidthUsedChart),
+    private setData(period: string): void {
+        // TODO: type
+        this.dotCdnService.requestStats(period).subscribe((data: any) => {
+            this.data = data;
+
+            this.chartData = {
+                labels: this.getLabels(data.stats.bandwidthUsedChart),
                 datasets: [
                     {
                         label: 'Bandwidth Used',
@@ -59,5 +70,9 @@ export class AppComponent implements OnInit {
                 ]
             };
         });
+    }
+
+    private getLabels(data: { [key: string]: number }): string[] {
+        return Object.keys(data).map((label) => label.split('T')[0]);
     }
 }

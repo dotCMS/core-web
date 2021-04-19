@@ -3,14 +3,14 @@ import { TestBed } from '@angular/core/testing';
 import { DotCDNService } from './dotcdn.service';
 
 describe('DotcdnService', () => {
-  let service: DotCDNService;
+    let service: DotCDNService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(DotCDNService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(DotCDNService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });
