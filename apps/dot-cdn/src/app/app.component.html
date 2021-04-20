@@ -61,12 +61,12 @@
                         <textarea
                             [rows]="5"
                             pInputTextarea
-                            formControlName="textArea"
+                            formControlName="purgeUrlsTextArea"
                             (ngModelChange)="setUrlString($event)"
                         ></textarea>
                         <button
                             pButton
-                            label="Purge URL"
+                            [label]="purgeURLLoading ? 'loading...': 'Purge URL'"
                             [disabled]="urlsString.length === 0"
                             (click)="purgeUrls()"
                         ></button>
@@ -74,16 +74,16 @@
                     <div class="dot-cdn__tab-content__row">
                         <h3 class="dot-cdn__tab-content-label">Purge Pull Zone</h3>
                         <p>
-                            Purging a pull zone will remove completely remove all of its files from
+                            Purging a Pull Zone will remove completely all of its files from
                             cache and foce everything to be re-downloaded from your origin. If your
                             zone uses a lot of storage, this ight send a large amount of traffic
                             back to your server, so use with caution.
                         </p>
                         <button
                             pButton
-                            label="Purge Pull Zone"
+                            [label]="purgePullZoneLoading ? 'loading...': 'Purge Pull Zone'"
                             class="p-button-danger p-button-outlined"
-                            (click)="purgePullZone($event)"
+                            (click)="purgePullZone()"
                         ></button>
                     </div>
                 </form>
