@@ -22,10 +22,9 @@ import { TabViewModule } from 'primeng/tabview';
 import { ChartModule } from 'primeng/chart';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
-import { DotIconModule } from '@dotcms/ui';
 import { DotCDNService } from './dotcdn.service';
 import { FormsModule } from '@angular/forms';
-import { DotSpinnerModule } from '@dotcms/ui';
+import { DotSpinnerModule, DotIconModule } from '@dotcms/ui';
 
 const dotEventSocketURLFactory = () => {
     return new DotEventsSocketURL(
@@ -33,12 +32,6 @@ const dotEventSocketURLFactory = () => {
         window.location.protocol === 'https:'
     );
 };
-
-import { TabViewModule } from 'primeng/tabview';
-import { ChartModule } from 'primeng/chart';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { ButtonModule } from 'primeng/button';
-import { DotIconModule } from '@dotcms/ui';
 
 @NgModule({
     declarations: [AppComponent],

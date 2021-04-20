@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     chartData: ChartData | Record<string, unknown> = {};
     statsData: DotChartStats[] = [];
     isLoading = true;
-    chartHeight = '30rem';
+    chartHeight = '25rem';
 
     options: ChartOptions | Record<string, unknown> = {};
 
