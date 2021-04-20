@@ -31,6 +31,7 @@ jobs:
             npm run nx build dotcms-ui -- --with-deps --prod
         - name: "publish to npm"
           run: |
+              npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
               cd dist/libs/dotcms-webcomponents
               npm publish
 
