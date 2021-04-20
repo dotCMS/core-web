@@ -1,0 +1,41 @@
+name: Publish to Dotcms Webcomponents
+on:
+  push:
+      branches:
+          - issue-20245-automate-dotwebcomponents-generation
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+          with:
+              fetch-depth: 1
+        - name: Configuring Node.js
+          uses: actions/setup-node@v2-beta
+          with:
+              node-version: '10.15.3'
+        - name: Installing dependencies
+          run: npm install
+        - name: Build dotcms-webcomponents with deps
+          run: |
+            npm run nx build dotcms-ui -- --with-deps --prod
+            npm run nx build dotcms-webcomponents --with-deps
+        - name: Print a greeting
+          run: |
+            echo Hello there!
+        - name: "Automated Version Bump"
+          id: version-bump
+          uses: "phips28/gh-action-bump-version@master"
+          with:
+            commit-message: 'CI: bumps version to {{version}} [skip ci]'
+            PACKAGEJSON_DIR:  'dist/libs/dotcms-webcomponents'
+            skip-tag:  'true'
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        - name: "cat package.json"
+          run: cat ./package.json
+        - name:  'Output Step'
+          env:
+            NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+          run: echo "new tag $NEW_TAG"
