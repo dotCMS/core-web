@@ -39,3 +39,9 @@ export interface DotCDNStats {
         totalRequestsServed: number;
     };
 }
+
+export interface DotChartStats {
+    label: string;
+    value: string | number;
+    icon: string;
+}

@@ -6,6 +6,12 @@
     padding: $spacing-3 0;
 }
 
+ p-skeleton {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
 h1 {
     margin: 0;
 }

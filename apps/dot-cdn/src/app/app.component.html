@@ -12,40 +12,32 @@
                 ></p-dropdown>
 
                 <div class="dot-cdn__stats">
-                    <div class="dot-cdn__col">
-                        <span class="dot-cdn__stats-label">Bandwidth Used</span>
-                        <h3 class="dot-cdn__stats-value">{{ data.stats?.bandwidthPretty }}</h3>
+                    <div class="dot-cdn__col" *ngFor="let stats of statsData">
+                        <span class="dot-cdn__stats-label">{{ stats.label }}</span>
+                        <p-skeleton styleClass="skeleton" width="10rem" height="1.5rem" *ngIf="isLoading; else valuesBlock"></p-skeleton>
+                        <ng-template #valuesBlock>
+                            <h3 class="dot-cdn__stats-value">{{ stats.value }}</h3>
+                        </ng-template>
                         <dot-icon
-                            name="insert_chart_outlined"
+                            [name]="stats.icon"
                             size="32"
-                            *ngIf="data.stats"
                         ></dot-icon>
-                    </div>
-                    <div class="dot-cdn__col">
-                        <span class="dot-cdn__stats-label">Requests Served</span>
-                        <h3 class="dot-cdn__stats-value">{{ data.stats?.totalRequestsServed }}</h3>
-                        <dot-icon name="file_download" size="32" *ngIf="data.stats"></dot-icon>
-                    </div>
-                    <div class="dot-cdn__col">
-                        <span class="dot-cdn__stats-label">Cache Hit Rate</span>
-                        <h3 class="dot-cdn__stats-value">
-                            {{ data.stats?.cacheHitRate | number: '1.0-2' }}%
-                        </h3>
-                        <dot-icon name="file_download" size="32" *ngIf="data.stats"></dot-icon>
                     </div>
                 </div>
 
                 <div class="dot-cdn__chart">
-                    <h3 class="dot-cdn__tab-content-label">Bandwidth Served</h3>
-                    <p-chart
-                        #chart
-                        type="line"
-                        [data]="chartData"
-                        width="100%"
-                        height="40vh"
-                        [options]="options"
-                        
-                    ></p-chart>
+                    <h3 *ngIf="isLoading; else chartBlock">loading...</h3>
+                    <ng-template #chartBlock>
+                        <h3 class="dot-cdn__tab-content-label">Bandwidth Served</h3>
+                        <p-chart
+                            #chart
+                            type="line"
+                            [data]="chartData"
+                            width="100%"
+                            height="40vh"
+                            [options]="options"
+                        ></p-chart>
+                    </ng-template>
                 </div>
             </div>
         </p-tabPanel>

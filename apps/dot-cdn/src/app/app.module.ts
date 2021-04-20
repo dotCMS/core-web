@@ -17,7 +17,7 @@ import {
 } from '@dotcms/dotcms-js';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-
+import { SkeletonModule } from 'primeng/skeleton';
 import { TabViewModule } from 'primeng/tabview';
 import { ChartModule } from 'primeng/chart';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -47,7 +47,8 @@ const dotEventSocketURLFactory = () => {
         InputTextareaModule,
         ButtonModule,
         DotIconModule,
-        FormsModule
+        FormsModule,
+        SkeletonModule
     ],
     providers: [
         CoreWebService,
