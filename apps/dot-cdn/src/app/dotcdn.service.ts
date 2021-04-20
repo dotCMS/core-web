@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { merge, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { CoreWebService, SiteService } from '@dotcms/dotcms-js';
 import { pluck, mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -18,6 +18,7 @@ export class DotCDNService {
                 this.currentSite$.next(hostId);
             });
     }
+
     /**
      * Request stats via Core Web Service
      *
@@ -37,6 +38,14 @@ export class DotCDNService {
         );
     }
 
+    /**
+     *  Makes a request to purge the cache
+     *
+     * @param {string[]} [urls=[]]
+     * @param {boolean} [invalidateAll=false]
+     * @return {*}
+     * @memberof DotCDNService
+     */
     purgeCache(urls: string[] = [], invalidateAll: boolean = false) {
         return this.currentSite$.pipe(
             mergeMap((hostId: string) => {
