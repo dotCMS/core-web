@@ -88,7 +88,6 @@ export class AppComponent implements OnInit {
                 }
             ];
 
-
             this.chartData = {
                 labels: this.getLabels(stats.bandwidthUsedChart),
                 datasets: [

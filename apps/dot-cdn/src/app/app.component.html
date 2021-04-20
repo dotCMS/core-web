@@ -14,14 +14,16 @@
                 <div class="dot-cdn__stats">
                     <div class="dot-cdn__col" *ngFor="let stats of statsData">
                         <span class="dot-cdn__stats-label">{{ stats.label }}</span>
-                        <p-skeleton styleClass="skeleton" width="10rem" height="1.5rem" *ngIf="isLoading; else valuesBlock"></p-skeleton>
+                        <p-skeleton
+                            styleClass="skeleton"
+                            width="10rem"
+                            height="1.5rem"
+                            *ngIf="isLoading; else valuesBlock"
+                        ></p-skeleton>
                         <ng-template #valuesBlock>
                             <h3 class="dot-cdn__stats-value">{{ stats.value }}</h3>
                         </ng-template>
-                        <dot-icon
-                            [name]="stats.icon"
-                            size="32"
-                        ></dot-icon>
+                        <dot-icon [name]="stats.icon" size="32"></dot-icon>
                     </div>
                 </div>
 
