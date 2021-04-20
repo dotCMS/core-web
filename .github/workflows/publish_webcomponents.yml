@@ -29,15 +29,8 @@ jobs:
         - name: Build dotcms-webcomponents with deps
           run: |
             npm run nx build dotcms-ui -- --with-deps --prod
-        - name: Print a greeting
+        - name: "publish to npm"
           run: |
-            echo Hello there!
-        - name: "cat package.json lib"
-          run: cat ./libs/dotcms-webcomponents/package.json
-        - name:  'Output Step'
-          env:
-            NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
-          run: echo "new tag $NEW_TAG"
-        - name: "cat package.json dist lib"
-          run: cat ./dist/libs/dotcms-webcomponents/package.json
+              cd dist/libs/dotcms-webcomponents
+              npm publish
 
