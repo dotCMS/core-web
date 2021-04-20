@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 import { SelectItem, SelectItemGroup } from 'primeng/api';
 import { ChartOptions } from 'chart.js';
 
-
 enum ChartPeriod {
     Last30Days = '30',
     Last60Days = '60'
@@ -101,11 +100,11 @@ export class AppComponent implements OnInit {
         this.dotCdnStore.dispatchLoading({
             loadingState: LoadingState.LOADING,
             loader: Loader.PURGE_URLS
-        })
+        });
 
         this.dotCdnService.purgeCache(urls).subscribe(() => {
             this.resetPurgeUrlsForm();
-        })
+        });
     }
 
     private resetPurgeUrlsForm(): void {
