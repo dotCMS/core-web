@@ -65,7 +65,7 @@
                         ></textarea>
                         <button
                             pButton
-                            [label]="(isPurgeUrlsLoading$ | async) ? 'loading...': 'Purge URL'"
+                            [label]="(isPurgeUrlsLoading$ | async) ? 'loading...' : 'Purge URL'"
                             [disabled]="purgeZoneForm.get('purgeUrlsTextArea').value.length === 0"
                             (click)="purgeUrls()"
                         ></button>
@@ -73,14 +73,16 @@
                     <div class="dot-cdn__tab-content__row">
                         <h3 class="dot-cdn__tab-content-label">Purge Pull Zone</h3>
                         <p>
-                            Purging a Pull Zone will remove completely all of its files from
-                            cache and foce everything to be re-downloaded from your origin. If your
-                            zone uses a lot of storage, this ight send a large amount of traffic
-                            back to your server, so use with caution.
+                            Purging a Pull Zone will remove completely all of its files from cache
+                            and foce everything to be re-downloaded from your origin. If your zone
+                            uses a lot of storage, this ight send a large amount of traffic back to
+                            your server, so use with caution.
                         </p>
                         <button
                             pButton
-                            [label]="(isPurgeZoneLoading$ | async) ? 'loading...': 'Purge Pull Zone'"
+                            [label]="
+                                (isPurgeZoneLoading$ | async) ? 'loading...' : 'Purge Pull Zone'
+                            "
                             class="p-button-danger p-button-outlined"
                             (click)="purgePullZone()"
                         ></button>

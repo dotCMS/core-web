@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
     isChartLoading$: Observable<boolean> = this.dotCdnStore.isChartLoading$;
     isPurgeUrlsLoading$: Observable<boolean> = this.dotCdnStore.isPurgeUrlsLoading$;
     isPurgeZoneLoading$: Observable<boolean> = this.dotCdnStore.isPurgeZoneLoading$;
-    
+
     chartHeight = '25rem';
     urlsString = '';
     options: ChartOptions | Record<string, unknown> = {};
