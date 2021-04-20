@@ -52,30 +52,40 @@
             <div class="dot-cdn__tab-content--contained">
                 <form [formGroup]="purgeZoneForm">
                     <div class="dot-cdn__tab-content__row">
-                    <h3 class="dot-cdn__tab-content-label">Purge URL List</h3>
-                    <p>
-                        Purging an url list will remove the file from the CDN cache and re-download
-                        it from your server. Please enter the exact CDN URL of each individual file.
-                        Wildcard values are not supported.
-                    </p>
-                    <textarea [rows]="5" pInputTextarea formControlName="textArea"  (ngModelChange)="setUrlString($event)"></textarea>
-                    <button pButton label="Purge URL" [disabled]="urlsString.length === 0"  (click)="purgeUrls()"></button>
-                </div>
-                <div class="dot-cdn__tab-content__row">
-                    <h3 class="dot-cdn__tab-content-label">Purge Pull Zone</h3>
-                    <p>
-                        Purging a pull zone will remove completely remove all of its files from
-                        cache and foce everything to be re-downloaded from your origin. If your zone
-                        uses a lot of storage, this ight send a large amount of traffic back to your
-                        server, so use with caution.
-                    </p>
-                    <button
-                        pButton
-                        label="Purge Pull Zone"
-                        class="p-button-danger p-button-outlined"
-                        (click)="purgePullZone($event)"
-                    ></button>
-                </div>
+                        <h3 class="dot-cdn__tab-content-label">Purge URL List</h3>
+                        <p>
+                            Purging an url list will remove the file from the CDN cache and
+                            re-download it from your server. Please enter the exact CDN URL of each
+                            individual file. Wildcard values are not supported.
+                        </p>
+                        <textarea
+                            [rows]="5"
+                            pInputTextarea
+                            formControlName="textArea"
+                            (ngModelChange)="setUrlString($event)"
+                        ></textarea>
+                        <button
+                            pButton
+                            label="Purge URL"
+                            [disabled]="urlsString.length === 0"
+                            (click)="purgeUrls()"
+                        ></button>
+                    </div>
+                    <div class="dot-cdn__tab-content__row">
+                        <h3 class="dot-cdn__tab-content-label">Purge Pull Zone</h3>
+                        <p>
+                            Purging a pull zone will remove completely remove all of its files from
+                            cache and foce everything to be re-downloaded from your origin. If your
+                            zone uses a lot of storage, this ight send a large amount of traffic
+                            back to your server, so use with caution.
+                        </p>
+                        <button
+                            pButton
+                            label="Purge Pull Zone"
+                            class="p-button-danger p-button-outlined"
+                            (click)="purgePullZone($event)"
+                        ></button>
+                    </div>
                 </form>
             </div>
         </p-tabPanel>

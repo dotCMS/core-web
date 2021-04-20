@@ -54,8 +54,8 @@ export class AppComponent implements OnInit {
     }
 
     purgeUrls() {
-       const urls = this.urlsString.split(',').map(url => url.trim());
-       this.dotCdnService.purgeUrls(urls);
+        const urls = this.urlsString.split(',').map((url) => url.trim());
+        this.dotCdnService.purgeUrls(urls);
     }
 
     setUrlString(urls: string) {
