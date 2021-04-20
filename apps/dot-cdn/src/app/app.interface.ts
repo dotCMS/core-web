@@ -4,11 +4,6 @@ export interface ChartDataSet {
     borderColor: string;
     fill: boolean;
 }
-export interface ChartData {
-    labels: string[];
-    datasets: ChartDataSet[];
-}
-
 export interface ChartOptions {
     title: {
         display: boolean;
@@ -18,11 +13,6 @@ export interface ChartOptions {
     legend: {
         position: string;
     };
-}
-
-export interface SelectValue {
-    name?: string;
-    value: string;
 }
 
 type DotCDNDate = { epochSecond: number; nano: number };
@@ -41,8 +31,12 @@ export interface DotCDNStats {
     };
 }
 
+export interface ChartData {
+    labels: string[];
+    datasets: ChartDataSet[];
+}
 export interface DotChartStats {
     label: string;
-    value: string | number;
+    value: string;
     icon: string;
 }

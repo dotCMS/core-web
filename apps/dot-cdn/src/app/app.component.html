@@ -5,12 +5,10 @@
                 <p-dropdown
                     [options]="periodValues"
                     (onChange)="changePeriod($event)"
-                    optionLabel="name"
+                    optionLabel="label"
                     optionValue="value"
-                    dataKey="value"
                     [(ngModel)]="selectedPeriod.value"
                 ></p-dropdown>
-
                 <div class="dot-cdn__stats">
                     <div class="dot-cdn__col" *ngFor="let stats of statsData$ | async">
                         <span class="dot-cdn__stats-label">{{ stats.label }}</span>
@@ -29,8 +27,8 @@
 
                 <div class="dot-cdn__chart">
                     <dot-spinner
-                        size="4rem"
-                        borderSize="3px"
+                        [size]="'4rem'"
+                        [borderSize]="'3px'"
                         *ngIf="isChartLoading$ | async; else chartBlock"
                         [ngStyle]="{ height: chartHeight }"
                     ></dot-spinner>
@@ -70,24 +68,22 @@
                             (click)="purgeUrls()"
                         ></button>
                     </div>
-                    <div class="dot-cdn__tab-content__row">
-                        <h3 class="dot-cdn__tab-content-label">Purge Pull Zone</h3>
-                        <p>
-                            Purging a Pull Zone will remove completely all of its files from cache
-                            and foce everything to be re-downloaded from your origin. If your zone
-                            uses a lot of storage, this ight send a large amount of traffic back to
-                            your server, so use with caution.
-                        </p>
-                        <button
-                            pButton
-                            [label]="
-                                (isPurgeZoneLoading$ | async) ? 'loading...' : 'Purge Pull Zone'
-                            "
-                            class="p-button-danger p-button-outlined"
-                            (click)="purgePullZone()"
-                        ></button>
-                    </div>
                 </form>
+                <div class="dot-cdn__tab-content__row">
+                    <h3 class="dot-cdn__tab-content-label">Purge Pull Zone</h3>
+                    <p>
+                        Purging a Pull Zone will remove completely all of its files from cache and
+                        foce everything to be re-downloaded from your origin. If your zone uses a
+                        lot of storage, this ight send a large amount of traffic back to your
+                        server, so use with caution.
+                    </p>
+                    <button
+                        pButton
+                        [label]="(isPurgeZoneLoading$ | async) ? 'loading...' : 'Purge Pull Zone'"
+                        class="p-button-danger p-button-outlined"
+                        (click)="purgePullZone()"
+                    ></button>
+                </div>
             </div>
         </p-tabPanel>
     </p-tabView>

@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChartData, ChartOptions, DotCDNStats, SelectValue, DotChartStats } from './app.interface';
+import { ChartData, DotCDNStats, DotChartStats } from './app.interface';
 import { DotCDNService } from './dotcdn.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { DotCDNStore, Loader, LoadingState } from './dotcdn.store';
 import { Observable } from 'rxjs';
+import { SelectItem, SelectItemGroup } from 'primeng/api';
+import { ChartOptions } from 'chart.js';
+
 
 enum ChartPeriod {
     Last30Days = '30',
@@ -12,9 +15,9 @@ enum ChartPeriod {
 
 export interface DotCDNState {
     chartData: [];
-    isChartLoading: string;
-    isPurgeLoading: string;
-    isPurgeZoneLoading: string;
+    isChartLoading: LoadingState;
+    isPurgeLoading: LoadingState;
+    isPurgeZoneLoading: LoadingState;
 }
 @Component({
     selector: 'dotcms-root',
@@ -24,13 +27,13 @@ export interface DotCDNState {
 export class AppComponent implements OnInit {
     @ViewChild('chart', { static: true }) chart: any;
     purgeZoneForm: FormGroup;
-    periodValues: SelectValue[] = [
-        { name: 'Last 30 days', value: ChartPeriod.Last30Days },
-        { name: 'Last 60 days', value: ChartPeriod.Last60Days }
+    periodValues: SelectItem[] = [
+        { label: 'Last 30 days', value: ChartPeriod.Last30Days, title: 'asas' },
+        { label: 'Last 60 days', value: ChartPeriod.Last60Days }
     ];
 
-    selectedPeriod: Pick<SelectValue, 'value'> = { value: ChartPeriod.Last30Days };
-    chartData$: Observable<ChartData | Record<string, unknown>> = this.dotCdnStore.chartData$;
+    selectedPeriod: Pick<SelectItemGroup, 'value'> = { value: ChartPeriod.Last30Days };
+    chartData$: Observable<ChartData> = this.dotCdnStore.chartData$;
     statsData$: Observable<DotChartStats[]> = this.dotCdnStore.statsData$;
     isChartLoading$: Observable<boolean> = this.dotCdnStore.isChartLoading$;
     isPurgeUrlsLoading$: Observable<boolean> = this.dotCdnStore.isPurgeUrlsLoading$;
@@ -38,30 +41,34 @@ export class AppComponent implements OnInit {
 
     chartHeight = '25rem';
     urlsString = '';
-    options: ChartOptions | Record<string, unknown> = {};
+    options: ChartOptions;
 
     constructor(
         private readonly dotCdnService: DotCDNService,
         private fb: FormBuilder,
         private dotCdnStore: DotCDNStore
-    ) {
+    ) {}
+
+    ngOnInit(): void {
+        this.setOptions();
+        this.setData(this.selectedPeriod.value);
         this.purgeZoneForm = this.fb.group({
             purgeUrlsTextArea: ''
         });
     }
 
-    ngOnInit(): void {
-        this.setOptions();
-        this.setData(this.selectedPeriod.value);
-    }
-
-    // TODO: Missing type
-    changePeriod(event): void {
+    /**
+     *  Handles the period change
+     *
+     * @param {*} event
+     * @memberof AppComponent
+     */
+    changePeriod(element: HTMLTextAreaElement): void {
         this.dotCdnStore.dispatchLoading({
             loadingState: LoadingState.LOADING,
             loader: Loader.CHART
         });
-        this.setData(event.value);
+        this.setData(element.value);
     }
     /**
      * Purges the entire cache
@@ -86,14 +93,19 @@ export class AppComponent implements OnInit {
      * @memberof AppComponent
      */
     purgeUrls(): void {
-        const urls = this.urlsString.split(',').map((url) => url.trim());
+        const urls = this.purgeZoneForm
+            .get('purgeUrlsTextArea')
+            .value.split('\n')
+            .map((url) => url.trim());
+
         this.dotCdnStore.dispatchLoading({
             loadingState: LoadingState.LOADING,
             loader: Loader.PURGE_URLS
-        });
+        })
+
         this.dotCdnService.purgeCache(urls).subscribe(() => {
             this.resetPurgeUrlsForm();
-        });
+        })
     }
 
     private resetPurgeUrlsForm(): void {
@@ -108,8 +120,9 @@ export class AppComponent implements OnInit {
     private setOptions(): void {
         this.options = {
             responsive: true,
-            hoverMode: 'index',
-            stacked: false,
+            hover: {
+                mode: 'index'
+            },
             scales: {
                 yAxes: [
                     {
@@ -163,7 +176,7 @@ export class AppComponent implements OnInit {
                 },
                 {
                     label: 'Requests Served',
-                    value: stats.totalRequestsServed,
+                    value: `${stats.totalRequestsServed}`,
                     icon: 'file_download'
                 },
                 {

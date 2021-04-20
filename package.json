@@ -115,6 +115,7 @@
         "@storybook/html": "^6.1.21",
         "@storybook/storybook-deployer": "^2.8.7",
         "@storybook/theming": "^6.1.21",
+        "@types/chart.js": "^2.9.32",
         "@types/googlemaps": "3.40.3",
         "@types/jasmine": "~3.6.2",
         "@types/jasminewd2": "~2.0.8",
