@@ -32,7 +32,7 @@
                         [size]="'4rem'"
                         [borderSize]="'3px'"
                         *ngIf="isLoading; else chartBlock"
-                        [ngStyle]="{height: chartHeight}"
+                        [ngStyle]="{ height: chartHeight }"
                     ></dot-spinner>
                     <ng-template #chartBlock>
                         <h3 class="dot-cdn__tab-content-label">Bandwidth Served</h3>
