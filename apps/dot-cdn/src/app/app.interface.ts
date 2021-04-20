@@ -26,6 +26,7 @@ export interface SelectValue {
 }
 
 type DotCDNDate = { epochSecond: number; nano: number };
+
 export interface DotCDNStats {
     stats: {
         bandwidthPretty: string;
