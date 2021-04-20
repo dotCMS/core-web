@@ -14,6 +14,7 @@ enum ChartPeriod {
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit {
     constructor(private readonly dotCdnService: DotCDNService) {}
 
@@ -24,33 +25,21 @@ export class AppComponent implements OnInit {
         { name: 'Last 30 days', value: ChartPeriod.Last30Days },
         { name: 'Last 60 days', value: ChartPeriod.Last60Days }
     ];
+
     selectedPeriod: Pick<SelectValue, 'value'> = { value: ChartPeriod.Last30Days };
 
     chartData: ChartData | Record<string, unknown> = {};
     data: Partial<DotCDNStats> = {};
+    
     options: ChartOptions | Record<string, unknown> = {};
 
     ngOnInit(): void {
-        this.setOptions();
         this.setData(this.selectedPeriod.value);
     }
 
     // TODO: Missing type
     changePeriod(event) {
         this.setData(event.value);
-    }
-
-    private setOptions(): void {
-        this.options = {
-            title: {
-                display: true,
-                text: 'My Title',
-                fontSize: 16
-            },
-            legend: {
-                position: 'bottom'
-            }
-        };
     }
 
     private setData(period: string): void {
