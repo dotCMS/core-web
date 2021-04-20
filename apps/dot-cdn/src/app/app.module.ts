@@ -26,6 +26,8 @@ import { ButtonModule } from 'primeng/button';
 import { DotCDNService } from './dotcdn.service';
 import { FormsModule } from '@angular/forms';
 import { DotSpinnerModule, DotIconModule } from '@dotcms/ui';
+import { ComponentStore } from '@ngrx/component-store';
+import { DotCDNStore } from './dotcdn.store';
 
 const dotEventSocketURLFactory = () => {
     return new DotEventsSocketURL(
@@ -63,7 +65,8 @@ const dotEventSocketURLFactory = () => {
         DotEventsSocket,
         DotcmsEventsService,
         { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
-        DotcmsConfigService
+        DotcmsConfigService,
+        DotCDNStore
     ],
     bootstrap: [AppComponent]
 })

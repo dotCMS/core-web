@@ -12,13 +12,13 @@
                 ></p-dropdown>
 
                 <div class="dot-cdn__stats">
-                    <div class="dot-cdn__col" *ngFor="let stats of statsData">
+                    <div class="dot-cdn__col" *ngFor="let stats of statsData$ | async">
                         <span class="dot-cdn__stats-label">{{ stats.label }}</span>
                         <p-skeleton
                             styleClass="skeleton"
                             width="10rem"
                             height="1.5rem"
-                            *ngIf="isLoading; else valuesBlock"
+                            *ngIf="isChartLoading$ | async; else valuesBlock"
                         ></p-skeleton>
                         <ng-template #valuesBlock>
                             <h3 class="dot-cdn__stats-value">{{ stats.value }}</h3>
@@ -31,7 +31,7 @@
                     <dot-spinner
                         [size]="'4rem'"
                         [borderSize]="'3px'"
-                        *ngIf="isLoading; else chartBlock"
+                        *ngIf="isChartLoading$ | async; else chartBlock"
                         [ngStyle]="{ height: chartHeight }"
                     ></dot-spinner>
                     <ng-template #chartBlock>
@@ -39,7 +39,7 @@
                         <p-chart
                             #chart
                             type="line"
-                            [data]="chartData"
+                            [data]="chartData$ | async"
                             width="100%"
                             [height]="chartHeight"
                             [options]="options"
@@ -66,7 +66,7 @@
                         ></textarea>
                         <button
                             pButton
-                            [label]="purgeURLLoading ? 'loading...': 'Purge URL'"
+                            [label]="(isPurgeUrlsLoading$ | async) ? 'loading...': 'Purge URL'"
                             [disabled]="urlsString.length === 0"
                             (click)="purgeUrls()"
                         ></button>
@@ -81,7 +81,7 @@
                         </p>
                         <button
                             pButton
-                            [label]="purgePullZoneLoading ? 'loading...': 'Purge Pull Zone'"
+                            [label]="(isPurgeZoneLoading$ | async) ? 'loading...': 'Purge Pull Zone'"
                             class="p-button-danger p-button-outlined"
                             (click)="purgePullZone()"
                         ></button>

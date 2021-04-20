@@ -2,10 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartData, ChartOptions, DotCDNStats, SelectValue, DotChartStats } from './app.interface';
 import { DotCDNService } from './dotcdn.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { DotCDNStore, Loader, LoadingState } from './dotcdn.store';
+import { Observable } from 'rxjs';
 
 enum ChartPeriod {
     Last30Days = '30',
     Last60Days = '60'
+}
+
+export interface DotCDNState {
+    chartData: [];
+    isChartLoading: string;
+    isPurgeLoading: string;
+    isPurgeZoneLoading: string;
 }
 @Component({
     selector: 'dotcms-root',
@@ -19,18 +28,24 @@ export class AppComponent implements OnInit {
         { name: 'Last 30 days', value: ChartPeriod.Last30Days },
         { name: 'Last 60 days', value: ChartPeriod.Last60Days }
     ];
+
     selectedPeriod: Pick<SelectValue, 'value'> = { value: ChartPeriod.Last30Days };
-    chartData: ChartData | Record<string, unknown> = {};
-    statsData: DotChartStats[] = [];
-    isLoading = true;
-    purgeURLLoading = false;
-    purgePullZoneLoading = false;
+    chartData$: Observable<ChartData | Record<string, unknown>> = this.dotCdnStore.chartData$;
+    statsData$: Observable<DotChartStats[]> = this.dotCdnStore.statsData$;
+    isChartLoading$: Observable<boolean> = this.dotCdnStore.isChartLoading$;
+    isPurgeUrlsLoading$: Observable<boolean> = this.dotCdnStore.isPurgeUrlsLoading$;
+    isPurgeZoneLoading$: Observable<boolean> = this.dotCdnStore.isPurgeZoneLoading$;
+    
     chartHeight = '25rem';
     urlsString = '';
     options: ChartOptions | Record<string, unknown> = {};
 
-    constructor(private readonly dotCdnService: DotCDNService, private fb: FormBuilder) {
-        this.purgeZoneForm = fb.group({
+    constructor(
+        private readonly dotCdnService: DotCDNService,
+        private fb: FormBuilder,
+        private dotCdnStore: DotCDNStore
+    ) {
+        this.purgeZoneForm = this.fb.group({
             purgeUrlsTextArea: ''
         });
     }
@@ -42,7 +57,10 @@ export class AppComponent implements OnInit {
 
     // TODO: Missing type
     changePeriod(event): void {
-        this.isLoading = true;
+        this.dotCdnStore.dispatchLoading({
+            loadingState: LoadingState.LOADING,
+            loader: Loader.CHART
+        });
         this.setData(event.value);
     }
     /**
@@ -51,9 +69,15 @@ export class AppComponent implements OnInit {
      * @memberof AppComponent
      */
     purgePullZone(): void {
-        this.purgePullZoneLoading = true;
+        this.dotCdnStore.dispatchLoading({
+            loadingState: LoadingState.LOADING,
+            loader: Loader.PURGE_PULL_ZONE
+        });
         this.dotCdnService.purgeCache([], true).subscribe(() => {
-            this.purgePullZoneLoading = false;
+            this.dotCdnStore.dispatchLoading({
+                loadingState: LoadingState.LOADED,
+                loader: Loader.PURGE_PULL_ZONE
+            });
         });
     }
     /**
@@ -63,7 +87,10 @@ export class AppComponent implements OnInit {
      */
     purgeUrls(): void {
         const urls = this.urlsString.split(',').map((url) => url.trim());
-        this.purgeURLLoading = true;
+        this.dotCdnStore.dispatchLoading({
+            loadingState: LoadingState.LOADING,
+            loader: Loader.PURGE_URLS
+        });
         this.dotCdnService.purgeCache(urls).subscribe(() => {
             this.resetPurgeUrlsForm();
         });
@@ -79,7 +106,10 @@ export class AppComponent implements OnInit {
     }
 
     private resetPurgeUrlsForm(): void {
-        this.purgeURLLoading = false;
+        this.dotCdnStore.dispatchLoading({
+            loadingState: LoadingState.LOADED,
+            loader: Loader.PURGE_URLS
+        });
         this.urlsString = '';
         this.purgeZoneForm.setValue({ purgeUrlsTextArea: '' });
     }
@@ -112,9 +142,29 @@ export class AppComponent implements OnInit {
     }
 
     private setData(period: string): void {
+        this.dotCdnStore.dispatchLoading({
+            loadingState: LoadingState.LOADING,
+            loader: Loader.CHART
+        });
         this.dotCdnService.requestStats(period).subscribe(({ stats }: DotCDNStats) => {
-            this.isLoading = false;
-            this.statsData = [
+            this.dotCdnStore.dispatchLoading({
+                loadingState: LoadingState.LOADED,
+                loader: Loader.CHART
+            });
+
+            const chartData = {
+                labels: this.getLabels(stats.bandwidthUsedChart),
+                datasets: [
+                    {
+                        label: 'Bandwidth Used',
+                        data: Object.values(stats.bandwidthUsedChart),
+                        borderColor: '#42A5F5',
+                        fill: false
+                    }
+                ]
+            };
+
+            const statsData = [
                 {
                     label: 'Bandwidth Used',
                     value: stats.bandwidthPretty,
@@ -132,17 +182,8 @@ export class AppComponent implements OnInit {
                 }
             ];
 
-            this.chartData = {
-                labels: this.getLabels(stats.bandwidthUsedChart),
-                datasets: [
-                    {
-                        label: 'Bandwidth Used',
-                        data: Object.values(stats.bandwidthUsedChart),
-                        borderColor: '#42A5F5',
-                        fill: false
-                    }
-                ]
-            };
+            this.dotCdnStore.addChartData(chartData);
+            this.dotCdnStore.addStatsData(statsData);
         });
     }
 
