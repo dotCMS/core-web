@@ -15,14 +15,8 @@ jobs:
           uses: actions/setup-node@v2-beta
           with:
               node-version: '10.15.3'
-       # - name: Installing dependencies
-         # run: npm install
-       # - name: Build dotcms-webcomponents with deps
-         # run: |
-           # npm run nx build dotcms-ui -- --with-deps --prod
-        - name: Print a greeting
-          run: |
-            echo Hello there!
+        - name: Installing dependencies
+          run: npm install
         - name: "Automated Version Bump"
           id: version-bump
           uses: "phips28/gh-action-bump-version@master"
@@ -32,9 +26,18 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             PACKAGEJSON_DIR:  'libs/dotcms-webcomponents'
-        - name: "cat package.json"
-          run: cat ./package.json
+        - name: Build dotcms-webcomponents with deps
+          run: |
+            npm run nx build dotcms-ui -- --with-deps --prod
+        - name: Print a greeting
+          run: |
+            echo Hello there!
+        - name: "cat package.json lib"
+          run: cat ./libs/dotcms-webcomponents/package.json
         - name:  'Output Step'
           env:
             NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
           run: echo "new tag $NEW_TAG"
+        - name: "cat package.json dist lib"
+          run: cat ./dist/libs/dotcms-webcomponents/package.json
+
