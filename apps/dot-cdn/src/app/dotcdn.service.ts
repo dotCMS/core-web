@@ -18,8 +18,13 @@ export class DotCDNService {
                 this.currentSite.next(hostId);
             });
     }
-
-    // TODO: Find appropriate type
+    /**
+     * Request stats via Core Web Service
+     *
+     * @param {string} period
+     * @return {*}  {*} // TODO: Find appropriate return type
+     * @memberof DotCDNService
+     */
     requestStats(period: string): any {
         return this.currentSite.pipe(
             mergeMap((hostId: string) => {
@@ -30,5 +35,13 @@ export class DotCDNService {
                 });
             })
         );
+    }
+
+    purgePullZone(e) {
+        console.log(e);
+    }
+
+    purgeUrls(e) {
+        console.log(e);
     }
 }

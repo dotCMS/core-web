@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartData, ChartOptions, DotCDNStats, SelectValue, DotChartStats } from './app.interface';
 import { DotCDNService } from './dotcdn.service';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 
 enum ChartPeriod {
@@ -14,8 +15,7 @@ enum ChartPeriod {
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-    constructor(private readonly dotCdnService: DotCDNService) {}
-
+    public purgeZoneForm: FormGroup;
     @ViewChild('chart', { static: true }) chart: any;
 
     periodValues: SelectValue[] = [
@@ -27,8 +27,15 @@ export class AppComponent implements OnInit {
     statsData: DotChartStats[] = [];
     isLoading = true;
     chartHeight = '25rem';
+    urlsString = '';
 
     options: ChartOptions | Record<string, unknown> = {};
+
+    constructor(private readonly dotCdnService: DotCDNService, private fb: FormBuilder) {
+        this.purgeZoneForm = fb.group({
+            textArea: ''
+        });
+    }
 
     ngOnInit(): void {
         this.setOptions();
@@ -39,6 +46,20 @@ export class AppComponent implements OnInit {
     changePeriod(event) {
         this.isLoading = true;
         this.setData(event.value);
+        console.log(this.purgeZoneForm);
+    }
+
+    purgePullZone(event: Event) {
+        this.dotCdnService.purgePullZone(event);
+    }
+
+    purgeUrls() {
+       const urls = this.urlsString.split(',').map(url => url.trim());
+       this.dotCdnService.purgeUrls(urls);
+    }
+
+    setUrlString(urls: string) {
+        this.urlsString = urls;
     }
 
     private setOptions(): void {

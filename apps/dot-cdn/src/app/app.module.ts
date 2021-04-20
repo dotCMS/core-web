@@ -15,6 +15,7 @@ import {
     SiteService,
     StringUtils
 } from '@dotcms/dotcms-js';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -49,7 +50,8 @@ const dotEventSocketURLFactory = () => {
         DotIconModule,
         FormsModule,
         SkeletonModule,
-        DotSpinnerModule
+        DotSpinnerModule,
+        ReactiveFormsModule
     ],
     providers: [
         CoreWebService,
