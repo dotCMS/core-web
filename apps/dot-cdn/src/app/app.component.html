@@ -29,8 +29,8 @@
 
                 <div class="dot-cdn__chart">
                     <dot-spinner
-                        [size]="'4rem'"
-                        [borderSize]="'3px'"
+                        size="4rem"
+                        borderSize="3px"
                         *ngIf="isChartLoading$ | async; else chartBlock"
                         [ngStyle]="{ height: chartHeight }"
                     ></dot-spinner>
