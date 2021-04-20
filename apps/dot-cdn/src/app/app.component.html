@@ -28,7 +28,12 @@
                 </div>
 
                 <div class="dot-cdn__chart">
-                    <h3 *ngIf="isLoading; else chartBlock">loading...</h3>
+                    <dot-spinner
+                        [size]="'4rem'"
+                        [borderSize]="'3px'"
+                        *ngIf="isLoading; else chartBlock"
+                        [ngStyle]="{height: chartHeight}"
+                    ></dot-spinner>
                     <ng-template #chartBlock>
                         <h3 class="dot-cdn__tab-content-label">Bandwidth Served</h3>
                         <p-chart
@@ -36,7 +41,7 @@
                             type="line"
                             [data]="chartData"
                             width="100%"
-                            height="40vh"
+                            [height]="chartHeight"
                             [options]="options"
                         ></p-chart>
                     </ng-template>

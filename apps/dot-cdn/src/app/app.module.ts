@@ -25,6 +25,7 @@ import { ButtonModule } from 'primeng/button';
 import { DotIconModule } from '@dotcms/ui';
 import { DotCDNService } from './dotcdn.service';
 import { FormsModule } from '@angular/forms';
+import { DotSpinnerModule } from '@dotcms/ui'
 
 const dotEventSocketURLFactory = () => {
     return new DotEventsSocketURL(
@@ -48,7 +49,8 @@ const dotEventSocketURLFactory = () => {
         ButtonModule,
         DotIconModule,
         FormsModule,
-        SkeletonModule
+        SkeletonModule,
+        DotSpinnerModule
     ],
     providers: [
         CoreWebService,

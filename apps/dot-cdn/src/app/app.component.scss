@@ -12,6 +12,15 @@ p-skeleton {
     justify-content: center;
 }
 
+dot-spinner {
+    margin: 0 auto;
+    min-height: 40vh;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 h1 {
     margin: 0;
 }
