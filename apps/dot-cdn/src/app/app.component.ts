@@ -95,15 +95,6 @@ export class AppComponent implements OnInit {
             this.resetPurgeUrlsForm();
         });
     }
-    /**
-     *  Sets the URL string from the text area
-     *
-     * @param {string} urls
-     * @memberof AppComponent
-     */
-    setUrlString(urls: string): void {
-        this.urlsString = urls;
-    }
 
     private resetPurgeUrlsForm(): void {
         this.dotCdnStore.dispatchLoading({

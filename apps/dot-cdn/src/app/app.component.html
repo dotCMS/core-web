@@ -62,12 +62,11 @@
                             [rows]="5"
                             pInputTextarea
                             formControlName="purgeUrlsTextArea"
-                            (ngModelChange)="setUrlString($event)"
                         ></textarea>
                         <button
                             pButton
                             [label]="(isPurgeUrlsLoading$ | async) ? 'loading...': 'Purge URL'"
-                            [disabled]="urlsString.length === 0"
+                            [disabled]="purgeZoneForm.get('purgeUrlsTextArea').value.length === 0"
                             (click)="purgeUrls()"
                         ></button>
                     </div>
