@@ -7,7 +7,7 @@ export interface DotCDNState {
     chartData: ChartData;
     statsData: DotChartStats[];
     isChartLoading: string;
-    isPurgeUrlsLoading: string;
+    isPurgeLoading: string;
     isPurgeZoneLoading: string;
 }
 
@@ -33,7 +33,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
             },
             statsData: [],
             isChartLoading: LoadingState.IDLE,
-            isPurgeUrlsLoading: LoadingState.IDLE,
+            isPurgeLoading: LoadingState.IDLE,
             isPurgeZoneLoading: LoadingState.IDLE
         });
     }
@@ -45,13 +45,18 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
     );
 
     readonly isPurgeUrlsLoading$: Observable<boolean> = this.select(
-        (state) => state.isPurgeUrlsLoading === LoadingState.LOADING
+        (state) => state.isPurgeLoading === LoadingState.LOADING
     );
 
     readonly isPurgeZoneLoading$: Observable<boolean> = this.select(
         (state) => state.isPurgeZoneLoading === LoadingState.LOADING
     );
 
+    /**
+     *
+     *  Adds chart data
+     * @memberof DotCDNStore
+     */
     readonly addChartData = this.updater((state, chartData: ChartData) => {
         return {
             ...state,
@@ -59,6 +64,11 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
         };
     });
 
+    /**
+     *
+     *  Adds stats data
+     * @memberof DotCDNStore
+     */
     readonly addStatsData = this.updater((state, statsData: DotChartStats[]) => {
         return {
             ...state,
