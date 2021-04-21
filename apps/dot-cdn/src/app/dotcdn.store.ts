@@ -40,21 +40,6 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
             isPurgeZoneLoading: LoadingState.IDLE
         });
     }
-
-    readonly chartData$: Observable<ChartData> = this.select((state) => state.chartData);
-    readonly statsData$: Observable<DotChartStats[]> = this.select((state) => state.statsData);
-    readonly isChartLoading$: Observable<boolean> = this.select(
-        (state) => state.isChartLoading === LoadingState.LOADING
-    );
-
-    readonly isPurgeUrlsLoading$: Observable<boolean> = this.select(
-        (state) => state.isPurgeUrlsLoading === LoadingState.LOADING
-    );
-
-    readonly isPurgeZoneLoading$: Observable<boolean> = this.select(
-        (state) => state.isPurgeZoneLoading === LoadingState.LOADING
-    );
-
     readonly vm$ = this.select(
         ({ chartData, statsData, isChartLoading, isPurgeUrlsLoading, isPurgeZoneLoading }) => ({
             chartData,
