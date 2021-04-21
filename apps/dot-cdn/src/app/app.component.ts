@@ -6,6 +6,7 @@ import { DotCDNStore, Loader, LoadingState } from './dotcdn.store';
 import { Observable } from 'rxjs';
 import { SelectItem, SelectItemGroup } from 'primeng/api';
 import { ChartOptions } from 'chart.js';
+import { ResponseView } from '@dotcms/dotcms-js';
 
 enum ChartPeriod {
     Last30Days = '30',
@@ -49,8 +50,8 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.setOptions();
-        this.setData(this.selectedPeriod.value);
+        this.setChartOptions();
+        this.setChartData(this.selectedPeriod.value);
         this.purgeZoneForm = this.fb.group({
             purgeUrlsTextArea: ''
         });
@@ -67,7 +68,7 @@ export class AppComponent implements OnInit {
             loadingState: LoadingState.LOADING,
             loader: Loader.CHART
         });
-        this.setData(element.value);
+        this.setChartData(element.value);
     }
     /**
      * Purges the entire cache
@@ -79,7 +80,7 @@ export class AppComponent implements OnInit {
             loadingState: LoadingState.LOADING,
             loader: Loader.PURGE_PULL_ZONE
         });
-        this.dotCdnService.purgeCache([], true).subscribe(() => {
+        this.dotCdnService.purgeCache(true).subscribe(() => {
             this.dotCdnStore.dispatchLoading({
                 loadingState: LoadingState.LOADED,
                 loader: Loader.PURGE_PULL_ZONE
@@ -116,7 +117,7 @@ export class AppComponent implements OnInit {
         this.purgeZoneForm.setValue({ purgeUrlsTextArea: '' });
     }
 
-    private setOptions(): void {
+    private setChartOptions(): void {
         this.options = {
             responsive: true,
             hover: {
@@ -144,18 +145,20 @@ export class AppComponent implements OnInit {
         };
     }
 
-    private setData(period: string): void {
+    private setChartData(period: string): void {
         this.dotCdnStore.dispatchLoading({
             loadingState: LoadingState.LOADING,
             loader: Loader.CHART
         });
-        this.dotCdnService.requestStats(period).subscribe(({ stats }: DotCDNStats) => {
+        this.dotCdnService.requestStats(period).subscribe((data: ResponseView<DotCDNStats>) => {
             this.dotCdnStore.dispatchLoading({
                 loadingState: LoadingState.LOADED,
                 loader: Loader.CHART
             });
 
-            const chartData = {
+            const stats: DotCDNStats = data.pick('stats');
+
+            const chartData: ChartData = {
                 labels: this.getLabels(stats.bandwidthUsedChart),
                 datasets: [
                     {
@@ -167,7 +170,7 @@ export class AppComponent implements OnInit {
                 ]
             };
 
-            const statsData = [
+            const statsData: DotChartStats[] = [
                 {
                     label: 'Bandwidth Used',
                     value: stats.bandwidthPretty,

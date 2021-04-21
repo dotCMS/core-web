@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-import { CoreWebService, SiteService } from '@dotcms/dotcms-js';
+import { Observable, ReplaySubject } from 'rxjs';
+import { CoreWebService, ResponseView, SiteService } from '@dotcms/dotcms-js';
 import { pluck, mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
+import { DotCDNStats } from './app.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -26,12 +27,12 @@ export class DotCDNService {
      * @return {*}  {*} // TODO: Find appropriate return type
      * @memberof DotCDNService
      */
-    requestStats(period: string): any {
+    requestStats(period: string): Observable<ResponseView<DotCDNStats>> {
         return this.currentSite$.pipe(
             mergeMap((hostId: string) => {
                 const dateTo = moment().format('YYYY-MM-DD');
                 const dateFrom = moment().subtract(period, 'd').format('YYYY-MM-DD');
-                return this.coreWebService.request({
+                return this.coreWebService.requestView({
                     url: `/api/v1/dotcdn/stats?hostId=${hostId}&dateFrom=${dateFrom}&dateTo=${dateTo}`
                 });
             })
@@ -46,20 +47,24 @@ export class DotCDNService {
      * @return {*}
      * @memberof DotCDNService
      */
-    purgeCache(urls: string[] = [], invalidateAll: boolean = false) {
+    purgeCache(invalidateAll: boolean = false, urls?: string[]): Observable<ResponseView<any>> {
         return this.currentSite$.pipe(
             mergeMap((hostId: string) => {
-                return this.purgeUrlRequest(urls, hostId, invalidateAll);
+                return this.purgeUrlRequest(hostId, invalidateAll, urls);
             })
         );
     }
 
-    private purgeUrlRequest(urls: string[], hostId: string, invalidateAll: boolean) {
-        return this.coreWebService.request({
+    private purgeUrlRequest(
+        hostId: string,
+        invalidateAll: boolean,
+        urls: string[]
+    ): Observable<ResponseView<any>> {
+        return this.coreWebService.requestView({
             url: `/api/v1/dotcdn`,
             method: 'DELETE',
             body: JSON.stringify({
-                urls,
+                urls: urls || [],
                 invalidateAll,
                 hostId
             })
