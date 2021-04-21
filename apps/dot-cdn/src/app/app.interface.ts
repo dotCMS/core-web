@@ -46,3 +46,9 @@ export interface DotCDNStoreViewModel {
     isPurgeUrlsLoading: boolean;
     isPurgeZoneLoading: boolean;
 }
+
+export interface PurgeUrlOptions {
+    hostId: string;
+    invalidateAll: boolean;
+    urls: string[];
+}
