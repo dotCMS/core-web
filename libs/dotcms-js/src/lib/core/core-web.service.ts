@@ -61,7 +61,7 @@ export class CoreWebService {
     ) {}
 
     /**
-     *  
+     *
      *
      * @template T
      * @param {DotRequestOptionsArgs} options

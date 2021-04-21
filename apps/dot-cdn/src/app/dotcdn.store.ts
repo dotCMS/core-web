@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
+import { ResponseView } from '@dotcms/dotcms-js';
 import { ComponentStore } from '@ngrx/component-store';
-import { Observable } from 'rxjs';
-import { ChartData, DotChartStats } from './app.interface';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, mergeMap, tap } from 'rxjs/operators';
+import { ChartData, DotCDNStats, DotChartStats } from './app.interface';
+import { DotCDNService } from './dotcdn.service';
 
 export interface DotCDNState {
     chartData: ChartData;
     statsData: DotChartStats[];
     isChartLoading: string;
-    isPurgeLoading: string;
+    isPurgeUrlsLoading: string;
     isPurgeZoneLoading: string;
 }
 
@@ -25,7 +28,7 @@ export const enum Loader {
 
 @Injectable()
 export class DotCDNStore extends ComponentStore<DotCDNState> {
-    constructor() {
+    constructor(private readonly dotCdnService: DotCDNService) {
         super({
             chartData: {
                 labels: [],
@@ -33,7 +36,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
             },
             statsData: [],
             isChartLoading: LoadingState.IDLE,
-            isPurgeLoading: LoadingState.IDLE,
+            isPurgeUrlsLoading: LoadingState.IDLE,
             isPurgeZoneLoading: LoadingState.IDLE
         });
     }
@@ -45,11 +48,21 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
     );
 
     readonly isPurgeUrlsLoading$: Observable<boolean> = this.select(
-        (state) => state.isPurgeLoading === LoadingState.LOADING
+        (state) => state.isPurgeUrlsLoading === LoadingState.LOADING
     );
 
     readonly isPurgeZoneLoading$: Observable<boolean> = this.select(
         (state) => state.isPurgeZoneLoading === LoadingState.LOADING
+    );
+
+    readonly vm$ = this.select(
+        ({ chartData, statsData, isChartLoading, isPurgeUrlsLoading, isPurgeZoneLoading }) => ({
+            chartData,
+            statsData,
+            isChartLoading: isChartLoading === LoadingState.LOADING,
+            isPurgeUrlsLoading: isPurgeUrlsLoading === LoadingState.LOADING,
+            isPurgeZoneLoading: isPurgeZoneLoading === LoadingState.LOADING
+        })
     );
 
     /**
@@ -83,6 +96,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      */
     readonly dispatchLoading = this.updater(
         (state, action: { loadingState: string; loader: string }) => {
+            console.log(action.loader, action.loadingState);
             switch (action.loader) {
                 case Loader.CHART:
                     return {
@@ -102,4 +116,74 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
             }
         }
     );
+
+    /**
+     *  Handles the chart data fetching
+     *
+     * @memberof DotCDNStore
+     */
+    readonly getChartStats = this.effect((period$: Observable<string>) => {
+        return period$.pipe(
+            mergeMap((period) => {
+                // Dispatch the loading state
+                this.dispatchLoading({
+                    loadingState: LoadingState.LOADING,
+                    loader: Loader.CHART
+                });
+                return this.dotCdnService.requestStats(period).pipe(
+                    tap({
+                        next: (data: ResponseView<DotCDNStats>) => {
+                            this.dispatchLoading({
+                                loadingState: LoadingState.LOADED,
+                                loader: Loader.CHART
+                            });
+                            const stats: DotCDNStats = data.pick('stats');
+
+                            const chartData: ChartData = {
+                                labels: this.getLabels(stats.bandwidthUsedChart),
+                                datasets: [
+                                    {
+                                        label: 'Bandwidth Used',
+                                        data: Object.values(stats.bandwidthUsedChart),
+                                        borderColor: '#42A5F5',
+                                        fill: false
+                                    }
+                                ]
+                            };
+
+                            const statsData: DotChartStats[] = [
+                                {
+                                    label: 'Bandwidth Used',
+                                    value: stats.bandwidthPretty,
+                                    icon: 'insert_chart_outlined'
+                                },
+                                {
+                                    label: 'Requests Served',
+                                    value: `${stats.totalRequestsServed}`,
+                                    icon: 'file_download'
+                                },
+                                {
+                                    label: 'Cache Hit Rate',
+                                    value: `${stats.cacheHitRate.toFixed(2)}%`,
+                                    icon: 'file_download'
+                                }
+                            ];
+
+                            this.addChartData(chartData);
+                            this.addStatsData(statsData);
+                        },
+                        error: (e) => {
+                            // TODO: Handle error
+                            console.log(e);
+                        }
+                    }),
+                    catchError(() => EMPTY)
+                );
+            })
+        );
+    });
+
+    private getLabels(data: { [key: string]: number }): string[] {
+        return Object.keys(data).map((label) => label.split('T')[0]);
+    }
 }

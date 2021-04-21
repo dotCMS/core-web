@@ -38,3 +38,11 @@ export interface DotChartStats {
     value: string;
     icon: string;
 }
+
+export interface DotCDNStoreViewModel {
+    chartData: ChartData;
+    statsData: DotChartStats[];
+    isChartLoading: boolean;
+    isPurgeUrlsLoading: boolean;
+    isPurgeZoneLoading: boolean;
+}

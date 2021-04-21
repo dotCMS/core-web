@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChartData, DotCDNStats, DotChartStats } from './app.interface';
+import { DotCDNStoreViewModel } from './app.interface';
 import { DotCDNService } from './dotcdn.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { DotCDNStore, Loader, LoadingState } from './dotcdn.store';
 import { Observable } from 'rxjs';
 import { SelectItem, SelectItemGroup } from 'primeng/api';
 import { ChartOptions } from 'chart.js';
-import { ResponseView } from '@dotcms/dotcms-js';
 
 enum ChartPeriod {
     Last30Days = '30',
@@ -16,7 +15,7 @@ enum ChartPeriod {
 export interface DotCDNState {
     chartData: [];
     isChartLoading: LoadingState;
-    isPurgeLoading: LoadingState;
+    isPurgeUrlsLoading: LoadingState;
     isPurgeZoneLoading: LoadingState;
 }
 @Component({
@@ -33,14 +32,8 @@ export class AppComponent implements OnInit {
     ];
 
     selectedPeriod: Pick<SelectItemGroup, 'value'> = { value: ChartPeriod.Last30Days };
-    chartData$: Observable<ChartData> = this.dotCdnStore.chartData$;
-    statsData$: Observable<DotChartStats[]> = this.dotCdnStore.statsData$;
-    isChartLoading$: Observable<boolean> = this.dotCdnStore.isChartLoading$;
-    isPurgeUrlsLoading$: Observable<boolean> = this.dotCdnStore.isPurgeUrlsLoading$;
-    isPurgeZoneLoading$: Observable<boolean> = this.dotCdnStore.isPurgeZoneLoading$;
-
+    vm$: Observable<DotCDNStoreViewModel> = this.dotCdnStore.vm$;
     chartHeight = '25rem';
-    urlsString = '';
     options: ChartOptions;
 
     constructor(
@@ -51,7 +44,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.setChartOptions();
-        this.setChartData(this.selectedPeriod.value);
+        this.dotCdnStore.getChartStats(this.selectedPeriod.value);
         this.purgeZoneForm = this.fb.group({
             purgeUrlsTextArea: ''
         });
@@ -68,7 +61,7 @@ export class AppComponent implements OnInit {
             loadingState: LoadingState.LOADING,
             loader: Loader.CHART
         });
-        this.setChartData(element.value);
+        this.dotCdnStore.getChartStats(element.value);
     }
     /**
      * Purges the entire cache
@@ -113,7 +106,6 @@ export class AppComponent implements OnInit {
             loadingState: LoadingState.LOADED,
             loader: Loader.PURGE_URLS
         });
-        this.urlsString = '';
         this.purgeZoneForm.setValue({ purgeUrlsTextArea: '' });
     }
 
@@ -143,57 +135,5 @@ export class AppComponent implements OnInit {
                 ]
             }
         };
-    }
-
-    private setChartData(period: string): void {
-        this.dotCdnStore.dispatchLoading({
-            loadingState: LoadingState.LOADING,
-            loader: Loader.CHART
-        });
-        this.dotCdnService.requestStats(period).subscribe((data: ResponseView<DotCDNStats>) => {
-            this.dotCdnStore.dispatchLoading({
-                loadingState: LoadingState.LOADED,
-                loader: Loader.CHART
-            });
-
-            const stats: DotCDNStats = data.pick('stats');
-
-            const chartData: ChartData = {
-                labels: this.getLabels(stats.bandwidthUsedChart),
-                datasets: [
-                    {
-                        label: 'Bandwidth Used',
-                        data: Object.values(stats.bandwidthUsedChart),
-                        borderColor: '#42A5F5',
-                        fill: false
-                    }
-                ]
-            };
-
-            const statsData: DotChartStats[] = [
-                {
-                    label: 'Bandwidth Used',
-                    value: stats.bandwidthPretty,
-                    icon: 'insert_chart_outlined'
-                },
-                {
-                    label: 'Requests Served',
-                    value: `${stats.totalRequestsServed}`,
-                    icon: 'file_download'
-                },
-                {
-                    label: 'Cache Hit Rate',
-                    value: `${stats.cacheHitRate.toFixed(2)}%`,
-                    icon: 'file_download'
-                }
-            ];
-
-            this.dotCdnStore.addChartData(chartData);
-            this.dotCdnStore.addStatsData(statsData);
-        });
-    }
-
-    private getLabels(data: { [key: string]: number }): string[] {
-        return Object.keys(data).map((label) => label.split('T')[0]);
     }
 }
