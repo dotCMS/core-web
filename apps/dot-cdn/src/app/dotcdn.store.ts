@@ -32,12 +32,10 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
         isChartLoading
     }));
 
-    readonly vmPurgeLoaders$ = this.select(
-        ({ isPurgeUrlsLoading, isPurgeZoneLoading }) => ({
-            isPurgeUrlsLoading,
-            isPurgeZoneLoading
-        })
-    );
+    readonly vmPurgeLoaders$ = this.select(({ isPurgeUrlsLoading, isPurgeZoneLoading }) => ({
+        isPurgeUrlsLoading,
+        isPurgeZoneLoading
+    }));
 
     /**
      *
