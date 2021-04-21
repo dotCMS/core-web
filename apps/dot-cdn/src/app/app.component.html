@@ -16,7 +16,7 @@
                             styleClass="skeleton"
                             width="10rem"
                             height="1.5rem"
-                            *ngIf="(vm$ |async).isChartLoading; else valuesBlock"
+                            *ngIf="(vm$ | async).isChartLoading; else valuesBlock"
                         ></p-skeleton>
                         <ng-template #valuesBlock>
                             <h3 class="dot-cdn__stats-value">{{ stats.value }}</h3>
@@ -29,7 +29,7 @@
                     <dot-spinner
                         [size]="'4rem'"
                         [borderSize]="'3px'"
-                        *ngIf="(vm$ |async).isChartLoading; else chartBlock"
+                        *ngIf="(vm$ | async).isChartLoading; else chartBlock"
                         [ngStyle]="{ height: chartHeight }"
                     ></dot-spinner>
                     <ng-template #chartBlock>
@@ -79,7 +79,9 @@
                     </p>
                     <button
                         pButton
-                        [label]="(vm$ | async).isPurgeZoneLoading ? 'loading...' : 'Purge Pull Zone'"
+                        [label]="
+                            (vm$ | async).isPurgeZoneLoading ? 'loading...' : 'Purge Pull Zone'
+                        "
                         class="p-button-danger p-button-outlined"
                         (click)="purgePullZone()"
                     ></button>
