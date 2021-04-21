@@ -85,6 +85,12 @@ h1 {
     margin-bottom: $spacing-8;
 }
 
+.dot-cdn__tab-content__row {
+    button {
+        min-width: 12.71rem;
+    }
+}
+
 @media (min-width: $screen-md-min) {
     .dot-cdn__tab-content {
         padding: $spacing-4;

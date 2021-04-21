@@ -79,9 +79,7 @@
                     </p>
                     <button
                         pButton
-                        [label]="
-                            (vm$ | async).isPurgeZoneLoading ? 'loading...' : 'Purge Pull Zone'
-                        "
+                        [label]="(vm$ | async).isPurgeZoneLoading ? 'loading...' : 'Purge Pull Zone'"
                         class="p-button-danger p-button-outlined"
                         (click)="purgePullZone()"
                     ></button>
