@@ -118,10 +118,12 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
                 return this.dotCdnService.requestStats(period).pipe(
                     tap({
                         next: (data: ResponseView<DotCDNStats>) => {
+                            // Now the chart is loaded
                             this.dispatchLoading({
                                 loadingState: LoadingState.LOADED,
                                 loader: Loader.CHART
                             });
+
                             const stats: DotCDNStats = data.pick('stats');
 
                             const chartData: ChartData = {

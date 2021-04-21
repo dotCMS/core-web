@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
             loader: Loader.PURGE_URLS
         });
 
-        this.dotCdnService.purgeCache(urls).subscribe(() => {
+        this.dotCdnService.purgeCache(false, urls).subscribe(() => {
             this.resetPurgeUrlsForm();
         });
     }
