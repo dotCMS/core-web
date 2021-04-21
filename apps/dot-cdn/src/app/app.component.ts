@@ -1,23 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DotCDNStoreViewModel } from './app.interface';
-import { DotCDNService } from './dotcdn.service';
+import { DotCDNState } from './app.interface';
+import { ChartPeriod } from './app.enums';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { DotCDNStore, Loader, LoadingState } from './dotcdn.store';
+import { DotCDNStore } from './dotcdn.store';
 import { Observable } from 'rxjs';
-import { SelectItem, SelectItemGroup } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { ChartOptions } from 'chart.js';
+import { take } from 'rxjs/operators';
 
-enum ChartPeriod {
-    Last30Days = '30',
-    Last60Days = '60'
-}
-
-export interface DotCDNState {
-    chartData: [];
-    isChartLoading: LoadingState;
-    isPurgeUrlsLoading: LoadingState;
-    isPurgeZoneLoading: LoadingState;
-}
 @Component({
     selector: 'dotcms-root',
     templateUrl: './app.component.html',
@@ -27,24 +17,20 @@ export class AppComponent implements OnInit {
     @ViewChild('chart', { static: true }) chart: any;
     purgeZoneForm: FormGroup;
     periodValues: SelectItem[] = [
-        { label: 'Last 30 days', value: ChartPeriod.Last30Days, title: 'asas' },
+        { label: 'Last 30 days', value: ChartPeriod.Last30Days },
         { label: 'Last 60 days', value: ChartPeriod.Last60Days }
     ];
 
-    selectedPeriod: Pick<SelectItemGroup, 'value'> = { value: ChartPeriod.Last30Days };
-    vm$: Observable<DotCDNStoreViewModel> = this.dotCdnStore.vm$;
+    selectedPeriod: SelectItem<string> = { value: ChartPeriod.Last30Days };
+    vm$: Observable<Partial<DotCDNState>> = this.dotCdnStore.vm$;
+    vmPurgeLoaders$: Observable<Partial<DotCDNState>> = this.dotCdnStore.vmPurgeLoaders$;
     chartHeight = '25rem';
     options: ChartOptions;
 
-    constructor(
-        private readonly dotCdnService: DotCDNService,
-        private fb: FormBuilder,
-        private dotCdnStore: DotCDNStore
-    ) {}
+    constructor(private fb: FormBuilder, private dotCdnStore: DotCDNStore) {}
 
     ngOnInit(): void {
         this.setChartOptions();
-        this.dotCdnStore.getChartStats(this.selectedPeriod.value);
         this.purgeZoneForm = this.fb.group({
             purgeUrlsTextArea: ''
         });
@@ -57,29 +43,19 @@ export class AppComponent implements OnInit {
      * @memberof AppComponent
      */
     changePeriod(element: HTMLTextAreaElement): void {
-        this.dotCdnStore.dispatchLoading({
-            loadingState: LoadingState.LOADING,
-            loader: Loader.CHART
-        });
         this.dotCdnStore.getChartStats(element.value);
     }
+
     /**
      * Purges the entire cache
      *
      * @memberof AppComponent
      */
     purgePullZone(): void {
-        this.dotCdnStore.dispatchLoading({
-            loadingState: LoadingState.LOADING,
-            loader: Loader.PURGE_PULL_ZONE
-        });
-        this.dotCdnService.purgeCache(true).subscribe(() => {
-            this.dotCdnStore.dispatchLoading({
-                loadingState: LoadingState.LOADED,
-                loader: Loader.PURGE_PULL_ZONE
-            });
-        });
+        const invalidateAll = true;
+        this.dotCdnStore.purgeCDNCache(invalidateAll);
     }
+
     /**
      * Purges all the URLs in the array
      *
@@ -91,22 +67,12 @@ export class AppComponent implements OnInit {
             .value.split('\n')
             .map((url) => url.trim());
 
-        this.dotCdnStore.dispatchLoading({
-            loadingState: LoadingState.LOADING,
-            loader: Loader.PURGE_URLS
-        });
-
-        this.dotCdnService.purgeCache(false, urls).subscribe(() => {
-            this.resetPurgeUrlsForm();
-        });
-    }
-
-    private resetPurgeUrlsForm(): void {
-        this.dotCdnStore.dispatchLoading({
-            loadingState: LoadingState.LOADED,
-            loader: Loader.PURGE_URLS
-        });
-        this.purgeZoneForm.setValue({ purgeUrlsTextArea: '' });
+        this.dotCdnStore
+            .purgeCDNCache(false, urls)
+            .pipe(take(1))
+            .subscribe(() => {
+                this.purgeZoneForm.setValue({ purgeUrlsTextArea: '' });
+            });
     }
 
     private setChartOptions(): void {

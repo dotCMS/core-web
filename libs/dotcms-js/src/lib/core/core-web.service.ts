@@ -62,7 +62,8 @@ export class CoreWebService {
 
     /**
      *
-     *
+     * Request data from dotCMS endpoints
+     * 
      * @template T
      * @param {DotRequestOptionsArgs} options
      * @return {*}  {Observable<HttpResponse<any>>}

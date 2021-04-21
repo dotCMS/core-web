@@ -1,6 +1,6 @@
 <div class="dot-cdn__container">
     <p-tabView>
-        <p-tabPanel header="Overview">
+        <p-tabPanel header="Overview" *ngIf="vm$ | async as VM">
             <div class="dot-cdn__tab-content">
                 <p-dropdown
                     [options]="periodValues"
@@ -10,13 +10,13 @@
                     [(ngModel)]="selectedPeriod.value"
                 ></p-dropdown>
                 <div class="dot-cdn__stats">
-                    <div class="dot-cdn__col" *ngFor="let stats of (vm$ | async).statsData">
+                    <div class="dot-cdn__col" *ngFor="let stats of VM.statsData">
                         <span class="dot-cdn__stats-label">{{ stats.label }}</span>
                         <p-skeleton
                             styleClass="skeleton"
                             width="10rem"
                             height="1.5rem"
-                            *ngIf="(vm$ | async).isChartLoading; else valuesBlock"
+                            *ngIf="VM.isChartLoading; else valuesBlock"
                         ></p-skeleton>
                         <ng-template #valuesBlock>
                             <h3 class="dot-cdn__stats-value">{{ stats.value }}</h3>
@@ -29,7 +29,7 @@
                     <dot-spinner
                         [size]="'4rem'"
                         [borderSize]="'3px'"
-                        *ngIf="(vm$ | async).isChartLoading; else chartBlock"
+                        *ngIf="VM.isChartLoading; else chartBlock"
                         [ngStyle]="{ height: chartHeight }"
                     ></dot-spinner>
                     <ng-template #chartBlock>
@@ -37,7 +37,7 @@
                         <p-chart
                             #chart
                             type="line"
-                            [data]="(vm$ | async).chartData"
+                            [data]="VM.chartData"
                             width="100%"
                             [height]="chartHeight"
                             [options]="options"
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </p-tabPanel>
-        <p-tabPanel header="Flush Cache">
+        <p-tabPanel header="Flush Cache" *ngIf="vmPurgeLoaders$ | async as VMPurgeLoaders">
             <div class="dot-cdn__tab-content--contained">
                 <form [formGroup]="purgeZoneForm">
                     <div class="dot-cdn__tab-content__row">
@@ -63,7 +63,7 @@
                         ></textarea>
                         <button
                             pButton
-                            [label]="(vm$ | async).isPurgeUrlsLoading ? 'loading...' : 'Purge URL'"
+                            [label]="VMPurgeLoaders.isPurgeUrlsLoading ? 'loading...' : 'Purge URL'"
                             [disabled]="purgeZoneForm.get('purgeUrlsTextArea').value.length === 0"
                             (click)="purgeUrls()"
                         ></button>
@@ -80,7 +80,7 @@
                     <button
                         pButton
                         [label]="
-                            (vm$ | async).isPurgeZoneLoading ? 'loading...' : 'Purge Pull Zone'
+                            VMPurgeLoaders.isPurgeZoneLoading ? 'loading...' : 'Purge Pull Zone'
                         "
                         class="p-button-danger p-button-outlined"
                         (click)="purgePullZone()"

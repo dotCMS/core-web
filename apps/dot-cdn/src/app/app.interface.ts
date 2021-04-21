@@ -1,3 +1,5 @@
+import { Loader, LoadingState } from './app.enums';
+
 export interface ChartDataSet {
     label: string;
     data: number[];
@@ -16,7 +18,6 @@ export interface ChartOptions {
 }
 
 type DotCDNDate = { epochSecond: number; nano: number };
-
 export interface DotCDNStats {
     bandwidthPretty: string;
     bandwidthUsedChart: { [key: string]: number };
@@ -39,16 +40,15 @@ export interface DotChartStats {
     icon: string;
 }
 
-export interface DotCDNStoreViewModel {
+export interface PurgeUrlOptions {
+    hostId: string;
+    invalidateAll: boolean;
+    urls: string[];
+}
+export interface DotCDNState {
     chartData: ChartData;
     statsData: DotChartStats[];
     isChartLoading: boolean;
     isPurgeUrlsLoading: boolean;
     isPurgeZoneLoading: boolean;
-}
-
-export interface PurgeUrlOptions {
-    hostId: string;
-    invalidateAll: boolean;
-    urls: string[];
 }
