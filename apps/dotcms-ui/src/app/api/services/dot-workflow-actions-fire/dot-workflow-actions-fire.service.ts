@@ -7,7 +7,7 @@ import { DotActionBulkRequestOptions } from '@models/dot-action-bulk-request-opt
 import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 
 interface DotActionRequestOptions {
-    contentType: string;
+    contentType?: string;
     data: { [key: string]: any };
     action: ActionToFire;
 }
@@ -100,9 +100,8 @@ export class DotWorkflowActionsFireService {
      * @return {*}  {Observable<T>}
      * @memberof DotWorkflowActionsFireService
      */
-    saveContentlet<T>(contentType: string, data: { [key: string]: any }): Observable<T> {
+    saveContentlet<T>(data: { [key: string]: any }): Observable<T> {
         return this.request<T>({
-            contentType,
             data,
             action: ActionToFire.EDIT
         });
