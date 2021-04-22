@@ -1,5 +1,3 @@
-import { Loader, LoadingState } from './app.enums';
-
 export interface ChartDataSet {
     label: string;
     data: number[];
@@ -19,15 +17,17 @@ export interface ChartOptions {
 
 type DotCDNDate = { epochSecond: number; nano: number };
 export interface DotCDNStats {
-    bandwidthPretty: string;
-    bandwidthUsedChart: { [key: string]: number };
-    cacheHitRate: number;
-    dateFrom: DotCDNDate;
-    dateTo: DotCDNDate;
-    geographicDistribution: unknown;
-    id: number;
-    totalBandwidthUsed: number;
-    totalRequestsServed: number;
+    stats: {
+        bandwidthPretty: string;
+        bandwidthUsedChart: { [key: string]: number };
+        cacheHitRate: number;
+        dateFrom: DotCDNDate;
+        dateTo: DotCDNDate;
+        geographicDistribution: unknown;
+        id: number;
+        totalBandwidthUsed: number;
+        totalRequestsServed: number;
+    };
 }
 
 export interface ChartData {

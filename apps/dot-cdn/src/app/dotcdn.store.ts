@@ -110,8 +110,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
                                 loader: Loader.CHART
                             });
 
-                            const stats: DotCDNStats = data.pick('stats');
-                            const { statsData, chartData } = this.setChartStatsData(stats);
+                            const { statsData, chartData } = this.setChartStatsData(data.entity);
 
                             this.addChartData(chartData);
                             this.addStatsData(statsData);
@@ -126,7 +125,8 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
         );
     });
 
-    private setChartStatsData(stats: DotCDNStats) {
+    private setChartStatsData({ stats }: DotCDNStats) {
+        console.log(stats);
         const chartData: ChartData = {
             labels: this.getLabels(stats.bandwidthUsedChart),
             datasets: [

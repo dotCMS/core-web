@@ -19,6 +19,7 @@ export class DotCDNService {
             });
     }
 
+
     /**
      * Request stats via Core Web Service
      *

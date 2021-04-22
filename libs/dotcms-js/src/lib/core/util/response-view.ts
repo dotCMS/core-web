@@ -42,10 +42,6 @@ export class ResponseView<T = any> {
         return this.bodyJsonObject.entity;
     }
 
-    pick(prop: string): T {
-        return this.bodyJsonObject[prop];
-    }
-
     get tempFiles(): T {
         return this.bodyJsonObject.tempFiles;
     }
