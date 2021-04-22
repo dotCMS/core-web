@@ -76,7 +76,7 @@ describe('DotWorkflowActionsFireService', () => {
         const fieldName = 'title';
 
         dotWorkflowActionsFireService
-            .saveContentlet('Banner', { inode: '123', [fieldName]: 'hello world' })
+            .saveContentlet({ inode: '123', [fieldName]: 'hello world' })
             .subscribe((res) => {
                 expect(res).toEqual([
                     {
@@ -89,7 +89,6 @@ describe('DotWorkflowActionsFireService', () => {
         expect(req.request.method).toBe('PUT');
         expect(req.request.body).toEqual({
             contentlet: {
-                contentType: 'Banner',
                 inode: '123',
                 [fieldName]: 'hello world'
             }
