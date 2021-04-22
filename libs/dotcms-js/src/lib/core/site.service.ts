@@ -156,6 +156,7 @@ export class SiteService {
                 method: 'PUT',
                 url: `${this.urls.switchSiteUrl}/${site.identifier}`
             })
+            .pipe(take(1))
             .subscribe(() => {
                 this.setCurrentSite(site);
             });
