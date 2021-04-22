@@ -127,13 +127,15 @@ export class DotWorkflowActionsFireService {
     }
 
     private request<T>({ contentType, data, action }: DotActionRequestOptions): Observable<T> {
+        const contentlet = contentType ? { contentType: contentType, ...data } : data;
+
         return this.coreWebService
             .requestView({
                 method: 'PUT',
                 url: `v1/workflow/actions/default/fire/${action}${
                     data.inode ? `?inode=${data.inode}` : ''
                 }`,
-                body: { contentlet: { contentType: contentType, ...data } }
+                body: { contentlet }
             })
             .pipe(take(1), pluck('entity'));
     }
