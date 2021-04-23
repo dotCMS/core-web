@@ -7,26 +7,24 @@ import { DotCDNService } from './dotcdn.service';
 import { SiteServiceMock } from './siteservice.mock-temp';
 
 fdescribe('DotCDNComponentStore', () => {
+    let service: DotCDNStore;
 
-      let service: DotCDNStore;
-
-      beforeEach(() => {
-          TestBed.configureTestingModule({
-              imports: [HttpClientTestingModule],
-              providers: [
-                  DotCDNService,
-                  DotCDNStore,
-                  { provide: CoreWebService, useClass: CoreWebServiceMock },
-                  { provide: SiteService, useClass: SiteServiceMock }
-              ]
-          });
-          service = TestBed.inject(DotCDNStore);
-      });
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule],
+            providers: [
+                DotCDNService,
+                DotCDNStore,
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                { provide: SiteService, useClass: SiteServiceMock }
+            ]
+        });
+        service = TestBed.inject(DotCDNStore);
+    });
 
     describe('addMovie reducer', () => {
         it('should...', () => {
-            pending()
+            pending();
         });
     });
-
 });

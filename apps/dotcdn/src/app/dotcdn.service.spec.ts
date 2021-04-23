@@ -12,7 +12,10 @@ describe('DotcdnService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
-            providers: [{ provide: CoreWebService, useClass: CoreWebServiceMock }, { provide: SiteService, useClass: SiteServiceMock }]
+            providers: [
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
+                { provide: SiteService, useClass: SiteServiceMock }
+            ]
         });
         service = TestBed.inject(DotCDNService);
     });
