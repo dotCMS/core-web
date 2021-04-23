@@ -14,17 +14,14 @@ export interface ChartOptions {
         position: string;
     };
 }
-
-type DotCDNDate = { epochSecond: number; nano: number };
 export interface DotCDNStats {
     stats: {
         bandwidthPretty: string;
         bandwidthUsedChart: { [key: string]: number };
         cacheHitRate: number;
-        dateFrom: DotCDNDate;
-        dateTo: DotCDNDate;
+        dateFrom: string;
+        dateTo: string;
         geographicDistribution: unknown;
-        id: number;
         totalBandwidthUsed: number;
         totalRequestsServed: number;
     };

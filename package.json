@@ -119,7 +119,7 @@
         "@types/googlemaps": "3.40.3",
         "@types/jasmine": "~3.6.2",
         "@types/jasminewd2": "~2.0.8",
-        "@types/jest": "26.0.8",
+        "@types/jest": "^26.0.8",
         "@types/node": "12.12.38",
         "@types/puppeteer": "^5.4.2",
         "@types/webpack": "4.41.21",

@@ -14,6 +14,7 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
+        "types": ["jest", "node"],
         "paths": {
             "@dotcms/dot-rules": ["libs/dot-rules/src/public_api.ts"],
             "@pipes/*": ["apps/dotcms-ui/src/app/view/pipes/*"],

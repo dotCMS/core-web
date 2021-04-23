@@ -19,7 +19,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
                 datasets: []
             },
             statsData: [],
-            isChartLoading: true,
+            isChartLoading: false,
             isPurgeUrlsLoading: false,
             isPurgeZoneLoading: false
         });
@@ -62,12 +62,50 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
     });
 
     /**
+     *  Handles the chart data fetching
+     *
+     * @memberof DotCDNStore
+     */
+    readonly getChartStats = this.effect((period$: Observable<string>) => {
+        return period$.pipe(
+            mergeMap((period: string) => {
+                // Dispatch the loading state
+                this.dispatchLoading({
+                    loadingState: LoadingState.LOADING,
+                    loader: Loader.CHART
+                });
+                return this.dotCdnService.requestStats(period).pipe(
+                    tapResponse(
+                        (data: DotCDNStats) => {
+                            // Now the chart is loaded
+                            this.dispatchLoading({
+                                loadingState: LoadingState.LOADED,
+                                loader: Loader.CHART
+                            });
+
+                            const { statsData, chartData } = this.setChartStatsData(data);
+
+                            this.addChartData(chartData);
+                            this.addStatsData(statsData);
+                        },
+                        (error) => {
+                            // TODO: Handle error
+                            console.log(error);
+                        }
+                    )
+                );
+            })
+        );
+    });
+
+    /**
      *  Dispatches a loading state
      *
      * @memberof DotCDNStore
      */
     readonly dispatchLoading = this.updater(
         (state, action: { loadingState: string; loader: string }) => {
+            console
             switch (action.loader) {
                 case Loader.CHART:
                     return {
@@ -87,77 +125,6 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
             }
         }
     );
-
-    /**
-     *  Handles the chart data fetching
-     *
-     * @memberof DotCDNStore
-     */
-    readonly getChartStats = this.effect((period$: Observable<string>) => {
-        return period$.pipe(
-            mergeMap((period: string) => {
-                // Dispatch the loading state
-                this.dispatchLoading({
-                    loadingState: LoadingState.LOADING,
-                    loader: Loader.CHART
-                });
-                return this.dotCdnService.requestStats(period).pipe(
-                    tapResponse(
-                        (data: ResponseView<DotCDNStats>) => {
-                            // Now the chart is loaded
-                            this.dispatchLoading({
-                                loadingState: LoadingState.LOADED,
-                                loader: Loader.CHART
-                            });
-
-                            const { statsData, chartData } = this.setChartStatsData(data.entity);
-
-                            this.addChartData(chartData);
-                            this.addStatsData(statsData);
-                        },
-                        (error) => {
-                            // TODO: Handle error
-                            console.log(error);
-                        }
-                    )
-                );
-            })
-        );
-    });
-
-    private setChartStatsData({ stats }: DotCDNStats) {
-        const chartData: ChartData = {
-            labels: this.getLabels(stats.bandwidthUsedChart),
-            datasets: [
-                {
-                    label: 'Bandwidth Used',
-                    data: Object.values(stats.bandwidthUsedChart),
-                    borderColor: '#42A5F5',
-                    fill: false
-                }
-            ]
-        };
-
-        const statsData: DotChartStats[] = [
-            {
-                label: 'Bandwidth Used',
-                value: stats.bandwidthPretty,
-                icon: 'insert_chart_outlined'
-            },
-            {
-                label: 'Requests Served',
-                value: `${stats.totalRequestsServed}`,
-                icon: 'file_download'
-            },
-            {
-                label: 'Cache Hit Rate',
-                value: `${stats.cacheHitRate.toFixed(2)}%`,
-                icon: 'file_download'
-            }
-        ];
-
-        return { chartData, statsData };
-    }
 
     /**
      * Purges the CDN cache
@@ -201,6 +168,40 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
                     loader: Loader.PURGE_PULL_ZONE
                 });
             });
+    }
+
+    private setChartStatsData({ stats }: DotCDNStats) {
+        const chartData: ChartData = {
+            labels: this.getLabels(stats.bandwidthUsedChart),
+            datasets: [
+                {
+                    label: 'Bandwidth Used',
+                    data: Object.values(stats.bandwidthUsedChart),
+                    borderColor: '#42A5F5',
+                    fill: false
+                }
+            ]
+        };
+
+        const statsData: DotChartStats[] = [
+            {
+                label: 'Bandwidth Used',
+                value: stats.bandwidthPretty,
+                icon: 'insert_chart_outlined'
+            },
+            {
+                label: 'Requests Served',
+                value: `${stats.totalRequestsServed}`,
+                icon: 'file_download'
+            },
+            {
+                label: 'Cache Hit Rate',
+                value: `${stats.cacheHitRate.toFixed(2)}%`,
+                icon: 'file_download'
+            }
+        ];
+
+        return { chartData, statsData };
     }
 
     /**
