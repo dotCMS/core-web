@@ -563,10 +563,7 @@
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": [
-                            "apps/dotcdn/src/**/*.ts",
-                            "apps/dotcdn/src/**/*.html"
-                        ]
+                        "lintFilePatterns": ["apps/dotcdn/src/**/*.ts", "apps/dotcdn/src/**/*.html"]
                     }
                 },
                 "test": {
