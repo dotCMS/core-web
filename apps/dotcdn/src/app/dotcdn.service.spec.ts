@@ -27,8 +27,7 @@ describe('DotcdnService', () => {
     });
 
     it('should return an object with stats', () => {
-
-        pending()
+        pending();
         // service.currentSite$.next('hello')
         // service.requestStats('30').subscribe((value) => {
         //     expect(value).toBeFalsy();

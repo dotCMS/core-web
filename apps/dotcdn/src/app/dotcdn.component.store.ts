@@ -105,7 +105,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      */
     readonly dispatchLoading = this.updater(
         (state, action: { loadingState: string; loader: string }) => {
-            console
+            console;
             switch (action.loader) {
                 case Loader.CHART:
                     return {

@@ -76,7 +76,6 @@ export class DotCDNService {
      * @memberof DotCDNService
      */
     requestStats(period: string): Observable<DotCDNStats> {
-
         return this.currentSite$.pipe(
             mergeMap((hostId: string) => {
                 const dateTo = moment().format('YYYY-MM-DD');

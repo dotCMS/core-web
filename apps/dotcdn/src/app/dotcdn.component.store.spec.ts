@@ -106,6 +106,12 @@ fdescribe('DotCDNComponentStore', () => {
     });
 
     fdescribe('DotCDN Component Store', () => {
+        let storeMock;
+        beforeEach(() => {
+            storeMock = mocked(store, true);
+            jest.restoreAllMocks();
+        });
+
         fit('should return chart state', (done) => {
             const addChartDataSpy = jest.spyOn(store, 'addChartData');
             store.addChartData(fakeAddChartData);
@@ -140,8 +146,8 @@ fdescribe('DotCDNComponentStore', () => {
 
         fit('should return stats state', (done) => {
             const addStatsDataSpy = jest.spyOn(store, 'addStatsData');
-            store.addStatsData(fakeStatsData);
-            store.state$.subscribe((state) => {
+            storeMock.addStatsData(fakeStatsData);
+            storeMock.state$.subscribe((state) => {
                 expect(state.statsData.length).toBe(3);
                 done();
             });
@@ -152,30 +158,40 @@ fdescribe('DotCDNComponentStore', () => {
             ]);
         });
 
-        fit('should return requested chart data', () => {
-            const storeSpy = jest.spyOn(store, 'addChartData');
-            const dotCdnServiceSpy = jest.spyOn(dotCdnService, 'requestStats');
+        fit('should return requested chart data', (done) => {
+            const cdnServiceMock = jest
+                .spyOn(dotCdnService, 'requestStats')
+                .mockReturnValue(of(fakeResponseData));
 
-            store.getChartStats('30');
-            store.state$.subscribe(console.log);
-            expect(dotCdnServiceSpy).toHaveBeenCalledWith('30');
+            storeMock.getChartStats('30');
+
+            cdnServiceMock.mock.results[0].value.subscribe((chartData) => {
+                expect(chartData).toStrictEqual(fakeResponseData);
+            });
+
+            store.state$.subscribe((state) => {
+                expect(state.isChartLoading).toBe(false);
+                expect(state.statsData.length).toBe(3);
+                expect(state.chartData.labels.length).toBe(31);
+                done();
+            });
         });
 
         fit('should dispatch loading, loaded and idle state', (done) => {
-            const dispatchLoadingSpy = jest.spyOn(store, 'dispatchLoading');
+            const dispatchLoadingSpy = jest.spyOn(storeMock, 'dispatchLoading');
 
-            store.dispatchLoading({ loadingState: LoadingState.IDLE, loader: Loader.CHART });
-            store.state$.subscribe((state) => {
+            storeMock.dispatchLoading({ loadingState: LoadingState.IDLE, loader: Loader.CHART });
+            storeMock.state$.subscribe((state) => {
                 expect(state.isChartLoading).toBe(false);
             });
 
-            store.dispatchLoading({ loadingState: LoadingState.LOADING, loader: Loader.CHART });
-            store.state$.subscribe((state) => {
+            storeMock.dispatchLoading({ loadingState: LoadingState.LOADING, loader: Loader.CHART });
+            storeMock.state$.subscribe((state) => {
                 expect(state.isChartLoading).toBe(true);
             });
 
-            store.dispatchLoading({ loadingState: LoadingState.LOADED, loader: Loader.CHART });
-            store.state$.subscribe((state) => {
+            storeMock.dispatchLoading({ loadingState: LoadingState.LOADED, loader: Loader.CHART });
+            storeMock.state$.subscribe((state) => {
                 expect(state.isChartLoading).toBe(false);
                 done();
             });
