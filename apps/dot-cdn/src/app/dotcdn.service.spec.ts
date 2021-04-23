@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DotCDNService } from './dotcdn.service';
 
-describe('DotcdnService', () => {
+fdescribe('DotcdnService', () => {
     let service: DotCDNService;
 
     beforeEach(() => {

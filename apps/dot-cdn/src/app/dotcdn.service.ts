@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 import { CoreWebService, ResponseView, SiteService } from '@dotcms/dotcms-js';
 import { pluck, mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -8,7 +8,7 @@ import { DotCDNStats, PurgeUrlOptions } from './app.interface';
     providedIn: 'root'
 })
 export class DotCDNService {
-    currentSite$: ReplaySubject<string> = new ReplaySubject(null);
+    currentSite$: ReplaySubject<string> = new ReplaySubject();
 
     constructor(private coreWebService: CoreWebService, private siteService: SiteService) {
         this.siteService
@@ -23,7 +23,7 @@ export class DotCDNService {
      * Request stats via Core Web Service
      *
      * @param {string} period
-     * @return {*}  {*} // TODO: Find appropriate return type
+     * @return {*}  {*}
      * @memberof DotCDNService
      */
     requestStats(period: string): Observable<ResponseView<DotCDNStats>> {
