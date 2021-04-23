@@ -7,7 +7,7 @@ import { DotCDNService } from './dotcdn.service';
 import { SiteServiceMock } from './siteservice.mock-temp';
 
 fdescribe('DotCDNComponentStore', () => {
-    let service: DotCDNStore;
+    let store: DotCDNStore;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -19,11 +19,23 @@ fdescribe('DotCDNComponentStore', () => {
                 { provide: SiteService, useClass: SiteServiceMock }
             ]
         });
-        service = TestBed.inject(DotCDNStore);
+        store = TestBed.inject(DotCDNStore);
     });
 
     describe('addMovie reducer', () => {
-        it('should...', () => {
+        it('should add chart data', () => {
+            store.addChartData({
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Bandwidth Used',
+                        data: [],
+                        borderColor: '#42A5F5',
+                        fill: false
+                    }
+                ]
+            });
+            store.state$.subscribe(console.log);
             pending();
         });
     });
