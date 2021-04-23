@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DotCDNService } from './dotcdn.service';
 
-fdescribe('DotcdnService', () => {
+describe('DotcdnService', () => {
     let service: DotCDNService;
 
     beforeEach(() => {
@@ -10,7 +10,7 @@ fdescribe('DotcdnService', () => {
         service = TestBed.inject(DotCDNService);
     });
 
-    it('should be created', () => {
+    fit('should be created', () => {
         expect(service).toBeTruthy();
     });
 });

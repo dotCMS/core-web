@@ -563,7 +563,10 @@
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": ["apps/dotcdn/src/**/*.ts", "apps/dotcdn/src/**/*.html"]
+                        "lintFilePatterns": [
+                            "apps/dotcdn/src/**/*.ts",
+                            "apps/dotcdn/src/**/*.html"
+                        ]
                     }
                 },
                 "test": {
@@ -573,9 +576,18 @@
                         "tsConfig": "apps/dotcdn/tsconfig.spec.json",
                         "karmaConfig": "apps/dotcdn/karma.conf.js",
                         "polyfills": "apps/dotcdn/src/polyfills.ts",
-                        "styles": [],
-                        "scripts": [],
-                        "assets": []
+                        "styles": [
+                            "libs/dot-primeng-theme-styles/src/scss/styles.scss",
+                            "node_modules/primeicons/primeicons.css",
+                            "node_modules/primeflex/primeflex.css",
+                            "node_modules/primeng/resources/primeng.min.css",
+                            "apps/dotcdn/src/styles.scss"
+                        ],
+                        "assets": ["apps/dotcdn/src/favicon.ico", "apps/dotcdn/src/assets"],
+                        "stylePreprocessorOptions": {
+                            "includePaths": ["libs/dot-primeng-theme-styles/src/scss"]
+                        },
+                        "scripts": ["node_modules/chart.js/dist/Chart.js"]
                     }
                 }
             }
