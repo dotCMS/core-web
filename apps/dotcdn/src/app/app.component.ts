@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DotCDNState } from './app.interface';
 import { ChartPeriod } from './app.enums';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { DotCDNStore } from './dotcdn.store';
+import { DotCDNStore } from './dotcdn.component.store';
 import { Observable } from 'rxjs';
 import { SelectItem } from 'primeng/api';
 import { ChartOptions } from 'chart.js';

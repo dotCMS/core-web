@@ -23,10 +23,9 @@ import { TabViewModule } from 'primeng/tabview';
 import { ChartModule } from 'primeng/chart';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
-import { DotCDNService } from './dotcdn.service';
 import { FormsModule } from '@angular/forms';
 import { DotSpinnerModule, DotIconModule } from '@dotcms/ui';
-import { DotCDNStore } from './dotcdn.store';
+import { DotCDNStore } from './dotcdn.component.store';
 
 const dotEventSocketURLFactory = () => {
     return new DotEventsSocketURL(

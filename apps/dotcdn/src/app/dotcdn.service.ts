@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { CoreWebService, ResponseView, SiteService } from '@dotcms/dotcms-js';
 import { pluck, mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';

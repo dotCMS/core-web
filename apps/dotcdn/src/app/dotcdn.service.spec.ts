@@ -1,16 +1,23 @@
 import { TestBed } from '@angular/core/testing';
+import { CoreWebService, SiteService } from '@dotcms/dotcms-js';
+import { CoreWebServiceMock } from './coreweb.service.mock-temp';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DotCDNService } from './dotcdn.service';
+import { SiteServiceMock } from './siteservice.mock-temp';
 
 describe('DotcdnService', () => {
     let service: DotCDNService;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({});
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule],
+            providers: [{ provide: CoreWebService, useClass: CoreWebServiceMock }, { provide: SiteService, useClass: SiteServiceMock }]
+        });
         service = TestBed.inject(DotCDNService);
     });
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(service).toBeTruthy();
     });
 });
