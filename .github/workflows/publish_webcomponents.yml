@@ -2,15 +2,17 @@ name: Publish to Dotcms Webcomponents
 on:
   push:
       branches:
-          - issue-20245-automate-dotwebcomponents-generation
+          # - issue-20245-automate-dotwebcomponents-generation
+          - release-wc-test-*
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout
+        - name: Checkout core-web
           uses: actions/checkout@v2
           with:
               fetch-depth: 1
+              path: 'core-web'
         - name: Configuring Node.js
           uses: actions/setup-node@v2-beta
           with:
@@ -25,20 +27,31 @@ jobs:
             skip-tag:  'true'
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            PACKAGEJSON_DIR:  'libs/dotcms-webcomponents'
+            PACKAGEJSON_DIR:  'core-web/libs/dotcms-webcomponents'
         # - name: Build dotcms-webcomponents with deps
         #   run: |
+        #     cd core-web
         #     npm run nx build dotcms-ui -- --with-deps --prod
         # - name: "publish to npm"
         #   run: |
+        #       cd core-web
         #       npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-        #       cd dist/libs/dotcms-webcomponents
+        #       cd core-web/dist/libs/dotcms-webcomponents
         #       npm publish
+        - name: Checkout core
+          uses: actions/checkout@v2
+          with:
+              fetch-depth: 1
+              path: 'core'
+              ref: release-21.04
+              repository: 'dotCMS/core'
         - name: Gets version
           run: |
             NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
-            echo "version= ${NEW_VERSION:1}"
-            sed -i -e 's/webComponentsReleaseVersion=latest/webComponentsReleaseVersion=${{ steps.version-bump.outputs.newTag }}/g' gradle.properties
+            # echo "version= ${NEW_VERSION:1}"
+            cd core/dotCMS
+            sed -i -e 's/webComponentsReleaseVersion=.*/webComponentsReleaseVersion=${NEW_VERSION:1}/g' gradle.properties
+            cat gradle.properties
 
             echo "event_name= ${{ github.event_name }}"
             echo "head_ref= ${{ github.head_ref }}"
