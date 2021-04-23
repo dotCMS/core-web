@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotCDNService } from './dotcdn.service';
 import { SiteServiceMock } from './siteservice.mock-temp';
 
-describe('DotcdnService', () => {
+fdescribe('DotcdnService', () => {
     let service: DotCDNService;
 
     beforeEach(() => {
