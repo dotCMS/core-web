@@ -87,6 +87,82 @@ const fakeStatsData = [
     { label: 'Cache Hit Rate', value: '14.62%', icon: 'file_download' }
 ];
 
+const fakeAddChartDataReturnValue = {
+    datasets: [
+        {
+            borderColor: '#42A5F5',
+            data: [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                78554075,
+                15506849,
+                0,
+                0,
+                15301470,
+                5061682,
+                0,
+                0,
+                0
+            ],
+            fill: false,
+            label: 'Bandwidth Used'
+        }
+    ],
+    labels: [
+        '2021-03-24',
+        '2021-03-25',
+        '2021-03-26',
+        '2021-03-27',
+        '2021-03-28',
+        '2021-03-29',
+        '2021-03-30',
+        '2021-03-31',
+        '2021-04-01',
+        '2021-04-02',
+        '2021-04-03',
+        '2021-04-04',
+        '2021-04-05',
+        '2021-04-06',
+        '2021-04-07',
+        '2021-04-08',
+        '2021-04-09',
+        '2021-04-10',
+        '2021-04-11',
+        '2021-04-12',
+        '2021-04-13',
+        '2021-04-14',
+        '2021-04-15',
+        '2021-04-16',
+        '2021-04-17',
+        '2021-04-18',
+        '2021-04-19',
+        '2021-04-20',
+        '2021-04-21',
+        '2021-04-22',
+        '2021-04-23'
+    ]
+};
+
 fdescribe('DotCDNComponentStore', () => {
     let store: DotCDNStore;
     let dotCdnService;
@@ -158,14 +234,14 @@ fdescribe('DotCDNComponentStore', () => {
             ]);
         });
 
-        fit('should return requested chart data', (done) => {
-            const cdnServiceMock = jest
+        fit('should set chart state', (done) => {
+            const requestStatsSpy = jest
                 .spyOn(dotCdnService, 'requestStats')
                 .mockReturnValue(of(fakeResponseData));
 
             storeMock.getChartStats('30');
 
-            cdnServiceMock.mock.results[0].value.subscribe((chartData) => {
+            requestStatsSpy.mock.results[0].value.subscribe((chartData) => {
                 expect(chartData).toStrictEqual(fakeResponseData);
             });
 
@@ -175,6 +251,21 @@ fdescribe('DotCDNComponentStore', () => {
                 expect(state.chartData.labels.length).toBe(31);
                 done();
             });
+        });
+
+        fit('should call addChartData and addStatsData', () => {
+            jest
+                 .spyOn(dotCdnService, 'requestStats')
+                 .mockReturnValue(of(fakeResponseData));
+            storeMock.addChartData = jest.fn((chartData) => chartData);
+            storeMock.addStatsData = jest.fn((statsData) => statsData);
+            console.log(storeMock.addChartData.mock);
+
+            storeMock.getChartStats('30');
+
+            expect(storeMock.addChartData).toHaveBeenCalledWith(fakeAddChartDataReturnValue);
+            expect(storeMock.addStatsData).toHaveBeenCalledWith(fakeStatsData);
+
         });
 
         fit('should dispatch loading, loaded and idle state', (done) => {
