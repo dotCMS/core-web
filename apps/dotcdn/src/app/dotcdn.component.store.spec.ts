@@ -254,9 +254,7 @@ fdescribe('DotCDNComponentStore', () => {
         });
 
         fit('should call addChartData and addStatsData', () => {
-            jest
-                 .spyOn(dotCdnService, 'requestStats')
-                 .mockReturnValue(of(fakeResponseData));
+            jest.spyOn(dotCdnService, 'requestStats').mockReturnValue(of(fakeResponseData));
             storeMock.addChartData = jest.fn((chartData) => chartData);
             storeMock.addStatsData = jest.fn((statsData) => statsData);
             console.log(storeMock.addChartData.mock);
@@ -265,7 +263,6 @@ fdescribe('DotCDNComponentStore', () => {
 
             expect(storeMock.addChartData).toHaveBeenCalledWith(fakeAddChartDataReturnValue);
             expect(storeMock.addStatsData).toHaveBeenCalledWith(fakeStatsData);
-
         });
 
         fit('should dispatch loading, loaded and idle state', (done) => {
