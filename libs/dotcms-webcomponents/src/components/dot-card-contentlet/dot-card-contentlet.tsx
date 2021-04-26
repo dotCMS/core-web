@@ -1,4 +1,4 @@
-import { Component, h, Element, Prop, Event, EventEmitter , Method } from '@stencil/core';
+import { Component, h, Element, Prop, Event, EventEmitter, Method } from '@stencil/core';
 import {
     DotCardContentletItem,
     DotCardContentletEvent
@@ -111,7 +111,12 @@ export class DotCardContentlet {
         );
     }
 
-    private getContentState ({ live, working, deleted, hasLiveVersion}: DotContentletItem): DotContentState {
-        return {live, working, deleted, hasLiveVersion}
+    private getContentState({
+        live,
+        working,
+        deleted,
+        hasLiveVersion
+    }: DotContentletItem): DotContentState {
+        return { live, working, deleted, hasLiveVersion };
     }
 }
