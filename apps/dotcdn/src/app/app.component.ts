@@ -87,15 +87,11 @@ export class AppComponent implements OnInit {
                         type: 'linear',
                         display: true,
                         position: 'left',
-                        id: 'y-axis-1'
-                    },
-                    {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        id: 'y-axis-2',
-                        gridLines: {
-                            drawOnChartArea: false
+                        id: 'y-axis-1',
+                        ticks: {
+                            callback: function (value: number): string {
+                                return (value / 1e6).toString() + 'MB';
+                            }
                         }
                     }
                 ]

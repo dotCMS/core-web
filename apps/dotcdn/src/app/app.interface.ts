@@ -18,6 +18,7 @@ export interface DotCDNStats {
     stats: {
         bandwidthPretty: string;
         bandwidthUsedChart: { [key: string]: number };
+        requestsServedChart: { [key: string]: number };
         cacheHitRate: number;
         dateFrom: string;
         dateTo: string;

@@ -43,6 +43,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      * @memberof DotCDNStore
      */
     readonly addChartData = this.updater((state, chartData: ChartData) => {
+        console.log({ chartData });
         return {
             ...state,
             chartData
@@ -171,6 +172,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
     }
 
     private setChartStatsData({ stats }: DotCDNStats) {
+        console.log({ stats });
         const chartData: ChartData = {
             labels: this.getLabels(stats.bandwidthUsedChart),
             datasets: [
@@ -178,6 +180,12 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
                     label: 'Bandwidth Used',
                     data: Object.values(stats.bandwidthUsedChart),
                     borderColor: '#42A5F5',
+                    fill: false
+                },
+                {
+                    label: 'Requests Served',
+                    data: Object.values(stats.requestsServedChart),
+                    borderColor: '#FFA726',
                     fill: false
                 }
             ]

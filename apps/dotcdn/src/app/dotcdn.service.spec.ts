@@ -5,8 +5,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DotCDNService } from './dotcdn.service';
 import { SiteServiceMock } from './siteservice.mock-temp';
-import { of } from 'rxjs';
-import { DotCDNStats } from './app.interface';
 
 describe('DotcdnService', () => {
     let service: DotCDNService;
