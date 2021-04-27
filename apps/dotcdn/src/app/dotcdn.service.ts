@@ -3,7 +3,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { CoreWebService, ResponseView, SiteService } from '@dotcms/dotcms-js';
 import { pluck, mergeMap, map } from 'rxjs/operators';
 import * as moment from 'moment';
-import { DotCDNStats, PurgeUrlOptions } from './app.interface';
+import { DotCDNStats, PurgeUrlOptions } from './app.models';
 
 const fakeResponseData: DotCDNStats = {
     stats: {

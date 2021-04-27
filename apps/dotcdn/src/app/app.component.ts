@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DotCDNState } from './app.interface';
-import { ChartPeriod } from './app.enums';
+import { DotCDNState, ChartPeriod } from './app.models';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { DotCDNStore } from './dotcdn.component.store';
 import { Observable } from 'rxjs';
 import { SelectItem } from 'primeng/api';
 import { ChartOptions } from 'chart.js';
 import { take } from 'rxjs/operators';
+import { UIChart } from 'primeng/chart';
 
 @Component({
     selector: 'dotcms-root',
@@ -14,16 +14,18 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-    @ViewChild('chart', { static: true }) chart: any;
+    @ViewChild('chart', { static: true }) chart: UIChart;
     purgeZoneForm: FormGroup;
     periodValues: SelectItem[] = [
         { label: 'Last 30 days', value: ChartPeriod.Last30Days },
         { label: 'Last 60 days', value: ChartPeriod.Last60Days }
     ];
-
     selectedPeriod: SelectItem<string> = { value: ChartPeriod.Last30Days };
-    vm$: Observable<Partial<DotCDNState>> = this.dotCdnStore.vm$;
-    vmPurgeLoaders$: Observable<Partial<DotCDNState>> = this.dotCdnStore.vmPurgeLoaders$;
+    vm$: Observable<Pick<DotCDNState, 'chartData' | 'statsData' | 'isChartLoading'>> = this
+        .dotCdnStore.vm$;
+    vmPurgeLoaders$: Observable<
+        Pick<DotCDNState, 'isPurgeUrlsLoading' | 'isPurgeZoneLoading'>
+    > = this.dotCdnStore.vmPurgeLoaders$;
     chartHeight = '25rem';
     options: ChartOptions;
 

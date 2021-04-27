@@ -4,8 +4,15 @@ import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { SelectItem } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { mergeMap, take, tap } from 'rxjs/operators';
-import { ChartData, DotCDNState, DotCDNStats, DotChartStats } from './app.interface';
-import { ChartPeriod, Loader, LoadingState } from './app.enums';
+import {
+    ChartData,
+    DotCDNState,
+    DotCDNStats,
+    DotChartStats,
+    ChartPeriod,
+    Loader,
+    LoadingState
+} from './app.models';
 import { DotCDNService } from './dotcdn.service';
 
 @Injectable()
@@ -66,37 +73,39 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      *
      * @memberof DotCDNStore
      */
-    readonly getChartStats = this.effect((period$: Observable<string>) => {
-        return period$.pipe(
-            mergeMap((period: string) => {
-                // Dispatch the loading state
-                this.dispatchLoading({
-                    loadingState: LoadingState.LOADING,
-                    loader: Loader.CHART
-                });
-                return this.dotCdnService.requestStats(period).pipe(
-                    tapResponse(
-                        (data: DotCDNStats) => {
-                            // Now the chart is loaded
-                            this.dispatchLoading({
-                                loadingState: LoadingState.LOADED,
-                                loader: Loader.CHART
-                            });
+    readonly getChartStats = this.effect(
+        (period$: Observable<string>): Observable<DotCDNStats> => {
+            return period$.pipe(
+                mergeMap((period: string) => {
+                    // Dispatch the loading state
+                    this.dispatchLoading({
+                        loadingState: LoadingState.LOADING,
+                        loader: Loader.CHART
+                    });
+                    return this.dotCdnService.requestStats(period).pipe(
+                        tapResponse(
+                            (data: DotCDNStats) => {
+                                // Now the chart is loaded
+                                this.dispatchLoading({
+                                    loadingState: LoadingState.LOADED,
+                                    loader: Loader.CHART
+                                });
 
-                            const { statsData, chartData } = this.setChartStatsData(data);
+                                const { statsData, chartData } = this.getChartStatsData(data);
 
-                            this.addChartData(chartData);
-                            this.addStatsData(statsData);
-                        },
-                        (error) => {
-                            // TODO: Handle error
-                            console.log(error);
-                        }
-                    )
-                );
-            })
-        );
-    });
+                                this.addChartData(chartData);
+                                this.addStatsData(statsData);
+                            },
+                            (error) => {
+                                // TODO: Handle error
+                                console.log(error);
+                            }
+                        )
+                    );
+                })
+            );
+        }
+    );
 
     /**
      *  Dispatches a loading state
@@ -170,7 +179,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
             });
     }
 
-    private setChartStatsData({ stats }: DotCDNStats) {
+    private getChartStatsData({ stats }: DotCDNStats) {
         console.log({ stats });
         const chartData: ChartData = {
             labels: this.getLabels(stats.bandwidthUsedChart),
