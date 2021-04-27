@@ -12,7 +12,7 @@ import {
     ChartPeriod,
     Loader,
     LoadingState,
-    PurgeUrlReturnData
+    PurgeReturnData
 } from './app.models';
 import { DotCDNService } from './dotcdn.service';
 
@@ -144,7 +144,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      * @memberof DotCDNStore
      */
 
-    purgeCDNCache(urls: string[]): Observable<ResponseView<PurgeUrlReturnData>> {
+    purgeCDNCache(urls: string[]): Observable<ResponseView<PurgeReturnData>> {
         const loading$ = of(
             this.dispatchLoading({
                 loadingState: LoadingState.LOADING,

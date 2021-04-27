@@ -51,13 +51,12 @@ export interface DotCDNState {
     isPurgeZoneLoading: boolean;
 }
 
-export interface PurgeUrlReturnData {
+export interface PurgeReturnData {
     entity: { [key: string]: string };
     errors: string[];
     messages: string[];
     permissions: string[];
     i18nMessagesMap: { [key: string]: string };
-
 }
 
 export const enum ChartPeriod {
