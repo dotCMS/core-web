@@ -554,7 +554,7 @@ export class DotEditContentHtmlService {
     }
 
     private handleDatasetMissingErrors({ dataset }: Pick<DotInlineEditContent, 'dataset'>): void {
-        const requiredDatasetKeys = ['mode', 'inode', 'fieldName', 'language'];
+        const requiredDatasetKeys = ['inode', 'fieldName'];
         const datasetMissing = requiredDatasetKeys.filter(function (key) {
             return !Object.keys(dataset).includes(key);
         });
