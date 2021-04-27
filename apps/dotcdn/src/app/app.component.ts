@@ -54,8 +54,7 @@ export class AppComponent implements OnInit {
      * @memberof AppComponent
      */
     purgePullZone(): void {
-        const invalidateAll = true;
-        this.dotCdnStore.purgeCDNCache(invalidateAll);
+        this.dotCdnStore.purgeCDNCacheAll();
     }
 
     /**
@@ -64,13 +63,13 @@ export class AppComponent implements OnInit {
      * @memberof AppComponent
      */
     purgeUrls(): void {
-        const urls = this.purgeZoneForm
+        const urls: string[] = this.purgeZoneForm
             .get('purgeUrlsTextArea')
             .value.split('\n')
             .map((url) => url.trim());
 
         this.dotCdnStore
-            .purgeCDNCache(false, urls)
+            .purgeCDNCache(urls)
             .pipe(take(1))
             .subscribe(() => {
                 this.purgeZoneForm.setValue({ purgeUrlsTextArea: '' });

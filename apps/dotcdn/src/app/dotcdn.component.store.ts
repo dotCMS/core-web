@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ResponseView } from '@dotcms/dotcms-js';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { SelectItem } from 'primeng/api';
-import { Observable } from 'rxjs';
-import { mergeMap, take, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { mergeMap, switchMapTo, take, tap, exhaustMap, pluck } from 'rxjs/operators';
 import {
     ChartData,
     DotCDNState,
@@ -11,7 +11,8 @@ import {
     DotChartStats,
     ChartPeriod,
     Loader,
-    LoadingState
+    LoadingState,
+    PurgeUrlReturnData
 } from './app.models';
 import { DotCDNService } from './dotcdn.service';
 
@@ -114,7 +115,6 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      */
     readonly dispatchLoading = this.updater(
         (state, action: { loadingState: string; loader: string }) => {
-            console;
             switch (action.loader) {
                 case Loader.CHART:
                     return {
@@ -143,34 +143,39 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      * @return {*}  {(Observable<ResponseView<any>> | void)}
      * @memberof DotCDNStore
      */
-    purgeCDNCache(invalidateAll: boolean): void;
-    purgeCDNCache(invalidateAll: boolean, urls?: string[]): Observable<ResponseView<any>>;
-    purgeCDNCache(
-        invalidateAll: boolean = false,
-        urls?: string[]
-    ): Observable<ResponseView<any>> | void {
-        if (!invalidateAll) {
+
+    purgeCDNCache(urls: string[]): Observable<ResponseView<PurgeUrlReturnData>> {
+        const loading$ = of(
             this.dispatchLoading({
                 loadingState: LoadingState.LOADING,
                 loader: Loader.PURGE_URLS
-            });
-            return this.dotCdnService.purgeCache(invalidateAll, urls).pipe(
-                tap(() => {
-                    this.dispatchLoading({
-                        loadingState: LoadingState.LOADED,
-                        loader: Loader.PURGE_URLS
-                    });
-                })
-            );
-        }
+            })
+        );
+        return loading$.pipe(
+            switchMapTo(
+                this.dotCdnService.purgeCache(urls).pipe(
+                    tap(() => {
+                        this.dispatchLoading({
+                            loadingState: LoadingState.LOADED,
+                            loader: Loader.PURGE_URLS
+                        });
+                    })
+                )
+            ),
+            pluck('bodyJsonObject'),
+        );
+    }
 
-        this.dispatchLoading({
-            loadingState: LoadingState.LOADING,
-            loader: Loader.PURGE_PULL_ZONE
-        });
-        this.dotCdnService
-            .purgeCache(invalidateAll)
-            .pipe(take(1))
+    purgeCDNCacheAll(): void {
+        const $loading = of(
+            this.dispatchLoading({
+                loadingState: LoadingState.LOADING,
+                loader: Loader.PURGE_PULL_ZONE
+            })
+        );
+
+        $loading
+            .pipe(switchMapTo(this.dotCdnService.purgeCacheAll()), pluck('bodyJsonObject'))
             .subscribe(() => {
                 this.dispatchLoading({
                     loadingState: LoadingState.LOADED,
@@ -180,7 +185,6 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
     }
 
     private getChartStatsData({ stats }: DotCDNStats) {
-        console.log({ stats });
         const chartData: ChartData = {
             labels: this.getLabels(stats.bandwidthUsedChart),
             datasets: [

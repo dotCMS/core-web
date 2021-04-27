@@ -129,16 +129,32 @@ export class DotCDNService {
      * @return {*}
      * @memberof DotCDNService
      */
-    purgeCache(invalidateAll = false, urls?: string[]): Observable<ResponseView<any>> {
+    purgeCache(urls?: string[]): Observable<ResponseView<any>> {
         return this.currentSite$.pipe(
             mergeMap((hostId: string) => {
-                return this.purgeUrlRequest({ hostId, invalidateAll, urls });
+                return this.purgeUrlRequest({ hostId, invalidateAll: false, urls });
+            })
+        );
+    }
+
+    /**
+     *  Makes a request to purge the cache
+     *
+     * @param {string[]} [urls=[]]
+     * @param {boolean} [invalidateAll=false]
+     * @return {*}
+     * @memberof DotCDNService
+     */
+    purgeCacheAll(): Observable<ResponseView<any>> {
+        return this.currentSite$.pipe(
+            mergeMap((hostId: string) => {
+                return this.purgeUrlRequest({ hostId, invalidateAll: true });
             })
         );
     }
 
     private purgeUrlRequest({
-        urls,
+        urls = [],
         invalidateAll,
         hostId
     }: PurgeUrlOptions): Observable<ResponseView<any>> {
@@ -146,7 +162,7 @@ export class DotCDNService {
             url: `/api/v1/dotcdn`,
             method: 'DELETE',
             body: JSON.stringify({
-                urls: urls || [],
+                urls,
                 invalidateAll,
                 hostId
             })

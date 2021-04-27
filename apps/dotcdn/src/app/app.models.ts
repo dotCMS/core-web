@@ -41,7 +41,7 @@ export interface DotChartStats {
 export interface PurgeUrlOptions {
     hostId: string;
     invalidateAll: boolean;
-    urls: string[];
+    urls?: string[];
 }
 export interface DotCDNState {
     chartData: ChartData;
@@ -49,6 +49,15 @@ export interface DotCDNState {
     isChartLoading: boolean;
     isPurgeUrlsLoading: boolean;
     isPurgeZoneLoading: boolean;
+}
+
+export interface PurgeUrlReturnData {
+    entity: { [key: string]: string };
+    errors: string[];
+    messages: string[];
+    permissions: string[];
+    i18nMessagesMap: { [key: string]: string };
+
 }
 
 export const enum ChartPeriod {
