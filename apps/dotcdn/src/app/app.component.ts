@@ -25,8 +25,11 @@ export class AppComponent implements OnInit {
     vm$: Observable<
         Pick<
             DotCDNState,
-            'chartBandwidthData' |
-            'chartRequestsData' | 'statsData' | 'isChartLoading' | 'cdnDomain'
+            | 'chartBandwidthData'
+            | 'chartRequestsData'
+            | 'statsData'
+            | 'isChartLoading'
+            | 'cdnDomain'
         >
     > = this.dotCdnStore.vm$;
     vmPurgeLoaders$: Observable<
@@ -91,7 +94,7 @@ export class AppComponent implements OnInit {
             tooltips: {
                 callbacks: {
                     label: function (context, data): string {
-                        console.log(data)
+                        console.log(data);
                         return `${data.datasets[0].label}: ${context.value}MB`;
                     }
                 }
