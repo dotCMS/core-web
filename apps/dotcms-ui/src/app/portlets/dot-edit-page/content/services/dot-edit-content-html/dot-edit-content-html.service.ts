@@ -32,6 +32,7 @@ import {
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { INLINE_TINYMCE_SCRIPTS } from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/inline-edit-mode.js';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export enum DotContentletAction {
     EDIT,
@@ -572,15 +573,17 @@ export class DotEditContentHtmlService {
                 .subscribe(
                     () => {
                         // on success
+                        const message = this.dotMessageService.get('dot.common.message.saved');
+                        this.dotGlobalMessageService.success(message);
+
+                        content.element.classList.remove('inline-editing--saving');
+                        delete this.inlineCurrentContent[content.element.id];
                     },
-                    () => {
+                    (e: HttpErrorResponse) => {
                         // on error
                         content.element.innerHTML = this.inlineCurrentContent[content.element.id];
-                        const message = this.dotMessageService.get('editpage.inline.error');
+                        const message = e.error.errors[0].message || this.dotMessageService.get('editpage.inline.error');
                         this.dotGlobalMessageService.error(message);
-                    },
-                    () => {
-                        // finally
                         content.element.classList.remove('inline-editing--saving');
                         delete this.inlineCurrentContent[content.element.id];
                     }
