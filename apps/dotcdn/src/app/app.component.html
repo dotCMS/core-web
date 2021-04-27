@@ -10,9 +10,9 @@
                     optionValue="value"
                     [(ngModel)]="selectedPeriod.value"
                  ></p-dropdown>
-                 <div class="dot-cdn__tab-domain">
+                 <div class="dot-cdn__tab-domain" *ngIf="VM.cdnDomain">
                      <small>Root CDN Domain</small>
-                     <p>https://cdn.dotcms.com</p>
+                     <p>{{ VM.cdnDomain }}</p>
                  </div>
                 </div>
                 <div class="dot-cdn__stats">
@@ -43,7 +43,7 @@
                         <p-chart
                             #chart
                             type="line"
-                            [data]="VM.chartData"
+                            [data]="VM.chartBandwidthData"
                             width="100%"
                             [height]="chartHeight"
                             [options]="options"
@@ -62,7 +62,7 @@
                         <p-chart
                             #chart
                             type="line"
-                            [data]="VM.chartData"
+                            [data]="VM.chartRequestsData"
                             width="100%"
                             [height]="chartHeight"
                             [options]="options"

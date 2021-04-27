@@ -119,6 +119,7 @@ h1 {
     .dot-cdn__stats {
         flex-direction: row;
         justify-content: space-between;
+        margin: $spacing-2 0 $spacing-5 0;
     }
 
     .dot-cdn__col {

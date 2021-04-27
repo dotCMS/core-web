@@ -25,6 +25,7 @@ export interface DotCDNStats {
         geographicDistribution: unknown;
         totalBandwidthUsed: number;
         totalRequestsServed: number;
+        cdnDomain: string;
     };
 }
 
@@ -44,9 +45,11 @@ export interface PurgeUrlOptions {
     urls?: string[];
 }
 export interface DotCDNState {
-    chartData: ChartData;
+    chartBandwidthData: ChartData;
+    chartRequestsData: ChartData;
     statsData: DotChartStats[];
     isChartLoading: boolean;
+    cdnDomain: string;
     isPurgeUrlsLoading: boolean;
     isPurgeZoneLoading: boolean;
 }

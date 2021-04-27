@@ -22,8 +22,13 @@ export class AppComponent implements OnInit {
         { label: 'Last 60 days', value: ChartPeriod.Last60Days }
     ];
     selectedPeriod: SelectItem<string> = { value: ChartPeriod.Last15Days };
-    vm$: Observable<Pick<DotCDNState, 'chartData' | 'statsData' | 'isChartLoading'>> = this
-        .dotCdnStore.vm$;
+    vm$: Observable<
+        Pick<
+            DotCDNState,
+            'chartBandwidthData' |
+            'chartRequestsData' | 'statsData' | 'isChartLoading' | 'cdnDomain'
+        >
+    > = this.dotCdnStore.vm$;
     vmPurgeLoaders$: Observable<
         Pick<DotCDNState, 'isPurgeUrlsLoading' | 'isPurgeZoneLoading'>
     > = this.dotCdnStore.vmPurgeLoaders$;
@@ -86,6 +91,7 @@ export class AppComponent implements OnInit {
             tooltips: {
                 callbacks: {
                     label: function (context, data): string {
+                        console.log(data)
                         return `${data.datasets[0].label}: ${context.value}MB`;
                     }
                 }
@@ -99,7 +105,7 @@ export class AppComponent implements OnInit {
                         id: 'y-axis-1',
                         ticks: {
                             callback: function (value: number): string {
-                                return (value / 1e6).toString() + 'MB';
+                                return value.toString() + 'MB';
                             }
                         }
                     }
