@@ -573,9 +573,6 @@ export class DotEditContentHtmlService {
                 .subscribe(
                     () => {
                         // on success
-                        const message = this.dotMessageService.get('dot.common.message.saved');
-                        this.dotGlobalMessageService.success(message);
-
                         content.element.classList.remove('inline-editing--saving');
                         delete this.inlineCurrentContent[content.element.id];
                     },
