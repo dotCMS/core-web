@@ -37,6 +37,7 @@ export class SiteServiceMock {
         this._switchSite$.next(site || mockSites[0]);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     switchSite(_site: Site) {}
 
     getCurrentSite(): Observable<Site> {

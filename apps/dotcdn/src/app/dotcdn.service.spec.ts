@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { CoreWebService, SiteService } from '@dotcms/dotcms-js';
-import { CoreWebServiceMock } from './coreweb.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DotCDNService } from './dotcdn.service';
-import { SiteServiceMock } from './siteservice.mock-temp';
+import { SiteServiceMock, CoreWebServiceMock } from '@dotcms/dotcms-js';
 
 describe('DotcdnService', () => {
     let service: DotCDNService;
@@ -26,10 +25,5 @@ describe('DotcdnService', () => {
 
     it('should return an object with stats', () => {
         pending();
-        // service.currentSite$.next('hello')
-        // service.requestStats('30').subscribe((value) => {
-        //     expect(value).toBeFalsy();
-        //     done();
-        // });
     });
 });
