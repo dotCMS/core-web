@@ -82,6 +82,13 @@ export class AppComponent implements OnInit {
             hover: {
                 mode: 'index'
             },
+            tooltips: {
+                callbacks: {
+                    label: function(context, data): string {
+                        return `${data.datasets[0].label}: ${context.value}MB`;
+                    }
+                }
+            },
             scales: {
                 yAxes: [
                     {
@@ -93,7 +100,7 @@ export class AppComponent implements OnInit {
                             callback: function (value: number): string {
                                 return (value / 1e6).toString() + 'MB';
                             }
-                        }
+                        },
                     }
                 ]
             }

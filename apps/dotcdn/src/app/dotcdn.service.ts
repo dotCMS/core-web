@@ -3,7 +3,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { CoreWebService, ResponseView, SiteService } from '@dotcms/dotcms-js';
 import { pluck, mergeMap, map } from 'rxjs/operators';
 import * as moment from 'moment';
-import { DotCDNStats, PurgeUrlOptions } from './app.models';
+import { DotCDNStats, PurgeReturnData, PurgeUrlOptions } from './app.models';
 @Injectable({
     providedIn: 'root'
 })
@@ -44,10 +44,10 @@ export class DotCDNService {
      *
      * @param {string[]} [urls=[]]
      * @param {boolean} [invalidateAll=false]
-     * @return {*}
+     * @return {Observable<ResponseView<PurgeReturnData>>}
      * @memberof DotCDNService
      */
-    purgeCache(urls?: string[]): Observable<ResponseView<any>> {
+    purgeCache(urls?: string[]): Observable<ResponseView<PurgeReturnData>> {
         return this.currentSite$.pipe(
             mergeMap((hostId: string) => {
                 return this.purgeUrlRequest({ hostId, invalidateAll: false, urls });
@@ -60,10 +60,10 @@ export class DotCDNService {
      *
      * @param {string[]} [urls=[]]
      * @param {boolean} [invalidateAll=false]
-     * @return {*}
+     * @return {Observable<ResponseView<PurgeReturnData>>}
      * @memberof DotCDNService
      */
-    purgeCacheAll(): Observable<ResponseView<any>> {
+    purgeCacheAll(): Observable<ResponseView<PurgeReturnData>> {
         return this.currentSite$.pipe(
             mergeMap((hostId: string) => {
                 return this.purgeUrlRequest({ hostId, invalidateAll: true });

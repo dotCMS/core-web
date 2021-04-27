@@ -1,6 +1,6 @@
 export interface ChartDataSet {
     label: string;
-    data: number[];
+    data: string[];
     borderColor: string;
     fill: boolean;
 }

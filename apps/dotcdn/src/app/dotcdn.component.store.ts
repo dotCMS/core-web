@@ -190,16 +190,18 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
             datasets: [
                 {
                     label: 'Bandwidth Used',
-                    data: Object.values(stats.bandwidthUsedChart),
+                    data: Object.values(stats.bandwidthUsedChart).map((values) =>
+                        (values / 1e6).toFixed(2).toString()
+                    ),
                     borderColor: '#6f5fa3',
                     fill: false
-                },
-                {
-                    label: 'Requests Served',
-                    data: Object.values(stats.requestsServedChart),
-                    borderColor: '#FFA726',
-                    fill: false
                 }
+                // {
+                //     label: 'Requests Served',
+                //     data: Object.values(stats.requestsServedChart),
+                //     borderColor: '#FFA726',
+                //     fill: false
+                // }
             ]
         };
 
