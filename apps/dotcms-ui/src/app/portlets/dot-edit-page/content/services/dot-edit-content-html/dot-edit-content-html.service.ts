@@ -549,23 +549,7 @@ export class DotEditContentHtmlService {
         );
     }
 
-    private resetInlineCurrentContent(id: string) {
-        return this.inlineCurrentContent[id];
-    }
-
-    private handleDatasetMissingErrors({ dataset }: Pick<DotInlineEditContent, 'dataset'>): void {
-        const requiredDatasetKeys = ['inode', 'fieldName'];
-        const datasetMissing = requiredDatasetKeys.filter(function (key) {
-            return !Object.keys(dataset).includes(key);
-        });
-        const message = this.dotMessageService.get('editpage.inline.attribute.error');
-        datasetMissing.forEach((dataset: string) => {
-            this.dotGlobalMessageService.error(`${dataset} ${message}`);
-        });
-    }
-
     private handleTinyMCEOnFocusEvent(contentlet: DotInlineEditContent) {
-        this.handleDatasetMissingErrors(contentlet);
         this.inlineCurrentContent = {
             ...this.inlineCurrentContent,
             [contentlet.element.id]: contentlet.innerHTML
