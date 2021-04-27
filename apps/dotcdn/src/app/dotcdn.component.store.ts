@@ -3,7 +3,7 @@ import { ResponseView } from '@dotcms/dotcms-js';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { SelectItem } from 'primeng/api';
 import { Observable, of } from 'rxjs';
-import { mergeMap, switchMapTo, take, tap, exhaustMap, pluck } from 'rxjs/operators';
+import { mergeMap, switchMapTo, tap, pluck } from 'rxjs/operators';
 import {
     ChartData,
     DotCDNState,
@@ -18,7 +18,7 @@ import { DotCDNService } from './dotcdn.service';
 
 @Injectable()
 export class DotCDNStore extends ComponentStore<DotCDNState> {
-    selectedPeriod: SelectItem<string> = { value: ChartPeriod.Last30Days };
+    selectedPeriod: SelectItem<string> = { value: ChartPeriod.Last15Days };
 
     constructor(private readonly dotCdnService: DotCDNService) {
         super({

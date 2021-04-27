@@ -73,7 +73,17 @@ h1 {
 }
 
 .dot-cdn__chart {
-    margin-top: $spacing-4;
+    margin-bottom: $spacing-6;
+}
+
+.dot-cdn__tab-content-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $spacing-0;
+}
+
+.dot-cdn__tab-domain p {
+    margin-top: $spacing-1;
 }
 
 .dot-cdn__tab-content-label {

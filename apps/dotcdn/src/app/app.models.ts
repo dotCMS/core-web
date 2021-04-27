@@ -60,6 +60,7 @@ export interface PurgeReturnData {
 }
 
 export const enum ChartPeriod {
+    Last15Days = '15',
     Last30Days = '30',
     Last60Days = '60'
 }

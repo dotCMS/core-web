@@ -17,10 +17,11 @@ export class AppComponent implements OnInit {
     @ViewChild('chart', { static: true }) chart: UIChart;
     purgeZoneForm: FormGroup;
     periodValues: SelectItem[] = [
+        { label: 'Last 15 days', value: ChartPeriod.Last15Days },
         { label: 'Last 30 days', value: ChartPeriod.Last30Days },
         { label: 'Last 60 days', value: ChartPeriod.Last60Days }
     ];
-    selectedPeriod: SelectItem<string> = { value: ChartPeriod.Last30Days };
+    selectedPeriod: SelectItem<string> = { value: ChartPeriod.Last15Days };
     vm$: Observable<Pick<DotCDNState, 'chartData' | 'statsData' | 'isChartLoading'>> = this
         .dotCdnStore.vm$;
     vmPurgeLoaders$: Observable<
@@ -84,7 +85,7 @@ export class AppComponent implements OnInit {
             },
             tooltips: {
                 callbacks: {
-                    label: function(context, data): string {
+                    label: function (context, data): string {
                         return `${data.datasets[0].label}: ${context.value}MB`;
                     }
                 }
@@ -100,7 +101,7 @@ export class AppComponent implements OnInit {
                             callback: function (value: number): string {
                                 return (value / 1e6).toString() + 'MB';
                             }
-                        },
+                        }
                     }
                 ]
             }

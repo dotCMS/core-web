@@ -2,13 +2,19 @@
     <p-tabView>
         <p-tabPanel header="Overview" *ngIf="vm$ | async as VM">
             <div class="dot-cdn__tab-content">
-                <p-dropdown
+                <div class="dot-cdn__tab-content-meta">
+                     <p-dropdown
                     [options]="periodValues"
                     (onChange)="changePeriod($event)"
                     optionLabel="label"
                     optionValue="value"
                     [(ngModel)]="selectedPeriod.value"
-                ></p-dropdown>
+                 ></p-dropdown>
+                 <div class="dot-cdn__tab-domain">
+                     <small>Root CDN Domain</small>
+                     <p>https://cdn.dotcms.com</p>
+                 </div>
+                </div>
                 <div class="dot-cdn__stats">
                     <div class="dot-cdn__col" *ngFor="let stats of VM.statsData">
                         <span class="dot-cdn__stats-label">{{ stats.label }}</span>
@@ -34,6 +40,25 @@
                     ></dot-spinner>
                     <ng-template #chartBlock>
                         <h3 class="dot-cdn__tab-content-label">Bandwidth Served</h3>
+                        <p-chart
+                            #chart
+                            type="line"
+                            [data]="VM.chartData"
+                            width="100%"
+                            [height]="chartHeight"
+                            [options]="options"
+                        ></p-chart>
+                    </ng-template>
+                </div>
+                <div class="dot-cdn__chart">
+                    <dot-spinner
+                        [size]="'4rem'"
+                        [borderSize]="'3px'"
+                        *ngIf="VM.isChartLoading; else chartBlockRequests"
+                        [ngStyle]="{ height: chartHeight }"
+                    ></dot-spinner>
+                    <ng-template #chartBlockRequests>
+                        <h3 class="dot-cdn__tab-content-label">Requests Served</h3>
                         <p-chart
                             #chart
                             type="line"
@@ -70,17 +95,16 @@
                     </div>
                 </form>
                 <div class="dot-cdn__tab-content__row">
-                    <h3 class="dot-cdn__tab-content-label">Purge Pull Zone</h3>
+                    <h3 class="dot-cdn__tab-content-label">Purge All</h3>
                     <p>
-                        Purging a Pull Zone will remove completely all of its files from cache and
-                        foce everything to be re-downloaded from your origin. If your zone uses a
-                        lot of storage, this ight send a large amount of traffic back to your
-                        server, so use with caution.
+                        "Purge All" will remove files from your CDN domain and force everything to be re-downloaded 
+                        from your origin site. If your CDN domain is highly trafficked and/or caches a lot of resources, 
+                        this might send a large amount of traffic back to your origin sites, so use with caution.
                     </p>
                     <button
                         pButton
                         [label]="
-                            VMPurgeLoaders.isPurgeZoneLoading ? 'loading...' : 'Purge Pull Zone'
+                            VMPurgeLoaders.isPurgeZoneLoading ? 'loading...' : 'Purge All'
                         "
                         class="p-button-danger p-button-outlined"
                         (click)="purgePullZone()"
