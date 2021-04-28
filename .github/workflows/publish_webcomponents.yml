@@ -2,7 +2,7 @@ name: Publish to Dotcms Webcomponents
 on:
   push:
       branches:
-          - issue-20245-automate-dotwebcomponents-generation
+          # - issue-20245-automate-dotwebcomponents-generation
           - release-*
 jobs:
   publish:
@@ -42,7 +42,6 @@ jobs:
           env:
             CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
           run: |
-            echo "esto no me toca a mi"
             mkdir -p ~/.ssh
             ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
             echo "${CORE_SSH_KEY}" > ~/.ssh/id_rsa
@@ -54,28 +53,18 @@ jobs:
             if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]
             then
               CURRENT_BRANCH=$(basename "${{ github.ref }}")
-              echo "*** CURRENT_BRANCH: ${CURRENT_BRANCH}"
               git config --global user.email "${GITHUB_USER}@dotcms.com"
               git config --global user.name "${GITHUB_USER}"
-              echo "*** 1"
               git clone git@github.com:dotCMS/core.git ../core
-              echo "*** 2"
               cd ../core
-              echo "*** 3"
               git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}
-              echo "*** 4"
               cd dotCMS
-              echo "*** 5"
               NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
-              echo "*** 6"
               sed -i "s|webComponentsReleaseVersion=.*|webComponentsReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
-              echo "*** 7"
               git add .
               echo "*** 8"
               git commit -m "CI: bumps webComponentsReleaseVersion to ${NEW_VERSION:1} [skip ci]"
-              echo "*** 9"
               git push origin ${CURRENT_BRANCH}
-              echo "*** 0"
             else
               echo "Skipping bump, not a release brach"
             fi
