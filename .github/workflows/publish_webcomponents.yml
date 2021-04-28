@@ -42,9 +42,11 @@ jobs:
           run: |
             mkdir -p ~/.ssh
             ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-            echo "${{ secrets.CORE_SSH_KEY }}" > ~/.ssh/id_rsa
+            echo "${{ env.CORE_SSH_KEY }}" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
             ls -las ~/.ssh/id_rsa
+          env:
+            CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
         - name: Checkout Core & Bump webComponentsReleaseVersion, only on a release branch
           env:
             GITHUB_USER: dotcmsbuild
