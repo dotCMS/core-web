@@ -39,7 +39,10 @@ jobs:
         #       cd core-web/dist/libs/dotcms-webcomponents
         #       npm publish
         - name: Set Core SSH keys
+          env:
+            CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
           run: |
+            echo "esto no me toca a mi"
             mkdir -p ~/.ssh
             ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
             echo "${CORE_SSH_KEY}" > ~/.ssh/id_rsa
