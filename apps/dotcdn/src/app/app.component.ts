@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
                     }
                 }
             },
-            scales: { 
+            scales: {
                 xAxes: [
                     {
                         ticks: {

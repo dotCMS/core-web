@@ -281,7 +281,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      * It takes the timestamp and removes the time from the string
      */
     private getLabels(data: { [key: string]: number }): string[] {
-        return Object.keys(data).map((label) => {     
+        return Object.keys(data).map((label) => {
             return this.formatDate(label.split('T')[0]);
         });
     }
