@@ -58,6 +58,7 @@ jobs:
             if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]
             then
               CURRENT_BRANCH=$(basename "${{ github.ref }}")
+              echo "CURRENT_BRANCH: ${CURRENT_BRANCH}"
               git config --global user.email "${GITHUB_USER}@dotcms.com"
               git config --global user.name "${GITHUB_USER}"
               echo "clone"
