@@ -60,19 +60,19 @@ jobs:
               CURRENT_BRANCH=$(basename "${{ github.ref }}")
               git config --global user.email "${GITHUB_USER}@dotcms.com"
               git config --global user.name "${GITHUB_USER}"
-echo "clone"
+              echo "clone"
               git clone git@github.com:dotCMS/core.git ../core
               cd ../core
-echo "checkout"
+              echo "checkout"
               git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}
               cd dotCMS
               NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
               sed -i "s|webComponentsReleaseVersion=.*|webComponentsReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
               git add .
               echo "*** 8"
-echo commit
+              echo commit
               git commit -m "CI: bumps webComponentsReleaseVersion to ${NEW_VERSION:1} [skip ci]"
-echo push
+              echo push
               git push origin ${CURRENT_BRANCH}
             #else
             #  echo "Skipping bump, not a release brach"
