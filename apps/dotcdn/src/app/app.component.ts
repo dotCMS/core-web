@@ -121,6 +121,13 @@ export class AppComponent implements OnInit {
 
         const requestOptions: ChartOptions = {
             ...defaultOptions,
+            tooltips: {
+                callbacks: {
+                    label: function (context, data): string {
+                        return `${data.datasets[0].label}: ${context.value}`;
+                    }
+                }
+            },
             scales: {
                 ...defaultOptions.scales,
                 yAxes: [
