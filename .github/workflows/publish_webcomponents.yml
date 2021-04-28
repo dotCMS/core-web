@@ -1,0 +1,103 @@
+name: Publish to Dotcms Webcomponents
+on:
+  push:
+      branches:
+          # - issue-20245-automate-dotwebcomponents-generation
+          - release-wc-test-*
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout core-web
+          uses: actions/checkout@v2
+          with:
+              fetch-depth: 1
+              path: 'core-web'
+        - name: Configuring Node.js
+          uses: actions/setup-node@v2-beta
+          with:
+              node-version: '10.15.3'
+        - name: Installing dependencies
+          run: npm install
+        - name: "Automated Version Bump"
+          id: version-bump
+          uses: "phips28/gh-action-bump-version@master"
+          with:
+            commit-message: 'CI: bumps version to {{version}} [skip ci]'
+            skip-tag:  'true'
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PACKAGEJSON_DIR:  'core-web/libs/dotcms-webcomponents'
+        # - name: Build dotcms-webcomponents with deps
+        #   run: |
+        #     cd core-web
+        #     npm run nx build dotcms-ui -- --with-deps --prod
+        # - name: "publish to npm"
+        #   run: |
+        #       cd core-web
+        #       npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+        #       cd core-web/dist/libs/dotcms-webcomponents
+        #       npm publish
+        # - name: Checkout core
+        #   uses: actions/checkout@v2
+        #   with:
+        #       fetch-depth: 1
+        #       path: 'core'
+        #       # ref: "$(basename "${{ github.ref }}")"
+        #       ref: release-21.04-test
+        #       repository: 'dotCMS/core'
+        - name: Checkout core
+          env:
+            GITHUB_USER: dotcmsbuild
+            GITHUB_USER_TOKEN: ${{ secrets.CORE_USER_TOKEN }}
+            CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
+          run: |
+            CURRENT_BRANCH=$(basename "${{ github.ref }}")
+            # dir=$(pwd)
+            echo $(basename "${{ github.ref }}")
+            echo "***sigue ${dir}"
+            mkdir -p ~/.ssh
+            ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+            echo "${CORE_SSH_KEY}" > ~/.ssh/id_rsa
+            echo "***0"
+            chmod 600 ~/.ssh/id_rsa
+            echo "***1"
+            ls -las ~/.ssh
+            echo "***2"
+        - name: Bump webComponentsReleaseVersion only on release branch
+          env:
+            GITHUB_USER: dotcmsbuild
+            GITHUB_USER_TOKEN: ${{ secrets.CORE_USER_TOKEN }}
+            CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
+          run: |
+            if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]
+            then
+              echo "***3"
+              git config --global user.email "${GITHUB_USER}@dotcms.com"
+              git config --global user.name "${GITHUB_USER}"
+              echo "***3a"
+              git clone git@github.com:dotCMS/core.git ../core
+              echo "***3b"
+              cd ../core
+              dir2=$(pwd)
+              echo "***3c ${dir2}"
+              git checkout -b release-21.04-test --track origin/release-21.04-test
+              echo "***3d"
+              # git remote set-url origin https://victoralfaro-dotcms:${GITHUB_USER_TOKEN}@github.com/dotCMS/core.git
+              echo "*** es release"
+              NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
+              # cd ${dir}
+              # cd core/dotCMS
+              cd dotCMS
+              echo "***4"
+              sed -i "s|webComponentsReleaseVersion=.*|webComponentsReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
+              echo "***5"
+              git add .
+              git commit -m "CI: bumps webComponentsReleaseVersion to ${NEW_VERSION:1} [skip ci]"
+              echo "***6"
+              # git push origin "$(basename "${{ github.ref }}")"
+              git push origin release-21.04-test
+              echo "***7"
+            else
+              echo "None of the condition met"
+            fi
