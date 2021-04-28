@@ -55,8 +55,8 @@ jobs:
             GITHUB_USER_TOKEN: ${{ secrets.CORE_USER_TOKEN }}
             CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
           run: |
-            #if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]
-            #then
+            if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]
+            then
               CURRENT_BRANCH=$(basename "${{ github.ref }}")
               git config --global user.email "${GITHUB_USER}@dotcms.com"
               git config --global user.name "${GITHUB_USER}"
@@ -74,6 +74,6 @@ jobs:
               git commit -m "CI: bumps webComponentsReleaseVersion to ${NEW_VERSION:1} [skip ci]"
               echo push
               git push origin ${CURRENT_BRANCH}
-            #else
-            #  echo "Skipping bump, not a release brach"
-            #fi
+            else
+              echo "Skipping bump, not a release brach"
+            fi
