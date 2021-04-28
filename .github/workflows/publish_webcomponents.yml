@@ -2,7 +2,7 @@ name: Publish to Dotcms Webcomponents
 on:
   push:
       branches:
-          # - issue-20245-automate-dotwebcomponents-generation
+          - issue-20245-automate-dotwebcomponents-generation
           - release-*
 jobs:
   publish:
