@@ -1,19 +1,11 @@
+import { ChartOptions } from 'chart.js';
 export interface ChartDataSet {
     label: string;
     data: string[];
     borderColor: string;
     fill: boolean;
 }
-export interface ChartOptions {
-    title: {
-        display: boolean;
-        text: string;
-        fontSize: number;
-    };
-    legend: {
-        position: string;
-    };
-}
+
 export interface DotCDNStats {
     stats: {
         bandwidthPretty: string;
@@ -53,6 +45,11 @@ export interface DotCDNState {
     isPurgeUrlsLoading: boolean;
     isPurgeZoneLoading: boolean;
 }
+
+export type CdnChartOptions = {
+    bandwidthUsedChart: ChartOptions;
+    requestsServedChart: ChartOptions;
+};
 
 export interface PurgeReturnData {
     entity: { [key: string]: string };

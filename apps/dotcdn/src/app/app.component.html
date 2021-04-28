@@ -1,5 +1,4 @@
-<div class="dot-cdn__container">
-    <p-tabView>
+<p-tabView>
         <p-tabPanel header="Overview" *ngIf="vm$ | async as VM">
             <div class="dot-cdn__tab-content">
                 <div class="dot-cdn__tab-content-meta">
@@ -46,7 +45,7 @@
                             [data]="VM.chartBandwidthData"
                             width="100%"
                             [height]="chartHeight"
-                            [options]="options"
+                            [options]="options['bandwidthUsedChart']"
                         ></p-chart>
                     </ng-template>
                 </div>
@@ -65,7 +64,7 @@
                             [data]="VM.chartRequestsData"
                             width="100%"
                             [height]="chartHeight"
-                            [options]="options"
+                            [options]="options['requestsServedChart']"
                         ></p-chart>
                     </ng-template>
                 </div>
@@ -77,14 +76,15 @@
                     <div class="dot-cdn__tab-content__row">
                         <h3 class="dot-cdn__tab-content-label">Purge URL List</h3>
                         <p>
-                            Purging an url list will remove the file from the CDN cache and
+                            Purging an URL list will remove the file from the CDN cache and
                             re-download it from your server. Please enter the exact CDN URL of each
-                            individual file. Wildcard values are not supported.
+                            file. You can also purge folders or wildcards files using * inside the URL path.
                         </p>
                         <textarea
                             [rows]="5"
                             pInputTextarea
                             formControlName="purgeUrlsTextArea"
+                            placeholder="cdn.dotcms.com&#10;cdn.dotcms.com/images/*"
                         ></textarea>
                         <button
                             pButton
@@ -112,4 +112,3 @@
             </div>
         </p-tabPanel>
     </p-tabView>
-</div>

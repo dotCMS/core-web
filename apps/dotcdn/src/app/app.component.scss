@@ -1,11 +1,5 @@
 @use "variables" as *;
 
-:host {
-    display: block;
-    box-sizing: border-box;
-    padding: $spacing-3 0;
-}
-
 p-skeleton {
     display: flex;
     flex-direction: column;
@@ -25,9 +19,7 @@ h1 {
 }
 
 .dot-cdn__container {
-    box-shadow: $md-shadow-1;
     background: $white;
-    margin: $spacing-3 $spacing-5;
     display: block;
 }
 
@@ -81,6 +73,9 @@ h1 {
     justify-content: space-between;
     margin-bottom: $spacing-0;
 }
+.dot-cdn__tab-domain small {
+    color: $gray;
+}
 
 .dot-cdn__tab-domain p {
     margin-top: $spacing-1;
@@ -98,6 +93,9 @@ h1 {
 .dot-cdn__tab-content__row {
     button {
         min-width: 12.71rem;
+    }
+    button:focus {
+        color: white;
     }
 }
 

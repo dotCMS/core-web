@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DotCDNState, ChartPeriod } from './app.models';
+import { DotCDNState, ChartPeriod, CdnChartOptions } from './app.models';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { DotCDNStore } from './dotcdn.component.store';
 import { Observable } from 'rxjs';
 import { SelectItem } from 'primeng/api';
-import { ChartOptions } from 'chart.js';
 import { take } from 'rxjs/operators';
 import { UIChart } from 'primeng/chart';
+import { ChartOptions } from 'chart.js';
 
 @Component({
     selector: 'dotcms-root',
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
         Pick<DotCDNState, 'isPurgeUrlsLoading' | 'isPurgeZoneLoading'>
     > = this.dotCdnStore.vmPurgeLoaders$;
     chartHeight = '25rem';
-    options: ChartOptions;
+    options: CdnChartOptions;
 
     constructor(private fb: FormBuilder, private dotCdnStore: DotCDNStore) {}
 
@@ -86,20 +86,23 @@ export class AppComponent implements OnInit {
     }
 
     private setChartOptions(): void {
-        this.options = {
+        const defaultOptions: ChartOptions = {
             responsive: true,
-            hover: {
-                mode: 'index'
-            },
             tooltips: {
                 callbacks: {
                     label: function (context, data): string {
-                        console.log(data);
                         return `${data.datasets[0].label}: ${context.value}MB`;
                     }
                 }
             },
-            scales: {
+            scales: { 
+                xAxes: [
+                    {
+                        ticks: {
+                            maxTicksLimit: 15
+                        }
+                    }
+                ],
                 yAxes: [
                     {
                         type: 'linear',
@@ -115,5 +118,23 @@ export class AppComponent implements OnInit {
                 ]
             }
         };
+
+        const requestOptions: ChartOptions = {
+            ...defaultOptions,
+            scales: {
+                ...defaultOptions.scales,
+                yAxes: [
+                    ...defaultOptions.scales.yAxes,
+                    {
+                        ...defaultOptions.scales.yAxes[0],
+                        ticks: {
+                            callback: (value: number) => value.toString()
+                        }
+                    }
+                ]
+            }
+        };
+
+        this.options = { bandwidthUsedChart: defaultOptions, requestsServedChart: requestOptions };
     }
 }

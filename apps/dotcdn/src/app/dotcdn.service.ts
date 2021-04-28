@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { CoreWebService, ResponseView, SiteService } from '@dotcms/dotcms-js';
 import { pluck, mergeMap, map } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -75,7 +75,7 @@ export class DotCDNService {
         urls = [],
         invalidateAll,
         hostId
-    }: PurgeUrlOptions): Observable<ResponseView<any>> {
+    }: PurgeUrlOptions): Observable<ResponseView<PurgeReturnData>> {
         return this.coreWebService.requestView({
             url: `/api/v1/dotcdn`,
             method: 'DELETE',

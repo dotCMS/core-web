@@ -268,12 +268,21 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
         return { chartData, statsData, cdnDomain: stats.cdnDomain };
     }
 
+    private formatDate(date) {
+        return new Date(date).toLocaleDateString('en-GB', {
+            month: '2-digit',
+            day: '2-digit'
+        });
+    }
+
     /**
      *
      * This private method is responsible for transforming the keys from bandwidthUsedChart in order to make it more readable
      * It takes the timestamp and removes the time from the string
      */
     private getLabels(data: { [key: string]: number }): string[] {
-        return Object.keys(data).map((label) => label.split('T')[0]);
+        return Object.keys(data).map((label) => {     
+            return this.formatDate(label.split('T')[0]);
+        });
     }
 }
