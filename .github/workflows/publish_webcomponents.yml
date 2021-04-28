@@ -61,7 +61,7 @@ jobs:
               git config --global user.email "${GITHUB_USER}@dotcms.com"
               git config --global user.name "${GITHUB_USER}"
               echo "clone"
-              git clone git@github.com:dotCMS/core.git ../core
+              git clone https://github.com/dotCMS/core.git ../core
               cd ../core
               echo "checkout"
               git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}
