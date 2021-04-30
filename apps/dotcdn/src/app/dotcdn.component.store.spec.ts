@@ -46,7 +46,6 @@ const fakeResponseData = {
     }
 };
 
-
 const fakeStateViewModel = {
     chartBandwidthData: {
         labels: ['15/04', '16/04', '17/04', '18/04', '19/04', '20/04', '21/04', '22/04', '23/04'],
@@ -112,9 +111,8 @@ describe('DotCDNComponentStore', () => {
     describe('DotCDN Component Store', () => {
         beforeEach(() => {
             jest.restoreAllMocks();
-            jest.clearAllMocks()
+            jest.clearAllMocks();
         });
-
 
         fit('should set chart state', (done) => {
             jest.spyOn(dotCdnService, 'requestStats').mockReturnValue(of(fakeResponseData));
@@ -126,7 +124,6 @@ describe('DotCDNComponentStore', () => {
                 done();
             });
         });
-
 
         it('should purge cdn with urls', (done) => {
             const urls = ['url1, url2'];
