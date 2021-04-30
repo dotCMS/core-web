@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ResponseView } from '@dotcms/dotcms-js';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { SelectItem } from 'primeng/api';
 import { Observable, of } from 'rxjs';

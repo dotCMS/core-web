@@ -114,7 +114,7 @@ describe('DotCDNComponentStore', () => {
             jest.clearAllMocks();
         });
 
-        fit('should set chart state', (done) => {
+        it('should set chart state', (done) => {
             jest.spyOn(dotCdnService, 'requestStats').mockReturnValue(of(fakeResponseData));
 
             store.getChartStats('30');
