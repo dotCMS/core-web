@@ -135,7 +135,9 @@ export class AppComponent implements OnInit {
                     {
                         ...defaultOptions.scales.yAxes[0],
                         ticks: {
-                            callback: (value: number) => value.toString()
+                            callback: (value: number): string => {
+                                return Math.round(value).toString();
+                            }
                         }
                     }
                 ]

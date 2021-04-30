@@ -1,23 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CoreWebService, ResponseView, SiteService } from '@dotcms/dotcms-js';
-import { pluck, mergeMap, map } from 'rxjs/operators';
+import { pluck, mergeMap, map, tap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DotCDNStats, PurgeReturnData, PurgeUrlOptions } from './app.models';
 @Injectable({
     providedIn: 'root'
 })
 export class DotCDNService {
-    currentSite$: ReplaySubject<string> = new ReplaySubject();
-
-    constructor(private coreWebService: CoreWebService, private siteService: SiteService) {
-        this.siteService
-            .getCurrentSite()
-            .pipe(pluck('identifier'))
-            .subscribe((hostId: string) => {
-                this.currentSite$.next(hostId);
-            });
-    }
+    constructor(private coreWebService: CoreWebService, private siteService: SiteService) {}
 
     /**
      * Request stats via Core Web Service
@@ -27,7 +18,8 @@ export class DotCDNService {
      * @memberof DotCDNService
      */
     requestStats(period: string): Observable<DotCDNStats> {
-        return this.currentSite$.pipe(
+        return this.siteService.getCurrentSite().pipe(
+            pluck('identifier'),
             mergeMap((hostId: string) => {
                 const dateTo = moment().format('YYYY-MM-DD');
                 const dateFrom = moment().subtract(period, 'd').format('YYYY-MM-DD');
@@ -47,11 +39,13 @@ export class DotCDNService {
      * @return {Observable<ResponseView<PurgeReturnData>>}
      * @memberof DotCDNService
      */
-    purgeCache(urls?: string[]): Observable<ResponseView<PurgeReturnData>> {
-        return this.currentSite$.pipe(
-            mergeMap((hostId: string) => {
-                return this.purgeUrlRequest({ hostId, invalidateAll: false, urls });
-            })
+    purgeCache(urls?: string[]): Observable<PurgeReturnData> {
+        return this.siteService.getCurrentSite().pipe(
+            pluck('identifier'),
+            mergeMap((hostId: string) =>
+                this.purgeUrlRequest({ hostId, invalidateAll: false, urls })
+            ),
+            pluck('bodyJsonObject')
         );
     }
 
@@ -63,11 +57,11 @@ export class DotCDNService {
      * @return {Observable<ResponseView<PurgeReturnData>>}
      * @memberof DotCDNService
      */
-    purgeCacheAll(): Observable<ResponseView<PurgeReturnData>> {
-        return this.currentSite$.pipe(
-            mergeMap((hostId: string) => {
-                return this.purgeUrlRequest({ hostId, invalidateAll: true });
-            })
+    purgeCacheAll(): Observable<PurgeReturnData> {
+        return this.siteService.getCurrentSite().pipe(
+            pluck('identifier'),
+            mergeMap((hostId: string) => this.purgeUrlRequest({ hostId, invalidateAll: true })),
+            pluck('bodyJsonObject')
         );
     }
 

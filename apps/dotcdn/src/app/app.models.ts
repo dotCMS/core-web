@@ -2,8 +2,8 @@ import { ChartOptions } from 'chart.js';
 export interface ChartDataSet {
     label: string;
     data: string[];
-    borderColor: string;
-    fill: boolean;
+    borderColor?: string;
+    fill?: boolean;
 }
 
 export interface DotCDNStats {
@@ -52,7 +52,7 @@ export type CdnChartOptions = {
 };
 
 export interface PurgeReturnData {
-    entity: { [key: string]: string };
+    entity: { [key: string]: string | boolean };
     errors: string[];
     messages: string[];
     permissions: string[];

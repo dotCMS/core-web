@@ -2,38 +2,16 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CoreWebService, SiteService } from '@dotcms/dotcms-js';
 import { of } from 'rxjs';
-import { DotCDNStats, Loader, LoadingState } from './app.models';
 import { DotCDNStore } from './dotcdn.component.store';
 import { DotCDNService } from './dotcdn.service';
 import { SiteServiceMock, CoreWebServiceMock } from '@dotcms/dotcms-js';
-import { mocked } from 'ts-jest/utils';
+import 'ts-jest/utils';
 
-const fakeResponseData: DotCDNStats = {
+const fakeResponseData = {
     stats: {
         bandwidthPretty: '114.42 MB',
+        cdnDomain: 'demo.dotcms.com',
         bandwidthUsedChart: {
-            '2021-03-24T00:00:00Z': 0,
-            '2021-03-25T00:00:00Z': 0,
-            '2021-03-26T00:00:00Z': 0,
-            '2021-03-27T00:00:00Z': 0,
-            '2021-03-28T00:00:00Z': 0,
-            '2021-03-29T00:00:00Z': 0,
-            '2021-03-30T00:00:00Z': 0,
-            '2021-03-31T00:00:00Z': 0,
-            '2021-04-01T00:00:00Z': 0,
-            '2021-04-02T00:00:00Z': 0,
-            '2021-04-03T00:00:00Z': 0,
-            '2021-04-04T00:00:00Z': 0,
-            '2021-04-05T00:00:00Z': 0,
-            '2021-04-06T00:00:00Z': 0,
-            '2021-04-07T00:00:00Z': 0,
-            '2021-04-08T00:00:00Z': 0,
-            '2021-04-09T00:00:00Z': 0,
-            '2021-04-10T00:00:00Z': 0,
-            '2021-04-11T00:00:00Z': 0,
-            '2021-04-12T00:00:00Z': 0,
-            '2021-04-13T00:00:00Z': 0,
-            '2021-04-14T00:00:00Z': 0,
             '2021-04-15T00:00:00Z': 78554075,
             '2021-04-16T00:00:00Z': 15506849,
             '2021-04-17T00:00:00Z': 0,
@@ -45,28 +23,6 @@ const fakeResponseData: DotCDNStats = {
             '2021-04-23T00:00:00Z': 0
         },
         requestsServedChart: {
-            '2021-03-24T00:00:00Z': 0,
-            '2021-03-25T00:00:00Z': 0,
-            '2021-03-26T00:00:00Z': 0,
-            '2021-03-27T00:00:00Z': 0,
-            '2021-03-28T00:00:00Z': 0,
-            '2021-03-29T00:00:00Z': 0,
-            '2021-03-30T00:00:00Z': 0,
-            '2021-03-31T00:00:00Z': 0,
-            '2021-04-01T00:00:00Z': 0,
-            '2021-04-02T00:00:00Z': 0,
-            '2021-04-03T00:00:00Z': 0,
-            '2021-04-04T00:00:00Z': 0,
-            '2021-04-05T00:00:00Z': 0,
-            '2021-04-06T00:00:00Z': 0,
-            '2021-04-07T00:00:00Z': 0,
-            '2021-04-08T00:00:00Z': 0,
-            '2021-04-09T00:00:00Z': 0,
-            '2021-04-10T00:00:00Z': 0,
-            '2021-04-11T00:00:00Z': 0,
-            '2021-04-12T00:00:00Z': 0,
-            '2021-04-13T00:00:00Z': 0,
-            '2021-04-14T00:00:00Z': 0,
             '2021-04-15T00:00:00Z': 78554075,
             '2021-04-16T00:00:00Z': 15506849,
             '2021-04-17T00:00:00Z': 0,
@@ -90,7 +46,15 @@ const fakeResponseData: DotCDNStats = {
     }
 };
 
-const fakeAddChartData = {
+const fakeAddBandwidthChartData = {
+    datasets: [
+        {
+            label: 'Bandwidth Used',
+            data: ['78554075', '15506849', '0', '0', '15301470', '5061682', '0', '0', '0'],
+            borderColor: '#6f5fa3',
+            fill: false
+        }
+    ],
     labels: [
         '2021-04-15',
         '2021-04-16',
@@ -101,20 +65,28 @@ const fakeAddChartData = {
         '2021-04-21',
         '2021-04-22',
         '2021-04-23'
-    ],
+    ]
+};
+
+const fakeAddRequestsChartData = {
     datasets: [
         {
-            label: 'Bandwidth Used',
-            data: [78554075, 15506849, 0, 0, 15301470, 5061682, 0, 0, 0],
+            label: 'Requests Served',
+            data: ['78554075', '15506849', '0', '0', '15301470', '5061682', '0', '0', '0'],
             borderColor: '#6f5fa3',
             fill: false
-        },
-        {
-            label: 'Requests Served',
-            data: [78554075, 15506849, 0, 0, 15301470, 5061682, 0, 0, 0],
-            borderColor: '#FFA726',
-            fill: false
         }
+    ],
+    labels: [
+        '2021-04-15',
+        '2021-04-16',
+        '2021-04-17',
+        '2021-04-18',
+        '2021-04-19',
+        '2021-04-20',
+        '2021-04-21',
+        '2021-04-22',
+        '2021-04-23'
     ]
 };
 
@@ -124,85 +96,53 @@ const fakeStatsData = [
     { label: 'Cache Hit Rate', value: '14.62%', icon: 'file_download' }
 ];
 
-const fakeAddChartDataReturnValue = {
-    datasets: [
+const fakeStateViewModel = {
+    chartBandwidthData: {
+        labels: ['15/04', '16/04', '17/04', '18/04', '19/04', '20/04', '21/04', '22/04', '23/04'],
+        datasets: [
+            {
+                label: 'Bandwidth Used',
+                data: ['78.55', '15.51', '0.00', '0.00', '15.30', '5.06', '0.00', '0.00', '0.00'],
+                borderColor: '#6f5fa3',
+                fill: false
+            }
+        ]
+    },
+    chartRequestsData: {
+        labels: ['15/04', '16/04', '17/04', '18/04', '19/04', '20/04', '21/04', '22/04', '23/04'],
+        datasets: [
+            {
+                label: 'Requests Served',
+                data: ['78554075', '15506849', '0', '0', '15301470', '5061682', '0', '0', '0'],
+                borderColor: '#FFA726',
+                fill: false
+            }
+        ]
+    },
+    statsData: [
         {
-            borderColor: '#6f5fa3',
-            data: [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                78554075,
-                15506849,
-                0,
-                0,
-                15301470,
-                5061682,
-                0,
-                0,
-                0
-            ],
-            fill: false,
-            label: 'Bandwidth Used'
+            label: 'Bandwidth Used',
+            value: '114.42 MB',
+            icon: 'insert_chart_outlined'
+        },
+        {
+            label: 'Requests Served',
+            value: '130',
+            icon: 'file_download'
+        },
+        {
+            label: 'Cache Hit Rate',
+            value: '14.62%',
+            icon: 'file_download'
         }
     ],
-    labels: [
-        '2021-03-24',
-        '2021-03-25',
-        '2021-03-26',
-        '2021-03-27',
-        '2021-03-28',
-        '2021-03-29',
-        '2021-03-30',
-        '2021-03-31',
-        '2021-04-01',
-        '2021-04-02',
-        '2021-04-03',
-        '2021-04-04',
-        '2021-04-05',
-        '2021-04-06',
-        '2021-04-07',
-        '2021-04-08',
-        '2021-04-09',
-        '2021-04-10',
-        '2021-04-11',
-        '2021-04-12',
-        '2021-04-13',
-        '2021-04-14',
-        '2021-04-15',
-        '2021-04-16',
-        '2021-04-17',
-        '2021-04-18',
-        '2021-04-19',
-        '2021-04-20',
-        '2021-04-21',
-        '2021-04-22',
-        '2021-04-23'
-    ]
+    isChartLoading: false,
+    cdnDomain: 'demo.dotcms.com'
 };
 
 fdescribe('DotCDNComponentStore', () => {
     let store: DotCDNStore;
-    let dotCdnService;
+    let dotCdnService: DotCDNService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -218,120 +158,187 @@ fdescribe('DotCDNComponentStore', () => {
         dotCdnService = TestBed.inject(DotCDNService);
     });
 
-    fdescribe('DotCDN Component Store', () => {
-        let storeMock;
+    describe('DotCDN Component Store', () => {
         beforeEach(() => {
-            storeMock = mocked(store, true);
             jest.restoreAllMocks();
         });
 
-        fit('should return chart state', (done) => {
-            const addChartDataSpy = jest.spyOn(store, 'addChartData');
-            store.addChartData(fakeAddChartData);
+        it('should return bandwidth chart state', (done) => {
+            const addChartDataSpy = jest.spyOn(store, 'addChartBandwidthData');
+
+            store.addChartBandwidthData(fakeAddBandwidthChartData);
             store.state$.subscribe((state) => {
-                expect(state.chartData.labels.length).toBe(9);
-                expect(state.chartData.datasets.length).toBe(1);
+                expect(state.chartBandwidthData.datasets.length).toBe(1);
+                expect(state.chartBandwidthData.datasets[0].label).toEqual('Bandwidth Used');
                 done();
             });
 
-            expect(addChartDataSpy).toHaveBeenCalledWith({
+            expect(addChartDataSpy).toHaveBeenCalledWith(fakeAddBandwidthChartData);
+        });
+
+        it('should update the requests chart state', (done) => {
+            jest.spyOn(store, 'addChartRequestData');
+            store.addChartRequestData(fakeAddRequestsChartData);
+            store.state$.subscribe((state) => {
+                expect(state.chartRequestsData.datasets[0]).toEqual({
+                    label: 'Requests Served',
+                    data: ['78554075', '15506849', '0', '0', '15301470', '5061682', '0', '0', '0'],
+                    borderColor: '#6f5fa3',
+                    fill: false
+                });
+                done();
+            });
+        });
+
+        it('should update the stats', (done) => {
+            jest.spyOn(store, 'addStatsData');
+            store.addStatsData(fakeStatsData);
+            store.state$.subscribe((state) => {
+                expect(state.statsData).toStrictEqual([
+                    {
+                        label: 'Bandwidth Used',
+                        value: '114.42 MB',
+                        icon: 'insert_chart_outlined'
+                    },
+                    { label: 'Requests Served', value: '130', icon: 'file_download' },
+                    { label: 'Cache Hit Rate', value: '14.62%', icon: 'file_download' }
+                ]);
+                done();
+            });
+        });
+
+        it('should set chart state', (done) => {
+            jest.spyOn(dotCdnService, 'requestStats').mockReturnValue(of(fakeResponseData));
+            jest.spyOn(store, 'addChartBandwidthData');
+            jest.spyOn(store, 'addChartRequestData');
+
+            store.getChartStats('30');
+
+            expect(store.addChartBandwidthData).toHaveBeenCalledWith({
+                datasets: [
+                    {
+                        borderColor: '#6f5fa3',
+                        data: [
+                            '78.55',
+                            '15.51',
+                            '0.00',
+                            '0.00',
+                            '15.30',
+                            '5.06',
+                            '0.00',
+                            '0.00',
+                            '0.00'
+                        ],
+                        fill: false,
+                        label: 'Bandwidth Used'
+                    }
+                ],
                 labels: [
-                    '2021-04-15',
-                    '2021-04-16',
-                    '2021-04-17',
-                    '2021-04-18',
-                    '2021-04-19',
-                    '2021-04-20',
-                    '2021-04-21',
-                    '2021-04-22',
-                    '2021-04-23'
+                    '15/04',
+                    '16/04',
+                    '17/04',
+                    '18/04',
+                    '19/04',
+                    '20/04',
+                    '21/04',
+                    '22/04',
+                    '23/04'
+                ]
+            });
+
+            expect(store.addChartRequestData).toHaveBeenCalledWith({
+                labels: [
+                    '15/04',
+                    '16/04',
+                    '17/04',
+                    '18/04',
+                    '19/04',
+                    '20/04',
+                    '21/04',
+                    '22/04',
+                    '23/04'
                 ],
                 datasets: [
                     {
-                        label: 'Bandwidth Used',
-                        data: [78554075, 15506849, 0, 0, 15301470, 5061682, 0, 0, 0],
-                        borderColor: '#42A5F5',
+                        label: 'Requests Served',
+                        data: [
+                            '78554075',
+                            '15506849',
+                            '0',
+                            '0',
+                            '15301470',
+                            '5061682',
+                            '0',
+                            '0',
+                            '0'
+                        ],
+                        borderColor: '#FFA726',
                         fill: false
                     }
                 ]
             });
-        });
 
-        fit('should return stats state', (done) => {
-            const addStatsDataSpy = jest.spyOn(store, 'addStatsData');
-            storeMock.addStatsData(fakeStatsData);
-            storeMock.state$.subscribe((state) => {
-                expect(state.statsData.length).toBe(3);
+            store.vm$.subscribe((state) => {
+                expect(state).toStrictEqual(fakeStateViewModel);
                 done();
             });
-            expect(addStatsDataSpy).toHaveBeenCalledWith([
-                { label: 'Bandwidth Used', value: '114.42 MB', icon: 'insert_chart_outlined' },
-                { label: 'Requests Served', value: '130', icon: 'file_download' },
-                { label: 'Cache Hit Rate', value: '14.62%', icon: 'file_download' }
-            ]);
         });
 
-        fit('should set chart state', (done) => {
-            const requestStatsSpy = jest
-                .spyOn(dotCdnService, 'requestStats')
-                .mockReturnValue(of(fakeResponseData));
-
-            storeMock.getChartStats('30');
-
-            requestStatsSpy.mock.results[0].value.subscribe((chartData) => {
-                expect(chartData).toStrictEqual(fakeResponseData);
-            });
+        it('should add domain to state', (done) => {
+            store.addCdnDomain('demo.dotcms.com');
 
             store.state$.subscribe((state) => {
-                expect(state.isChartLoading).toBe(false);
-                expect(state.statsData.length).toBe(3);
-                expect(state.chartData.labels.length).toBe(31);
+                expect(state.cdnDomain).toEqual('demo.dotcms.com');
                 done();
             });
         });
 
-        fit('should call addChartData and addStatsData', () => {
-            jest.spyOn(dotCdnService, 'requestStats').mockReturnValue(of(fakeResponseData));
-            storeMock.addChartData = jest.fn((chartData) => chartData);
-            storeMock.addStatsData = jest.fn((statsData) => statsData);
+        it('should purge cdn with urls', (done) => {
+            const urls = ['url1, url2'];
 
-            storeMock.getChartStats('30');
+            const dotCdnServiceSpy = jest.spyOn(dotCdnService, 'purgeCache').mockReturnValue(
+                of({
+                    entity: {
+                        'All Urls Sent Purged: ': true
+                    },
+                    errors: [],
+                    i18nMessagesMap: {},
+                    messages: [],
+                    permissions: []
+                })
+            );
 
-            // expect(storeMock.addChartData).toHaveBeenCalledWith(fakeAddChartDataReturnValue);
-            // expect(storeMock.addStatsData).toHaveBeenCalledWith(fakeStatsData);
-        });
+            store.purgeCDNCache(urls);
 
-        fit('should dispatch loading, loaded and idle state', (done) => {
-            const dispatchLoadingSpy = jest.spyOn(storeMock, 'dispatchLoading');
-
-            storeMock.dispatchLoading({ loadingState: LoadingState.IDLE, loader: Loader.CHART });
-            storeMock.state$.subscribe((state) => {
-                expect(state.isChartLoading).toBe(false);
-            });
-
-            storeMock.dispatchLoading({ loadingState: LoadingState.LOADING, loader: Loader.CHART });
-            storeMock.state$.subscribe((state) => {
-                expect(state.isChartLoading).toBe(true);
-            });
-
-            storeMock.dispatchLoading({ loadingState: LoadingState.LOADED, loader: Loader.CHART });
-            storeMock.state$.subscribe((state) => {
-                expect(state.isChartLoading).toBe(false);
+            dotCdnServiceSpy.mock.results[0].value.subscribe((values) => {
+                expect(values.entity['All Urls Sent Purged: ']).toBe(true);
                 done();
             });
 
-            expect(dispatchLoadingSpy).toHaveBeenCalledWith({
-                loadingState: LoadingState.IDLE,
-                loader: Loader.CHART
+            expect(dotCdnService.purgeCache).toHaveBeenCalledWith(urls);
+        });
+
+        it('should purge all the cache', (done) => {
+            const dotCdnServiceSpy = jest.spyOn(dotCdnService, 'purgeCacheAll').mockReturnValue(
+                of({
+                    entity: {
+                        'Entire Cache Purged: ': true
+                    },
+                    errors: [],
+                    i18nMessagesMap: {},
+                    messages: [],
+                    permissions: []
+                })
+            );
+
+            store.purgeCDNCacheAll();
+
+            dotCdnServiceSpy.mock.results[0].value.subscribe((values) => {
+                expect(values.entity['Entire Cache Purged: ']).toBe(true);
+                done();
             });
-            expect(dispatchLoadingSpy).toHaveBeenCalledWith({
-                loadingState: LoadingState.LOADING,
-                loader: Loader.CHART
-            });
-            expect(dispatchLoadingSpy).toHaveBeenCalledWith({
-                loadingState: LoadingState.LOADED,
-                loader: Loader.CHART
-            });
+
+            expect(dotCdnService.purgeCacheAll).toHaveBeenCalledTimes(1);
         });
     });
 });

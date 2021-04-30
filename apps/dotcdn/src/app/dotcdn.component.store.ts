@@ -59,7 +59,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      *  Adds chart data
      * @memberof DotCDNStore
      */
-    readonly addChartBandwidthData = this.updater((state, chartData: ChartData) => {
+    addChartBandwidthData = this.updater((state, chartData: ChartData) => {
         return {
             ...state,
             chartBandwidthData: chartData
@@ -101,7 +101,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      *
      * @memberof DotCDNStore
      */
-    readonly getChartStats = this.effect(
+    getChartStats = this.effect(
         (period$: Observable<string>): Observable<DotCDNStats> => {
             return period$.pipe(
                 mergeMap((period: string) => {
@@ -177,7 +177,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
      * @memberof DotCDNStore
      */
 
-    purgeCDNCache(urls: string[]): Observable<ResponseView<PurgeReturnData>> {
+    purgeCDNCache(urls: string[]): Observable<PurgeReturnData> {
         const loading$ = of(
             this.dispatchLoading({
                 loadingState: LoadingState.LOADING,
@@ -194,8 +194,7 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
                         });
                     })
                 )
-            ),
-            pluck('bodyJsonObject')
+            )
         );
     }
 
