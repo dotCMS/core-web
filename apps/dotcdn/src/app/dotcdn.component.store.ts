@@ -54,47 +54,23 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
         isPurgeZoneLoading
     }));
 
-    /**
-     *
-     *  Adds chart data
-     * @memberof DotCDNStore
-     */
-    addChartBandwidthData = this.updater((state, chartData: ChartData) => {
-        return {
-            ...state,
-            chartBandwidthData: chartData
-        };
-    });
-
-    readonly addChartRequestData = this.updater((state, chartData: ChartData) => {
-        return {
-            ...state,
-            chartRequestsData: chartData
-        };
-    });
-
-    /**
-     *
-     *  Adds stats data
-     * @memberof DotCDNStore
-     */
-    readonly addStatsData = this.updater((state, statsData: DotChartStats[]) => {
-        return {
-            ...state,
-            statsData
-        };
-    });
-    /**
-     *
-     *  Adds stats data
-     * @memberof DotCDNStore
-     */
-    readonly addCdnDomain = this.updater((state, cdnDomain: string) => {
-        return {
-            ...state,
-            cdnDomain
-        };
-    });
+    readonly updateChartState = this.updater(
+        (
+            state,
+            chartData: Omit<
+                DotCDNState,
+                'isChartLoading' | 'isPurgeUrlsLoading' | 'isPurgeZoneLoading'
+            >
+        ) => {
+            return {
+                ...state,
+                chartBandwidthData: chartData.chartBandwidthData,
+                chartRequestsData: chartData.chartRequestsData,
+                cdnDomain: chartData.cdnDomain,
+                statsData: chartData.statsData
+            };
+        }
+    );
 
     /**
      *  Handles the chart data fetching
@@ -121,14 +97,16 @@ export class DotCDNStore extends ComponentStore<DotCDNState> {
 
                                 const {
                                     statsData,
-                                    chartData: [bandwidthData, requestsData],
+                                    chartData: [chartBandwidthData, chartRequestsData],
                                     cdnDomain
                                 } = this.getChartStatsData(data);
 
-                                this.addChartBandwidthData(bandwidthData);
-                                this.addChartRequestData(requestsData);
-                                this.addStatsData(statsData);
-                                this.addCdnDomain(cdnDomain);
+                                this.updateChartState({
+                                    chartBandwidthData,
+                                    chartRequestsData,
+                                    statsData,
+                                    cdnDomain
+                                });
                             },
                             (error) => {
                                 // TODO: Handle error
