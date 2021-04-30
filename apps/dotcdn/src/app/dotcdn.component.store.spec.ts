@@ -140,7 +140,7 @@ const fakeStateViewModel = {
     cdnDomain: 'demo.dotcms.com'
 };
 
-fdescribe('DotCDNComponentStore', () => {
+describe('DotCDNComponentStore', () => {
     let store: DotCDNStore;
     let dotCdnService: DotCDNService;
 
