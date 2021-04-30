@@ -105,13 +105,11 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
      * @memberof DotTemplateListComponent
      */
     editTemplate({ identifier }: DotTemplate): void {
-        if (this.isTemplateAsFile(identifier)) {
-            this.dotSiteBrowserService.setSelectedFolder(identifier).subscribe(() => {
-                this.dotRouterService.goToSiteBrowser();
-            });
-        } else {
-            this.dotRouterService.goToEditTemplate(identifier);
-        }
+        this.isTemplateAsFile(identifier)
+            ? this.dotSiteBrowserService.setSelectedFolder(identifier).subscribe(() => {
+                  this.dotRouterService.goToSiteBrowser();
+              })
+            : this.dotRouterService.goToEditTemplate(identifier);
     }
 
     /**
@@ -168,13 +166,11 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
      * @memberof DotTemplateListComponent
      */
     setContextMenu(template: DotTemplate): void {
-        if (this.isTemplateAsFile(template.identifier)) {
-            this.listing.contextMenuItems = null;
-        } else {
-            this.listing.contextMenuItems = this.setTemplateActions(template).map(
-                ({ menuItem }: DotActionMenuItem) => menuItem
-            );
-        }
+        this.isTemplateAsFile(template.identifier)
+            ? (this.listing.contextMenuItems = null)
+            : (this.listing.contextMenuItems = this.setTemplateActions(template).map(
+                  ({ menuItem }: DotActionMenuItem) => menuItem
+              ));
     }
 
     /**
