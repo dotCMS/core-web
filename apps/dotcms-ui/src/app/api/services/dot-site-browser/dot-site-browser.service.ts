@@ -12,7 +12,7 @@ import { take } from 'rxjs/operators';
 export class DotSiteBrowserService {
     constructor(private coreWebService: CoreWebService) {}
 
-    setSelectedFolder(path: string): Observable<any> {
+    setSelectedFolder(path: string): Observable<{}> {
         return this.coreWebService
             .requestView({
                 body: {
