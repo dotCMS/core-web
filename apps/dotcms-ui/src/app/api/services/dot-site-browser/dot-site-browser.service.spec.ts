@@ -26,9 +26,6 @@ describe('DotSiteBrowserService', () => {
     });
 
     it('should set Site Browser Selected folder', () => {
-        const appKey = '1';
-        const url = `v1/apps/${appKey}`;
-
         dotSiteBrowserService.setSelectedFolder('/test').subscribe(() => {});
 
         const req = httpMock.expectOne('/api/v1/browser/selectedfolder');

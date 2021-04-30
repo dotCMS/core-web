@@ -166,11 +166,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
      * @memberof DotTemplateListComponent
      */
     setContextMenu(template: DotTemplate): void {
-        this.isTemplateAsFile(template.identifier)
-            ? (this.listing.contextMenuItems = null)
-            : (this.listing.contextMenuItems = this.setTemplateActions(template).map(
-                  ({ menuItem }: DotActionMenuItem) => menuItem
-              ));
+        this.listing.contextMenuItems = this.isTemplateAsFile(template.identifier)
+            ? null
+            : this.setTemplateActions(template).map(({ menuItem }: DotActionMenuItem) => menuItem);
     }
 
     /**
@@ -198,7 +196,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     }
     /**
      * Identify if is a template as File based on the identifier path.
-     * * @param {string} identifier
+     * @param {string} identifier
      * @returns boolean
      * @memberof DotTemplateListComponent
      */

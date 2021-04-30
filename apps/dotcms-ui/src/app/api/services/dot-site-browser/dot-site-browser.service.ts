@@ -12,6 +12,11 @@ import { take } from 'rxjs/operators';
 export class DotSiteBrowserService {
     constructor(private coreWebService: CoreWebService) {}
 
+    /**
+     * Set the selected folder in the Site Browser portlet.
+     * @returns Observable<{}>
+     * @memberof DotSiteBrowserService
+     */
     setSelectedFolder(path: string): Observable<{}> {
         return this.coreWebService
             .requestView({
