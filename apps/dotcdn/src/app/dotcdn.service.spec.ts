@@ -192,7 +192,7 @@ fdescribe('DotcdnService', () => {
             bodyJsonObject: { entity }
         } = fakeDotCDNViewData;
 
-        const period = '30'
+        const period = '30';
 
         const dateTo = moment().format('YYYY-MM-DD');
         const dateFrom = moment().subtract(period, 'd').format('YYYY-MM-DD');
