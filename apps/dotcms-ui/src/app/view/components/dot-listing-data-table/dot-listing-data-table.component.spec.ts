@@ -49,7 +49,6 @@ class EmptyMockComponent {}
         [actions]="actions"
         [dataKey]="dataKey"
         [checkbox]="checkbox"
-        [firstPageData]="firstPageData"
         [paginatorExtraParams]="paginatorExtraParams"
         (rowWasClicked)="rowWasClicked($event)"
         (selectedItems)="selectedItems($event)"
@@ -69,7 +68,6 @@ class TestHostComponent {
     @Input() actions: DotActionMenuItem[];
     @Input() dataKey = '';
     @Input() checkbox = false;
-    @Input() firstPageData: any[];
     @Input() paginatorExtraParams: { [key: string]: string } = {};
 
     rowWasClicked(data: any) {
