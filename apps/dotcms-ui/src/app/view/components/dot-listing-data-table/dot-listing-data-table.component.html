@@ -52,6 +52,7 @@
             [pSelectableRow]="rowData"
             [pContextMenuRow]="rowData"
             [pContextMenuRowDisabled]="rowData.disableInteraction === true"
+            data-testClass="testTableRow"
         >
             <td *ngIf="checkbox">
                 <p-tableCheckbox

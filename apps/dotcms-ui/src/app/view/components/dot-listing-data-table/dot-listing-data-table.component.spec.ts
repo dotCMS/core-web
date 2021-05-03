@@ -28,6 +28,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { FormsModule } from '@angular/forms';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { doc } from 'prettier';
 
 @Component({
     selector: 'dot-empty-state',
@@ -49,7 +50,7 @@ class EmptyMockComponent {}
         [actions]="actions"
         [dataKey]="dataKey"
         [checkbox]="checkbox"
-        [disableItemInteraction]="disableItemInteraction"
+        [mapItems]="mapItems"
         [paginatorExtraParams]="paginatorExtraParams"
         (rowWasClicked)="rowWasClicked($event)"
         (selectedItems)="selectedItems($event)"
@@ -79,12 +80,15 @@ class TestHostComponent {
         console.log(data);
     }
 
-    disableItemInteraction(item: any): boolean {
-        return item.variable === 'Host';
+    mapItems(items: any[]): any[] {
+        return items.map((item) => {
+            item.disableInteraction = item.variable === 'Host';
+            return item;
+        });
     }
 }
 
-fdescribe('DotListingDataTableComponent', () => {
+describe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
     let hostFixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
@@ -159,18 +163,18 @@ fdescribe('DotListingDataTableComponent', () => {
 
         items = [
             {
-                field1: 'item1-value1',
-                field2: 'item1-value2',
-                field3: 'item1-value3',
-                nEntries: 'item1-value4',
-                variable: 'Host'
-            },
-            {
                 field1: 'item2-value1',
                 field2: 'item2-value2',
                 field3: 'item2-value3',
                 nEntries: 'item1-value4',
                 variable: 'Banner'
+            },
+            {
+                field1: 'item1-value1',
+                field2: 'item1-value2',
+                field3: 'item1-value3',
+                nEntries: 'item1-value4',
+                variable: 'Host'
             },
             {
                 field1: 'item3-value1',
@@ -442,11 +446,10 @@ fdescribe('DotListingDataTableComponent', () => {
         hostFixture.detectChanges();
         tick(1);
         hostFixture.detectChanges();
-        const contextMenu = document.querySelector('.p-contextmenu');
-        expect(contextMenu.classList.contains('no-display')).toEqual(true);
-        comp.contextMenuItems = [{ label: 'test' }];
-        hostFixture.detectChanges();
-        expect(contextMenu.classList.contains('no-display')).toEqual(false);
+        const rows = document.querySelectorAll('[data-testclass="testTableRow"]');
+        debugger;
+        expect(rows[0].getAttribute('ng-reflect-p-context-menu-row-disabled')).toEqual('false');
+        expect(rows[1].getAttribute('ng-reflect-p-context-menu-row-disabled')).toEqual('true');
     }));
 
     describe('with checkBox', () => {
@@ -465,7 +468,7 @@ fdescribe('DotListingDataTableComponent', () => {
         it('should renderer table', () => {
             const headerCheckBoxes = el.querySelectorAll('p-tableheadercheckbox');
             expect(1).toEqual(headerCheckBoxes.length);
-            expect(7).toEqual(bodyCheckboxes.length);
+            expect(6).toEqual(bodyCheckboxes.length);
         });
     });
 
