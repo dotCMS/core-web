@@ -43,10 +43,10 @@ export class DotCDNService {
     purgeCache(urls?: string[]): Observable<PurgeReturnData> {
         return this.siteService.getCurrentSite().pipe(
             pluck('identifier'),
-            mergeMap((hostId: string) =>
-                this.purgeUrlRequest({ hostId, invalidateAll: false, urls })
-            ),
-            pluck('bodyJsonObject')
+            mergeMap((hostId: string) => {
+                return this.purgeUrlRequest({ hostId, invalidateAll: false, urls });
+            }),
+            pluck('bodyJsonObject'),
         );
     }
 
@@ -71,7 +71,7 @@ export class DotCDNService {
         invalidateAll,
         hostId
     }: PurgeUrlOptions): Observable<ResponseView<PurgeReturnData>> {
-        return this.coreWebService.requestView({
+        return this.coreWebService.requestView<PurgeReturnData>({
             url: `/api/v1/dotcdn`,
             method: 'DELETE',
             body: JSON.stringify({

@@ -1,32 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { CoreWebService, DotCMSResponse, ResponseView, SiteService } from '@dotcms/dotcms-js';
+import { CoreWebService, SiteService } from '@dotcms/dotcms-js';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { DotCDNService } from './dotcdn.service';
 import { SiteServiceMock, CoreWebServiceMock } from '@dotcms/dotcms-js';
-import { of } from 'rxjs';
-import { DotCDNStats } from './app.models';
-import { HttpResponse } from '@angular/common/http';
-import * as moment from 'moment';
-
-const mockDotApps = [
-    {
-        allowExtraParams: true,
-        configurationsCount: 0,
-        key: 'google-calendar',
-        name: 'Google Calendar',
-        description: 'It is a tool to keep track of your events',
-        iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg'
-    },
-    {
-        allowExtraParams: true,
-        configurationsCount: 1,
-        key: 'asana',
-        name: 'Asana',
-        description: 'It is asana to keep track of your asana events',
-        iconUrl: '/dA/792c7c9f-6b6f-427b-80ff-1643376c9999/photo/mountain-persona.jpg'
-    }
-];
+import MockDate from 'mockdate';
 
 const fakeDotCDNViewData = {
     resp: {
@@ -163,7 +141,79 @@ const fakeDotCDNViewData = {
     }
 };
 
-fdescribe('DotcdnService', () => {
+const fakePurgeUrlsResp = {
+    resp: {
+        headers: {
+            normalizedNames: {},
+            lazyUpdate: null
+        },
+        status: 200,
+        statusText: 'OK',
+        url: 'http://localhost:4200/api/v1/dotcdn',
+        ok: true,
+        type: 4,
+        body: {
+            entity: {
+                'All Urls Sent Purged: ': true
+            },
+            errors: [],
+            i18nMessagesMap: {},
+            messages: [],
+            permissions: []
+        }
+    },
+    bodyJsonObject: {
+        entity: {
+            'All Urls Sent Purged: ': true
+        },
+        errors: [],
+        i18nMessagesMap: {},
+        messages: [],
+        permissions: []
+    },
+    headers: {
+        normalizedNames: {},
+        lazyUpdate: null
+    }
+};
+
+const fakePurgeAllResp = {
+    resp: {
+        headers: {
+            normalizedNames: {},
+            lazyUpdate: null
+        },
+        status: 200,
+        statusText: 'OK',
+        url: 'http://localhost:4200/api/v1/dotcdn',
+        ok: true,
+        type: 4,
+        body: {
+            entity: {
+                'Entire Cache Purged: ': true
+            },
+            errors: [],
+            i18nMessagesMap: {},
+            messages: [],
+            permissions: []
+        }
+    },
+    bodyJsonObject: {
+        entity: {
+            'Entire Cache Purged: ': true
+        },
+        errors: [],
+        i18nMessagesMap: {},
+        messages: [],
+        permissions: []
+    },
+    headers: {
+        normalizedNames: {},
+        lazyUpdate: null
+    }
+};
+
+describe('DotcdnService', () => {
     let service: DotCDNService;
     let dotSiteService: SiteService;
     let dotCoreWebService: CoreWebService;
@@ -181,39 +231,82 @@ fdescribe('DotcdnService', () => {
         dotSiteService = TestBed.inject(SiteService);
         dotCoreWebService = TestBed.inject(CoreWebService);
         httpMock = TestBed.inject(HttpTestingController);
+        jest.spyOn(dotSiteService, 'getCurrentSite');
+        jest.restoreAllMocks()
     });
 
-    fit('should return stats', (done) => {
-        // const r = new ResponseView<DotCDNStats>(fakeDotCDNViewData);
-        jest.spyOn(dotSiteService, 'getCurrentSite');
+    afterEach(() => {
+        MockDate.reset();
+    });
+
+    it('should return the stats', (done) => {
         jest.spyOn(dotCoreWebService, 'requestView');
+        
+        MockDate.set('2021-05-03');
 
         const {
             bodyJsonObject: { entity }
         } = fakeDotCDNViewData;
 
-        const period = '30';
-
-        const dateTo = moment().format('YYYY-MM-DD');
-        const dateFrom = moment().subtract(period, 'd').format('YYYY-MM-DD');
-
-        service.requestStats(period).subscribe((value) => {
+        service.requestStats('30').subscribe((value) => {
             expect(value).toStrictEqual(entity);
             done();
         });
 
         const req = httpMock.expectOne(
-            `/api/v1/dotcdn/stats?hostId=123-xyz-567-xxl&dateFrom=${dateFrom}&dateTo=${dateTo}`
+            `/api/v1/dotcdn/stats?hostId=123-xyz-567-xxl&dateFrom=2021-04-03&dateTo=2021-05-03`
         );
 
         req.flush({ entity });
     });
 
-    xit('should be created', () => {
-        expect(service).toBeTruthy();
+    it('should purge cache with URLs', (done) => {
+        const requestViewSpy = jest.spyOn(dotCoreWebService, 'requestView');
+        service.purgeCache(['url1, url2']).subscribe((value) => {
+            expect(value).toStrictEqual({
+                entity: {
+                    'All Urls Sent Purged: ': true
+                },
+                errors: [],
+                i18nMessagesMap: {},
+                messages: [],
+                permissions: []
+            });
+            done()
+        })
+        const req = httpMock.expectOne('/api/v1/dotcdn');
+        expect(req.request.method).toBe('DELETE')
+
+        expect(requestViewSpy).toHaveBeenCalledWith({
+            body: '{"urls":["url1, url2"],"invalidateAll":false,"hostId":"123-xyz-567-xxl"}',
+            method: 'DELETE',
+            url: '/api/v1/dotcdn'
+        });
+            
+        req.flush(fakePurgeUrlsResp.bodyJsonObject);
     });
 
-    xit('should return an object with stats', () => {
-        pending();
+    it('should purge all cache', (done) => {
+        const requestViewSpy = jest.spyOn(dotCoreWebService, 'requestView');
+        service.purgeCacheAll().subscribe((value) => {
+            expect(value).toStrictEqual({
+                entity: { 'Entire Cache Purged: ': true },
+                errors: [],
+                i18nMessagesMap: {},
+                messages: [],
+                permissions: []
+            });
+            done()
+        })
+        const req = httpMock.expectOne('/api/v1/dotcdn');
+        expect(req.request.method).toBe('DELETE')
+
+        expect(requestViewSpy).toHaveBeenCalledWith({
+            body: '{"urls":[],"invalidateAll":true,"hostId":"123-xyz-567-xxl"}',
+            method: 'DELETE',
+            url: '/api/v1/dotcdn'
+        });
+            
+        req.flush(fakePurgeAllResp.bodyJsonObject);
     });
 });
