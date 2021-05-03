@@ -46,7 +46,7 @@ export class DotCDNService {
             mergeMap((hostId: string) => {
                 return this.purgeUrlRequest({ hostId, invalidateAll: false, urls });
             }),
-            pluck('bodyJsonObject'),
+            pluck('bodyJsonObject')
         );
     }
 

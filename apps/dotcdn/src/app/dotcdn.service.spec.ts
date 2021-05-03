@@ -232,7 +232,7 @@ describe('DotcdnService', () => {
         dotCoreWebService = TestBed.inject(CoreWebService);
         httpMock = TestBed.inject(HttpTestingController);
         jest.spyOn(dotSiteService, 'getCurrentSite');
-        jest.restoreAllMocks()
+        jest.restoreAllMocks();
     });
 
     afterEach(() => {
@@ -241,7 +241,7 @@ describe('DotcdnService', () => {
 
     it('should return the stats', (done) => {
         jest.spyOn(dotCoreWebService, 'requestView');
-        
+
         MockDate.set('2021-05-03');
 
         const {
@@ -272,17 +272,17 @@ describe('DotcdnService', () => {
                 messages: [],
                 permissions: []
             });
-            done()
-        })
+            done();
+        });
         const req = httpMock.expectOne('/api/v1/dotcdn');
-        expect(req.request.method).toBe('DELETE')
+        expect(req.request.method).toBe('DELETE');
 
         expect(requestViewSpy).toHaveBeenCalledWith({
             body: '{"urls":["url1, url2"],"invalidateAll":false,"hostId":"123-xyz-567-xxl"}',
             method: 'DELETE',
             url: '/api/v1/dotcdn'
         });
-            
+
         req.flush(fakePurgeUrlsResp.bodyJsonObject);
     });
 
@@ -296,17 +296,17 @@ describe('DotcdnService', () => {
                 messages: [],
                 permissions: []
             });
-            done()
-        })
+            done();
+        });
         const req = httpMock.expectOne('/api/v1/dotcdn');
-        expect(req.request.method).toBe('DELETE')
+        expect(req.request.method).toBe('DELETE');
 
         expect(requestViewSpy).toHaveBeenCalledWith({
             body: '{"urls":[],"invalidateAll":true,"hostId":"123-xyz-567-xxl"}',
             method: 'DELETE',
             url: '/api/v1/dotcdn'
         });
-            
+
         req.flush(fakePurgeAllResp.bodyJsonObject);
     });
 });
