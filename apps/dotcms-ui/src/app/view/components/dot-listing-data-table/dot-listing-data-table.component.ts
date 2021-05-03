@@ -221,12 +221,10 @@ export class DotListingDataTableComponent implements OnInit {
     }
 
     private setItems(items: any[]): void {
-        debugger;
         setTimeout(() => {
             // avoid ExpressionChangedAfterItHasBeenCheckedError on p-table on tests.
             // TODO: Double check if versions after prime-ng 11.0.0 solve the need to add this hack.
             this.items = this.setInteraction(this.dateColumns ? this.formatData(items) : items);
-            debugger;
             this.loading = false;
             this.maxLinksPage = this.paginatorService.maxLinksPage;
             this.totalRecords = this.paginatorService.totalRecords;
@@ -236,7 +234,9 @@ export class DotListingDataTableComponent implements OnInit {
     private setInteraction(items: any[]) {
         return items.map((item) => {
             item.disableInteraction =
-                !this.disableItemInteraction || this.disableItemInteraction(item);
+                this.disableItemInteraction === undefined
+                    ? false
+                    : this.disableItemInteraction(item);
             return item;
         });
     }
