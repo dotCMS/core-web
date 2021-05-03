@@ -49,6 +49,7 @@ class EmptyMockComponent {}
         [actions]="actions"
         [dataKey]="dataKey"
         [checkbox]="checkbox"
+        [disableItemInteraction]="disableItemInteraction"
         [paginatorExtraParams]="paginatorExtraParams"
         (rowWasClicked)="rowWasClicked($event)"
         (selectedItems)="selectedItems($event)"
@@ -77,9 +78,13 @@ class TestHostComponent {
     selectedItems(data: any) {
         console.log(data);
     }
+
+    disableItemInteraction(item: any): boolean {
+        return item.variable === 'Host';
+    }
 }
 
-describe('DotListingDataTableComponent', () => {
+fdescribe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
     let hostFixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
@@ -430,7 +435,7 @@ describe('DotListingDataTableComponent', () => {
         expect(comp.rowWasClicked.emit).toHaveBeenCalledTimes(2);
     }));
 
-    it('should hide and show context menu ', fakeAsync(() => {
+    it('should set pContextMenuRowDisabled correctly', fakeAsync(() => {
         setRequestSpy(items);
         spyOn(comp.rowWasClicked, 'emit');
         comp.loadFirstPage();

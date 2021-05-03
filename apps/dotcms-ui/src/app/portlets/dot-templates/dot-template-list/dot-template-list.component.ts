@@ -166,7 +166,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
      * @memberof DotTemplateListComponent
      */
     setContextMenu(template: DotTemplate): void {
-        this.setTemplateActions(template).map(({ menuItem }: DotActionMenuItem) => menuItem);
+        this.listing.contextMenuItems = this.setTemplateActions(template).map(
+            ({ menuItem }: DotActionMenuItem) => menuItem
+        );
     }
 
     /**
@@ -191,6 +193,19 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
             revision: this.dotMessageService.get('Revision'),
             draft: this.dotMessageService.get('Draft')
         };
+    }
+
+    /**
+     * Map table results to add the disableInteraction property.
+     * @param {DotTemplate[]} templates
+     * @returns DotTemplate[]
+     * @memberof DotTemplateListComponent
+     */
+    mapTableItems(templates: DotTemplate[]): DotTemplate[] {
+        return templates.map((template) => {
+            template.disableInteraction = template.identifier.includes('/') ? true : false;
+            return template;
+        });
     }
 
     /**
