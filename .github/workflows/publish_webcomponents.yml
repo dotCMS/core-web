@@ -70,11 +70,8 @@ jobs:
               git config --global user.email "${GITHUB_USER}@dotcms.com"
               git config --global user.name "${GITHUB_USER}"
               echo "clone"
-#              git clone ${github_core_token_repo} ../core
               git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo}" --depth 1 ../core
               cd ../core
-#              echo "checkout"
-#              git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}
               cd dotCMS
               NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
               sed -i "s|webComponentsReleaseVersion=.*|webComponentsReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
