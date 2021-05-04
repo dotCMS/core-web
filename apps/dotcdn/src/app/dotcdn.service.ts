@@ -19,7 +19,6 @@ export class DotCDNService {
      */
     requestStats(period: string): Observable<DotCDNStats> {
         return this.siteService.getCurrentSite().pipe(
-            take(1),
             pluck('identifier'),
             mergeMap((hostId: string) => {
                 const dateTo = moment().format('YYYY-MM-DD');
@@ -36,7 +35,6 @@ export class DotCDNService {
      *  Makes a request to purge the cache
      *
      * @param {string[]} [urls=[]]
-     * @param {boolean} [invalidateAll=false]
      * @return {Observable<ResponseView<PurgeReturnData>>}
      * @memberof DotCDNService
      */
@@ -53,8 +51,6 @@ export class DotCDNService {
     /**
      *  Makes a request to purge the cache
      *
-     * @param {string[]} [urls=[]]
-     * @param {boolean} [invalidateAll=false]
      * @return {Observable<ResponseView<PurgeReturnData>>}
      * @memberof DotCDNService
      */
@@ -79,6 +75,6 @@ export class DotCDNService {
                 invalidateAll,
                 hostId
             })
-        });
+        })
     }
 }

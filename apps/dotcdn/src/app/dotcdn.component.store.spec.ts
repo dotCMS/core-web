@@ -127,8 +127,7 @@ describe('DotCDNComponentStore', () => {
 
         it('should purge cdn with urls', (done) => {
             const urls = ['url1, url2'];
-
-            const dotCdnServiceSpy = jest.spyOn(dotCdnService, 'purgeCache').mockReturnValue(
+            jest.spyOn(dotCdnService, 'purgeCache').mockReturnValue(
                 of({
                     entity: {
                         'All Urls Sent Purged: ': true
@@ -140,18 +139,20 @@ describe('DotCDNComponentStore', () => {
                 })
             );
 
-            store.purgeCDNCache(urls);
-
-            dotCdnServiceSpy.mock.results[0].value.subscribe((values) => {
-                expect(values.entity['All Urls Sent Purged: ']).toBe(true);
-                done();
+            store.state$.subscribe((state) => {
+                expect(state.isPurgeUrlsLoading).toBe(false);
             });
 
-            expect(dotCdnService.purgeCache).toHaveBeenCalledWith(urls);
+            store.purgeCDNCache(urls);
+
+            store.state$.subscribe((state) => {
+                expect(state.isPurgeUrlsLoading).toBe(true);
+                done();
+            });
         });
 
         it('should purge all the cache', (done) => {
-            const dotCdnServiceSpy = jest.spyOn(dotCdnService, 'purgeCacheAll').mockReturnValue(
+            jest.spyOn(dotCdnService, 'purgeCacheAll').mockReturnValue(
                 of({
                     entity: {
                         'Entire Cache Purged: ': true
@@ -163,14 +164,16 @@ describe('DotCDNComponentStore', () => {
                 })
             );
 
-            store.purgeCDNCacheAll();
-
-            dotCdnServiceSpy.mock.results[0].value.subscribe((values) => {
-                expect(values.entity['Entire Cache Purged: ']).toBe(true);
-                done();
+            store.state$.subscribe((state) => {
+                expect(state.isPurgeUrlsLoading).toBe(true);
             });
 
-            expect(dotCdnService.purgeCacheAll).toHaveBeenCalledTimes(1);
+            store.purgeCDNCacheAll();
+
+            store.state$.subscribe((state) => {
+                expect(state.isPurgeUrlsLoading).toBe(false);
+                done();
+            });
         });
     });
 });

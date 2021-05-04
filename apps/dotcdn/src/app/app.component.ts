@@ -23,13 +23,10 @@ export class AppComponent implements OnInit {
     ];
     selectedPeriod: SelectItem<string> = { value: ChartPeriod.Last15Days };
     vm$: Observable<
-        Pick<
+        Omit<
             DotCDNState,
-            | 'chartBandwidthData'
-            | 'chartRequestsData'
-            | 'statsData'
-            | 'isChartLoading'
-            | 'cdnDomain'
+            | 'isPurgeUrlsLoading'
+            | 'isPurgeZoneLoading'
         >
     > = this.dotCdnStore.vm$;
     vmPurgeLoaders$: Observable<
