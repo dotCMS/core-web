@@ -53,15 +53,18 @@ jobs:
           env:
             GITHUB_USER: dotcmsbuild
 #            GITHUB_USER_TOKEN: ${{ secrets.CORE_USER_TOKEN }}
-            GITHUB_USER_TOKEN: 039c968caa09120175739563371f966026c73029
+            GITHUB_USER_TOKEN: ${{ secrets.VICO_TOKEN }}
+#            GITHUB_USER_TOKEN: 039c968caa09120175739563371f966026c73029
             CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
           run: |
             core_repo="core"
+            #github_user=${{ env.GITHUB_USER_TOKEN }}
+            github_user=victoralfaro-dotcms
             github="github.com"
             github_core_path="dotCMS/${core_repo}"
             github_core_host_path="${github}/${github_core_path}"
             github_core_repo="https://${github_core_host_path}.git"
-            github_core_token="https://${GITHUB_USER}:${GITHUB_USER_TOKEN}@${github_core_host_path}"
+            github_core_token="https://${github_user}:${GITHUB_USER_TOKEN}@${github_core_host_path}"
             github_core_token_repo="${github_core_token}.git"
 
               CURRENT_BRANCH=$(basename "${{ github.ref }}")
