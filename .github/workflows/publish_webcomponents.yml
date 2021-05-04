@@ -38,34 +38,43 @@ jobs:
         #       npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
         #       cd core-web/dist/libs/dotcms-webcomponents
         #       npm publish
-        - name: Set Core SSH keys
-          env:
-            GITHUB_USER: dotcmsbuild
-            GITHUB_USER_TOKEN: ${{ secrets.CORE_USER_TOKEN }}
-            CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
-          run: |
-            mkdir -p ~/.ssh
-            ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-            echo "${{ env.CORE_SSH_KEY }}" > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            ls -las ~/.ssh/id_rsa
+#        - name: Set Core SSH keys
+#          env:
+#            GITHUB_USER: dotcmsbuild
+#            GITHUB_USER_TOKEN: ${{ secrets.CORE_USER_TOKEN }}
+#            CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
+#          run: |
+#            mkdir -p ~/.ssh
+#            ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+#            echo "${{ env.CORE_SSH_KEY }}" > ~/.ssh/id_rsa
+#            chmod 600 ~/.ssh/id_rsa
+#            ls -las ~/.ssh/id_rsa
         - name: Checkout Core & Bump webComponentsReleaseVersion, only on a release branch
           env:
             GITHUB_USER: dotcmsbuild
-            GITHUB_USER_TOKEN: ${{ secrets.CORE_USER_TOKEN }}
+#            GITHUB_USER_TOKEN: ${{ secrets.CORE_USER_TOKEN }}
+            GITHUB_USER_TOKEN: 039c968caa09120175739563371f966026c73029
             CORE_SSH_KEY: ${{ secrets.CORE_SSH_KEY }}
           run: |
-            if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]
-            then
+            core_repo="core"
+            github="github.com"
+            github_core_path="dotCMS/${core_repo}"
+            github_core_host_path="${github}/${github_core_path}"
+            github_core_repo="https://${github_core_host_path}.git"
+            github_core_token="https://${GITHUB_USER}:${GITHUB_USER_TOKEN}@${github_core_host_path}"
+            github_core_token_repo="${github_core_token}.git"
+
+            if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
               CURRENT_BRANCH=$(basename "${{ github.ref }}")
               echo "CURRENT_BRANCH: ${CURRENT_BRANCH}"
               git config --global user.email "${GITHUB_USER}@dotcms.com"
               git config --global user.name "${GITHUB_USER}"
               echo "clone"
-              git clone https://github.com/dotCMS/core.git ../core
+#              git clone ${github_core_token_repo} ../core
+              git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo}" --depth 1 ../core
               cd ../core
-              echo "checkout"
-              git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}
+#              echo "checkout"
+#              git checkout -b ${CURRENT_BRANCH} --track origin/${CURRENT_BRANCH}
               cd dotCMS
               NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
               sed -i "s|webComponentsReleaseVersion=.*|webComponentsReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
