@@ -44,8 +44,9 @@ jobs:
             GITHUB_USER: victoralfaro-dotcms
           run: |
             github_user=${{ env.GITHUB_USER }}
+            github_token=${{ secrets.CICD_GITHUB_TOKEN }}
             github_core_path="github.com/dotCMS/core"
-            github_core_token_url="https://${github_user}:${{ secrets.CICD_GITHUB_TOKEN }}@${github_core_path}"
+            github_core_token_url="https://${github_user}:${github_token}@${github_core_path}"
             github_core_token_repo_url="${github_core_token}.git"
 
             #if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
