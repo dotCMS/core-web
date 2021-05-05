@@ -155,7 +155,10 @@ export class SiteService {
                 method: RequestMethod.Put,
                 url: `${this.urls.switchSiteUrl}/${site.identifier}`
             })
-            .subscribe();
+            .pipe(take(1))
+            .subscribe(() => {
+                this.setCurrentSite(site);
+            });
     }
 
     /**
@@ -180,8 +183,10 @@ export class SiteService {
     }
 
     private setCurrentSite(site: Site): void {
-        this.selectedSite = site;
-        this._switchSite$.next({ ...site });
+        if (this.selectedSite && this.selectedSite.identifier !== site.identifier) {
+            this.selectedSite = site;
+            this._switchSite$.next({ ...site });
+        }
     }
 
     private loadCurrentSite(): void {
