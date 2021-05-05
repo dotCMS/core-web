@@ -22,6 +22,7 @@ import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publi
 import { SelectItem } from 'primeng/api';
 import { DotFormModel } from '@models/dot-form/dot-form.model';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotTimeZone, DotTimeZoneService } from '@services/dot-timezone/dot-timezone.service';
 
 @Component({
     selector: 'dot-push-publish-form',
@@ -34,8 +35,12 @@ export class DotPushPublishFormComponent
     form: FormGroup;
     pushActions: SelectItem[];
     filterOptions: SelectItem[] = null;
+    timeZoneOptions: SelectItem[] = null;
     eventData: DotPushPublishDialogData = { assetIdentifier: '', title: '' };
     assetIdentifier: string;
+    localTimezone: string;
+    showTimezonePicker = false;
+    changeTimezoneActionLabel = this.dotMessageService.get('Change');
 
     @Input() data: DotPushPublishDialogData;
 
@@ -52,12 +57,14 @@ export class DotPushPublishFormComponent
         private dotPushPublishFiltersService: DotPushPublishFiltersService,
         private dotParseHtmlService: DotParseHtmlService,
         private dotMessageService: DotMessageService,
+        private dotTimezoneService: DotTimeZoneService,
         private httpErrorManagerService: DotHttpErrorManagerService,
         public fb: FormBuilder
     ) {}
 
     ngOnInit() {
         if (this.data) {
+            this.loadTimezones();
             if (this.filterOptions) {
                 this.loadData(this.data);
             } else {
@@ -84,6 +91,20 @@ export class DotPushPublishFormComponent
         this.value.emit(this.form.value);
     }
 
+    updateTimezoneLabel(timezone: string): void {
+        this.localTimezone = this.timeZoneOptions.find(({ value }) => value === timezone)['label'];
+        debugger
+    }
+
+    toggleTimezonePicker(event: MouseEvent): void {
+        event.preventDefault();
+        this.showTimezonePicker = !this.showTimezonePicker;
+
+        this.changeTimezoneActionLabel = this.showTimezonePicker
+            ? this.dotMessageService.get('hide')
+            : this.dotMessageService.get('Change');
+    }
+
     private loadData(data: DotPushPublishDialogData): void {
         this.eventData = data;
         if (this.eventData.customCode) {
@@ -107,6 +128,20 @@ export class DotPushPublishFormComponent
             this.customCodeContainer.nativeElement,
             true
         );
+    }
+
+    private loadTimezones(): void {
+        this.dotTimezoneService
+            .get()
+            .pipe(take(1))
+            .subscribe((timezones: DotTimeZone[]) => {
+                this.timeZoneOptions = timezones.map((item: DotTimeZone) => {
+                    return {
+                        label: item.label,
+                        value: item.id
+                    };
+                });
+            });
     }
 
     private loadFilters(): Observable<any> {
@@ -150,18 +185,30 @@ export class DotPushPublishFormComponent
             pushActionSelected: [this.pushActions[0].value, [Validators.required]],
             publishDate: [new Date(), [Validators.required]],
             expireDate: [{ value: new Date(), disabled: true }, [Validators.required]],
+            timezoneId: [''],
             environment: ['', [Validators.required]]
         });
 
         const publishDate = this.form.get('publishDate');
         const expireDate = this.form.get('expireDate');
         const ppFilter = this.form.get('filterKey');
+        const ppTimezone = this.form.get('timezoneId');
 
         const enableFilters = () => {
             ppFilter.enable();
             this.filterOptions = this._filterOptions;
             ppFilter.setValue(this.defaultFilterKey);
         };
+
+        const setUsersTimeZone = () => {
+            const localTZItem = this.timeZoneOptions.find(
+                ({ value }) => value === Intl.DateTimeFormat().resolvedOptions().timeZone
+            );
+            ppTimezone.setValue(localTZItem.value);
+            this.localTimezone = localTZItem.label;
+        };
+
+        setUsersTimeZone();
 
         this.form
             .get('filterKey')

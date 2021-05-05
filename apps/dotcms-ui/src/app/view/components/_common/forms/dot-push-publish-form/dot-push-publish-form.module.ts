@@ -11,6 +11,7 @@ import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.ser
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { DotTimeZoneService } from '@services/dot-timezone/dot-timezone.service';
 
 @NgModule({
     declarations: [DotPushPublishFormComponent],
@@ -27,6 +28,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
         SelectButtonModule,
         DotPipesModule
     ],
-    providers: [PushPublishService, DotParseHtmlService]
+    providers: [PushPublishService, DotParseHtmlService, DotTimeZoneService]
 })
 export class DotPushPublishFormModule {}

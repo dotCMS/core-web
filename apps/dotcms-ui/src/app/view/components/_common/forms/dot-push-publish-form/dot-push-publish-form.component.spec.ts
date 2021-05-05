@@ -31,6 +31,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SelectButton, SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
 import { Dropdown, DropdownModule } from 'primeng/dropdown';
+import { DotTimeZoneService } from '@services/dot-timezone/dot-timezone.service';
+import { DotTimeZoneServiceMock } from '@dotcms/app/test/dot-timezone-service.mock';
+import { mockDotTimeZones } from '@dotcms/app/test/dot-timezone.mock';
 
 const messageServiceMock = new MockDotMessageService({
     'contenttypes.content.push_publish.action.push': 'Push',
@@ -101,8 +104,10 @@ describe('DotPushPublishFormComponent', () => {
         filterKey: mockFilters[0].key,
         pushActionSelected: mockPushActions[0].value,
         publishDate: mockDate,
-        environment: ''
+        environment: '',
+        timezoneId: 'America/Costa Rica'
     };
+    const localTZ = 'America/Costa Rica';
 
     beforeEach(() => {
         pushPublishServiceMock = new PushPublishServiceMock();
@@ -114,6 +119,7 @@ describe('DotPushPublishFormComponent', () => {
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 { provide: LoginService, useClass: LoginServiceMock },
                 { provide: DotRouterService, useClass: MockDotRouterService },
+                { provide: DotTimeZoneService, useClass: DotTimeZoneServiceMock },
                 DotPushPublishFiltersService,
                 DotParseHtmlService,
                 DotHttpErrorManagerService,
@@ -136,6 +142,9 @@ describe('DotPushPublishFormComponent', () => {
     });
 
     beforeEach(() => {
+        spyOn<any>(Intl, 'DateTimeFormat').and.returnValue({
+            resolvedOptions: () => ({ timeZone: localTZ })
+        });
         jasmine.clock().install();
         jasmine.clock().mockDate(mockDate);
         fixture = TestBed.createComponent(TestHostComponent);
@@ -160,6 +169,53 @@ describe('DotPushPublishFormComponent', () => {
             .componentInstance;
 
         expect(filterDropDown.options).toEqual(mockSortedFilters);
+    });
+
+    it('should load timezones local label and list on load, also TimeZone dropdown must be hidden', () => {
+        const timezoneDropDownContainer = fixture.debugElement.query(
+            By.css('[data-testid="timeZoneSelectContainer"]')
+        );
+        const timezoneDropDown: Dropdown = fixture.debugElement.query(
+            By.css('[data-testid="timeZoneSelect"]')
+        ).componentInstance;
+        const timeZoneLabel = fixture.debugElement.query(
+            By.css('.push-publish-dialog__timezone-label span')
+        ).nativeElement;
+        expect(timezoneDropDownContainer.attributes['hidden']).toBeDefined();
+        expect(timezoneDropDown.options.length).toEqual(mockDotTimeZones.length);
+        expect(timeZoneLabel.outerText).toEqual(
+            pushPublishForm.timeZoneOptions.find(({ value }) => value === localTZ)['label']
+        );
+    });
+
+    it('should display TimeZones dropdown when "Change" link clicked', () => {
+        const changeTZLink = fixture.debugElement.query(
+            By.css('.push-publish-dialog__timezone-label a')
+        ).nativeElement;
+        changeTZLink.click();
+        fixture.detectChanges();
+        const timezoneDropDownContainer = fixture.debugElement.query(
+            By.css('[data-testid="timeZoneSelectContainer"]')
+        );
+        expect(timezoneDropDownContainer.attributes['hidden']).not.toBeDefined();
+    });
+
+    it('should change selected TimeZone value', () => {
+        const changedTZ = 'America/Panama';
+        fixture.debugElement
+            .query(By.css('.push-publish-dialog__timezone-label a'))
+            .nativeElement.click();
+        const dropdown = fixture.debugElement.query(By.css('[data-testid="timeZoneSelect"]'));
+        dropdown.triggerEventHandler('onChange', {
+            value: changedTZ
+        });
+        fixture.detectChanges();
+        const timeZoneLabel = fixture.debugElement.query(
+            By.css('.push-publish-dialog__timezone-label span')
+        ).nativeElement;
+        expect(timeZoneLabel.outerText).toEqual(
+            pushPublishForm.timeZoneOptions.find(({ value }) => value === changedTZ)['label']
+        );
     });
 
     it('should pass assetIdentifier to dot-push-publish-env-selector', () => {
