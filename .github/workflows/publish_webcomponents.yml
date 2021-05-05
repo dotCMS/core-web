@@ -54,6 +54,7 @@ jobs:
               git config --global user.email "${github_user}@dotcms.com"
               git config --global user.name "${github_user}"
               echo "clone"
+              echo "git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo_url}" --depth 1 ../core"
               git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo_url}" --depth 1 ../core
               cd ../core
               cd dotCMS
