@@ -2,7 +2,7 @@ name: Publish to Dotcms Webcomponents
 on:
   push:
       branches:
-          - issue-20245-automate-dotwebcomponents-generation
+#          - issue-20245-automate-dotwebcomponents-generation
           - release-*
 jobs:
   publish:
@@ -47,9 +47,9 @@ jobs:
             github_token=${{ secrets.CICD_GITHUB_TOKEN }}
             github_core_path="github.com/dotCMS/core"
             github_core_token_url="https://${github_user}:${github_token}@${github_core_path}"
-            github_core_token_repo_url="${github_core_token}.git"
+            github_core_token_repo_url="${github_core_token_url}.git"
 
-            #if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
+            if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
               CURRENT_BRANCH=$(basename "${{ github.ref }}")
               echo "CURRENT_BRANCH: ${CURRENT_BRANCH}"
               git config --global user.email "${github_user}@dotcms.com"
@@ -67,6 +67,6 @@ jobs:
               git commit -m "CI: bumps webComponentsReleaseVersion to ${NEW_VERSION:1} [skip ci]"
               echo push
               git push origin ${CURRENT_BRANCH}
-            #else
-            #  echo "Skipping bump, not a release brach"
-            #fi
+            else
+              echo "Skipping bump, not a release brach"
+            fi
