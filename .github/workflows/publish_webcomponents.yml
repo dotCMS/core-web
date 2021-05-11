@@ -20,7 +20,7 @@ jobs:
               id: filter
               with:
                 list-files: 'json'
-                initial-fetch-depth: 1
+                initial-fetch-depth: '1'
                 working-directory: 'core-web'
                 filters: |
                   dotcms-webcomponents:
