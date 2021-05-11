@@ -25,7 +25,7 @@ jobs:
                   commit-message: 'CI: bumps version to {{version}} [skip ci]'
                   skip-tag: 'true'
                   default: prerelease
-                  preid: 'next'
+                  preid: 'rc'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
