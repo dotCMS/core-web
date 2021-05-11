@@ -4,7 +4,6 @@ on:
         branches:
             - release-*
             - master
-            - issue-20245-automate-dotwebcomponent-lib-generation
 jobs:
     changes:
         runs-on: ubuntu-latest
@@ -55,53 +54,50 @@ jobs:
                   node-version: '10.15.3'
             - name: Installing dependencies
               run: |
-                  dir=$(pwd)
-                  echo ${dir}
-                  ls -la
                   cd core-web
                   npm install
-            # - name: 'Automated Version Bump - dotcms-webcomponents'
-            #   id: version-bump
-            #   uses: 'phips28/gh-action-bump-version@master'
-            #   with:
-            #       commit-message: 'CI: bumps version to {{version}} [skip ci]'
-            #       skip-tag: 'true'
-            #   env:
-            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            #       PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
+            - name: 'Automated Version Bump - dotcms-webcomponents'
+              id: version-bump
+              uses: 'phips28/gh-action-bump-version@master'
+              with:
+                  commit-message: 'CI: bumps version to {{version}} [skip ci]'
+                  skip-tag: 'true'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
             - name: Build dotcms-webcomponents with deps
               run: |
                   cd core-web
                   npm run nx build dotcms-ui -- --with-deps --prod
-            # - name: 'publish to npm'
-            #   run: |
-            #       cd core-web
-            #       npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-            #       cd dist/libs/dotcms-webcomponents
-            #       npm publish
-            # - name: Checkout Core & Bump webComponentsReleaseVersion, only on a release branch
-            #   env:
-            #       # TODO: Change me to someone else's username
-            #       GITHUB_USER: victoralfaro-dotcms
-            #   run: |
-            #       github_user=${{ env.GITHUB_USER }}
-            #       github_token=${{ secrets.CICD_GITHUB_TOKEN }}
-            #       github_core_path="github.com/dotCMS/core"
-            #       github_core_token_url="https://${github_user}:${github_token}@${github_core_path}"
-            #       github_core_token_repo_url="${github_core_token_url}.git"
+            - name: 'publish to npm'
+              run: |
+                  cd core-web
+                  npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+                  cd dist/libs/dotcms-webcomponents
+                  npm publish
+            - name: Checkout Core & Bump webComponentsReleaseVersion, only on a release branch
+              env:
+                  # TODO: Change me to someone else's username
+                  GITHUB_USER: victoralfaro-dotcms
+              run: |
+                  github_user=${{ env.GITHUB_USER }}
+                  github_token=${{ secrets.CICD_GITHUB_TOKEN }}
+                  github_core_path="github.com/dotCMS/core"
+                  github_core_token_url="https://${github_user}:${github_token}@${github_core_path}"
+                  github_core_token_repo_url="${github_core_token_url}.git"
 
-            #       if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
-            #         CURRENT_BRANCH=$(basename "${{ github.ref }}")
-            #         git config --global user.email "${github_user}@dotcms.com"
-            #         git config --global user.name "${github_user}"
-            #         git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo_url}" --depth 1 ../core
-            #         cd ../core
-            #         cd dotCMS
-            #         NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
-            #         sed -i "s|webComponentsReleaseVersion=.*|webComponentsReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
-            #         git add .
-            #         git commit -m "CI: bumps webComponentsReleaseVersion to ${NEW_VERSION:1} [skip ci]"
-            #         git push origin ${CURRENT_BRANCH}
-            #       else
-            #         echo "Skipping bump, not a release brach"
-            #       fi
+                  if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
+                    CURRENT_BRANCH=$(basename "${{ github.ref }}")
+                    git config --global user.email "${github_user}@dotcms.com"
+                    git config --global user.name "${github_user}"
+                    git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo_url}" --depth 1 ../core
+                    cd ../core
+                    cd dotCMS
+                    NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
+                    sed -i "s|webComponentsReleaseVersion=.*|webComponentsReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
+                    git add .
+                    git commit -m "CI: bumps webComponentsReleaseVersion to ${NEW_VERSION:1} [skip ci]"
+                    git push origin ${CURRENT_BRANCH}
+                  else
+                    echo "Skipping bump, not a release brach"
+                  fi
