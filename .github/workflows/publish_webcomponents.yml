@@ -40,7 +40,8 @@ jobs:
 
             - name: print files
               if: ${{ steps.filter.outputs.dotcms-webcomponents == 'true' }}
-              run: echo ${{ steps.filter.outputs.dotcms-webcomponents_files }}
+              run: |
+                  echo ${{ steps.filter.outputs.dotcms-webcomponents_files }}
 
 
             # - name: Get specific changed files
