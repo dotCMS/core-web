@@ -19,8 +19,9 @@ jobs:
               uses: dorny/paths-filter@v2
               id: filter
               with:
+                base: ${{ github.ref }}
                 list-files: 'json'
-                initial-fetch-depth: '0'
+                initial-fetch-depth: '1'
                 working-directory: 'core-web'
                 filters: |
                   dotcms-webcomponents:
