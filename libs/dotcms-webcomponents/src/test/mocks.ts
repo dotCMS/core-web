@@ -27,7 +27,6 @@ export const basicField: DotCMSContentTypeField = {
     variable: ''
 };
 
-
 export const dotFormLayoutMock: DotCMSContentTypeLayoutRow[] = [
     {
         divider: {
