@@ -14,17 +14,13 @@ jobs:
               with:
                   fetch-depth: 1
                   path: 'core-web'
-            - name: log dir
-              run: |
-                  # cd core-web
-                  dir=$(pwd)
-                  echo ${dir}
-                  ls -la
-            
-            - uses: dorny/paths-filter@v2
+
+            - name: Get specific changed files
+              uses: dorny/paths-filter@v2
               id: filter
               with:
-                initial-fetch-depth: '1'
+                list-files: 'json'
+                initial-fetch-depth: 1
                 working-directory: 'core-web'
                 filters: |
                   dotcms-webcomponents:
@@ -41,6 +37,10 @@ jobs:
               if: steps.filter.outputs.dotcms-webcomponents == 'false'
               run: |
                 echo "NO changed."
+
+            - name: print files
+              if: ${{ steps.filter.outputs.dotcms-webcomponents == 'true' }}
+              run: echo ${{ steps.filter.outputs.dotcms-webcomponents_files }}
 
 
             # - name: Get specific changed files
