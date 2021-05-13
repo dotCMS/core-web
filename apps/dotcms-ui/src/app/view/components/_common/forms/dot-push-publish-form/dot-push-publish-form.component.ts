@@ -22,7 +22,7 @@ import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publi
 import { SelectItem } from 'primeng/api';
 import { DotFormModel } from '@models/dot-form/dot-form.model';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotTimeZone, DotTimeZoneService } from '@services/dot-timezone/dot-timezone.service';
+import { DotcmsConfigService, DotTimeZone } from '@dotcms/dotcms-js';
 
 @Component({
     selector: 'dot-push-publish-form',
@@ -57,14 +57,13 @@ export class DotPushPublishFormComponent
         private dotPushPublishFiltersService: DotPushPublishFiltersService,
         private dotParseHtmlService: DotParseHtmlService,
         private dotMessageService: DotMessageService,
-        private dotTimezoneService: DotTimeZoneService,
+        private dotcmsConfigService: DotcmsConfigService,
         private httpErrorManagerService: DotHttpErrorManagerService,
         public fb: FormBuilder
     ) {}
 
     ngOnInit() {
         if (this.data) {
-            this.loadTimezones();
             if (this.filterOptions) {
                 this.loadData(this.data);
             } else {
@@ -91,11 +90,20 @@ export class DotPushPublishFormComponent
         this.value.emit(this.form.value);
     }
 
+    /**
+     * Changes timezone label according to the one picked at the timezone dropdown
+     * @param string timezone
+     * @memberof DotPushPublishFormComponent
+     */
     updateTimezoneLabel(timezone: string): void {
         this.localTimezone = this.timeZoneOptions.find(({ value }) => value === timezone)['label'];
-        debugger
     }
 
+    /**
+     * Show/Hide timezone dropdown picker and changes link label
+     * @param MouseEvent event
+     * @memberof DotPushPublishFormComponent
+     */
     toggleTimezonePicker(event: MouseEvent): void {
         event.preventDefault();
         this.showTimezonePicker = !this.showTimezonePicker;
@@ -120,6 +128,7 @@ export class DotPushPublishFormComponent
             });
             this.emitValues();
         }
+        this.loadTimezones();
     }
 
     private loadCustomCode(): void {
@@ -130,9 +139,19 @@ export class DotPushPublishFormComponent
         );
     }
 
+    private setUsersTimeZone(): void {
+        const ppTimezone = this.form.get('timezoneId');
+
+        const localTZItem = this.timeZoneOptions.find(
+            ({ value }) => value === Intl.DateTimeFormat().resolvedOptions().timeZone
+        );
+        ppTimezone.setValue(localTZItem.value);
+        this.localTimezone = localTZItem.label;
+    }
+
     private loadTimezones(): void {
-        this.dotTimezoneService
-            .get()
+        this.dotcmsConfigService
+            .getTimeZone()
             .pipe(take(1))
             .subscribe((timezones: DotTimeZone[]) => {
                 this.timeZoneOptions = timezones.map((item: DotTimeZone) => {
@@ -141,6 +160,7 @@ export class DotPushPublishFormComponent
                         value: item.id
                     };
                 });
+                this.setUsersTimeZone();
             });
     }
 
@@ -192,23 +212,12 @@ export class DotPushPublishFormComponent
         const publishDate = this.form.get('publishDate');
         const expireDate = this.form.get('expireDate');
         const ppFilter = this.form.get('filterKey');
-        const ppTimezone = this.form.get('timezoneId');
 
         const enableFilters = () => {
             ppFilter.enable();
             this.filterOptions = this._filterOptions;
             ppFilter.setValue(this.defaultFilterKey);
         };
-
-        const setUsersTimeZone = () => {
-            const localTZItem = this.timeZoneOptions.find(
-                ({ value }) => value === Intl.DateTimeFormat().resolvedOptions().timeZone
-            );
-            ppTimezone.setValue(localTZItem.value);
-            this.localTimezone = localTZItem.label;
-        };
-
-        setUsersTimeZone();
 
         this.form
             .get('filterKey')

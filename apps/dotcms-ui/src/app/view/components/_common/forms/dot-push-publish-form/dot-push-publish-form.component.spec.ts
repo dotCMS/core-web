@@ -14,7 +14,7 @@ import {
     DotPushPublishFilter,
     DotPushPublishFiltersService
 } from '@services/dot-push-publish-filters/dot-push-publish-filters.service';
-import { CoreWebService, LoginService } from '@dotcms/dotcms-js';
+import { CoreWebService, DotcmsConfigService, LoginService } from '@dotcms/dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotParseHtmlService } from '@services/dot-parse-html/dot-parse-html.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
@@ -31,9 +31,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SelectButton, SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
 import { Dropdown, DropdownModule } from 'primeng/dropdown';
-import { DotTimeZoneService } from '@services/dot-timezone/dot-timezone.service';
-import { DotTimeZoneServiceMock } from '@dotcms/app/test/dot-timezone-service.mock';
-import { mockDotTimeZones } from '@dotcms/app/test/dot-timezone.mock';
+import { DotcmsConfigServiceMock, mockDotTimeZones } from '@dotcms/app/test/dot-timezone-service.mock';
 
 const messageServiceMock = new MockDotMessageService({
     'contenttypes.content.push_publish.action.push': 'Push',
@@ -119,7 +117,7 @@ describe('DotPushPublishFormComponent', () => {
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 { provide: LoginService, useClass: LoginServiceMock },
                 { provide: DotRouterService, useClass: MockDotRouterService },
-                { provide: DotTimeZoneService, useClass: DotTimeZoneServiceMock },
+                { provide: DotcmsConfigService, useClass: DotcmsConfigServiceMock },
                 DotPushPublishFiltersService,
                 DotParseHtmlService,
                 DotHttpErrorManagerService,

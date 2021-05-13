@@ -1,9 +1,25 @@
-import { DotTimeZone } from '@services/dot-timezone/dot-timezone.service';
+import { DotTimeZone } from '@dotcms/dotcms-js';
 import { Observable, of } from 'rxjs';
-import { mockDotTimeZones } from './dot-timezone.mock';
 
-export class DotTimeZoneServiceMock {
-    get(): Observable<DotTimeZone[]> {
+export const mockDotTimeZones = [
+    {
+        id: 'America/Venezuela',
+        label: 'Venezuela',
+        offset: '240'
+    },
+    {
+        id: 'America/Costa Rica',
+        label: 'Costa Rica',
+        offset: '360'
+    },
+    {
+        id: 'America/Panama',
+        label: 'Panama',
+        offset: '300'
+    }
+];
+export class DotcmsConfigServiceMock {
+    getTimeZone(): Observable<DotTimeZone[]> {
         return of(mockDotTimeZones);
     }
 }
