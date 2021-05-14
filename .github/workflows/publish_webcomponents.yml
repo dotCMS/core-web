@@ -19,7 +19,7 @@ jobs:
             - name: Changes found issue-20245-automate
               if: ${{contains(github.ref, 'issue-20245-automate')}}
               run: |
-                  echo "issue-20245-automate"
+                  echo "issue-20245-automate" $(basename "${{ github.ref }}")
             - name: Changes found master
               if: ${{contains(github.ref, 'master')}}
               run: |
@@ -27,7 +27,7 @@ jobs:
             - name: Changes found issue-20245-automate-dotwebcomponent-lib-generation
               if: ${{contains(github.ref, 'issue-20245-automate-dotwebcomponent-lib-generation')}}
               run: |
-                  echo "issue-20245-automate-dotwebcomponent-lib-generation"
+                  echo 'issue-20245-automate-dotwebcomponent-lib-generation $(basename "${{ github.ref }}")'
             # - name: Configuring Node.js
             #   uses: actions/setup-node@v2-beta
             #   with:
