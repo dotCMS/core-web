@@ -21,10 +21,12 @@ jobs:
               run: |
                   if [[ $(basename "${{ github.ref }}") =~ ^issue-20245-automate-.* ]]; then
                     echo "SI"
-                  else if [[ $(basename "${{ github.ref }}") =~ ^issue-20245-automate2-.* ]]; then
-                    echo "NO"
                   fi
-                  
+                  if [[ $(basename "${{ github.ref }}") =~ ^issue-20245-automate-.* ]]; then
+                    echo "SI2"
+                  else
+                    echo "NO2"
+                  fi
                   # echo "issue-20245-base_ref" ${{ github.base_ref }}
                   # echo "issue-20245-basename_base_ref" $(basename "${{ github.base_ref }}" )
             
