@@ -14,21 +14,35 @@ jobs:
               with:
                   fetch-depth: 1
                   path: 'core-web'
-            - name: Configuring Node.js
-              uses: actions/setup-node@v2-beta
-              with:
-                  node-version: '10.15.3'
-            - name: 'Automated Version Bump - dotcms-webcomponents'
-              id: version-bump
-              uses: 'phips28/gh-action-bump-version@master'
-              with:
-                  commit-message: 'CI: bumps version to {{version}} [skip ci]'
-                  skip-tag: 'true'
-                  # default: prerelease
-                  # preid: 'rc'
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
+
+                  #if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
+            - name: Changes found issue-20245-automate
+              if: ${{contains(github.ref, 'issue-20245-automate')}}
+              run: |
+                  echo "issue-20245-automate"
+            - name: Changes found master
+              if: ${{contains(github.ref, 'master')}}
+              run: |
+                  echo "issue-20245-master"
+            - name: Changes found issue-20245-automate-dotwebcomponent-lib-generation
+              if: ${{contains(github.ref, 'issue-20245-automate-dotwebcomponent-lib-generation')}}
+              run: |
+                  echo "issue-20245-automate-dotwebcomponent-lib-generation"
+            # - name: Configuring Node.js
+            #   uses: actions/setup-node@v2-beta
+            #   with:
+            #       node-version: '10.15.3'
+            # - name: 'Automated Version Bump - dotcms-webcomponents'
+            #   id: version-bump
+            #   uses: 'phips28/gh-action-bump-version@master'
+            #   with:
+            #       commit-message: 'CI: bumps version to {{version}} [skip ci]'
+            #       skip-tag: 'true'
+            #       default: prerelease
+            #       preid: 'next'
+            #   env:
+            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #       PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
 
 
     # changes:
