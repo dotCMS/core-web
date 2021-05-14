@@ -17,19 +17,21 @@ jobs:
 
                   #if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
             - name: Changes found issue-20245-automate
-              if: ${{contains($(basename "${{ github.ref }}"), 'issue-20245-automate')}}
+              # if: ${{contains(github.ref, 'issue-20245-automate')}}
               run: |
-                  echo "issue-20245-automate" $(basename "${{ github.ref }}")
-                  echo "issue-20245-base_ref" ${{ github.base_ref }}
-                  echo "issue-20245-basename_base_ref" $(basename "${{ github.base_ref }}" )
-            - name: Changes found master
-              if: ${{contains(github.ref, 'master')}}
-              run: |
-                  echo "issue-20245-master"
-            - name: Changes found issue-20245-automate-dotwebcomponent-lib-generation
-              if: ${{contains(github.ref, 'issue-20245-automate-dotwebcomponent-lib-generation')}}
-              run: |
-                  echo 'issue-20245-automate-dotwebcomponent-lib-generation $(basename "${{ github.ref }}")'
+                  if [[ $(basename "${{ github.ref }}") =~ ^issue-20245-automate-.* ]]; then
+                    echo "SI"
+                  else
+                    echo "NO"
+                  fi
+                  if [[ $(basename "${{ github.ref }}") =~ ^master-.* ]]; then
+                    echo "SI2"
+                  else
+                    echo "NO2"
+                  fi
+                  # echo "issue-20245-base_ref" ${{ github.base_ref }}
+                  # echo "issue-20245-basename_base_ref" $(basename "${{ github.base_ref }}" )
+            
             # - name: Configuring Node.js
             #   uses: actions/setup-node@v2-beta
             #   with:
@@ -45,7 +47,6 @@ jobs:
             #   env:
             #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             #       PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
-
 
     # changes:
     #     runs-on: ubuntu-latest
@@ -98,12 +99,27 @@ jobs:
     #           run: |
     #               cd core-web
     #               npm install
-    #         - name: 'Automated Version Bump - dotcms-webcomponents'
+    #         - name: 'Automated Version Bump - dotcms-webcomponents - is Release branch'
     #           id: version-bump
+    #           if: ${{contains(github.ref, 'release-')}}
     #           uses: 'phips28/gh-action-bump-version@master'
     #           with:
     #               commit-message: 'CI: bumps version to {{version}} [skip ci]'
     #               skip-tag: 'true'
+    #               default: prerelease
+    #               preid: 'rc'
+    #           env:
+    #               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #               PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
+    #         - name: 'Automated Version Bump - dotcms-webcomponents - is Master branch'
+    #           id: version-bump
+    #           if: ${{contains(github.ref, 'master')}}
+    #           uses: 'phips28/gh-action-bump-version@master'
+    #           with:
+    #               commit-message: 'CI: bumps version to {{version}} [skip ci]'
+    #               skip-tag: 'true'
+    #               default: prerelease
+    #               preid: 'next'
     #           env:
     #               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #               PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
