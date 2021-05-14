@@ -21,7 +21,7 @@ jobs:
               run: |
                   echo "issue-20245-automate" $(basename "${{ github.ref }}")
                   echo "issue-20245-base_ref" ${{ github.base_ref }}
-                  echo "issue-20245-basename_base_ref" ${{contains($(basename "${{ github.base_ref }}"), 'issue-20245-automate' )}}
+                  echo "issue-20245-basename_base_ref" $(basename "${{ github.base_ref }}" )
             - name: Changes found master
               if: ${{contains(github.ref, 'master')}}
               run: |
