@@ -17,7 +17,7 @@ jobs:
 
                   #if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
             - name: Changes found issue-20245-automate
-              if: ${{contains(github.ref, 'issue-20245-automate')}}
+              if: ${{contains($(basename "${{ github.ref }}"), 'issue-20245-automate')}}
               run: |
                   echo "issue-20245-automate" $(basename "${{ github.ref }}")
                   echo "issue-20245-base_ref" ${{ github.base_ref }}
