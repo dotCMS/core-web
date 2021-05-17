@@ -57,7 +57,7 @@ jobs:
                   cd core-web
                   npm install
             - name: 'Automated Version Bump - dotcms-webcomponents - is Release branch'
-              id: version-bump
+              id: version-bump-release
               if: ${{contains(github.ref, 'release-')}}
               uses: 'phips28/gh-action-bump-version@master'
               with:
@@ -69,7 +69,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: 'core-web/libs/dotcms-webcomponents'
             - name: 'Automated Version Bump - dotcms-webcomponents - is Master branch'
-              id: version-bump
+              id: version-bump-master
               if: ${{contains(github.ref, 'master')}}
               uses: 'phips28/gh-action-bump-version@master'
               with:
@@ -113,7 +113,12 @@ jobs:
                     git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo_url}" --depth 1 ../core
                     cd ../core
                     cd dotCMS
-                    NEW_VERSION="${{ steps.version-bump.outputs.newTag }}"
+                    if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
+                      NEW_VERSION="${{ steps.version-bump-release.outputs.newTag }}"
+                    fi
+                    if [[ $(basename "${{ github.ref }}") =~ ^master ]]; then
+                      NEW_VERSION="${{ steps.version-bump-master.outputs.newTag }}"
+                    fi
                     sed -i "s|webComponentsReleaseVersion=.*|webComponentsReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
                     git add .
                     git commit -m "CI: bumps webComponentsReleaseVersion to ${NEW_VERSION:1} [skip ci]"
