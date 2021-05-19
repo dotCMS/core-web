@@ -69,6 +69,7 @@ jobs:
                   preid: 'rc'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PACKAGEJSON_DIR: 'core-web'
             - name: 'Automated Version Bump - dotcms-ui - is Master branch'
               id: version-bump-master
               if: ${{contains(github.ref, 'master')}}
@@ -80,6 +81,7 @@ jobs:
                   preid: 'next'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PACKAGEJSON_DIR: 'core-web'
             - name: Build dotcms-ui with deps
               run: |
                   cd core-web
