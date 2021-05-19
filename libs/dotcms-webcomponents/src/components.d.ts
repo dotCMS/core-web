@@ -23,6 +23,7 @@ export namespace Components {
           * Labels to be shown in error dialog
          */
         "dialogLabels": { closeButton: string; uploadErrorHeader: string; dotAssetErrorHeader: string; errorHeader: string; };
+        "displayIndicator": boolean;
         /**
           * URL to endpoint to create dotAssets
          */
@@ -1347,6 +1348,7 @@ declare namespace LocalJSX {
           * Labels to be shown in error dialog
          */
         "dialogLabels"?: { closeButton: string; uploadErrorHeader: string; dotAssetErrorHeader: string; errorHeader: string; };
+        "displayIndicator"?: boolean;
         /**
           * URL to endpoint to create dotAssets
          */
