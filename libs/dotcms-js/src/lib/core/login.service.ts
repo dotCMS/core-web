@@ -334,7 +334,6 @@ export interface User {
     password?: string;
 }
 
-
 export interface Auth {
     user: User;
     loginAsUser: User;
