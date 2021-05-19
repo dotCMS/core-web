@@ -81,7 +81,11 @@ export class DotAssetDropZone {
                 ondragleave={(event: DragEvent) => this.dragOutHandler(event)}
                 ondragover={(event: DragEvent) => this.dragOverHandler(event)}
             >
-                <div class={`${this.dropState} dot-asset-drop-zone__indicators ${this.displayIndicator ? 'active' : ''}`}>
+                <div
+                    class={`${this.dropState} dot-asset-drop-zone__indicators ${
+                        this.displayIndicator ? 'active' : ''
+                    }`}
+                >
                     <div class="dot-asset-drop-zone__icon">
                         <mwc-icon>get_app</mwc-icon>
                         <span>{this.dropFilesText}</span>
