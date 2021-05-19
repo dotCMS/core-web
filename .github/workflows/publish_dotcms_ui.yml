@@ -4,7 +4,6 @@ on:
         branches:
             - release-*
             # - master
-            - issue-automate-dotcms-ui-lib-generation
 jobs:
     changes:
         runs-on: ubuntu-latest
@@ -99,34 +98,34 @@ jobs:
                   #   npm publish --tag next
                   # fi
                   ls -la
-            # - name: Checkout Core & Bump coreWebReleaseVersion, only for master and release branches
-            #   env:
-            #       # TODO: Change me to someone else's username
-            #       GITHUB_USER: victoralfaro-dotcms
-            #   run: |
-            #       github_user=${{ env.GITHUB_USER }}
-            #       github_token=${{ secrets.CICD_GITHUB_TOKEN }}
-            #       github_core_path="github.com/dotCMS/core"
-            #       github_core_token_url="https://${github_user}:${github_token}@${github_core_path}"
-            #       github_core_token_repo_url="${github_core_token_url}.git"
+            - name: Checkout Core & Bump coreWebReleaseVersion, only for master and release branches
+              env:
+                  # TODO: Change me to someone else's username
+                  GITHUB_USER: victoralfaro-dotcms
+              run: |
+                  github_user=${{ env.GITHUB_USER }}
+                  github_token=${{ secrets.CICD_GITHUB_TOKEN }}
+                  github_core_path="github.com/dotCMS/core"
+                  github_core_token_url="https://${github_user}:${github_token}@${github_core_path}"
+                  github_core_token_repo_url="${github_core_token_url}.git"
 
-            #       if [[ $(basename "${{ github.ref }}") =~ ^release-.* || $(basename "${{ github.ref }}") =~ ^master ]]; then
-            #         CURRENT_BRANCH=$(basename "${{ github.ref }}")
-            #         git config --global user.email "${github_user}@dotcms.com"
-            #         git config --global user.name "${github_user}"
-            #         git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo_url}" --depth 1 ../core
-            #         cd ../core
-            #         cd dotCMS
-            #         if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
-            #           NEW_VERSION="${{ steps.version-bump-release.outputs.newTag }}"
-            #         fi
-            #         if [[ $(basename "${{ github.ref }}") =~ ^master ]]; then
-            #           NEW_VERSION="${{ steps.version-bump-master.outputs.newTag }}"
-            #         fi
-            #         sed -i "s|coreWebReleaseVersion=.*|coreWebReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
-            #         git add .
-            #         git commit -m "CI: bumps coreWebReleaseVersion to ${NEW_VERSION:1} [skip ci]"
-            #         git push origin ${CURRENT_BRANCH}
-            #       else
-            #         echo "Skipping bump, not a release brach"
-            #       fi
+                  if [[ $(basename "${{ github.ref }}") =~ ^release-.* || $(basename "${{ github.ref }}") =~ ^master ]]; then
+                    CURRENT_BRANCH=$(basename "${{ github.ref }}")
+                    git config --global user.email "${github_user}@dotcms.com"
+                    git config --global user.name "${github_user}"
+                    git clone --single-branch --branch ${CURRENT_BRANCH} "${github_core_token_repo_url}" --depth 1 ../core
+                    cd ../core
+                    cd dotCMS
+                    if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
+                      NEW_VERSION="${{ steps.version-bump-release.outputs.newTag }}"
+                    fi
+                    if [[ $(basename "${{ github.ref }}") =~ ^master ]]; then
+                      NEW_VERSION="${{ steps.version-bump-master.outputs.newTag }}"
+                    fi
+                    sed -i "s|coreWebReleaseVersion=.*|coreWebReleaseVersion=${NEW_VERSION:1}|g" gradle.properties
+                    git add .
+                    git commit -m "CI: bumps coreWebReleaseVersion to ${NEW_VERSION:1} [skip ci]"
+                    git push origin ${CURRENT_BRANCH}
+                  else
+                    echo "Skipping bump, not a release brach"
+                  fi
