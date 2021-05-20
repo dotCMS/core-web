@@ -3,7 +3,7 @@ on:
     push:
         branches:
             - release-*
-            # - master
+            - master
 jobs:
     changes:
         runs-on: ubuntu-latest
@@ -89,15 +89,14 @@ jobs:
             - name: 'publish to npm'
               run: |
                   cd core-web
-                  # npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+                  npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
                   cd dist/apps/dotcms-ui
-                  # if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
-                  #   npm publish --tag rc
-                  # fi
-                  # if [[ $(basename "${{ github.ref }}") =~ ^master ]]; then
-                  #   npm publish --tag next
-                  # fi
-                  ls -la
+                  if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
+                    npm publish --tag rc
+                  fi
+                  if [[ $(basename "${{ github.ref }}") =~ ^master ]]; then
+                    npm publish --tag next
+                  fi
             - name: Checkout Core & Bump coreWebReleaseVersion, only for master and release branches
               env:
                   # TODO: Change me to someone else's username
