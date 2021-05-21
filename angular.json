@@ -47,7 +47,6 @@
                         "main": "apps/dotcms-ui/src/main.ts",
                         "polyfills": "apps/dotcms-ui/src/polyfills.ts",
                         "tsConfig": "apps/dotcms-ui/tsconfig.app.json",
-                        "aot": true,
                         "allowedCommonJsDependencies": [
                             "lodash",
                             "dragula",
@@ -77,7 +76,13 @@
                         "scripts": ["node_modules/marked/lib/marked.js"],
                         "stylePreprocessorOptions": {
                             "includePaths": ["libs/dot-primeng-theme-styles/src/scss"]
-                        }
+                        },
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
@@ -498,7 +503,6 @@
                         "main": "apps/dotcdn/src/main.ts",
                         "polyfills": "apps/dotcdn/src/polyfills.ts",
                         "tsConfig": "apps/dotcdn/tsconfig.app.json",
-                        "aot": true,
                         "assets": ["apps/dotcdn/src/favicon.ico", "apps/dotcdn/src/assets"],
                         "styles": [
                             "libs/dot-primeng-theme-styles/src/scss/styles.scss",
@@ -510,7 +514,13 @@
                         "stylePreprocessorOptions": {
                             "includePaths": ["libs/dot-primeng-theme-styles/src/scss"]
                         },
-                        "scripts": ["node_modules/chart.js/dist/Chart.js"]
+                        "scripts": ["node_modules/chart.js/dist/Chart.js"],
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
