@@ -31,7 +31,7 @@ export interface ConfigParams {
         displayServerId: string;
         isCommunity: boolean;
         level: number;
-        levelName: string
+        levelName: string;
     };
     logos: {
         loginScreen: string;

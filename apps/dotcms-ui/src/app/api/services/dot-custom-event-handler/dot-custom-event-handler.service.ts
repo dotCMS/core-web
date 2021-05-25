@@ -80,12 +80,8 @@ export class DotCustomEventHandlerService {
     }
 
     private setDotcmsUiColors($event: CustomEvent): void {
-
-
         // this.dotNavLogoService.setLogo('logo')
         // in the service we'll react to it
-
-
 
         this.dotUiColorsService.setColors(
             document.querySelector('html'),
