@@ -3,8 +3,8 @@ import { SiteService, Site, DotcmsEventsService, DotcmsConfigService } from '@do
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';
-import { filter, map, pluck, tap } from 'rxjs/operators';
-import { config } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { DotNavLogoService } from '@services/dot-nav-logo/dot-nav-logo.service';
 
 @Component({
     selector: 'dot-toolbar',
@@ -14,17 +14,13 @@ import { config } from 'rxjs';
 export class DotToolbarComponent implements OnInit {
     @Input()
     collapsed: boolean;
-
-    navBarLogo$ = this.dotCmsConfigService.getConfig().pipe(
-        map((config) => config.logos.navBar),
-        filter((logo) => logo !== 'NA'),
-        map((logo) => `url("${logo}")`)
-    );
+    logo: string | boolean;
 
     constructor(
         private dotRouterService: DotRouterService,
         private dotcmsEventsService: DotcmsEventsService,
         private dotCmsConfigService: DotcmsConfigService,
+        private dotNavLogoService: DotNavLogoService,
         private siteService: SiteService,
         public dotNavigationService: DotNavigationService,
         public iframeOverlayService: IframeOverlayService
@@ -38,7 +34,13 @@ export class DotToolbarComponent implements OnInit {
                 });
             }
         });
+
+        this.dotNavLogoService.setInitialLogo();
+        this.dotNavLogoService.navBarLogo$.subscribe((logo: string) => {
+            this.logo = logo;
+        })
     }
+
 
     siteChange(site: Site): void {
         this.siteService.switchSite(site);
