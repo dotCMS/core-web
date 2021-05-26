@@ -38,9 +38,8 @@ export class DotToolbarComponent implements OnInit {
         this.dotNavLogoService.setInitialLogo();
         this.dotNavLogoService.navBarLogo$.subscribe((logo: string) => {
             this.logo = logo;
-        })
+        });
     }
-
 
     siteChange(site: Site): void {
         this.siteService.switchSite(site);

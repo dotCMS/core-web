@@ -34,6 +34,6 @@ export class DotNavLogoService {
     }
 
     private setUrlProperty(navLogo: string): string {
-      return `url("${navLogo}")`;
+        return `url("${navLogo}")`;
     }
 }
