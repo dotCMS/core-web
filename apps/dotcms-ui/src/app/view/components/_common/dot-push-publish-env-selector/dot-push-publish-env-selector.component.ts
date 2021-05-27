@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ViewEncapsulation, forwardRef } from '@angula
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
-import { Observable } from 'rxjs';
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-push-publish-env-selector',
@@ -21,7 +20,7 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
     assetIdentifier: string;
     @Input()
     showList = false;
-    pushEnvironments$: Observable<any>;
+    pushEnvironments: DotEnvironment[];
     selectedEnvironments: DotEnvironment[];
     selectedEnvironmentIds: string[] = [];
     value: string[];
@@ -29,8 +28,9 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
     constructor(private pushPublishService: PushPublishService) {}
 
     ngOnInit() {
-        this.pushEnvironments$ = this.pushPublishService.getEnvironments();
         this.pushPublishService.getEnvironments().subscribe((environments) => {
+            this.pushEnvironments = environments;
+
             if (this.pushPublishService.lastEnvironmentPushed) {
                 this.selectedEnvironments = environments.filter((env) => {
                     return this.pushPublishService.lastEnvironmentPushed.includes(env.id);
