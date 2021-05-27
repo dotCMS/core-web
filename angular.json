@@ -635,6 +635,31 @@
                     }
                 }
             }
+        },
+        "block-editor": {
+            "projectType": "library",
+            "root": "libs/block-editor",
+            "sourceRoot": "libs/block-editor/src",
+            "prefix": "dotcms",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "libs/block-editor/src/**/*.ts",
+                            "libs/block-editor/src/**/*.html"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/block-editor"],
+                    "options": {
+                        "jestConfig": "libs/block-editor/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
     }
 }
