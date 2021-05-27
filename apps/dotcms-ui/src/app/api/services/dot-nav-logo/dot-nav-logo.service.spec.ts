@@ -24,7 +24,6 @@ describe('DotNavLogoService', () => {
     it('should set a new logo', (done) => {
         service.setLogo('/dA/id/asset/logo.png');
         service.navBarLogo$.subscribe((logo) => {
-            console.log(logo);
             expect(logo).toBe('url("/dA/id/asset/logo.png")');
             done();
         });
