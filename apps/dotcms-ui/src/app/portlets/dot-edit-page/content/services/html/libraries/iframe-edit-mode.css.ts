@@ -8,6 +8,7 @@ const grayLight = '#c5c5c5';
 
 export const getEditPageCss = (timestampId: string): string => {
     return `
+    // Fonts
     // MATERIAL DESIGN ICONS
     /* fallback */
     @font-face {
@@ -42,12 +43,9 @@ export const getEditPageCss = (timestampId: string): string => {
         font-style: normal;
         font-weight: 400;
         font-display: swap;
-        src: url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.eot'); /* IE9 Compat Modes */
         src: local(''),
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2') format('woff2'), /* Super Modern Browsers */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff') format('woff'), /* Modern Browsers */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
     }
     /* roboto-500 - vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic */
     @font-face {
@@ -55,12 +53,9 @@ export const getEditPageCss = (timestampId: string): string => {
         font-style: normal;
         font-weight: 500;
         font-display: swap;
-        src: url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.eot'); /* IE9 Compat Modes */
         src: local(''),
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2') format('woff2'), /* Super Modern Browsers */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff') format('woff'), /* Modern Browsers */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-500.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
     }
     /* roboto-700 - vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic */
     @font-face {
@@ -68,12 +63,9 @@ export const getEditPageCss = (timestampId: string): string => {
         font-style: normal;
         font-weight: 700;
         font-display: swap;
-        src: url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.eot'); /* IE9 Compat Modes */
         src: local(''),
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2') format('woff2'), /* Super Modern Browsers */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff') format('woff'), /* Modern Browsers */
-        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('/html/fonts/roboto-v27-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-700.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
     }
 
     ${timestampId}:root {
