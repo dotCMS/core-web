@@ -15,18 +15,18 @@ describe('DotNavLogoService', () => {
 
     it('should not set a new logo', (done) => {
         service.setLogo(null);
-        service.navBarLogo$.subscribe(logo => {
+        service.navBarLogo$.subscribe((logo) => {
             expect(logo).toBeNull();
-            done()
-        })
+            done();
+        });
     });
 
     it('should set a new logo', (done) => {
-         service.setLogo('/dA/id/asset/logo.png');
-         service.navBarLogo$.subscribe((logo) => {
-             console.log(logo);
-             expect(logo).toBe('url("/dA/id/asset/logo.png")');
-             done();
-         });
+        service.setLogo('/dA/id/asset/logo.png');
+        service.navBarLogo$.subscribe((logo) => {
+            console.log(logo);
+            expect(logo).toBe('url("/dA/id/asset/logo.png")');
+            done();
+        });
     });
 });

@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class DotNavLogoService{
+export class DotNavLogoService {
     navBarLogo$: BehaviorSubject<string> = new BehaviorSubject('');
 
     constructor() {}
@@ -14,11 +14,11 @@ export class DotNavLogoService{
      * @memberof DotNavLogoService
      */
     setLogo(navLogo: string): void {
-       if (!navLogo) {
-           this.navBarLogo$.next(null);
-           return;
-       }
-      this.navBarLogo$.next(this.setUrlProperty(navLogo));
+        if (!navLogo) {
+            this.navBarLogo$.next(null);
+            return;
+        }
+        this.navBarLogo$.next(this.setUrlProperty(navLogo));
     }
 
     private setUrlProperty(navLogo: string): string {
