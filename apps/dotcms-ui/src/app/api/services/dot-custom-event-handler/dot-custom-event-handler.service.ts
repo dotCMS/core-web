@@ -36,7 +36,7 @@ export class DotCustomEventHandlerService {
                 'edit-contentlet': this.editContentlet.bind(this),
                 'edit-task': this.editTask.bind(this),
                 'create-contentlet': this.createContentlet.bind(this),
-                'company-info-updated': this.setDotcmsUiColors.bind(this),
+                'company-info-updated': this.setPersonalization.bind(this),
                 'push-publish': this.pushPublishDialog.bind(this),
                 'download-bundle': this.downloadBundleDialog.bind(this),
                 'workflow-wizard': this.executeWorkflowWizard.bind(this)
@@ -81,11 +81,8 @@ export class DotCustomEventHandlerService {
         this.dotRouterService.goToEditTask($event.detail.data.inode);
     }
 
-    private setDotcmsUiColors($event: CustomEvent): void {
-        // this.dotNavLogoService.setLogo('logo')
-        // in the service we'll react to it
-
-        this.dotNavLogoService.changeLogo($event.detail.payload.navBarLogo);
+    private setPersonalization($event: CustomEvent): void {
+        this.dotNavLogoService.setLogo($event.detail.payload.navBarLogo);
 
         this.dotUiColorsService.setColors(
             document.querySelector('html'),

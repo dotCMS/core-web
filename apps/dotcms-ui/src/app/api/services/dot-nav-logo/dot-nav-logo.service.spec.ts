@@ -6,11 +6,27 @@ describe('DotNavLogoService', () => {
     let service: DotNavLogoService;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({});
+        TestBed.configureTestingModule({
+            imports: [],
+            providers: []
+        });
         service = TestBed.inject(DotNavLogoService);
     });
 
-    it('should be created', () => {
-        expect(service).toBeTruthy();
+    it('should not set a new logo', (done) => {
+        service.setLogo(null);
+        service.navBarLogo$.subscribe(logo => {
+            expect(logo).toBeNull();
+            done()
+        })
+    });
+
+    it('should set a new logo', (done) => {
+         service.setLogo('/dA/id/asset/logo.png');
+         service.navBarLogo$.subscribe((logo) => {
+             console.log(logo);
+             expect(logo).toBe('url("/dA/id/asset/logo.png")');
+             done();
+         });
     });
 });

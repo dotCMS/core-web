@@ -11,12 +11,11 @@
         <div
             class="toolbar__logo-wrapper"
             [class.toolbar__logo-wrapper--collapsed]="dotNavigationService.collapsed$ | async"
-            [class.toolbar__logo-wrapper--whitelabel]="logo"
+            [class.toolbar__logo-wrapper--whitelabel]="logo$ | async"
         >
-            <div *ngIf="logo; else toolbarLogo">
+            <div *ngIf="logo$ | async as logo; else toolbarLogo">
                 <span
                     class="toolbar__logo--whitelabel"
-                    [style.background-image]="'url(' + photo + ')'"
                     [ngStyle]="{ 'background-image': logo, 'background-size': 'contain' }"
                 ></span>
             </div>

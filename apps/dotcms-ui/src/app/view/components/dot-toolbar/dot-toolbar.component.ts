@@ -3,8 +3,8 @@ import { SiteService, Site, DotcmsEventsService, DotcmsConfigService } from '@do
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';
-import { filter, map } from 'rxjs/operators';
 import { DotNavLogoService } from '@services/dot-nav-logo/dot-nav-logo.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'dot-toolbar',
@@ -14,7 +14,7 @@ import { DotNavLogoService } from '@services/dot-nav-logo/dot-nav-logo.service';
 export class DotToolbarComponent implements OnInit {
     @Input()
     collapsed: boolean;
-    logo: string | boolean;
+    logo$: BehaviorSubject<string> = this.dotNavLogoService.navBarLogo$;
 
     constructor(
         private dotRouterService: DotRouterService,
@@ -33,11 +33,6 @@ export class DotToolbarComponent implements OnInit {
                     this.siteChange(defaultSite);
                 });
             }
-        });
-
-        this.dotNavLogoService.setInitialLogo();
-        this.dotNavLogoService.navBarLogo$.subscribe((logo: string) => {
-            this.logo = logo;
         });
     }
 
