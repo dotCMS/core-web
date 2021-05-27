@@ -41,7 +41,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TreeTableModule } from 'primeng/treetable';
 
+import { NgxTiptapModule } from 'block-editor';
+
 export const CUSTOM_MODULES = [
+    NgxTiptapModule,
     DotToolbarModule,
     DotActionButtonModule,
     DotContentletEditorModule,
