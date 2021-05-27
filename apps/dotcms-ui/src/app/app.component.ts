@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DotcmsConfigService, DotUiColors } from '@dotcms/dotcms-js';
+import { ConfigParams, DotcmsConfigService, DotUiColors } from '@dotcms/dotcms-js';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
-import { take, map, tap } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotNavLogoService } from '@services/dot-nav-logo/dot-nav-logo.service';
 @Component({
@@ -23,8 +23,10 @@ export class AppComponent implements OnInit {
             .getConfig()
             .pipe(
                 take(1),
-                tap(console.log),
-                map((config) => ({ colors: config.colors, navBar: config.logos.navBar }))
+                map((config: ConfigParams) => ({
+                    colors: config.colors,
+                    navBar: config.logos?.navBar
+                }))
             )
             .subscribe(({ colors, navBar }: { colors: DotUiColors; navBar: string }) => {
                 this.dotNavLogoService.setLogo(navBar);
