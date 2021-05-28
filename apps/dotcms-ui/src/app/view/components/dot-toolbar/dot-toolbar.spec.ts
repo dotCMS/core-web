@@ -180,7 +180,7 @@ describe('DotToolbarComponent', () => {
     });
 
     it('should have default logo', () => {
-        dotNavLogoService.navBarLogo$.next(null)
+        dotNavLogoService.navBarLogo$.next(null);
         fixture.detectChanges();
         const defaultLogo = de.nativeElement.querySelector('.toolbar__logo');
         expect(defaultLogo).not.toBeNull();
