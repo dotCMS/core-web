@@ -7,9 +7,11 @@ export class DotNavLogoService {
     navBarLogo$: BehaviorSubject<string> = new BehaviorSubject('');
 
     constructor() {}
+    
     /**
-     *  Sets the initial logo via NgOnInit
      *
+     *
+     * @param {string} navLogo
      * @return {*}  {void}
      * @memberof DotNavLogoService
      */
