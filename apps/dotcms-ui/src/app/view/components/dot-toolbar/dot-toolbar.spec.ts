@@ -177,7 +177,7 @@ describe('DotToolbarComponent', () => {
 
     it('should have default logo', () => {
         comp.logo$.next(null);
-        fixture.detectChanges()
+        fixture.detectChanges();
         const defaultLogo = de.nativeElement.querySelector('.toolbar__logo');
         expect(defaultLogo).not.toBeNull();
     });
@@ -185,9 +185,9 @@ describe('DotToolbarComponent', () => {
     it('should have the logo passed to the subject', () => {
         const imageUrlProp = 'url("image.png")';
         comp.logo$.next(imageUrlProp);
-        fixture.detectChanges()
+        fixture.detectChanges();
         const newLogo = de.nativeElement.querySelector('.toolbar__logo--whitelabel');
-        expect(newLogo.style['background-image']).toBe(imageUrlProp)
+        expect(newLogo.style['background-image']).toBe(imageUrlProp);
         expect(newLogo).not.toBeNull();
     });
 });
