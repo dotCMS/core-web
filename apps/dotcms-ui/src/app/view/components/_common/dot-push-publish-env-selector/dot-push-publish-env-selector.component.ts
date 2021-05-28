@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation, forwardRef } from '@angula
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
+import { take } from 'rxjs/operators';
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-push-publish-env-selector',
@@ -28,19 +29,22 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
     constructor(private pushPublishService: PushPublishService) {}
 
     ngOnInit() {
-        this.pushPublishService.getEnvironments().subscribe((environments) => {
-            this.pushEnvironments = environments;
+        this.pushPublishService
+            .getEnvironments()
+            .pipe(take(1))
+            .subscribe((environments) => {
+                this.pushEnvironments = environments;
 
-            if (this.pushPublishService.lastEnvironmentPushed) {
-                this.selectedEnvironments = environments.filter((env) => {
-                    return this.pushPublishService.lastEnvironmentPushed.includes(env.id);
-                });
-                this.valueChange('', this.selectedEnvironments);
-            } else if (environments.length === 1) {
-                this.selectedEnvironments = environments;
-                this.valueChange('', this.selectedEnvironments);
-            }
-        });
+                if (this.pushPublishService.lastEnvironmentPushed) {
+                    this.selectedEnvironments = environments.filter((env) => {
+                        return this.pushPublishService.lastEnvironmentPushed.includes(env.id);
+                    });
+                    this.valueChange('', this.selectedEnvironments);
+                } else if (environments.length === 1) {
+                    this.selectedEnvironments = environments;
+                    this.valueChange('', this.selectedEnvironments);
+                }
+            });
     }
 
     propagateChange = (_: any) => {};
