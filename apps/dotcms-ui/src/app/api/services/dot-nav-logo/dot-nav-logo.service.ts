@@ -7,7 +7,7 @@ export class DotNavLogoService {
     navBarLogo$: BehaviorSubject<string> = new BehaviorSubject('');
 
     constructor() {}
-    
+
     /**
      *
      *
