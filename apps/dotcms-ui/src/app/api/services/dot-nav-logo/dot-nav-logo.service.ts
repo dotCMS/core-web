@@ -16,10 +16,10 @@ export class DotNavLogoService {
      * @memberof DotNavLogoService
      */
     setLogo(navLogo: string): void {
-        if(navLogo.startsWith('/dA')) {
-          this.navBarLogo$.next(this.setUrlProperty(navLogo));
+        if (navLogo.startsWith('/dA')) {
+            this.navBarLogo$.next(this.setUrlProperty(navLogo));
         } else {
-          this.navBarLogo$.next(null);
+            this.navBarLogo$.next(null);
         }
     }
 
