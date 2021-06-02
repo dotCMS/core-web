@@ -9,7 +9,7 @@ export class DotNavLogoService {
     constructor() {}
 
     /**
-     *
+     * Sets a logo for the nav bar
      *
      * @param {string} navLogo
      * @return {*}  {void}
