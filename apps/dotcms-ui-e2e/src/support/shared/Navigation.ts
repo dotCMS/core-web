@@ -4,9 +4,9 @@ class Navigation {
     }
 
     static assertPageUrlIs(url: string) {
-        cy.location({ timeout: 10000 })
-            .its('href')
-            .should('eq', `${Cypress.env('baseUrl')}${url}`);
+        cy.location().should((location) => {
+            expect(location.href.indexOf(url)).to.be.greaterThan(-1);
+        });
     }
 
     static async getIdFromUrl(): Promise<string> {

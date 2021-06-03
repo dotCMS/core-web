@@ -13,7 +13,7 @@
         "e2e": "ng e2e dotcms-ui-e2e --headless true --base-url ${BASEURL:-http://localhost:8080} || (npm run poste2e && exit 1)",
         "e2e:open": "ng e2e dotcms-ui-e2e --watch --base-url ${BASEURL:-http://localhost:8080}",
 
-        "e2e:clean:reports": "rm -R -f dist/cypress/apps/dotcms-ui-e2e/* && mkdir dist/cypress/apps/dotcms-ui-e2e/reports && mkdir dist/cypress/apps/dotcms-ui-e2e/reports/results",
+        "e2e:clean:reports": "rm -R -f ./dist/cypress/apps/dotcms-ui-e2e/* && mkdir -p ./dist/cypress/apps/dotcms-ui-e2e/reports/results",
         "pree2e": "npm run e2e:clean:reports",
         "e2e:combine-reports": "mochawesome-merge dist/cypress/apps/dotcms-ui-e2e/reports/results/*.json > dist/cypress/apps/dotcms-ui-e2e/reports/results/report.json",
         "e2e:generate-report": "marge dist/cypress/apps/dotcms-ui-e2e/reports/results/report.json -f index -o dist/cypress/apps/dotcms-ui-e2e/reports",
