@@ -50,4 +50,5 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           LICENSE_KEY: ${{ secrets.DOTCMS_LICENSE }}
-          #BUILD_ID: master ask in dot-cdci if exist, or use master instead
+          # WAIT_DOTCMS_FOR: 3m
+          # BUILD_ID: master ask in dot-cdci if exist, or use master instead
