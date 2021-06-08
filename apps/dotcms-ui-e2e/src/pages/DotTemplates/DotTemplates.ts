@@ -7,14 +7,14 @@ const CREATE_TEMPLATE_BUTTON = 'dot-action-button dot-icon i';
 
 class DotTemplates {
     static openPage() {
-        cy.visit('/dotAdmin');
-        cy.wait(10000)
-        // cy.intercept('GET', 'v1/templates').as('templates');
+        // cy.visit('/dotAdmin');
+        // cy.wait(10000)
+        cy.intercept('GET', 'v1/templates').as('templates');
         Navigation.visit(URL);
         // cy.wait(10000)
         Navigation.assertPageUrlIs(URL);
         // cy.wait(5000)
-        // cy.wait('@templates');
+        cy.wait('@templates');
     }
 
     static checkTemplatesPageLoaded() {
@@ -59,7 +59,7 @@ class DotTemplates {
 
     static checkEditTemplatesPageLoaded() {
         // TODO: Check other components loaded on Edit Template page
-        cy.wait(10000);
+        // cy.wait(10000);
         Page.assertElementContainsText('#p-tabpanel-0-label .p-tabview-title', `design`); // Secondary Menu bar
         Page.assertElementContainsText('#p-tabpanel-1-label .p-tabview-title', `Permissions`); // Secondary Menu bar
         Page.assertElementContainsText('#p-tabpanel-2-label .p-tabview-title', `History`); // Secondary Menu bar

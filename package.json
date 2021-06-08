@@ -10,7 +10,7 @@
         "build": "ng build",
         "test": "ng test",
         "lint": "nx workspace-lint && ng lint",
-        "e2e": "ng e2e dotcms-ui-e2e --headless true --base-url ${BASEURL:-http://localhost:8080} || (npm run poste2e && exit 1)",
+        "e2e": "ng e2e dotcms-ui-e2e --headless true --browser chrome --base-url ${BASEURL:-http://localhost:8080} || (npm run poste2e && exit 1)",
         "e2e:open": "ng e2e dotcms-ui-e2e --watch --base-url ${BASEURL:-http://localhost:8080}",
 
         "e2e:clean:reports": "rm -R -f ./dist/cypress/apps/dotcms-ui-e2e/* && mkdir -p ./dist/cypress/apps/dotcms-ui-e2e/reports/results",

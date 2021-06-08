@@ -54,10 +54,10 @@ class DotEditPage {
             .iframe()
             .then((iframe) => {
                 cy.get(iframe)
-                    .find(`${container} .row > div`)
+                    .find(`${container} .col-lg-12`)
                     .children()
                     .its('length')
-                    .should('be.gte', size + 1);
+                    .should('eq', size);
             });
     }
 }
