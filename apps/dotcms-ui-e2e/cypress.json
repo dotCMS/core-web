@@ -22,5 +22,6 @@
     "videosFolder": "../../dist/cypress/apps/dotcms-ui-e2e/videos",
     "screenshotsFolder": "../../dist/cypress/apps/dotcms-ui-e2e/screenshots",
     "chromeWebSecurity": false,
-    "pageLoadTimeout": 100000
+    "pageLoadTimeout": 100000,
+    "requestTimeout": 10000
 }
