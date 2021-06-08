@@ -17,12 +17,16 @@
 import './commands';
 import addContext from 'mochawesome/addContext';
 
+// now any cookie with the name 'JSESSIONID' or 'access_token'
+// will not be cleared before each test runs
+Cypress.Cookies.defaults({
+    preserve: ['JSESSIONID', 'access_token']
+});
+
 // Adds screenshots & videos to failed tests report
 Cypress.on('test:after:run', (test, runnable) => {
     if (test.state === 'failed') {
-        const screenshot = `../screenshots/${Cypress.spec.name}/${
-            runnable.parent.title
-        } -- ${test.title} (failed).png`;
+        const screenshot = `../screenshots/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
         addContext({ test }, screenshot);
 
         const video = `../videos/${Cypress.spec.name}.mp4`;
