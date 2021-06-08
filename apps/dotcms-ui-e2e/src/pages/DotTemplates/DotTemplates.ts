@@ -8,13 +8,13 @@ const CREATE_TEMPLATE_BUTTON = 'dot-action-button dot-icon i';
 class DotTemplates {
     static openPage() {
         cy.visit('/dotAdmin');
-        cy.wait(10000)
-        // cy.intercept('GET', 'v1/templates').as('templates');
+        // cy.wait(10000)
+        cy.intercept('GET', 'v1/templates').as('templates');
         Navigation.visit(URL);
-        cy.wait(10000)
+        // cy.wait(10000)
         Navigation.assertPageUrlIs(URL);
-        cy.wait(5000)
-        // cy.wait('@templates');
+        // cy.wait(5000)
+        cy.wait('@templates');
     }
 
     static checkTemplatesPageLoaded() {
