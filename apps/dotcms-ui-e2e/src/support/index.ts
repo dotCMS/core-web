@@ -23,6 +23,8 @@ Cypress.Cookies.defaults({
     preserve: ['JSESSIONID', 'access_token']
 });
 
+Cypress.Cookies.debug(true);
+
 // Adds screenshots & videos to failed tests report
 Cypress.on('test:after:run', (test, runnable) => {
     if (test.state === 'failed') {
