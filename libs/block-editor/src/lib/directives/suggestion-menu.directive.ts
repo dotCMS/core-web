@@ -73,10 +73,6 @@ export class SuggestionMenuDirective {
             .run();
     }
 
-    private getItems(): any {
-        return [{ name: 'A' }, { name: 'B' }];
-    }
-
     private render(): any {
         let dotListing;
         let popup;
@@ -100,15 +96,6 @@ export class SuggestionMenuDirective {
                     popup[0].setContent(this._el.nativeElement);
                 });
 
-                // dotListing.addEventListener('selected', (item: CustomEvent) => {
-                //     const data: DotListItemModel = item.detail;
-                //     if (isContentlet(data.value)) {
-                //         props.command({ contentlet: data.value });
-                //     } else {
-                //         popup[0].setContent(loader);
-                //         getContentlets(data.value.variable, dotListing, popup[0]);
-                //     }
-                // });
             },
             onUpdate(props) {
                 console.log('onUpdate: ', props);
@@ -129,12 +116,6 @@ export class SuggestionMenuDirective {
         return loader;
     }
 
-    // function getContentlets(variable: string, dotListing, tippy): void {
-    //     DotContentLetService.get(variable).then((items) => {
-    //         dotListing.items = generateContentOptions(items);
-    //         tippy.setContent(dotListing);
-    //     });
-    // }
 
     private isContentlet(item: any): boolean {
         return item.publishDate ? true : false;
