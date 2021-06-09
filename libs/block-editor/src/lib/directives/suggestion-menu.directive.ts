@@ -50,7 +50,6 @@ export class SuggestionMenuDirective {
     // }
 
     handleSelected(item: any): void {
-        console.log('selected', item);
         if (this.isContentlet(item)) {
             this.onStartProps.command({ contentlet: item });
         } else {
@@ -74,14 +73,12 @@ export class SuggestionMenuDirective {
     }
 
     private render(): any {
-        let dotListing;
         let popup;
         this.onStartTippy = popup;
         // const loader = this.getLoader();
         return {
             onStart: (props) => {
                 this.onStartProps = props;
-                dotListing = document.createElement('dot-listing');
                 popup = tippy('body', {
                     appendTo: 'parent',
                     getReferenceClientRect: props.clientRect,
@@ -95,7 +92,6 @@ export class SuggestionMenuDirective {
                     this.items.emit(items);
                     popup[0].setContent(this._el.nativeElement);
                 });
-
             },
             onUpdate(props) {
                 console.log('onUpdate: ', props);
@@ -115,7 +111,6 @@ export class SuggestionMenuDirective {
         loader.innerHTML = '<div></div>';
         return loader;
     }
-
 
     private isContentlet(item: any): boolean {
         return item.publishDate ? true : false;
