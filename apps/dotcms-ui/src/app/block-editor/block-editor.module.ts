@@ -6,6 +6,8 @@ import { NgxTiptapModule } from 'block-editor';
 import { FormsModule } from '@angular/forms';
 import { BlockEditorRoutingModule } from './bloc-editor-routing.module';
 import { DotPortletBaseModule } from '../view/components/dot-portlet-base/dot-portlet-base.module';
+import { OrderListModule } from 'primeng/orderlist';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
     declarations: [BlockEditorComponent],
@@ -15,7 +17,9 @@ import { DotPortletBaseModule } from '../view/components/dot-portlet-base/dot-po
         FormsModule,
         NgxTiptapModule,
         BlockEditorRoutingModule,
-        DotPortletBaseModule
+        DotPortletBaseModule,
+        OrderListModule,
+        ListboxModule
     ]
 })
 export class BlockEditorModule {}

@@ -1,0 +1,22 @@
+
+tiptap-editor {
+    margin: 0 20px;
+
+}
+::ng-deep{
+    .dot-content {
+        display: flex;
+        padding: 8px;
+        outline: none;
+        background: bisque;
+
+        img {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #ccc;
+            margin-right: 8px;
+        }
+    }
+}
+
+

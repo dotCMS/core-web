@@ -1,3 +1,8 @@
-<dot-portlet-base>
-    <tiptap-editor [editor]="editor" [(ngModel)]="value"></tiptap-editor>
-</dot-portlet-base>
+<tiptap-editor [editor]="editor" [(ngModel)]="value"></tiptap-editor>
+<dot-suggestion-menu #suggestion [selected]='selectedItem' (items)='loadItems($event)'  [editor]='editor'>
+    <p-listbox  [options]="items"  (onClick)='handleSlected($event)'>
+        <ng-template let-item pTemplate="item">
+            <div>{{item?.name}}-{{item?.title}}</div>
+        </ng-template>
+    </p-listbox>
+</dot-suggestion-menu>
