@@ -1,8 +1,15 @@
+:host {
+    display: block;
+    padding: 5rem;
+}
+
 
 tiptap-editor {
+    display: block;
     margin: 0 20px;
-
 }
+
+// This will go when block is a angular component
 ::ng-deep{
     .dot-content {
         display: flex;

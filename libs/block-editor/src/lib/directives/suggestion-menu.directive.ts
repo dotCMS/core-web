@@ -14,7 +14,9 @@ export class SuggestionMenuDirective {
     @Input() editor!: Editor;
     @Output() items = new EventEmitter<any>();
     @Input() set selected(value: any) {
-        this.handleSelected(value);
+        if (value) {
+            this.handleSelected(value);
+        }
     }
 
     private onStartProps: any;
@@ -81,6 +83,7 @@ export class SuggestionMenuDirective {
                 this.onStartProps = props;
                 popup = tippy('body', {
                     appendTo: 'parent',
+                    placement: 'auto-start',
                     getReferenceClientRect: props.clientRect,
                     content: this.getLoader(),
                     showOnCreate: true,
@@ -88,9 +91,9 @@ export class SuggestionMenuDirective {
                     trigger: 'manual'
                 });
                 DotContentTypeService.get().then((items) => {
+                    popup[0].setContent(this._el.nativeElement);
                     // dotListing.items = generateListOptions(items);
                     this.items.emit(items);
-                    popup[0].setContent(this._el.nativeElement);
                 });
             },
             onUpdate(props) {
