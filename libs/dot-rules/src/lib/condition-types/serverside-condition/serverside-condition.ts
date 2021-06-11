@@ -147,7 +147,6 @@ export class ServersideCondition {
     }
 
     private static getRightHandArgCount(selectedComparison): boolean {
-        console.log('---*** getRightHandArgCount', selectedComparison);
         let argCount = null;
         if (selectedComparison) {
             argCount = Verify.isNumber(selectedComparison.rightHandArgCount)
@@ -162,12 +161,10 @@ export class ServersideCondition {
     }
 
     ngOnChanges(change): void {
-        console.log('=====  change', change);
         let paramDefs = null;
         if (change.componentInstance) {
             this._rhArgCount = null;
             paramDefs = this.componentInstance.type.parameters;
-            console.log('***paramDefs', paramDefs);
         }
         if (paramDefs) {
             let prevPriority = 0;
@@ -175,14 +172,6 @@ export class ServersideCondition {
             Object.keys(paramDefs).forEach((key) => {
                 const paramDef = this.componentInstance.getParameterDef(key);
                 const param = this.componentInstance.getParameter(key);
-                // this.loggerService.info('ServersideCondition', 'onChange', 'params', key, param);
-                
-                // const input = this.getInputFor(paramDef.inputType.type, param, paramDef);
-                // if (paramDef.priority < prevPriority) {
-                //     this._inputs = [input, ...this._inputs];
-                // } else {
-                //     this._inputs.push(input);
-                // }
                 prevPriority = paramDef.priority;
 
                 const input = this.getInputFor(paramDef.inputType.type, param, paramDef);
@@ -212,10 +201,6 @@ export class ServersideCondition {
             if (comparison) {
                 this.applyRhsCount(comparison.value);
             }
-            console.log('**this._inputs', this._inputs);
-            console.log('**this._rhArgCount', this._rhArgCount);
-            console.log('----------------------');
-            console.log('');
         }
     }
 
@@ -258,7 +243,7 @@ export class ServersideCondition {
         let input;
         if (type === 'text' || type === 'number') {
             input = this.getTextInput(param, paramDef, i18nBaseKey);
-            // this.loggerService.info('ServersideCondition', 'getInputFor', type, paramDef);
+            this.loggerService.info('ServersideCondition', 'getInputFor', type, paramDef);
         } else if (type === 'datetime') {
             input = this.getDateTimeInput(param, paramDef, i18nBaseKey);
         } else if (type === 'restDropdown') {
@@ -390,9 +375,6 @@ export class ServersideCondition {
         const comparisonDef = this.componentInstance.getParameterDef('comparison');
         const comparisonType: CwDropdownInputModel = <CwDropdownInputModel>comparisonDef.inputType;
         const selectedComparisonDef = comparisonType.options[selectedComparison];
-        console.log('----PRE applyRhsCount', this._rhArgCount);
-
         this._rhArgCount = ServersideCondition.getRightHandArgCount(selectedComparisonDef);
-        console.log('----applyRhsCount', this._rhArgCount);
     }
 }
