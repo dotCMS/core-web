@@ -1,8 +1,10 @@
 <tiptap-editor [editor]="editor" [(ngModel)]="value"></tiptap-editor>
-<dot-suggestion-menu [selected]='selectedItem' (items)='loadItems($event)'  [editor]='editor'>
+<dotcms-suggestions [editor]="editor"></dotcms-suggestions>
+<!-- <dot-suggestion-menu [selected]="selectedItem" (items)="loadItems($event)" [editor]="editor"> 
+    <div #container></div>
     <p-listbox  [options]="items"  (onClick)='handleSelected($event)'>
         <ng-template let-item pTemplate="item">
             <div>{{item?.name}}-{{item?.title}}</div>
         </ng-template>
-    </p-listbox>
-</dot-suggestion-menu>
+    </p-listbox> 
+</dot-suggestion-menu> -->

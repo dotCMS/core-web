@@ -1,4 +1,14 @@
-import { Directive, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Directive,
+    ElementRef,
+    Input,
+    Output,
+    EventEmitter,
+    OnInit,
+    ViewContainerRef,
+    ViewChild
+
+} from '@angular/core';
 import { Editor, Range } from '@tiptap/core';
 import { Suggestion } from '@tiptap/suggestion';
 import tippy from 'tippy.js';
@@ -8,7 +18,10 @@ import { DotContentLetService } from '../services/dotContentLet.service';
 @Directive({
     selector: 'dot-suggestion-menu[editor]'
 })
-export class SuggestionMenuDirective {
+export class SuggestionMenuDirective implements OnInit {
+    @ViewChild('container', { read: ViewContainerRef })
+    container!: ViewContainerRef;
+
     constructor(private _el: ElementRef<HTMLElement>) {}
 
     @Input() editor!: Editor;
@@ -45,6 +58,8 @@ export class SuggestionMenuDirective {
                 })
             );
         });
+
+        console.log(this.container)
     }
 
     // ngOnDestroy(): void {
@@ -90,11 +105,11 @@ export class SuggestionMenuDirective {
                     interactive: true,
                     trigger: 'manual'
                 });
-                DotContentTypeService.get().then((items) => {
-                    popup[0].setContent(this._el.nativeElement);
-                    // dotListing.items = generateListOptions(items);
-                    this.items.emit(items);
-                });
+                // DotContentTypeService.get().then((items) => {
+                //     popup[0].setContent(this._el.nativeElement);
+                //     // dotListing.items = generateListOptions(items);
+                //     this.items.emit(items);
+                // });
             },
             onUpdate(props) {
                 console.log('onUpdate: ', props);
