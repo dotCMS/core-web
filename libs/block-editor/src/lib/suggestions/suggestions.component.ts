@@ -61,11 +61,13 @@ export class SuggestionsComponent implements OnInit {
                     componentRef.instance.items = items.map((item) => {
                         return {
                             label: item['name'],
-                            icon: 'pi pi-fw pi-plus'
+                            icon: 'pi pi-fw pi-plus',
+                            command: () => {
+                                console.log(item);
+                            }
                         };
                     });
                     componentRef.changeDetectorRef.detectChanges();
-                    this.container.clear();
                     // get the element
                     console.log(componentRef.location.nativeElement.querySelector('.p-menu'));
 
@@ -83,7 +85,7 @@ export class SuggestionsComponent implements OnInit {
                 });
             },
             onUpdate: (props) => {
-                console.log('onUpdate: ', props)            
+                console.log('onUpdate: ', props);
             },
             onKeyDown(props) {
                 console.log('onKeyDown', props);

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
     selector: 'dotcms-suggestion-list',
@@ -6,7 +6,6 @@ import { Component, Input, OnInit } from '@angular/core';
     styleUrls: ['./suggestion-list.component.scss']
 })
 export class SuggestionListComponent implements OnInit {
-    loading = true;
     @Input() items = [];
 
     constructor() {}
