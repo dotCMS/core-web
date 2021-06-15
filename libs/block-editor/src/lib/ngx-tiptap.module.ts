@@ -11,9 +11,12 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 
 import { MenuModule } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
+import { ContentletBlockComponent } from './extentions/contentlet-block/contentlet-block.component';
+
 
 @NgModule({
-    imports: [CommonModule, MenuModule],
+    imports: [CommonModule, MenuModule, CardModule],
     declarations: [
         EditorDirective,
         FloatingMenuDirective,
@@ -22,7 +25,8 @@ import { CommonModule } from '@angular/common';
         NodeViewContentDirective,
         SuggestionMenuDirective,
         SuggestionListComponent,
-        SuggestionsComponent
+        SuggestionsComponent,
+        ContentletBlockComponent
     ],
     exports: [
         SuggestionsComponent,

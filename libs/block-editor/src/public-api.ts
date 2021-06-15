@@ -11,3 +11,4 @@ export * from './lib/ngx-tiptap.module';
 
 export * from './lib/AngularRenderer';
 export * from './lib/NodeViewRenderer';
+export * from './lib/extentions/contentlet-block.extension'

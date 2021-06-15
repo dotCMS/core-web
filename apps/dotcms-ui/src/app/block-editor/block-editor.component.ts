@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import { DotContent } from '../../../../../libs/block-editor/src/lib/extentions/dotContent.extention';
+import { ContentletBlockExtension } from 'block-editor';
 
 @Component({
     selector: 'dot-block-editor',
@@ -10,15 +10,18 @@ import { DotContent } from '../../../../../libs/block-editor/src/lib/extentions/
 })
 export class BlockEditorComponent {
     items: any;
-    editor = new Editor({
-        extensions: [StarterKit, DotContent]
-    });
-
     selectedItem: any;
+    editor: Editor;
 
     value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
-    constructor() {}
+    constructor(private injector: Injector) {}
+
+    ngOnInit() {
+        this.editor = new Editor({
+            extensions: [StarterKit, ContentletBlockExtension(this.injector)]
+        });
+    }
 
     handleSelected(event: any): void {
         this.selectedItem = event.option;
