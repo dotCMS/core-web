@@ -39,7 +39,7 @@ export class ConditionService {
         return json;
     }
 
-    static fromServerConditionTransformFn(condition: ICondition): ConditionModel {
+    static fromServerConditionTransformFn(condition: ICondition, showLogs = false): ConditionModel {
         let conditionModel: ConditionModel = null;
         try {
             conditionModel = new ConditionModel(condition);
@@ -48,8 +48,10 @@ export class ConditionService {
             Object.keys(values).forEach((key) => {
                 const x = values[key];
                 conditionModel.setParameter(key, x.value, x.priority);
-                // tslint:disable-next-line:no-console
-                console.log('ConditionService', 'setting parameter', key, x);
+                if (showLogs) {
+                    // tslint:disable-next-line:no-console
+                    console.log('ConditionService', 'setting parameter', key, x);
+                }
             });
         } catch (e) {
             // tslint:disable-next-line:no-console
@@ -110,7 +112,10 @@ export class ConditionService {
             map((entity) => {
                 entity.id = conditionId;
                 entity._type = conditionTypes ? conditionTypes[entity.conditionlet] : null;
-                return ConditionService.fromServerConditionTransformFn(entity);
+                return ConditionService.fromServerConditionTransformFn(
+                    entity,
+                    this.loggerService.shouldShowLogs()
+                );
             })
         );
     }

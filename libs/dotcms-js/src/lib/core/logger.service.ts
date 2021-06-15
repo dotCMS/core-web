@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StringUtils } from './string-utils.service';
-import { environment } from '../environments/environment';
+import { environment } from '../../../../../apps/dotcms-ui/src/environments/environment';
 import { HttpRequestUtils } from './util/http-request-utils';
 const DEV_MODE_PARAM = 'devMode';
 
@@ -14,44 +14,42 @@ export class LoggerService {
     private httpRequestUtils: HttpRequestUtils;
 
     constructor(private stringUtils: StringUtils) {
-        // tslint:disable:no-console
-        console.info('Setting the logger...');
         this.httpRequestUtils = new HttpRequestUtils();
         this.showLogs = this.shouldShowLogs();
 
         if (this.showLogs) {
-            console.info('Developer mode logger on');
+            console.info('Setting the logger --> Developer mode logger on');
         }
     }
 
     info(message?: any, ...optionalParams: any[]): void {
-        if (optionalParams && optionalParams.length > 0) {
+        if (this.showLogs && optionalParams && optionalParams.length > 0) {
             console.info(this.wrapMessage(message), optionalParams);
-        } else {
+        } else if (this.showLogs) {
             console.info(this.wrapMessage(message));
         }
     }
 
     error(message?: any, ...optionalParams: any[]): void {
-        if (optionalParams && optionalParams.length > 0) {
+        if (this.showLogs && optionalParams && optionalParams.length > 0) {
             console.error(this.wrapMessage(message), optionalParams);
-        } else {
+        } else if (this.showLogs) {
             console.error(this.wrapMessage(message));
         }
     }
 
     warn(message?: any, ...optionalParams: any[]): void {
-        if (optionalParams && optionalParams.length > 0) {
+        if (this.showLogs && optionalParams && optionalParams.length > 0) {
             console.warn(this.wrapMessage(message), optionalParams);
-        } else {
+        } else if (this.showLogs) {
             console.warn(this.wrapMessage(message));
         }
     }
 
     debug(message?: any, ...optionalParams: any[]): void {
-        if (optionalParams && optionalParams.length > 0) {
+        if (this.showLogs && optionalParams && optionalParams.length > 0) {
             console.debug(this.wrapMessage(message), optionalParams);
-        } else {
+        } else if (this.showLogs) {
             console.debug(this.wrapMessage(message));
         }
     }
