@@ -8,7 +8,7 @@ import { I18nService } from '../../services/system/locale/I18n';
 import { ObservableHack } from '../../services/util/ObservableHack';
 import { CwRestDropdownInputModel } from '../../services/util/CwInputModel';
 import { Verify } from '../../services/validation/Verify';
-import { ParameterModel } from '../../services/Rule';
+import { ConditionModel, ParameterModel } from '../../services/Rule';
 import { LoggerService } from '@dotcms/dotcms-js';
 
 @Component({
@@ -181,7 +181,7 @@ export class ServersideCondition {
 
             this._inputs = this._inputs.filter(i => i);
 
-            if (this._inputs.length <= 2) {
+            if (this._inputs.length <= 2 && change.componentInstance.currentValue instanceof ConditionModel) {
                 this._inputs = [{ flex: 40, type: 'spacer' }, ...this._inputs];
             }
 
