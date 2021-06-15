@@ -6,11 +6,14 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import { Editor } from '@tiptap/core';
+import { Editor, Range } from '@tiptap/core';
 import Suggestion from '@tiptap/suggestion';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import tippy from 'tippy.js';
+
+// theses needs to be Angular Services
 import { DotContentTypeService } from '../services/dotContentType.service';
+import { DotContentLetService } from '../services/dotContentLet.service';
 
 @Component({
     selector: 'dotcms-suggestions',
@@ -34,8 +37,25 @@ export class SuggestionsComponent implements OnInit {
                 char: '/c',
                 allowSpaces: true,
                 startOfLine: true,
-                command: () => {
-                    console.log('command');
+                command: ({
+                    editor,
+                    range,
+                    props
+                }: {
+                    editor: Editor;
+                    range: Range;
+                    props: any;
+                }) => {
+                    editor
+                        .chain()
+                        .focus()
+                        .insertContentAt(range, {
+                            type: 'dotContent',
+                            attrs: {
+                                data: props
+                            }
+                        })
+                        .run();
                 },
                 allow: ({ editor, range }) => {
                     return editor.can().insertContentAt(range, { type: 'dotContentAutoComplete' });
@@ -63,19 +83,28 @@ export class SuggestionsComponent implements OnInit {
                             label: item['name'],
                             icon: 'pi pi-fw pi-plus',
                             command: () => {
-                                console.log(item);
+                                DotContentLetService.get(item['variable']).then((contentlets) => {
+                                    const newElements = contentlets.map((contentlet) => {
+                                        return {
+                                            label: contentlet['title'],
+                                            icon: 'pi pi-fw pi-plus',
+                                            command: () => {
+                                                props.command(contentlet);
+                                            }
+                                        };
+                                    });
+                                    componentRef.instance.items = newElements;
+                                    componentRef.changeDetectorRef.detectChanges();
+                                });
                             }
                         };
                     });
                     componentRef.changeDetectorRef.detectChanges();
-                    // get the element
-                    console.log(componentRef.location.nativeElement.querySelector('.p-menu'));
-
-                    console.log(this.editor.view.dom);
 
                     this.popup = tippy(this.editor.view.dom, {
                         appendTo: document.body,
-                        content: componentRef.location.nativeElement.querySelector('.p-menu'),
+                        // content: componentRef.location.nativeElement.querySelector('.p-menu'),
+                        content: componentRef.location.nativeElement,
                         placement: 'auto-start',
                         getReferenceClientRect: props.clientRect,
                         showOnCreate: true,
