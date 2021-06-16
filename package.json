@@ -22,7 +22,7 @@
         "docker:test": "npm run docker:build;IMAGE_BASE_NAME=core-web docker-compose -f docker-compose-running-test.yml up",
         "docker:build": "docker build -t core-web .",
         "analyze": "ng build --stats-json;webpack-bundle-analyzer dist/stats.json",
-        "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
+        "docs:json": "compodoc -p ./tsconfig.base.json -e json -d .",
         "storybook": "npm run docs:json && start-storybook -p 6006",
         "affected:apps": "nx affected:apps",
         "affected:libs": "nx affected:libs",
