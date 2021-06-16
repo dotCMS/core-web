@@ -1,0 +1,26 @@
+@use "variables" as *;
+
+:host{
+    width: 225px;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.edit-page-content-type-nav__items {
+    a {
+        width: 100px;
+        height: 80px;
+        border: 1px solid $gray-light;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: $spacing-1 0 0 $spacing-1;
+    }
+}
+
+

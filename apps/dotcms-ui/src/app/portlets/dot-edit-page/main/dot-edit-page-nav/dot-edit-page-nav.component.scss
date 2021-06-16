@@ -1,7 +1,7 @@
 @use "variables" as *;
 @import "mixins";
 
-$nav-size: 80px;
+$nav-size: 305px;
 
 :host {
     background-color: $white;
@@ -14,7 +14,7 @@ $nav-size: 80px;
 
 .edit-page-nav {
     @include naked-list;
-    width: 100%;
+    width: 80px;
 }
 
 .edit-page-nav__item {
