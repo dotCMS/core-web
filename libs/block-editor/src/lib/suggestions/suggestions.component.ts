@@ -12,8 +12,8 @@ import { SuggestionListComponent } from '../suggestion-list/suggestion-list.comp
 import tippy from 'tippy.js';
 
 // theses needs to be Angular Services
-import { DotContentTypeService } from '../services/dotContentType.service';
 import { DotContentLetService } from '../services/dotContentLet.service';
+import { SuggestionsService } from '../services/suggestions.service';
 
 @Component({
     selector: 'dotcms-suggestions',
@@ -28,7 +28,10 @@ export class SuggestionsComponent implements OnInit {
 
     @Input() editor!: Editor;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
+    constructor(
+        private componentFactoryResolver: ComponentFactoryResolver,
+        private suggestionsService: SuggestionsService
+    ) {}
 
     ngOnInit(): void {
         this.editor.registerPlugin(
@@ -71,7 +74,7 @@ export class SuggestionsComponent implements OnInit {
             onStart: (props) => {
                 console.log('onStart', props);
 
-                DotContentTypeService.get().then((items) => {
+                this.suggestionsService.getContentTypes().subscribe((items) => {
                     const dynamicComponentFactory = this.componentFactoryResolver.resolveComponentFactory(
                         SuggestionListComponent
                     );
@@ -83,19 +86,21 @@ export class SuggestionsComponent implements OnInit {
                             label: item['name'],
                             icon: 'pi pi-fw pi-plus',
                             command: () => {
-                                DotContentLetService.get(item['variable']).then((contentlets) => {
-                                    const newElements = contentlets.map((contentlet) => {
-                                        return {
-                                            label: contentlet['title'],
-                                            icon: 'pi pi-fw pi-plus',
-                                            command: () => {
-                                                props.command(contentlet);
-                                            }
-                                        };
+                                this.suggestionsService
+                                    .getContentlets(item['variable'])
+                                    .subscribe((contentlets) => {
+                                        const newElements = contentlets.map((contentlet) => {
+                                            return {
+                                                label: contentlet['title'],
+                                                icon: 'pi pi-fw pi-plus',
+                                                command: () => {
+                                                    props.command(contentlet);
+                                                }
+                                            };
+                                        });
+                                        componentRef.instance.items = newElements;
+                                        componentRef.changeDetectorRef.detectChanges();
                                     });
-                                    componentRef.instance.items = newElements;
-                                    componentRef.changeDetectorRef.detectChanges();
-                                });
                             }
                         };
                     });

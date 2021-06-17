@@ -12,6 +12,7 @@ import { MenuModule } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ContentletBlockComponent } from './extentions/contentlet-block/contentlet-block.component';
+import { SuggestionsService } from './services/suggestions.service';
 
 @NgModule({
     imports: [CommonModule, MenuModule, CardModule],
@@ -25,6 +26,7 @@ import { ContentletBlockComponent } from './extentions/contentlet-block/contentl
         SuggestionsComponent,
         ContentletBlockComponent
     ],
+    providers: [SuggestionsService],
     exports: [
         SuggestionsComponent,
         EditorDirective,
@@ -32,6 +34,7 @@ import { ContentletBlockComponent } from './extentions/contentlet-block/contentl
         BubbleMenuDirective,
         DraggableDirective,
         NodeViewContentDirective
-    ]
+    ],
+    entryComponents: [SuggestionListComponent]
 })
 export class NgxTiptapModule {}
