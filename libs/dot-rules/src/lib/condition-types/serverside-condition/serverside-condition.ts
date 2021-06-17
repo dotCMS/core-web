@@ -160,6 +160,10 @@ export class ServersideCondition {
         return input && input.name === 'comparison';
     }
 
+    private isConditionalFieldWithLessThanThreeFields(size: number, field: any): boolean {
+        return size <= 2 && field instanceof ConditionModel;
+    }
+
     ngOnChanges(change): void {
         let paramDefs = null;
         if (change.componentInstance) {
@@ -176,12 +180,16 @@ export class ServersideCondition {
 
                 const input = this.getInputFor(paramDef.inputType.type, param, paramDef);
                 this._inputs[paramDef.priority] = input;
-
             });
 
-            this._inputs = this._inputs.filter(i => i);
+            this._inputs = this._inputs.filter((i) => i);
 
-            if (this._inputs.length <= 2 && change.componentInstance.currentValue instanceof ConditionModel) {
+            if (
+                this.isConditionalFieldWithLessThanThreeFields(
+                    this._inputs.length,
+                    change.componentInstance.currentValue
+                )
+            ) {
                 this._inputs = [{ flex: 40, type: 'spacer' }, ...this._inputs];
             }
 
