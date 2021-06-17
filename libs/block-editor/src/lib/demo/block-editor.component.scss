@@ -1,29 +1,17 @@
-:host {
+dot-block-editor {
     display: block;
-    padding: 5rem;
+    height: calc(100vh - 2rem); // 1rem sb boddy padding;
+    width: calc(100vw - 2rem); // 1rem sb boddy padding;
 }
-
 
 tiptap-editor {
-    display: block;
-    margin: 0 20px;
-}
+    height: 100%;
 
-// This will go when block is a angular component
-::ng-deep{
-    .dot-content {
-        display: flex;
-        padding: 8px;
-        outline: none;
-        background: bisque;
-
-        img {
-            width: 80px;
-            height: 80px;
-            border: 1px solid #ccc;
-            margin-right: 8px;
-        }
+    .ProseMirror {
+        border: solid 2px #222;
+        display: block;
+        height: 100%;
+        border-radius: 4px;
+        padding: 1rem;
     }
 }
-
-

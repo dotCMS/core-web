@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, ViewEncapsulation } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import { ContentletBlockExtension } from '../extentions/contentlet-block.extension';
@@ -6,7 +6,8 @@ import { ContentletBlockExtension } from '../extentions/contentlet-block.extensi
 @Component({
     selector: 'dot-block-editor',
     templateUrl: './block-editor.component.html',
-    styleUrls: ['./block-editor.component.scss']
+    styleUrls: ['./block-editor.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class BlockEditorComponent {
     items: any;
