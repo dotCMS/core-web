@@ -334,7 +334,7 @@
                     "builder": "@nrwl/storybook:storybook",
                     "options": {
                         "uiFramework": "@storybook/html",
-                        "port": 4400,
+                        "port": 5500,
                         "config": {
                             "configFolder": "libs/dotcms-webcomponents/.storybook"
                         }
@@ -665,7 +665,7 @@
                     "builder": "@nrwl/storybook:storybook",
                     "options": {
                         "uiFramework": "@storybook/angular",
-                        "port": 4400,
+                        "port": 6600,
                         "config": {
                             "configFolder": "libs/block-editor/.storybook"
                         }
