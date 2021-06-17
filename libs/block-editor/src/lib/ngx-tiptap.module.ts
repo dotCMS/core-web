@@ -34,7 +34,6 @@ import { SuggestionsService } from './services/suggestions.service';
         BubbleMenuDirective,
         DraggableDirective,
         NodeViewContentDirective
-    ],
-    entryComponents: [SuggestionListComponent, ContentletBlockComponent]
+    ]
 })
 export class NgxTiptapModule {}

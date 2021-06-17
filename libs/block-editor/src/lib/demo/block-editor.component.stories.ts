@@ -7,6 +7,8 @@ import { NgxTiptapModule } from '../ngx-tiptap.module';
 import { SuggestionsService } from '../services/suggestions.service';
 import { BlockEditorComponent } from './block-editor.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ContentletBlockComponent } from '../extentions/contentlet-block/contentlet-block.component';
+import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 
 export default {
     title: 'BlockEditorComponent'
@@ -42,7 +44,9 @@ export const primary = () => ({
                     }
                 }
             }
-        ]
+        ],
+        // We need this 2 here because they are dynamically rendered
+        entryComponents: [SuggestionListComponent, ContentletBlockComponent]
     },
     component: BlockEditorComponent
     // props: {
