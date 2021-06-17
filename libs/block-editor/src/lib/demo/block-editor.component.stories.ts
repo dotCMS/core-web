@@ -31,14 +31,44 @@ export const primary = () => ({
                     getContentTypes() {
                         return of([
                             {
-                                name: 'Hello World'
+                                name: 'Blog'
+                            },
+                            {
+                                name: 'Persona'
+                            },
+                            {
+                                name: 'News Item'
+                            },
+                            {
+                                name: 'Banner'
+                            },
+                            {
+                                name: 'Product in the store'
+                            },
+                            {
+                                name: 'Reatil information'
                             }
                         ]);
                     },
                     getContentlets() {
                         return of([
                             {
-                                title: 'I am a contentlet'
+                                title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.'
+                            },
+                            {
+                                title: 'Aliquam tincidunt mauris eu risus.'
+                            },
+                            {
+                                title: 'Vestibulum auctor dapibus neque.'
+                            },
+                            {
+                                title: 'Nunc dignissim risus id metus.'
+                            },
+                            {
+                                title: 'Cras ornare tristique elit.'
+                            },
+                            {
+                                title: 'Vivamus vestibulum ntulla nec ante.'
                             }
                         ]);
                     }
@@ -49,7 +79,4 @@ export const primary = () => ({
         entryComponents: [SuggestionListComponent, ContentletBlockComponent]
     },
     component: BlockEditorComponent
-    // props: {
-    //     editor: text('editor')
-    // }
 });
