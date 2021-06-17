@@ -17,11 +17,6 @@ import { DotCustomReuseStrategyService } from '@shared/dot-custom-reuse-strategy
 
 const PORTLETS_ANGULAR = [
     {
-        path: 'editor',
-        loadChildren: () =>
-            import('../app/block-editor/block-editor.module').then((m) => m.BlockEditorModule)
-    },
-    {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'templates',

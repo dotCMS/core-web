@@ -172,6 +172,7 @@
                     "options": {
                         "uiFramework": "@storybook/angular",
                         "outputPath": "docs",
+                        "deleteOutputPath": false,
                         "config": {
                             "configFolder": "apps/dotcms-ui/.storybook"
                         }
@@ -349,6 +350,7 @@
                     "options": {
                         "uiFramework": "@storybook/html",
                         "outputPath": "docs/dotcms-webcomponents",
+                        "deleteOutputPath": false,
                         "config": {
                             "configFolder": "libs/dotcms-webcomponents/.storybook"
                         }
@@ -679,7 +681,8 @@
                     "outputs": ["{options.outputPath}"],
                     "options": {
                         "uiFramework": "@storybook/angular",
-                        "outputPath": "dist/storybook/block-editor",
+                        "outputPath": "docs/block-editor",
+                        "deleteOutputPath": false,
                         "config": {
                             "configFolder": "libs/block-editor/.storybook"
                         }
