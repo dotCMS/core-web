@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import { ContentletBlockExtension } from 'block-editor';
+import { ContentletBlockExtension } from '../extentions/contentlet-block.extension';
 
 @Component({
     selector: 'dot-block-editor',
