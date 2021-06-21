@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StringUtils } from './string-utils.service';
-import { environment } from '../../../../../apps/dotcms-ui/src/environments/environment';
+import { environment } from '../environments/environment';
 import { HttpRequestUtils } from './util/http-request-utils';
 const DEV_MODE_PARAM = 'devMode';
 
@@ -23,33 +23,33 @@ export class LoggerService {
     }
 
     info(message?: any, ...optionalParams: any[]): void {
-        if (this.showLogs && optionalParams && optionalParams.length > 0) {
+        if (optionalParams && optionalParams.length > 0) {
             console.info(this.wrapMessage(message), optionalParams);
-        } else if (this.showLogs) {
+        } else {
             console.info(this.wrapMessage(message));
         }
     }
 
     error(message?: any, ...optionalParams: any[]): void {
-        if (this.showLogs && optionalParams && optionalParams.length > 0) {
+        if (optionalParams && optionalParams.length > 0) {
             console.error(this.wrapMessage(message), optionalParams);
-        } else if (this.showLogs) {
+        } else {
             console.error(this.wrapMessage(message));
         }
     }
 
     warn(message?: any, ...optionalParams: any[]): void {
-        if (this.showLogs && optionalParams && optionalParams.length > 0) {
+        if (optionalParams && optionalParams.length > 0) {
             console.warn(this.wrapMessage(message), optionalParams);
-        } else if (this.showLogs) {
+        } else {
             console.warn(this.wrapMessage(message));
         }
     }
 
     debug(message?: any, ...optionalParams: any[]): void {
-        if (this.showLogs && optionalParams && optionalParams.length > 0) {
+        if (optionalParams && optionalParams.length > 0) {
             console.debug(this.wrapMessage(message), optionalParams);
-        } else if (this.showLogs) {
+        } else {
             console.debug(this.wrapMessage(message));
         }
     }

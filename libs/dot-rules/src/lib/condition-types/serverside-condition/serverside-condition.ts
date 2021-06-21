@@ -182,6 +182,7 @@ export class ServersideCondition {
                 this._inputs[paramDef.priority] = input;
             });
 
+            // Cleans _inputs array from empty(undefined) elements
             this._inputs = this._inputs.filter((i) => i);
 
             if (
