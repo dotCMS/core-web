@@ -1,5 +1,5 @@
-import { Component, Injector, ViewEncapsulation } from '@angular/core';
-import { Editor } from '@tiptap/core';
+import { Component, ComponentFactoryResolver, Injector, ViewEncapsulation } from '@angular/core';
+import { Editor, } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import { ContentletBlockExtension } from '../extentions/contentlet-block.extension';
 
@@ -16,11 +16,11 @@ export class BlockEditorComponent {
 
     value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
-    constructor(private injector: Injector) {}
+    constructor(private injector: Injector, private resolver: ComponentFactoryResolver) { }
 
     ngOnInit() {
         this.editor = new Editor({
-            extensions: [StarterKit, ContentletBlockExtension(this.injector)]
+            extensions: [StarterKit, ContentletBlockExtension(this.injector, this.resolver)]
         });
     }
 
