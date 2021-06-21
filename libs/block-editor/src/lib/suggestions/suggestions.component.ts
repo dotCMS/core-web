@@ -14,6 +14,7 @@ import tippy from 'tippy.js';
 // theses needs to be Angular Services
 import { DotContentLetService } from '../services/dotContentLet.service';
 import { SuggestionsService } from '../services/suggestions.service';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'dotcms-suggestions',
@@ -63,7 +64,10 @@ export class SuggestionsComponent implements OnInit {
                 allow: ({ editor, range }) => {
                     return editor.can().insertContentAt(range, { type: 'dotContentAutoComplete' });
                 },
-                items: () => [],
+                items: (param) => {
+                    console.log({param})
+                    return []
+                },
                 render: this.render.bind(this)
             })
         );
@@ -74,7 +78,7 @@ export class SuggestionsComponent implements OnInit {
             onStart: (props) => {
                 console.log('onStart', props);
 
-                this.suggestionsService.getContentTypes().subscribe((items) => {
+                this.suggestionsService.getContentTypes().pipe(take(1)).subscribe((items) => {
                     const dynamicComponentFactory = this.componentFactoryResolver.resolveComponentFactory(
                         SuggestionListComponent
                     );
@@ -108,7 +112,6 @@ export class SuggestionsComponent implements OnInit {
 
                     this.popup = tippy(this.editor.view.dom, {
                         appendTo: document.body,
-                        // content: componentRef.location.nativeElement.querySelector('.p-menu'),
                         content: componentRef.location.nativeElement,
                         placement: 'auto-start',
                         getReferenceClientRect: props.clientRect,
