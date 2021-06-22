@@ -41,7 +41,7 @@ jobs:
         run: |
           brew install docker-machine docker
           brew services start docker-machine
-          sudo docker –-version
+          sudo docker –v
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
         if: env.jobRun == 'true'
       - name: Run Cypress Tests
