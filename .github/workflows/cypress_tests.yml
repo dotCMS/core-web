@@ -39,9 +39,8 @@ jobs:
           echo "CORE_WEB_BUILD_ID=${CORE_WEB_BUILD_ID}" >> $GITHUB_ENV
       - name: Prepare dot-cicd
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-          brew install --cask docker
-          find /usr -name docker
+          brew install docker-machine docker
+          sudo docker –version
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
         if: env.jobRun == 'true'
       - name: Run Cypress Tests
