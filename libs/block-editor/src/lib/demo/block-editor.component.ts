@@ -25,8 +25,6 @@ export class BlockEditorComponent implements OnInit {
     constructor(private injector: Injector, private resolver: ComponentFactoryResolver) {}
 
     ngOnInit() {
-        const el = document.createElement('button');
-        el.innerText = 'Action';
         this.editor = new Editor({
             extensions: [
                 StarterKit,
