@@ -40,6 +40,8 @@ jobs:
       - name: Prepare dot-cicd
         run: |
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          brew cask install docker
         if: env.jobRun == 'true'
       - name: Run Cypress Tests
         run: |
