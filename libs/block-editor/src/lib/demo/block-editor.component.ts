@@ -8,6 +8,7 @@ import {
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 
+import { ActionsMenu } from '../extentions/actions-menu.extension';
 import { ContentletBlock } from '../extentions/contentlet-block.extension';
 
 @Component({
@@ -24,8 +25,14 @@ export class BlockEditorComponent implements OnInit {
     constructor(private injector: Injector, private resolver: ComponentFactoryResolver) {}
 
     ngOnInit() {
+        const el = document.createElement('button');
+        el.innerText = 'Action';
         this.editor = new Editor({
-            extensions: [StarterKit, ContentletBlock(this.injector, this.resolver)]
+            extensions: [
+                StarterKit,
+                ContentletBlock(this.injector, this.resolver),
+                ActionsMenu(this.injector, this.resolver)
+            ]
         });
     }
 }
