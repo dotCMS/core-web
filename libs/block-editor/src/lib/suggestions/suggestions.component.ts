@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 
-import { SuggestionsService } from '../services/suggestions.service';
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
+
+import { SuggestionsService } from '../services/suggestions.service';
 
 @Component({
     selector: 'dotcms-suggestions',

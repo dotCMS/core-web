@@ -1,23 +1,26 @@
+import { Node, mergeAttributes, Editor, Range, NodeViewRenderer } from '@tiptap/core';
+import { DOMOutputSpec, ParseRule } from 'prosemirror-model';
 import { ComponentFactoryResolver, Injector } from '@angular/core';
-import { Node, mergeAttributes, Editor, Range } from '@tiptap/core';
-import Suggestion from '@tiptap/suggestion';
-import { AngularNodeViewRenderer } from '../NodeViewRenderer';
-import { SuggestionsComponent } from '../suggestions/suggestions.component';
-import { ContentletBlockComponent } from './contentlet-block/contentlet-block.component';
+import Suggestion, { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion';
 import tippy from 'tippy.js';
 
+import { SuggestionsComponent } from '../suggestions/suggestions.component';
+import { ContentletBlockComponent } from './contentlet-block/contentlet-block.component';
+import { AngularNodeViewRenderer } from '../NodeViewRenderer';
 
-export const ContentletBlockExtension = (
+export type ContentletBlockOptions = {
+    HTMLAttributes: Record<string, unknown>;
+    suggestion: Omit<SuggestionOptions, 'editor'>;
+};
+
+export const ContentletBlock = (
     injector: Injector,
     resolver: ComponentFactoryResolver
-): Node<any> => {
-    console.log('ContentletBlockExtension');
-
+): Node<ContentletBlockOptions> => {
     return Node.create({
         name: 'dotContent',
         defaultOptions: {
             HTMLAttributes: {},
-            value: '',
             suggestion: {
                 char: '/c',
                 allowSpaces: true,
@@ -42,7 +45,7 @@ export const ContentletBlockExtension = (
                         })
                         .run();
                 },
-                allow: ({ editor, range }) => {
+                allow: ({ editor, range }: SuggestionProps) => {
                     return editor.can().insertContentAt(range, { type: 'dotContent' });
                 },
                 items: (param) => {
@@ -51,11 +54,10 @@ export const ContentletBlockExtension = (
                 },
                 render: () => {
                     let myTippy;
+
                     return {
-                        onStart: (props) => {
-                            const factory = resolver.resolveComponentFactory(
-                                SuggestionsComponent
-                            );
+                        onStart: (props: SuggestionProps) => {
+                            const factory = resolver.resolveComponentFactory(SuggestionsComponent);
                             const component = factory.create(injector);
                             component.instance.command = props.command;
                             component.changeDetectorRef.detectChanges();
@@ -95,17 +97,17 @@ export const ContentletBlockExtension = (
             };
         },
 
-        parseHTML() {
+        parseHTML(): ParseRule[] {
             console.log('parseHTML');
             return [{ tag: 'dotcms-contentlet-block' }];
         },
 
-        renderHTML({ HTMLAttributes }) {
+        renderHTML({ HTMLAttributes }): DOMOutputSpec {
             console.log('renderHTML');
             return ['dotcms-contentlet-block', mergeAttributes(HTMLAttributes)];
         },
 
-        addNodeView() {
+        addNodeView(): NodeViewRenderer {
             console.log('addNodeView');
             return AngularNodeViewRenderer(ContentletBlockComponent, { injector });
         },
