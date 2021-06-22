@@ -3,7 +3,7 @@ on: [ push ]
 jobs:
   cypress-tests:
     name: Cypress Tests
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     continue-on-error: true
     env:
       DOT_CICD_BRANCH: issue-20341-trigger-cypress-tests-using-github-actions
