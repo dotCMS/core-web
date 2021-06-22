@@ -40,6 +40,7 @@ jobs:
       - name: Prepare dot-cicd
         run: |
           brew install docker-machine docker
+          brew services start docker-machine
           sudo docker –-version
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
         if: env.jobRun == 'true'
