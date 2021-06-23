@@ -19,6 +19,12 @@ export const ContentletBlock = (
 ): Node<ContentletBlockOptions> => {
     return Node.create({
         name: 'dotContent',
+        group: 'block',
+
+        inline: false,
+
+        draggable: true,
+
         defaultOptions: {
             HTMLAttributes: {},
             suggestion: {
@@ -32,21 +38,34 @@ export const ContentletBlock = (
                 }: {
                     editor: Editor;
                     range: Range;
-                    props: unknown;
+                    props: { type: string; payload: unknown };
                 }) => {
-                    editor
-                        .chain()
-                        .focus()
-                        .insertContentAt(range, {
-                            type: 'dotContent',
-                            attrs: {
-                                data: props
-                            }
-                        })
-                        .run();
+                    if (props.type === 'dotContent') {
+                        editor
+                            .chain()
+                            .deleteRange(range)
+                            .command((data) => {
+                                const node = data.editor.schema.nodes.dotContent.create({
+                                    data: props.payload
+                                });
+                                data.tr.replaceSelectionWith(node);
+                                return true;
+                            })
+                            .focus()
+                            .run();
+                    } else {
+                        editor
+                            .chain()
+                            .focus()
+                            .deleteRange(range)
+                            .toggleHeading({ level: 1 })
+                            .focus()
+                            .run();
+                    }
                 },
                 allow: ({ editor, range }: SuggestionProps) => {
-                    return editor.can().insertContentAt(range, { type: 'dotContent' });
+                    // needs to check if we need this allow at all.
+                    return true
                 },
                 items: (param) => {
                     console.log({ param });
@@ -79,8 +98,6 @@ export const ContentletBlock = (
                 }
             }
         },
-        group: 'block',
-        draggable: true,
 
         // ...configuration
         addAttributes() {

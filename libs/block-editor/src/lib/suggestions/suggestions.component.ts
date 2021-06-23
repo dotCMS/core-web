@@ -11,7 +11,7 @@ import { SuggestionsService } from '../services/suggestions.service';
     styleUrls: ['./suggestions.component.scss']
 })
 export class SuggestionsComponent implements OnInit {
-    @Input() command: (item) => void;
+    @Input() command: ({ payload, type }: { payload?: unknown; type: string }) => void;
     items: MenuItem[] = [];
 
     constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
@@ -35,10 +35,14 @@ export class SuggestionsComponent implements OnInit {
                                                 label: contentlet['title'],
                                                 icon: 'pi pi-fw pi-plus',
                                                 command: () => {
-                                                    this.command(contentlet)
+                                                    this.command({
+                                                        payload: contentlet,
+                                                        type: 'dotContent'
+                                                    });
                                                 }
                                             };
                                         });
+
                                         this.cd.detectChanges();
                                     });
                             }
@@ -48,7 +52,20 @@ export class SuggestionsComponent implements OnInit {
                 take(1)
             )
             .subscribe((items) => {
-                this.items = items;
+                this.items = [
+                    ...[
+                        {
+                            label: 'Heading 1',
+                            icon: 'pi pi-circle-on',
+                            command: () => {
+                                this.command({
+                                    type: 'heading'
+                                });
+                            }
+                        }
+                    ],
+                    ...items
+                ];
             });
     }
 }
