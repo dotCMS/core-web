@@ -9,7 +9,7 @@ import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 
 import { ActionsMenu } from '../extentions/actions-menu.extension';
-import { ContentletBlock } from '../extentions/contentlet-block.extension';
+import { ContentletBlock } from '../extentions/blocks/contentlet-block/contentlet-block.extension';
 import { SuggestionsMenu } from '../extentions/suggestions-menu.extension';
 
 @Component({
