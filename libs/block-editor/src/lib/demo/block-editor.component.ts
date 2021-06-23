@@ -10,6 +10,7 @@ import StarterKit from '@tiptap/starter-kit';
 
 import { ActionsMenu } from '../extentions/actions-menu.extension';
 import { ContentletBlock } from '../extentions/contentlet-block.extension';
+import { SuggestionsMenu } from '../extentions/suggestions-menu.extension';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -28,8 +29,9 @@ export class BlockEditorComponent implements OnInit {
         this.editor = new Editor({
             extensions: [
                 StarterKit,
-                ContentletBlock(this.injector, this.resolver),
-                ActionsMenu(this.injector, this.resolver)
+                ContentletBlock(this.injector),
+                ActionsMenu(this.injector, this.resolver),
+                SuggestionsMenu(this.injector, this.resolver)
             ]
         });
     }
