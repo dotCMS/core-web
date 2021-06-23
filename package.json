@@ -12,7 +12,7 @@
         "lint": "nx workspace-lint && ng lint",
         "e2e": "ng e2e dotcms-ui-e2e --headless true --base-url http://localhost:8080",
         "e2e:open": "ng e2e dotcms-ui-e2e --watch --base-url http://localhost:8080",
-        "publish:dev": "rm -rf dist;npm run build:prod;cp package.json ./dist/apps/dotcms-ui/package.json",
+        "publish:dev": "rm -rf dist;npm run build:prod;cp package.json ./dist/apps/dotcms-ui/package.json;cd dist/apps/dotcms-ui;npm publish --tag next",
         "build:docs:dotcms": "typedoc --options libs/dotcms/typedoc.json ./libs/dotcms --exclude '**/*.spec.ts';",
         "build:docs:dotcms-models": "typedoc --options libs/dotcms-models/typedoc.json ./libs/dotcms-models --exclude '**/*.spec.ts';",
         "publish:docs": "gh-pages --dist ./docs --dest ./",
