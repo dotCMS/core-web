@@ -10,7 +10,6 @@ import StarterKit from '@tiptap/starter-kit';
 
 import { ActionsMenu } from '../extentions/actions-menu.extension';
 import { ContentletBlock } from '../extentions/blocks/contentlet-block/contentlet-block.extension';
-import { SuggestionsMenu } from '../extentions/suggestions-menu.extension';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -31,7 +30,6 @@ export class BlockEditorComponent implements OnInit {
                 StarterKit,
                 ContentletBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
-                SuggestionsMenu(this.injector, this.resolver)
             ]
         });
     }
