@@ -11,6 +11,8 @@ jobs:
       PULL_REQUEST: ${{ github.event.number }}
       DEBUG: true
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
       - name: GITHUB CONTEXT
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
