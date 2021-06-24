@@ -12,12 +12,44 @@ import { DotCMSContentlet } from '@dotcms/dotcms-models';
     styleUrls: ['./suggestions.component.scss']
 })
 export class SuggestionsComponent implements OnInit {
-    @Input() command: ({ payload, type }: { payload?: DotCMSContentlet; type: string }) => void;
+    @Input() command: ({
+        payload,
+        type
+    }: {
+        payload?: DotCMSContentlet;
+        type: { name: string; level?: number };
+    }) => void;
     items: MenuItem[] = [];
 
     constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
 
     ngOnInit(): void {
+        this.items = [
+            {
+                label: 'Contentlets',
+                icon: 'pi pi-plus',
+                command: () => {
+                    this.initContentletSelection();
+                }
+            },
+            ...[...Array(6).keys()].map((level) => {
+                return {
+                    label: `Heading ${level + 1}`,
+                    icon: 'pi pi-circle-on',
+                    command: () => {
+                        this.command({
+                            type: {
+                                name: 'heading',
+                                level: level + 1
+                            }
+                        });
+                    }
+                };
+            })
+        ];
+    }
+
+    private initContentletSelection() {
         this.suggestionsService
             .getContentTypes()
             .pipe(
@@ -38,7 +70,9 @@ export class SuggestionsComponent implements OnInit {
                                                 command: () => {
                                                     this.command({
                                                         payload: contentlet,
-                                                        type: 'dotContent'
+                                                        type: {
+                                                            name: 'dotContent'
+                                                        }
                                                     });
                                                 }
                                             };
@@ -53,20 +87,8 @@ export class SuggestionsComponent implements OnInit {
                 take(1)
             )
             .subscribe((items) => {
-                this.items = [
-                    ...[
-                        {
-                            label: 'Heading 1',
-                            icon: 'pi pi-circle-on',
-                            command: () => {
-                                this.command({
-                                    type: 'heading'
-                                });
-                            }
-                        }
-                    ],
-                    ...items
-                ];
+                this.items = items;
+                this.cd.detectChanges();
             });
     }
 }

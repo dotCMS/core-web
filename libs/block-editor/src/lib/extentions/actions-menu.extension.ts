@@ -31,7 +31,7 @@ function getMenuComponent(injector: Injector, resolver: ComponentFactoryResolver
     const factory = resolver.resolveComponentFactory(SuggestionsComponent);
     const component = factory.create(injector);
     component.changeDetectorRef.detectChanges();
-    return component
+    return component;
 }
 
 function getTippyInstance({
@@ -61,12 +61,12 @@ function execCommand({
 }: {
     editor: Editor;
     range: Range;
-    props: { type: string; payload: unknown };
+    props: { type: { name: string; level?: number }; payload: unknown };
 }) {
-    if (props.type === 'dotContent') {
+    if (props.type.name === 'dotContent') {
         editor.chain().addContentletBlock({ range, payload: props.payload }).run();
     } else {
-        editor.chain().addHeading({ range }).run();
+        editor.chain().addHeading({ range, type: props.type }).run();
     }
 }
 
@@ -113,11 +113,11 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
 
         addCommands() {
             return {
-                addHeading: ({ range }) => ({ chain }) => {
+                addHeading: ({ range, type }) => ({ chain }) => {
                     return chain()
                         .focus()
                         .deleteRange(range)
-                        .toggleHeading({ level: 1 })
+                        .toggleHeading({ level: type.level })
                         .focus()
                         .run();
                 },
@@ -147,15 +147,26 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                 FloatingActionsPlugin({
                     editor: this.editor,
                     element: button.location.nativeElement,
-                    command: ({ range, rect, editor }: { rect: DOMRect, range: Range, editor: Editor }) => {
+                    command: ({
+                        range,
+                        rect,
+                        editor
+                    }: {
+                        rect: DOMRect;
+                        range: Range;
+                        editor: Editor;
+                    }) => {
                         const component = getMenuComponent(injector, resolver);
 
                         component.instance.command = ({ type, payload }) => {
                             execCommand({
-                                editor, range, props: {
-                                    type, payload
+                                editor,
+                                range,
+                                props: {
+                                    type,
+                                    payload
                                 }
-                            })
+                            });
                             myTippy.destroy();
                         };
 
