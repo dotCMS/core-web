@@ -4,7 +4,7 @@ import { Editor, Extension, Range } from '@tiptap/core';
 import { FloatingMenuPluginProps } from '@tiptap/extension-floating-menu';
 import Suggestion, { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion';
 
-import tippy from 'tippy.js';
+import tippy, { GetReferenceClientRect } from 'tippy.js';
 
 import { FloatingActionsPlugin } from '../plugins/floating.plugin';
 import { SuggestionsComponent } from '../suggestions/suggestions.component';
@@ -14,6 +14,26 @@ export type FloatingMenuOptions = Omit<FloatingMenuPluginProps, 'editor' | 'elem
     element: HTMLElement | null;
     suggestion: Omit<SuggestionOptions, 'editor'>;
 };
+
+function getTippyInstance({
+    element,
+    content,
+    rect
+}: {
+    element: Element;
+    content: Element;
+    rect: GetReferenceClientRect;
+}) {
+    return tippy(element, {
+        appendTo: document.body,
+        content: content,
+        placement: 'auto-start',
+        getReferenceClientRect: rect,
+        showOnCreate: true,
+        interactive: true,
+        trigger: 'manual'
+    });
+}
 
 export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
     return Extension.create<FloatingMenuOptions>({
@@ -75,14 +95,10 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                             component.instance.command = props.command;
                             component.changeDetectorRef.detectChanges();
 
-                            myTippy = tippy(props.editor.view.dom, {
-                                appendTo: document.body,
+                            myTippy = getTippyInstance({
+                                element: props.editor.view.dom,
                                 content: component.location.nativeElement,
-                                placement: 'auto-start',
-                                getReferenceClientRect: props.clientRect,
-                                showOnCreate: true,
-                                interactive: true,
-                                trigger: 'manual'
+                                rect: props.clientRect
                             });
                         },
                         onExit: () => {
@@ -124,14 +140,10 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                         };
                         suggestions.changeDetectorRef.detectChanges();
 
-                        myTippy = tippy(this.editor.view.dom, {
-                            appendTo: document.body,
+                        myTippy = getTippyInstance({
+                            element: this.editor.view.dom,
                             content: suggestions.location.nativeElement,
-                            placement: 'auto-start',
-                            getReferenceClientRect: () => rect,
-                            showOnCreate: true,
-                            interactive: true,
-                            trigger: 'manual'
+                            rect: () => rect
                         });
                     }
                 }),
