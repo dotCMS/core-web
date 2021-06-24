@@ -63,11 +63,22 @@ function execCommand({
     range: Range;
     props: { type: { name: string; level?: number }; payload: unknown };
 }) {
-    if (props.type.name === 'dotContent') {
-        editor.chain().addContentletBlock({ range, payload: props.payload }).run();
-    } else {
-        editor.chain().addHeading({ range, type: props.type }).run();
+    const whatToDo = {
+        dotContent: () => {
+            editor.chain().addContentletBlock({ range, payload: props.payload }).run();
+        },
+        heading: () => {
+            editor.chain().addHeading({ range, type: props.type }).run();
+        },
+        listOrdered: () => {
+            editor.chain().deleteRange(range).toggleOrderedList().focus().run()
+        },
+        listUnordered: () => {
+            editor.chain().deleteRange(range).toggleBulletList().focus().run()
+        }
     }
+
+    whatToDo[props.type.name]();
 }
 
 export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {

@@ -24,6 +24,60 @@ export class SuggestionsComponent implements OnInit {
     constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
 
     ngOnInit(): void {
+        const headings = [...Array(6).keys()].map((level) => {
+            return {
+                label: `Heading ${level + 1}`,
+                icon: 'pi pi-circle-on',
+                command: () => {
+                    this.command({
+                        type: {
+                            name: 'heading',
+                            level: level + 1
+                        }
+                    });
+                }
+            };
+        });
+
+        const paragraph = [
+            {
+                label: 'Paragraph',
+                icon: 'pi pi-circle-on',
+                command: () => {
+                    this.command({
+                        type: {
+                            name: 'paragraph'
+                        }
+                    });
+                }
+            }
+        ];
+
+        const list = [
+            {
+                label: 'List Ordered',
+                icon: 'pi pi-circle-on',
+                command: () => {
+                    this.command({
+                        type: {
+                            name: 'listOrdered'
+                        }
+                    });
+                }
+            },
+            {
+                label: 'List Unordered',
+                icon: 'pi pi-circle-on',
+                command: () => {
+                    this.command({
+                        type: {
+                            name: 'listUnordered'
+                        }
+                    });
+                }
+            }
+        ];
+
         this.items = [
             {
                 label: 'Contentlets',
@@ -32,20 +86,9 @@ export class SuggestionsComponent implements OnInit {
                     this.initContentletSelection();
                 }
             },
-            ...[...Array(6).keys()].map((level) => {
-                return {
-                    label: `Heading ${level + 1}`,
-                    icon: 'pi pi-circle-on',
-                    command: () => {
-                        this.command({
-                            type: {
-                                name: 'heading',
-                                level: level + 1
-                            }
-                        });
-                    }
-                };
-            })
+            ...headings,
+            ...paragraph,
+            ...list
         ];
     }
 
