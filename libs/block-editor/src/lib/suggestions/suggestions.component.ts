@@ -4,6 +4,7 @@ import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
 import { SuggestionsService } from '../services/suggestions.service';
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
 @Component({
     selector: 'dotcms-suggestions',
@@ -11,7 +12,7 @@ import { SuggestionsService } from '../services/suggestions.service';
     styleUrls: ['./suggestions.component.scss']
 })
 export class SuggestionsComponent implements OnInit {
-    @Input() command: ({ payload, type }: { payload?: unknown; type: string }) => void;
+    @Input() command: ({ payload, type }: { payload?: DotCMSContentlet; type: string }) => void;
     items: MenuItem[] = [];
 
     constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
