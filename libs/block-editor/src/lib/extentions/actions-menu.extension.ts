@@ -27,6 +27,13 @@ export type FloatingMenuOptions = Omit<FloatingMenuPluginProps, 'editor' | 'elem
     suggestion: Omit<SuggestionOptions, 'editor'>;
 };
 
+function getMenuComponent(injector: Injector, resolver: ComponentFactoryResolver) {
+    const factory = resolver.resolveComponentFactory(SuggestionsComponent);
+    const component = factory.create(injector);
+    component.changeDetectorRef.detectChanges();
+    return component
+}
+
 function getTippyInstance({
     element,
     content,
@@ -87,10 +94,8 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
 
                     return {
                         onStart: (props: SuggestionProps) => {
-                            const factory = resolver.resolveComponentFactory(SuggestionsComponent);
-                            const component = factory.create(injector);
+                            const component = getMenuComponent(injector, resolver);
                             component.instance.command = props.command;
-                            component.changeDetectorRef.detectChanges();
 
                             myTippy = getTippyInstance({
                                 element: props.editor.view.dom,
@@ -143,12 +148,9 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                     editor: this.editor,
                     element: button.location.nativeElement,
                     command: ({ range, rect, editor }: { rect: DOMRect, range: Range, editor: Editor }) => {
-                        const factorySuggestions = resolver.resolveComponentFactory(
-                            SuggestionsComponent
-                        );
-                        const suggestions = factorySuggestions.create(injector);
+                        const component = getMenuComponent(injector, resolver);
 
-                        suggestions.instance.command = ({ type, payload }) => {
+                        component.instance.command = ({ type, payload }) => {
                             execCommand({
                                 editor, range, props: {
                                     type, payload
@@ -156,11 +158,10 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                             })
                             myTippy.destroy();
                         };
-                        suggestions.changeDetectorRef.detectChanges();
 
                         myTippy = getTippyInstance({
                             element: this.editor.view.dom,
-                            content: suggestions.location.nativeElement,
+                            content: component.location.nativeElement,
                             rect: () => rect
                         });
                     }
