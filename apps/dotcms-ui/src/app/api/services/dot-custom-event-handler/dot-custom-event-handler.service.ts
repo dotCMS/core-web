@@ -100,6 +100,7 @@ export class DotCustomEventHandlerService {
     }
 
     private executeWorkflowWizard($event: CustomEvent): void {
+        debugger;
         this.dotWorkflowEventHandlerService.open($event.detail.data);
     }
 }

@@ -1,13 +1,14 @@
 import { DotPageAsset } from '../service/dot-page-selector.service';
 import { Site } from '@dotcms/dotcms-js';
+import { Observable } from 'rxjs';
 
-export interface DotPageSeletorItem {
+export interface DotPageSelectorItem {
     label: string;
-    payload: DotPageAsset | Site;
+    payload: DotPageAsset | Site | DotFolder;
 }
 
 export interface DotPageSelectorResults {
-    data: DotPageSeletorItem[];
+    data: Observable<DotPageSelectorItem[]>;
     type: string;
     query: string;
 }
@@ -15,4 +16,9 @@ export interface DotPageSelectorResults {
 export interface DotSimpleURL {
     host: string;
     pathname: string;
+}
+
+export interface DotFolder {
+    hostname: string;
+    path: string;
 }

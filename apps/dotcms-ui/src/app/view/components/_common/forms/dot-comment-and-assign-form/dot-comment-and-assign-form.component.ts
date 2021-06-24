@@ -29,6 +29,7 @@ export class DotCommentAndAssignFormComponent
     constructor(private dotRolesService: DotRolesService, public fb: FormBuilder) {}
 
     ngOnInit() {
+        debugger;
         if (this.data) {
             if (this.data[DotActionInputs.ASSIGNABLE]) {
                 this.dotRolesService
@@ -58,7 +59,8 @@ export class DotCommentAndAssignFormComponent
     private initForm(): void {
         this.form = this.fb.group({
             assign: this.dotRoles ? this.dotRoles[0].value : '',
-            comments: ''
+            comments: '',
+            move: ''
         });
         this.emitValues();
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.emitValues());

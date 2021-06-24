@@ -11,7 +11,7 @@ import { AutoComplete } from 'primeng/autocomplete';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import {
     DotPageSelectorResults,
-    DotPageSeletorItem
+    DotPageSelectorItem
 } from '@components/_common/dot-page-selector/models/dot-page-selector.models';
 import { LoginService } from '@dotcms/dotcms-js';
 import { LoginServiceMock } from '../../../../test/login-service.mock';
@@ -80,7 +80,7 @@ class MockDotPageSelectorService {
 
     setCurrentHost(_site: Site) {}
 
-    getPageById(_param: string): Observable<DotPageSeletorItem> {
+    getPageById(_param: string): Observable<DotPageSelectorItem> {
         return observableOf(mockDotPageSelectorResults.data[0]);
     }
 }

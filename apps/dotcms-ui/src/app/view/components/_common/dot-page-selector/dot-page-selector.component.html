@@ -1,7 +1,8 @@
 <div class="p-field">
-    <label>{{ label }}</label>
+    <label class="form__label">{{ label }}</label>
     <span *ngIf="floatingLabel; else placeholded">
         <p-autoComplete
+            #autoComplete
             appendTo="body"
             (completeMethod)="search($event)"
             (keydown.enter)="onKeyEnter($event)"
@@ -11,19 +12,18 @@
             [minLength]="2"
             field="label"
             [ngModel]="val"
-            [suggestions]="results.data"
+            [suggestions]="suggestions | async"
         >
             <ng-template let-item pTemplate="item">
                 <div class="dot-page-selector__item">
-                    <span *ngIf="results.type === 'site'">{{ item.label }}</span>
+                    <span *ngIf="searchType === 'site'">{{ item.label }}</span>
                     <span
                         class="dot-page-selector__item-url"
-                        *ngIf="results.type === 'page'"
-                        style=""
+                        *ngIf="searchType !== 'site'"
                         >{{ item.payload.path }}</span
                     >
-                    <span class="dot-page-selector__item-host" *ngIf="results.type === 'page'">{{
-                        item.payload.hostName
+                    <span class="dot-page-selector__item-host" *ngIf="searchType !== 'site'">{{
+                        item.payload.hostname
                     }}</span>
                 </div>
             </ng-template>
@@ -34,31 +34,5 @@
 </div>
 
 <ng-template #placeholded>
-    <p-autoComplete
-        appendTo="body"
-        (completeMethod)="search($event)"
-        (keydown.enter)="onKeyEnter($event)"
-        (keydown.tab)="$event.preventDefault()"
-        (onClear)="onClear($event)"
-        (onSelect)="onSelect($event)"
-        [minLength]="3"
-        field="label"
-        [ngModel]="val"
-        [suggestions]="results.data"
-    >
-        <ng-template let-item pTemplate="item">
-            <div class="dot-page-selector__item">
-                <span *ngIf="results.type === 'site'">{{ item.label }}</span>
-                <span
-                    class="dot-page-selector__item-url"
-                    *ngIf="results.type === 'page'"
-                    style=""
-                    >{{ item.payload.path }}</span
-                >
-                <span class="dot-page-selector__item-host" *ngIf="results.type === 'page'">{{
-                    item.payload.hostName
-                }}</span>
-            </div>
-        </ng-template>
-    </p-autoComplete>
+
 </ng-template>

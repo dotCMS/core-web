@@ -27,7 +27,8 @@ import { DotActionBulkRequestOptions } from '@models/dot-action-bulk-request-opt
 enum DotActionInputs {
     ASSIGNABLE = 'assignable',
     COMMENTABLE = 'commentable',
-    COMMENTANDASSIGN = 'commentAndAssign'
+    COMMENTANDASSIGN = 'commentAndAssign',
+    MOVEABLE = 'moveable'
 }
 
 const EDIT_CONTENT_CALLBACK_FUNCTION = 'saveAssignCallBackAngular';
@@ -115,6 +116,7 @@ export class DotWorkflowEventHandlerService {
      */
     setWizardInput(workflow: DotCMSWorkflowAction, title: string): DotWizardInput {
         const steps: DotWizardStep<any>[] = [];
+        debugger;
         this.mergeCommentAndAssign(workflow).forEach((input: DotCMSWorkflowInput) => {
             if (this.workflowStepMap[input.id]) {
                 steps.push({
@@ -157,6 +159,7 @@ export class DotWorkflowEventHandlerService {
 
     private mergeCommentAndAssign(workflow: DotCMSWorkflowAction): DotCMSWorkflowInput[] {
         const body = {};
+        debugger;
         let workflows: DotCMSWorkflowInput[];
         workflow.actionInputs.forEach((input) => {
             if (this.isCommentOrAssign(input.id)) {
@@ -182,6 +185,7 @@ export class DotWorkflowEventHandlerService {
             )
             .pipe(take(1))
             .subscribe((data: { [key: string]: any }) => {
+                debugger;
                 this.fireWorkflowAction(event, data);
             });
     }
@@ -250,7 +254,11 @@ export class DotWorkflowEventHandlerService {
     }
 
     private isCommentOrAssign(id: string): boolean {
-        return id === DotActionInputs.ASSIGNABLE || id === DotActionInputs.COMMENTABLE;
+        return (
+            id === DotActionInputs.ASSIGNABLE ||
+            id === DotActionInputs.COMMENTABLE ||
+            id === DotActionInputs.MOVEABLE
+        );
     }
 
     private processBulkData(
@@ -273,7 +281,8 @@ export class DotWorkflowEventHandlerService {
                     publishDate: data.publishDate,
                     publishTime: data.publishTime,
                     filterKey: data.filterKey
-                }
+                },
+                additionalBeanMap: { _path_to_move: data.move }
             }
         };
         if (Array.isArray(event.selectedInodes)) {
