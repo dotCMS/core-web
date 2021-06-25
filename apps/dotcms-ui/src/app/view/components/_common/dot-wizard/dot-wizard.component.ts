@@ -184,7 +184,6 @@ export class DotWizardComponent implements OnInit, OnDestroy {
     }
 
     private sendValue(): void {
-        debugger;
         this.dotWizardService.output$(this.wizardData);
         this.close();
     }

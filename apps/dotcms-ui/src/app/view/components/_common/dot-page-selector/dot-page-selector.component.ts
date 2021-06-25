@@ -53,18 +53,13 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     val: DotPageSelectorItem;
     suggestions: Subject<any> = new Subject<any>();
     emptyMessage: string;
+    searchType: string;
     private currentHost: Site;
-    private searchType: string;
 
     constructor(
         private dotPageSelectorService: DotPageSelectorService,
         private dotMessageService: DotMessageService
-    ) {
-        this.suggestions.subscribe((data) => {
-            console.log('suggestions: ', data);
-            this.autoComplete.show();
-        });
-    }
+    ) {}
 
     propagateChange = (_: any) => {};
 
@@ -86,12 +81,12 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      */
     search(param: any): void {
         const query = this.cleanAndValidateQuery(param.query);
-        console.log('search', query);
         if (!!query) {
             this.handleSearchType(query)
                 .pipe(take(1))
                 .subscribe((data) => {
                     this.suggestions.next(data);
+                    this.autoComplete.show();
                     this.emptyMessage = !!data.length ? null : this.getEmptyMessage();
                 });
         } else {
@@ -106,7 +101,6 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      * @memberof DotPageSelectorComponent
      */
     onSelect(item: DotPageSelectorItem): void {
-        console.log('onSelect');
         if (this.searchType === 'site') {
             const site: Site = <Site>item.payload;
             this.currentHost = site;
@@ -164,7 +158,6 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     registerOnTouched(_fn: any): void {}
 
     private handleSearchType(query: string): Observable<DotPageSelectorItem[]> {
-        console.log('isTwoStepSearch: ', this.isTwoStepSearch(query));
         if (this.isTwoStepSearch(query)) {
             return this.fullSearch(query);
         } else {

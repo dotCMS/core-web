@@ -116,7 +116,6 @@ export class DotWorkflowEventHandlerService {
      */
     setWizardInput(workflow: DotCMSWorkflowAction, title: string): DotWizardInput {
         const steps: DotWizardStep<any>[] = [];
-        debugger;
         this.mergeCommentAndAssign(workflow).forEach((input: DotCMSWorkflowInput) => {
             if (this.workflowStepMap[input.id]) {
                 steps.push({
@@ -159,15 +158,14 @@ export class DotWorkflowEventHandlerService {
 
     private mergeCommentAndAssign(workflow: DotCMSWorkflowAction): DotCMSWorkflowInput[] {
         const body = {};
-        debugger;
         let workflows: DotCMSWorkflowInput[];
         workflow.actionInputs.forEach((input) => {
-            if (this.isCommentOrAssign(input.id)) {
+            if (this.isValidActionInput(input.id)) {
                 body[input.id] = true;
             }
         });
         if (Object.keys(body).length) {
-            workflows = workflow.actionInputs.filter((input) => !this.isCommentOrAssign(input.id));
+            workflows = workflow.actionInputs.filter((input) => !this.isValidActionInput(input.id));
             workflows.unshift({
                 id: DotActionInputs.COMMENTANDASSIGN,
                 body: { ...body, ...this.getAssignableData(workflow) }
@@ -185,7 +183,6 @@ export class DotWorkflowEventHandlerService {
             )
             .pipe(take(1))
             .subscribe((data: { [key: string]: any }) => {
-                debugger;
                 this.fireWorkflowAction(event, data);
             });
     }
@@ -253,7 +250,7 @@ export class DotWorkflowEventHandlerService {
         return { roleId: workflow.nextAssign, roleHierarchy: workflow.roleHierarchyForAssign };
     }
 
-    private isCommentOrAssign(id: string): boolean {
+    private isValidActionInput(id: string): boolean {
         return (
             id === DotActionInputs.ASSIGNABLE ||
             id === DotActionInputs.COMMENTABLE ||

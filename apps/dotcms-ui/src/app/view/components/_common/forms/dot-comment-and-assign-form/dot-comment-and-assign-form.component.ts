@@ -29,7 +29,6 @@ export class DotCommentAndAssignFormComponent
     constructor(private dotRolesService: DotRolesService, public fb: FormBuilder) {}
 
     ngOnInit() {
-        debugger;
         if (this.data) {
             if (this.data[DotActionInputs.ASSIGNABLE]) {
                 this.dotRolesService
