@@ -17,12 +17,12 @@ describe('Templates', () => {
 
         // Create Template
         Templates.openCreateTemplateDialog();
-        Templates.fillCreateTemplateForm({ title: 'CypressTemplate', theme: 'default' });
+        Templates.fillCreateTemplateForm({ title: 'CypressTemplate', theme: 'system_theme' });
         Templates.submitCreateTemplateForm();
 
         // Edit Template
         Templates.checkEditTemplatesPageLoaded();
-        Templates.addContainer({ type: 'Default - default' });
+        Templates.addContainer({ type: 'System Container - default' });
         Templates.saveEditTemplate();
 
         // Site Browser
@@ -34,7 +34,7 @@ describe('Templates', () => {
 
         DotSiteBrowser.fillCreatePageForm({
             title: PAGE_NAME,
-            template: 'CypressTemplatedefault'
+            template: 'System Template'
         });
 
         DotSiteBrowser.submitCreatePageForm({ action: 'Save' });

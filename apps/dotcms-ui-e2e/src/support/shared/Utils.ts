@@ -18,33 +18,5 @@ class Utils {
             }
         });
     }
-
-    static DBSeed(): Promise<void> {
-        return Utils.login().then(() => {
-            // Declarations
-            const fileName = 'Cypress-DB-Seed.tar.gz';
-            const method = 'POST';
-            const url = '/api/bundle?sync=true';
-            const fileType = 'application/gzip';
-
-            return new Cypress.Promise((resolve) => {
-                // Get file from fixtures as binary
-                cy.fixture(fileName, 'binary').then((bundle) => {
-                    // File in binary format gets converted to blob so it can be sent as Form data
-                    const blob = Cypress.Blob.binaryStringToBlob(bundle, fileType);
-
-                    // Build up the form
-                    const formData = new FormData();
-                    formData.set('file', blob, fileName); // adding a file to the form
-
-                    // Perform the request
-                    cy.form_request(method, url, formData, (response) => {
-                        expect(response.status).to.eq(200);
-                        resolve();
-                    });
-                });
-            });
-        });
-    }
 }
 export default Utils;
