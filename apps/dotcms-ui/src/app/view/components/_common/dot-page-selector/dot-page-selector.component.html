@@ -7,7 +7,7 @@
             (completeMethod)="search($event)"
             (keydown.enter)="onKeyEnter($event)"
             (keydown.tab)="$event.preventDefault()"
-            (onClear)="onClear($event)"
+            (onClear)="onClear()"
             (onSelect)="onSelect($event)"
             [minLength]="2"
             field="label"
@@ -29,7 +29,7 @@
             </ng-template>
         </p-autoComplete>
     </span>
-    <small *ngIf="message" class="p-invalid" [textContent]="message"></small>
+    <small *ngIf="emptyMessage" class="p-invalid" [textContent]="emptyMessage"></small>
     <dot-field-helper [message]="'page.selector.hint' | dm"></dot-field-helper>
 </div>
 

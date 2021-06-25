@@ -21,6 +21,6 @@ export interface DotActionBulkRequestOptions {
             publishTime: string;
             filterKey: string;
         };
-        additionalBeanMap: { _path_to_move: string };
+        additionalParamsMap: { _path_to_move: string };
     };
 }

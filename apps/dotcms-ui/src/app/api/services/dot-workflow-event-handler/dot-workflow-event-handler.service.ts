@@ -282,7 +282,7 @@ export class DotWorkflowEventHandlerService {
                     publishTime: data.publishTime,
                     filterKey: data.filterKey
                 },
-                additionalBeanMap: { _path_to_move: data.move }
+                additionalParamsMap: { _path_to_move: data.move }
             }
         };
         if (Array.isArray(event.selectedInodes)) {

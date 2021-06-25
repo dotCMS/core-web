@@ -9,17 +9,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Site } from '@dotcms/dotcms-js';
 
 import { DotPageSelectorService, DotPageAsset } from './service/dot-page-selector.service';
-import {
-    DotPageSelectorResults,
-    DotPageSelectorItem,
-    DotFolder,
-    DotSimpleURL
-} from './models/dot-page-selector.models';
+import { DotPageSelectorItem, DotFolder, DotSimpleURL } from './models/dot-page-selector.models';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs/internal/observable/of';
@@ -55,21 +50,21 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
 
     @ViewChild('autoComplete') autoComplete: AutoComplete;
 
-    // results: DotPageSelectorResults = {
-    //     data: of([]),
-    //     query: '',
-    //     type: ''
-    // };
     val: DotPageSelectorItem;
-    message: string;
     suggestions: Subject<any> = new Subject<any>();
+    emptyMessage: string;
     private currentHost: Site;
     private searchType: string;
 
     constructor(
         private dotPageSelectorService: DotPageSelectorService,
         private dotMessageService: DotMessageService
-    ) {}
+    ) {
+        this.suggestions.subscribe((data) => {
+            console.log('suggestions: ', data);
+            this.autoComplete.show();
+        });
+    }
 
     propagateChange = (_: any) => {};
 
@@ -90,20 +85,21 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      * @memberof DotPageSelectorComponent
      */
     search(param: any): void {
-        console.log('search');
-        if (this.validSearch(param)) {
-            debugger;
-            this.handleSearchType(this.cleanQuery(param.query))
+        const query = this.cleanAndValidateQuery(param.query);
+        console.log('search', query);
+        if (!!query) {
+            this.handleSearchType(query)
                 .pipe(take(1))
                 .subscribe((data) => {
-                    debugger;
                     this.suggestions.next(data);
-                    if (
-                        this.shouldAutoFill() &&
-                        this.isOnlyFullHost(this.cleanQuery(param.query))
-                    ) {
-                        this.autoSelectUniqueResult();
-                    }
+                    this.emptyMessage = !!data.length ? null : this.getEmptyMessage();
+                    // if (data.length === 1 && this.isSearchingForHost(query)) {
+                    //     console.log('autoSelectUniqueResult');
+                    //     this.autoSelectUniqueResult(data[0]);
+                    // }
+                    // if ( this.shouldAutoFill() && this.isOnlyFullHost(query)) {
+                    //     this.autoSelectUniqueResult();
+                    // }
                 });
         } else {
             this.resetResults();
@@ -128,8 +124,8 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
             this.propagateChange(page.identifier);
         } else if (this.searchType === 'folder') {
             const folder = <DotFolder>item.payload;
-            this.selected.emit(`${folder.hostname}${folder.path}`);
-            this.propagateChange(`${folder.hostname}${folder.path}`);
+            this.selected.emit(`//${folder.hostname}${folder.path}`);
+            this.propagateChange(`//${folder.hostname}${folder.path}`);
         }
 
         this.resetResults();
@@ -144,10 +140,10 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     onKeyEnter($event: KeyboardEvent): void {
         $event.stopPropagation();
 
-        if (this.shouldAutoFill()) {
-            this.autoFillField($event);
-            this.autoSelectUniqueResult();
-        }
+        // if (this.shouldAutoFill()) {
+        //     this.autoFillField($event);
+        //     // this.autoSelectUniqueResult();
+        // }
     }
 
     /**
@@ -180,9 +176,11 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     registerOnTouched(_fn: any): void {}
 
     private handleSearchType(query: string): Observable<DotPageSelectorItem[]> {
+        console.log('isTwoStepSearch: ', this.isTwoStepSearch(query));
         if (this.isTwoStepSearch(query)) {
             return this.fullSearch(query);
         } else {
+            this.currentHost = null;
             return this.conditionalSearch(query);
         }
     }
@@ -194,18 +192,9 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
             switchMap((results: DotPageSelectorItem[]) => {
                 if (results.length) {
                     this.currentHost = <Site>results[0].payload;
-                    return this.folderSearch
-                        ? this.dotPageSelectorService.getFolders(param).pipe(
-                              tap(() => {
-                                  this.searchType = 'folder';
-                              })
-                          )
-                        : this.dotPageSelectorService.getPages(param).pipe(
-                              tap(() => {
-                                  this.searchType = 'page';
-                              })
-                          );
+                    return this.getSecondStepData(param);
                 } else {
+                    this.searchType = this.folderSearch ? 'folder' : 'site';
                     return of(results);
                 }
             })
@@ -225,14 +214,35 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     }
 
     private conditionalSearch(param: string): Observable<DotPageSelectorItem[]> {
-        debugger;
-        return !this.currentHost || this.isReSearchingForHost(param)
+        return this.isSearchingForHost(param)
             ? this.dotPageSelectorService.getSites(this.getSiteName(param)).pipe(
                   tap(() => {
                       this.searchType = 'site';
                   })
               )
-            : this.folderSearch
+            : this.getSecondStepData(param);
+
+        // return !this.currentHost || this.isReSearchingForHost(param)
+        //     ? this.dotPageSelectorService.getSites(this.getSiteName(param)).pipe(
+        //           tap(() => {
+        //               this.searchType = 'site';
+        //           })
+        //       )
+        //     : this.folderSearch
+        //     ? this.dotPageSelectorService.getFolders(param).pipe(
+        //           tap(() => {
+        //               this.searchType = 'folder';
+        //           })
+        //       )
+        //     : this.dotPageSelectorService.getPages(param).pipe(
+        //           tap(() => {
+        //               this.searchType = 'page';
+        //           })
+        //       );
+    }
+
+    private getSecondStepData(param: string): Observable<DotPageSelectorItem[]> {
+        return this.folderSearch
             ? this.dotPageSelectorService.getFolders(param).pipe(
                   tap(() => {
                       this.searchType = 'folder';
@@ -245,9 +255,14 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
               );
     }
 
-    private isTwoStepSearch(param): boolean {
+    private isTwoStepSearch(param: string): boolean {
         // return !!this.currentHost || this.hostChanged(param);
-        return this.isHostAndPath(param) && (!this.currentHost || this.hostChanged(param));
+        return (
+            param.startsWith('//') &&
+            param.length > 2 &&
+            (this.isHostAndPath(param) || param.endsWith('/'))
+        );
+        // return this.isHostAndPath(param) && (!this.currentHost || this.hostChanged(param));
     }
 
     private isHostAndPath(param: string): boolean {
@@ -256,81 +271,87 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     }
 
     private parseUrl(query: string): DotSimpleURL {
-        if (this.isSearchingForHost(query)) {
-            try {
-                const url = new URL(`http:${query}`);
-                debugger;
-                return {
-                    host: url.host,
-                    pathname:
-                        query.endsWith('/') && url.pathname.length === 1
-                            ? ' '
-                            : url.pathname.substr(1)
-                };
-            } catch {
-                return null;
-            }
-        } else {
+        try {
+            const url = new URL(`http:${query}`);
+            return { host: url.host, pathname: url.pathname.substr(1) };
+        } catch {
             return null;
         }
+
+        // if (this.isSearchingForHost(query)) {
+        //     try {
+        //         const url = new URL(`http:${query}`);
+        //         return {
+        //             host: url.host,
+        //             pathname:
+        //                 query.endsWith('/') && url.pathname.length === 1
+        //                     ? ' '
+        //                     : url.pathname.substr(1)
+        //         };
+        //     } catch {
+        //         return null;
+        //     }
+        // } else {
+        //     return null;
+        // }
     }
 
     private isSearchingForHost(query: string): boolean {
         return query.startsWith('//') && !!this.getSiteName(query) ? !query.endsWith('/') : true;
     }
 
-    private shouldSearchPages(query: string): boolean {
-        debugger;
-        if (!this.isHostAndPath(query) || this.isReSearchingForHost(query)) {
-            this.currentHost = null;
-        }
-        console.log(!!(this.currentHost || !this.isSearchingForHost(query)));
-        return !!(this.currentHost || !this.isSearchingForHost(query));
-    }
+    // private shouldSearchPages(query: string): boolean {
+    //     debugger;
+    //     if (!this.isHostAndPath(query) || this.isReSearchingForHost(query)) {
+    //         this.currentHost = null;
+    //     }
+    //     console.log(!!(this.currentHost || !this.isSearchingForHost(query)));
+    //     return !!(this.currentHost || !this.isSearchingForHost(query));
+    // }
 
-    private isReSearchingForHost(query: string): boolean {
-        console.log('hostChanged', this.hostChanged(query));
-        if (this.isSearchingForHost(query) && this.hostChanged(query)) {
-            this.currentHost = null;
-            return true;
-        }
-        return false;
-    }
+    // private isReSearchingForHost(query: string): boolean {
+    //     console.log('hostChanged', this.hostChanged(query));
+    //     if (this.isSearchingForHost(query) && this.hostChanged(query)) {
+    //         this.currentHost = null;
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
-    private hostChanged(query: string): boolean {
-        const parsedURL = this.parseUrl(query);
-        return (
-            this.currentHost &&
-            parsedURL &&
-            this.currentHost.hostname.toLocaleLowerCase() !== parsedURL.host.toLocaleLowerCase()
-        );
-    }
+    // private hostChanged(query: string): boolean {
+    //     const parsedURL = this.parseUrl(query);
+    //     return (
+    //         this.currentHost &&
+    //         parsedURL &&
+    //         this.currentHost.hostname.toLocaleLowerCase() !== parsedURL.host.toLocaleLowerCase()
+    //     );
+    // }
 
     private getSiteName(site: string): string {
         return site.replace(/\//g, '');
     }
 
-    private autoFillField($event: KeyboardEvent): void {
-        const input: HTMLInputElement = <HTMLInputElement>$event.target;
+    // private autoFillField($event: KeyboardEvent): void {
+    //     const input: HTMLInputElement = <HTMLInputElement>$event.target;
+    //
+    //     if (this.searchType === 'site') {
+    //         const host = <Site>this.autoComplete.suggestions[0].payload;
+    //         input.value = `//${host.hostname}/`;
+    //     } else if (this.searchType === 'page') {
+    //         const page = <DotPageAsset>this.autoComplete.suggestions[0].payload;
+    //         input.value = `//${page.hostName}/${page.path}`;
+    //     } else if (this.searchType === 'folder') {
+    //         const folder = <DotFolder>this.autoComplete.suggestions[0].payload;
+    //         input.value = `//${folder.hostname}${folder.path}`;
+    //     }
+    //
+    //     this.resetResults();
+    // }
 
-        if (this.searchType === 'site') {
-            const host = <Site>this.autoComplete.suggestions[0].payload;
-            input.value = `//${host.hostname}/`;
-        } else if (this.searchType === 'page') {
-            const page = <DotPageAsset>this.autoComplete.suggestions[0].payload;
-            input.value = `//${page.hostName}/${page.path}`;
-        } else if (this.searchType === 'folder') {
-            const folder = <DotFolder>this.autoComplete.suggestions[0].payload;
-            input.value = `//${folder.hostname}${folder.path}`;
-        }
-
-        this.resetResults();
-    }
-
-    private shouldAutoFill(): boolean {
-        debugger;
-        return this.autoComplete.suggestions.length === 1;
-    }
+    // private shouldAutoFill(): boolean {
+    //     debugger;
+    //     return this.autoComplete.suggestions.length === 1;
+    // }
 
     private resetResults(): void {
         this.suggestions.next(of([]));
@@ -340,32 +361,51 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     //     return this.results.data.length === 0 ? this.getEmptyMessage(this.results.type) : null;
     // }
 
-    private isOnlyFullHost(host: string): boolean {
-        return /\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\/*$/.test(host);
+    // private isOnlyFullHost(host: string): boolean {
+    //     return /\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\/*$/.test(host);
+    // }
+
+    // private autoSelectUniqueResult(data: DotPageSelectorItem): void {
+    //     this.onSelect(data);
+    // }
+
+    private cleanAndValidateQuery(query: string): string {
+        const cleanedQuery = this.cleanQuery(query);
+        this.autoComplete.inputEL.nativeElement.value = cleanedQuery;
+        debugger;
+        return cleanedQuery.startsWith('//')
+            ? cleanedQuery
+            : cleanedQuery.length >= 3
+            ? cleanedQuery
+            : '';
+
+        // return !!cleanedQuery
+        //     ? cleanedQuery.startsWith('//')
+        //         ? cleanedQuery
+        //         : cleanedQuery.length >= 3
+        //         ? cleanedQuery
+        //         : ''
+        //     : '';
     }
 
-    private autoSelectUniqueResult(): void {
-        this.onSelect(this.autoComplete.suggestions[0]);
-    }
+    // private validSearch(param: any): boolean {
+    //     return (
+    //         this.cleanInput(param).length &&
+    //         (param.query.startsWith('//') ? true : param.query.length >= 3)
+    //     );
+    // }
 
-    private validSearch(param: any): boolean {
-        return (
-            this.cleanInput(param).length &&
-            (!param.query.startsWith('//') ? param.query.length >= 3 : true)
-        );
-    }
-
-    private cleanInput(event: any): string {
-        this.autoComplete.inputEL.nativeElement.value = this.cleanQuery(event.query);
-        return this.autoComplete.inputEL.nativeElement.value;
-    }
+    // private cleanInput(event: any): string {
+    //     this.autoComplete.inputEL.nativeElement.value = this.cleanQuery(event.query);
+    //     return this.autoComplete.inputEL.nativeElement.value;
+    // }
 
     private cleanQuery(query: string): string {
         return !NO_SPECIAL_CHAR.test(query) ? query.replace(REPLACE_SPECIAL_CHAR, '') : query;
     }
 
-    private getEmptyMessage(type: string): string {
-        switch (type) {
+    private getEmptyMessage(): string {
+        switch (this.searchType) {
             case 'site':
                 return this.dotMessageService.get('page.selector.no.sites.results');
             case 'page':
