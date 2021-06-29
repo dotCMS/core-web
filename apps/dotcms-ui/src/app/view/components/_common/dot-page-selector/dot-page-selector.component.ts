@@ -22,6 +22,11 @@ import { Observable, Subject } from 'rxjs';
 
 const NO_SPECIAL_CHAR = /^[a-zA-Z0-9._/-]*$/g;
 const REPLACE_SPECIAL_CHAR = /[^a-zA-Z0-9._/-]/g;
+enum SearchType {
+    SITE = 'site',
+    FOLDER = 'folder',
+    PAGE = 'page'
+}
 
 /**
  * Search and select a page asset
@@ -52,9 +57,11 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
 
     val: DotPageSelectorItem;
     suggestions: Subject<any> = new Subject<any>();
-    emptyMessage: string;
+    message: string;
     searchType: string;
+    isError = false;
     private currentHost: Site;
+    private invalidHost = false;
 
     constructor(
         private dotPageSelectorService: DotPageSelectorService,
@@ -80,14 +87,16 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      * @memberof DotPageSelectorComponent
      */
     search(param: any): void {
+        this.propagateChange(null);
         const query = this.cleanAndValidateQuery(param.query);
+        this.message = null;
+        this.invalidHost = false;
+        this.isError = false;
         if (!!query) {
             this.handleSearchType(query)
                 .pipe(take(1))
                 .subscribe((data) => {
-                    this.suggestions.next(data);
-                    this.autoComplete.show();
-                    this.emptyMessage = !!data.length ? null : this.getEmptyMessage();
+                    this.handleDataAndErrors(data, query);
                 });
         } else {
             this.resetResults();
@@ -111,8 +120,13 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
             this.propagateChange(page.identifier);
         } else if (this.searchType === 'folder') {
             const folder = <DotFolder>item.payload;
-            this.selected.emit(`//${folder.hostname}${folder.path}`);
-            this.propagateChange(`//${folder.hostname}${folder.path}`);
+            if (folder.addChildrenAllowed) {
+                this.selected.emit(`//${folder.hostname}${folder.path}`);
+                this.propagateChange(`//${folder.hostname}${folder.path}`);
+            } else {
+                this.message = this.dotMessageService.get('page.selector.folder.permissions');
+                this.isError = true;
+            }
         }
 
         this.resetResults();
@@ -157,11 +171,38 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
 
     registerOnTouched(_fn: any): void {}
 
+    private handleDataAndErrors(data: DotPageSelectorItem[], query: string): void {
+        if (data.length === 0) {
+            if (this.invalidHost) {
+                this.message = this.getEmptyMessage(SearchType.SITE);
+            } else if (this.isFolderAndHost(query)) {
+                this.propagateChange(this.autoComplete.inputEL.nativeElement.value);
+                this.message = this.dotMessageService.get('page.selector.folder.new');
+            } else {
+                this.message = this.getEmptyMessage(this.searchType);
+            }
+        }
+        this.suggestions.next(data);
+        this.autoComplete.show();
+    }
+
+    private isFolderAndHost(query: string): boolean {
+        return (
+            this.searchType === SearchType.FOLDER && !query.endsWith('/') && query.startsWith('//')
+        );
+    }
+
     private handleSearchType(query: string): Observable<DotPageSelectorItem[]> {
         if (this.isTwoStepSearch(query)) {
+            this.searchType = this.folderSearch ? SearchType.FOLDER : SearchType.PAGE;
             return this.fullSearch(query);
         } else {
             this.currentHost = null;
+            this.searchType = this.isSearchingForHost(query)
+                ? SearchType.SITE
+                : this.folderSearch
+                ? SearchType.FOLDER
+                : SearchType.PAGE;
             return this.conditionalSearch(query);
         }
     }
@@ -175,7 +216,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
                     this.currentHost = <Site>results[0].payload;
                     return this.getSecondStepData(param);
                 } else {
-                    this.searchType = this.folderSearch ? 'folder' : 'site';
+                    this.invalidHost = true;
                     return of(results);
                 }
             })
@@ -183,27 +224,15 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     }
 
     private conditionalSearch(param: string): Observable<DotPageSelectorItem[]> {
-        return this.isSearchingForHost(param)
-            ? this.dotPageSelectorService.getSites(this.getSiteName(param)).pipe(
-                  tap(() => {
-                      this.searchType = 'site';
-                  })
-              )
+        return this.searchType === SearchType.SITE
+            ? this.dotPageSelectorService.getSites(this.getSiteName(param))
             : this.getSecondStepData(param);
     }
 
     private getSecondStepData(param: string): Observable<DotPageSelectorItem[]> {
         return this.folderSearch
-            ? this.dotPageSelectorService.getFolders(param).pipe(
-                  tap(() => {
-                      this.searchType = 'folder';
-                  })
-              )
-            : this.dotPageSelectorService.getPages(param).pipe(
-                  tap(() => {
-                      this.searchType = 'page';
-                  })
-              );
+            ? this.dotPageSelectorService.getFolders(param)
+            : this.dotPageSelectorService.getPages(param);
     }
 
     private isTwoStepSearch(param: string): boolean {
@@ -229,7 +258,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     }
 
     private isSearchingForHost(query: string): boolean {
-        return query.startsWith('//') && !!this.getSiteName(query) ? !query.endsWith('/') : true;
+        return query.startsWith('//') && (!!this.getSiteName(query) ? !query.endsWith('/') : true);
     }
 
     private getSiteName(site: string): string {
@@ -254,8 +283,9 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
         return !NO_SPECIAL_CHAR.test(query) ? query.replace(REPLACE_SPECIAL_CHAR, '') : query;
     }
 
-    private getEmptyMessage(): string {
-        switch (this.searchType) {
+    private getEmptyMessage(type: string): string {
+        this.isError = true;
+        switch (type) {
             case 'site':
                 return this.dotMessageService.get('page.selector.no.sites.results');
             case 'page':
