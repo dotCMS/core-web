@@ -91,7 +91,7 @@ const mockWizardOutputTransformedData = {
     whereToSend: '37fe23d5-588d-4c61-a9ea-70d01e913344'
 };
 
-fdescribe('DotWorkflowEventHandlerService', () => {
+describe('DotWorkflowEventHandlerService', () => {
     let dotWorkflowEventHandlerService: DotWorkflowEventHandlerService;
     let dotWizardService: DotWizardService;
     let dotWorkflowActionsFireService: DotWorkflowActionsFireService;

@@ -1,5 +1,4 @@
 import { DotPageAsset, DotPageSelectorService } from './dot-page-selector.service';
-import { mockDotPageSelectorResults } from '../dot-page-selector.component.spec';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { CoreWebService, Site } from '@dotcms/dotcms-js';
@@ -89,12 +88,12 @@ const expectedFolderMap: DotPageSelectorItem[] = [
 const mockGetPagedResponse = {
     entity: [
         {
-            hostname: 'demo.dotcms.com',
+            hostName: 'demo.dotcms.com',
             path: '/activities/hiking',
             identifier: 'abc'
         },
         {
-            hostname: 'lunik',
+            hostName: 'lunik',
             path: '/activities/walk',
             identifier: '123'
         }
@@ -103,11 +102,11 @@ const mockGetPagedResponse = {
 
 const expectedPagesMap: DotPageSelectorItem[] = [
     {
-        label: `//${mockGetPagedResponse.entity[0].hostname}${mockGetPagedResponse.entity[0].path}`,
+        label: `//${mockGetPagedResponse.entity[0].hostName}${mockGetPagedResponse.entity[0].path}`,
         payload: (mockGetPagedResponse.entity[0] as unknown) as DotPageAsset
     },
     {
-        label: `//${mockGetPagedResponse.entity[1].hostname}${mockGetPagedResponse.entity[1].path}`,
+        label: `//${mockGetPagedResponse.entity[1].hostName}${mockGetPagedResponse.entity[1].path}`,
         payload: (mockGetPagedResponse.entity[1] as unknown) as DotPageAsset
     }
 ];
@@ -142,21 +141,21 @@ fdescribe('DotPageSelectorService', () => {
 
         dotPageSelectorService.getPageById(searchParam).subscribe((res: any) => {
             expect(res).toEqual({
-                label: '//demo.dotcms.com/about-us',
-                payload: mockDotPageSelectorResults.data[0].payload
+                label: `//${mockGetPagedResponse.entity[0].hostName}${mockGetPagedResponse.entity[0].path}`,
+                payload: mockGetPagedResponse.entity[0]
             });
         });
 
         const req = httpMock.expectOne('/api/es/search');
-        expect(req.request.method).toBe('POST');
+        expect(req.request.method).toEqual('POST');
         expect(req.request.body).toEqual(query);
-        req.flush({ contentlets: [mockDotPageSelectorResults.data[0].payload] });
+        req.flush({ contentlets: [mockGetPagedResponse.entity[0]] });
     });
 
     it('should make page search', () => {
         dotPageSelectorService.getPages('about-us').subscribe((res: DotPageSelectorItem[]) => {
             expect(res).toEqual(expectedPagesMap);
-            expect(req.request.method).toBe('GET');
+            expect(req.request.method).toEqual('GET');
         });
 
         const req = httpMock.expectOne(
@@ -166,11 +165,11 @@ fdescribe('DotPageSelectorService', () => {
         req.flush(mockGetPagedResponse);
     });
 
-    it('should make page folder', () => {
+    it('should make page folder search', () => {
         dotPageSelectorService.getFolders('folder').subscribe((res: any) => {
             expect(res).toEqual(expectedFolderMap);
-            expect(req.request.body).toBe({ path: 'folder' });
-            expect(req.request.method).toBe('POST');
+            expect(req.request.body).toEqual({ path: 'folder' });
+            expect(req.request.method).toEqual('POST');
         });
 
         const req = httpMock.expectOne(`/api/v1/folder/byPath`);
@@ -181,7 +180,7 @@ fdescribe('DotPageSelectorService', () => {
     it('should make a host search', () => {
         dotPageSelectorService.getSites('//demo.dotcms.com').subscribe((res: any) => {
             expect(res).toEqual(expectedSitesMap);
-            expect(req.request.method).toBe('POST');
+            expect(req.request.method).toEqual('POST');
             expect(req.request.body).toEqual(hostQuery);
         });
 
@@ -199,12 +198,10 @@ fdescribe('DotPageSelectorService', () => {
     });
 
     it('should make a host search but limit to MAX_RESULTS_SIZE if string is empty', () => {
-        dotPageSelectorService.getSites('//').subscribe((res: any) => {
-            expect(req.request.body).toEqual(emptyHostQuery);
-        });
-
+        dotPageSelectorService.getSites('').subscribe();
         const req = httpMock.expectOne(`/api/es/search`);
 
+        expect(req.request.body).toEqual(emptyHostQuery);
         req.flush(mockGetSitesResponse);
     });
 
