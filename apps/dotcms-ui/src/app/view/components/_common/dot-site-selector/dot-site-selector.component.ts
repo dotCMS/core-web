@@ -174,13 +174,11 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     getSitesList(filter = '', offset = 0): void {
-        debugger;
         this.paginationService.filter = filter;
         this.paginationService
             .getWithOffset(offset)
             .pipe(take(1))
             .subscribe((items: Site[]) => {
-                debugger;
                 this.sitesCurrentPage = [...items];
                 this.moreThanOneSite = this.moreThanOneSite || items.length > 1;
             });
@@ -201,7 +199,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof DotSiteSelectorComponent
      */
     updateCurrentSite(site: Site): void {
-        console.log('updateCurrentSite', site);
         const newSite = { ...site };
         this.currentSiteSub$.next(newSite);
     }
