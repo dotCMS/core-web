@@ -71,6 +71,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.setExtraParams('live', this.live);
         this.paginationService.setExtraParams('system', this.system);
         this.paginationService.paginationPerPage = this.pageSize;
+
         this.siteService.refreshSites$
             .pipe(takeUntil(this.destroy$))
             .subscribe((_site: Site) => this.handleSitesRefresh(_site));
@@ -190,7 +191,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     siteChange(site: Site): void {
-        debugger;
         this.change.emit(site);
     }
     /**
@@ -200,7 +200,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof DotSiteSelectorComponent
      */
     updateCurrentSite(site: Site): void {
-        debugger;
         const newSite = { ...site };
         this.currentSiteSub$.next(newSite);
     }
@@ -214,6 +213,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private selectCurrentSite(siteId: string): void {
         const selectedInCurrentPage = this.getSiteByIdFromCurrentPage(siteId);
+
         if (selectedInCurrentPage) {
             this.updateCurrentSite(selectedInCurrentPage);
         } else {

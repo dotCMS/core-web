@@ -20,6 +20,5 @@
 <ng-template #hostName>
     <span class="site-selector__title">
         {{ (currentSite$ | async)?.hostname }}
-        {{currentSite$ | async | json}}
     </span>
 </ng-template>
