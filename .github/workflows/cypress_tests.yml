@@ -46,7 +46,9 @@ jobs:
           #brew install docker docker-machine
           #brew services start docker-machine
           brew install --cask docker
-          open /Applications/Docker.app
+          #open /Applications/Docker.app
+          ls /Applications/Docker.app/Contents/Resources/bin
+          echo "Creating symlink..."
           ln -s /Applications/Docker.app/Contents/Resources/bin /usr/local/bin/docker
           
           #brew install bash-completion
