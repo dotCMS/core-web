@@ -46,24 +46,18 @@ jobs:
           brew install docker docker-machine
           echo "executed brew install docker docker-machine"
           docker-machine create default
-          eval $(docker-machine env default)
-          echo "executed eval $(docker-machine env default)"
-          chmod +x /usr/local/bin/docker-machine
-          echo "executed chmod +x /usr/local/bin/docker-machine"
+          #eval $(docker-machine env default)
+          #echo "executed eval $(docker-machine env default)"
+          #chmod +x /usr/local/bin/docker-machine
+          #echo "executed chmod +x /usr/local/bin/docker-machine"
           brew services start docker-machine
           echo "executed brew services start docker-machine"
 
-          docker-machine restart
-          echo "executed docker-machine restart"
-          #brew install --cask docker
-          #open /Applications/Docker.app
-          #ls /Applications/Docker.app/Contents/Resources/bin
-          #echo "Creating symlink..."
-          #ln -s /Applications/Docker.app/Contents/Resources/bin /usr/local/bin/docker
+          #docker-machine restart
+          #echo "executed docker-machine restart"
           
           docker version
           
-          journalctl -fu docker
           # sleep 150
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
         if: env.jobRun == 'true'
