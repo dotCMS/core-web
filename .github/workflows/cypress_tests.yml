@@ -43,13 +43,13 @@ jobs:
           # curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.12/boot2docker.iso
           brew update
           
-          #brew install docker docker-machine
-          #brew services start docker-machine
-          brew install --cask docker
+          brew install docker docker-machine
+          brew services start docker-machine
+          #brew install --cask docker
           #open /Applications/Docker.app
-          ls /Applications/Docker.app/Contents/Resources/bin
-          echo "Creating symlink..."
-          ln -s /Applications/Docker.app/Contents/Resources/bin /usr/local/bin/docker
+          #ls /Applications/Docker.app/Contents/Resources/bin
+          #echo "Creating symlink..."
+          #ln -s /Applications/Docker.app/Contents/Resources/bin /usr/local/bin/docker
           
           #brew install bash-completion
           #brew install docker-completion
