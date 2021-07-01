@@ -46,6 +46,7 @@ jobs:
           brew install docker-machine docker
           chmod +x /usr/local/bin/docker-machine
           brew services start docker-machine
+          eval $(docker-machine env default)
           docker-machine restart
           #brew install --cask docker
           #open /Applications/Docker.app
