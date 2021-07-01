@@ -51,6 +51,7 @@ jobs:
           #echo "Creating symlink..."
           #ln -s /Applications/Docker.app/Contents/Resources/bin /usr/local/bin/docker
           
+          systemctl start docker
           #brew install bash-completion
           #brew install docker-completion
           #brew install docker-compose-completion
