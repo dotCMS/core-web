@@ -44,10 +44,15 @@ jobs:
           brew update
           
           brew install docker-machine docker
+          echo "executed brew install docker-machine docker"
           chmod +x /usr/local/bin/docker-machine
+          echo "executed chmod +x /usr/local/bin/docker-machine"
           brew services start docker-machine
+          echo "executed brew services start docker-machine"
           eval $(docker-machine env default)
+          echo "executed eval $(docker-machine env default)"
           docker-machine restart
+          echo "executed docker-machine restart"
           #brew install --cask docker
           #open /Applications/Docker.app
           #ls /Applications/Docker.app/Contents/Resources/bin
