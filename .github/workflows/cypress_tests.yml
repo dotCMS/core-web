@@ -45,6 +45,11 @@ jobs:
           #brew install docker docker-machine
           #brew services start docker-machine
           brew install --cask docker
+          
+          brew install bash-completion
+          brew install docker-completion
+          brew install docker-compose-completion
+          brew install docker-machine-completion
           docker version
           
           journalctl -fu docker
