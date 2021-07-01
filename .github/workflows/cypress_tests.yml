@@ -42,10 +42,12 @@ jobs:
           # mkdir -p ~/.docker/machine/cache
           # curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.12/boot2docker.iso
           brew update
-          brew install docker docker-machine
-          brew services start docker-machine
-          
+          #brew install docker docker-machine
+          #brew services start docker-machine
+          brew cask install docker
           docker version
+          
+          journalctl -fu docker
           # sleep 150
           # sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
         if: env.jobRun == 'true'
