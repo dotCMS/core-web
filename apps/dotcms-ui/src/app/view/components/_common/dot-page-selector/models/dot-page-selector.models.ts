@@ -16,3 +16,8 @@ export interface DotFolder {
     path: string;
     addChildrenAllowed: boolean;
 }
+
+export interface CompleteEvent {
+    originalEvent: InputEvent;
+    query: string;
+}

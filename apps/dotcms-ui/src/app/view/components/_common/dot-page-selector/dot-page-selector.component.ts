@@ -9,12 +9,17 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 import { Site } from '@dotcms/dotcms-js';
 
 import { DotPageSelectorService, DotPageAsset } from './service/dot-page-selector.service';
-import { DotPageSelectorItem, DotFolder, DotSimpleURL } from './models/dot-page-selector.models';
+import {
+    DotPageSelectorItem,
+    DotFolder,
+    DotSimpleURL,
+    CompleteEvent
+} from './models/dot-page-selector.models';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs/internal/observable/of';
@@ -56,7 +61,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     @ViewChild('autoComplete') autoComplete: AutoComplete;
 
     val: DotPageSelectorItem;
-    suggestions: Subject<any> = new Subject<any>();
+    suggestions$: Subject<DotPageSelectorItem[]> = new Subject<DotPageSelectorItem[]>();
     message: string;
     searchType: string;
     isError = false;
@@ -77,18 +82,18 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      */
     onClear(): void {
         this.propagateChange(null);
-        this.suggestions.next(of([]));
+        this.resetResults();
     }
 
     /**
      * Get results and set it to the autotomplete
      *
-     * @param string param
+     * @param CompleteEvent param
      * @memberof DotPageSelectorComponent
      */
-    search(param: any): void {
+    search(event: CompleteEvent): void {
         this.propagateChange(null);
-        const query = this.cleanAndValidateQuery(param.query);
+        const query = this.cleanAndValidateQuery(event.query);
         this.message = null;
         this.invalidHost = false;
         this.isError = false;
@@ -182,7 +187,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
                 this.message = this.getEmptyMessage(this.searchType);
             }
         }
-        this.suggestions.next(data);
+        this.suggestions$.next(data);
         this.autoComplete.show();
     }
 
@@ -198,12 +203,8 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
             return this.fullSearch(query);
         } else {
             this.currentHost = null;
-            this.searchType = this.isSearchingForHost(query)
-                ? SearchType.SITE
-                : this.folderSearch
-                ? SearchType.FOLDER
-                : SearchType.PAGE;
-            return this.conditionalSearch(query);
+            this.searchType = this.setSearchType(query);
+            return this.getConditionalSearch(query);
         }
     }
 
@@ -217,13 +218,21 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
                     return this.getSecondStepData(param);
                 } else {
                     this.invalidHost = true;
-                    return of(results);
+                    return of([]);
                 }
             })
         );
     }
 
-    private conditionalSearch(param: string): Observable<DotPageSelectorItem[]> {
+    private setSearchType(query: string): string {
+        return this.isSearchingForHost(query)
+            ? SearchType.SITE
+            : this.folderSearch
+            ? SearchType.FOLDER
+            : SearchType.PAGE;
+    }
+
+    private getConditionalSearch(param: string): Observable<DotPageSelectorItem[]> {
         return this.searchType === SearchType.SITE
             ? this.dotPageSelectorService.getSites(this.getSiteName(param))
             : this.getSecondStepData(param);
@@ -266,7 +275,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     }
 
     private resetResults(): void {
-        this.suggestions.next(of([]));
+        this.suggestions$.next([]);
     }
 
     private cleanAndValidateQuery(query: string): string {

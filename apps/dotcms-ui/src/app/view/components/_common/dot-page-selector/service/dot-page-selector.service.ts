@@ -46,7 +46,7 @@ export class DotPageSelectorService {
      */
     getPageById(identifier: string): Observable<DotPageSelectorItem> {
         return this.coreWebService
-            .requestView({
+            .requestView<DotPageAsset[]>({
                 body: this.getRequestBodyQuery(
                     `${PAGE_BASE_TYPE_QUERY} +identifier:*${identifier}*`
                 ),
@@ -67,7 +67,7 @@ export class DotPageSelectorService {
 
     getPages(path: string): Observable<DotPageSelectorItem[]> {
         return this.coreWebService
-            .requestView({
+            .requestView<DotPageAsset[]>({
                 url: `v1/page/search?path=${path}&onlyLiveSites=true&live=false`
             })
             .pipe(
@@ -85,7 +85,7 @@ export class DotPageSelectorService {
 
     getFolders(path: string): Observable<DotPageSelectorItem[]> {
         return this.coreWebService
-            .requestView({
+            .requestView<DotFolder[]>({
                 url: `/api/v1/folder/byPath`,
                 body: { path: path },
                 method: 'POST'
@@ -107,7 +107,7 @@ export class DotPageSelectorService {
         let query = '+contenttype:Host -identifier:SYSTEM_HOST +host.hostName:';
         query += specific ? this.getSiteName(param) : `*${this.getSiteName(param)}*`;
         return this.coreWebService
-            .requestView({
+            .requestView<Site[]>({
                 body: param
                     ? this.getRequestBodyQuery(query)
                     : this.getRequestBodyQuery(query, MAX_RESULTS_SIZE),

@@ -12,20 +12,20 @@
             [minLength]="2"
             field="label"
             [ngModel]="val"
-            [suggestions]="suggestions | async"
+            [suggestions]="suggestions$ | async"
             [placeholder]=" 'page.selector.placeholder' | dm"
         >
             <ng-template let-item pTemplate="item">
                 <div class="dot-page-selector__item">
-                    <span *ngIf="searchType === 'site'">{{ item.label }}</span>
-                    <span
-                        class="dot-page-selector__item-url"
-                        *ngIf="searchType !== 'site'"
-                        >{{ item.payload.path }}</span
-                    >
-                    <span class="dot-page-selector__item-host" *ngIf="searchType !== 'site'">{{
-                        item.payload.hostname
-                    }}</span>
+                    <span *ngIf="searchType === 'site'; else notSite" >{{ item.label }}</span>
+                    <ng-template #notSite>
+                        <span class="dot-page-selector__item-url">
+                            {{ item.payload.path }}
+                        </span>
+                        <span class="dot-page-selector__item-host">
+                            {{item.payload.hostname}}
+                        </span>
+                    </ng-template>
                 </div>
             </ng-template>
         </p-autoComplete>
@@ -45,19 +45,19 @@
         [minLength]="3"
         field="label"
         [ngModel]="val"
-        [suggestions]="suggestions | async"
+        [suggestions]="suggestions$ | async"
     >
         <ng-template let-item pTemplate="item">
             <div class="dot-page-selector__item">
-                <span *ngIf="searchType === 'site'">{{ item.label }}</span>
-                <span
-                    class="dot-page-selector__item-url"
-                    *ngIf="searchType !== 'site'"
-                >{{ item.payload.path }}</span
-                >
-                <span class="dot-page-selector__item-host" *ngIf="searchType !== 'site'">{{
-                    item.payload.hostname
-                    }}</span>
+                <span *ngIf="searchType === 'site'; else notSite" >{{ item.label }}</span>
+                <ng-template #notSite>
+                        <span class="dot-page-selector__item-url">
+                            {{ item.payload.path }}
+                        </span>
+                    <span class="dot-page-selector__item-host">
+                            {{item.payload.hostname}}
+                        </span>
+                </ng-template>
             </div>
         </ng-template>
     </p-autoComplete>
