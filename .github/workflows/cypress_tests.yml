@@ -45,7 +45,7 @@ jobs:
           
           brew install docker docker-machine
           echo "executed brew install docker docker-machine"
-          docker-machine create
+          docker-machine create default
           eval $(docker-machine env default)
           echo "executed eval $(docker-machine env default)"
           chmod +x /usr/local/bin/docker-machine
