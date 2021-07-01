@@ -40,6 +40,7 @@ jobs:
       - name: Prepare dot-cicd
         run: |
           
+          rm -rf ~/.docker/machine/cache
           brew update
           brew install docker docker-machine
           docker-machine create default
