@@ -44,7 +44,7 @@ jobs:
           brew update
           #brew install docker docker-machine
           #brew services start docker-machine
-          brew cask install docker
+          brew install --cask docker
           docker version
           
           journalctl -fu docker
