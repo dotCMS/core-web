@@ -43,14 +43,15 @@ jobs:
           # curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.12/boot2docker.iso
           brew update
           
-          brew install docker-machine docker
-          echo "executed brew install docker-machine docker"
+          brew install docker docker-machine
+          echo "executed brew install docker docker-machine"
+          eval $(docker-machine env default)
+          echo "executed eval $(docker-machine env default)"
           chmod +x /usr/local/bin/docker-machine
           echo "executed chmod +x /usr/local/bin/docker-machine"
           brew services start docker-machine
           echo "executed brew services start docker-machine"
-          eval $(docker-machine env default)
-          echo "executed eval $(docker-machine env default)"
+
           docker-machine restart
           echo "executed docker-machine restart"
           #brew install --cask docker
