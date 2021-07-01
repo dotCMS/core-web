@@ -50,6 +50,7 @@ export class DotSiteSelectorFieldComponent implements ControlValueAccessor {
     registerOnTouched(): void {}
 
     setValue(site: Site): void {
+        debugger;
         /*
             TODO: we have an issue (ExpressionChangedAfterItHasBeenCheckedError) here with the
             form in content types when the current site is set for the first time, I'll debug

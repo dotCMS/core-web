@@ -39,6 +39,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     @Input() cssClass: string;
     @Input() width: string;
     @Input() pageSize = 10;
+    @Input() asField = false;
 
     @Output() change: EventEmitter<Site> = new EventEmitter();
     @Output() hide: EventEmitter<any> = new EventEmitter();
@@ -49,6 +50,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     currentSiteSub$: Subject<Site> = new Subject();
 
     sitesCurrentPage: Site[];
+    moreThanOneSite = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -69,7 +71,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.setExtraParams('live', this.live);
         this.paginationService.setExtraParams('system', this.system);
         this.paginationService.paginationPerPage = this.pageSize;
-
         this.siteService.refreshSites$
             .pipe(takeUntil(this.destroy$))
             .subscribe((_site: Site) => this.handleSitesRefresh(_site));
@@ -177,7 +178,9 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
             .getWithOffset(offset)
             .pipe(take(1))
             .subscribe((items: Site[]) => {
+                debugger;
                 this.sitesCurrentPage = [...items];
+                this.moreThanOneSite = this.moreThanOneSite || items.length > 1;
             });
     }
 
@@ -187,6 +190,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     siteChange(site: Site): void {
+        debugger;
         this.change.emit(site);
     }
     /**
@@ -196,6 +200,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof DotSiteSelectorComponent
      */
     updateCurrentSite(site: Site): void {
+        debugger;
         const newSite = { ...site };
         this.currentSiteSub$.next(newSite);
     }
@@ -209,7 +214,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private selectCurrentSite(siteId: string): void {
         const selectedInCurrentPage = this.getSiteByIdFromCurrentPage(siteId);
-
         if (selectedInCurrentPage) {
             this.updateCurrentSite(selectedInCurrentPage);
         } else {
