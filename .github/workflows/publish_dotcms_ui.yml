@@ -56,7 +56,7 @@ jobs:
             - name: Installing dependencies
               run: |
                   cd core-web
-                  npm install
+                  # npm install
             - name: 'Automated Version Bump - dotcms-ui - is Release branch'
               id: version-bump-release
               if: ${{contains(github.ref, 'release-')}}
@@ -64,6 +64,7 @@ jobs:
               with:
                   commit-message: 'CI: bumps version to {{version}} [skip ci]'
                   skip-tag: 'true'
+                  default: prerelease
                   preid: 'rc'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
