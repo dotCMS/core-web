@@ -64,7 +64,6 @@ jobs:
               with:
                   commit-message: 'CI: bumps version to {{version}} [skip ci]'
                   skip-tag: 'true'
-                  default: prerelease
                   preid: 'rc'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -84,13 +83,13 @@ jobs:
             - name: Build dotcms-ui with deps
               run: |
                   cd core-web
-                  npm run nx build dotcms-ui -- --with-deps --prod
-                  cp package.json ./dist/apps/dotcms-ui/package.json
+                  # npm run nx build dotcms-ui -- --with-deps --prod
+                  # cp package.json ./dist/apps/dotcms-ui/package.json
             - name: 'publish to npm'
               run: |
                   cd core-web
                   npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-                  cd dist/apps/dotcms-ui
+                  # cd dist/apps/dotcms-ui
                   if [[ $(basename "${{ github.ref }}") =~ ^release-.* ]]; then
                     echo "---- tag rc"
                     # npm publish --tag rc
