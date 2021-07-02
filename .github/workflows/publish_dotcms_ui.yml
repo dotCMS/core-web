@@ -65,7 +65,7 @@ jobs:
                   commit-message: 'CI: bumps version to {{version}} [skip ci]'
                   skip-tag: 'true'
                   default: prerelease
-                  preid: 'rc'
+                  preid: 'next'
                   rc-wording: ''
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
