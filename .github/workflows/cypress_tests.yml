@@ -39,7 +39,11 @@ jobs:
           echo "CORE_WEB_BUILD_ID=${CORE_WEB_BUILD_ID}" >> $GITHUB_ENV
       - name: Prepare dot-cicd
         run: |
-          
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
+        if: env.jobRun == 'true'
+      - name: Run Cypress Tests
+        run: |
+        
           rm -rf ~/.docker/machine/cache
           brew update
           brew install docker docker-machine
@@ -50,10 +54,6 @@ jobs:
 
           docker version
           
-          sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
-        if: env.jobRun == 'true'
-      - name: Run Cypress Tests
-        run: |
           ../dotcicd/library/pipeline.sh runSidecar cypress
         if: env.jobRun == 'true'
         env:
