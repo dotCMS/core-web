@@ -153,6 +153,8 @@ export class DotWorkflowEventHandlerService {
             delete data.environment;
             delete data.pushActionSelected;
         }
+        data['pathToMove'] = data.move;
+        delete data.move;
         return data;
     }
 
