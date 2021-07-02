@@ -69,8 +69,6 @@ export const EDIT_PAGE_JS = `
         }
     });
 
-    
-
     drake.on('drag', function() {
         window.requestAnimationFrame(function() {
             const el = document.querySelector('.gu-mirror');
