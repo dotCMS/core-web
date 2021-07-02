@@ -68,6 +68,7 @@ export const EDIT_PAGE_JS = `
             return !handle.classList.contains('dotedit-contentlet__drag');
         }
     });
+    
 
     drake.on('drag', function() {
         window.requestAnimationFrame(function() {
