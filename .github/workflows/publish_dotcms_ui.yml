@@ -60,7 +60,7 @@ jobs:
             - name: 'Automated Version Bump - dotcms-ui - is Release branch'
               id: version-bump-release
               if: ${{contains(github.ref, 'release-')}}
-              uses: 'phips28/gh-action-bump-version@8.3.1'
+              uses: 'phips28/gh-action-bump-version@v8.3.1'
               with:
                   commit-message: 'CI: bumps version to {{version}} [skip ci]'
                   skip-tag: 'true'
