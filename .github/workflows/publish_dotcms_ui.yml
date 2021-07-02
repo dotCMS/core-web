@@ -66,6 +66,7 @@ jobs:
                   skip-tag: 'true'
                   default: prerelease
                   preid: 'rc'
+                  rc-wording: 'RELEASE,alpha'
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: 'core-web'
