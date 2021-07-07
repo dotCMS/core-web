@@ -93,8 +93,6 @@ jobs:
                     branchName=$(basename "${{ github.ref }}")
                   fi
 
-                  echo $branchName
-
                   # Checks if branch is release or master
                   if [[ $branchName == *master* ]]; then
                     preReleaseTag=next
@@ -102,11 +100,8 @@ jobs:
                     preReleaseTag=rc
                   fi
 
-                  echo $preReleaseTag
-
                   # Get version from package.json
                   cd core-web
-                  pwd
                   pkgVersion=`awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json`
                   arrIN=(${pkgVersion//./ })
 
@@ -117,22 +112,12 @@ jobs:
                   else
                     pkgVersion="${arrIN[0]}.${arrIN[1]}.0-$preReleaseTag.0"
                   fi
-
-                  echo $pkgVersion
-
-                  git pull origin $branchName
-
-                  pwd
-                  ls -la
-                  cat package.json
                   sed -i -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" ./package.json
 
                   # Commits new version
                   git config --global user.email "dotcmsbuild@dotcms.com"
                   git config --global user.name "dotCms build"
 
-                  git status
-                  git diff package.json
                   git add package.json
                   git commit -m "CI: bumps version to $pkgVersion [skip ci]"
                   git push https://${{ secrets.GITHUB_TOKEN }}@github.com/dotcms/core-web
