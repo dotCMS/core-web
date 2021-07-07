@@ -120,6 +120,8 @@ jobs:
 
                   echo $pkgVersion
 
+                  git pull origin $branchName
+
                   pwd
                   ls -la
                   sed -i -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" ./package.json
