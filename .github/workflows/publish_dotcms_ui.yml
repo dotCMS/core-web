@@ -96,10 +96,10 @@ jobs:
                   echo $branchName
 
                   # Checks if branch is release or master
-                  if [[ $branchName == *next* ]]; then
+                  if [[ $branchName == *master* ]]; then
                     preReleaseTag=next
-                  elif [[ $branchName == *master* ]]; then
-                    preReleaseTag=master
+                  elif [[ $branchName == *release* ]]; then
+                    preReleaseTag=rc
                   fi
 
                   echo $preReleaseTag
