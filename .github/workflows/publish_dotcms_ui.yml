@@ -122,7 +122,7 @@ jobs:
 
                   pwd
                   ls -la
-                  sed -i '' -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" package.json
+                  sed -i '' -E "s/\"version\": \".*\"/\"version\": \"caca\"/g" package.json
 
                   # Commits new version
                   git add package.json
