@@ -93,12 +93,16 @@ jobs:
                     branchName=$(basename "${{ github.ref }}")
                   fi
 
+                  echo $branchName
+
                   # Checks if branch is release or master
                   if [[ $branchName == *next* ]]; then
                     preReleaseTag=next
                   elif [[ $branchName == *master* ]]; then
                     preReleaseTag=master
                   fi
+
+                  echo $preReleaseTag
 
                   # Get version from package.json
                   cd core-web
