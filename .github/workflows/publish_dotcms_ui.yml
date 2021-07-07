@@ -134,8 +134,7 @@ jobs:
                   git status
                   git diff package.json
                   git add package.json
-                  git commit -m 'CI: bumps version to $pkgVersion [skip ci]'
-                  # git push origin $branchName
+                  git commit -m `CI: bumps version to $pkgVersion [skip ci]`
                   git push https://${{ secrets.GITHUB_TOKEN }}@github.com/dotcms/core-web
                   
             - name: Build dotcms-ui with deps
