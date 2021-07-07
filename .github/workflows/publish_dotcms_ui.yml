@@ -85,23 +85,28 @@ jobs:
             - name: Manual Version Bump - dotcms-ui - if it's Release Branch
               if: ${{contains(github.ref, 'release-')}}
               run: |
+
+                  # Get Branch Name
                   if [[ "${{ github.event_name }}" == "pull_request" ]]; then
                     branchName="${{ github.head_ref }}"
                   else
                     branchName=$(basename "${{ github.ref }}")
                   fi
 
-                  echo ---branchName
-                  echo $branchName
+                  # Checks if branch is release or master
+                  if [[ $branchName == *next* ]]; then
+                    preReleaseTag=next
+                  elif [[ $branchName == *master* ]]; then
+                    preReleaseTag=master
+                  fi
 
-                  preReleaseTag=next
-                  
-                  # TODO agregar RC en solo una funcion
-
+                  # Get version from package.json
                   cd core-web
+                  pwd
                   pkgVersion=`awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json`
                   arrIN=(${pkgVersion//./ })
 
+                  # Bump version
                   if [[ $pkgVersion == *$preReleaseTag* ]]; then
                     preReleaseVersion=${arrIN[-1]}
                     pkgVersion="${arrIN[0]}.${arrIN[1]}.0-$preReleaseTag.$((preReleaseVersion+1))"
@@ -112,6 +117,8 @@ jobs:
                   echo $pkgVersion
 
                   sed -i '' -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" package.json
+
+                  # Commits new version
                   git add package.json
                   git commit -m 'CI: bumps version to $pkgVersion [skip ci]'
                   # git push origin master
