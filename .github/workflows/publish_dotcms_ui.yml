@@ -124,6 +124,7 @@ jobs:
 
                   pwd
                   ls -la
+                  cat package.json
                   sed -i -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" ./package.json
 
                   # Commits new version
