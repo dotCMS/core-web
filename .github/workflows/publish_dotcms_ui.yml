@@ -125,6 +125,8 @@ jobs:
                   sed -i -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" ./package.json
 
                   # Commits new version
+                  git status
+                  git diff package.json
                   git add package.json
                   git commit -m 'CI: bumps version to $pkgVersion [skip ci]'
                   # git push origin master
