@@ -57,19 +57,19 @@ jobs:
               run: |
                   cd core-web
                   # npm install
-            - name: 'Automated Version Bump - dotcms-ui - is Release branch'
-              id: version-bump-release
-              if: ${{contains(github.ref, 'release-')}}
-              uses: 'phips28/gh-action-bump-version@v8.3.1'
-              with:
-                  commit-message: 'CI: bumps version to {{version}} [skip ci]'
-                  skip-tag: 'true'
-                  default: prerelease
-                  preid: 'next'
-                  rc-wording: ''
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  PACKAGEJSON_DIR: 'core-web'
+            # - name: 'Automated Version Bump - dotcms-ui - is Release branch'
+            #   id: version-bump-release
+            #   if: ${{contains(github.ref, 'release-')}}
+            #   uses: 'phips28/gh-action-bump-version@v8.3.1'
+            #   with:
+            #       commit-message: 'CI: bumps version to {{version}} [skip ci]'
+            #       skip-tag: 'true'
+            #       default: prerelease
+            #       preid: 'next'
+            #       rc-wording: ''
+            #   env:
+            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #       PACKAGEJSON_DIR: 'core-web'
             # - name: 'Automated Version Bump - dotcms-ui - is Master branch'
             #   id: version-bump-master
             #   if: ${{contains(github.ref, 'master')}}
@@ -103,6 +103,7 @@ jobs:
                   # Get version from package.json
                   cd core-web
                   pwd
+                  ls -la
                   pkgVersion=`awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json`
                   arrIN=(${pkgVersion//./ })
 
