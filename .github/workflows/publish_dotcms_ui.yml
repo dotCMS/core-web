@@ -107,7 +107,6 @@ jobs:
                   # Get version from package.json
                   cd core-web
                   pwd
-                  ls -la
                   pkgVersion=`awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json`
                   arrIN=(${pkgVersion//./ })
 
@@ -121,6 +120,9 @@ jobs:
 
                   echo $pkgVersion
 
+                  cd core-web
+                  pwd
+                  ls -la
                   sed -i '' -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" package.json
 
                   # Commits new version
