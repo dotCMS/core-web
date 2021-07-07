@@ -5,43 +5,43 @@ on:
             - release-*
             - master
 jobs:
-    changes:
-        runs-on: ubuntu-latest
-        outputs:
-            dotcms-ui: ${{ steps.filter.outputs.dotcms-ui }}
-        steps:
-            - name: Checkout core-web
-              uses: actions/checkout@v2
-              with:
-                  fetch-depth: 1
-                  path: 'core-web'
+    # changes:
+    #     runs-on: ubuntu-latest
+    #     outputs:
+    #         dotcms-ui: ${{ steps.filter.outputs.dotcms-ui }}
+    #     steps:
+    #         - name: Checkout core-web
+    #           uses: actions/checkout@v2
+    #           with:
+    #               fetch-depth: 1
+    #               path: 'core-web'
 
-            - name: Get specific changed files
-              uses: dorny/paths-filter@v2
-              id: filter
-              with:
-                  base: ${{ github.ref }}
-                  list-files: 'json'
-                  working-directory: 'core-web'
-                  filters: |
-                      dotcms-ui:
-                        - 'apps/dotcms-ui/src/**'
-                        - 'libs/!(dotcms-webcomponents/**)/**'
+    #         - name: Get specific changed files
+    #           uses: dorny/paths-filter@v2
+    #           id: filter
+    #           with:
+    #               base: ${{ github.ref }}
+    #               list-files: 'json'
+    #               working-directory: 'core-web'
+    #               filters: |
+    #                   dotcms-ui:
+    #                     - 'apps/dotcms-ui/src/**'
+    #                     - 'libs/!(dotcms-webcomponents/**)/**'
 
-            - name: Changes found
-              if: steps.filter.outputs.dotcms-ui == 'true'
-              run: |
-                  echo "Found Dotcms-UI files changed."
-                  echo ${{ steps.filter.outputs.dotcms-ui }}
+    #         - name: Changes found
+    #           if: steps.filter.outputs.dotcms-ui == 'true'
+    #           run: |
+    #               echo "Found Dotcms-UI files changed."
+    #               echo ${{ steps.filter.outputs.dotcms-ui }}
 
-            - name: No changes found
-              if: steps.filter.outputs.dotcms-ui == 'false'
-              run: |
-                  echo "No changes found in Dotcms-UI"
+    #         - name: No changes found
+    #           if: steps.filter.outputs.dotcms-ui == 'false'
+    #           run: |
+    #               echo "No changes found in Dotcms-UI"
 
     publish:
-        needs: changes
-        if: ${{ needs.changes.outputs.dotcms-ui == 'true' }}
+        # needs: changes
+        # if: ${{ needs.changes.outputs.dotcms-ui == 'true' }}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout core-web
@@ -70,18 +70,53 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: 'core-web'
-            - name: 'Automated Version Bump - dotcms-ui - is Master branch'
-              id: version-bump-master
-              if: ${{contains(github.ref, 'master')}}
-              uses: 'phips28/gh-action-bump-version@master'
-              with:
-                  commit-message: 'CI: bumps version to {{version}} [skip ci]'
-                  skip-tag: 'true'
-                  default: prerelease
-                  preid: 'next'
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  PACKAGEJSON_DIR: 'core-web'
+            # - name: 'Automated Version Bump - dotcms-ui - is Master branch'
+            #   id: version-bump-master
+            #   if: ${{contains(github.ref, 'master')}}
+            #   uses: 'phips28/gh-action-bump-version@master'
+            #   with:
+            #       commit-message: 'CI: bumps version to {{version}} [skip ci]'
+            #       skip-tag: 'true'
+            #       default: prerelease
+            #       preid: 'next'
+            #   env:
+            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #       PACKAGEJSON_DIR: 'core-web'
+            - name: Manual Version Bump - dotcms-ui - if it's Release Branch
+              if: ${{contains(github.ref, 'release-')}}
+              run: |
+                  if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+                    branchName="${{ github.head_ref }}"
+                  else
+                    branchName=$(basename "${{ github.ref }}")
+                  fi
+
+                  echo ---branchName
+                  echo $branchName
+
+                  preReleaseTag=next
+                  
+                  # TODO agregar RC en solo una funcion
+
+                  cd core-web
+                  pkgVersion=`awk -F'"' '/"version": ".+"/{ print $4; exit; }' package.json`
+                  arrIN=(${pkgVersion//./ })
+
+                  if [[ $pkgVersion == *$preReleaseTag* ]]; then
+                    preReleaseVersion=${arrIN[-1]}
+                    pkgVersion="${arrIN[0]}.${arrIN[1]}.0-$preReleaseTag.$((preReleaseVersion+1))"
+                  else
+                    pkgVersion="${arrIN[0]}.${arrIN[1]}.0-$preReleaseTag.0"
+                  fi
+
+                  echo $pkgVersion
+
+                  sed -i '' -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" package.json
+                  git add package.json
+                  git commit -m 'CI: bumps version to $pkgVersion [skip ci]'
+                  # git push origin master
+                  
+                  
             - name: Build dotcms-ui with deps
               run: |
                   cd core-web
