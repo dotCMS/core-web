@@ -120,7 +120,6 @@ jobs:
 
                   echo $pkgVersion
 
-                  cd core-web
                   pwd
                   ls -la
                   sed -i '' -E "s/\"version\": \".*\"/\"version\": \"$pkgVersion\"/g" package.json
