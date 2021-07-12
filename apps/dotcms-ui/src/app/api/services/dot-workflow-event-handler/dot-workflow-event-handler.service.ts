@@ -194,6 +194,7 @@ export class DotWorkflowEventHandlerService {
         data?: { [key: string]: any }
     ): void {
         if (this.isBulkAction(event)) {
+
             this.dotIframeService.run({ name: 'fireActionLoadingIndicator' });
             this.dotWorkflowActionsFireService
                 .bulkFire(this.processBulkData(event, data))
@@ -281,7 +282,7 @@ export class DotWorkflowEventHandlerService {
                     publishTime: data.publishTime,
                     filterKey: data.filterKey
                 },
-                additionalParamsMap: { _path_to_move: data.move }
+                additionalParamsMap: { _path_to_move: data.pathToMove }
             }
         };
         if (Array.isArray(event.selectedInodes)) {

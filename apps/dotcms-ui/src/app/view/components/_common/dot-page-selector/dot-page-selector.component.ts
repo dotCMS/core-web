@@ -22,7 +22,7 @@ import {
 } from './models/dot-page-selector.models';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { AutoComplete } from 'primeng/autocomplete';
-import { of } from 'rxjs/internal/observable/of';
+import { of } from 'rxjs';
 import { Observable, Subject } from 'rxjs';
 
 const NO_SPECIAL_CHAR = /^[a-zA-Z0-9._/-]*$/g;
