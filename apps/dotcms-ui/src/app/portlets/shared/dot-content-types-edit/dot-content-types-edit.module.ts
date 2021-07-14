@@ -22,7 +22,7 @@ import {
     FieldPropertyService,
     FieldService
 } from '@portlets/shared/dot-content-types-edit/components/fields/service';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotContentTypesEditComponent } from './dot-content-types-edit.component';
 import { ContentTypesLayoutComponent } from './components/layout/content-types-layout.component';
@@ -159,6 +159,7 @@ import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot
         FieldPropertyService,
         FieldService,
         FormatDateService
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DotContentTypesEditModule {}

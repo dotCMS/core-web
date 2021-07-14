@@ -18,6 +18,15 @@
     </div>
     <div class="p-field">
         <label for="content-type-form-description">{{
+            'contenttypes.form.label.icon' | dm
+        }}</label>
+        <dot-material-icon-picker
+            (dotValueChange)="iconSelectorChange($event)"
+        ></dot-material-icon-picker>
+    </div>
+
+    <div class="p-field">
+        <label for="content-type-form-description">{{
             'contenttypes.form.label.description' | dm
         }}</label>
         <input
