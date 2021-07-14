@@ -50,7 +50,7 @@ const mockGetSitesResponse = {
     ]
 };
 
-const expectedSitesMap: DotPageSelectorItem[] = [
+export const expectedSitesMap: DotPageSelectorItem[] = [
     {
         label: `//${mockGetSitesResponse.contentlets[0].hostname}/`,
         payload: mockGetSitesResponse.contentlets[0] as Site
@@ -64,23 +64,25 @@ const expectedSitesMap: DotPageSelectorItem[] = [
 const mockGetFolderResponse = {
     entity: [
         {
-            hostname: 'demo.dotcms.com',
-            path: '/activities/'
+            hostName: 'demo.dotcms.com',
+            path: '/activities/',
+            addChildrenAllowed: true
         },
         {
-            hostname: 'lunik',
-            path: '/images/'
+            hostName: 'lunik',
+            path: '/images/',
+            addChildrenAllowed: false
         }
     ]
 };
 
-const expectedFolderMap: DotPageSelectorItem[] = [
+export const expectedFolderMap: DotPageSelectorItem[] = [
     {
-        label: `//${mockGetFolderResponse.entity[0].hostname}${mockGetFolderResponse.entity[0].path}`,
+        label: `//${mockGetFolderResponse.entity[0].hostName}${mockGetFolderResponse.entity[0].path}`,
         payload: mockGetFolderResponse.entity[0] as DotFolder
     },
     {
-        label: `//${mockGetFolderResponse.entity[1].hostname}${mockGetFolderResponse.entity[1].path}`,
+        label: `//${mockGetFolderResponse.entity[1].hostName}${mockGetFolderResponse.entity[1].path}`,
         payload: mockGetFolderResponse.entity[1] as DotFolder
     }
 ];
@@ -100,7 +102,7 @@ const mockGetPagedResponse = {
     ]
 };
 
-const expectedPagesMap: DotPageSelectorItem[] = [
+export const expectedPagesMap: DotPageSelectorItem[] = [
     {
         label: `//${mockGetPagedResponse.entity[0].hostName}${mockGetPagedResponse.entity[0].path}`,
         payload: (mockGetPagedResponse.entity[0] as unknown) as DotPageAsset
@@ -111,7 +113,7 @@ const expectedPagesMap: DotPageSelectorItem[] = [
     }
 ];
 
-fdescribe('DotPageSelectorService', () => {
+describe('DotPageSelectorService', () => {
     let injector: TestBed;
     let dotPageSelectorService: DotPageSelectorService;
     let httpMock: HttpTestingController;

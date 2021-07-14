@@ -12,7 +12,7 @@ export interface DotSimpleURL {
 }
 
 export interface DotFolder {
-    hostname: string;
+    hostName: string;
     path: string;
     addChildrenAllowed: boolean;
 }

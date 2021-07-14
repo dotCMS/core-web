@@ -55,7 +55,6 @@ enum SearchType {
 export class DotPageSelectorComponent implements ControlValueAccessor {
     @Output() selected = new EventEmitter<DotPageAsset | string>();
     @Input() label: string;
-    @Input() floatingLabel = false;
     @Input() folderSearch = false;
 
     @ViewChild('autoComplete') autoComplete: AutoComplete;
@@ -126,8 +125,8 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
         } else if (this.searchType === 'folder') {
             const folder = <DotFolder>item.payload;
             if (folder.addChildrenAllowed) {
-                this.selected.emit(`//${folder.hostname}${folder.path}`);
-                this.propagateChange(`//${folder.hostname}${folder.path}`);
+                this.selected.emit(`//${folder.hostName}${folder.path}`);
+                this.propagateChange(`//${folder.hostName}${folder.path}`);
             } else {
                 this.message = this.dotMessageService.get('page.selector.folder.permissions');
                 this.isError = true;

@@ -54,6 +54,7 @@ const mockWizardSteps: DotWizardStep<any>[] = [
         data: {
             assignable: true,
             commentable: true,
+            moveable: true,
             roleId: mockWorkflowsActions[0].nextAssign,
             roleHierarchy: mockWorkflowsActions[0].roleHierarchyForAssign
         }
@@ -89,10 +90,11 @@ const mockWizardOutputTransformedData = {
     iWantTo: 'publishexpire',
     publishDate: '2020-08-05',
     publishTime: '17-59',
-    whereToSend: '37fe23d5-588d-4c61-a9ea-70d01e913344'
+    whereToSend: '37fe23d5-588d-4c61-a9ea-70d01e913344',
+    pathToMove: '/test/'
 };
 
-fdescribe('DotWorkflowEventHandlerService', () => {
+describe('DotWorkflowEventHandlerService', () => {
     let dotWorkflowEventHandlerService: DotWorkflowEventHandlerService;
     let dotWizardService: DotWizardService;
     let dotWorkflowActionsFireService: DotWorkflowActionsFireService;

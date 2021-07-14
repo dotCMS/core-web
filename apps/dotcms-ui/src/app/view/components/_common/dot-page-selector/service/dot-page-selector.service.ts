@@ -56,12 +56,7 @@ export class DotPageSelectorService {
             .pipe(
                 pluck('contentlets'),
                 flatMap((pages: DotPageAsset[]) => pages),
-                map((page: DotPageAsset) => {
-                    return {
-                        label: `//${page.hostName}${page.path}`,
-                        payload: page
-                    };
-                })
+                map((page: DotPageAsset) => this.getPageSelectorItem(page))
             );
     }
 
@@ -73,12 +68,7 @@ export class DotPageSelectorService {
             .pipe(
                 pluck('entity'),
                 map((pages: DotPageAsset[]) => {
-                    return pages.map((page) => {
-                        return {
-                            label: `//${page.hostName}${page.path}`,
-                            payload: page
-                        };
-                    });
+                    return pages.map((page: DotPageAsset) => this.getPageSelectorItem(page));
                 })
             );
     }
@@ -93,12 +83,7 @@ export class DotPageSelectorService {
             .pipe(
                 pluck('entity'),
                 map((folder: DotFolder[]) => {
-                    return folder.map((folder: DotFolder) => {
-                        return {
-                            label: `//${folder.hostname}${folder.path}`,
-                            payload: folder
-                        };
-                    });
+                    return folder.map((folder: DotFolder) => this.getPageSelectorItem(folder));
                 })
             );
     }
@@ -140,5 +125,12 @@ export class DotPageSelectorService {
 
     private getSiteName(site: string): string {
         return site.replace(/\//g, '');
+    }
+
+    private getPageSelectorItem(item: DotPageAsset | DotFolder): DotPageSelectorItem {
+        return {
+            label: `//${item.hostName}${item.path}`,
+            payload: item
+        };
     }
 }
