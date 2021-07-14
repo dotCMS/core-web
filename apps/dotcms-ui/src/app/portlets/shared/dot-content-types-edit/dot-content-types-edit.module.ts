@@ -22,7 +22,7 @@ import {
     FieldPropertyService,
     FieldService
 } from '@portlets/shared/dot-content-types-edit/components/fields/service';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotContentTypesEditComponent } from './dot-content-types-edit.component';
 import { ContentTypesLayoutComponent } from './components/layout/content-types-layout.component';
@@ -72,6 +72,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { TabViewModule } from 'primeng/tabview';
 import { DotRelationshipTreeModule } from '@components/dot-relationship-tree/dot-relationship-tree.module';
 import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot-portlet-box/dot-portlet-box.module';
+import { DotMdIconSelectorModule } from '@dotcms/app/view/components/_common/dot-md-icon-selector/dot-md-icon-selector.module';
 
 @NgModule({
     declarations: [
@@ -149,7 +150,8 @@ import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot
         SplitButtonModule,
         TabViewModule,
         DotRelationshipTreeModule,
-        DotPortletBoxModule
+        DotPortletBoxModule,
+        DotMdIconSelectorModule
     ],
     providers: [
         DotContentTypesInfoService,
@@ -160,6 +162,6 @@ import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot
         FieldService,
         FormatDateService
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    schemas: []
 })
 export class DotContentTypesEditModule {}
