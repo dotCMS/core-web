@@ -7,8 +7,8 @@ import Suggestion, { SuggestionOptions, SuggestionProps } from '@tiptap/suggesti
 import tippy, { GetReferenceClientRect } from 'tippy.js';
 
 import { FloatingActionsPlugin } from '../plugins/floating.plugin';
-import { SuggestionsComponent } from '../suggestions/suggestions.component';
-import { ActionButtonComponent } from './action-button/action-button.component';
+import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import { ActionButtonComponent } from './components/action-button/action-button.component';
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {
