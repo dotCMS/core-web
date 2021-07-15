@@ -146,6 +146,88 @@ export const EDIT_PAGE_JS = `
 
     // D&D Img - Start
 
+    function dotAssetCreate(options) {
+        var promises = [];
+        var filesCreated = 1;
+        options.files.map((file) => {
+            const data = {
+                contentlet: {
+                    baseType: 'dotAsset',
+                    asset: file.id,
+                    hostFolder: options.folder,
+                    indexPolicy: 'WAIT_FOR'
+                }
+            };
+
+            promises.push(
+                fetch(options.url, {
+                    method: 'PUT',
+                    headers: {
+                        Origin: window.location.hostname,
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    body: JSON.stringify(data)
+                }).catch((e) => e)
+            );
+        });
+
+        return Promise.all(promises).then(async (response) => {
+            const errors = [];
+            const data = [];
+            for (const res of response) {
+                data.push((await res.json()).entity);
+                if (res.status !== 200) {
+                    let message = '';
+                    try {
+                        message = (await res.json()).errors[0].message;
+                    } catch(e) {
+                        message = e.message;
+                    }
+                    errors.push({
+                        message: message,
+                        status: res.status
+                    });
+                }
+            }
+
+            if (errors.length) {
+                throw errors;
+            } else {
+                return data;
+            }
+        });
+    }
+
+    function uploadBinaryFile(file, maxSize) {
+        var path = '/api/v1/temp';
+        path += maxSize ? '?maxFileLength=' + maxSize : '';
+        var formData = new FormData();
+        formData.append('file', file);
+        return fetch(path, {
+            method: 'POST',
+            headers: {
+                Origin: window.location.hostname
+            },
+            body: formData
+        }).then(async (response) => {
+            if (response.status === 200) {
+                return (await response.json()).tempFiles[0];
+            } else {
+                var error = {
+                    message: (await response.json()).message,
+                    status: response.status
+                };
+                throw error;
+            }
+        });
+    }
+
+    function uploadFile(file, maxSize) {
+        if (typeof file !== 'string') {
+            return uploadBinaryFile(file, maxSize);
+        }
+    }
+
     function isCursorOnUpperSide(cursor, contentletBoundingRect) {
         return cursor.y - contentletBoundingRect.top  <  (contentletBoundingRect.bottom - contentletBoundingRect.top)/2
     }
@@ -261,7 +343,21 @@ export const EDIT_PAGE_JS = `
         var container = event.target.closest('[data-dot-object="container"]');
 
         if (container && !container.classList.contains('no')) {
-            console.log('** INSERT')
+            console.log('** INSERT', event.dataTransfer.files[0]);
+            uploadFile(event.dataTransfer.files[0]).then((dotCMSTempFile) => {
+                dotAssetCreate({
+                    files: [dotCMSTempFile],
+                    url: '/api/v1/workflow/actions/default/fire/PUBLISH',
+                    folder: ''
+                }).then((response) => {
+                    console.log('*** termino', response)
+                    // this.hideOverlay();
+                    // debugger;
+                    // this.uploadComplete.emit(response);
+                })
+            })
+            
+
         } else {
             console.log('** NO INSERT')
         }
