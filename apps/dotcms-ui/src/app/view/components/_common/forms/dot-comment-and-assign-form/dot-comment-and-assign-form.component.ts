@@ -60,7 +60,7 @@ export class DotCommentAndAssignFormComponent
         this.form = this.fb.group({
             assign: this.dotRoles ? this.dotRoles[0].value : '',
             comments: '',
-            move: this.data[DotActionInputs.MOVEABLE] ? ['', [Validators.required]] : ''
+            pathToMove: this.data[DotActionInputs.MOVEABLE] ? ['', [Validators.required]] : ''
         });
         this.emitValues();
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.emitValues());

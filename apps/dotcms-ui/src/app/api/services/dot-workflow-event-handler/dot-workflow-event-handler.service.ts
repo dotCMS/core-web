@@ -153,8 +153,6 @@ export class DotWorkflowEventHandlerService {
             delete data.environment;
             delete data.pushActionSelected;
         }
-        data['pathToMove'] = data.move;
-        delete data.move;
         return data;
     }
 
@@ -194,7 +192,6 @@ export class DotWorkflowEventHandlerService {
         data?: { [key: string]: any }
     ): void {
         if (this.isBulkAction(event)) {
-
             this.dotIframeService.run({ name: 'fireActionLoadingIndicator' });
             this.dotWorkflowActionsFireService
                 .bulkFire(this.processBulkData(event, data))
