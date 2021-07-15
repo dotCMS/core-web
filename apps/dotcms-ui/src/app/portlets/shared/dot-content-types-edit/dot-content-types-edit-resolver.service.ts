@@ -62,6 +62,7 @@ export class DotContentTypeEditResolver implements Resolve<DotCMSContentType> {
 
     private getDefaultContentType(type: string): Observable<DotCMSContentType> {
         return of({
+            icon: '',
             baseType: type,
             clazz: this.contentTypesInfoService.getClazz(type),
             defaultType: false,
