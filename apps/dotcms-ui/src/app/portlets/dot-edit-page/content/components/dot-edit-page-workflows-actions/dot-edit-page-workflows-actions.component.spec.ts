@@ -199,7 +199,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                     const mockData = {
                         assign: '654b0931-1027-41f7-ad4d-173115ed8ec1',
                         comments: 'ds',
-                        move: '/test/',
+                        pathToMove: '/test/',
                         environment: ['37fe23d5-588d-4c61-a9ea-70d01e913344'],
                         expireDate: '2020-08-11 19:59',
                         filterKey: 'Intelligent.yml',
