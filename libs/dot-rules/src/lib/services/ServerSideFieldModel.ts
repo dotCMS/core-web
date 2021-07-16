@@ -6,6 +6,11 @@ import { LoggerService } from '@dotcms/dotcms-js';
 import { CustomValidators } from './validation/CustomValidators';
 
 export class ServerSideFieldModel extends CwModel {
+    private static readonly QUOTE_ALLOW_HEADER_KEYS: Array<string> = [
+        'Set Request Attribute',
+        'Set Response Header',
+        'Set Session Attribute'
+    ];
     parameterDefs: { [key: string]: ParameterDefinition };
     parameters: { [key: string]: ParameterModel };
     priority: number;
@@ -16,7 +21,8 @@ export class ServerSideFieldModel extends CwModel {
         const param = model.parameters[paramName];
         const paramDef = model.parameterDefs[paramName];
         const vFn: Function[] = <ValidatorFn[]>paramDef.inputType.dataType.validators();
-        vFn.push(CustomValidators.noQuotes());
+        const quoteAllowed: boolean = ServerSideFieldModel.QUOTE_ALLOW_HEADER_KEYS.includes(model.type._opt['label']);
+        vFn.push(quoteAllowed ? CustomValidators.noDoubleQuotes() : CustomValidators.noQuotes());
         const control = new FormControl(
             model.getParameterValue(param.key),
             Validators.compose(<ValidatorFn[]>vFn)
