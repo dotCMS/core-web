@@ -144,7 +144,7 @@ export const EDIT_PAGE_JS = `
         }
     });
 
-    // D&D Img - Start
+    // D&D DotAsset - Start
 
     function dotAssetCreate(options) {
         var promises = [];
@@ -228,6 +228,12 @@ export const EDIT_PAGE_JS = `
         }
     }
 
+    function setLoadingIndicator() {
+        var currentContentlet = document.getElementById('contentletPlaceholder');
+        currentContentlet.classList.remove('gu-transit');
+        currentContentlet.innerHTML = '<div class="loader__overlay"><div class="loader"></div></div>';
+    }
+
     function isCursorOnUpperSide(cursor, contentletBoundingRect) {
         return cursor.y - contentletBoundingRect.top  <  (contentletBoundingRect.bottom - contentletBoundingRect.top)/2
     }
@@ -254,7 +260,7 @@ export const EDIT_PAGE_JS = `
         document.getElementById(elemId).remove()
     }
 
-    function checkIfContainerAllowsContent(event) {
+    function checkIfContainerAllowsDotAsset(event) {
 
         var container = event.target.closest('[data-dot-object="container"]');
         
@@ -269,7 +275,7 @@ export const EDIT_PAGE_JS = `
         }
 
         // Container does NOT allow img
-        if (!container.dataset.dotAcceptTypes.toLocaleLowerCase().match(/image/g)) {
+        if (!container.dataset.dotAcceptTypes.toLocaleLowerCase().match(/dotasset/g)) {
             return false;
         }
 
@@ -287,7 +293,7 @@ export const EDIT_PAGE_JS = `
         var container = event.target.closest('[data-dot-object="container"]');
         currentContainer = container;
 
-        if (container && !checkIfContainerAllowsContent(event)) {
+        if (container && !checkIfContainerAllowsDotAsset(event)) {
             container.classList.add('no');
         }
 
@@ -343,29 +349,26 @@ export const EDIT_PAGE_JS = `
         var container = event.target.closest('[data-dot-object="container"]');
 
         if (container && !container.classList.contains('no')) {
-            console.log('** INSERT', event.dataTransfer.files[0]);
+
+            setLoadingIndicator();
             uploadFile(event.dataTransfer.files[0]).then((dotCMSTempFile) => {
                 dotAssetCreate({
                     files: [dotCMSTempFile],
                     url: '/api/v1/workflow/actions/default/fire/PUBLISH',
                     folder: ''
                 }).then((response) => {
-                    console.log('*** termino', response)
-                    // this.hideOverlay();
-                    // debugger;
-                    // this.uploadComplete.emit(response);
+                    window.contentletEvents.next({
+                        name: 'add-uploaded-dotAsset',
+                        data: {
+                            contentlet: response[0],
+                            placeholderId: 'contentletPlaceholder'
+                        }
+                    });
                 })
             })
-            
 
-        } else {
-            console.log('** NO INSERT')
         }
 
-        if (isContentletPlaceholderInDOM()) {
-                removeElementById('contentletPlaceholder');
-        }
-        
         if (container) {
             container.classList.remove('no');
         }
@@ -373,6 +376,7 @@ export const EDIT_PAGE_JS = `
     }, false)
 
     // D&D Img - End
+
 })();
 
 `;

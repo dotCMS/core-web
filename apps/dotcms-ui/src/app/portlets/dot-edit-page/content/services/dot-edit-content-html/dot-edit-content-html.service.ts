@@ -198,24 +198,34 @@ export class DotEditContentHtmlService {
     }
 
     /**
-     * Render a contrentlet in the DOM after add it
+     * Render a contentlet in the DOM after add it
      *
      * @param * contentlet
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(contentlet: DotPageContent): void {
+    renderAddedContentlet(contentlet: DotPageContent, externalPlaceholderId?: string): void {
         const doc = this.getEditPageDocument();
+
+        if (externalPlaceholderId) {
+            const container: HTMLElement = doc.querySelector(`#${externalPlaceholderId}`).closest('[data-dot-object="container"]');
+            this.setContainterToAppendContentlet({ identifier: container.dataset['dotIdentifier'], uuid: container.dataset['dotUuid']});
+        }
+
         const containerEl: HTMLElement = doc.querySelector(
-            // eslint-disable-next-line max-len
             `[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
         );
 
         if (this.isContentExistInContainer(contentlet, containerEl)) {
             this.showContentAlreadyAddedError();
         } else {
-            const contentletPlaceholder = this.getContentletPlaceholder();
-            containerEl.appendChild(contentletPlaceholder);
-            this.dotContainerContentletService
+            let contentletPlaceholder;
+            if (externalPlaceholderId) {
+                contentletPlaceholder = doc.querySelector(`#${externalPlaceholderId}`);
+            } else {
+                contentletPlaceholder = this.getContentletPlaceholder();
+                containerEl.appendChild(contentletPlaceholder);
+            }
+                this.dotContainerContentletService
                 .getContentletToContainer(this.currentContainer, contentlet)
                 .pipe(take(1))
                 .subscribe((contentletHtml: string) => {
@@ -628,6 +638,9 @@ export class DotEditContentHtmlService {
             },
             'deleted-contenlet': () => {
                 this.removeCurrentContentlet();
+            },
+            'add-uploaded-dotAsset': (data: any) => {
+                this.renderAddedContentlet(data.contentlet, data.placeholderId)
             }
         };
 
