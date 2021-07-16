@@ -84,10 +84,6 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    iconSelectorChange(e) {
-        console.log(e);
-    }
-
     /**
      * Update expireDateVar and publishDateVar fields base on selection
      *
