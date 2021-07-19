@@ -147,73 +147,61 @@ export const EDIT_PAGE_JS = `
     // D&D DotAsset - Start
 
     function dotAssetCreate(options) {
-        var promises = [];
-        var filesCreated = 1;
-        options.files.map((file) => {
-            const data = {
-                contentlet: {
-                    baseType: 'dotAsset',
-                    asset: file.id,
-                    hostFolder: options.folder,
-                    indexPolicy: 'WAIT_FOR'
-                }
-            };
+        const data = {
+            contentlet: {
+                baseType: 'dotAsset',
+                asset: options.file.id,
+                hostFolder: options.folder,
+                indexPolicy: 'WAIT_FOR'
+            }
+        };
 
-            promises.push(
-                fetch(options.url, {
-                    method: 'PUT',
-                    headers: {
-                        Origin: window.location.hostname,
-                        'Content-Type': 'application/json;charset=UTF-8'
-                    },
-                    body: JSON.stringify(data)
-                }).catch((e) => e)
-            );
-        });
-
-        return Promise.all(promises).then(async (response) => {
-            const errors = [];
-            const data = [];
-            for (const res of response) {
-                data.push((await res.json()).entity);
-                if (res.status !== 200) {
-                    let message = '';
-                    try {
-                        message = (await res.json()).errors[0].message;
-                    } catch(e) {
-                        message = e.message;
-                    }
-                    errors.push({
-                        message: message,
-                        status: res.status
-                    });
+        return fetch(options.url, {
+            method: 'PUT',
+            headers: {
+                Origin: window.location.hostname,
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(async (res) => {
+            const error = {};
+            const data = await res.json();
+            if (res.status !== 200) {
+                let message = '';
+                try {
+                    message = data.errors[0].message;
+                } catch(e) {
+                    message = e.message;
                 }
+                error = {
+                    message: message,
+                    status: res.status
+                };
             }
 
-            if (errors.length) {
-                throw errors;
+            if (!!error.message) {
+                throw error;
             } else {
-                return data;
+                return data.entity;
             }
-        });
+        })
+        .catch((e) => e)
     }
 
     function uploadBinaryFile(file, maxSize) {
-        var path = '/api/v1/temp';
+        let path = '/api/v1/temp';
         path += maxSize ? '?maxFileLength=' + maxSize : '';
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append('file', file);
         return fetch(path, {
             method: 'POST',
-            headers: {
-                Origin: window.location.hostname
-            },
             body: formData
         }).then(async (response) => {
             if (response.status === 200) {
                 return (await response.json()).tempFiles[0];
             } else {
-                var error = {
+                const error = {
                     message: (await response.json()).message,
                     status: response.status
                 };
@@ -223,23 +211,23 @@ export const EDIT_PAGE_JS = `
     }
 
     function uploadFile(file, maxSize) {
-        if (typeof file !== 'string') {
+        if (file instanceof File) {
             return uploadBinaryFile(file, maxSize);
         }
     }
 
     function setLoadingIndicator() {
-        var currentContentlet = document.getElementById('contentletPlaceholder');
+        const currentContentlet = document.getElementById('contentletPlaceholder');
         currentContentlet.classList.remove('gu-transit');
         currentContentlet.innerHTML = '<div class="loader__overlay"><div class="loader"></div></div>';
     }
 
-    function isCursorOnUpperSide(cursor, contentletBoundingRect) {
-        return cursor.y - contentletBoundingRect.top  <  (contentletBoundingRect.bottom - contentletBoundingRect.top)/2
+    function isCursorOnUpperSide(cursor, { top, bottom }) {
+        return cursor.y - top  <  (bottom - top)/2
     }
 
     function isContentletPlaceholderInDOM() {
-        return document.getElementById('contentletPlaceholder');
+        return !!document.getElementById('contentletPlaceholder');
     }
 
     function isContainerAndContentletValid(container, contentlet) {
@@ -262,7 +250,7 @@ export const EDIT_PAGE_JS = `
 
     function checkIfContainerAllowsDotAsset(event) {
 
-        var container = event.target.closest('[data-dot-object="container"]');
+        const container = event.target.closest('[data-dot-object="container"]');
         
         // Different than 1 file
         if (event.dataTransfer.items.length !== 1 ) {
@@ -282,15 +270,15 @@ export const EDIT_PAGE_JS = `
         return true;
     }
 
-    var contentletPlaceholder;
-    var currentContainer;
+    let contentletPlaceholder;
+    let currentContainer;
 
     window.addEventListener("dragenter", (event) => {
         
         event.preventDefault(); 
         event.stopPropagation();
 
-        var container = event.target.closest('[data-dot-object="container"]');
+        const container = event.target.closest('[data-dot-object="container"]');
         currentContainer = container;
 
         if (container && !checkIfContainerAllowsDotAsset(event)) {
@@ -304,8 +292,8 @@ export const EDIT_PAGE_JS = `
         event.preventDefault(); 
         event.stopPropagation();
 
-        var container = event.target.closest('[data-dot-object="container"]');
-        var contentlet = event.target.closest('[data-dot-object="contentlet"]');
+        const container = event.target.closest('[data-dot-object="container"]');
+        const contentlet = event.target.closest('[data-dot-object="contentlet"]');
 
         if (contentlet) {
 
@@ -317,11 +305,13 @@ export const EDIT_PAGE_JS = `
             contentletPlaceholder.id = 'contentletPlaceholder';
             contentletPlaceholder.setAttribute('data-dot-object', 'contentlet')
             contentletPlaceholder.classList.add('gu-transit')
-            
-            if (isContainerAndContentletValid(container, contentlet) && isCursorOnUpperSide(event, contentlet.getBoundingClientRect())) {
-                insertBeforeElement(contentletPlaceholder, contentlet);
-            } else if (isContainerAndContentletValid(container, contentlet)) {
-                insertAfterElement(contentletPlaceholder, contentlet);
+
+            if (isContainerAndContentletValid(container, contentlet)) {
+                if (isCursorOnUpperSide(event, contentlet.getBoundingClientRect())) {
+                    insertBeforeElement(contentletPlaceholder, contentlet);
+                } else {
+                    insertAfterElement(contentletPlaceholder, contentlet);                    
+                }
             }
 
             contentletPlaceholder = null;
@@ -334,7 +324,7 @@ export const EDIT_PAGE_JS = `
         event.preventDefault(); 
         event.stopPropagation();
 
-        var container = event.target.closest('[data-dot-object="container"]');
+        const container = event.target.closest('[data-dot-object="container"]');
 
         if (container && currentContainer !== container) {
             container.classList.remove('no');
@@ -346,21 +336,21 @@ export const EDIT_PAGE_JS = `
         event.preventDefault(); 
         event.stopPropagation();
 
-        var container = event.target.closest('[data-dot-object="container"]');
+        const container = event.target.closest('[data-dot-object="container"]');
 
         if (container && !container.classList.contains('no')) {
 
             setLoadingIndicator();
             uploadFile(event.dataTransfer.files[0]).then((dotCMSTempFile) => {
                 dotAssetCreate({
-                    files: [dotCMSTempFile],
+                    file: dotCMSTempFile,
                     url: '/api/v1/workflow/actions/default/fire/PUBLISH',
                     folder: ''
                 }).then((response) => {
                     window.contentletEvents.next({
                         name: 'add-uploaded-dotAsset',
                         data: {
-                            contentlet: response[0],
+                            contentlet: response,
                             placeholderId: 'contentletPlaceholder'
                         }
                     });
