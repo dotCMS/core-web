@@ -372,7 +372,7 @@ describe('ContentTypesFormComponent', () => {
         fixture.detectChanges();
 
         expect(Object.keys(comp.form.controls).length).toBe(13);
-        // expect(comp.form.get('icon')).toBeNull();
+        expect(comp.form.get('icon')).not.toBeNull();
         expect(comp.form.get('clazz')).not.toBeNull();
         expect(comp.form.get('name')).not.toBeNull();
         expect(comp.form.get('host')).not.toBeNull();

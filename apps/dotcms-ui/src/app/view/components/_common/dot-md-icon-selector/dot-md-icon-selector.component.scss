@@ -21,7 +21,7 @@ dot-material-icon-picker {
         }
 
         .dot-material-icon__input {
-            padding: 0.75rem;
+            padding: $spacing-2;
 
             &:focus {
                 outline: none;
@@ -29,12 +29,12 @@ dot-material-icon-picker {
         }
 
         .dot-material-icon__preview {
-            font-size: 1.5rem;
-            margin-left: 0.75rem;
+            font-size: $font-size-x-large;
+            margin-left: $spacing-2;
         }
 
         .dot-material-icon__button mwc-icon {
-            font-size: 2rem;
+            font-size: 2rem; // we don't have 2rem var this is for this icon only
         }
 
         .dot-material-icon__list {
@@ -52,11 +52,11 @@ dot-material-icon-picker {
                 align-items: center;
                 cursor: pointer;
                 display: flex;
-                padding: 0.75rem;
+                padding: $spacing-2;
             }
 
             mwc-icon {
-                font-size: 1.25rem;
+                font-size: $font-size-large;
             }
         }
     }
