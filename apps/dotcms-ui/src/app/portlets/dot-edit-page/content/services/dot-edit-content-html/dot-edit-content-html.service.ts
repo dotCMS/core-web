@@ -19,7 +19,9 @@ import { MODEL_VAR_NAME } from '@dotcms/app/portlets/dot-edit-page/content/servi
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {
+    DotAssetPayload,
     DotContentletEvent,
+    DotContentletEventDragAndDropDotAsset,
     DotContentletEventRelocate,
     DotContentletEventSave,
     DotContentletEventSelect,
@@ -38,6 +40,7 @@ export enum DotContentletAction {
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<
+        | DotContentletEventDragAndDropDotAsset
         | DotContentletEventRelocate
         | DotContentletEventSelect
         | DotContentletEventSave
@@ -200,14 +203,14 @@ export class DotEditContentHtmlService {
     /**
      * Render a contentlet in the DOM after add it
      *
-     * @param * contentlet
+     * @param DotPageContent contentlet
+     * @param string placeholderIdToBeReplaced
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(contentlet: DotPageContent, externalPlaceholderId?: string): void {
+    renderAddedContentlet(contentlet: DotPageContent, placeholderIdToBeReplaced?: string): void {
         const doc = this.getEditPageDocument();
-
-        if (externalPlaceholderId) {
-            const container: HTMLElement = doc.querySelector(`#${externalPlaceholderId}`).closest('[data-dot-object="container"]');
+        if (placeholderIdToBeReplaced) {
+            const container: HTMLElement = doc.querySelector(`#${placeholderIdToBeReplaced}`).closest('[data-dot-object="container"]');
             this.setContainterToAppendContentlet({ identifier: container.dataset['dotIdentifier'], uuid: container.dataset['dotUuid']});
         }
 
@@ -219,13 +222,14 @@ export class DotEditContentHtmlService {
             this.showContentAlreadyAddedError();
         } else {
             let contentletPlaceholder;
-            if (externalPlaceholderId) {
-                contentletPlaceholder = doc.querySelector(`#${externalPlaceholderId}`);
+            if (placeholderIdToBeReplaced) {
+                contentletPlaceholder = doc.querySelector(`#${placeholderIdToBeReplaced}`);
             } else {
                 contentletPlaceholder = this.getContentletPlaceholder();
                 containerEl.appendChild(contentletPlaceholder);
             }
-                this.dotContainerContentletService
+            
+            this.dotContainerContentletService
                 .getContentletToContainer(this.currentContainer, contentlet)
                 .pipe(take(1))
                 .subscribe((contentletHtml: string) => {
@@ -639,8 +643,8 @@ export class DotEditContentHtmlService {
             'deleted-contenlet': () => {
                 this.removeCurrentContentlet();
             },
-            'add-uploaded-dotAsset': (data: any) => {
-                this.renderAddedContentlet(data.contentlet, data.placeholderId)
+            'add-uploaded-dotAsset': (dotAssetData: DotAssetPayload) => {
+                this.renderAddedContentlet(dotAssetData.contentlet, dotAssetData.placeholderId)
             }
         };
 

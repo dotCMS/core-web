@@ -30,6 +30,7 @@ import { DotGlobalMessageService } from '@dotcms/app/view/components/_common/dot
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { mockResponseView } from '@dotcms/app/test/response-view.mock';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 class MockDotLicenseService {
@@ -44,7 +45,7 @@ const mouseoverEvent = new MouseEvent('mouseover', {
     cancelable: true
 });
 
-xdescribe('DotEditContentHtmlService', () => {
+describe('DotEditContentHtmlService', () => {
     let dotLicenseService: DotLicenseService;
     let fakeDocument: Document;
 
@@ -93,9 +94,9 @@ xdescribe('DotEditContentHtmlService', () => {
                             </div>
                         </div>
                     </div>
+                    <div data-dot-object="contentlet" data-dot-identifier="tmpPlaceholder" id="externalPlaceholder"></div>
                 </div>
 
-                
 
                 <div data-dot-object="contentlet" data-dot-type="Banner" data-field-name="title">
                     <div class="dotedit-contentlet__toolbar">
@@ -299,6 +300,34 @@ xdescribe('DotEditContentHtmlService', () => {
             identifier: '123',
             inode: ''
         });
+    });
+
+    it('should add uploaded DotAsset', () => {
+        spyOn(service, 'renderAddedContentlet');
+        service.setContainterToAppendContentlet({
+            identifier: '123',
+            uuid: '456'
+        });
+
+        const dataObj = {
+            contentlet: {
+                identifier: '456',
+                inode: '456'
+            },
+            placeholderId: 'id1'
+        };
+
+        service.contentletEvents$.next({
+            name: 'add-uploaded-dotAsset',
+            data: dataObj
+        });
+
+        expect(service.renderAddedContentlet).toHaveBeenCalledWith({
+                identifier: '456',
+                inode: '456'
+            },
+            'id1'
+        );
     });
 
     it('should render relocated contentlet', () => {
@@ -516,7 +545,56 @@ xdescribe('DotEditContentHtmlService', () => {
         expect(currentModel).toEqual(
             {
                 model: [
-                    { identifier: '123', uuid: '456', contentletsId: ['456'] },
+                    { identifier: '123', uuid: '456', contentletsId: ['456', 'tmpPlaceholder'] },
+                    { identifier: '321', uuid: '654', contentletsId: ['456'] },
+                    { identifier: '976', uuid: '156', contentletsId: ['367'] }
+                ],
+                type: PageModelChangeEventType.ADD_CONTENT
+            },
+            'should tigger model change event'
+        );
+    });
+
+    it('should render added Dot Asset', () => {
+        let currentModel;
+
+        const currentContainer = {
+            identifier: '123',
+            uuid: '456'
+        };
+
+        spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue(
+            of('<div id="newContent" data-dot-object="contentlet" data-dot-identifier="zxc"><i>replaced contentlet</i></div>')
+        );
+
+        const contentlet: DotPageContent = {
+            identifier: '67',
+            inode: '89',
+            type: 'type',
+            baseType: 'CONTENT'
+        };
+
+        service.pageModel$.subscribe((model) => (currentModel = model));
+
+        service.renderAddedContentlet(contentlet, 'externalPlaceholder');
+
+        expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(
+            currentContainer,
+            contentlet
+        );
+
+        expect(service.currentContainer).toEqual(
+            {
+                identifier: '123',
+                uuid: '456'
+            },
+            'currentContainer must be the same after add content'
+        );
+
+        expect(currentModel).toEqual(
+            {
+                model: [
+                    { identifier: '123', uuid: '456', contentletsId: ['456', 'zxc'] },
                     { identifier: '321', uuid: '654', contentletsId: ['456'] },
                     { identifier: '976', uuid: '156', contentletsId: ['367'] }
                 ],
@@ -550,7 +628,7 @@ xdescribe('DotEditContentHtmlService', () => {
         expect(currentModel).toEqual(
             {
                 model: [
-                    { identifier: '123', uuid: '456', contentletsId: ['456'] },
+                    { identifier: '123', uuid: '456', contentletsId: ['456', 'tmpPlaceholder'] },
                     { identifier: '321', uuid: '654', contentletsId: ['456'] },
                     { identifier: '976', uuid: '156', contentletsId: [] }
                 ],
@@ -891,7 +969,7 @@ xdescribe('DotEditContentHtmlService', () => {
         });
 
         it('should display a toast on error', () => {
-            const error404 = mockResponseView(404);
+            const error404 = mockResponseView(404, '', null, { errors: [{message: 'An error ocurred'}] });
             spyOn(dotWorkflowActionsFireService, 'saveContentlet').and.returnValue(
                 throwError(error404)
             );
@@ -1095,7 +1173,7 @@ xdescribe('DotEditContentHtmlService', () => {
             service.renderAddedForm({ ...form, id: '4' }).subscribe((model) => {
                 expect(model).toEqual(
                     [
-                        { identifier: '123', uuid: '456', contentletsId: ['456', '2'] },
+                        { identifier: '123', uuid: '456', contentletsId: ['456', 'tmpPlaceholder', '2'] },
                         { identifier: '321', uuid: '654', contentletsId: ['456'] },
                         { identifier: '976', uuid: '156', contentletsId: ['367'] }
                     ],
