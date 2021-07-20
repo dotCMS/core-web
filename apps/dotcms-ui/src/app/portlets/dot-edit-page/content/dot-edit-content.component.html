@@ -1,3 +1,4 @@
+<dot-content-palette *ngIf="(pageState$ | async).state.mode === dotPageMode.EDIT"></dot-content-palette>
 <dot-form-selector
     [show]="editForm"
     (select)="onFormSelected($event)"

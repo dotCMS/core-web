@@ -6,6 +6,16 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+
+    &.dot-edit--editMode {
+        padding-right: 225px;
+        position: relative;
+    }
+
+    dot-edit-page-content-type-nav {
+        position: absolute;
+        right: 0;
+    }
 }
 
 dot-whats-changed,

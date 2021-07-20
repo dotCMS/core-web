@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotEditPageContentTypeNavComponent } from './dot-edit-page-content-type-nav.component';
+import { DotContentPaletteComponent } from './dot-content-palette.component';
 
 describe('DotEditPageSubNavComponent', () => {
-    let component: DotEditPageContentTypeNavComponent;
-    let fixture: ComponentFixture<DotEditPageContentTypeNavComponent>;
+    let component: DotContentPaletteComponent;
+    let fixture: ComponentFixture<DotContentPaletteComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [DotEditPageContentTypeNavComponent]
+            declarations: [DotContentPaletteComponent]
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(DotEditPageContentTypeNavComponent);
+        fixture = TestBed.createComponent(DotContentPaletteComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

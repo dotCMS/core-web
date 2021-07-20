@@ -1,4 +1,3 @@
-<dot-edit-page-content-type-nav></dot-edit-page-content-type-nav>
 <ul class="edit-page-nav">
     <li *ngFor="let item of model | async">
         <div *ngIf="!item.needsEntepriseLicense; then basic; else enterprise"></div>

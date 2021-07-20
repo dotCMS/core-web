@@ -2,7 +2,15 @@ import { Observable, Subject, fromEvent, merge } from 'rxjs';
 
 import { filter, takeUntil, pluck, take, tap, skip } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    ElementRef,
+    NgZone,
+    OnDestroy,
+    HostBinding
+} from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { SiteService } from '@dotcms/dotcms-js';
@@ -57,6 +65,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     showIframe = true;
     reorderMenuUrl = '';
     showOverlay = false;
+    dotPageMode = DotPageMode;
+    @HostBinding('class.dot-edit--editMode') editMode: boolean = false;
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -352,8 +362,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private renderPage(pageState: DotPageRenderState): void {
         if (this.shouldEditMode(pageState)) {
             this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
+            debugger;
+            this.editMode = true;
         } else {
             this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
+            this.editMode = false;
         }
     }
 

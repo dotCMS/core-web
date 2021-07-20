@@ -1,0 +1,37 @@
+@use "variables" as *;
+
+:host{
+    width: 221px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dot-content-palette__search {
+    position: relative;
+
+    input {
+        font-size: $font-size-small;
+    }
+
+    dot-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: $spacing-1;
+    }
+}
+
+.dot-content-palette__items {
+    a {
+        width: 100px;
+        height: 80px;
+        border: 1px solid $gray-light;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: $spacing-1 0 0 $spacing-1;
+    }
+}
+
+
