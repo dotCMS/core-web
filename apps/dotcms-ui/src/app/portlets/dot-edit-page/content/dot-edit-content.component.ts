@@ -41,6 +41,8 @@ import {
 } from './services/dot-edit-content-html/models';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
+import { DotContentTypeService } from '@services/dot-content-type';
+import { DotContentPaletteComponent } from '@components/_common/dot-content-palette/dot-content-palette.component';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -67,6 +69,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     showOverlay = false;
     dotPageMode = DotPageMode;
     @HostBinding('class.dot-edit--editMode') editMode: boolean = false;
+    @ViewChild('contentPallet') contentPallet: DotContentPaletteComponent;
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -85,6 +88,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private siteService: SiteService,
         private dotCustomEventHandlerService: DotCustomEventHandlerService,
+        private dotContentTypeService: DotContentTypeService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
         public sanitizer: DomSanitizer,
@@ -150,6 +154,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
+    }
+    test(event: any): void {
+        console.log(event);
     }
 
     /**
@@ -219,6 +226,20 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     onCustomEvent($event: CustomEvent): void {
         this.dotCustomEventHandlerService.handle($event);
+    }
+
+    /**
+     * Load items in the Content Pallet
+     *
+     * @memberof DotEditContentComponent
+     */
+    loadContentPallet(filter = ''): void {
+        this.dotContentTypeService
+            .getContentTypes(filter)
+            .pipe(take(1))
+            .subscribe((items) => {
+                this.contentPallet.items = items;
+            });
     }
 
     private isInternallyNavigatingToSamePage(url: string): boolean {
@@ -362,7 +383,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private renderPage(pageState: DotPageRenderState): void {
         if (this.shouldEditMode(pageState)) {
             this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
-            debugger;
+            this.loadContentPallet();
             this.editMode = true;
         } else {
             this.dotEditContentHtmlService.renderPage(pageState, this.iframe);

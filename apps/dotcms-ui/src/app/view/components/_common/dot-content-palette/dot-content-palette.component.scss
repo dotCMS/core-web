@@ -4,13 +4,18 @@
     width: 221px;
     display: flex;
     flex-direction: column;
+    padding: $spacing-1 0;
 }
 
 .dot-content-palette__search {
     position: relative;
+    margin: 0  $spacing-1 $spacing-1;
 
     input {
-        font-size: $font-size-small;
+        width: 100%;
+        border: none;
+        outline: 0px;
+        background: transparent;
     }
 
     dot-icon {
@@ -31,6 +36,25 @@
         justify-content: center;
         align-items: center;
         margin: $spacing-1 0 0 $spacing-1;
+        cursor: grab;
+        color: $black;
+
+        &:hover{
+            background: $gray-bg;
+        }
+
+        &.dragging{
+            transform: rotate(4deg);
+        }
+
+        span {
+            padding: 0 4px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+        }
     }
 }
 

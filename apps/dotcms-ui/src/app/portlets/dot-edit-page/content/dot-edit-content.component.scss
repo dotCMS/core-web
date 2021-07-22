@@ -123,3 +123,12 @@ dot-whats-changed,
 ::ng-deep .p-unselectable-text .dot-edit__contentlet-iframe {
     pointer-events: none;
 }
+
+dot-content-palette {
+    background: $white;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden auto;
+}

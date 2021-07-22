@@ -1,33 +1,24 @@
 <div class="dot-content-palette__search">
-    <dot-icon
-        name="search"
-        data-testId="searchIcon"
-    ></dot-icon>
     <input
         data-testId="searchInput"
         #searchInput
+        [placeholder]="'Content Type'| uppercase"
         pInputText
-        placeholder="Search"
         type="text"
-        class="searchable-dropdown__search-field"
     />
+    <dot-icon
+        name="search"
+        data-testId="searchIcon"
+        size="14"
+    ></dot-icon>
 </div>
 <div class="dot-content-palette__items">
-    <a draggable="true">
-        <dot-icon name="description" ></dot-icon>
-        <span>Content Type</span>
-    </a>
-    <a draggable="true" >
-        <dot-icon name="description" ></dot-icon>
-        <span>Content Type</span>
-    </a>
-    <a draggable="true" >
-        <dot-icon name="description" ></dot-icon>
-        <span>Content Type</span>
-    </a>
-    <a>
-        <dot-icon name="description" ></dot-icon>
-        <span>Content Type</span>
+    <a *ngFor='let item of items' draggable="true"
+       [attr.data-content]="item | json"
+       (dragstart)="toggleDragClass($event)"
+        (dragend)="toggleDragClass($event)">
+        <dot-icon [name]='item.icon'></dot-icon>
+        <span>{{item.name}}</span>
     </a>
 </div>
 
