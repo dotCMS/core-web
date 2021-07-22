@@ -13,7 +13,7 @@ import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.servic
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
-import { LoggerService, StringUtils, CoreWebService } from '@dotcms/dotcms-js';
+import { LoggerService, StringUtils, CoreWebService, HttpCode } from '@dotcms/dotcms-js';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { mockDotLayout, mockDotRenderedPage, mockDotPage } from '@tests/dot-page-render.mock';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
@@ -30,7 +30,7 @@ import { DotGlobalMessageService } from '@dotcms/app/view/components/_common/dot
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { mockResponseView } from '@dotcms/app/test/response-view.mock';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 @Injectable()
@@ -164,6 +164,7 @@ describe('DotEditContentHtmlService', () => {
 
     let service: DotEditContentHtmlService;
     let dotEditContentToolbarHtmlService;
+    let dotHttpErrorManagerService: DotHttpErrorManagerService;
     let mouseOverContentlet;
     let dotContainerContentletService: DotContainerContentletService;
 
@@ -184,7 +185,9 @@ describe('DotEditContentHtmlService', () => {
                     ConfirmationService,
                     DotGlobalMessageService,
                     DotEventsService,
-                    { provide: DotHttpErrorManagerService, useValue: {} },
+                    { provide: DotHttpErrorManagerService, useValue: {
+                        handle: jasmine.createSpy().and.returnValue(of({}))
+                    }},
                     DotWorkflowActionsFireService,
                     { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: DotLicenseService, useClass: MockDotLicenseService }
@@ -194,6 +197,7 @@ describe('DotEditContentHtmlService', () => {
             dotEditContentToolbarHtmlService = TestBed.inject(DotEditContentToolbarHtmlService);
             dotLicenseService = TestBed.inject(DotLicenseService);
             dotContainerContentletService = TestBed.inject(DotContainerContentletService);
+            dotHttpErrorManagerService = TestBed.inject(DotHttpErrorManagerService);
 
             fakeIframeEl = document.createElement('iframe');
             document.body.appendChild(fakeIframeEl);
@@ -330,6 +334,24 @@ describe('DotEditContentHtmlService', () => {
             },
             'id1'
         );
+    });
+
+    it('should handle http error', () => {
+        const errorResponse = new HttpErrorResponse(
+            new HttpResponse({
+                body: null,
+                status: HttpCode.FORBIDDEN,
+                headers: null,
+                url: ''
+            })
+        );
+
+        service.contentletEvents$.next({
+            name: 'handle-http-error',
+            data: <any>errorResponse
+        });
+
+        expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should render relocated contentlet', () => {
