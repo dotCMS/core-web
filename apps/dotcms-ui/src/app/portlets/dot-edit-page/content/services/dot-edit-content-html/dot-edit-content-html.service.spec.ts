@@ -31,6 +31,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { mockResponseView } from '@dotcms/app/test/response-view.mock';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 @Injectable()
 class MockDotLicenseService {
@@ -183,6 +184,7 @@ describe('DotEditContentHtmlService', () => {
                     ConfirmationService,
                     DotGlobalMessageService,
                     DotEventsService,
+                    { provide: DotHttpErrorManagerService, useValue: {} },
                     DotWorkflowActionsFireService,
                     { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: DotLicenseService, useClass: MockDotLicenseService }

@@ -32,6 +32,7 @@ import { DotPageContainer } from '@models/dot-page-container/dot-page-container.
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { INLINE_TINYMCE_SCRIPTS } from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/inline-edit-mode.js';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 export enum DotContentletAction {
     EDIT,
@@ -68,6 +69,7 @@ export class DotEditContentHtmlService {
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
         private dotDialogService: DotAlertConfirmService,
+        private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotMessageService: DotMessageService,
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotWorkflowActionsFireService: DotWorkflowActionsFireService,
@@ -645,6 +647,12 @@ export class DotEditContentHtmlService {
             },
             'add-uploaded-dotAsset': (dotAssetData: DotAssetPayload) => {
                 this.renderAddedContentlet(dotAssetData.contentlet, dotAssetData.placeholderId)
+            },
+            'handle-http-error': (err: HttpErrorResponse) => {
+                this.dotHttpErrorManagerService
+                        .handle(err)
+                        .pipe(take(1))
+                        .subscribe(() => {});
             }
         };
 

@@ -159,34 +159,36 @@ export const EDIT_PAGE_JS = `
         return fetch(options.url, {
             method: 'PUT',
             headers: {
-                Origin: window.location.hostname,
                 'Content-Type': 'application/json;charset=UTF-8'
             },
             body: JSON.stringify(data)
         })
         .then(async (res) => {
             const error = {};
-            const data = await res.json();
-            if (res.status !== 200) {
-                let message = '';
-                try {
-                    message = data.errors[0].message;
-                } catch(e) {
-                    message = e.message;
+            try {
+                const data = await res.json();
+                if (res.status !== 200) {
+                    let message = '';
+                    try {
+                        message = data.errors[0].message;
+                    } catch(e) {
+                        message = e.message;
+                    }
+                    error = {
+                        message: message,
+                        status: res.status
+                    };
                 }
-                error = {
-                    message: message,
-                    status: res.status
-                };
-            }
-
-            if (!!error.message) {
-                throw error;
-            } else {
-                return data.entity;
+    
+                if (!!error.message) {
+                    throw error;
+                } else {
+                    return data.entity;
+                }
+            } catch(e) {
+                throw res;
             }
         })
-        .catch((e) => e)
     }
 
     function uploadBinaryFile(file, maxSize) {
@@ -201,13 +203,11 @@ export const EDIT_PAGE_JS = `
             if (response.status === 200) {
                 return (await response.json()).tempFiles[0];
             } else {
-                const error = {
-                    message: (await response.json()).message,
-                    status: response.status
-                };
-                throw error;
+                throw response;
             }
-        });
+        }).catch(e => {
+            throw e;
+        })
     }
 
     function uploadFile(file, maxSize) {
@@ -230,8 +230,12 @@ export const EDIT_PAGE_JS = `
         return !!document.getElementById('contentletPlaceholder');
     }
 
+    function isContainerValid(container) {
+        return !container.classList.contains('no');
+    }
+
     function isContainerAndContentletValid(container, contentlet) {
-        return !container.classList.contains('no') && !contentlet.classList.contains('gu-transit');
+        return isContainerValid(container) && !contentlet.classList.contains('gu-transit');
     }
 
     function insertBeforeElement(newElem, element) {
@@ -239,9 +243,7 @@ export const EDIT_PAGE_JS = `
     }
 
     function insertAfterElement(newElem, element) {
-        try{
-            element.parentNode.insertBefore(newElem, element.nextSibling);
-        }catch(error){}
+        element.parentNode.insertBefore(newElem, element.nextSibling);
     }
 
     function removeElementById(elemId) {
@@ -270,11 +272,30 @@ export const EDIT_PAGE_JS = `
         return true;
     }
 
-    let contentletPlaceholder;
+    function setPlaceholderContentlet() {
+        const placeholder = document.createElement('div');
+        placeholder.id = 'contentletPlaceholder';
+        placeholder.setAttribute('data-dot-object', 'contentlet');
+        placeholder.classList.add('gu-transit');
+        return placeholder;
+    }
+
+    function handleHttpErrors(error) {
+        window.contentletEvents.next({
+            name: 'handle-http-error',
+            data: error
+        });
+    }
+
     let currentContainer;
 
-    window.addEventListener("dragenter", (event) => {
-        
+    window.addEventListener("dragenter", dragEnterEvent, false);
+    window.addEventListener("dragover", dragOverEvent, false);
+    window.addEventListener("dragleave", dragLeaveEvent, false);
+    window.addEventListener("drop", dropEvent, false);
+    window.addEventListener("beforeunload", removeEvents, false);
+
+    function dragEnterEvent(event) {
         event.preventDefault(); 
         event.stopPropagation();
 
@@ -284,11 +305,9 @@ export const EDIT_PAGE_JS = `
         if (container && !checkIfContainerAllowsDotAsset(event)) {
             container.classList.add('no');
         }
+    }
 
-    }, false);
-
-    window.addEventListener('dragover', (event) => {
-
+    function dragOverEvent(event) {
         event.preventDefault(); 
         event.stopPropagation();
 
@@ -301,11 +320,7 @@ export const EDIT_PAGE_JS = `
                 removeElementById('contentletPlaceholder');
             }
 
-            contentletPlaceholder = document.createElement('div');
-            contentletPlaceholder.id = 'contentletPlaceholder';
-            contentletPlaceholder.setAttribute('data-dot-object', 'contentlet')
-            contentletPlaceholder.classList.add('gu-transit')
-
+            const contentletPlaceholder = setPlaceholderContentlet();
             if (isContainerAndContentletValid(container, contentlet)) {
                 if (isCursorOnUpperSide(event, contentlet.getBoundingClientRect())) {
                     insertBeforeElement(contentletPlaceholder, contentlet);
@@ -314,13 +329,16 @@ export const EDIT_PAGE_JS = `
                 }
             }
 
-            contentletPlaceholder = null;
+        } else if (container && !container.querySelectorAll('[data-dot-object="contentlet"]').length) { // Empty container
+            if (isContainerValid(container) && isContentletPlaceholderInDOM()) { 
+                removeElementById('contentletPlaceholder');
+            }
 
+            container.appendChild(setPlaceholderContentlet()); 
         }
+    }
 
-    }, false)
-
-    window.addEventListener('dragleave', (event) => {
+    function dragLeaveEvent(event) {
         event.preventDefault(); 
         event.stopPropagation();
 
@@ -329,10 +347,9 @@ export const EDIT_PAGE_JS = `
         if (container && currentContainer !== container) {
             container.classList.remove('no');
         }
+    }
 
-    }, false)
-
-    window.addEventListener('drop', (event) => {
+    function dropEvent(event) {
         event.preventDefault(); 
         event.stopPropagation();
 
@@ -354,16 +371,27 @@ export const EDIT_PAGE_JS = `
                             placeholderId: 'contentletPlaceholder'
                         }
                     });
+                }).catch(e => {
+                    handleHttpErrors(e);
                 })
+            }).catch(e => {
+                handleHttpErrors(e);
             })
-
         }
 
         if (container) {
             container.classList.remove('no');
         }
 
-    }, false)
+    }
+
+    function removeEvents(e) {
+        window.removeEventListener("dragenter", dragEnterEvent, false);
+        window.removeEventListener("dragover", dragOverEvent, false);
+        window.removeEventListener("dragleave", dragLeaveEvent, false);
+        window.removeEventListener("drop", dropEvent, false);
+        window.removeEventListener("beforeunload", removeEvents, false);
+    }
 
     // D&D Img - End
 
