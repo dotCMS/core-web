@@ -48,6 +48,7 @@ export class DotHttpErrorManagerService {
      * @memberof DotHttpErrorManagerService
      */
     handle(err: HttpErrorResponse): Observable<DotHttpErrorHandled> {
+        debugger;
         const result: DotHttpErrorHandled = {
             redirected: this.callErrorHandler(err),
             status: err.status
@@ -64,6 +65,7 @@ export class DotHttpErrorManagerService {
     }
 
     private callErrorHandler(response: HttpErrorResponse | any): boolean {
+        debugger;
         const code = response.status;
 
         return code === HttpCode.FORBIDDEN

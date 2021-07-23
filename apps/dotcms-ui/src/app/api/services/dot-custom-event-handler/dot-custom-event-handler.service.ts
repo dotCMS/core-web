@@ -51,6 +51,7 @@ export class DotCustomEventHandlerService {
      * @memberof DotCustomEventHandlerService
      */
     handle(event: CustomEvent): void {
+        debugger;
         if (event && this.handlers[event.detail.name]) {
             this.handlers[event.detail.name](event);
         }

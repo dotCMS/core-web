@@ -62,9 +62,12 @@ export class DotContentletWrapperComponent {
                     this.onClose();
                 },
                 'edit-contentlet-data-updated': (e: CustomEvent) => {
+                    console.log('---EVENT---', 'edit-contentlet-data-updated');
                     this.isContentletModified = e.detail.payload;
                 },
-                'save-page': () => {
+                'save-page': (event) => {
+                    debugger;
+                    console.log(event);
                     this.isContentletModified = false;
                 },
                 'edit-contentlet-loaded': (e: CustomEvent) => {
@@ -114,9 +117,10 @@ export class DotContentletWrapperComponent {
      * Handle the custome events from the DotDialogIframe component
      *
      * @param CustomEvent $event
-     * @memberof DotAddContentletComponent
+     * @memberof DotContentletWrapperComponent
      */
     onCustomEvent($event: CustomEvent): void {
+        console.log('onCustomEvent', $event.detail.name);
         if (this.customEventsHandler[$event.detail.name]) {
             this.customEventsHandler[$event.detail.name]($event);
         }
@@ -128,7 +132,7 @@ export class DotContentletWrapperComponent {
      * Call the keyDown method from the service if exist
      *
      * @param any $event
-     * @memberof DotAddContentletComponent
+     * @memberof DotContentletWrapperComponent
      */
     onKeyDown($event): void {
         if (this.dotContentletEditorService.keyDown) {
@@ -140,9 +144,10 @@ export class DotContentletWrapperComponent {
      * Call the load method from the service if exist
      *
      * @param any $event
-     * @memberof DotAddContentletComponent
+     * @memberof DotContentletWrapperComponent
      */
     onLoad($event): void {
+        debugger;
         if (this.dotContentletEditorService.load) {
             this.dotContentletEditorService.load($event);
         }

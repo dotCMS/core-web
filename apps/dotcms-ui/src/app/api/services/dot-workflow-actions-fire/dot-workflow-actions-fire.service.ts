@@ -36,11 +36,12 @@ export class DotWorkflowActionsFireService {
         actionId: string,
         data?: { [key: string]: string }
     ): Observable<DotCMSContentlet> {
+        debugger;
         return this.coreWebService
             .requestView({
                 body: data,
                 method: 'PUT',
-                url: `v1/workflow/actions/${actionId}/fire?inode=${inode}`
+                url: `v1/workflow/actions/${actionId}/fire?inode=${inode}&indexPolicy=WAIT_FOR`
             })
             .pipe(pluck('entity'));
     }
