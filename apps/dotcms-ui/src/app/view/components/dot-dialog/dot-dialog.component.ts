@@ -161,6 +161,7 @@ export class DotDialogComponent implements OnChanges {
     }
 
     private handleClose(): void {
+        debugger;
         this.visibleChange.emit(false);
         this.hide.emit();
         this.unBindEvents();

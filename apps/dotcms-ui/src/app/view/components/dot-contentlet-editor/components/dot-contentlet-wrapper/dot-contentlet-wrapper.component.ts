@@ -3,6 +3,7 @@ import { DotContentletEditorService } from '../../services/dot-contentlet-editor
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 
 export interface DotCMSEditPageEvent {
     name: string;
@@ -38,7 +39,8 @@ export class DotContentletWrapperComponent {
         private dotContentletEditorService: DotContentletEditorService,
         private dotAlertConfirmService: DotAlertConfirmService,
         private dotMessageService: DotMessageService,
-        private dotRouterService: DotRouterService
+        private dotRouterService: DotRouterService,
+        private dotIframeService: DotIframeService
     ) {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
@@ -62,12 +64,10 @@ export class DotContentletWrapperComponent {
                     this.onClose();
                 },
                 'edit-contentlet-data-updated': (e: CustomEvent) => {
-                    console.log('---EVENT---', 'edit-contentlet-data-updated');
                     this.isContentletModified = e.detail.payload;
                 },
                 'save-page': (event) => {
-                    debugger;
-                    console.log(event);
+                    this.dotIframeService.reload();
                     this.isContentletModified = false;
                 },
                 'edit-contentlet-loaded': (e: CustomEvent) => {
@@ -147,7 +147,7 @@ export class DotContentletWrapperComponent {
      * @memberof DotContentletWrapperComponent
      */
     onLoad($event): void {
-        debugger;
+        console.log('onLoad', $event);
         if (this.dotContentletEditorService.load) {
             this.dotContentletEditorService.load($event);
         }

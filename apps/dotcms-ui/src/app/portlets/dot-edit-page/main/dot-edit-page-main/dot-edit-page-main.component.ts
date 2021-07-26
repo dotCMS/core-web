@@ -32,10 +32,8 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
                 'save-page': ({ detail: { payload } }: CustomEvent) => {
-                    debugger;
                     this.pageUrl = payload.htmlPageReferer.split('?')[0];
                     this.pageIsSaved = true;
-                    this.dotPageStateService.reload();
                 },
                 'deleted-page': () => {
                     this.dotRouterService.goToSiteBrowser();
@@ -71,6 +69,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
      * @memberof DotEditPageMainComponent
      */
     onCustomEvent($event: CustomEvent): void {
+        debugger;
         if (this.customEventsHandler[$event.detail.name]) {
             this.customEventsHandler[$event.detail.name]($event);
         }

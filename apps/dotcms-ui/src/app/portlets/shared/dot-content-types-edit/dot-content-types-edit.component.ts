@@ -109,6 +109,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
      * @memberof DotContentTypesEditComponent
      */
     onDialogHide(): void {
+        debugger;
         if (!this.isEditMode()) {
             this.dotRouterService.gotoPortlet(`/${this.dotRouterService.currentPortlet.id}`);
         }

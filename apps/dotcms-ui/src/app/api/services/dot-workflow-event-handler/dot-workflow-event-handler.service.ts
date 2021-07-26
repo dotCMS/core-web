@@ -16,10 +16,7 @@ import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/
 import * as moment from 'moment';
 import { DotCommentAndAssignFormComponent } from '@components/_common/forms/dot-comment-and-assign-form/dot-comment-and-assign-form.component';
 import { DotPushPublishFormComponent } from '@components/_common/forms/dot-push-publish-form/dot-push-publish-form.component';
-import {
-    DotHttpErrorHandled,
-    DotHttpErrorManagerService
-} from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { Observable } from 'rxjs';
@@ -156,6 +153,7 @@ export class DotWorkflowEventHandlerService {
             delete data.environment;
             delete data.pushActionSelected;
         }
+        data['contentlet'] = {};
         return data;
     }
 
@@ -231,12 +229,9 @@ export class DotWorkflowEventHandlerService {
                         }),
                         take(1)
                     )
-                    .subscribe((response) => {
-                        debugger;
-                        if (!!(response as DotHttpErrorHandled).status) {
-                            this.displayNotification(event.workflow.name);
-                            this.dotIframeService.run({ name: event.callback });
-                        }
+                    .subscribe(() => {
+                        this.displayNotification(event.workflow.name);
+                        this.dotIframeService.run({ name: event.callback });
                     });
             }
         }
