@@ -41,17 +41,6 @@ jobs:
         run: |
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
         if: env.jobRun == 'true'
-      - name: Run Cypress Tests
-        run: |
-          ../dotcicd/library/pipeline.sh runSidecar
-        if: env.jobRun == 'true'
-        env:
-          BUNDLE_LOCATION: core-web/apps/dotcms-ui-e2e/src/fixtures/Cypress-DB-Seed.tar.gz
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-          LICENSE_KEY: ${{ secrets.DOTCMS_LICENSE }}
-          # WAIT_DOTCMS_FOR: 3m
-          # BUILD_ID: master ask in dot-cdci if exist, or use master instead
       - name: Checkout
         uses: actions/checkout@v2
       - name: Building project
@@ -64,3 +53,14 @@ jobs:
           command: nx e2e dotcms-ui-e2e --headless true --browser chrome --base-url http://localhost:8080
           # quote the url to be safe against YML parsing surprises
           wait-on: 'http://localhost:8080'
+      - name: Run Cypress Tests
+        run: |
+          ../dotcicd/library/pipeline.sh runSidecar
+        if: env.jobRun == 'true'
+        env:
+          BUNDLE_LOCATION: core-web/apps/dotcms-ui-e2e/src/fixtures/Cypress-DB-Seed.tar.gz
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          LICENSE_KEY: ${{ secrets.DOTCMS_LICENSE }}
+          # WAIT_DOTCMS_FOR: 3m
+          # BUILD_ID: master ask in dot-cdci if exist, or use master instead
