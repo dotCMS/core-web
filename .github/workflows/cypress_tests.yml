@@ -43,16 +43,15 @@ jobs:
         if: env.jobRun == 'true'
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Building project
-        run: |
-          npm run build:prod
-          npm install -g nx
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          command: nx e2e dotcms-ui-e2e --headless true --browser chrome --base-url http://localhost:8080
+          build: npm run build
           # quote the url to be safe against YML parsing surprises
           wait-on: 'http://localhost:8080'
+          wait-on-timeout: 240
+          browser: chrome
+          headless: true
       - name: Run Cypress Tests
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
