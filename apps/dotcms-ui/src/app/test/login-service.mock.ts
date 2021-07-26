@@ -1,4 +1,4 @@
-import { of as observableOf, Observable, Subject } from 'rxjs';
+import { of as observableOf, Observable, Subject, of } from 'rxjs';
 import { Auth } from '@dotcms/dotcms-js';
 
 export const mockUser = () => {
@@ -140,5 +140,16 @@ export class LoginServiceMock {
 
     changePassword(): Observable<any> {
         return observableOf({});
+    }
+
+    getCurrentUser() {
+        return of({
+            email: 'admin@dotcms.com',
+            givenName: 'Admin',
+            loginAs: true,
+            roleId: 'e7d4e34e-5127-45fc-8123-d48b62d510e3',
+            surname: 'User',
+            userId: 'dotcms.org.1'
+        });
     }
 }
