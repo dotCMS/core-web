@@ -208,7 +208,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @memberof DotEditContentComponent
      */
     onCustomEvent($event: CustomEvent): void {
-        debugger;
         this.dotCustomEventHandlerService.handle($event);
     }
 

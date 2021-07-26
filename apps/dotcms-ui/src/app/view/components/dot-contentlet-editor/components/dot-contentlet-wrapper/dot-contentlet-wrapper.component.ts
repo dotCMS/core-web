@@ -120,7 +120,6 @@ export class DotContentletWrapperComponent {
      * @memberof DotContentletWrapperComponent
      */
     onCustomEvent($event: CustomEvent): void {
-        console.log('onCustomEvent', $event.detail.name);
         if (this.customEventsHandler[$event.detail.name]) {
             this.customEventsHandler[$event.detail.name]($event);
         }

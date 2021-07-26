@@ -36,7 +36,6 @@ export class DotWorkflowActionsFireService {
         actionId: string,
         data?: { [key: string]: string }
     ): Observable<DotCMSContentlet> {
-        debugger;
         return this.coreWebService
             .requestView({
                 body: data,
