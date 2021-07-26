@@ -44,6 +44,8 @@ jobs:
       - name: Run Cypress Tests
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
+          myIP="$(ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}')"
+          echo "myIP=${myIP}"
         if: env.jobRun == 'true'
         env:
           BUNDLE_LOCATION: core-web/apps/dotcms-ui-e2e/src/fixtures/Cypress-DB-Seed.tar.gz
@@ -61,7 +63,7 @@ jobs:
         with:
           build: npm run build:prod
           # quote the url to be safe against YML parsing surprises
-          wait-on: 'http://"$(ifconfig  | grep \'inet addr:\'| grep -v \'127.0.0.1\' | cut -d: -f2 | awk \'{ print $1}\')":8080'
+          wait-on: 'http://${{ myIP }}:8080'
           wait-on-timeout: 120
           browser: chrome
           headless: true
