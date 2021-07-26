@@ -54,6 +54,8 @@ jobs:
           # BUILD_ID: master ask in dot-cdci if exist, or use master instead
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Test Docker
+        run: docker ps -a
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
