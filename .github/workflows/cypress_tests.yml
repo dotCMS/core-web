@@ -44,7 +44,7 @@ jobs:
       - name: Run Cypress Tests
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
-          myIP="$(ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}')"
+          myIP="$(ipconfig)"
           echo "myIP=${myIP}" >> $GITHUB_ENV
         if: env.jobRun == 'true'
         env:
