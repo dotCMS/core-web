@@ -41,17 +41,6 @@ jobs:
         run: |
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/dotCMS/dot-cicd/${DOT_CICD_BRANCH}/seed/install-dot-cicd.sh)"
         if: env.jobRun == 'true'
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          build: npm run build:prod
-          # quote the url to be safe against YML parsing surprises
-          wait-on: 'http://localhost:8080'
-          wait-on-timeout: 240
-          browser: chrome
-          headless: true
       - name: Run Cypress Tests
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
@@ -63,3 +52,14 @@ jobs:
           LICENSE_KEY: ${{ secrets.DOTCMS_LICENSE }}
           # WAIT_DOTCMS_FOR: 3m
           # BUILD_ID: master ask in dot-cdci if exist, or use master instead
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          build: npm run build:prod
+          # quote the url to be safe against YML parsing surprises
+          wait-on: 'http://localhost:8080'
+          wait-on-timeout: 240
+          browser: chrome
+          headless: true
