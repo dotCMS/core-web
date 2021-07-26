@@ -54,9 +54,13 @@ jobs:
           # BUILD_ID: master ask in dot-cdci if exist, or use master instead
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Building project
+        run: |
+        npm run build:prod
+        npm install -g nx
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: nx e2e dotcms-ui-e2e --headless true --browser chrome --base-url http://localhost:8080
+          command: nx e2e dotcms-ui-e2e --headless true --browser chrome --base-url http://localhost:8080
           # quote the url to be safe against YML parsing surprises
           wait-on: 'http://localhost:8080'
