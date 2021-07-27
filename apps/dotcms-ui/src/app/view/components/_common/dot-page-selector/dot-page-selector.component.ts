@@ -24,7 +24,6 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs';
 import { Observable, Subject } from 'rxjs';
-import { element } from 'protractor';
 
 const NO_SPECIAL_CHAR = /^[a-zA-Z0-9._/-]*$/g;
 const REPLACE_SPECIAL_CHAR = /[^a-zA-Z0-9._/-]/g;
@@ -282,7 +281,6 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
 
     private cleanAndValidateQuery(query: string): string {
         let cleanedQuery = '';
-        debugger;
         if (this.isTwoStepSearch(query)) {
             const url = this.parseUrl(query);
             url.host = this.cleanHost(decodeURI(url.host));
@@ -293,7 +291,6 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
         } else {
             cleanedQuery = this.cleanPath(query);
         }
-        console.log('cleanedQuery', cleanedQuery);
         this.autoComplete.inputEL.nativeElement.value = cleanedQuery;
         return cleanedQuery.startsWith('//')
             ? cleanedQuery

@@ -146,7 +146,6 @@ export class DotContentletWrapperComponent {
      * @memberof DotContentletWrapperComponent
      */
     onLoad($event): void {
-        console.log('onLoad', $event);
         if (this.dotContentletEditorService.load) {
             this.dotContentletEditorService.load($event);
         }
