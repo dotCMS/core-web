@@ -1,4 +1,4 @@
-import { of as observableOf, Observable, Subject, of } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 import { Auth } from '@dotcms/dotcms-js';
 
 export const mockUser = () => {
@@ -94,19 +94,19 @@ export class LoginServiceMock {
     setAuth(): void {}
 
     loginAs(): Observable<any> {
-        return observableOf({});
+        return of({});
     }
 
     logoutAs(): Observable<any> {
-        return observableOf({});
+        return of({});
     }
 
     loginUser(): Observable<any> {
-        return observableOf(mockUserWithRedirect);
+        return of(mockUserWithRedirect);
     }
 
     logOutUser(): Observable<any> {
-        return observableOf({});
+        return of({});
     }
 
     watchUser(func: Function): void {
@@ -122,7 +122,7 @@ export class LoginServiceMock {
     }
 
     getLoginFormInfo(): Observable<any> {
-        return observableOf({
+        return of({
             i18nMessagesMap: {
                 'sign-in': 'Sign in'
             },
@@ -135,11 +135,11 @@ export class LoginServiceMock {
     }
 
     recoverPassword(): Observable<any> {
-        return observableOf({});
+        return of({});
     }
 
     changePassword(): Observable<any> {
-        return observableOf({});
+        return of({});
     }
 
     getCurrentUser() {
