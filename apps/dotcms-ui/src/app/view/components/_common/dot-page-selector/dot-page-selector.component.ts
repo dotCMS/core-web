@@ -211,7 +211,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     }
 
     private fullSearch(param: string): Observable<DotPageSelectorItem[]> {
-        const host = this.parseUrl(param).host;
+        const host = decodeURI(this.parseUrl(param).host);
         return this.dotPageSelectorService.getSites(host, true).pipe(
             take(1),
             switchMap((results: DotPageSelectorItem[]) => {
@@ -282,9 +282,10 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
 
     private cleanAndValidateQuery(query: string): string {
         let cleanedQuery = '';
+        debugger;
         if (this.isTwoStepSearch(query)) {
             const url = this.parseUrl(query);
-            url.host = this.cleanHost(url.host);
+            url.host = this.cleanHost(decodeURI(url.host));
             url.pathname = this.cleanPath(url.pathname);
             cleanedQuery = `//${url.host}/${url.pathname}`;
         } else if (query.startsWith('//')) {
