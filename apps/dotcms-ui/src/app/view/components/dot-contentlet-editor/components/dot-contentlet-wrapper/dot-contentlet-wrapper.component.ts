@@ -66,7 +66,7 @@ export class DotContentletWrapperComponent {
                 'edit-contentlet-data-updated': (e: CustomEvent) => {
                     this.isContentletModified = e.detail.payload;
                 },
-                'save-page': (event) => {
+                'save-page': () => {
                     this.dotIframeService.reload();
                     this.isContentletModified = false;
                 },
@@ -81,7 +81,7 @@ export class DotContentletWrapperComponent {
      * Habdle the before close dialog event
      *
      * @param * $event
-     * @memberof DotEditContentletComponent
+     * @memberof DotContentletWrapperComponent
      */
     onBeforeClose($event?: { close: () => void }): void {
         if (this.isContentletModified) {

@@ -1,4 +1,4 @@
-import { of, of as observableOf } from 'rxjs';
+import { of } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
@@ -79,7 +79,7 @@ describe('DotContentletWrapperComponent', () => {
                         provide: DotMenuService,
                         useValue: {
                             getDotMenuId() {
-                                return observableOf('999');
+                                return of('999');
                             }
                         }
                     },
