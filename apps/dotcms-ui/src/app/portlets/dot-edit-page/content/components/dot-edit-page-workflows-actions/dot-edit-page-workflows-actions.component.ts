@@ -103,7 +103,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                 )
             )
             .pipe(take(1))
-            .subscribe((data: { [key: string]: any }) => {
+            .subscribe((data: { [key: string]: string }) => {
                 this.fireWorkflowAction(
                     workflow,
                     this.dotWorkflowEventHandlerService.processWorkflowPayload(

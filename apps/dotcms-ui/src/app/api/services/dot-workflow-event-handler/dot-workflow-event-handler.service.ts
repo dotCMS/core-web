@@ -141,8 +141,9 @@ export class DotWorkflowEventHandlerService {
     processWorkflowPayload(
         data: { [key: string]: any },
         inputs: DotCMSWorkflowInput[]
-    ): { [key: string]: any } {
+    ): { [key: string]: string } {
         if (this.containsPushPublish(inputs)) {
+            debugger
             data['whereToSend'] = data.environment.join();
             data['iWantTo'] = data.pushActionSelected;
             data['publishTime'] = moment(data.publishDate).format('HH-mm');
