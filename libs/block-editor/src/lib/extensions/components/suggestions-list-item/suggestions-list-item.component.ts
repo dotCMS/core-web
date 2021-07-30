@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostBinding } from '@angular/core';
+
+import { FocusableOption } from '@angular/cdk/a11y';
 
 @Component({
-  selector: 'dotcms-suggestions-list-item',
-  templateUrl: './suggestions-list-item.component.html',
-  styleUrls: ['./suggestions-list-item.component.scss']
+    selector: 'dotcms-suggestions-list-item',
+    templateUrl: './suggestions-list-item.component.html',
+    styleUrls: ['./suggestions-list-item.component.scss'],
 })
-export class SuggestionsListItemComponent implements OnInit {
+export class SuggestionsListItemComponent implements FocusableOption {
+    @HostBinding('attr.role') role = 'list-item'
+    @HostBinding('attr.tabindex') tabindex = '-1'
 
-  constructor() { }
+    constructor(private element: ElementRef) { }
 
-  ngOnInit(): void {
-  }
+    getLabel(): string {
+        return this.element.nativeElement.innerText;
+    }
 
+    focus() {
+        this.element.nativeElement.focus();
+    }
 }
