@@ -1,16 +1,39 @@
-import { Component, Output, EventEmitter, forwardRef, Input } from '@angular/core';
+import {
+    Component,
+    Output,
+    EventEmitter,
+    forwardRef,
+    Input,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 import { Site } from '@dotcms/dotcms-js';
 
 import { DotPageSelectorService, DotPageAsset } from './service/dot-page-selector.service';
-import { DotPageSelectorResults, DotPageSeletorItem } from './models/dot-page-selector.models';
+import {
+    DotPageSelectorItem,
+    DotFolder,
+    DotSimpleURL,
+    CompleteEvent
+} from './models/dot-page-selector.models';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { AutoComplete } from 'primeng/autocomplete';
+import { of } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 const NO_SPECIAL_CHAR = /^[a-zA-Z0-9._/-]*$/g;
 const REPLACE_SPECIAL_CHAR = /[^a-zA-Z0-9._/-]/g;
+const NO_SPECIAL_CHAR_WHITE_SPACE = /^[a-zA-Z0-9._/-\s]*$/g;
+const REPLACE_SPECIAL_CHAR_WHITE_SPACE = /[^a-zA-Z0-9._/-\s]/g;
+enum SearchType {
+    SITE = 'site',
+    FOLDER = 'folder',
+    PAGE = 'page'
+}
 
 /**
  * Search and select a page asset
@@ -32,17 +55,19 @@ const REPLACE_SPECIAL_CHAR = /[^a-zA-Z0-9._/-]/g;
     ]
 })
 export class DotPageSelectorComponent implements ControlValueAccessor {
-    @Output() selected = new EventEmitter<DotPageAsset>();
+    @Output() selected = new EventEmitter<DotPageAsset | string>();
     @Input() label: string;
-    @Input() floatingLabel = false;
+    @Input() folderSearch = false;
 
-    results: DotPageSelectorResults = {
-        data: [],
-        query: '',
-        type: ''
-    };
-    val: DotPageSeletorItem;
+    @ViewChild('autoComplete') autoComplete: AutoComplete;
+
+    val: DotPageSelectorItem;
+    suggestions$: Subject<DotPageSelectorItem[]> = new Subject<DotPageSelectorItem[]>();
     message: string;
+    searchType: string;
+    isError = false;
+    private currentHost: Site;
+    private invalidHost = false;
 
     constructor(
         private dotPageSelectorService: DotPageSelectorService,
@@ -58,7 +83,30 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      */
     onClear(): void {
         this.propagateChange(null);
-        this.results.data = [];
+        this.resetResults();
+    }
+
+    /**
+     * Get results and set it to the autotomplete
+     *
+     * @param CompleteEvent param
+     * @memberof DotPageSelectorComponent
+     */
+    search(event: CompleteEvent): void {
+        this.propagateChange(null);
+        const query = this.cleanAndValidateQuery(event.query);
+        this.message = null;
+        this.invalidHost = false;
+        this.isError = false;
+        if (!!query) {
+            this.handleSearchType(query)
+                .pipe(take(1))
+                .subscribe((data) => {
+                    this.handleDataAndErrors(data, query);
+                });
+        } else {
+            this.resetResults();
+        }
     }
 
     /**
@@ -67,14 +115,17 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      * @param DotPageAsset item
      * @memberof DotPageSelectorComponent
      */
-    onSelect(item: DotPageSeletorItem): void {
-        if (this.results.type === 'site') {
+    onSelect(item: DotPageSelectorItem): void {
+        if (this.searchType === 'site') {
             const site: Site = <Site>item.payload;
-            this.dotPageSelectorService.setCurrentHost(site);
-        } else if (this.results.type === 'page') {
+            this.currentHost = site;
+            this.autoComplete.completeMethod.emit({ query: `//${site.hostname}/` });
+        } else if (this.searchType === 'page') {
             const page: DotPageAsset = <DotPageAsset>item.payload;
             this.selected.emit(page);
             this.propagateChange(page.identifier);
+        } else if (this.searchType === 'folder') {
+            this.handleFolderSelection(<DotFolder>item.payload);
         }
 
         this.resetResults();
@@ -88,38 +139,6 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      */
     onKeyEnter($event: KeyboardEvent): void {
         $event.stopPropagation();
-
-        if (this.shouldAutoFill()) {
-            this.autoFillField($event);
-            this.autoSelectUniqueResult();
-        }
-    }
-
-    /**
-     * Get pages results and set it to the autotomplete
-     *
-     * @param string param
-     * @memberof DotPageSelectorComponent
-     */
-    search(param: any): void {
-        if (this.validSearch(param)) {
-            this.dotPageSelectorService
-                .search(this.cleanQuery(param.query))
-                .pipe(take(1))
-                .subscribe((results: DotPageSelectorResults) => {
-                    this.results = results;
-                    this.message = this.getErrorMessage();
-
-                    if (
-                        this.shouldAutoFill() &&
-                        this.isOnlyFullHost(this.cleanQuery(param.query))
-                    ) {
-                        this.autoSelectUniqueResult();
-                    }
-                });
-        } else {
-            this.results.data = [];
-        }
     }
 
     /**
@@ -133,7 +152,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
             this.dotPageSelectorService
                 .getPageById(idenfier)
                 .pipe(take(1))
-                .subscribe((item: DotPageSeletorItem) => {
+                .subscribe((item: DotPageSelectorItem) => {
                     this.val = item;
                 });
         }
@@ -151,61 +170,164 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
 
     registerOnTouched(_fn: any): void {}
 
-    private autoFillField($event: KeyboardEvent): void {
-        const input: HTMLInputElement = <HTMLInputElement>$event.target;
-
-        if (this.results.type === 'site') {
-            const host = <Site>this.results.data[0].payload;
-            input.value = `//${host.hostname}/`;
-        } else if (this.results.type === 'page') {
-            const page = <DotPageAsset>this.results.data[0].payload;
-            input.value = `//demo.dotcms.com${page.path}`;
+    private handleDataAndErrors(data: DotPageSelectorItem[], query: string): void {
+        if (data.length === 0) {
+            if (this.invalidHost) {
+                this.message = this.getEmptyMessage(SearchType.SITE);
+            } else if (this.isFolderAndHost(query)) {
+                this.propagateChange(this.autoComplete.inputEL.nativeElement.value);
+                this.message = this.dotMessageService.get('page.selector.folder.new');
+            } else {
+                this.message = this.getEmptyMessage(this.searchType);
+            }
+        } else if (
+            this.searchType === SearchType.FOLDER &&
+            this.currentHost &&
+            (<DotFolder>data[0].payload).path === '/'
+        ) {
+            //select the root folder of a host.
+            this.handleFolderSelection(<DotFolder>data[0].payload);
         }
-
-        this.resetResults();
+        this.suggestions$.next(data);
+        this.autoComplete.show();
     }
 
-    private shouldAutoFill(): boolean {
-        return this.results.data.length === 1;
-    }
-
-    private resetResults(): void {
-        this.results = {
-            data: [],
-            query: '',
-            type: ''
-        };
-    }
-
-    private getErrorMessage(): string {
-        return this.results.data.length === 0
-            ? this.results.type === 'site'
-                ? this.dotMessageService.get('page.selector.no.sites.results')
-                : this.dotMessageService.get('page.selector.no.page.results')
-            : null;
-    }
-
-    private isOnlyFullHost(host: string): boolean {
-        return /\/\/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\/*$/.test(host);
-    }
-
-    private autoSelectUniqueResult(): void {
-        this.onSelect(this.results.data[0]);
-    }
-
-    private validSearch(param: any): boolean {
+    private isFolderAndHost(query: string): boolean {
         return (
-            this.cleanInput(param).length &&
-            (!param.query.startsWith('//') ? param.query.length >= 3 : true)
+            this.searchType === SearchType.FOLDER && !query.endsWith('/') && query.startsWith('//')
         );
     }
 
-    private cleanInput(event: any): string {
-        event.originalEvent.target.value = this.cleanQuery(event.query);
-        return event.originalEvent.target.value;
+    private handleSearchType(query: string): Observable<DotPageSelectorItem[]> {
+        if (this.isTwoStepSearch(query)) {
+            this.searchType = this.folderSearch ? SearchType.FOLDER : SearchType.PAGE;
+            return this.fullSearch(query);
+        } else {
+            this.currentHost = null;
+            this.searchType = this.setSearchType(query);
+            return this.getConditionalSearch(query);
+        }
     }
 
-    private cleanQuery(query: string): string {
+    private fullSearch(param: string): Observable<DotPageSelectorItem[]> {
+        const host = decodeURI(this.parseUrl(param).host);
+        return this.dotPageSelectorService.getSites(host, true).pipe(
+            take(1),
+            switchMap((results: DotPageSelectorItem[]) => {
+                if (results.length) {
+                    this.currentHost = <Site>results[0].payload;
+                    return this.getSecondStepData(param);
+                } else {
+                    this.invalidHost = true;
+                    return of([]);
+                }
+            })
+        );
+    }
+
+    private setSearchType(query: string): string {
+        return this.isSearchingForHost(query)
+            ? SearchType.SITE
+            : this.folderSearch
+            ? SearchType.FOLDER
+            : SearchType.PAGE;
+    }
+
+    private getConditionalSearch(param: string): Observable<DotPageSelectorItem[]> {
+        return this.searchType === SearchType.SITE
+            ? this.dotPageSelectorService.getSites(this.getSiteName(param))
+            : this.getSecondStepData(param);
+    }
+
+    private getSecondStepData(param: string): Observable<DotPageSelectorItem[]> {
+        return this.folderSearch
+            ? this.dotPageSelectorService.getFolders(param)
+            : this.dotPageSelectorService.getPages(param);
+    }
+
+    private isTwoStepSearch(query: string): boolean {
+        return (
+            query.startsWith('//') &&
+            query.length > 2 &&
+            (this.isHostAndPath(query) || query.endsWith('/'))
+        );
+    }
+
+    private isHostAndPath(param: string): boolean {
+        const url: DotSimpleURL | { [key: string]: string } = this.parseUrl(param);
+        return url && !!(url.host && url.pathname.length > 0);
+    }
+
+    private parseUrl(query: string): DotSimpleURL {
+        try {
+            const url = new URL(`http:${query}`);
+            return { host: url.host, pathname: url.pathname.substr(1) };
+        } catch {
+            return null;
+        }
+    }
+
+    private isSearchingForHost(query: string): boolean {
+        return query.startsWith('//') && (!!this.getSiteName(query) ? !query.endsWith('/') : true);
+    }
+
+    private getSiteName(site: string): string {
+        return site.replace(/\//g, '');
+    }
+
+    private resetResults(): void {
+        this.suggestions$.next([]);
+    }
+
+    private cleanAndValidateQuery(query: string): string {
+        let cleanedQuery = '';
+        if (this.isTwoStepSearch(query)) {
+            const url = this.parseUrl(query);
+            url.host = this.cleanHost(decodeURI(url.host));
+            url.pathname = this.cleanPath(url.pathname);
+            cleanedQuery = `//${url.host}/${url.pathname}`;
+        } else if (query.startsWith('//')) {
+            cleanedQuery = this.cleanHost(query);
+        } else {
+            cleanedQuery = this.cleanPath(query);
+        }
+        this.autoComplete.inputEL.nativeElement.value = cleanedQuery;
+        return cleanedQuery.startsWith('//')
+            ? cleanedQuery
+            : cleanedQuery.length >= 3
+            ? cleanedQuery
+            : '';
+    }
+
+    private cleanHost(query: string): string {
+        return !NO_SPECIAL_CHAR_WHITE_SPACE.test(query)
+            ? query.replace(REPLACE_SPECIAL_CHAR_WHITE_SPACE, '')
+            : query;
+    }
+
+    private cleanPath(query: string): string {
         return !NO_SPECIAL_CHAR.test(query) ? query.replace(REPLACE_SPECIAL_CHAR, '') : query;
+    }
+
+    private getEmptyMessage(type: string): string {
+        this.isError = true;
+        switch (type) {
+            case 'site':
+                return this.dotMessageService.get('page.selector.no.sites.results');
+            case 'page':
+                return this.dotMessageService.get('page.selector.no.page.results');
+            case 'folder':
+                return this.dotMessageService.get('page.selector.no.folder.results');
+        }
+    }
+
+    private handleFolderSelection(folder: DotFolder): void {
+        if (folder.addChildrenAllowed) {
+            this.selected.emit(`//${folder.hostName}${folder.path}`);
+            this.propagateChange(`//${folder.hostName}${folder.path}`);
+        } else {
+            this.message = this.dotMessageService.get('page.selector.folder.permissions');
+            this.isError = true;
+        }
     }
 }
