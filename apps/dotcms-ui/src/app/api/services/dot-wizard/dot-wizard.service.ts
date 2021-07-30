@@ -16,7 +16,7 @@ export class DotWizardService {
      * @param {{ [key: string]: string }} form
      * @memberof DotWizardService
      */
-    output$(form: { [key: string]: string }): void {
+    output$(form: { [key: string]: any }): void {
         this.output.next(form);
     }
 
