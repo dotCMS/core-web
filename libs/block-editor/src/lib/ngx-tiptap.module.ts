@@ -14,6 +14,7 @@ import { SuggestionsService } from './extensions/services/suggestions.service';
 import { SuggestionsComponent } from './extensions/components/suggestions/suggestions.component';
 import { SuggestionListComponent } from './extensions/components/suggestion-list/suggestion-list.component';
 import { ActionButtonComponent } from './extensions/components/action-button/action-button.component';
+import { SuggestionsListItemComponent } from './extensions/components/suggestions-list-item/suggestions-list-item.component';
 
 @NgModule({
     imports: [CommonModule, CardModule, MenuModule],
@@ -24,6 +25,7 @@ import { ActionButtonComponent } from './extensions/components/action-button/act
         NodeViewContentDirective,
         SuggestionsComponent,
         SuggestionListComponent,
+        SuggestionsListItemComponent,
         ContentletBlockComponent,
         ActionButtonComponent
     ],

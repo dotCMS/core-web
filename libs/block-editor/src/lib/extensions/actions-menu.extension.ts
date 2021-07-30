@@ -102,11 +102,16 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                 },
                 render: () => {
                     let myTippy;
+                    const component = getMenuComponent(injector, resolver);
 
                     return {
                         onStart: (props: SuggestionProps) => {
-                            const component = getMenuComponent(injector, resolver);
+                            // props.editor.on('keydown', () => {
+                            //     console.log('keydown in the editor')
+                            // })
+
                             component.instance.command = props.command;
+
 
                             myTippy = getTippyInstance({
                                 element: props.editor.view.dom,
@@ -116,7 +121,14 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                         },
                         onExit: () => {
                             myTippy.destroy();
-                        }
+                        },
+                        onKeyDown({ event }) {
+                            const key = (event as KeyboardEvent).key;
+
+                            if (key === 'ArrowDown' || key === 'ArrowUp') {
+                                component.instance.onKeyDown(event);
+                            }
+                        },
                     };
                 }
             }

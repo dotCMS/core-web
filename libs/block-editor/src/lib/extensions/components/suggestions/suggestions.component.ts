@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
 import { SuggestionsService } from '../../services/suggestions.service';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 
 @Component({
     selector: 'dotcms-suggestions',
@@ -12,6 +13,8 @@ import { DotCMSContentlet } from '@dotcms/dotcms-models';
     styleUrls: ['./suggestions.component.scss']
 })
 export class SuggestionsComponent implements OnInit {
+    @ViewChild('list', { static: true }) list: SuggestionListComponent;
+
     @Input() command: ({
         payload,
         type
@@ -22,6 +25,10 @@ export class SuggestionsComponent implements OnInit {
     items: MenuItem[] = [];
 
     constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
+
+    onKeyDown(e: KeyboardEvent) {
+        this.list.onKeydown(e);
+    }
 
     ngOnInit(): void {
         const headings = [...Array(6).keys()].map((level) => {

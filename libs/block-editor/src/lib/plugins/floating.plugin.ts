@@ -35,6 +35,7 @@ export class FloatingActionsView {
         this.element.addEventListener('mousedown', this.mousedownHandler, { capture: true });
         this.editor.on('focus', this.focusHandler);
         this.editor.on('blur', this.blurHandler);
+        this.editor.on('keydown', this.keydownHandler);
         this.createTooltip(tippyOptions);
         this.element.style.visibility = 'visible';
         this.command = command;
@@ -48,10 +49,10 @@ export class FloatingActionsView {
         const { from, to } = selection;
         const rect = posToDOMRect(this.view, from, to);
         this.command({ rect, range: { from, to }, editor: this.editor });
+        console.log(this.editor.isFocused);
     };
 
     focusHandler = () => {
-        console.log('focusHandler');
         // we use `setTimeout` to make sure `selection` is already updated
         setTimeout(() => this.update(this.editor.view));
     };
@@ -73,6 +74,10 @@ export class FloatingActionsView {
 
         this.hide();
     };
+
+    keydownHandler = ({ event }) => {
+        console.log('floating', 'keydownHandler', event)
+    }
 
     createTooltip(options: Partial<Props> = {}) {
         this.tippy = tippy(this.view.dom, {
