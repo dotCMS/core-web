@@ -22,6 +22,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import * as _ from 'lodash';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { DataView } from 'primeng/dataView';
 import { PrimeTemplate } from 'primeng/api';
 
 /**
@@ -98,6 +99,9 @@ export class SearchableDropdownComponent
     disabled = false;
 
     @Input()
+    resetPaginationIndex = false;
+
+    @Input()
     externalItemListTemplate: TemplateRef<any>;
 
     @Input()
@@ -123,6 +127,9 @@ export class SearchableDropdownComponent
 
     @ViewChild('searchPanel', { static: true })
     searchPanelRef: OverlayPanel;
+
+    @ViewChild('dataView', { static: true })
+    dataViewRef: DataView;
 
     @ViewChild('button')
     button: ElementRef;
@@ -156,6 +163,16 @@ export class SearchableDropdownComponent
             this.setLabel();
         }
         this.setOptions(changes);
+        console.log('===change', changes);
+        this.totalRecords = this.totalRecords || this.data?.length;
+        // If new data comes from the first time and needs to show first page on pagination
+        // if (changes.data && changes.totalRecords) {
+        if (this.resetPaginationIndex && changes.data && changes.totalRecords) {
+            this.dataViewRef.paginate({
+                first: 0,
+                rows: this.rows
+            });
+        }
     }
 
     ngOnInit(): void {}
@@ -173,6 +190,7 @@ export class SearchableDropdownComponent
     }
 
     ngAfterContentInit() {
+        console.log('***ngAfterContentInit')
         this.totalRecords = this.totalRecords || this.data?.length;
         this.templates.forEach((item: PrimeTemplate) => {
             if (item.getType() === 'listItem') {
@@ -219,6 +237,7 @@ export class SearchableDropdownComponent
                     .height.toString();
             }
         }, 0);
+        console.log('==emit')
         this.show.emit();
     }
 

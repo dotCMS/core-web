@@ -4,7 +4,7 @@ import { DebugElement, Component, Input } from '@angular/core';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { SEARCHABLE_NGFACES_MODULES } from '../searchable-dropdown.module';
-import { SearchableDropdownComponent } from './searchable-dropdown.component';
+import { PaginationEvent, SearchableDropdownComponent } from './searchable-dropdown.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotIconModule } from '@dotcms/ui';
 import * as _ from 'lodash';
@@ -323,6 +323,85 @@ describe('SearchableDropdownComponent', () => {
 
         hostFixture.detectChanges();
         expect(hostComp.placeholder).toEqual(comp.valueString);
+    });
+});
+
+describe('SearchableDropdownComponent', () => {
+    const NROWS = 6;
+
+    let hostFixture: ComponentFixture<HostTestComponent>;
+    let hostComp: HostTestComponent;
+    let de: DebugElement;
+    let comp: SearchableDropdownComponent;
+    let data = [];
+    let rows: number;
+    let mainButton: DebugElement;
+    let pdataview: DebugElement;
+
+    beforeEach(
+        waitForAsync(() => {
+            const messageServiceMock = new MockDotMessageService({
+                search: 'Search'
+            });
+
+            TestBed.configureTestingModule({
+                declarations: [SearchableDropdownComponent, HostTestComponent],
+                imports: [
+                    ...SEARCHABLE_NGFACES_MODULES,
+                    BrowserAnimationsModule,
+                    DotIconModule,
+                    UiDotIconButtonModule,
+                    DotPipesModule
+                ],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            }).compileComponents();
+
+            hostFixture = TestBed.createComponent(HostTestComponent);
+            hostComp = hostFixture.componentInstance;
+            de = hostFixture.debugElement.query(By.css('dot-searchable-dropdown'));
+            comp = de.componentInstance;
+            rows = NROWS / 3;
+        })
+    );
+
+    beforeEach(() => {
+        hostComp.placeholder = 'placeholder';
+        hostFixture.detectChanges();
+
+        mainButton = de.query(By.css('button'));
+        mainButton.nativeElement.dispatchEvent(new MouseEvent('click'));
+        hostFixture.detectChanges();
+        pdataview = de.query(By.css('p-dataview'));
+        spyOn(pdataview.componentInstance, 'paginate');
+    });
+
+    it('should call paginate function on dataview component when new pagination data changes', () => {
+
+        data = [];
+        for (let i = 0; i < NROWS; i++) {
+            data[i] = {
+                id: i,
+                label: `site-${i}`,
+                name: `site-${i}`,
+                parentPermissionable: {
+                    hostname: 'demo.dotcms.com'
+                }
+            };
+        }
+
+        hostComp.totalRecords = NROWS;
+        hostComp.rows = rows;
+        hostComp.data = data;
+
+        hostFixture.detectChanges();
+
+        expect(pdataview.componentInstance.paginate).toHaveBeenCalledWith({
+            filter: undefined,
+            first: 0,
+            page: undefined,
+            pageCount: undefined,
+            rows
+        });
     });
 });
 

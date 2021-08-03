@@ -61,6 +61,7 @@
     (change)="onChange($event)"
     [placeholder]="'dot.common.select.themes' | dm"
     [data]="themes"
+    [resetPaginationIndex]="resetPaginationIndex"
     [totalRecords]="totalRecords"
     (pageChange)="handlePageChange($event)"
     [rows]="paginatorService.paginationPerPage"
