@@ -73,7 +73,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
 
     form: FormGroup;
     initialFormValue: any;
-    isModelUpdated = false;
     themeDialogVisibility = false;
     currentTheme: DotTheme;
 
@@ -215,7 +214,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
+            if(!_.isEqual(this.form.value, this.initialFormValue)){
+                this.onSave();
+            }
             this.cd.detectChanges();
         });
 
@@ -235,7 +236,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             );
 
         this.initialFormValue = _.cloneDeep(this.form.value);
-        this.isModelUpdated = false;
     }
 
     private createSidebarForm(): DotLayoutSideBar {
