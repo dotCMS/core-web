@@ -186,34 +186,6 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
-        it('should show cancel button', () => {
-            const cancelButton: DebugElement = fixture.debugElement.query(
-                By.css('.dot-edit-layout__toolbar-action-cancel')
-            );
-
-            expect(cancelButton).toBeTruthy();
-            expect(cancelButton.nativeElement.textContent).toEqual('Cancel');
-        });
-
-        it('should emit cancel', () => {
-            spyOn(component.cancel, 'emit');
-            const cancelButton: DebugElement = fixture.debugElement.query(
-                By.css('.dot-edit-layout__toolbar-action-cancel')
-            );
-            cancelButton.triggerEventHandler('click', {});
-            expect(component.cancel.emit).toHaveBeenCalledTimes(1);
-        });
-
-        it('should show save button', () => {
-            fixture.detectChanges();
-            const saveButton: DebugElement = fixture.debugElement.query(
-                By.css('.dot-edit-layout__toolbar-save')
-            );
-
-            expect(saveButton).toBeTruthy();
-            expect(saveButton.nativeElement.textContent).toEqual('Save');
-        });
-
         it('should show dot-layout-properties and bind attr correctly', () => {
             fixture.detectChanges();
             const layoutProperties: DebugElement = fixture.debugElement.query(
@@ -344,35 +316,6 @@ describe('DotEditLayoutDesignerComponent', () => {
             };
             fixture.detectChanges();
             expect(component.form.value.layout.sidebar.containers).toEqual([]);
-        });
-    });
-
-    describe('save button', () => {
-        let saveButton: DebugElement;
-
-        beforeEach(() => {
-            component.layout = mockDotLayout();
-            fixture.detectChanges();
-            saveButton = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-save'));
-        });
-
-        it('should have disabled by default', () => {
-            expect(saveButton.nativeElement.disabled).toBe(true);
-        });
-
-        it('should have enabled if the model is updated', async () => {
-            component.form.get('title').setValue('Hello');
-            fixture.detectChanges();
-            await fixture.whenRenderingDone();
-            expect(saveButton.nativeElement.disabled).toBe(false);
-        });
-
-        it('should have disabled if the form is not valid', () => {
-            // This will make the template title required, it's like clicking the "Save as template" checkbox
-            // component.saveAsTemplateHandleChange(true);
-            fixture.detectChanges();
-
-            expect(saveButton.nativeElement.disabled).toBe(true);
         });
     });
 
