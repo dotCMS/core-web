@@ -76,6 +76,7 @@ export class DotThemeSelectorDropdownComponent
         this.searchInput.nativeElement.value = '';
         this.setHostThemes(this.currentSiteIdentifier);
         this.getFilteredThemes('');
+        this.resetPaginationIndex = true;
     }
 
     propagateChange = (_: any) => {};
@@ -119,7 +120,6 @@ export class DotThemeSelectorDropdownComponent
         this.currentSiteIdentifier = event.identifier;
         this.setHostThemes(event.identifier);
         this.resetPaginationIndex = true;
-        console.log("siteChange this.resetPaginationIndex", this.resetPaginationIndex);
 
     }
     /**
@@ -135,7 +135,6 @@ export class DotThemeSelectorDropdownComponent
             this.currentSiteIdentifier = this.value.hostId;
         }
         this.resetPaginationIndex = false;
-        console.log("onShow this.resetPaginationIndex", this.resetPaginationIndex);
         this.setHostThemes(this.currentSiteIdentifier);
     }
 

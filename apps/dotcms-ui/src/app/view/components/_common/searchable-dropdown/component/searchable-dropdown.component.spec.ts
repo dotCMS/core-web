@@ -21,6 +21,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         [pageLinkSize]="pageLinkSize"
         [persistentPlaceholder]="persistentPlaceholder"
         [placeholder]="placeholder"
+        [resetPaginationIndex]="resetPaginationIndex"
         [rows]="rows"
         [totalRecords]="totalRecords"
         [valuePropertyName]="valuePropertyName"
@@ -47,6 +48,9 @@ class HostTestComponent {
 
     @Input()
     pageLinkSize = 3;
+
+    @Input()
+    resetPaginationIndex = true;
 
     @Input()
     rows: number;
@@ -396,10 +400,7 @@ describe('SearchableDropdownComponent', () => {
         hostFixture.detectChanges();
 
         expect(pdataview.componentInstance.paginate).toHaveBeenCalledWith({
-            filter: undefined,
             first: 0,
-            page: undefined,
-            pageCount: undefined,
             rows
         });
     });
@@ -417,6 +418,7 @@ describe('SearchableDropdownComponent', () => {
         [pageLinkSize]="pageLinkSize"
         [persistentPlaceholder]="persistentPlaceholder"
         [placeholder]="placeholder"
+        [resetPaginationIndex]="resetPaginationIndex"
         [rows]="rows"
         [totalRecords]="totalRecords"
         [valuePropertyName]="valuePropertyName"
@@ -456,6 +458,9 @@ class HostTestExternalTemplateComponent {
 
     @Input()
     pageLinkSize = 3;
+
+    @Input()
+    resetPaginationIndex = false;
 
     @Input()
     rows: number;
@@ -524,6 +529,7 @@ describe('SearchableDropdownComponent', () => {
             pageLinkSize = 1;
 
             hostComp.totalRecords = NROWS;
+            hostComp.resetPaginationIndex = true;
             hostComp.rows = rows;
             hostComp.pageLinkSize = pageLinkSize;
         })
