@@ -66,9 +66,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     url: string;
 
     @Output()
-    cancel: EventEmitter<MouseEvent> = new EventEmitter();
-
-    @Output()
     save: EventEmitter<Event> = new EventEmitter();
 
     form: FormGroup;
@@ -113,15 +110,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
      */
     addGridBox() {
         this.dotEditLayoutService.addBox();
-    }
-
-    /**
-     * Emit cancel event
-     *
-     * @memberof DotEditLayoutDesignerComponent
-     */
-    onCancel(): void {
-        this.cancel.emit();
     }
 
     /**
@@ -214,9 +202,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$), debounce(() => interval(300))).subscribe(() => {
-            if (!_.isEqual(this.form.value, this.initialFormValue)) {
-                this.onSave();
-            }
+            this.onSave();
             this.cd.detectChanges();
         });
 
