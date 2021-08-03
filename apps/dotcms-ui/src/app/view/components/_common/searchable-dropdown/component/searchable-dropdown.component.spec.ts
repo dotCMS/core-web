@@ -4,7 +4,7 @@ import { DebugElement, Component, Input } from '@angular/core';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { SEARCHABLE_NGFACES_MODULES } from '../searchable-dropdown.module';
-import { PaginationEvent, SearchableDropdownComponent } from './searchable-dropdown.component';
+import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotIconModule } from '@dotcms/ui';
 import * as _ from 'lodash';

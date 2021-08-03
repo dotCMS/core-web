@@ -22,7 +22,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import * as _ from 'lodash';
 import { OverlayPanel } from 'primeng/overlaypanel';
-import { DataView } from 'primeng/dataView';
+import { DataView } from 'primeng/dataview';
 import { PrimeTemplate } from 'primeng/api';
 
 /**
