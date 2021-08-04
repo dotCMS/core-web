@@ -6,7 +6,7 @@ import { SuggestionsListItemComponent } from '../suggestions-list-item/suggestio
 import { SuggestionListComponent } from "./suggestion-list.component";
 
 export default {
-    title: 'SuggestionListComponent',
+    title: 'Suggestion List',
     decorators: [
         moduleMetadata({
             declarations: [SuggestionListComponent, SuggestionsListItemComponent],

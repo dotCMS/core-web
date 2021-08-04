@@ -9,6 +9,7 @@ import tippy, { GetReferenceClientRect } from 'tippy.js';
 import { FloatingActionsPlugin } from '../plugins/floating.plugin';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
+import { EditorView } from 'prosemirror-view';
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {

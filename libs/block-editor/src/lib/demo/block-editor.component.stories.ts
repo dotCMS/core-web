@@ -16,7 +16,7 @@ import { ActionButtonComponent } from '../extensions/components/action-button/ac
 import { ContentletBlockComponent } from '../extensions/blocks/contentlet-block/contentlet-block.component';
 
 export default {
-    title: 'BlockEditorComponent'
+    title: 'Block Editor'
 };
 
 export const primary = () => ({
