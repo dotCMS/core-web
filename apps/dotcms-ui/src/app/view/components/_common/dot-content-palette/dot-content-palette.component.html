@@ -14,9 +14,8 @@
 </div>
 <div class="dot-content-palette__items">
     <a *ngFor='let item of items' draggable="true"
-       [attr.data-content]="item | json"
-       (dragstart)="toggleDragClass($event)"
-        (dragend)="toggleDragClass($event)">
+       (dragstart)="dragStart($event, item)"
+        (dragend)="dragEnd($event)">
         <dot-icon [name]='item.icon'></dot-icon>
         <span>{{item.name}}</span>
     </a>

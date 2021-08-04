@@ -179,7 +179,7 @@ export const EDIT_PAGE_JS = `
                         status: res.status
                     };
                 }
-    
+
                 if (!!error.message) {
                     throw error;
                 } else {
@@ -253,7 +253,7 @@ export const EDIT_PAGE_JS = `
     function checkIfContainerAllowsDotAsset(event) {
 
         const container = event.target.closest('[data-dot-object="container"]');
-        
+
         // Different than 1 file
         if (event.dataTransfer.items.length !== 1 ) {
             return false;
@@ -275,6 +275,15 @@ export const EDIT_PAGE_JS = `
         }
 
         return true;
+    }
+
+    function checkIfContainerAllowContentType(container) {
+        // draggedContent is set by dotContentletEditorService.draggedContentType$
+        const dotAcceptTypes = container.dataset.dotAcceptTypes.toLocaleLowerCase();
+        if (draggedContent && dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase())) {
+            return true;
+        }
+        return false;
     }
 
     function setPlaceholderContentlet() {
@@ -301,27 +310,31 @@ export const EDIT_PAGE_JS = `
     window.addEventListener("beforeunload", removeEvents, false);
 
     function dragEnterEvent(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         event.stopPropagation();
 
         const container = event.target.closest('[data-dot-object="container"]');
         currentContainer = container;
+        if (container) {
+            console.log(!checkIfContainerAllowsDotAsset(event), checkIfContainerAllowContentType(container) )
+        }
 
-        if (container && !checkIfContainerAllowsDotAsset(event)) {
+
+          if (container && (!checkIfContainerAllowsDotAsset(event) && !checkIfContainerAllowContentType(container))) {
             container.classList.add('no');
         }
     }
 
     function dragOverEvent(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         event.stopPropagation();
-
+        console.log('dragOverEvent');
         const container = event.target.closest('[data-dot-object="container"]');
         const contentlet = event.target.closest('[data-dot-object="contentlet"]');
 
         if (contentlet) {
 
-            if (isContainerAndContentletValid(container, contentlet) && isContentletPlaceholderInDOM()) { 
+            if (isContainerAndContentletValid(container, contentlet) && isContentletPlaceholderInDOM()) {
                 removeElementById('contentletPlaceholder');
             }
 
@@ -330,25 +343,25 @@ export const EDIT_PAGE_JS = `
                 if (isCursorOnUpperSide(event, contentlet.getBoundingClientRect())) {
                     insertBeforeElement(contentletPlaceholder, contentlet);
                 } else {
-                    insertAfterElement(contentletPlaceholder, contentlet);                    
+                    insertAfterElement(contentletPlaceholder, contentlet);
                 }
             }
 
         } else if (
-                container && 
-                !container.querySelectorAll('[data-dot-object="contentlet"]').length && 
+                container &&
+                !container.querySelectorAll('[data-dot-object="contentlet"]').length &&
                 isContainerValid(container)
             ) { // Empty container
 
-            if (isContentletPlaceholderInDOM()) { 
+            if (isContentletPlaceholderInDOM()) {
                 removeElementById('contentletPlaceholder');
             }
-            container.appendChild(setPlaceholderContentlet()); 
+            container.appendChild(setPlaceholderContentlet());
         }
     }
 
     function dragLeaveEvent(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         event.stopPropagation();
 
         const container = event.target.closest('[data-dot-object="container"]');
@@ -359,10 +372,16 @@ export const EDIT_PAGE_JS = `
     }
 
     function dropEvent(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         event.stopPropagation();
 
+
         const container = event.target.closest('[data-dot-object="container"]');
+
+        if (container) {
+            debugger
+            console.log(event.dataTransfer.getData('text'));
+        }
 
         if (container && !container.classList.contains('no')) {
 

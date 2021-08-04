@@ -149,6 +149,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.subscribeIframeActions();
         this.subscribePageModelChange();
         this.subscribeOverlayService();
+        this.subscribeDraggedContentType();
     }
 
     ngOnDestroy(): void {
@@ -461,5 +462,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.iframeOverlayService.overlay
             .pipe(takeUntil(this.destroy$))
             .subscribe((val: boolean) => (this.showOverlay = val));
+    }
+
+    private subscribeDraggedContentType(): void {
+        this.dotContentletEditorService.draggedContentType$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((contentType: DotCMSContentType) => {
+                const window: any = (this.iframe.nativeElement as HTMLIFrameElement).contentWindow;
+                window.draggedContent = contentType;
+            });
     }
 }
