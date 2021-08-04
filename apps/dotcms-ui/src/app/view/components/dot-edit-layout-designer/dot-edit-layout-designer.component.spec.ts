@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { Component, Input, EventEmitter, Output, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { FormsModule, FormGroup, ReactiveFormsModule, ControlContainer } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, of } from 'rxjs';
@@ -186,12 +186,20 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
+        it('should save changes when editing the form.', fakeAsync( () => {
+            spyOn(component.save, 'emit');
+            component.form.get('title').setValue('Hello');
+            tick(500);
+            fixture.detectChanges();
+            expect(component.save.emit).toHaveBeenCalledTimes(1);
+        }));
+
         it('should show dot-layout-properties and bind attr correctly', () => {
             fixture.detectChanges();
             const layoutProperties: DebugElement = fixture.debugElement.query(
                 By.css('dot-layout-properties')
             );
-
+            
             expect(layoutProperties).toBeTruthy();
             expect(layoutProperties.componentInstance.group).toEqual(component.form.get('layout'));
         });

@@ -205,7 +205,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             this.onSave();
             this.cd.detectChanges();
         });
-
         this.updateModel();
     }
 
