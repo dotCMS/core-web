@@ -170,35 +170,41 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                 FloatingActionsPlugin({
                     editor: this.editor,
                     element: button.location.nativeElement,
-                    command: ({
-                        range,
-                        rect,
-                        editor
-                    }: {
-                        rect: DOMRect;
-                        range: Range;
-                        editor: Editor;
-                    }) => {
-                        const component = getMenuComponent(injector, resolver);
+                    on: {
+                        command: ({
+                            range,
+                            rect,
+                            editor
+                        }: {
+                            rect: DOMRect;
+                            range: Range;
+                            editor: Editor;
+                        }) => {
+                            const component = getMenuComponent(injector, resolver);
 
-                        component.instance.command = ({ type, payload }) => {
-                            execCommand({
-                                editor,
-                                range,
-                                props: {
-                                    type,
-                                    payload
-                                }
+                            component.instance.command = ({ type, payload }) => {
+                                execCommand({
+                                    editor,
+                                    range,
+                                    props: {
+                                        type,
+                                        payload
+                                    }
+                                });
+                                myTippy.destroy();
+                            };
+
+                            myTippy = getTippyInstance({
+                                element: this.editor.view.dom,
+                                content: component.location.nativeElement,
+                                rect: () => rect
                             });
-                            myTippy.destroy();
-                        };
-
-                        myTippy = getTippyInstance({
-                            element: this.editor.view.dom,
-                            content: component.location.nativeElement,
-                            rect: () => rect
-                        });
+                        },
+                        keydown: ((view, event) => {
+                            console.log(event)
+                        })
                     }
+
                 }),
                 Suggestion({
                     editor: this.editor,

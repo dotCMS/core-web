@@ -1,13 +1,16 @@
 import { Editor, posToDOMRect, Range } from '@tiptap/core';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { range } from 'rxjs';
 import tippy, { Instance, Props } from 'tippy.js';
 export interface FloatingActionsPluginProps {
     editor: Editor;
     element: HTMLElement;
     tippyOptions?: Partial<Props>;
-    command: (props: { rect: DOMRect, range: Range, editor: Editor }) => void;
+    on: {
+        command: (props: { rect: DOMRect, range: Range, editor: Editor }) => void;
+        keydown: (view, event) => void;
+    }
+
 }
 
 export type FloatingActionsViewProps = FloatingActionsPluginProps & {
@@ -27,15 +30,13 @@ export class FloatingActionsView {
 
     public command: (props: { rect: DOMRect, range: Range, editor: Editor }) => void;
 
-    constructor({ editor, element, view, tippyOptions, command }: FloatingActionsViewProps) {
+    constructor({ editor, element, view, tippyOptions, on: { command } }: FloatingActionsViewProps) {
         console.log('constructor');
         this.editor = editor;
         this.element = element;
         this.view = view;
         this.element.addEventListener('mousedown', this.mousedownHandler, { capture: true });
         this.editor.on('focus', this.focusHandler);
-        this.editor.on('blur', this.blurHandler);
-        this.editor.on('keydown', this.keydownHandler);
         this.createTooltip(tippyOptions);
         this.element.style.visibility = 'visible';
         this.command = command;
@@ -49,35 +50,14 @@ export class FloatingActionsView {
         const { from, to } = selection;
         const rect = posToDOMRect(this.view, from, to);
         this.command({ rect, range: { from, to }, editor: this.editor });
-        console.log(this.editor.isFocused);
     };
 
     focusHandler = () => {
+        console.log('focusHandler');
         // we use `setTimeout` to make sure `selection` is already updated
         setTimeout(() => this.update(this.editor.view));
     };
 
-    blurHandler = ({ event }: { event: FocusEvent }) => {
-        console.log('blurHandler');
-        if (this.preventHide) {
-            this.preventHide = false;
-
-            return;
-        }
-
-        if (
-            event?.relatedTarget &&
-            this.element.parentNode?.contains(event.relatedTarget as Node)
-        ) {
-            return;
-        }
-
-        this.hide();
-    };
-
-    keydownHandler = ({ event }) => {
-        console.log('floating', 'keydownHandler', event)
-    }
 
     createTooltip(options: Partial<Props> = {}) {
         this.tippy = tippy(this.view.dom, {
@@ -132,7 +112,6 @@ export class FloatingActionsView {
         this.tippy.destroy();
         this.element.removeEventListener('mousedown', this.mousedownHandler);
         this.editor.off('focus', this.focusHandler);
-        this.editor.off('blur', this.blurHandler);
     }
 }
 
@@ -141,6 +120,14 @@ export const FloatingActionsPluginKey = new PluginKey('menuFloating');
 export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
     return new Plugin({
         key: FloatingActionsPluginKey,
-        view: (view) => new FloatingActionsView({ view, ...options })
+        view: (view) => new FloatingActionsView({ view, ...options }),
+        props: {
+            handleKeyDown(view, event) {
+                console.log('handleKeyDown')
+                options.on.keydown(view, event);
+
+                return false
+            },
+        }
     });
 };
