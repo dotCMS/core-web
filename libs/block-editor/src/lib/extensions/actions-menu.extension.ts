@@ -200,7 +200,7 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                                 rect: () => rect
                             });
                         },
-                        keydown: ((view, event) => {
+                        keydown: ((view: EditorView, event: KeyboardEvent) => {
                             console.log(event)
                         })
                     }

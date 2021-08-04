@@ -8,7 +8,7 @@ export interface FloatingActionsPluginProps {
     tippyOptions?: Partial<Props>;
     on: {
         command: (props: { rect: DOMRect, range: Range, editor: Editor }) => void;
-        keydown: (view, event) => void;
+        keydown: (view: EditorView, event: KeyboardEvent) => void;
     }
 
 }
@@ -37,6 +37,7 @@ export class FloatingActionsView {
         this.view = view;
         this.element.addEventListener('mousedown', this.mousedownHandler, { capture: true });
         this.editor.on('focus', this.focusHandler);
+        this.editor.on('blur', this.blurHandler);
         this.createTooltip(tippyOptions);
         this.element.style.visibility = 'visible';
         this.command = command;
@@ -56,6 +57,11 @@ export class FloatingActionsView {
         console.log('focusHandler');
         // we use `setTimeout` to make sure `selection` is already updated
         setTimeout(() => this.update(this.editor.view));
+    };
+
+    blurHandler = () => {
+        console.log('blurHandler');
+        this.view.focus()
     };
 
 
@@ -122,7 +128,7 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
         key: FloatingActionsPluginKey,
         view: (view) => new FloatingActionsView({ view, ...options }),
         props: {
-            handleKeyDown(view, event) {
+            handleKeyDown(view: EditorView, event: KeyboardEvent) {
                 console.log('handleKeyDown')
                 options.on.keydown(view, event);
 
