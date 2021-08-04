@@ -202,7 +202,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$), debounce(() => interval(300))).subscribe(() => {
-            this.onSave();
+            if(!_.isEqual(this.form.value, this.initialFormValue)){
+                this.onSave();
+            }
             this.cd.detectChanges();
         });
         this.updateModel();
