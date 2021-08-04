@@ -14,6 +14,10 @@ export class SuggestionListComponent implements AfterContentInit {
 
     @HostListener('keydown', ['$event'])
     onKeydown(event: KeyboardEvent) {
+        if (this.keyManager.activeItem) {
+            this.keyManager.activeItem.unfocus();
+        }
+
         this.keyManager.onKeydown(event);
     }
 

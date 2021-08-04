@@ -167,6 +167,8 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
 
             let myTippy;
 
+            const component = getMenuComponent(injector, resolver);
+
             return [
                 FloatingActionsPlugin({
                     editor: this.editor,
@@ -181,8 +183,6 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                             range: Range;
                             editor: Editor;
                         }) => {
-                            const component = getMenuComponent(injector, resolver);
-
                             component.instance.command = ({ type, payload }) => {
                                 execCommand({
                                     editor,
@@ -202,7 +202,11 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                             });
                         },
                         keydown: ((view: EditorView, event: KeyboardEvent) => {
-                            console.log(event)
+                            const key = (event as KeyboardEvent).key;
+
+                            if (key === 'ArrowDown' || key === 'ArrowUp') {
+                                component.instance.onKeyDown(event);
+                            }
                         })
                     }
 

@@ -18,6 +18,10 @@ export class SuggestionsListItemComponent implements FocusableOption {
     }
 
     focus() {
-        this.element.nativeElement.focus();
+        this.element.nativeElement.style = 'background: lightgray';
+    }
+
+    unfocus() {
+        this.element.nativeElement.style = '';
     }
 }
