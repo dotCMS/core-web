@@ -18,8 +18,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash';
 
 import { Observable } from 'rxjs';
-import { Subject, interval } from 'rxjs';
-import { tap, take, takeUntil, debounce } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { tap, take, takeUntil, debounceTime } from 'rxjs/operators';
 
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -201,7 +201,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 sidebar: this.createSidebarForm()
             })
         });
-        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounce(() => interval(300))).subscribe(() => {
+        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(300)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
             }
