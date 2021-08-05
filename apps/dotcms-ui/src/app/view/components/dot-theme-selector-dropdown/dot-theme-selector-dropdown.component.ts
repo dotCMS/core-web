@@ -29,7 +29,7 @@ export class DotThemeSelectorDropdownComponent
     totalRecords: number = 0;
     currentOffset: number;
     currentSiteIdentifier: string;
-    resetPaginationIndex = false;
+    // resetPaginationIndex = false;
 
     @ViewChild('searchableDropdown', { static: true })
     searchableDropdown: SearchableDropdownComponent;
@@ -76,7 +76,7 @@ export class DotThemeSelectorDropdownComponent
         this.searchInput.nativeElement.value = '';
         this.setHostThemes(this.currentSiteIdentifier);
         this.getFilteredThemes('');
-        this.resetPaginationIndex = true;
+        // this.resetPaginationIndex = true;
     }
 
     propagateChange = (_: any) => {};
@@ -119,7 +119,7 @@ export class DotThemeSelectorDropdownComponent
     siteChange(event: Site): void {
         this.currentSiteIdentifier = event.identifier;
         this.setHostThemes(event.identifier);
-        this.resetPaginationIndex = true;
+        // this.resetPaginationIndex = true;
 
     }
     /**
@@ -134,7 +134,7 @@ export class DotThemeSelectorDropdownComponent
         if (this.value) {
             this.currentSiteIdentifier = this.value.hostId;
         }
-        this.resetPaginationIndex = false;
+        // this.resetPaginationIndex = false;
         this.setHostThemes(this.currentSiteIdentifier);
     }
 
