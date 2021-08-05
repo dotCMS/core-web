@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding } from '@angular/core';
+import { Component, ElementRef, HostBinding, Input } from '@angular/core';
 
 import { FocusableOption } from '@angular/cdk/a11y';
 
@@ -10,6 +10,8 @@ import { FocusableOption } from '@angular/cdk/a11y';
 export class SuggestionsListItemComponent implements FocusableOption {
     @HostBinding('attr.role') role = 'list-item'
     @HostBinding('attr.tabindex') tabindex = '-1'
+
+    @Input() item: any;
 
     constructor(private element: ElementRef) { }
 
