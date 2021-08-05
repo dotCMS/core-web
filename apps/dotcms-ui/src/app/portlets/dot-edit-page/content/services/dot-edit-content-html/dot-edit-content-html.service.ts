@@ -38,6 +38,9 @@ export enum DotContentletAction {
     EDIT,
     ADD
 }
+
+const CONTENTLET_PLACEHOLDER_SELECTOR = '#contentletPlaceholder';
+
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<
@@ -84,7 +87,6 @@ export class DotEditContentHtmlService {
                     | DotContentletEventSave
             ) => {
                 this.ngZone.run(() => {
-                    debugger;
                     this.handlerContentletEvents(contentletEvent.name)(contentletEvent.data);
                 });
             }
@@ -204,25 +206,36 @@ export class DotEditContentHtmlService {
     }
 
     /**
+     * Removes placeholder when closing the dialog.
+     *
+     * @memberof DotEditContentHtmlService
+     */
+    removeContentletPlaceholder(): void {
+        const doc = this.getEditPageDocument();
+        const placeholder = doc.querySelector(CONTENTLET_PLACEHOLDER_SELECTOR);
+        if (placeholder) {
+            placeholder.remove();
+        }
+    }
+
+    /**
      * Render a contentlet in the DOM after add it
      *
      * @param DotPageContent contentlet
      * @param string placeholderIdToBeReplaced
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(contentlet: DotPageContent, placeholderIdToBeReplaced?: string): void {
+    renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): void {
         const doc = this.getEditPageDocument();
-
-        debugger;
-        // if (placeholderIdToBeReplaced) {
-        //     const container: HTMLElement = doc
-        //         .querySelector(`#${placeholderIdToBeReplaced}`)
-        //         .closest('[data-dot-object="container"]');
-        //     this.setContainterToAppendContentlet({
-        //         identifier: container.dataset['dotIdentifier'],
-        //         uuid: container.dataset['dotUuid']
-        //     });
-        // }
+        if (isDroppedAsset) {
+            const container: HTMLElement = doc
+                .querySelector(CONTENTLET_PLACEHOLDER_SELECTOR)
+                .closest('[data-dot-object="container"]');
+            this.setContainterToAppendContentlet({
+                identifier: container.dataset['dotIdentifier'],
+                uuid: container.dataset['dotUuid']
+            });
+        }
 
         const containerEl: HTMLElement = doc.querySelector(
             `[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
@@ -231,19 +244,11 @@ export class DotEditContentHtmlService {
         if (this.isContentExistInContainer(contentlet, containerEl)) {
             this.showContentAlreadyAddedError();
         } else {
-            let contentletPlaceholder = containerEl.querySelector('#contentletPlaceholder');
+            let contentletPlaceholder = doc.querySelector(CONTENTLET_PLACEHOLDER_SELECTOR);
             if (!contentletPlaceholder) {
                 contentletPlaceholder = this.getContentletPlaceholder();
                 containerEl.appendChild(contentletPlaceholder);
             }
-            // if (placeholderIdToBeReplaced) {
-            //     contentletPlaceholder =
-            //         doc.querySelector(`#${placeholderIdToBeReplaced}`) ||
-            //         doc.querySelector(`contentletPlaceholder`);
-            // } else {
-            //     contentletPlaceholder = this.getContentletPlaceholder();
-            //     containerEl.appendChild(contentletPlaceholder);
-            // }
 
             this.dotContainerContentletService
                 .getContentletToContainer(this.currentContainer, contentlet)
@@ -357,7 +362,6 @@ export class DotEditContentHtmlService {
         }
 
         this.docClickSubscription = fromEvent(doc, 'click').subscribe(($event: MouseEvent) => {
-            debugger;
             const target = <HTMLElement>$event.target;
             const method = this.docClickHandlers[target.dataset.dotObject];
             if (method) {
@@ -386,7 +390,6 @@ export class DotEditContentHtmlService {
 
     private setGlobalClickHandlers(): void {
         this.docClickHandlers['edit-content'] = (target: HTMLElement) => {
-            debugger;
             this.currentContentlet = this.getCurrentContentlet(target);
             this.buttonClickHandler(target, 'edit');
         };
@@ -400,7 +403,6 @@ export class DotEditContentHtmlService {
         };
 
         this.docClickHandlers['popup-menu-item'] = (target: HTMLElement) => {
-            debugger;
             if (target.dataset.dotAction === 'code') {
                 this.currentContentlet = this.getCurrentContentlet(target);
             }
@@ -536,7 +538,6 @@ export class DotEditContentHtmlService {
         this.updateContentletInode = this.shouldUpdateContentletInode(target);
 
         const container = <HTMLElement>target.closest('[data-dot-object="container"]');
-        debugger;
         this.iframeActions$.next({
             name: type,
             dataset: target.dataset,
@@ -663,26 +664,14 @@ export class DotEditContentHtmlService {
                 this.removeCurrentContentlet();
             },
             'add-uploaded-dotAsset': (dotAssetData: DotAssetPayload) => {
-                this.renderAddedContentlet(dotAssetData.contentlet, dotAssetData.placeholderId);
+                this.renderAddedContentlet(dotAssetData.contentlet, true);
             },
-
             'add-content': (data: any) => {
-                debugger;
-                console.log('DotEditContentHtmlService: add-content');
                 this.iframeActions$.next({
                     name: 'add-content',
                     data: data
                 });
-
-                // this.iframeActions$.next({
-                //     name: 'add-content',
-                //     data: {
-                //         url: `/c/portal/layout?p_l_id=2df9f117-b140-44bf-93d7-5b10a36fb7f9&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=new&selectedStructure=${data.contentType.id}&lang=1`
-                //     }
-                // });
-                //
             },
-
             'handle-http-error': (err: HttpErrorResponse) => {
                 this.dotHttpErrorManagerService
                     .handle(err)

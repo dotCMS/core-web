@@ -312,13 +312,10 @@ export const EDIT_PAGE_JS = `
     function dragEnterEvent(event) {
         event.preventDefault();
         event.stopPropagation();
-
+        console.log('dragEnterEvent', event.target);
         const container = event.target.closest('[data-dot-object="container"]');
         currentContainer = container;
-        console.log('!checkIfContainerAllowsDotAsset(event)', !checkIfContainerAllowsDotAsset(event));
-        console.log('!checkIfContainerAllowContentType(container)', !checkIfContainerAllowContentType(container));
-        // if (container && !checkIfContainerAllowsDotAsset(event)) {
-        if (container && (!checkIfContainerAllowsDotAsset(event) && !checkIfContainerAllowContentType(container))) {
+        if (container && !(checkIfContainerAllowsDotAsset(event) || checkIfContainerAllowContentType(container))) {
             container.classList.add('no');
         }
     }
@@ -326,7 +323,6 @@ export const EDIT_PAGE_JS = `
     function dragOverEvent(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('dragOverEvent');
         const container = event.target.closest('[data-dot-object="container"]');
         const contentlet = event.target.closest('[data-dot-object="contentlet"]');
 
@@ -361,12 +357,12 @@ export const EDIT_PAGE_JS = `
     function dragLeaveEvent(event) {
         event.preventDefault();
         event.stopPropagation();
-
+        console.log('dragLeaveEvent aaa')
         const container = event.target.closest('[data-dot-object="container"]');
 
-        if (container && currentContainer !== container) {
-            container.classList.remove('no');
-        }
+        // if (container && currentContainer !== container) {
+        //     container.classList.remove('no');
+        // }
 
         if (isContentletPlaceholderInDOM()){
             removeElementById('contentletPlaceholder');
@@ -374,6 +370,7 @@ export const EDIT_PAGE_JS = `
     }
 
     function dropEvent(event) {
+        console.log('dropEvent')
         event.preventDefault();
         event.stopPropagation();
         const container = event.target.closest('[data-dot-object="container"]');
@@ -389,8 +386,7 @@ export const EDIT_PAGE_JS = `
                         window.contentletEvents.next({
                             name: 'add-uploaded-dotAsset',
                             data: {
-                                contentlet: response,
-                                placeholderId: 'contentletPlaceholder'
+                                contentlet: response
                             }
                         });
                     }).catch(e => {
@@ -411,7 +407,7 @@ export const EDIT_PAGE_JS = `
         }
 
         if (container) {
-            container.classList.remove('no');
+           // container.classList.remove('no');
         }
 
     }

@@ -156,9 +156,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.destroy$.next(true);
         this.destroy$.complete();
     }
-    test(event: any): void {
-        console.log(event);
-    }
 
     /**
      * Close Reorder Menu Dialog
@@ -232,7 +229,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @memberof DotEditContentComponent
      */
     onCustomEvent($event: CustomEvent): void {
-        console.log('conCustomEvent', $event);
         this.dotCustomEventHandlerService.handle($event);
     }
 
@@ -248,6 +244,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe((items) => {
                 this.contentPallet.items = items;
             });
+    }
+
+    /**
+     * Execute actions needed when closing the create dialog.
+     *
+     * @memberof DotEditContentComponent
+     */
+    handleCloseAction(): void {
+        this.dotEditContentHtmlService.removeContentletPlaceholder();
     }
 
     private isInternallyNavigatingToSamePage(url: string): boolean {
@@ -299,30 +304,28 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return null;
     }
 
-    private addContentTypeReal($event: any): void {
-        debugger;
-
+    private addContentType($event: any): void {
         const container: DotPageContainer = {
             identifier: $event.data.container.dotIdentifier,
             uuid: $event.data.container.dotUuid
         };
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
-
-        this.dotContentletEditorService.create({
-            data: {
-                url: `/c/portal/layout?p_l_id=2df9f117-b140-44bf-93d7-5b10a36fb7f9&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=new&selectedStructure=${$event.data.contentType.id}&lang=1`
-            },
-            events: {
-                load: (event) => {
-                    debugger;
-                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
-                }
-            }
-        });
+        this.dotContentletEditorService
+            .getActionUrl($event.data.contentType.variable)
+            .pipe(take(1))
+            .subscribe((url) => {
+                this.dotContentletEditorService.create({
+                    data: { url },
+                    events: {
+                        load: (event) => {
+                            event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
+                        }
+                    }
+                });
+            });
     }
 
-    private addContentlet($event: any): void {
-        debugger;
+    private searchContentlet($event: any): void {
         const container: DotPageContainer = {
             identifier: $event.dataset.dotIdentifier,
             uuid: $event.dataset.dotUuid
@@ -361,14 +364,12 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private iframeActionsHandler(event: any): Function {
-        debugger;
-        console.log('iframeActionsHandler', event);
         const eventsHandlerMap = {
             edit: this.editContentlet.bind(this),
             code: this.editContentlet.bind(this),
-            add: this.addContentlet.bind(this),
+            add: this.searchContentlet.bind(this),
             remove: this.removeContentlet.bind(this),
-            'add-content': this.addContentTypeReal.bind(this),
+            'add-content': this.addContentType.bind(this),
             select: () => {
                 this.dotContentletEditorService.clear();
             },
