@@ -36,11 +36,9 @@ export class DotContentPaletteComponent implements OnInit, OnDestroy {
             });
     }
 
-    dragStart(event: DragEvent, item: DotCMSContentType): void {
+    dragStart(event: DragEvent, contentType: DotCMSContentType): void {
         const element = event.target as HTMLAnchorElement;
-        const data = { variable: item.variable, id: item.id };
-        this.dotContentletEditorService.setDraggedContentType(item);
-        event.dataTransfer.setData('text/plain', JSON.stringify(data));
+        this.dotContentletEditorService.setDraggedContentType(contentType);
         element.classList.toggle('dragging');
     }
 

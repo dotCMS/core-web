@@ -280,7 +280,7 @@ export const EDIT_PAGE_JS = `
     function checkIfContainerAllowContentType(container) {
         // draggedContent is set by dotContentletEditorService.draggedContentType$
         const dotAcceptTypes = container.dataset.dotAcceptTypes.toLocaleLowerCase();
-        if (draggedContent && dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase())) {
+        if (window.hasOwnProperty('draggedContent') && dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase())) {
             return true;
         }
         return false;
@@ -315,12 +315,10 @@ export const EDIT_PAGE_JS = `
 
         const container = event.target.closest('[data-dot-object="container"]');
         currentContainer = container;
-        if (container) {
-            console.log(!checkIfContainerAllowsDotAsset(event), checkIfContainerAllowContentType(container) )
-        }
-
-
-          if (container && (!checkIfContainerAllowsDotAsset(event) && !checkIfContainerAllowContentType(container))) {
+        console.log('!checkIfContainerAllowsDotAsset(event)', !checkIfContainerAllowsDotAsset(event));
+        console.log('!checkIfContainerAllowContentType(container)', !checkIfContainerAllowContentType(container));
+        // if (container && !checkIfContainerAllowsDotAsset(event)) {
+        if (container && (!checkIfContainerAllowsDotAsset(event) && !checkIfContainerAllowContentType(container))) {
             container.classList.add('no');
         }
     }
@@ -369,42 +367,47 @@ export const EDIT_PAGE_JS = `
         if (container && currentContainer !== container) {
             container.classList.remove('no');
         }
+
+        if (isContentletPlaceholderInDOM()){
+            removeElementById('contentletPlaceholder');
+        }
     }
 
     function dropEvent(event) {
         event.preventDefault();
         event.stopPropagation();
-
-
         const container = event.target.closest('[data-dot-object="container"]');
-
-        if (container) {
-            debugger
-            console.log(event.dataTransfer.getData('text'));
-        }
-
         if (container && !container.classList.contains('no')) {
-
             setLoadingIndicator();
-            uploadFile(event.dataTransfer.files[0]).then((dotCMSTempFile) => {
-                dotAssetCreate({
-                    file: dotCMSTempFile,
-                    url: '/api/v1/workflow/actions/default/fire/PUBLISH',
-                    folder: ''
-                }).then((response) => {
-                    window.contentletEvents.next({
-                        name: 'add-uploaded-dotAsset',
-                        data: {
-                            contentlet: response,
-                            placeholderId: 'contentletPlaceholder'
-                        }
-                    });
+            if (event.dataTransfer.files[0]) { // trying to upload an image
+                uploadFile(event.dataTransfer.files[0]).then((dotCMSTempFile) => {
+                    dotAssetCreate({
+                        file: dotCMSTempFile,
+                        url: '/api/v1/workflow/actions/default/fire/PUBLISH',
+                        folder: ''
+                    }).then((response) => {
+                        window.contentletEvents.next({
+                            name: 'add-uploaded-dotAsset',
+                            data: {
+                                contentlet: response,
+                                placeholderId: 'contentletPlaceholder'
+                            }
+                        });
+                    }).catch(e => {
+                        handleHttpErrors(e);
+                    })
                 }).catch(e => {
                     handleHttpErrors(e);
                 })
-            }).catch(e => {
-                handleHttpErrors(e);
-            })
+            } else { // Adding specific Content Type
+                window.contentletEvents.next({
+                    name: 'add-content',
+                    data: {
+                        container: container.dataset,
+                        contentType: draggedContent
+                    }
+                });
+            }
         }
 
         if (container) {

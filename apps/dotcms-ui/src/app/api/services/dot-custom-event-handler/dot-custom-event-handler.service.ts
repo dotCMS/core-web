@@ -51,6 +51,7 @@ export class DotCustomEventHandlerService {
      * @memberof DotCustomEventHandlerService
      */
     handle(event: CustomEvent): void {
+        console.log('handle', event && this.handlers[event.detail.name]);
         if (event && this.handlers[event.detail.name]) {
             this.handlers[event.detail.name](event);
         }

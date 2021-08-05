@@ -232,6 +232,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @memberof DotEditContentComponent
      */
     onCustomEvent($event: CustomEvent): void {
+        console.log('conCustomEvent', $event);
         this.dotCustomEventHandlerService.handle($event);
     }
 
@@ -298,7 +299,30 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return null;
     }
 
+    private addContentTypeReal($event: any): void {
+        debugger;
+
+        const container: DotPageContainer = {
+            identifier: $event.data.container.dotIdentifier,
+            uuid: $event.data.container.dotUuid
+        };
+        this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
+
+        this.dotContentletEditorService.create({
+            data: {
+                url: `/c/portal/layout?p_l_id=2df9f117-b140-44bf-93d7-5b10a36fb7f9&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=new&selectedStructure=${$event.data.contentType.id}&lang=1`
+            },
+            events: {
+                load: (event) => {
+                    debugger;
+                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
+                }
+            }
+        });
+    }
+
     private addContentlet($event: any): void {
+        debugger;
         const container: DotPageContainer = {
             identifier: $event.dataset.dotIdentifier,
             uuid: $event.dataset.dotUuid
@@ -337,11 +361,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private iframeActionsHandler(event: any): Function {
+        debugger;
+        console.log('iframeActionsHandler', event);
         const eventsHandlerMap = {
             edit: this.editContentlet.bind(this),
             code: this.editContentlet.bind(this),
             add: this.addContentlet.bind(this),
             remove: this.removeContentlet.bind(this),
+            'add-content': this.addContentTypeReal.bind(this),
             select: () => {
                 this.dotContentletEditorService.clear();
             },
@@ -468,8 +495,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotContentletEditorService.draggedContentType$
             .pipe(takeUntil(this.destroy$))
             .subscribe((contentType: DotCMSContentType) => {
-                const window: any = (this.iframe.nativeElement as HTMLIFrameElement).contentWindow;
-                window.draggedContent = contentType;
+                const iframeWindow: any = (this.iframe.nativeElement as HTMLIFrameElement)
+                    .contentWindow;
+                iframeWindow.draggedContent = contentType;
             });
     }
 }
