@@ -24,7 +24,6 @@ export class FloatingActionsView {
 
     public view: EditorView;
 
-    public preventHide = false;
 
     public tippy!: Instance;
 
@@ -36,34 +35,25 @@ export class FloatingActionsView {
         this.element = element;
         this.view = view;
         this.element.addEventListener('mousedown', this.mousedownHandler, { capture: true });
-        this.editor.on('focus', this.focusHandler);
-        this.editor.on('blur', this.blurHandler);
         this.createTooltip(tippyOptions);
         this.element.style.visibility = 'visible';
         this.command = command;
     }
 
-    mousedownHandler = () => {
-        console.log('mousedownHandler');
-        this.preventHide = true;
+    mousedownHandler = (e: MouseEvent) => {
+        // This preventDefault avoid losing focus in the editor on click
+        e.preventDefault();
 
-        const { selection } = this.editor.state;
-        const { from, to } = selection;
+        const { from, to } = this.editor.state.selection;
         const rect = posToDOMRect(this.view, from, to);
         this.command({ rect, range: { from, to }, editor: this.editor });
-    };
 
-    focusHandler = () => {
-        console.log('focusHandler');
-        // we use `setTimeout` to make sure `selection` is already updated
-        setTimeout(() => this.update(this.editor.view));
-    };
 
-    blurHandler = () => {
-        console.log('blurHandler');
-        this.view.focus()
+        const transaction = this.editor.state.tr.setMeta(FloatingActionsPluginKey, {
+            open: true,
+        })
+        this.editor.view.dispatch(transaction)
     };
-
 
     createTooltip(options: Partial<Props> = {}) {
         this.tippy = tippy(this.view.dom, {
@@ -78,16 +68,10 @@ export class FloatingActionsView {
         });
     }
 
-    update(view: EditorView, oldState?: EditorState) {
-        const { state, composing } = view;
-        const { doc, selection } = state;
-        const isSame = oldState && oldState.doc.eq(doc) && oldState.selection.eq(selection);
-
-        if (composing || isSame) {
-            return;
-        }
-
+    update(view: EditorView) {
+        const { selection } = view.state;
         const { $anchor, empty, from, to } = selection;
+
         const isRootDepth = $anchor.depth === 1;
         const isNodeEmpty =
             !selection.$anchor.parent.isLeaf && !selection.$anchor.parent.textContent;
@@ -117,7 +101,6 @@ export class FloatingActionsView {
     destroy() {
         this.tippy.destroy();
         this.element.removeEventListener('mousedown', this.mousedownHandler);
-        this.editor.off('focus', this.focusHandler);
     }
 }
 
@@ -127,11 +110,29 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
     return new Plugin({
         key: FloatingActionsPluginKey,
         view: (view) => new FloatingActionsView({ view, ...options }),
+        state: {
+            init() {
+                return {
+                    open: false
+                }
+            },
+            apply(transaction, prev) {
+                console.log('apply');
+                const { open } = transaction.getMeta(FloatingActionsPluginKey) || { open: false };
+
+                return {
+                    ...prev,
+                    open: open
+                };
+            }
+        },
         props: {
             handleKeyDown(view: EditorView, event: KeyboardEvent) {
-                console.log('handleKeyDown')
-                options.on.keydown(view, event);
+                const { open } = this.getState(view.state);
 
+                if (open) {
+                    options.on.keydown(view, event);
+                }
                 return false
             },
         }
