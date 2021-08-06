@@ -56,7 +56,6 @@ export class DotPersonaSelectorComponent implements OnInit {
             this.personaDialog.personaName = this.personas.length ? '' : this.personaSeachQuery;
         };
         this.paginationService.paginationPerPage = this.paginationPerPage;
-        debugger;
     }
 
     @Input('pageState')
@@ -68,7 +67,6 @@ export class DotPersonaSelectorComponent implements OnInit {
         this.paginationService.setExtraParams('respectFrontEndRoles', !this.isEditMode);
         this.value = this.pageState.viewAs && this.pageState.viewAs.persona;
         this.canDespersonalize = this.pageState.page.canEdit || this.pageState.page.canLock;
-        debugger;
         this.reloadPersonasListCurrentPage();
     }
 
@@ -84,7 +82,6 @@ export class DotPersonaSelectorComponent implements OnInit {
      */
     handleFilterChange(filter: string): void {
         this.personaSeachQuery = filter.trim();
-        debugger
         this.getPersonasList(this.personaSeachQuery);
     }
 
@@ -95,7 +92,6 @@ export class DotPersonaSelectorComponent implements OnInit {
      * @memberof DotPersonaSelectorComponent
      */
     handlePageChange(event: PaginationEvent): void {
-        debugger
         this.getPersonasList(event.filter, event.first);
     }
 

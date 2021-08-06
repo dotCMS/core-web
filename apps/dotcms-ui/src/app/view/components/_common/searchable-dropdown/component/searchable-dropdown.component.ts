@@ -163,15 +163,7 @@ export class SearchableDropdownComponent
         this.totalRecords = this.totalRecords || this.data?.length;
 
         // If new data comes from the first time and needs to show first page on pagination
-        // if (this.resetPaginationIndex && changes.data && changes.totalRecords) {
-
-            if (changes.data && changes.totalRecords) {
-                console.log('***changes', changes)
-            }
-
         if (changes.data && changes.totalRecords && !changes.totalRecords.firstChange) {
-        // debugger
-
             this.dataViewRef.paginate({
                 first: 0,
                 rows: this.rows
@@ -241,6 +233,10 @@ export class SearchableDropdownComponent
             }
         }, 0);
         this.show.emit();
+        this.dataViewRef.paginate({
+            first: 0,
+            rows: this.rows
+        });
     }
 
     /**
@@ -333,13 +329,7 @@ export class SearchableDropdownComponent
      * @memberof SearchableDropdownComponent
      */
     toggleOverlayPanel($event?: MouseEvent): void {
-        // debugger
         $event ? this.searchPanelRef.toggle($event) : this.searchPanelRef.hide();
-
-        this.dataViewRef.paginate({
-            first: 0,
-            rows: this.rows
-        });
     }
 
     /**
