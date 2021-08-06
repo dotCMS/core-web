@@ -6,7 +6,7 @@ import Suggestion, { SuggestionOptions, SuggestionProps } from '@tiptap/suggesti
 
 import tippy, { GetReferenceClientRect } from 'tippy.js';
 
-import { FloatingActionsPlugin } from '../plugins/floating.plugin';
+import { FloatingActionsPlugin, FLOATING_ACTIONS_MENU_KEYBOARD } from '../plugins/floating.plugin';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { EditorView } from 'prosemirror-view';
@@ -38,11 +38,13 @@ function getMenuComponent(injector: Injector, resolver: ComponentFactoryResolver
 function getTippyInstance({
     element,
     content,
-    rect
+    rect,
+    onHide
 }: {
     element: Element;
     content: Element;
     rect: GetReferenceClientRect;
+    onHide?: () => void
 }) {
     return tippy(element, {
         appendTo: document.body,
@@ -51,7 +53,8 @@ function getTippyInstance({
         getReferenceClientRect: rect,
         showOnCreate: true,
         interactive: true,
-        trigger: 'manual'
+        trigger: 'manual',
+        onHide
     });
 }
 
@@ -198,7 +201,13 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                             myTippy = getTippyInstance({
                                 element: this.editor.view.dom,
                                 content: component.location.nativeElement,
-                                rect: () => rect
+                                rect: () => rect,
+                                onHide: () => {
+                                    const transaction = editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
+                                        open: false,
+                                    })
+                                    editor.view.dispatch(transaction)
+                                }
                             });
                         },
                         keydown: ((view: EditorView, event: KeyboardEvent) => {

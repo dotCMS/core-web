@@ -2,6 +2,7 @@ import { Editor, posToDOMRect, Range } from '@tiptap/core';
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import tippy, { Instance, Props } from 'tippy.js';
+
 export interface FloatingActionsPluginProps {
     editor: Editor;
     element: HTMLElement;
@@ -16,6 +17,8 @@ export interface FloatingActionsPluginProps {
 export type FloatingActionsViewProps = FloatingActionsPluginProps & {
     view: EditorView;
 };
+
+export const FLOATING_ACTIONS_MENU_KEYBOARD = 'menuFloating';
 
 export class FloatingActionsView {
     public editor: Editor;
@@ -49,7 +52,7 @@ export class FloatingActionsView {
         this.command({ rect, range: { from, to }, editor: this.editor });
 
 
-        const transaction = this.editor.state.tr.setMeta(FloatingActionsPluginKey, {
+        const transaction = this.editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
             open: true,
         })
         this.editor.view.dispatch(transaction)
@@ -104,7 +107,7 @@ export class FloatingActionsView {
     }
 }
 
-export const FloatingActionsPluginKey = new PluginKey('menuFloating');
+export const FloatingActionsPluginKey = new PluginKey(FLOATING_ACTIONS_MENU_KEYBOARD);
 
 export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
     return new Plugin({
@@ -116,9 +119,11 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
                     open: false
                 }
             },
-            apply(transaction, prev) {
-                console.log('apply');
-                const { open } = transaction.getMeta(FloatingActionsPluginKey) || { open: false };
+            apply(transaction, prev: EditorState, newState: EditorState) {
+                console.log('apply')
+                const meta = transaction.getMeta(FLOATING_ACTIONS_MENU_KEYBOARD);
+                const state = this.getState(newState);
+                const open = meta ? meta.open : state.open;
 
                 return {
                     ...prev,
@@ -133,7 +138,7 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
                 if (open) {
                     options.on.keydown(view, event);
                 }
-                return false
+                return open
             },
         }
     });
