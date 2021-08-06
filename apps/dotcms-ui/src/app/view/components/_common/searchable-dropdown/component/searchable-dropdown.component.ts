@@ -161,14 +161,6 @@ export class SearchableDropdownComponent
         }
         this.setOptions(changes);
         this.totalRecords = this.totalRecords || this.data?.length;
-
-        // If new data comes from the first time and needs to show first page on pagination
-        if (changes.data && changes.totalRecords && !changes.totalRecords.firstChange) {
-            this.dataViewRef.paginate({
-                first: 0,
-                rows: this.rows
-            });
-        }
     }
 
     ngOnInit(): void {}

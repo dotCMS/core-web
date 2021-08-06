@@ -21,7 +21,6 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         [pageLinkSize]="pageLinkSize"
         [persistentPlaceholder]="persistentPlaceholder"
         [placeholder]="placeholder"
-        [resetPaginationIndex]="resetPaginationIndex"
         [rows]="rows"
         [totalRecords]="totalRecords"
         [valuePropertyName]="valuePropertyName"
@@ -48,9 +47,6 @@ class HostTestComponent {
 
     @Input()
     pageLinkSize = 3;
-
-    @Input()
-    resetPaginationIndex = true;
 
     @Input()
     rows: number;
@@ -247,11 +243,11 @@ describe('SearchableDropdownComponent', () => {
         expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0 - demo.dotcms.com');
     });
 
-    it('should the pageChange call the paginate method', fakeAsync(() => {
-        const first = 2;
+    it('should the pageChange call the paginate method', async () => {
+        const first = 0;
         const page = 3;
         const pageCount = 4;
-        rows = 5;
+        rows = 2;
         const filter = 'filter';
         let event;
 
@@ -265,7 +261,6 @@ describe('SearchableDropdownComponent', () => {
 
         const dataview = hostFixture.debugElement.query(By.css('p-dataview'));
         const dataviewComponentInstance = dataview.componentInstance;
-
         dataviewComponentInstance.onLazyLoad.emit({
             first: first,
             page: page,
@@ -273,14 +268,12 @@ describe('SearchableDropdownComponent', () => {
             rows: rows
         });
 
-        tick();
-
-        expect(first).toEqual(event.first);
-        expect(page).toEqual(event.page);
-        expect(pageCount).toEqual(event.pageCount);
-        expect(rows).toEqual(event.rows);
-        expect(filter).toEqual(event.filter);
-    }));
+        await hostFixture.whenStable().then(() => {
+            expect(first).toEqual(event.first);
+            expect(rows).toEqual(event.rows);
+            expect(filter).toEqual(event.filter);
+        });
+    });
 
     describe('emit the change event', () => {
         let items;
@@ -330,82 +323,6 @@ describe('SearchableDropdownComponent', () => {
     });
 });
 
-describe('SearchableDropdownComponent', () => {
-    const NROWS = 6;
-
-    let hostFixture: ComponentFixture<HostTestComponent>;
-    let hostComp: HostTestComponent;
-    let de: DebugElement;
-    let comp: SearchableDropdownComponent;
-    let data = [];
-    let rows: number;
-    let mainButton: DebugElement;
-    let pdataview: DebugElement;
-
-    beforeEach(
-        waitForAsync(() => {
-            const messageServiceMock = new MockDotMessageService({
-                search: 'Search'
-            });
-
-            TestBed.configureTestingModule({
-                declarations: [SearchableDropdownComponent, HostTestComponent],
-                imports: [
-                    ...SEARCHABLE_NGFACES_MODULES,
-                    BrowserAnimationsModule,
-                    DotIconModule,
-                    UiDotIconButtonModule,
-                    DotPipesModule
-                ],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-            }).compileComponents();
-
-            hostFixture = TestBed.createComponent(HostTestComponent);
-            hostComp = hostFixture.componentInstance;
-            de = hostFixture.debugElement.query(By.css('dot-searchable-dropdown'));
-            comp = de.componentInstance;
-            rows = NROWS / 3;
-        })
-    );
-
-    beforeEach(() => {
-        hostComp.placeholder = 'placeholder';
-        hostFixture.detectChanges();
-
-        mainButton = de.query(By.css('button'));
-        mainButton.nativeElement.dispatchEvent(new MouseEvent('click'));
-        hostFixture.detectChanges();
-        pdataview = de.query(By.css('p-dataview'));
-        spyOn(pdataview.componentInstance, 'paginate');
-    });
-
-    it('should call paginate function on dataview component when new pagination data changes', () => {
-
-        data = [];
-        for (let i = 0; i < NROWS; i++) {
-            data[i] = {
-                id: i,
-                label: `site-${i}`,
-                name: `site-${i}`,
-                parentPermissionable: {
-                    hostname: 'demo.dotcms.com'
-                }
-            };
-        }
-
-        hostComp.totalRecords = NROWS;
-        hostComp.rows = rows;
-        hostComp.data = data;
-
-        hostFixture.detectChanges();
-
-        expect(pdataview.componentInstance.paginate).toHaveBeenCalledWith({
-            first: 0,
-            rows
-        });
-    });
-});
-
 @Component({
     selector: 'dot-host-component',
     template: ` <dot-searchable-dropdown
@@ -418,7 +335,6 @@ describe('SearchableDropdownComponent', () => {
         [pageLinkSize]="pageLinkSize"
         [persistentPlaceholder]="persistentPlaceholder"
         [placeholder]="placeholder"
-        [resetPaginationIndex]="resetPaginationIndex"
         [rows]="rows"
         [totalRecords]="totalRecords"
         [valuePropertyName]="valuePropertyName"
@@ -458,9 +374,6 @@ class HostTestExternalTemplateComponent {
 
     @Input()
     pageLinkSize = 3;
-
-    @Input()
-    resetPaginationIndex = false;
 
     @Input()
     rows: number;
@@ -529,7 +442,6 @@ describe('SearchableDropdownComponent', () => {
             pageLinkSize = 1;
 
             hostComp.totalRecords = NROWS;
-            hostComp.resetPaginationIndex = true;
             hostComp.rows = rows;
             hostComp.pageLinkSize = pageLinkSize;
         })
