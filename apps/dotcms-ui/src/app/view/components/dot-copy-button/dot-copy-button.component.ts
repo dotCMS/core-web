@@ -17,7 +17,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 })
 export class DotCopyButtonComponent implements OnInit {
     @Input() copy = '';
-    @Input() label: string;
+    @Input() label: string = 'Copy';
 
     private _tooltipText: string;
 
