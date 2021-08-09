@@ -23,7 +23,7 @@ export class DotCopyButtonComponent implements OnInit {
 
     constructor(
         private dotClipboardUtil: DotClipboardUtil,
-        private dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService
     ) {}
 
     get tooltipText(): string {
