@@ -17,13 +17,13 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 })
 export class DotCopyButtonComponent implements OnInit {
     @Input() copy = '';
-    @Input() label: string = 'Copy';
+    @Input() label: string;
 
     private _tooltipText: string;
 
     constructor(
         private dotClipboardUtil: DotClipboardUtil,
-        private dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService,
     ) {}
 
     get tooltipText(): string {
@@ -37,6 +37,7 @@ export class DotCopyButtonComponent implements OnInit {
 
     ngOnInit() {
         this.tooltipText = this.tooltipText || this.dotMessageService.get('Copy');
+        this.label = this.label || this.dotMessageService.get('Copy');
     }
 
     /**
