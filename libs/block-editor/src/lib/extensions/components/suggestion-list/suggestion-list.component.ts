@@ -1,5 +1,6 @@
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { AfterContentInit, Component, ContentChildren, HostListener, QueryList } from '@angular/core';
+import { setTimeout } from 'timers';
 import { SuggestionsListItemComponent } from '../suggestions-list-item/suggestions-list-item.component';
 
 @Component({
@@ -8,22 +9,51 @@ import { SuggestionsListItemComponent } from '../suggestions-list-item/suggestio
     styleUrls: ['./suggestion-list.component.scss']
 })
 export class SuggestionListComponent implements AfterContentInit {
-    private keyManager: FocusKeyManager<SuggestionsListItemComponent>;
+    keyManager: FocusKeyManager<SuggestionsListItemComponent>;
 
     @ContentChildren(SuggestionsListItemComponent) items: QueryList<SuggestionsListItemComponent>;
 
     @HostListener('keydown', ['$event'])
     onKeydown(event: KeyboardEvent) {
+        if (event.key === 'Enter') {
+            this.keyManager.activeItem.command()
+        }
+
         if (this.keyManager.activeItem) {
             this.keyManager.activeItem.unfocus();
         }
 
         this.keyManager.onKeydown(event);
-    }
 
-    // @Input() items = [];
+    }
 
     ngAfterContentInit() {
         this.keyManager = new FocusKeyManager(this.items).withWrap();
     }
+
+    /**
+     * Set the first item of the list active
+     *
+     * @memberof SuggestionListComponent
+     */
+    setFirstItemActive() {
+        this.keyManager.activeItem?.unfocus();
+        this.keyManager.setFirstItemActive();
+        this.keyManager.activeItem.focus();
+    }
+
+    resetKeyManager() {
+        this.keyManager = new FocusKeyManager(this.items).withWrap();
+
+        // Needs to wait until the new items are rendered
+        setTimeout(() => {
+            this.setFirstItemActive();
+        }, 0)
+    }
+
+    updateActiveItem(index: number): void {
+        this.keyManager.activeItem?.unfocus();
+        this.keyManager.setActiveItem(index)
+    }
+
 }

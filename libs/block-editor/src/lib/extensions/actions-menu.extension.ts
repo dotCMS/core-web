@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Injector } from '@angular/core';
+import { ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
 
 import { Editor, Extension, Range } from '@tiptap/core';
 import { FloatingMenuPluginProps } from '@tiptap/extension-floating-menu';
@@ -106,16 +106,15 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                 },
                 render: () => {
                     let myTippy;
-                    const component = getMenuComponent(injector, resolver);
+                    let component: ComponentRef<SuggestionsComponent>;
 
                     return {
                         onStart: (props: SuggestionProps) => {
-                            // props.editor.on('keydown', () => {
-                            //     console.log('keydown in the editor')
-                            // })
+                            console.log('onStart')
 
+                            component = getMenuComponent(injector, resolver);
                             component.instance.command = props.command;
-
+                            component.instance.setFirstItemActive();
 
                             myTippy = getTippyInstance({
                                 element: props.editor.view.dom,
@@ -126,12 +125,16 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                         onExit: () => {
                             myTippy.destroy();
                         },
-                        onKeyDown({ event }) {
+                        onKeyDown({ event, view }) {
+                            console.log('suggestions keydown', { event });
                             const key = (event as KeyboardEvent).key;
 
-                            if (key === 'ArrowDown' || key === 'ArrowUp') {
+                            if (key === 'ArrowDown' || key === 'ArrowUp' || key === 'Enter') {
                                 component.instance.onKeyDown(event);
+                                return true;
                             }
+
+                            return false;
                         },
                     };
                 }
@@ -170,7 +173,7 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
 
             let myTippy;
 
-            const component = getMenuComponent(injector, resolver);
+            let component: ComponentRef<SuggestionsComponent>;
 
             return [
                 FloatingActionsPlugin({
@@ -186,6 +189,8 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                             range: Range;
                             editor: Editor;
                         }) => {
+                            component = getMenuComponent(injector, resolver);
+
                             component.instance.command = ({ type, payload }) => {
                                 execCommand({
                                     editor,
@@ -197,6 +202,8 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                                 });
                                 myTippy.destroy();
                             };
+
+                            component.instance.setFirstItemActive();
 
                             myTippy = getTippyInstance({
                                 element: this.editor.view.dom,
@@ -213,8 +220,12 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                         keydown: ((view: EditorView, event: KeyboardEvent) => {
                             const key = (event as KeyboardEvent).key;
 
-                            if (key === 'ArrowDown' || key === 'ArrowUp') {
+                            if (key === 'ArrowDown' || key === 'ArrowUp' || key === 'Enter') {
                                 component.instance.onKeyDown(event);
+                            }
+
+                            if (key === 'Escape') {
+                                myTippy.hide();
                             }
                         })
                     }

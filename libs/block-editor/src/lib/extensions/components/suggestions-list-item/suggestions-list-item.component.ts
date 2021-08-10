@@ -11,7 +11,12 @@ export class SuggestionsListItemComponent implements FocusableOption {
     @HostBinding('attr.role') role = 'list-item'
     @HostBinding('attr.tabindex') tabindex = '-1'
 
-    @Input() item: any;
+    @HostBinding('attr.data-index')
+
+    @Input() index;
+
+    @Input() command: () => void;
+
 
     constructor(private element: ElementRef) { }
 

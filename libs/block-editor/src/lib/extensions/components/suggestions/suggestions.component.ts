@@ -24,10 +24,29 @@ export class SuggestionsComponent implements OnInit {
     }) => void;
     items: MenuItem[] = [];
 
-    constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
+    constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) { }
 
     onKeyDown(e: KeyboardEvent) {
         this.list.onKeydown(e);
+    }
+
+    setFirstItemActive() {
+        this.list.setFirstItemActive();
+    }
+
+    resetKeyManager() {
+        this.list.resetKeyManager();
+    }
+
+    onMouseEnter(e: MouseEvent) {
+        const index = Number((e.target as HTMLElement).dataset.index);
+        console.log(index);
+        this.list.updateActiveItem(index);
+    }
+
+    onClick(e: MouseEvent, item: MenuItem) {
+        // console.log('click', item);
+        item.command()
     }
 
     ngOnInit(): void {
@@ -129,6 +148,7 @@ export class SuggestionsComponent implements OnInit {
                                         });
 
                                         this.cd.detectChanges();
+                                        this.resetKeyManager();
                                     });
                             }
                         };
@@ -139,6 +159,7 @@ export class SuggestionsComponent implements OnInit {
             .subscribe((items) => {
                 this.items = items;
                 this.cd.detectChanges();
+                this.resetKeyManager();
             });
     }
 }
