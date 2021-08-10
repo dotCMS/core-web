@@ -2,23 +2,27 @@
     <input
         data-testId="searchInput"
         #searchInput
-        [placeholder]="'Content Type'| uppercase"
+        [placeholder]="'structure'| dm | uppercase"
         pInputText
         type="text"
     />
     <dot-icon
         name="search"
         data-testId="searchIcon"
-        size="14"
+        size="18"
     ></dot-icon>
 </div>
-<div class="dot-content-palette__items">
+<div class="dot-content-palette__items" *ngIf="items.length; else noResults">
     <a *ngFor='let item of items' draggable="true"
        (dragstart)="dragStart($event, item)"
         (dragend)="dragEnd($event)">
-        <dot-icon [name]='item.icon'></dot-icon>
+        <dot-icon size='32' [name]='item.icon'></dot-icon>
         <span>{{item.name}}</span>
     </a>
 </div>
+<ng-template #noResults>
+    <spna class="dot-content-palette__empty" >{{'No-Results' | dm}}</spna>
+</ng-template>
+
 
 

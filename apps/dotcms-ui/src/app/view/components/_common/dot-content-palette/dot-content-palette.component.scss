@@ -1,6 +1,6 @@
 @use "variables" as *;
 
-:host{
+:host {
     width: 221px;
     display: flex;
     flex-direction: column;
@@ -8,14 +8,19 @@
 }
 
 .dot-content-palette__search {
-    position: relative;
-    margin: 0  $spacing-1 $spacing-1;
+    color: $gray;
+    position: sticky;
+    align-self: flex-start;
+    top: 0;
+    width: 100%;
 
     input {
         width: 100%;
         border: none;
         outline: 0px;
         background: transparent;
+        padding: $spacing-2 $spacing-5 $spacing-2 $spacing-3;
+        color: $gray;
     }
 
     dot-icon {
@@ -27,6 +32,9 @@
 }
 
 .dot-content-palette__items {
+
+    overflow: hidden auto;
+
     a {
         width: 100px;
         height: 80px;
@@ -39,11 +47,11 @@
         cursor: grab;
         color: $black;
 
-        &:hover{
+        &:hover {
             background: $gray-bg;
         }
 
-        &.dragging{
+        &.dragging {
             transform: rotate(4deg);
         }
 
@@ -56,6 +64,13 @@
             text-align: center;
         }
     }
+}
+
+.dot-content-palette__empty {
+    border: 1px solid $gray-light;
+    text-align: center;
+    padding: $spacing-1 0;
+    margin: $spacing-4;
 }
 
 

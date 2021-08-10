@@ -105,7 +105,6 @@ export const EDIT_PAGE_JS = `
 
     drake.on('drop', function(el, target, source, sibling) {
         const updatedModel = getDotNgModel();
-
         if (JSON.stringify(updatedModel) !== JSON.stringify(currentModel)) {
             window.${MODEL_VAR_NAME}.next({
                 model: getDotNgModel(),
@@ -312,7 +311,6 @@ export const EDIT_PAGE_JS = `
     function dragEnterEvent(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('dragEnterEvent', event.target);
         const container = event.target.closest('[data-dot-object="container"]');
         currentContainer = container;
         if (container && !(checkIfContainerAllowsDotAsset(event) || checkIfContainerAllowContentType(container))) {
@@ -357,12 +355,12 @@ export const EDIT_PAGE_JS = `
     function dragLeaveEvent(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('dragLeaveEvent aaa')
+
         const container = event.target.closest('[data-dot-object="container"]');
 
-        // if (container && currentContainer !== container) {
-        //     container.classList.remove('no');
-        // }
+        if (container && currentContainer !== container) {
+            container.classList.remove('no');
+        }
 
         if (isContentletPlaceholderInDOM()){
             removeElementById('contentletPlaceholder');
@@ -370,7 +368,7 @@ export const EDIT_PAGE_JS = `
     }
 
     function dropEvent(event) {
-        console.log('dropEvent')
+
         event.preventDefault();
         event.stopPropagation();
         const container = event.target.closest('[data-dot-object="container"]');
@@ -405,9 +403,10 @@ export const EDIT_PAGE_JS = `
                 });
             }
         }
-
         if (container) {
-           // container.classList.remove('no');
+            setTimeout(()=>{
+                container.classList.remove('no');
+            }, 0);
         }
 
     }

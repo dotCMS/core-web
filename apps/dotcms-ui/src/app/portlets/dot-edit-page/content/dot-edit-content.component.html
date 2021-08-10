@@ -1,4 +1,4 @@
-<dot-content-palette #contentPallet (filterChange)='loadContentPallet($event)' *ngIf="(pageState$ | async).state.mode === dotPageMode.EDIT"></dot-content-palette>
+<dot-content-palette (filterChange)='loadContentPallet($event)' [items]='contentPalletItems' *ngIf="(pageState$ | async).state.mode === dotPageMode.EDIT"></dot-content-palette>
 <dot-form-selector
     [show]="editForm"
     (select)="onFormSelected($event)"

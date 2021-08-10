@@ -6,8 +6,10 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding-right: 0;
+    transition: padding-right $basic-speed ease-in;
 
-    &.dot-edit--editMode {
+    &.dot-edit__editMode {
         padding-right: 225px;
         position: relative;
     }
@@ -125,6 +127,7 @@ dot-whats-changed,
 }
 
 dot-content-palette {
+    transition: all 1s ease-in-out;
     background: $white;
     position: absolute;
     right: 0;

@@ -68,8 +68,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     reorderMenuUrl = '';
     showOverlay = false;
     dotPageMode = DotPageMode;
-    @HostBinding('class.dot-edit--editMode') editMode: boolean = false;
-    @ViewChild('contentPallet') contentPallet: DotContentPaletteComponent;
+    contentPalletItems: DotCMSContentType[];
+    @HostBinding('class.dot-edit__editMode') editMode: boolean = false;
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -150,6 +150,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.subscribePageModelChange();
         this.subscribeOverlayService();
         this.subscribeDraggedContentType();
+        this.loadContentPallet();
     }
 
     ngOnDestroy(): void {
@@ -242,7 +243,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .getContentTypes(filter)
             .pipe(take(1))
             .subscribe((items) => {
-                this.contentPallet.items = items;
+                this.contentPalletItems = items;
             });
     }
 
@@ -418,7 +419,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private renderPage(pageState: DotPageRenderState): void {
         if (this.shouldEditMode(pageState)) {
             this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
-            this.loadContentPallet();
             this.editMode = true;
         } else {
             this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
