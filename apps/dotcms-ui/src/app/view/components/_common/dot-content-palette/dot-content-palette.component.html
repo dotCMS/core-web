@@ -16,7 +16,7 @@
     <a *ngFor='let item of items' draggable="true"
        (dragstart)="dragStart($event, item)"
         (dragend)="dragEnd($event)">
-        <dot-icon size='32' [name]='item.icon'></dot-icon>
+        <dot-icon size='30' [name]='item.icon'></dot-icon>
         <span>{{item.name}}</span>
     </a>
 </div>

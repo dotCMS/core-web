@@ -1,7 +1,7 @@
 @use "variables" as *;
 
 :host {
-    width: 221px;
+    width: 15.8rem;
     display: flex;
     flex-direction: column;
     padding: $spacing-1 0;
@@ -67,7 +67,6 @@
 }
 
 .dot-content-palette__empty {
-    border: 1px solid $gray-light;
     text-align: center;
     padding: $spacing-1 0;
     margin: $spacing-4;

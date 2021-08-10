@@ -5,6 +5,7 @@ $nav-size: 80px;
 
 :host {
     background-color: $gray-bg;
+    border-left: solid 1px  $gray-lighter;
     display: flex;
     flex-shrink: 0;
     order: 2;
@@ -14,16 +15,6 @@ $nav-size: 80px;
 .edit-page-nav {
     @include naked-list;
     width: 100%;
-
-    ::after{
-        content: '';
-        position: absolute;
-        top: $nav-size * 4;
-        left: 0;
-        bottom: 0;
-        width: 1px;
-        background-color: $gray-lighter;
-    }
 }
 
 .edit-page-nav__item {
@@ -37,7 +28,6 @@ $nav-size: 80px;
     text-decoration: none;
     text-transform: uppercase;
     transition: background-color $basic-speed ease-in;
-    border-left: 1px solid $gray-lighter;
 
     dot-icon {
         margin-bottom: $spacing-1;
@@ -55,10 +45,8 @@ $nav-size: 80px;
     &--disabled,
     &--disabled:hover {
         background-color: transparent;
+        opacity: 0.4;
         cursor: not-allowed;
-        dot-icon, span {
-            opacity: 0.4;
-        }
     }
 }
 
@@ -66,7 +54,6 @@ $nav-size: 80px;
     background-color: $white;
     color: $black;
     pointer-events: none;
-    border-left: none;
     border-bottom: 1px solid $gray-lighter;
     border-top: 1px solid $gray-lighter;
 
