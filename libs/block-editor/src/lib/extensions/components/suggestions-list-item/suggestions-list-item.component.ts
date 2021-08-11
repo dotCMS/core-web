@@ -12,9 +12,9 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
     @HostBinding('attr.tabindex') tabindex = '-1'
 
     @HostBinding('attr.data-index')
+    @Input() index: number;
 
     @Input() command: () => void;
-    @Input() index: number;
     @Input() label = '';
     @Input() url = '';
 

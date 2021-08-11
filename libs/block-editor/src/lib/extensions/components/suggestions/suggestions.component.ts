@@ -24,6 +24,8 @@ export class SuggestionsComponent implements OnInit {
     }) => void;
     items: MenuItem[] = [];
 
+    title = 'Select a block';
+
     constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {
     }
 
@@ -44,6 +46,7 @@ export class SuggestionsComponent implements OnInit {
         console.log(index);
         this.list.updateActiveItem(index);
     }
+
 
     onClick(e: MouseEvent, item: MenuItem) {
         // console.log('click', item);
@@ -149,6 +152,7 @@ export class SuggestionsComponent implements OnInit {
                                             };
                                         });
 
+                                        this.title = 'Select a contentlet'
                                         this.cd.detectChanges();
                                         this.resetKeyManager();
                                     });
@@ -159,6 +163,7 @@ export class SuggestionsComponent implements OnInit {
                 take(1)
             )
             .subscribe((items) => {
+                this.title = 'Select a content type'
                 this.items = items;
                 this.cd.detectChanges();
                 this.resetKeyManager();

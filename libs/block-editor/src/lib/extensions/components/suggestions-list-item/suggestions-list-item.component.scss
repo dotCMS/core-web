@@ -12,6 +12,7 @@
     border: solid 1px lightgrey;
     display: flex;
     flex-basis: 32px;
+    flex-shrink: 0;
     height: 32px;
     justify-content: center;
     width: 32px;
