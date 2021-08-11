@@ -5,6 +5,8 @@
         (mouseenter)="onMouseEnter($event)"
         [command]="item.command"
         [index]="i"
-        >{{ item.label }}</dotcms-suggestions-list-item
+        [label]="item.label"
+        [url]="item.icon"
     >
+    </dotcms-suggestions-list-item>
 </dotcms-suggestion-list>

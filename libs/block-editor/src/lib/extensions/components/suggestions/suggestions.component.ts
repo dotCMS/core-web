@@ -24,7 +24,8 @@ export class SuggestionsComponent implements OnInit {
     }) => void;
     items: MenuItem[] = [];
 
-    constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) { }
+    constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {
+    }
 
     onKeyDown(e: KeyboardEvent) {
         this.list.onKeydown(e);
@@ -50,10 +51,11 @@ export class SuggestionsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const headings = [...Array(6).keys()].map((level) => {
+        const headings = [...Array(3).keys()].map((level) => {
+            const size = level + 1;
             return {
-                label: `Heading ${level + 1}`,
-                icon: 'pi pi-circle-on',
+                label: `Heading ${size}`,
+                icon: `/assets/block-editor/h${size}.svg`,
                 command: () => {
                     this.command({
                         type: {
@@ -68,7 +70,7 @@ export class SuggestionsComponent implements OnInit {
         const paragraph = [
             {
                 label: 'Paragraph',
-                icon: 'pi pi-circle-on',
+                icon: `/assets/block-editor/p.svg`,
                 command: () => {
                     this.command({
                         type: {
@@ -82,7 +84,7 @@ export class SuggestionsComponent implements OnInit {
         const list = [
             {
                 label: 'List Ordered',
-                icon: 'pi pi-circle-on',
+                icon: `/assets/block-editor/ol.svg`,
                 command: () => {
                     this.command({
                         type: {
@@ -93,7 +95,7 @@ export class SuggestionsComponent implements OnInit {
             },
             {
                 label: 'List Unordered',
-                icon: 'pi pi-circle-on',
+                icon: `/assets/block-editor/ul.svg`,
                 command: () => {
                     this.command({
                         type: {
@@ -107,7 +109,7 @@ export class SuggestionsComponent implements OnInit {
         this.items = [
             {
                 label: 'Contentlets',
-                icon: 'pi pi-plus',
+                icon: 'receipt',
                 command: () => {
                     this.initContentletSelection();
                 }
@@ -126,7 +128,7 @@ export class SuggestionsComponent implements OnInit {
                     return items.map((item) => {
                         return {
                             label: item['name'],
-                            icon: 'pi pi-fw pi-plus',
+                            icon: item['icon'],
                             command: () => {
                                 this.suggestionsService
                                     .getContentlets(item['variable'])
@@ -135,7 +137,7 @@ export class SuggestionsComponent implements OnInit {
                                         this.items = contentlets.map((contentlet) => {
                                             return {
                                                 label: contentlet['title'],
-                                                icon: 'pi pi-fw pi-plus',
+                                                icon: 'image',
                                                 command: () => {
                                                     this.command({
                                                         payload: contentlet,
