@@ -2,8 +2,12 @@ import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/d
 import { moduleMetadata } from '@storybook/angular';
 import { CommonModule } from '@angular/common';
 import { Meta, Story } from '@storybook/angular/types-6-0';
-import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotIconModule } from '@dotcms/ui';
+import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
+import { Injectable } from '@angular/core';
+import { DotMessagePipe } from '@dotcms/app/view/pipes';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
 
 const data = [
     {
@@ -100,13 +104,26 @@ const data = [
     }
 ];
 
+@Injectable()
+class MockDotContentletEditorService {
+    setDraggedContentType = () => {};
+}
+
+const messageServiceMock = new MockDotMessageService({
+    structure: 'Content Type'
+});
+
 export default {
     title: 'DotCMS/ Content Palette',
     component: DotContentPaletteComponent,
     decorators: [
         moduleMetadata({
-            declarations: [DotContentPaletteComponent],
-            imports: [CommonModule, DotPipesModule, DotIconModule]
+            declarations: [DotContentPaletteComponent, DotMessagePipe],
+            imports: [CommonModule, DotIconModule],
+            providers: [
+                { provide: DotContentletEditorService, useClass: MockDotContentletEditorService },
+                { provide: DotMessageService, useValue: messageServiceMock }
+            ]
         })
     ],
     args: {
@@ -122,5 +139,16 @@ export const Default: Story<DotContentPaletteComponent> = (props) => {
         component: DotContentPaletteComponent,
         props,
         template: `<dot-content-palette [items]='items'></dot-content-palette>`
+    };
+};
+
+export const Empty: Story<DotContentPaletteComponent> = (props) => {
+    return {
+        moduleMetadata: {
+            declarations: [DotContentPaletteComponent]
+        },
+        component: DotContentPaletteComponent,
+        props,
+        template: `<dot-content-palette [items]='[]'></dot-content-palette>`
     };
 };
