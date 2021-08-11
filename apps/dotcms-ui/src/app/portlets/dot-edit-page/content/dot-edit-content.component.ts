@@ -235,6 +235,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     /**
      * Load items in the Content Pallet
      *
+     * @param string filter
      * @memberof DotEditContentComponent
      */
     loadContentPallet(filter = ''): void {

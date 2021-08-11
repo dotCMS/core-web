@@ -13,10 +13,10 @@
     ></dot-icon>
 </div>
 <div class="dot-content-palette__items" *ngIf="items.length; else noResults">
-    <div *ngFor='let item of items' draggable="true"
+    <div *ngFor="let item of items" draggable="true"
          data-testId="paletteItems"
         (dragstart)="dragStart(item)" >
-        <dot-icon size='30' [name]='item.icon'></dot-icon>
+        <dot-icon size="30" [name]="item.icon"></dot-icon>
         <span>{{item.name}}</span>
     </div>
 </div>

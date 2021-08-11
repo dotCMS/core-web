@@ -222,7 +222,7 @@ export class DotEditContentHtmlService {
      * Render a contentlet in the DOM after add it
      *
      * @param DotPageContent contentlet
-     * @param string placeholderIdToBeReplaced
+     * @param boolean isDroppedAsset
      * @memberof DotEditContentHtmlService
      */
     renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): void {
