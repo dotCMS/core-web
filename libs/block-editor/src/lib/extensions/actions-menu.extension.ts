@@ -54,6 +54,7 @@ function getTippyInstance({
         showOnCreate: true,
         interactive: true,
         trigger: 'manual',
+        offset: [30, 0],
         onHide
     });
 }
@@ -119,7 +120,7 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                             myTippy = getTippyInstance({
                                 element: props.editor.view.dom,
                                 content: component.location.nativeElement,
-                                rect: props.clientRect
+                                rect: props.clientRect,
                             });
                         },
                         onExit: () => {
