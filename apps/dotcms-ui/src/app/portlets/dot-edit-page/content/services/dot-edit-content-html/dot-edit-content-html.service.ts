@@ -39,7 +39,7 @@ export enum DotContentletAction {
     ADD
 }
 
-const CONTENTLET_PLACEHOLDER_SELECTOR = '#contentletPlaceholder';
+export const CONTENTLET_PLACEHOLDER_SELECTOR = '#contentletPlaceholder';
 
 @Injectable()
 export class DotEditContentHtmlService {

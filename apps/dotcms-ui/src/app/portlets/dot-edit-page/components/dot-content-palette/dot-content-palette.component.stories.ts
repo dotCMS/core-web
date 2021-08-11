@@ -1,4 +1,4 @@
-import { DotContentPaletteComponent } from '@components/_common/dot-content-palette/dot-content-palette.component';
+import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
 import { moduleMetadata } from '@storybook/angular';
 import { CommonModule } from '@angular/common';
 import { Meta, Story } from '@storybook/angular/types-6-0';

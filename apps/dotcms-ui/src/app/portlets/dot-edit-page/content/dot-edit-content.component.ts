@@ -42,7 +42,6 @@ import {
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotContentTypeService } from '@services/dot-content-type';
-import { DotContentPaletteComponent } from '@components/_common/dot-content-palette/dot-content-palette.component';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.

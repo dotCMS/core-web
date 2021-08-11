@@ -7,6 +7,8 @@ import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { By } from '@angular/platform-browser';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { Injectable } from '@angular/core';
+import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 
 const data = [
     {
@@ -31,20 +33,30 @@ const data = [
     }
 ];
 
-fdescribe('DotContentPaletteComponent', () => {
+@Injectable()
+class MockDotContentletEditorService {
+    setDraggedContentType = jasmine.createSpy('setDraggedContentType');
+}
+
+describe('DotContentPaletteComponent', () => {
     let component: DotContentPaletteComponent;
     let fixture: ComponentFixture<DotContentPaletteComponent>;
+    let dotContentletEditorService: DotContentletEditorService;
 
     const messageServiceMock = new MockDotMessageService({
-        structures: 'Content Type'
+        structure: 'Content Type'
     });
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [DotContentPaletteComponent],
             imports: [DotPipesModule, DotIconModule],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            providers: [
+                { provide: DotMessageService, useValue: messageServiceMock },
+                { provide: DotContentletEditorService, useClass: MockDotContentletEditorService }
+            ]
         }).compileComponents();
+        dotContentletEditorService = TestBed.inject(DotContentletEditorService);
     });
 
     beforeEach(() => {
@@ -60,18 +72,24 @@ fdescribe('DotContentPaletteComponent', () => {
     it('should list items correctly', () => {
         component.items = (data as unknown) as DotCMSContentType[];
         fixture.detectChanges();
-        const contents = fixture.debugElement.queryAll(By.css('.dot-content-palette__items a'));
+        const contents = fixture.debugElement.queryAll(By.css('[data-testId="paletteItems"]'));
         expect(contents.length).toEqual(4);
-        expect(JSON.parse(contents[0].nativeElement.dataset.content)).toEqual(data[0]);
         expect(contents[0].nativeElement.draggable).toEqual(true);
-        //TODO: Check fot data attributes need to be defined.
+    });
+
+    it('should show empty state', () => {
+        component.items = [];
+        fixture.detectChanges();
+        const emptyState = fixture.debugElement.query(By.css('.dot-content-palette__empty'));
+
+        expect(emptyState).not.toBeNull();
     });
 
     it('should show correct search Box', () => {
         const icon = fixture.debugElement.query(By.css('[data-testId="searchIcon"]'));
         const input = fixture.debugElement.query(By.css('[data-testId="searchInput"]'));
         expect(icon.componentInstance.name).toEqual('search');
-        expect(icon.componentInstance.size).toEqual('14');
+        expect(icon.componentInstance.size).toEqual('18');
         expect(input.nativeElement.placeholder).toEqual('CONTENT TYPE');
     });
 
@@ -83,4 +101,14 @@ fdescribe('DotContentPaletteComponent', () => {
         tick(550);
         expect(component.filterChange.emit).toHaveBeenCalledOnceWith('test');
     }));
+
+    it('should set Dragged ContentType on dragStart', () => {
+        component.items = (data as unknown) as DotCMSContentType[];
+        fixture.detectChanges();
+        const content = fixture.debugElement.query(By.css('[data-testId="paletteItems"]'));
+        content.triggerEventHandler('dragstart', data[0]);
+        expect(dotContentletEditorService.setDraggedContentType).toHaveBeenCalledOnceWith(
+            data[0] as DotCMSContentType
+        );
+    });
 });

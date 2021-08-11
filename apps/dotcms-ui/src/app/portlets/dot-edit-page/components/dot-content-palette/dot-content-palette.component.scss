@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
 
 :host {
     width: 15.8rem;
@@ -35,9 +35,9 @@
 
     overflow: hidden auto;
 
-    a {
-        width: 100px;
-        height: 80px;
+    div {
+        width: 7.15rem;
+        height: 5.71rem;
         border: 1px solid $gray-light;
         display: inline-flex;
         flex-direction: column;
@@ -51,12 +51,8 @@
             background: $gray-bg;
         }
 
-        &.dragging {
-            transform: rotate(4deg);
-        }
-
         span {
-            padding: 0 4px;
+            padding: 0 $spacing-3 / 3;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;

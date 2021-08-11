@@ -279,10 +279,7 @@ export const EDIT_PAGE_JS = `
     function checkIfContainerAllowContentType(container) {
         // draggedContent is set by dotContentletEditorService.draggedContentType$
         const dotAcceptTypes = container.dataset.dotAcceptTypes.toLocaleLowerCase();
-        if (window.hasOwnProperty('draggedContent') && dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase())) {
-            return true;
-        }
-        return false;
+        return (window.hasOwnProperty('draggedContent') && dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase()))
     }
 
     function setPlaceholderContentlet() {

@@ -30,7 +30,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-import { DotContentPaletteModule } from '@components/_common/dot-content-palette/dot-content-palette.module';
+import { DotContentPaletteModule } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.module';
 
 const routes: Routes = [
     {

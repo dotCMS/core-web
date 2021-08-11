@@ -19,7 +19,7 @@ import { DotContentletEditorService } from '@components/dot-contentlet-editor/se
     styleUrls: ['./dot-content-palette.component.scss']
 })
 export class DotContentPaletteComponent implements OnInit, OnDestroy {
-    @Input() items: DotCMSContentType[];
+    @Input() items: DotCMSContentType[] = [];
     @Output() filterChange: EventEmitter<string> = new EventEmitter();
 
     @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
@@ -36,15 +36,14 @@ export class DotContentPaletteComponent implements OnInit, OnDestroy {
             });
     }
 
-    dragStart(event: DragEvent, contentType: DotCMSContentType): void {
-        const element = event.target as HTMLAnchorElement;
+    /**
+     * Notify the dragging element to the service, and finally to the edit iframe.
+     *
+     * @param DotCMSContentType contentType
+     * @memberof DotContentPaletteComponent
+     */
+    dragStart(contentType: DotCMSContentType): void {
         this.dotContentletEditorService.setDraggedContentType(contentType);
-        element.classList.toggle('dragging');
-    }
-
-    dragEnd(event: DragEvent): void {
-        const element = event.target as HTMLAnchorElement;
-        element.classList.toggle('dragging');
     }
 
     ngOnDestroy(): void {
