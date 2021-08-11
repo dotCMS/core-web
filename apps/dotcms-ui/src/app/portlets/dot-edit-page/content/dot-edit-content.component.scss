@@ -10,7 +10,7 @@
     transition: padding-right $basic-speed ease-in;
 
     &.dot-edit__editMode {
-        padding-right: 225px;
+        padding-right: $content-palette-width;
         position: relative;
     }
 

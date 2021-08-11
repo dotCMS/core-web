@@ -1,10 +1,12 @@
 @use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
 
 :host {
-    width: 15.8rem;
+    width: $content-palette-width;
     display: flex;
     flex-direction: column;
     padding: $spacing-1 0;
+    border-left: 1px solid $gray-lighter;
+    padding: 0 $spacing-1 ;
 }
 
 .dot-content-palette__search {
@@ -19,7 +21,7 @@
         border: none;
         outline: 0px;
         background: transparent;
-        padding: $spacing-2 $spacing-5 $spacing-2 $spacing-3;
+        padding: $spacing-2 $spacing-5 $spacing-2 $spacing-1;
         color: $gray;
     }
 
@@ -36,16 +38,20 @@
     overflow: hidden auto;
 
     div {
-        width: 7.15rem;
+        width: 7.2rem;
         height: 5.71rem;
-        border: 1px solid $gray-light;
+        border: 1px solid $gray-lighter;
         display: inline-flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: $spacing-1 0 0 $spacing-1;
         cursor: grab;
         color: $black;
+        margin-bottom: $spacing-1;
+
+        &:nth-child(even) {
+            margin-left: $spacing-1;
+        }
 
         &:hover {
             background: $gray-bg;
@@ -58,6 +64,8 @@
             overflow: hidden;
             width: 100%;
             text-align: center;
+            margin-top: $spacing-1;
+            font-size: 0.8125rem;
         }
     }
 }
