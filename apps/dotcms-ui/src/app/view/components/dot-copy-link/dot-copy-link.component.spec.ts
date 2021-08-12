@@ -8,6 +8,7 @@ import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock
 import { DotClipboardUtil } from '@dotcms/app/api/util/clipboard/ClipboardUtil';
 import { UiDotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { TooltipModule } from 'primeng/tooltip';
+import { DotIconModule } from '@dotcms/ui';
 
 const messageServiceMock = new MockDotMessageService({
     Copy: 'Copy',
@@ -19,7 +20,7 @@ describe('DotCopyLinkComponent', () => {
     let fixture: ComponentFixture<DotCopyLinkComponent>;
     let de: DebugElement;
     let dotClipboardUtil: DotClipboardUtil;
-    let label: DebugElement;
+    let button: DebugElement;
 
     beforeEach(
         waitForAsync(() => {
@@ -32,7 +33,7 @@ describe('DotCopyLinkComponent', () => {
                     },
                     DotClipboardUtil
                 ],
-                imports: [UiDotIconButtonModule, TooltipModule]
+                imports: [UiDotIconButtonModule, TooltipModule, DotIconModule]
             }).compileComponents();
         })
     );
@@ -57,23 +58,28 @@ describe('DotCopyLinkComponent', () => {
         beforeEach(() => {
             component.label = 'Label';
             fixture.detectChanges();
-            label = de.query(By.css('.label'));
+            button = de.query(By.css('[data-testId="button"]'));
         });
 
         it('should show label', () => {
-            expect(label.nativeElement.textContent).toBe('Label');
+            expect(button.nativeElement.textContent).toBe('Label content_copy');
+        });
+
+        it('should show copy icon', () => {
+            const icon = de.query(By.css('[data-testId="icon"]'));
+            expect(icon).not.toBeNull()
         });
 
         it('should have pTooltip attributes', () => {
-            expect(label.attributes.appendTo).toEqual('body');
-            expect(label.attributes.tooltipPosition).toEqual('bottom');
-            expect(label.attributes.hideDelay).toEqual('800');
+            expect(button.attributes.appendTo).toEqual('body');
+            expect(button.attributes.tooltipPosition).toEqual('bottom');
+            expect(button.attributes.hideDelay).toEqual('300');
         });
 
         it('should copy text to clipboard', () => {
             const stopPropagation = jasmine.createSpy('stopPropagation');
 
-            label.triggerEventHandler('click', {
+            button.triggerEventHandler('click', {
                 stopPropagation: stopPropagation
             });
 

@@ -14,6 +14,7 @@
 <ng-container *ngIf="site.configured; else noConfigurations">
     <div class="dot-apps-configuration-list__host-configured">
         <dot-icon
+            data-testId="warning"
             *ngIf="site.secretsWithWarnings"
             name="warning"
             pTooltip="{{ site.secretsWithWarnings + ' ' + ('apps.invalid.secrets' | dm) }}"

@@ -107,7 +107,7 @@ describe('DotAppsConfigurationItemComponent', () => {
         });
 
         it('should have warning icon', () => {
-            const warningIcon = fixture.debugElement.query(By.css('dot-icon'));
+            const warningIcon = fixture.debugElement.query(By.css('[data-testId="warning"]'));
             expect(warningIcon).toBeTruthy();
             expect(warningIcon.attributes['name']).toBe('warning');
             expect(warningIcon.attributes['size']).toBe('18');
