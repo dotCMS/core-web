@@ -2,7 +2,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotCopyButtonComponent } from './dot-copy-button.component';
+import { DotCopyLinkComponent } from './dot-copy-link.component';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '@dotcms/app/test/dot-message-service.mock';
 import { DotClipboardUtil } from '@dotcms/app/api/util/clipboard/ClipboardUtil';
@@ -14,9 +14,9 @@ const messageServiceMock = new MockDotMessageService({
     Copied: 'Copied'
 });
 
-describe('DotCopyButtonComponent', () => {
-    let component: DotCopyButtonComponent;
-    let fixture: ComponentFixture<DotCopyButtonComponent>;
+describe('DotCopyLinkComponent', () => {
+    let component: DotCopyLinkComponent;
+    let fixture: ComponentFixture<DotCopyLinkComponent>;
     let de: DebugElement;
     let dotClipboardUtil: DotClipboardUtil;
     let label: DebugElement;
@@ -24,7 +24,7 @@ describe('DotCopyButtonComponent', () => {
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
-                declarations: [DotCopyButtonComponent],
+                declarations: [DotCopyLinkComponent],
                 providers: [
                     {
                         provide: DotMessageService,
@@ -38,7 +38,7 @@ describe('DotCopyButtonComponent', () => {
     );
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(DotCopyButtonComponent);
+        fixture = TestBed.createComponent(DotCopyLinkComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
 
