@@ -53,7 +53,7 @@ describe('DotAppsConfigurationItemComponent', () => {
             TestBed.configureTestingModule({
                 imports: [
                     CommonModule,
-                    DotLinkButtonModule,
+                    DotCopyLinkModule,
                     UiDotIconButtonModule,
                     DotIconModule,
                     TooltipModule,
