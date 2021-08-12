@@ -2,6 +2,7 @@
 
 :host {
     width: $content-palette-width;
+    min-width: $content-palette-width;
     display: flex;
     flex-direction: column;
     padding: $spacing-1;
