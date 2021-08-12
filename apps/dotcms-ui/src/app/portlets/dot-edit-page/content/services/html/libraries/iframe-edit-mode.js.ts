@@ -249,9 +249,7 @@ export const EDIT_PAGE_JS = `
         document.getElementById(elemId).remove()
     }
 
-    function checkIfContainerAllowsDotAsset(event) {
-
-        const container = event.target.closest('[data-dot-object="container"]');
+    function checkIfContainerAllowsDotAsset(event, container) {
 
         // Different than 1 file
         if (event.dataTransfer.items.length !== 1 ) {
@@ -277,6 +275,10 @@ export const EDIT_PAGE_JS = `
     }
 
     function checkIfContainerAllowContentType(container) {
+        if (container.querySelectorAll('[data-dot-object="contentlet"]').length === parseInt(container.dataset.maxContentlets, 10)) {
+            return false;
+        }
+
         // draggedContent is set by dotContentletEditorService.draggedContentType$
         const dotAcceptTypes = container.dataset.dotAcceptTypes.toLocaleLowerCase();
         return (window.hasOwnProperty('draggedContent') && dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase()))
@@ -310,7 +312,7 @@ export const EDIT_PAGE_JS = `
         event.stopPropagation();
         const container = event.target.closest('[data-dot-object="container"]');
         currentContainer = container;
-        if (container && !(checkIfContainerAllowsDotAsset(event) || checkIfContainerAllowContentType(container))) {
+        if (container && !(checkIfContainerAllowsDotAsset(event, container) || checkIfContainerAllowContentType(container))) {
             container.classList.add('no');
         }
     }
