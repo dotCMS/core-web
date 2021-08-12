@@ -1,0 +1,8 @@
+<button
+    (click)="copyUrlToClipboard($event)"
+    [pTooltip]="tooltipText"
+    appendTo="body"
+    hideDelay="300"
+    tooltipPosition="bottom"
+    >{{ label }} <dot-icon name="content_copy" size="12"></dot-icon>
+</button>
