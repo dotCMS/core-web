@@ -4,11 +4,11 @@
 
 <div class="dot-apps-configuration-list__host-key">
     {{ 'apps.key' | dm }}
-    <dot-copy-button
+    <dot-copy-link
         (click)="$event.stopPropagation()"
         [copy]="site.id"
         [label]="site.id"
-    ></dot-copy-button>
+    ></dot-copy-link>
 </div>
 
 <ng-container *ngIf="site.configured; else noConfigurations">
