@@ -56,8 +56,4 @@ $nav-size: 80px;
     pointer-events: none;
     border-bottom: 1px solid $gray-lighter;
     border-top: 1px solid $gray-lighter;
-
-    ::ng-deep dot-icon i {
-        // @include dot-icon_inverted;
-    }
 }

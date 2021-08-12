@@ -4,9 +4,8 @@
     width: $content-palette-width;
     display: flex;
     flex-direction: column;
-    padding: $spacing-1 0;
+    padding: $spacing-1;
     border-left: 1px solid $gray-lighter;
-    padding: 0 $spacing-1 ;
 }
 
 .dot-content-palette__search {
@@ -48,6 +47,7 @@
         cursor: grab;
         color: $black;
         margin-bottom: $spacing-1;
+        padding: 0 0.25rem;
 
         &:nth-child(even) {
             margin-left: $spacing-1;
@@ -58,14 +58,13 @@
         }
 
         span {
-            padding: 0 $spacing-3 / 3;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
             width: 100%;
             text-align: center;
             margin-top: $spacing-1;
-            font-size: 0.8125rem;
+            font-size: $font-size-small;
         }
     }
 }

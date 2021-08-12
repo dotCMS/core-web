@@ -712,6 +712,7 @@ describe('DotEditContentComponent', () => {
                         });
 
                         fixture.detectChanges();
+                        const contentPalette = de.query(By.css('dot-content-palette'));
                         const dotRenderedPageStateExpected = new DotPageRenderState(
                             mockUser(),
                             mockDotRenderedPage()
@@ -719,9 +720,7 @@ describe('DotEditContentComponent', () => {
                         expect(dotPageStateService.setLocalState).toHaveBeenCalledWith(
                             dotRenderedPageStateExpected
                         );
-                        expect(
-                            fixture.nativeElement.classList.contains('dot-edit__editMode')
-                        ).toEqual(true);
+                        expect(contentPalette).not.toBeNull();
                     }));
 
                     it('should handle load-edit-mode-page to internal navigation', fakeAsync(() => {

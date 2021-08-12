@@ -42,6 +42,7 @@ import {
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotContentTypeService } from '@services/dot-content-type';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -54,7 +55,19 @@ import { DotContentTypeService } from '@services/dot-content-type';
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
-    styleUrls: ['./dot-edit-content.component.scss']
+    styleUrls: ['./dot-edit-content.component.scss'],
+    animations: [
+        trigger('enterAnimation', [
+            transition(':enter', [
+                style({ transform: 'translateX(100%)', opacity: 0 }),
+                animate('150ms ease-in-out', style({ transform: 'translateX(0)', opacity: 1 }))
+            ]),
+            transition(':leave', [
+                style({ transform: 'translateX(0)', opacity: 1 }),
+                animate('150ms ease-in-out', style({ transform: 'translateX(100%)', opacity: 0 }))
+            ])
+        ])
+    ]
 })
 export class DotEditContentComponent implements OnInit, OnDestroy {
     @ViewChild('iframe') iframe: ElementRef;
@@ -68,7 +81,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     showOverlay = false;
     dotPageMode = DotPageMode;
     contentPalletItems: DotCMSContentType[];
-    @HostBinding('class.dot-edit__editMode') editMode: boolean = false;
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -419,10 +431,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private renderPage(pageState: DotPageRenderState): void {
         if (this.shouldEditMode(pageState)) {
             this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
-            this.editMode = true;
         } else {
             this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
-            this.editMode = false;
         }
     }
 
