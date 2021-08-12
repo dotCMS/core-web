@@ -65,5 +65,5 @@
     [@enterAnimation]
     (filterChange)='loadContentPallet($event)'
     [items]='contentPalletItems'
-    *ngIf="(pageState$ | async).state.mode === dotPageMode.EDIT">
+    *ngIf="isEditMode">
 </dot-content-palette>

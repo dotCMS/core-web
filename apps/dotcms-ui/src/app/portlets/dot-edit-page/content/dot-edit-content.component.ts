@@ -80,7 +80,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     reorderMenuUrl = '';
     showOverlay = false;
     dotPageMode = DotPageMode;
-    contentPalletItems: DotCMSContentType[];
+    contentPalletItems: DotCMSContentType[] = [];
+    isEditMode: boolean = false;
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -431,8 +432,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private renderPage(pageState: DotPageRenderState): void {
         if (this.shouldEditMode(pageState)) {
             this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
+            this.isEditMode = true;
         } else {
             this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
+            this.isEditMode = false;
         }
     }
 
