@@ -34,6 +34,7 @@ export class DotCopyLinkComponent implements OnInit {
     /**
      * Copy url to clipboard and update the tooltip text with the result
      *
+     * @param {MouseEvent} $event
      * @memberof DotCopyLinkComponent
      */
     copyUrlToClipboard($event: MouseEvent): void {
