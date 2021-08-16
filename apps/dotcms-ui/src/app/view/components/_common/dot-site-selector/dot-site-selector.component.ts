@@ -74,17 +74,13 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
         this.siteService.refreshSites$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((_site: Site) => {
-                console.log('===== refreshSites$')
-                this.handleSitesRefresh(_site)});
-        console.log('===== ngOnInit')
+            .subscribe((_site: Site) => this.handleSitesRefresh(_site));
         this.getSitesList();
         ['login-as', 'logout-as'].forEach((event: string) => {
             this.dotEventsService
                 .listen(event)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
-                    console.log('===== login-as, logout-as')
                     this.getSitesList();
                 });
         });
@@ -92,13 +88,11 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.siteService.switchSite$.pipe(takeUntil(this.destroy$)).subscribe(() => {
             setTimeout(() => {
                 this.updateCurrentSite(this.siteService.currentSite);
-                console.log('===== switchSite$')
             }, 200);
         });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('===== changes$', changes)
         if (changes.id && changes.id.currentValue) {
             this.selectCurrentSite(changes.id.currentValue);
         }
@@ -114,7 +108,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     handleSitesRefresh(site: Site): void {
-        debugger
         if (site.archived) {
             this.paginationService
                 .getCurrentPage()
@@ -162,8 +155,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     handleFilterChange(filter): void {
-        console.log('===== handleFilterChange', filter)
-
         this.getSitesList(filter);
     }
 
@@ -173,8 +164,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     handlePageChange(event): void {
-        console.log('===== handlePageChange', event)
-
         this.getSitesList(event.filter, event.first);
     }
 
@@ -185,8 +174,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     getSitesList(filter = '', offset = 0): void {
-        console.log('===== getSitesList', filter, offset)
-
         this.paginationService.filter = filter;
         this.paginationService
             .getWithOffset(offset)
@@ -194,9 +181,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe((items: Site[]) => {
                 this.sitesCurrentPage = [...items];
                 this.moreThanOneSite = this.moreThanOneSite || items.length > 1;
-                console.log('===== getSitesList sitesCurrentPage', this.sitesCurrentPage)
-                console.log('===== getSitesList moreThanOneSite', this.moreThanOneSite)
-
             });
     }
 
@@ -206,8 +190,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     siteChange(site: Site): void {
-        console.log('===== site', site)
-
         this.change.emit(site);
     }
     /**
@@ -217,13 +199,11 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof DotSiteSelectorComponent
      */
     updateCurrentSite(site: Site): void {
-        console.log('=====updateCurrentSite', site)
         const newSite = { ...site };
         this.currentSiteSub$.next(newSite);
     }
 
     private getSiteByIdFromCurrentPage(siteId: string): Site {
-        debugger
         return (
             this.sitesCurrentPage &&
             this.sitesCurrentPage.filter((site) => site.identifier === siteId)[0]

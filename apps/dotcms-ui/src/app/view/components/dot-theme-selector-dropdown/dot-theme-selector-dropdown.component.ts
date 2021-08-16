@@ -49,15 +49,11 @@ export class DotThemeSelectorDropdownComponent
 
     ngOnInit(): void {
         setTimeout(() => {
-            // console.log('**** ngOnInit', this.siteService.currentSite.identifier)
-            console.log('**** ngOnInit');
             this.currentSiteIdentifier = this.siteService.currentSite.identifier;
         }, 100);
     }
 
     ngAfterViewInit(): void {
-        console.log('**** ngAfterViewInit');
-
         if (this.searchInput) {
             fromEvent(this.searchInput.nativeElement, 'keyup')
                 .pipe(debounceTime(500))
@@ -76,11 +72,6 @@ export class DotThemeSelectorDropdownComponent
                     this.siteSelector.updateCurrentSite(site);
                 });
         }
-
-        // Reset back to its original state
-        // this.searchInput.nativeElement.value = '';
-        // this.setHostThemes(this.currentSiteIdentifier);
-        // this.getFilteredThemes('');
     }
 
     propagateChange = (_: any) => {};
@@ -92,7 +83,6 @@ export class DotThemeSelectorDropdownComponent
      * @memberof SearchableDropdownComponent
      */
     registerOnChange(fn): void {
-        console.log('**** registerOnChange');
         this.propagateChange = fn;
     }
 
@@ -103,14 +93,11 @@ export class DotThemeSelectorDropdownComponent
      * @memberof DotThemeSelectorDropdownComponent
      */
     writeValue(identifier: string): void {
-        console.log('**** writeValue', identifier);
-
         if (identifier) {
             this.themesService
                 .get(identifier)
                 .pipe(take(1))
                 .subscribe((theme: DotTheme) => {
-                    console.log('**** writeValue theme', theme);
                     this.value = theme;
                     this.siteService.getSiteById(this.value.hostId).subscribe((site) => {
                         this.siteSelector?.updateCurrentSite(site);
@@ -125,8 +112,6 @@ export class DotThemeSelectorDropdownComponent
      * @memberof DotThemeSelectorDropdownComponent
      */
     siteChange(event: Site): void {
-        console.log('**** siteChange', event);
-
         this.currentSiteIdentifier = event.identifier;
         this.setHostThemes(event.identifier);
     }
@@ -136,7 +121,6 @@ export class DotThemeSelectorDropdownComponent
      * @memberof DotThemeSelectorDropdownComponent
      */
     onShow(): void {
-        console.log('**** onShow');
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.paginationPerPage = 5;
 
@@ -154,24 +138,10 @@ export class DotThemeSelectorDropdownComponent
      * @memberof DotThemeSelectorDropdownComponent
      */
     onChange(theme: DotTheme) {
-        console.log('**** onChange', theme);
-
         this.value = theme;
         this.propagateChange(theme.identifier);
         this.searchableDropdown.toggleOverlayPanel();
     }
-
-    /**
-     *  Fetch theme list via the DotThemeSelectorDropdownComponent input text
-     *
-     * @param {string} filter
-     * @memberof DotThemeSelectorDropdownComponent
-     */
-    // handleFilterChange(filter: string): void {
-    //     console.log('**** handleFilterChange', filter)
-
-    //     this.getFilteredThemes(filter);
-    // }
 
     /**
      * Handles page change for pagination purposes.
@@ -181,41 +151,31 @@ export class DotThemeSelectorDropdownComponent
      * @memberof DotThemeSelectorDropdownComponent
      */
     handlePageChange(event: LazyLoadEvent): void {
-        console.log('**** handlePageChange', event, this.paginatorService.url);
-
         this.currentOffset = event.first;
-        // if (this.currentSiteIdentifier && this.paginatorService.url) {
-        if (this.paginatorService.url) {
+        if (this.currentSiteIdentifier && this.paginatorService.url) {
             this.paginatorService
                 .getWithOffset(event.first)
                 /*
                 We load the first page of themes (onShow) so we dont want to load them when the
                 first paginate event from the dataview inside <dot-searchable-dropdown> triggers
-            */
+                */
                 .pipe(
                     take(1),
                     filter(() => !!(this.currentSiteIdentifier && this.themes.length))
                 )
                 .subscribe((themes) => {
-                    console.log('**** handlePageChange themes', themes);
-                    // this.themes = [];
-                    // setTimeout(() => {
                     this.themes = themes;
-                    // }, 0);
                 });
         }
     }
 
     private getFilteredThemes(offset = 0): void {
-        console.log('**** getFilteredThemes', offset);
         this.setHostThemes(this.currentSiteIdentifier, this.currentOffset || offset);
     }
 
     private setHostThemes(hostId: string, offset: number = 0) {
-        console.log('**** setHostThemes', hostId, offset);
-
         this.siteService.getSiteById(hostId).subscribe((site: Site) => {
-            this.siteSelector.updateCurrentSite(site)
+            this.siteSelector.updateCurrentSite(site);
         });
 
         this.paginatorService.setExtraParams('hostId', hostId);
@@ -227,20 +187,12 @@ export class DotThemeSelectorDropdownComponent
                 if (themes.length || !this.initialLoad) {
                     this.themes = themes;
                     this.setTotalRecords();
-                    // this.siteService.getSiteById(hostId).subscribe((site: Site) => {
-                    //     this.siteSelector.updateCurrentSite(site)
-                    // });
-                // } else {
-                    // this.siteService.getSiteById('SYSTEM_HOST').subscribe((site: Site) => {
-                        // this.siteSelector.searchableDropdown.handleClick(site);
-                    // });
                 }
                 this.initialLoad = false;
             });
     }
 
     private setTotalRecords() {
-        console.log('**** setTotalRecords');
         this.totalRecords = 0;
 
         // Timeout to activate change of pagination to the first page
