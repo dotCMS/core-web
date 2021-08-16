@@ -12,3 +12,5 @@ This maintenance release includes the following code fixes:
 4. https://github.com/dotCMS/core/issues/20674 : Unable to pick time in earlier zone #20674
 
 5. https://github.com/dotCMS/core/issues/20659 : The Set Response Headers Rule Action does not allow single quotes in the value #20659
+
+6. https://github.com/dotCMS/core/issues/20623 : Container displays Add button twice under specific situations #20623
