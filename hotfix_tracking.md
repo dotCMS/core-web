@@ -8,3 +8,5 @@ This maintenance release includes the following code fixes:
 2. https://github.com/dotCMS/core/issues/20677 : Users without the 'Login As' Role are still able to select Login As and see all Users #20677
 
 3. https://github.com/dotCMS/core/issues/20721 : "Login As" Data Constraints #20721
+   
+4. https://github.com/dotCMS/core/issues/20674 : Unable to pick time in earlier zone #20674
