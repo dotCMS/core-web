@@ -33,7 +33,6 @@
         <dot-site-selector
             #siteSelector
             width="12.8rem"
-            [system]="true"
             (change)="siteChange($event)"
             data-testId="siteSelector"
         ></dot-site-selector>
@@ -57,7 +56,6 @@
     (hide)="onHide()"
     (show)="onShow()"
     [(ngModel)]="value"
-    (filterChange)="handleFilterChange($event)"
     (change)="onChange($event)"
     [placeholder]="'dot.common.select.themes' | dm"
     [data]="themes"

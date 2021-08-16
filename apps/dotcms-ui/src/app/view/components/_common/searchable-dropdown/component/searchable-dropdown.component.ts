@@ -157,6 +157,7 @@ export class SearchableDropdownComponent
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.usePlaceholder(changes.placeholder) || changes.persistentPlaceholder) {
+            console.log('++++ ngOnchanges', changes.placeholder, changes.persistentPlaceholder)
             this.setLabel();
         }
         this.setOptions(changes);
@@ -251,6 +252,7 @@ export class SearchableDropdownComponent
      * @memberof SearchableDropdownComponent
      */
     writeValue(value: any): void {
+        console.log('++++writeValue', value)
         this.setValue(value);
     }
 
@@ -350,6 +352,7 @@ export class SearchableDropdownComponent
             : this.placeholder;
         this.label = this.persistentPlaceholder ? this.placeholder : this.valueString;
         this.cd.markForCheck();
+        console.log('+++ setLabel', this.label)
     }
 
     private setOptions(change: SimpleChanges): void {
@@ -371,7 +374,7 @@ export class SearchableDropdownComponent
 
     private setValue(newValue: any): void {
         this.value = newValue;
-
+        console.log('+++ setVALUE', newValue)
         this.setLabel();
     }
 
