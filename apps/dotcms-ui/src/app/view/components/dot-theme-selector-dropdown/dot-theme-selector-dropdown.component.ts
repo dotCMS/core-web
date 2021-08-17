@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, forwardRef, OnInit, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    forwardRef,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotSiteSelectorComponent } from '@components/_common/dot-site-selector/dot-site-selector.component';
 import { SearchableDropdownComponent } from '@components/_common/searchable-dropdown/component';
@@ -7,8 +15,8 @@ import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { PaginatorService } from '@services/paginator';
 import { Site, SiteService } from '@dotcms/dotcms-js';
 import { LazyLoadEvent } from 'primeng/api';
-import { fromEvent } from 'rxjs';
-import { debounceTime, filter, pluck, take } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { debounceTime, filter, take, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-theme-selector-dropdown',
@@ -23,7 +31,7 @@ import { debounceTime, filter, pluck, take } from 'rxjs/operators';
     ]
 })
 export class DotThemeSelectorDropdownComponent
-    implements OnInit, ControlValueAccessor, AfterViewInit {
+    implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
     themes: DotTheme[] = [];
     value: DotTheme = null;
     totalRecords: number = 0;
@@ -40,6 +48,7 @@ export class DotThemeSelectorDropdownComponent
     siteSelector: DotSiteSelectorComponent;
 
     private initialLoad = true;
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         public readonly paginatorService: PaginatorService,
@@ -48,19 +57,27 @@ export class DotThemeSelectorDropdownComponent
     ) {}
 
     ngOnInit(): void {
-        setTimeout(() => {
-            this.currentSiteIdentifier = this.siteService.currentSite.identifier;
-        }, 100);
+        const interval = setInterval(() => {
+            try {
+                this.currentSiteIdentifier = this.siteService.currentSite.identifier;
+                clearInterval(interval);
+            } catch (e) {}
+        }, 0);
     }
 
     ngAfterViewInit(): void {
         if (this.searchInput) {
             fromEvent(this.searchInput.nativeElement, 'keyup')
-                .pipe(debounceTime(500))
+                .pipe(debounceTime(500), takeUntil(this.destroy$))
                 .subscribe(() => {
                     this.getFilteredThemes();
                 });
         }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     onHide(): void {
