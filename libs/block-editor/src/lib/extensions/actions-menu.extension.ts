@@ -82,7 +82,7 @@ function execCommand({
         }
     }
 
-    whatToDo[props.type.name]();
+    whatToDo[props.type.name] ? whatToDo[props.type.name]() : editor.chain().setTextSelection(range).focus().run();
 }
 
 export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
