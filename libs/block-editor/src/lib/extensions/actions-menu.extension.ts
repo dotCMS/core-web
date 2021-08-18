@@ -6,10 +6,9 @@ import Suggestion, { SuggestionOptions, SuggestionProps } from '@tiptap/suggesti
 
 import tippy, { GetReferenceClientRect } from 'tippy.js';
 
-import { FloatingActionsPlugin, FLOATING_ACTIONS_MENU_KEYBOARD } from '../plugins/floating.plugin';
+import { FloatingActionsPlugin, FloatingActionsProps, FLOATING_ACTIONS_MENU_KEYBOARD } from '../plugins/floating.plugin';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
-import { EditorView } from 'prosemirror-view';
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {
@@ -28,7 +27,7 @@ export type FloatingMenuOptions = Omit<FloatingMenuPluginProps, 'editor' | 'elem
     suggestion: Omit<SuggestionOptions, 'editor'>;
 };
 
-function getMenuComponent(injector: Injector, resolver: ComponentFactoryResolver) {
+function getSuggestionComponent(injector: Injector, resolver: ComponentFactoryResolver) {
     const factory = resolver.resolveComponentFactory(SuggestionsComponent);
     const component = factory.create(injector);
     component.changeDetectorRef.detectChanges();
@@ -87,9 +86,46 @@ function execCommand({
 }
 
 export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
+    let myTippy;
+    let menu: ComponentRef<SuggestionsComponent>;
+
+    function onStart(props: SuggestionProps | FloatingActionsProps) {
+        menu = getSuggestionComponent(injector, resolver);
+        menu.instance.command = props.command;
+        menu.instance.setFirstItemActive();
+
+        myTippy = getTippyInstance({
+            element: props.editor.view.dom,
+            content: menu.location.nativeElement,
+            rect: props.clientRect,
+            onHide: () => {
+                const transaction = props.editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
+                    open: false,
+                })
+                props.editor.view.dispatch(transaction)
+            }
+        });
+    }
+
+    function onKeyDown({ event }) {
+        const { key } = event;
+
+        if (key === 'Escape') {
+            myTippy.hide();
+            return true;
+        }
+
+        if (key === 'ArrowDown' || key === 'ArrowUp' || key === 'Enter') {
+            menu.instance.onKeyDown(event);
+            return true;
+        }
+
+        return false;
+    }
+
+
     return Extension.create<FloatingMenuOptions>({
         name: 'actionsMenu',
-
         defaultOptions: {
             element: null,
             suggestion: {
@@ -97,41 +133,12 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                 allowSpaces: true,
                 startOfLine: true,
                 command: execCommand,
-                allow: ({ editor, range }: SuggestionProps) => {
-                    // needs to check if we need this allow at all.
-                    return true;
-                },
-                items: (param) => {
-                    return [];
-                },
                 render: () => {
-                    let myTippy;
-                    let component: ComponentRef<SuggestionsComponent>;
-
                     return {
-                        onStart: (props: SuggestionProps) => {
-                            component = getMenuComponent(injector, resolver);
-                            component.instance.command = props.command;
-                            component.instance.setFirstItemActive();
-
-                            myTippy = getTippyInstance({
-                                element: props.editor.view.dom,
-                                content: component.location.nativeElement,
-                                rect: props.clientRect,
-                            });
-                        },
+                        onStart,
+                        onKeyDown,
                         onExit: () => {
                             myTippy.destroy();
-                        },
-                        onKeyDown({ event, view }) {
-                            const key = (event as KeyboardEvent).key;
-
-                            if (key === 'ArrowDown' || key === 'ArrowUp' || key === 'Enter') {
-                                component.instance.onKeyDown(event);
-                                return true;
-                            }
-
-                            return false;
                         },
                     };
                 }
@@ -168,65 +175,16 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
             const factoryButton = resolver.resolveComponentFactory(ActionButtonComponent);
             const button = factoryButton.create(injector);
 
-            let myTippy;
-
-            let component: ComponentRef<SuggestionsComponent>;
-
             return [
                 FloatingActionsPlugin({
                     editor: this.editor,
                     element: button.location.nativeElement,
-                    on: {
-                        command: ({
-                            range,
-                            rect,
-                            editor
-                        }: {
-                            rect: DOMRect;
-                            range: Range;
-                            editor: Editor;
-                        }) => {
-                            component = getMenuComponent(injector, resolver);
-
-                            component.instance.command = ({ type, payload }) => {
-                                execCommand({
-                                    editor,
-                                    range,
-                                    props: {
-                                        type,
-                                        payload
-                                    }
-                                });
-                                myTippy.destroy();
-                            };
-
-                            component.instance.setFirstItemActive();
-
-                            myTippy = getTippyInstance({
-                                element: this.editor.view.dom,
-                                content: component.location.nativeElement,
-                                rect: () => rect,
-                                onHide: () => {
-                                    const transaction = editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
-                                        open: false,
-                                    })
-                                    editor.view.dispatch(transaction)
-                                }
-                            });
-                        },
-                        keydown: ((view: EditorView, event: KeyboardEvent) => {
-                            const key = (event as KeyboardEvent).key;
-
-                            if (key === 'ArrowDown' || key === 'ArrowUp' || key === 'Enter') {
-                                component.instance.onKeyDown(event);
-                            }
-
-                            if (key === 'Escape') {
-                                myTippy.hide();
-                            }
-                        })
-                    }
-
+                    render: () => {
+                        return {
+                            onStart,
+                            onKeyDown
+                        }
+                    },
                 }),
                 Suggestion({
                     editor: this.editor,

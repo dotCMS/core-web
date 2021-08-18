@@ -7,39 +7,51 @@ export interface FloatingActionsPluginProps {
     editor: Editor;
     element: HTMLElement;
     tippyOptions?: Partial<Props>;
-    on: {
-        command: (props: { rect: DOMRect, range: Range, editor: Editor }) => void;
-        keydown: (view: EditorView, event: KeyboardEvent) => void;
-    }
-
+    render?: () => FloatingRenderActions;
 }
 
 export type FloatingActionsViewProps = FloatingActionsPluginProps & {
     view: EditorView;
 };
 
+export interface FloatingActionsProps {
+    range: Range;
+    editor: Editor;
+    command: (props: any) => void;
+    clientRect: (() => DOMRect) | null;
+}
+
+export interface FloatingActionsKeydownProps {
+    view: EditorView,
+    event: KeyboardEvent,
+    range: Range,
+}
+
+export interface FloatingRenderActions {
+    onStart?: (props: FloatingActionsProps) => void;
+    onExit?: (props: FloatingActionsProps) => void;
+    onKeyDown?: (props: FloatingActionsKeydownProps) => boolean;
+}
+
 export const FLOATING_ACTIONS_MENU_KEYBOARD = 'menuFloating';
 
 export class FloatingActionsView {
-    public editor: Editor;
+    editor: Editor;
+    element: HTMLElement;
+    view: EditorView;
+    tippy!: Instance;
+    render: () => FloatingRenderActions;
+    command: (props: FloatingActionsProps) => void;
 
-    public element: HTMLElement;
-
-    public view: EditorView;
-
-
-    public tippy!: Instance;
-
-    public command: (props: { rect: DOMRect, range: Range, editor: Editor }) => void;
-
-    constructor({ editor, element, view, tippyOptions, on: { command } }: FloatingActionsViewProps) {
+    constructor({ editor, element, view, tippyOptions, render }: FloatingActionsViewProps) {
         this.editor = editor;
         this.element = element;
         this.view = view;
         this.element.addEventListener('mousedown', this.mousedownHandler, { capture: true });
-        this.createTooltip(tippyOptions);
         this.element.style.visibility = 'visible';
-        this.command = command;
+        this.render = render;
+
+        this.createTooltip(tippyOptions);
     }
 
     mousedownHandler = (e: MouseEvent) => {
@@ -48,7 +60,12 @@ export class FloatingActionsView {
 
         const { from, to } = this.editor.state.selection;
         const rect = posToDOMRect(this.view, from, to);
-        this.command({ rect, range: { from, to }, editor: this.editor });
+        this.render().onStart({
+            clientRect: () => rect,
+            range: { from, to },
+            editor: this.editor,
+            command: this.command
+        });
 
 
         const transaction = this.editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
@@ -131,12 +148,12 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
         },
         props: {
             handleKeyDown(view: EditorView, event: KeyboardEvent) {
-                const { open } = this.getState(view.state);
+                const { open, range } = this.getState(view.state);
 
-                if (open) {
-                    options.on.keydown(view, event);
+                if (!open) {
+                    return false
                 }
-                return open
+                return options.render().onKeyDown({ event, range, view })
             },
         }
     });
