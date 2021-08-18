@@ -29,30 +29,6 @@ export class SuggestionsComponent implements OnInit {
     constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {
     }
 
-    onKeyDown(e: KeyboardEvent) {
-        this.list.onKeydown(e);
-    }
-
-    setFirstItemActive() {
-        this.list.setFirstItemActive();
-    }
-
-    resetKeyManager() {
-        this.list.resetKeyManager();
-    }
-
-    onMouseEnter(e: MouseEvent) {
-        const index = Number((e.target as HTMLElement).dataset.index);
-        console.log(index);
-        this.list.updateActiveItem(index);
-    }
-
-
-    onClick(e: MouseEvent, item: MenuItem) {
-        // console.log('click', item);
-        item.command()
-    }
-
     ngOnInit(): void {
         const headings = [...Array(3).keys()].map((level) => {
             const size = level + 1;
@@ -121,6 +97,27 @@ export class SuggestionsComponent implements OnInit {
             ...paragraph,
             ...list
         ];
+    }
+
+    onKeyDown(e: KeyboardEvent) {
+        this.list.onKeydown(e);
+    }
+
+    setFirstItemActive() {
+        this.list.setFirstItemActive();
+    }
+
+    resetKeyManager() {
+        this.list.resetKeyManager();
+    }
+
+    onMouseEnter(e: MouseEvent) {
+        const index = Number((e.target as HTMLElement).dataset.index);
+        this.list.updateActiveItem(index);
+    }
+
+    onClick(e: MouseEvent, item: MenuItem) {
+        item.command()
     }
 
     private initContentletSelection() {

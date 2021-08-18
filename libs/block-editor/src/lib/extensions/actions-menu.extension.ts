@@ -102,7 +102,6 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                     return true;
                 },
                 items: (param) => {
-                    console.log({ param });
                     return [];
                 },
                 render: () => {
@@ -111,8 +110,6 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
 
                     return {
                         onStart: (props: SuggestionProps) => {
-                            console.log('onStart')
-
                             component = getMenuComponent(injector, resolver);
                             component.instance.command = props.command;
                             component.instance.setFirstItemActive();
@@ -127,7 +124,6 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                             myTippy.destroy();
                         },
                         onKeyDown({ event, view }) {
-                            console.log('suggestions keydown', { event });
                             const key = (event as KeyboardEvent).key;
 
                             if (key === 'ArrowDown' || key === 'ArrowUp' || key === 'Enter') {

@@ -33,7 +33,6 @@ export class FloatingActionsView {
     public command: (props: { rect: DOMRect, range: Range, editor: Editor }) => void;
 
     constructor({ editor, element, view, tippyOptions, on: { command } }: FloatingActionsViewProps) {
-        console.log('constructor');
         this.editor = editor;
         this.element = element;
         this.view = view;
@@ -120,7 +119,6 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
                 }
             },
             apply(transaction, prev: EditorState, newState: EditorState) {
-                console.log('apply')
                 const meta = transaction.getMeta(FLOATING_ACTIONS_MENU_KEYBOARD);
                 const state = this.getState(newState);
                 const open = meta ? meta.open : state.open;

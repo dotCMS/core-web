@@ -42,6 +42,11 @@ export class SuggestionListComponent implements AfterContentInit {
         this.keyManager.activeItem.focus();
     }
 
+    /**
+     * Reset the key manager with the new options
+     *
+     * @memberof SuggestionListComponent
+     */
     resetKeyManager() {
         this.keyManager = new FocusKeyManager(this.items).withWrap();
 
@@ -51,6 +56,12 @@ export class SuggestionListComponent implements AfterContentInit {
         }, 0)
     }
 
+    /**
+     * Set an active item manually
+     *
+     * @param {number} index
+     * @memberof SuggestionListComponent
+     */
     updateActiveItem(index: number): void {
         this.keyManager.activeItem?.unfocus();
         this.keyManager.setActiveItem(index)
