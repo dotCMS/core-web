@@ -14,3 +14,6 @@ This maintenance release includes the following code fixes:
 5. https://github.com/dotCMS/core/issues/20659 : The Set Response Headers Rule Action does not allow single quotes in the value #20659
 
 6. https://github.com/dotCMS/core/issues/20623 : Container displays Add button twice under specific situations #20623
+
+7. https://github.com/dotCMS/core/issues/20504 : Create a "Bulk Move" Action for Content #20504
+

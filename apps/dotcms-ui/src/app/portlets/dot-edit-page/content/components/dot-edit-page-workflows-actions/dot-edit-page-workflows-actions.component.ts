@@ -8,10 +8,10 @@ import {
     EventEmitter,
     ChangeDetectionStrategy
 } from '@angular/core';
-import { tap, map, mergeMap, catchError, pluck, take } from 'rxjs/operators';
+import { tap, map, catchError, pluck, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
-import { DotCMSWorkflowAction } from '@dotcms/dotcms-models';
+import { DotCMSContentlet, DotCMSWorkflowAction } from '@dotcms/dotcms-models';
 
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
@@ -119,27 +119,22 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
         data?: { [key: string]: any }
     ): void {
         const currentMenuActions = this.actions;
-        this.actions = this.dotWorkflowActionsFireService
+        this.dotWorkflowActionsFireService
             .fireTo(this.page.workingInode, workflow.id, data)
             .pipe(
-                pluck('inode'),
-                tap(() => {
-                    this.dotGlobalMessageService.display(
-                        this.dotMessageService.get(
-                            'editpage.actions.fire.confirmation',
-                            workflow.name
-                        )
-                    );
-                }),
-                mergeMap((inode: string) => {
-                    const newInode = inode || this.page.workingInode;
-                    this.fired.emit();
-                    return this.getWorkflowActions(newInode);
-                }),
+                take(1),
                 catchError((error) => {
                     this.httpErrorManagerService.handle(error);
                     return currentMenuActions;
                 })
-            );
+            )
+            .subscribe((contentlet: DotCMSContentlet) => {
+                this.dotGlobalMessageService.display(
+                    this.dotMessageService.get('editpage.actions.fire.confirmation', workflow.name)
+                );
+                const newInode = contentlet.inode || this.page.workingInode;
+                this.fired.emit(contentlet);
+                this.actions = this.getWorkflowActions(newInode);
+            });
     }
 }
