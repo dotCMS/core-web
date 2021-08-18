@@ -115,8 +115,13 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
             return true;
         }
 
-        if (key === 'ArrowDown' || key === 'ArrowUp' || key === 'Enter') {
-            menu.instance.onKeyDown(event);
+        if (key === 'Enter') {
+            menu.instance.execCommand();
+            return true;
+        }
+
+        if (key === 'ArrowDown' || key === 'ArrowUp') {
+            menu.instance.updateSelection(event);
             return true;
         }
 

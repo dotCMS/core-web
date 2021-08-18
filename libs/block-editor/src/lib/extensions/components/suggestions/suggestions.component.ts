@@ -99,23 +99,61 @@ export class SuggestionsComponent implements OnInit {
         ];
     }
 
-    onKeyDown(e: KeyboardEvent) {
-        this.list.onKeydown(e);
+    /**
+     * Execute the item command
+     *
+     * @memberof SuggestionsComponent
+     */
+    execCommand() {
+        this.list.execCommand();
     }
 
+    /**
+     * Update the current item selected
+     *
+     * @param {KeyboardEvent} e
+     * @memberof SuggestionsComponent
+     */
+    updateSelection(e: KeyboardEvent) {
+        this.list.updateSelection(e);
+    }
+
+    /**
+     * Set the first item active
+     *
+     * @memberof SuggestionsComponent
+     */
     setFirstItemActive() {
         this.list.setFirstItemActive();
     }
 
+    /**
+     * Reset the key manager after we add new elements to the list
+     *
+     * @memberof SuggestionsComponent
+     */
     resetKeyManager() {
         this.list.resetKeyManager();
     }
 
+    /**
+     * Handle the active item on menu events
+     *
+     * @param {MouseEvent} e
+     * @memberof SuggestionsComponent
+     */
     onMouseEnter(e: MouseEvent) {
         const index = Number((e.target as HTMLElement).dataset.index);
         this.list.updateActiveItem(index);
     }
 
+    /**
+     * Execute the item command on click
+     *
+     * @param {MouseEvent} e
+     * @param {MenuItem} item
+     * @memberof SuggestionsComponent
+     */
     onClick(e: MouseEvent, item: MenuItem) {
         item.command()
     }

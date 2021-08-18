@@ -1,5 +1,5 @@
 import { FocusKeyManager } from '@angular/cdk/a11y';
-import { AfterContentInit, Component, ContentChildren, HostListener, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, QueryList } from '@angular/core';
 import { setTimeout } from 'timers';
 import { SuggestionsListItemComponent } from '../suggestions-list-item/suggestions-list-item.component';
 
@@ -13,22 +13,31 @@ export class SuggestionListComponent implements AfterContentInit {
 
     @ContentChildren(SuggestionsListItemComponent) items: QueryList<SuggestionsListItemComponent>;
 
-    @HostListener('keydown', ['$event'])
-    onKeydown(event: KeyboardEvent) {
-        if (event.key === 'Enter') {
-            this.keyManager.activeItem.command()
-        }
+    ngAfterContentInit() {
+        this.keyManager = new FocusKeyManager(this.items).withWrap();
+    }
 
+    /**
+     * Update the selected item in the list
+     *
+     * @param {KeyboardEvent} event
+     * @memberof SuggestionListComponent
+     */
+    updateSelection(event: KeyboardEvent) {
         if (this.keyManager.activeItem) {
             this.keyManager.activeItem.unfocus();
         }
 
         this.keyManager.onKeydown(event);
-
     }
 
-    ngAfterContentInit() {
-        this.keyManager = new FocusKeyManager(this.items).withWrap();
+    /**
+     * Execute the command function in the list item component
+     *
+     * @memberof SuggestionListComponent
+     */
+    execCommand() {
+        this.keyManager.activeItem.command()
     }
 
     /**
