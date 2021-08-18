@@ -39,6 +39,7 @@ import {
     DotLayoutSideBar
 } from '@models/dot-edit-layout-designer';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
+import { HostListener } from '@angular/core';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -77,6 +78,15 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     showTemplateLayoutSelectionDialog = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
+
+    @HostListener('window:beforeunload', ['$event'])
+    saveChangesOnUnload() {
+        if(!_.isEqual(this.form.value, this.initialFormValue)){
+            this.onSave();
+            this.cd.detectChanges();
+        }
+        return true;
+    }
 
     constructor(
         private dotEditLayoutService: DotEditLayoutService,
@@ -201,7 +211,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 sidebar: this.createSidebarForm()
             })
         });
-        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(300)).subscribe(() => {
+        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(10000)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
             }
