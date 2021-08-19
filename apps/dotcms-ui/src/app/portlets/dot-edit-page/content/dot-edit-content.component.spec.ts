@@ -82,27 +82,33 @@ import { DotPageContainer } from '@models/dot-page-container/dot-page-container.
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { DotContentTypeService } from '@services/dot-content-type';
 import { DotContentPaletteModule } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.module';
+import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
 
 const responseData: DotCMSContentType[] = [
     {
         icon: 'cloud',
         id: 'a1661fbc-9e84-4c00-bd62-76d633170da3',
-        name: 'Product'
+        name: 'Widget X',
+        variable: 'WidgetX',
+        baseType: 'WIDGET'
     },
     {
         icon: 'alt_route',
         id: '799f176a-d32e-4844-a07c-1b5fcd107578',
-        name: 'Blog'
+        name: 'Banner',
+        variable: 'Banner'
     },
     {
         icon: 'cloud',
         id: '897cf4a9-171a-4204-accb-c1b498c813fe',
-        name: 'Contact'
+        name: 'Contact',
+        variable: 'Contact'
     },
     {
         icon: 'person',
         id: '6044a806-f462-4977-a353-57539eac2a2c',
-        name: 'Long name Blog Comment'
+        name: 'Long name Blog Comment',
+        variable: 'long-name'
     }
 ] as DotCMSContentType[];
 
@@ -712,7 +718,9 @@ describe('DotEditContentComponent', () => {
                         });
 
                         fixture.detectChanges();
-                        const contentPalette = de.query(By.css('dot-content-palette'));
+                        const contentPalette: DotContentPaletteComponent = de.query(
+                            By.css('dot-content-palette')
+                        ).componentInstance;
                         const dotRenderedPageStateExpected = new DotPageRenderState(
                             mockUser(),
                             mockDotRenderedPage()
@@ -720,7 +728,8 @@ describe('DotEditContentComponent', () => {
                         expect(dotPageStateService.setLocalState).toHaveBeenCalledWith(
                             dotRenderedPageStateExpected
                         );
-                        expect(contentPalette).not.toBeNull();
+                        responseData.pop();
+                        expect(contentPalette.items).toEqual(responseData);
                     }));
 
                     it('should handle load-edit-mode-page to internal navigation', fakeAsync(() => {

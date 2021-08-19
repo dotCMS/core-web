@@ -43,6 +43,7 @@ import { IframeOverlayService } from '@components/_common/iframe/service/iframe-
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotContentTypeService } from '@services/dot-content-type';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { DotContainerStructure } from '@models/container/dot-container.model';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -154,7 +155,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.dotLoadingIndicatorService.show();
-        console.log('init');
         this.setInitalData();
         this.subscribeSwitchSite();
         this.subscribeIframeCustomEvents();
@@ -518,17 +518,17 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private setAllowedContentTypes(pageState: DotPageRenderState): void {
         let allowedContent = new Set();
-
-        Object.values(pageState.containers).forEach((val: any) => {
-            Object.values(val.containerStructures).forEach((value: any) => {
-                allowedContent.add(value.contentTypeVar);
-            });
+        Object.values(pageState.containers).forEach((container) => {
+            Object.values(container.containerStructures).forEach(
+                (containerStructure: DotContainerStructure) => {
+                    allowedContent.add(containerStructure.contentTypeVar);
+                }
+            );
         });
 
         this.contentPalletItems = this.contentPalletItems.filter(
             (contentType) =>
                 allowedContent.has(contentType.variable) || contentType.baseType === 'WIDGET'
         );
-        console.log(allowedContent.values());
     }
 }
