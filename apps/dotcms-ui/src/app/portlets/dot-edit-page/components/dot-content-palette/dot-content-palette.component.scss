@@ -36,9 +36,12 @@
 .dot-content-palette__items {
 
     overflow: hidden auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-1;
 
     div {
-        width: 7.2rem;
+        width: 48%;
         height: 5.71rem;
         border: 1px solid $gray-lighter;
         display: inline-flex;
@@ -47,12 +50,7 @@
         align-items: center;
         cursor: grab;
         color: $black;
-        margin-bottom: $spacing-1;
         padding: 0 0.25rem;
-
-        &:nth-child(even) {
-            margin-left: $spacing-1;
-        }
 
         &:hover {
             background: $gray-bg;

@@ -154,7 +154,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.dotLoadingIndicatorService.show();
-
+        console.log('init');
         this.setInitalData();
         this.subscribeSwitchSite();
         this.subscribeIframeCustomEvents();
@@ -431,6 +431,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private renderPage(pageState: DotPageRenderState): void {
         if (this.shouldEditMode(pageState)) {
+            this.setAllowedContentTypes(pageState);
             this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
             this.isEditMode = true;
         } else {
@@ -513,5 +514,21 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     .contentWindow;
                 iframeWindow.draggedContent = contentType;
             });
+    }
+
+    private setAllowedContentTypes(pageState: DotPageRenderState): void {
+        let allowedContent = new Set();
+
+        Object.values(pageState.containers).forEach((val: any) => {
+            Object.values(val.containerStructures).forEach((value: any) => {
+                allowedContent.add(value.contentTypeVar);
+            });
+        });
+
+        this.contentPalletItems = this.contentPalletItems.filter(
+            (contentType) =>
+                allowedContent.has(contentType.variable) || contentType.baseType === 'WIDGET'
+        );
+        console.log(allowedContent.values());
     }
 }
