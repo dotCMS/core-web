@@ -67,6 +67,7 @@ class DotThemeSelectorComponentMock {
 }
 
 const messageServiceMock = new MockDotMessageService({
+    'dot.common.message.saving': 'saving...',
     'dot.common.cancel': 'Cancel',
     'editpage.layout.dialog.edit.page': 'Edit Page',
     'editpage.layout.dialog.edit.template': 'Edit Template',
@@ -81,6 +82,7 @@ const messageServiceMock = new MockDotMessageService({
 let component: DotEditLayoutDesignerComponent;
 let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotThemesService: DotThemesService;
+let dotGlobalMessageService: DotGlobalMessageService;
 
 describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
@@ -149,6 +151,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         fixture = TestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
+        dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         dotThemesService = TestBed.inject(DotThemesService);
     });
 
@@ -195,8 +198,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
-<<<<<<< HEAD
-=======
+
         it('should display unsaved changes message when editing the form.', () => {
             component.form.get('title').setValue('Hello');
             fixture.detectChanges();
@@ -210,7 +212,12 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(component.save.emit).toHaveBeenCalledTimes(1);
         });
 
->>>>>>> 9ef07c8d... fix: test 2
+        it('should display saving.. message when editing the form.', () => {
+            component.form.get('title').setValue('Hello');
+            fixture.detectChanges();
+            expect(dotGlobalMessageService.display).toHaveBeenCalled();
+        });
+
         it('should save changes when editing the form.', fakeAsync( () => {
             spyOn(component.save, 'emit');
             component.form.get('title').setValue('Hello');
