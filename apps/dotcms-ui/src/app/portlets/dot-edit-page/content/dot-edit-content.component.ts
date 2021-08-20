@@ -2,15 +2,7 @@ import { Observable, Subject, fromEvent, merge } from 'rxjs';
 
 import { filter, takeUntil, pluck, take, tap, skip } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import {
-    Component,
-    OnInit,
-    ViewChild,
-    ElementRef,
-    NgZone,
-    OnDestroy,
-    HostBinding
-} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { SiteService } from '@dotcms/dotcms-js';
