@@ -67,6 +67,20 @@ export const mockDotLayout = (): DotLayout => {
 export const mockDotContainers = (): any => {
     return {
         '/default/': {
+            container: processedContainers[0].container,
+            containerStructures: [{ contentTypeVar: 'Banner' }]
+        },
+
+        '/banner/': {
+            container: processedContainers[1].container,
+            containerStructures: [{ contentTypeVar: 'Contact' }]
+        }
+    };
+};
+
+export const processedContainers = [
+    {
+        container: {
             type: 'containers',
             identifier: '5363c6c6-5ba0-4946-b7af-cf875188ac2e',
             name: 'Medium Column (md-1)',
@@ -74,11 +88,11 @@ export const mockDotContainers = (): any => {
             source: CONTAINER_SOURCE.DB,
             parentPermissionable: {
                 hostname: 'demo.dotcms.com'
-            },
-            containerStructures: [{ contentTypeVar: 'Banner' }]
-        },
-
-        '/banner/': {
+            }
+        }
+    },
+    {
+        container: {
             type: 'containers',
             identifier: '56bd55ea-b04b-480d-9e37-5d6f9217dcc3',
             name: 'Large Column (lg-1)',
@@ -87,11 +101,10 @@ export const mockDotContainers = (): any => {
             path: '/container/path',
             parentPermissionable: {
                 hostname: 'demo.dotcms.com'
-            },
-            containerStructures: [{ contentTypeVar: 'Contact' }]
+            }
         }
-    };
-};
+    }
+];
 
 export const mockDotTemplate = () => {
     return {
