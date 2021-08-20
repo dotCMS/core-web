@@ -41,6 +41,7 @@ import {
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
+import { EditingStateService } from '../../../api/services/guards/editing-state.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -89,6 +90,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         private dotThemesService: DotThemesService,
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotMessageService: DotMessageService,
+        private editingStateService: EditingStateService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef
     ) {}
@@ -214,6 +216,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             this.cd.detectChanges();
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.editingStateService.change(_.isEqual(this.form.value, this.initialFormValue));
             if(this.saving && !_.isEqual(this.form.value, this.initialFormValue)){
                 this.dotGlobalMessageService.display(
                     this.dotMessageService.get('dot.common.message.saving'),
@@ -237,6 +240,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             );
 
         this.initialFormValue = _.cloneDeep(this.form.value);
+        this.editingStateService.change(true);
         this.saving = true;
     }
 
