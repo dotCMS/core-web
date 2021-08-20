@@ -106,11 +106,11 @@ describe('DotEditLayoutSidebarComponent', () => {
         const transformedValue = {
             containers: [
                 {
-                    identifier: mockContainers[Object.keys(mockContainers)[0]].identifier,
+                    identifier: mockContainers[Object.keys(mockContainers)[0]].container.identifier,
                     uuid: undefined
                 },
                 {
-                    identifier: mockContainers[Object.keys(mockContainers)[1]].path,
+                    identifier: mockContainers[Object.keys(mockContainers)[1]].container.path,
                     uuid: undefined
                 }
             ],

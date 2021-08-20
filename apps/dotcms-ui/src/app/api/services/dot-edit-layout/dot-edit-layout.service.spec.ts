@@ -220,11 +220,11 @@ describe('DotEditLayoutService', () => {
         const mockContainers = mockDotContainers();
         const rawContainers = [
             {
-                identifier: mockContainers[Object.keys(mockContainers)[0]].identifier,
+                identifier: mockContainers[Object.keys(mockContainers)[0]].container.identifier,
                 uuid: '1234567890'
             },
             {
-                identifier: mockContainers[Object.keys(mockContainers)[1]].path,
+                identifier: mockContainers[Object.keys(mockContainers)[1]].container.path,
                 uuid: '1234567891'
             },
             {
@@ -232,7 +232,6 @@ describe('DotEditLayoutService', () => {
                 uuid: 'INVALID'
             }
         ];
-
         const containerColumnBox: DotContainerColumnBox[] = dotEditLayoutService.getDotLayoutSidebar(
             rawContainers
         );
