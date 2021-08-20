@@ -116,7 +116,7 @@ export class DotThemeSelectorDropdownComponent
                 .pipe(take(1))
                 .subscribe((theme: DotTheme) => {
                     this.value = theme;
-                    this.siteService.getSiteById(this.value.hostId).subscribe((site) => {
+                    this.siteService.getSiteById(this.value.hostId).pipe(take(1)).subscribe((site) => {
                         this.siteSelector?.updateCurrentSite(site);
                     });
                 });
@@ -191,7 +191,7 @@ export class DotThemeSelectorDropdownComponent
     }
 
     private setHostThemes(hostId: string, offset: number = 0) {
-        this.siteService.getSiteById(hostId).subscribe((site: Site) => {
+        this.siteService.getSiteById(hostId).pipe(take(1)).subscribe((site: Site) => {
             this.siteSelector.updateCurrentSite(site);
         });
 
