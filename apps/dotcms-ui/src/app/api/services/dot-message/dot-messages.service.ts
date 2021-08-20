@@ -38,6 +38,7 @@ export class DotMessageService {
                 this.messageMap = keys;
             }
         }
+        console.log(this.messageMap);
     }
 
     /**

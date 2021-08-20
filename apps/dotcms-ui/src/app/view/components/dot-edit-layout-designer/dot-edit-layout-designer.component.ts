@@ -40,6 +40,8 @@ import {
 } from '@models/dot-edit-layout-designer';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { HostListener } from '@angular/core';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -69,6 +71,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     @Output()
     save: EventEmitter<Event> = new EventEmitter();
 
+    saving = true;
     form: FormGroup;
     initialFormValue: any;
     themeDialogVisibility = false;
@@ -94,6 +97,8 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
+        private dotGlobalMessageService: DotGlobalMessageService,
+        private dotMessageService: DotMessageService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef
     ) {}
@@ -214,8 +219,17 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(10000)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
+                this.saving = false;
             }
             this.cd.detectChanges();
+        });
+        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            if(this.saving && !_.isEqual(this.form.value, this.initialFormValue)){
+                this.dotGlobalMessageService.display(
+                    this.dotMessageService.get('dot.common.message.saving'),
+                    true
+                );
+            }
         });
         this.updateModel();
     }
@@ -233,6 +247,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             );
 
         this.initialFormValue = _.cloneDeep(this.form.value);
+        this.saving = true;
     }
 
     private createSidebarForm(): DotLayoutSideBar {

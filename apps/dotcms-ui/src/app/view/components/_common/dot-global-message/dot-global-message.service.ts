@@ -19,11 +19,12 @@ export class DotGlobalMessageService {
     /**
      * Display text messages.
      * @param string message
+     * @param boolean noTime
      */
-    display(message?: string): void {
+    display(message?: string, noTime?: boolean): void {
         this.dotEventsService.notify('dot-global-message', {
             value: message ? message : this.dotMessageService.get('dot.common.message.loaded'),
-            life: this.messageLife
+            life: noTime ? undefined : this.messageLife
         });
     }
 

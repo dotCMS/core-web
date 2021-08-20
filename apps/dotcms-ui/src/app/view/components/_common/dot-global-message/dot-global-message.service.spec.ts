@@ -50,6 +50,14 @@ xdescribe('DotGlobalMessageService', () => {
         });
     });
 
+    it('should not have life if noTime is true for the Display scenario', (done) => {
+        dotGlobalMessageService.display('test', true);
+        listenerDotGlobalMessage.subscribe((event: DotEvent) => {
+            expect(event.data).toEqual({ value: 'test', life: undefined });
+            done();
+        });
+    });
+
     it('should set the default DotGlobalMessage Object for the Loading scenario', (done) => {
         dotGlobalMessageService.loading();
         listenerDotGlobalMessage.subscribe((event: DotEvent) => {
