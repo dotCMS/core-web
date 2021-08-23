@@ -32,6 +32,7 @@ import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
+import { DotDialogModule } from '../dot-dialog/dot-dialog.module';
 
 @NgModule({
     declarations: [DotEditLayoutDesignerComponent],
@@ -55,7 +56,8 @@ import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.
         TooltipModule,
         DotSecondaryToolbarModule,
         DotPipesModule,
-        DotLayoutDesignerModule
+        DotLayoutDesignerModule,
+        DotDialogModule
     ],
     exports: [DotEditLayoutDesignerComponent],
     providers: [DotEditLayoutService, DotPageLayoutService, DotTemplateContainersCacheService]

@@ -57,3 +57,13 @@
     </dot-secondary-toolbar>
     <dot-layout-designer formGroupName="layout"></dot-layout-designer>
 </form>
+
+<dot-dialog
+    #dialog
+    [header]="dialogHeader"
+    [(visible)]="dialogDisplay"
+    [width]="800"
+    [closeable]="true"
+>
+<p>This can take a few seconds.</p>
+</dot-dialog>

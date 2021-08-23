@@ -42,7 +42,7 @@ import { DotPageContainer } from '@models/dot-page-container/dot-page-container.
 import { HostListener } from '@angular/core';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { EditingStateService } from '../../../api/services/guards/editing-state.service';
+import { CanDesactiveGuardService } from '@services/guards/can-deactivate-guard.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -72,10 +72,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     @Output()
     save: EventEmitter<Event> = new EventEmitter();
 
-    saving = true;
     form: FormGroup;
     initialFormValue: any;
     themeDialogVisibility = false;
+    dialogDisplay = false;
+    dialogHeader: string;
+    unSaved = true;
     currentTheme: DotTheme;
 
     saveAsTemplate: boolean;
@@ -100,13 +102,18 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         private dotThemesService: DotThemesService,
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotMessageService: DotMessageService,
-        private editingStateService: EditingStateService,
+        private canDesactiveGuardService: CanDesactiveGuardService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
         this.setupLayout();
+        this.dialogHeader = this.dotMessageService.get('dot.common.message.saving');
+        this.canDesactiveGuardService.showAlert$.subscribe(resp => {
+            this.dialogDisplay = resp;
+            this.cd.detectChanges();
+        })
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -221,13 +228,14 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(10000)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
-                this.saving = false;
+                this.unSaved = false;
             }
             this.cd.detectChanges();
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.editingStateService.change(_.isEqual(this.form.value, this.initialFormValue));
-            if(this.saving && !_.isEqual(this.form.value, this.initialFormValue)){
+            const isEqual = _.isEqual(this.form.value, this.initialFormValue)
+            this.canDesactiveGuardService.changeState(isEqual);
+            if(this.unSaved && !isEqual){
                 this.dotGlobalMessageService.display(
                     this.dotMessageService.get('dot.common.message.saving'),
                     true
@@ -250,8 +258,8 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             );
 
         this.initialFormValue = _.cloneDeep(this.form.value);
-        this.editingStateService.change(true);
-        this.saving = true;
+        this.canDesactiveGuardService.changeState(true);
+        this.unSaved = true;
     }
 
     private createSidebarForm(): DotLayoutSideBar {
