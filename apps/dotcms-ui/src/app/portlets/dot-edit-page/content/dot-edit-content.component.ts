@@ -44,6 +44,7 @@ import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler
 import { DotContentTypeService } from '@services/dot-content-type';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -278,7 +279,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private saveContent(event: PageModelChangeEvent): void {
         this.saveToPage(event.model)
             .pipe(
-                filter((message) => {
+                filter((message: string) => {
                     return this.shouldReload(event.type) || message === 'error';
                 })
             )
@@ -307,7 +308,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                         this.dotMessageService.get('dot.common.message.saved')
                     );
                 }),
-                catchError((error) => {
+                catchError((error: HttpErrorResponse) => {
                     this.httpErrorManagerService.handle(error);
                     return of('error');
                 })
