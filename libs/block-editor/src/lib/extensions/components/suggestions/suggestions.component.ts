@@ -7,6 +7,11 @@ import { SuggestionsService } from '../../services/suggestions.service';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 
+export interface SuggestionsCommandProps {
+    payload?: DotCMSContentlet;
+    type: { name: string; level?: number };
+}
+
 @Component({
     selector: 'dotcms-suggestions',
     templateUrl: './suggestions.component.html',
@@ -15,19 +20,12 @@ import { SuggestionListComponent } from '../suggestion-list/suggestion-list.comp
 export class SuggestionsComponent implements OnInit {
     @ViewChild('list', { static: true }) list: SuggestionListComponent;
 
-    @Input() command: ({
-        payload,
-        type
-    }: {
-        payload?: DotCMSContentlet;
-        type: { name: string; level?: number };
-    }) => void;
+    @Input() onSelection: (props: SuggestionsCommandProps) => void;
     items: MenuItem[] = [];
 
     title = 'Select a block';
 
-    constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {
-    }
+    constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         const headings = [...Array(3).keys()].map((level) => {
@@ -36,7 +34,7 @@ export class SuggestionsComponent implements OnInit {
                 label: `Heading ${size}`,
                 icon: `/assets/block-editor/h${size}.svg`,
                 command: () => {
-                    this.command({
+                    this.onSelection({
                         type: {
                             name: 'heading',
                             level: level + 1
@@ -51,7 +49,7 @@ export class SuggestionsComponent implements OnInit {
                 label: 'Paragraph',
                 icon: `/assets/block-editor/p.svg`,
                 command: () => {
-                    this.command({
+                    this.onSelection({
                         type: {
                             name: 'paragraph'
                         }
@@ -65,7 +63,7 @@ export class SuggestionsComponent implements OnInit {
                 label: 'List Ordered',
                 icon: `/assets/block-editor/ol.svg`,
                 command: () => {
-                    this.command({
+                    this.onSelection({
                         type: {
                             name: 'listOrdered'
                         }
@@ -76,7 +74,7 @@ export class SuggestionsComponent implements OnInit {
                 label: 'List Unordered',
                 icon: `/assets/block-editor/ul.svg`,
                 command: () => {
-                    this.command({
+                    this.onSelection({
                         type: {
                             name: 'listUnordered'
                         }
@@ -143,19 +141,21 @@ export class SuggestionsComponent implements OnInit {
      * @memberof SuggestionsComponent
      */
     onMouseEnter(e: MouseEvent) {
+        e.preventDefault();
         const index = Number((e.target as HTMLElement).dataset.index);
         this.list.updateActiveItem(index);
     }
 
     /**
-     * Execute the item command on click
+     * Execute the item command on mouse down
      *
      * @param {MouseEvent} e
      * @param {MenuItem} item
      * @memberof SuggestionsComponent
      */
-    onClick(e: MouseEvent, item: MenuItem) {
-        item.command()
+    onMouseDown(e: MouseEvent, item: MenuItem) {
+        e.preventDefault();
+        item.command();
     }
 
     private initContentletSelection() {
@@ -165,19 +165,19 @@ export class SuggestionsComponent implements OnInit {
                 map((items) => {
                     return items.map((item) => {
                         return {
-                            label: item['name'],
-                            icon: item['icon'],
+                            label: item.name,
+                            icon: item.icon,
                             command: () => {
                                 this.suggestionsService
-                                    .getContentlets(item['variable'])
+                                    .getContentlets(item.variable)
                                     .pipe(take(1))
                                     .subscribe((contentlets) => {
                                         this.items = contentlets.map((contentlet) => {
                                             return {
-                                                label: contentlet['title'],
+                                                label: contentlet.title,
                                                 icon: 'image',
                                                 command: () => {
-                                                    this.command({
+                                                    this.onSelection({
                                                         payload: contentlet,
                                                         type: {
                                                             name: 'dotContent'
@@ -187,7 +187,7 @@ export class SuggestionsComponent implements OnInit {
                                             };
                                         });
 
-                                        this.title = 'Select a contentlet'
+                                        this.title = 'Select a contentlet';
                                         this.cd.detectChanges();
                                         this.resetKeyManager();
                                     });
@@ -198,7 +198,7 @@ export class SuggestionsComponent implements OnInit {
                 take(1)
             )
             .subscribe((items) => {
-                this.title = 'Select a content type'
+                this.title = 'Select a content type';
                 this.items = items;
                 this.cd.detectChanges();
                 this.resetKeyManager();

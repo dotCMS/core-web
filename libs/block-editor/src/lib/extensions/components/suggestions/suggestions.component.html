@@ -3,7 +3,7 @@
 <dotcms-suggestion-list #list>
     <dotcms-suggestions-list-item
         *ngFor="let item of items; let i = index"
-        (click)="onClick($event, item)"
+        (mousedown)="onMouseDown($event, item)"
         (mouseenter)="onMouseEnter($event)"
         [command]="item.command"
         [index]="i"

@@ -6,8 +6,16 @@ import Suggestion, { SuggestionOptions, SuggestionProps } from '@tiptap/suggesti
 
 import tippy, { GetReferenceClientRect } from 'tippy.js';
 
-import { FloatingActionsPlugin, FloatingActionsProps, FLOATING_ACTIONS_MENU_KEYBOARD } from '../plugins/floating.plugin';
-import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import {
+    FloatingActionsKeydownProps,
+    FloatingActionsPlugin,
+    FloatingActionsProps,
+    FLOATING_ACTIONS_MENU_KEYBOARD
+} from '../plugins/floating.plugin';
+import {
+    SuggestionsCommandProps,
+    SuggestionsComponent
+} from './components/suggestions/suggestions.component';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 
 declare module '@tiptap/core' {
@@ -43,7 +51,7 @@ function getTippyInstance({
     element: Element;
     content: Element;
     rect: GetReferenceClientRect;
-    onHide?: () => void
+    onHide?: () => void;
 }) {
     return tippy(element, {
         appendTo: document.body,
@@ -65,7 +73,7 @@ function execCommand({
 }: {
     editor: Editor;
     range: Range;
-    props: { type: { name: string; level?: number }; payload: unknown };
+    props: SuggestionsCommandProps;
 }) {
     const whatToDo = {
         dotContent: () => {
@@ -75,39 +83,54 @@ function execCommand({
             editor.chain().addHeading({ range, type: props.type }).run();
         },
         listOrdered: () => {
-            editor.chain().deleteRange(range).toggleOrderedList().focus().run()
+            editor.chain().deleteRange(range).toggleOrderedList().focus().run();
         },
         listUnordered: () => {
-            editor.chain().deleteRange(range).toggleBulletList().focus().run()
+            editor.chain().deleteRange(range).toggleBulletList().focus().run();
         }
-    }
+    };
 
-    whatToDo[props.type.name] ? whatToDo[props.type.name]() : editor.chain().setTextSelection(range).focus().run();
+    whatToDo[props.type.name]
+        ? whatToDo[props.type.name]()
+        : editor.chain().setTextSelection(range).focus().run();
 }
 
 export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
     let myTippy;
-    let menu: ComponentRef<SuggestionsComponent>;
+    let suggestionsComponent: ComponentRef<SuggestionsComponent>;
 
-    function onStart(props: SuggestionProps | FloatingActionsProps) {
-        menu = getSuggestionComponent(injector, resolver);
-        menu.instance.command = props.command;
-        menu.instance.setFirstItemActive();
+    /**
+     * Get's called on button click or suggestion char
+     *
+     * @param {(SuggestionProps | FloatingActionsProps)} { editor, range, clientRect }
+     */
+    function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
+        suggestionsComponent = getSuggestionComponent(injector, resolver);
+        suggestionsComponent.instance.onSelection = (item) => {
+            execCommand({ editor: editor, range: range, props: item });
+        };
+        suggestionsComponent.instance.setFirstItemActive();
 
         myTippy = getTippyInstance({
-            element: props.editor.view.dom,
-            content: menu.location.nativeElement,
-            rect: props.clientRect,
+            element: editor.view.dom,
+            content: suggestionsComponent.location.nativeElement,
+            rect: clientRect,
             onHide: () => {
-                const transaction = props.editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
-                    open: false,
-                })
-                props.editor.view.dispatch(transaction)
+                const transaction = editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
+                    open: false
+                });
+                editor.view.dispatch(transaction);
             }
         });
     }
 
-    function onKeyDown({ event }) {
+    /**
+     * Handle the keyboard events when the suggestion are opened
+     *
+     * @param {FloatingActionsKeydownProps} { event }
+     * @return {*}  {boolean}
+     */
+    function onKeyDown({ event }: FloatingActionsKeydownProps): boolean {
         const { key } = event;
 
         if (key === 'Escape') {
@@ -116,18 +139,21 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
         }
 
         if (key === 'Enter') {
-            menu.instance.execCommand();
+            suggestionsComponent.instance.execCommand();
             return true;
         }
 
         if (key === 'ArrowDown' || key === 'ArrowUp') {
-            menu.instance.updateSelection(event);
+            suggestionsComponent.instance.updateSelection(event);
             return true;
         }
 
         return false;
     }
 
+    function onExit() {
+        myTippy?.destroy();
+    }
 
     return Extension.create<FloatingMenuOptions>({
         name: 'actionsMenu',
@@ -137,14 +163,11 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
                 char: '/c',
                 allowSpaces: true,
                 startOfLine: true,
-                command: execCommand,
                 render: () => {
                     return {
                         onStart,
                         onKeyDown,
-                        onExit: () => {
-                            myTippy.destroy();
-                        },
+                        onExit
                     };
                 }
             }
@@ -182,14 +205,16 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
 
             return [
                 FloatingActionsPlugin({
+                    command: execCommand,
                     editor: this.editor,
                     element: button.location.nativeElement,
                     render: () => {
                         return {
                             onStart,
-                            onKeyDown
-                        }
-                    },
+                            onKeyDown,
+                            onExit
+                        };
+                    }
                 }),
                 Suggestion({
                     editor: this.editor,
