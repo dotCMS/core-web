@@ -308,6 +308,10 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('elements', () => {
+        beforeEach(() => {
+            spyOn<any>(dotEditPageService, 'save').and.returnValue(of({}));
+        });
+
         describe('dot-form-selector', () => {
             let dotFormSelector: DebugElement;
 
