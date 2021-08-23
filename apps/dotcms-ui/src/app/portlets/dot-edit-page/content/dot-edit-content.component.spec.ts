@@ -308,10 +308,6 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('elements', () => {
-        beforeEach(() => {
-            spyOn<any>(dotEditPageService, 'save').and.returnValue(of({}));
-        });
-
         describe('dot-form-selector', () => {
             let dotFormSelector: DebugElement;
 
@@ -1147,17 +1143,6 @@ describe('DotEditContentComponent', () => {
     describe('errors', () => {
         let httpErrorManagerService: DotHttpErrorManagerService;
         beforeEach(() => {
-            route.parent.parent.data = of({
-                content: new DotPageRenderState(
-                    mockUser(),
-                    new DotPageRender({
-                        ...mockDotRenderedPage(),
-                        viewAs: {
-                            mode: DotPageMode.EDIT
-                        }
-                    })
-                )
-            });
             httpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
         });
 
