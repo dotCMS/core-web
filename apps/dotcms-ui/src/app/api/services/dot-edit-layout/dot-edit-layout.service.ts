@@ -30,7 +30,6 @@ export class DotEditLayoutService {
 
     constructor(private templateContainersCacheService: DotTemplateContainersCacheService) {}
 
-
     get showAlert$() {
         return this._showMessage;
     }
