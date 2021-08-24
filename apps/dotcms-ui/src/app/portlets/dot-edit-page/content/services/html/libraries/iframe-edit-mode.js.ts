@@ -317,11 +317,23 @@ export const EDIT_PAGE_JS = `
         }
     }
 
+     function dotCustomScroll (step) {
+        var scrollY = $(window).scrollTop();
+        $(window).scrollTop(scrollY + step);
+    }
+
     function dragOverEvent(event) {
         event.preventDefault();
         event.stopPropagation();
         const container = event.target.closest('[data-dot-object="container"]');
         const contentlet = event.target.closest('[data-dot-object="contentlet"]');
+
+        if (event.clientY < 150) {
+            dotCustomScroll(-10)
+        }
+        if (event.clientY > (document.body.clientHeight - 150)) {
+            dotCustomScroll(10)
+        }
 
         if (contentlet) {
 
@@ -354,7 +366,6 @@ export const EDIT_PAGE_JS = `
     function dragLeaveEvent(event) {
         event.preventDefault();
         event.stopPropagation();
-
         const container = event.target.closest('[data-dot-object="container"]');
 
         if (container && currentContainer !== container) {

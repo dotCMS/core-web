@@ -52,8 +52,7 @@
     display: grid;
     flex-wrap: wrap;
     grid-template-columns: 1fr 1fr;
-    column-gap: $spacing-1;
-    row-gap: $spacing-1;
+    grid-gap: $spacing-1;
 
     div {
         border: 1px solid $gray-lighter;
