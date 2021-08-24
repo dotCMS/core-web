@@ -118,10 +118,10 @@ export class FloatingActionsView {
      *
      * @param {EditorView} view
      * @param {EditorState} prevState
-     * @return {*}
+     * @return {*}  {void}
      * @memberof FloatingActionsView
      */
-    update(view: EditorView, prevState: EditorState) {
+    update(view: EditorView, prevState: EditorState): void {
         const { selection } = view.state;
         const { $anchor, empty, from, to } = selection;
         const isRootDepth = $anchor.depth === 1;
@@ -212,6 +212,13 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
             }
         },
         props: {
+            /**
+             * Catch and handle the keydown in the plugin
+             *
+             * @param {EditorView} view
+             * @param {KeyboardEvent} event
+             * @return {*}
+             */
             handleKeyDown(view: EditorView, event: KeyboardEvent) {
                 const { open, range } = this.getState(view.state);
                 if (!open) {
