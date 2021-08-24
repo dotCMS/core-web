@@ -19,7 +19,7 @@ export class DotGlobalMessageService {
     /**
      * Display text messages.
      * @param string message
-     * @param boolean noTime
+     * @param boolean [noTime]
      */
     display(message?: string, noTime?: boolean): void {
         this.dotEventsService.notify('dot-global-message', {

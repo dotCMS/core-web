@@ -373,37 +373,6 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
     });
 
-    describe('beforeunload', () => {
-        beforeEach(() => {
-            component.layout = mockDotLayout();
-            component.theme = '123';
-            fixture.detectChanges();
-            window.onbeforeunload = jasmine.createSpy();
-        });
-        it('Should call saveChangesOnUnload before unload.', () => {
-            spyOn( component, 'saveChangesOnUnload');
-            window.dispatchEvent(new Event('beforeunload'));
-
-            expect(component.saveChangesOnUnload).toHaveBeenCalled();
-        });
-
-        it('Should save changes when the form was edited before unload.', () => {
-            component.form.get('title').setValue('Hello');            
-            fixture.detectChanges();
-            
-            spyOn( component, 'onSave');
-            component.saveChangesOnUnload();
-
-            expect(component.onSave).toHaveBeenCalled();
-        });
-
-        it('Should not save changes when the form was not edited before unload.', () => {
-            spyOn( component, 'onSave');
-            component.saveChangesOnUnload();
-            expect(component.onSave).not.toHaveBeenCalled();
-        });
-    });
-
     afterEach(() => {
         cleanUpDialog(fixture);
     });
