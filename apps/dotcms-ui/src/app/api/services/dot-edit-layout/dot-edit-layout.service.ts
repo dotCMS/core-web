@@ -20,23 +20,25 @@ import { DotPageContainer } from '@models/dot-page-container/dot-page-container.
  *
  * @class DotEditLayoutService
  */
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class DotEditLayoutService {
     private _addGridBox: Subject<boolean> = new Subject();
     private _canBeDesactivated = new BehaviorSubject(true);
     private _showMessage = new BehaviorSubject(false);
-  
+
     constructor(private templateContainersCacheService: DotTemplateContainersCacheService) {}
 
-  
+
     get showAlert$() {
         return this._showMessage;
     }
-    
+
     get canBeDesactivated$() {
         return this._canBeDesactivated;
     }
-  
+
     /**
      *
      *
@@ -46,7 +48,7 @@ export class DotEditLayoutService {
     changeState(next: boolean) {
         this._canBeDesactivated.next(next);
     }
-  
+
     /**
      *
      *
