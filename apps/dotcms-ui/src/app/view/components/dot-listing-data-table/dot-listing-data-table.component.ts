@@ -213,8 +213,10 @@ export class DotListingDataTableComponent implements OnInit {
     private formatData(items: any[]): any[] {
         return items.map((item) => {
             this.dateColumns.forEach(
-                (col) =>
-                    (item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName]))
+                (col) => {
+                    debugger
+                    return (item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName]))
+                }
             );
             return item;
         });

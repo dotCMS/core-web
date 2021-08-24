@@ -76,7 +76,8 @@ export class DotMessageService {
             {},
             ...relativeDateKeys.map((p) => ({ [p.split('.')[1]]: this.messageMap[p] }))
         );
-        this.formatDateService.setLang(languageId.split('_')[0], relativeDateMessages);
+        // this.formatDateService.setLang(languageId.split('_')[0], relativeDateMessages);
+        this.formatDateService.setLang(languageId.split('_')[0]);
     }
 
     private getAll(lang: string): void {

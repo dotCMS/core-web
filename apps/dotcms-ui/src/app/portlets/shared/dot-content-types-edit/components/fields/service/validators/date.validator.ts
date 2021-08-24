@@ -1,5 +1,4 @@
-import * as moment from 'moment';
-
+import { isValid, parse } from 'date-fns';
 import { FormControl } from '@angular/forms';
 
 const format = {
@@ -33,7 +32,9 @@ export function validateDateDefaultValue(formControl: FormControl) {
 
 function isValueValid(formControl: FormControl): boolean {
     const clazz: string = formControl.parent.controls['clazz'].value;
+    debugger;
     return format[clazz]
-        ? moment(formControl.value, format[clazz], true).isValid() || formControl.value === 'now'
+        ? isValid(parse(formControl.value, format[clazz], new Date())) ||
+              formControl.value === 'now'
         : true;
 }

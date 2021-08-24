@@ -69,6 +69,7 @@
         "chart.js": "^2.9.4",
         "core-js": "^3.9.1",
         "cross-fetch": "^3.1.1",
+        "date-fns": "^2.23.0",
         "dom-autoscroller": "^2.3.4",
         "font-awesome": "^4.7.0",
         "lodash": "^4.17.20",
