@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 export interface CanDeactivateGuarded {
-  canDeactivate: () =>  Observable<boolean>;
+    canDeactivate: () => Observable<boolean>;
 }
 
 /**
@@ -16,28 +16,27 @@ export interface CanDeactivateGuarded {
  * @implements {CanDeactivate<CanDeactivateGuarded>}
  */
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LayoutEditorCanDeactivateGuardService implements CanDeactivate<CanDeactivateGuarded> {
+    constructor(
+        // private pruebaService: PruebaService,
+        private dotEditLayoutService: DotEditLayoutService
+    ) {}
 
-  constructor(
-    // private pruebaService: PruebaService,
-    private dotEditLayoutService: DotEditLayoutService,
-  ) {}
-  
-  /**
-   *
-   *
-   * @return {*}  {Observable<boolean>}
-   * @memberof LayoutEditorCanDeactivateGuardService
-   */
-  canDeactivate(): Observable<boolean>{
-      return this.dotEditLayoutService.canBeDesactivated$.pipe(
-        filter(res => {
-          console.log('Guard:', res);
-          this.dotEditLayoutService.changeStateAlert(true);
-          return res;
-        })
-      )
+    /**
+     *
+     *
+     * @return {*}  {Observable<boolean>}
+     * @memberof LayoutEditorCanDeactivateGuardService
+     */
+    canDeactivate(): Observable<boolean> {
+        return this.dotEditLayoutService.canBeDesactivated$.pipe(
+            filter((res) => {
+                console.log('Guard:', res);
+                this.dotEditLayoutService.changeStateAlert(true);
+                return res;
+            })
+        );
     }
 }

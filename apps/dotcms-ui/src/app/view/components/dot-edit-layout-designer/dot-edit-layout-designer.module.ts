@@ -29,9 +29,9 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 
 // @portlets
-import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
+// import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
-import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
+// import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 import { DotDialogModule } from '../dot-dialog/dot-dialog.module';
 
 @NgModule({
@@ -60,6 +60,6 @@ import { DotDialogModule } from '../dot-dialog/dot-dialog.module';
         DotDialogModule
     ],
     exports: [DotEditLayoutDesignerComponent],
-    providers: [DotEditLayoutService, DotPageLayoutService, DotTemplateContainersCacheService]
+    providers: [DotPageLayoutService]
 })
 export class DotEditLayoutDesignerModule {}
