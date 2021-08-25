@@ -4,6 +4,7 @@ import { CoreWebService, ResponseView, SiteService } from '@dotcms/dotcms-js';
 import { pluck, mergeMap } from 'rxjs/operators';
 import { format, subDays } from 'date-fns';
 import { DotCDNStats, PurgeReturnData, PurgeUrlOptions } from './app.models';
+
 @Injectable({
     providedIn: 'root'
 })

@@ -32,7 +32,6 @@ export function validateDateDefaultValue(formControl: FormControl) {
 
 function isValueValid(formControl: FormControl): boolean {
     const clazz: string = formControl.parent.controls['clazz'].value;
-    debugger;
     return format[clazz]
         ? isValid(parse(formControl.value, format[clazz], new Date())) ||
               formControl.value === 'now'
