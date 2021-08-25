@@ -318,8 +318,10 @@ export const EDIT_PAGE_JS = `
     }
 
      function dotCustomScroll (step) {
-        var scrollY = window.scrollY;
-        window.scrollTo(0, scrollY + step);
+        window.scrollBy({
+          top: step,
+          behaviour: 'smooth'
+        })
     }
 
     function dragOverEvent(event) {
@@ -329,10 +331,10 @@ export const EDIT_PAGE_JS = `
         const contentlet = event.target.closest('[data-dot-object="contentlet"]');
 
         if (event.clientY < 150) {
-            dotCustomScroll(-15)
+            dotCustomScroll(-10)
         }
         if (event.clientY > (document.body.clientHeight - 150)) {
-            dotCustomScroll(15)
+            dotCustomScroll(10)
         }
 
         if (contentlet) {
