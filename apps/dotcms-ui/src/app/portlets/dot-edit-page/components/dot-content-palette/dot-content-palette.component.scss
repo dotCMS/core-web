@@ -1,7 +1,6 @@
 @use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
 
 :host {
-    position: relative;
     width: $content-palette-width;
     min-width: $content-palette-width;
     display: flex;

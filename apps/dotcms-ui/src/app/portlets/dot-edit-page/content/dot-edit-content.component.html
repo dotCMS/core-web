@@ -68,7 +68,7 @@
     </dot-content-palette>
     <div class="dot-edit-content__palette-visibility"
          data-testId="palette-visibility"
-         (click)='handleVisibility()'>
-        <dot-icon size='22' [name]="paletteControlIcon"></dot-icon>
+         (click)='paletteCollapsed = !paletteCollapsed'>
+        <dot-icon size='22' [name]="paletteCollapsed ? 'chevron_left' : 'chevron_right' "></dot-icon>
     </div>
 </div>

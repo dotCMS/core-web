@@ -329,10 +329,10 @@ export const EDIT_PAGE_JS = `
         const contentlet = event.target.closest('[data-dot-object="contentlet"]');
 
         if (event.clientY < 150) {
-            dotCustomScroll(-10)
+            dotCustomScroll(-15)
         }
         if (event.clientY > (document.body.clientHeight - 150)) {
-            dotCustomScroll(10)
+            dotCustomScroll(15)
         }
 
         if (contentlet) {

@@ -52,7 +52,6 @@ import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/d
 })
 export class DotEditContentComponent implements OnInit, OnDestroy {
     @ViewChild('iframe') iframe: ElementRef;
-    @ViewChild('palette') palette: DotContentPaletteComponent;
 
     contentletActionsUrl: SafeResourceUrl;
     pageState$: Observable<DotPageRenderState>;
@@ -64,7 +63,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     dotPageMode = DotPageMode;
     contentPalletItems: DotCMSContentType[] = [];
     isEditMode: boolean = false;
-    paletteControlIcon = 'chevron_right';
     paletteCollapsed = false;
 
     private readonly customEventsHandler;
@@ -250,17 +248,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     handleCloseAction(): void {
         this.dotEditContentHtmlService.removeContentletPlaceholder();
-    }
-
-    /**
-     * Show and hide the the content types.
-     *
-     * @memberof DotEditContentComponent
-     */
-    handleVisibility(): void {
-        this.paletteControlIcon =
-            this.paletteControlIcon === 'chevron_right' ? 'chevron_left' : 'chevron_right';
-        this.paletteCollapsed = !this.paletteCollapsed;
     }
 
     private isInternallyNavigatingToSamePage(url: string): boolean {
