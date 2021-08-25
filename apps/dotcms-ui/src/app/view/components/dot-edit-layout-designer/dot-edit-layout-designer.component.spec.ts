@@ -83,6 +83,7 @@ let component: DotEditLayoutDesignerComponent;
 let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotThemesService: DotThemesService;
 let dotGlobalMessageService: DotGlobalMessageService;
+let dotEditLayoutService: DotEditLayoutService;
 
 describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
@@ -141,7 +142,8 @@ describe('DotEditLayoutDesignerComponent', () => {
                 {
                     provide: DotGlobalMessageService,
                     useValue: {
-                        display: jasmine.createSpy()
+                        display: jasmine.createSpy(),
+                        loading: jasmine.createSpy()
                     }
                 }
             ]
@@ -151,6 +153,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         component = fixture.componentInstance;
         dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         dotThemesService = TestBed.inject(DotThemesService);
+        dotEditLayoutService = TestBed.inject(DotEditLayoutService);
     });
 
     describe('edit layout', () => {
@@ -200,6 +203,13 @@ describe('DotEditLayoutDesignerComponent', () => {
             component.form.get('title').setValue('Hello');
             fixture.detectChanges();
             expect(dotGlobalMessageService.display).toHaveBeenCalled();
+        });
+
+        fit('should save changes when showMessage is true', () => {
+            spyOn(component.save, 'emit');
+            dotEditLayoutService.changeStateAlert(true);
+            fixture.detectChanges();
+            expect(component.save.emit).toHaveBeenCalledTimes(1);
         });
 
         it('should save changes when editing the form.', fakeAsync( () => {
