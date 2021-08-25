@@ -34,8 +34,8 @@ import {
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotContentTypeService } from '@services/dot-content-type';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { DotContainerStructure } from '@models/container/dot-container.model';
+import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -48,22 +48,11 @@ import { DotContainerStructure } from '@models/container/dot-container.model';
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
-    styleUrls: ['./dot-edit-content.component.scss'],
-    animations: [
-        trigger('enterAnimation', [
-            transition(':enter', [
-                style({ transform: 'translateX(100%)', opacity: 0 }),
-                animate('150ms ease-in-out', style({ transform: 'translateX(0)', opacity: 1 }))
-            ]),
-            transition(':leave', [
-                style({ transform: 'translateX(0)', opacity: 1 }),
-                animate('150ms ease-in-out', style({ transform: 'translateX(100%)', opacity: 0 }))
-            ])
-        ])
-    ]
+    styleUrls: ['./dot-edit-content.component.scss']
 })
 export class DotEditContentComponent implements OnInit, OnDestroy {
     @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('palette') palette: DotContentPaletteComponent;
 
     contentletActionsUrl: SafeResourceUrl;
     pageState$: Observable<DotPageRenderState>;
@@ -75,6 +64,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     dotPageMode = DotPageMode;
     contentPalletItems: DotCMSContentType[] = [];
     isEditMode: boolean = false;
+    paletteControlIcon = 'chevron_right';
+    paletteCollapsed = false;
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -259,6 +250,17 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     handleCloseAction(): void {
         this.dotEditContentHtmlService.removeContentletPlaceholder();
+    }
+
+    /**
+     * Show and hide the the content types.
+     *
+     * @memberof DotEditContentComponent
+     */
+    handleVisibility(): void {
+        this.paletteControlIcon =
+            this.paletteControlIcon === 'chevron_right' ? 'chevron_left' : 'chevron_right';
+        this.paletteCollapsed = !this.paletteCollapsed;
     }
 
     private isInternallyNavigatingToSamePage(url: string): boolean {
@@ -453,7 +455,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             tap((pageState: DotPageRenderState) => {
                 this.pageStateInternal = pageState;
                 this.showIframe = false;
-
                 // In order to get the iframe clean up we need to remove it and then re-add it to the DOM
                 setTimeout(() => {
                     this.showIframe = true;

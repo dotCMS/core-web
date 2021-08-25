@@ -2,7 +2,6 @@ import {
     Component,
     ElementRef,
     EventEmitter,
-    HostBinding,
     Input,
     OnDestroy,
     OnInit,
@@ -22,9 +21,7 @@ import { DotContentletEditorService } from '@components/dot-contentlet-editor/se
 export class DotContentPaletteComponent implements OnInit, OnDestroy {
     @Input() items: DotCMSContentType[] = [];
     @Output() filterChange: EventEmitter<string> = new EventEmitter();
-    @HostBinding('class.collapsed') collapsed = false;
     @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
-    icon = 'chevron_right';
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -46,16 +43,6 @@ export class DotContentPaletteComponent implements OnInit, OnDestroy {
      */
     dragStart(contentType: DotCMSContentType): void {
         this.dotContentletEditorService.setDraggedContentType(contentType);
-    }
-
-    /**
-     * Show and hide the the content types.
-     *
-     * @memberof DotContentPaletteComponent
-     */
-    handleVisibility(): void {
-        this.icon = this.icon === 'chevron_right' ? 'chevron_left' : 'chevron_right';
-        this.collapsed = !this.collapsed;
     }
 
     ngOnDestroy(): void {

@@ -111,19 +111,4 @@ describe('DotContentPaletteComponent', () => {
             data[0] as DotCMSContentType
         );
     });
-    it('should set and unset class on palette collapse', () => {
-        component.items = (data as unknown) as DotCMSContentType[];
-        fixture.detectChanges();
-        const visibilityButton = fixture.debugElement.query(By.css('[data-testId="visibility"]'));
-        expect(fixture.nativeElement.classList.contains('collapsed')).toEqual(false);
-        expect(component.icon).toEqual('chevron_right');
-        visibilityButton.triggerEventHandler('click', {});
-        fixture.detectChanges();
-        expect(fixture.nativeElement.classList.contains('collapsed')).toEqual(true);
-        expect(component.icon).toEqual('chevron_left');
-        visibilityButton.triggerEventHandler('click', {});
-        fixture.detectChanges();
-        expect(fixture.nativeElement.classList.contains('collapsed')).toEqual(false);
-        expect(component.icon).toEqual('chevron_right');
-    });
 });

@@ -15,7 +15,7 @@
 <div class="dot-content-palette__items" *ngIf="items.length; else noResults">
     <div *ngFor="let item of items" draggable="true"
          data-testId="paletteItems"
-        (dragstart)="dragStart(item)" >
+         (dragstart)="dragStart(item)" >
         <dot-icon size="30" [name]="item.icon"></dot-icon>
         <span>{{item.name}}</span>
     </div>
@@ -23,8 +23,5 @@
 <ng-template #noResults>
     <span class="dot-content-palette__empty" >{{'No-Results' | dm}}</span>
 </ng-template>
-<div class="dot-content-palette__visibility" data-testId="visibility" (click)='handleVisibility()'>
-    <dot-icon size='22' [name]="icon"></dot-icon>
-</div>
 
 

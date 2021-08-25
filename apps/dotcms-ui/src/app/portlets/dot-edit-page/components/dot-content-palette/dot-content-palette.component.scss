@@ -1,6 +1,7 @@
 @use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
 
 :host {
+    position: relative;
     width: $content-palette-width;
     min-width: $content-palette-width;
     display: flex;
@@ -8,18 +9,8 @@
     padding: $spacing-1;
     border-left: 1px solid $gray-lighter;
     background: $white;
-    position: relative;
     transition: all $basic-speed ease-in-out;
-
-    &.collapsed{
-        width: 0px;
-        min-width: 0px;
-        padding: 0px;
-
-        .dot-content-palette__search dot-icon {
-            display: none;
-        }
-    }
+    height: 100%;
 }
 
 .dot-content-palette__search {
@@ -83,22 +74,6 @@
     text-align: center;
     padding: $spacing-1 0;
     margin: $spacing-4;
-}
-
-.dot-content-palette__visibility {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 35px;
-    height: 35px;
-    left: -35px;
-    position: absolute;
-    background: $white;
-    top: 50%;
-    border: 1px solid $gray-lighter;
-    border-radius: 6px 0 0 6px;
-    cursor: pointer;
-
 }
 
 

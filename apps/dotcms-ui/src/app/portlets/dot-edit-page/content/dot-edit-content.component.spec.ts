@@ -642,6 +642,41 @@ describe('DotEditContentComponent', () => {
                     );
                     expect(dotEditContentHtmlService.renderPage).not.toHaveBeenCalled();
                 }));
+
+                it('should show/hide content palette in edit mode with correct content', fakeAsync(() => {
+                    const state = new DotPageRenderState(
+                        mockUser(),
+                        new DotPageRender({
+                            ...mockDotRenderedPage(),
+                            page: {
+                                ...mockDotRenderedPage().page,
+                                lockedBy: null
+                            },
+                            viewAs: {
+                                mode: DotPageMode.EDIT
+                            }
+                        })
+                    );
+                    route.parent.parent.data = of({
+                        content: state
+                    });
+                    detectChangesForIframeRender(fixture);
+                    fixture.detectChanges();
+                    const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
+                    const contentPalette: DotContentPaletteComponent = de.query(
+                        By.css('dot-content-palette')
+                    ).componentInstance;
+                    const paletteController = de.query(
+                        By.css('.dot-edit-content__palette-visibility')
+                    );
+                    const classList = contentPaletteWrapper.nativeElement.classList;
+                    responseData.pop();
+                    expect(contentPalette.items).toEqual(responseData);
+                    expect(classList.contains('editMode')).toEqual(true);
+                    paletteController.triggerEventHandler('click', '');
+                    fixture.detectChanges();
+                    expect(classList.contains('collapsed')).toEqual(true);
+                }));
             });
 
             describe('events', () => {
@@ -718,9 +753,6 @@ describe('DotEditContentComponent', () => {
                         });
 
                         fixture.detectChanges();
-                        const contentPalette: DotContentPaletteComponent = de.query(
-                            By.css('dot-content-palette')
-                        ).componentInstance;
                         const dotRenderedPageStateExpected = new DotPageRenderState(
                             mockUser(),
                             mockDotRenderedPage()
@@ -728,8 +760,6 @@ describe('DotEditContentComponent', () => {
                         expect(dotPageStateService.setLocalState).toHaveBeenCalledWith(
                             dotRenderedPageStateExpected
                         );
-                        responseData.pop();
-                        expect(contentPalette.items).toEqual(responseData);
                     }));
 
                     it('should handle load-edit-mode-page to internal navigation', fakeAsync(() => {

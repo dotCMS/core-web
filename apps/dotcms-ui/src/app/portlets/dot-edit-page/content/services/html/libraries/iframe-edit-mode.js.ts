@@ -318,8 +318,8 @@ export const EDIT_PAGE_JS = `
     }
 
      function dotCustomScroll (step) {
-        var scrollY = $(window).scrollTop();
-        $(window).scrollTop(scrollY + step);
+        var scrollY = window.scrollY;
+        window.scrollTo(0, scrollY + step);
     }
 
     function dragOverEvent(event) {
