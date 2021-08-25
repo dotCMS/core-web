@@ -20,7 +20,7 @@ describe('LayoutEditorCanDeactivateGuardService', () => {
   });
 
   it('should le the user left the route when _canBeDesactivated is true', (done) => {
-    dotEditLayoutService.changeState(true);
+    dotEditLayoutService.changeDesactivateState(true);
     service.canDeactivate().subscribe((deactivate) => {
       expect(deactivate).toBeTruthy();
       done();
@@ -28,18 +28,18 @@ describe('LayoutEditorCanDeactivateGuardService', () => {
   });
 
   it('canBeDesactivated should be false', () => {
-    dotEditLayoutService.changeState(false);
+    dotEditLayoutService.changeDesactivateState(false);
     service.canDeactivate().subscribe(() => {
       fail('Should not be called if canBeDesactivated is false');
     });
   });
 
   it('should set _showMessage when canBeDesactivated is false', (done) => {
-    dotEditLayoutService.changeState(false);
+    dotEditLayoutService.changeDesactivateState(false);
     service.canDeactivate().subscribe(() => {
       fail('Should not be called if canBeDesactivated is false');
     });
-    dotEditLayoutService.showAlert$.subscribe((resp) => {
+    dotEditLayoutService.showMessage$.subscribe((resp) => {
       expect(resp).toBeTruthy();
       done();
     });

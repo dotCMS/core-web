@@ -251,7 +251,7 @@ describe('DotEditLayoutService', () => {
     });
 
     it('Should set _canBeDesactivated to true', (done) => {
-        dotEditLayoutService.changeState(true);
+        dotEditLayoutService.changeDesactivateState(true);
         dotEditLayoutService.canBeDesactivated$.subscribe((resp) =>{
             expect(resp).toBeTruthy();
             done();
@@ -259,8 +259,8 @@ describe('DotEditLayoutService', () => {
     });
 
    it('Should set _showMessage to true', (done) => {
-        dotEditLayoutService.changeStateAlert(true);
-        dotEditLayoutService.showAlert$.subscribe((resp) =>{
+        dotEditLayoutService.changeMessageState(true);
+        dotEditLayoutService.showMessage$.subscribe((resp) =>{
             expect(resp).toBeTruthy();
             done();
         })

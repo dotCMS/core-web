@@ -222,7 +222,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         fit('should save changes when showMessage is true', () => {
             spyOn(component.save, 'emit');
-            dotEditLayoutService.changeStateAlert(true);
+            dotEditLayoutService.changeMessageState(true);
             fixture.detectChanges();
             expect(component.save.emit).toHaveBeenCalledTimes(1);
         });

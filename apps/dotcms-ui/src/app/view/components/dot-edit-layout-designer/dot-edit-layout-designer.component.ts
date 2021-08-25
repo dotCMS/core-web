@@ -96,7 +96,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
 
     ngOnInit(): void {
         this.setupLayout();
-        this.dotEditLayoutService.showAlert$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
+        this.dotEditLayoutService.showMessage$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
             if(res) {
                 this.dotGlobalMessageService.loading(
                     this.dotMessageService.get('dot.common.message.saving')
@@ -226,7 +226,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             const isEqual = _.isEqual(this.form.value, this.initialFormValue)
-            this.dotEditLayoutService.changeState(isEqual);
+            this.dotEditLayoutService.changeDesactivateState(isEqual);
             if(this.unSaved && !isEqual){
                 this.dotGlobalMessageService.display('unsaved Changes', true);
             }
@@ -246,9 +246,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 },
                 (error) => this.errorHandler(error)
             );
-
         this.initialFormValue = _.cloneDeep(this.form.value);
-        this.dotEditLayoutService.changeState(true);
         this.unSaved = true;
     }
 

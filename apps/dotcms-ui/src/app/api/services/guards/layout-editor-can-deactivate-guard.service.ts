@@ -24,14 +24,14 @@ export class LayoutEditorCanDeactivateGuardService implements CanDeactivate<CanD
 
     /**
      *
-     *
+     * Make sure the changes have been saved before leaving the route.
      * @return {*}  {Observable<boolean>}
      * @memberof LayoutEditorCanDeactivateGuardService
      */
     canDeactivate(): Observable<boolean> {
         return this.dotEditLayoutService.canBeDesactivated$.pipe(
             filter((res) => {
-                this.dotEditLayoutService.changeStateAlert(!res);
+                this.dotEditLayoutService.changeMessageState(!res);
                 return res;
             })
         );
