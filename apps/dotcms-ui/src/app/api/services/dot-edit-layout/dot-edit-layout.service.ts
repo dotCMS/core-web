@@ -37,7 +37,7 @@ export class DotEditLayoutService {
      * @readonly
      * @memberof DotEditLayoutService
      */
-    get showAlert$() {
+    get showMessage$() {
         return this._showMessage;
     }
 
@@ -57,7 +57,7 @@ export class DotEditLayoutService {
      * @param {boolean} next
      * @memberof DotEditLayoutService
      */
-    changeState(next: boolean) {
+    changeDesactivateState(next: boolean) {
         this._canBeDesactivated.next(next);
     }
 
@@ -67,7 +67,7 @@ export class DotEditLayoutService {
      * @param {boolean} next
      * @memberof DotEditLayoutService
      */
-    changeStateAlert(next: boolean) {
+    changeMessageState(next: boolean) {
         this._showMessage.next(next);
     }
 
