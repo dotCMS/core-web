@@ -249,4 +249,20 @@ describe('DotEditLayoutService', () => {
 
         dotEditLayoutService.addBox();
     });
+
+    it('Should set _canBeDesactivated to true', (done) => {
+        dotEditLayoutService.changeState(true);
+        dotEditLayoutService.canBeDesactivated$.subscribe((resp) =>{
+            expect(resp).toBeTruthy();
+            done();
+        })
+    });
+
+   it('Should set _showMessage to true', (done) => {
+        dotEditLayoutService.changeStateAlert(true);
+        dotEditLayoutService.showAlert$.subscribe((resp) =>{
+            expect(resp).toBeTruthy();
+            done();
+        })
+    });
 });

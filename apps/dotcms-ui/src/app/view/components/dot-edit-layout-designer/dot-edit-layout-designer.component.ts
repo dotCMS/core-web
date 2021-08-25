@@ -96,11 +96,15 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
 
     ngOnInit(): void {
         this.setupLayout();
-        this.dotEditLayoutService.showAlert$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dotGlobalMessageService.loading(
-                this.dotMessageService.get('dot.common.message.saving')
-            );
-            this.cd.detectChanges();
+        this.dotEditLayoutService.showAlert$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
+            if(res) {
+                this.dotGlobalMessageService.loading(
+                    this.dotMessageService.get('dot.common.message.saving')
+                );
+                this.onSave()
+                this.cd.detectChanges();
+                this.unSaved = false;
+            } 
         });
     }
 

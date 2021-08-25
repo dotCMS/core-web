@@ -30,10 +30,23 @@ export class DotEditLayoutService {
 
     constructor(private templateContainersCacheService: DotTemplateContainersCacheService) {}
 
+
+    /**
+     *
+     *
+     * @readonly
+     * @memberof DotEditLayoutService
+     */
     get showAlert$() {
         return this._showMessage;
     }
 
+    /**
+     *
+     *
+     * @readonly
+     * @memberof DotEditLayoutService
+     */
     get canBeDesactivated$() {
         return this._canBeDesactivated;
     }

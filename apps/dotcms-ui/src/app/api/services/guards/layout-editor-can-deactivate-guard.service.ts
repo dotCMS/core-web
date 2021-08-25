@@ -10,7 +10,7 @@ export interface CanDeactivateGuarded {
 
 /**
  *
- *
+ *  
  * @export
  * @class LayoutEditorCanDeactivateGuardService
  * @implements {CanDeactivate<CanDeactivateGuarded>}
@@ -19,10 +19,8 @@ export interface CanDeactivateGuarded {
     providedIn: 'root'
 })
 export class LayoutEditorCanDeactivateGuardService implements CanDeactivate<CanDeactivateGuarded> {
-    constructor(
-        // private pruebaService: PruebaService,
-        private dotEditLayoutService: DotEditLayoutService
-    ) {}
+    
+    constructor(private dotEditLayoutService: DotEditLayoutService) {}
 
     /**
      *
@@ -33,8 +31,7 @@ export class LayoutEditorCanDeactivateGuardService implements CanDeactivate<CanD
     canDeactivate(): Observable<boolean> {
         return this.dotEditLayoutService.canBeDesactivated$.pipe(
             filter((res) => {
-                console.log('Guard:', res);
-                this.dotEditLayoutService.changeStateAlert(true);
+                this.dotEditLayoutService.changeStateAlert(!res);
                 return res;
             })
         );
