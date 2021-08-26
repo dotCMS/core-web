@@ -308,7 +308,6 @@ export const EDIT_PAGE_JS = `
     window.addEventListener("drop", dropEvent, false);
     window.addEventListener("beforeunload", removeEvents, false);
     window.addEventListener('mousemove', e => {
-        console.log('mouse move');
         executeScroll = 0;
     });
 
@@ -322,16 +321,13 @@ export const EDIT_PAGE_JS = `
         }
     }
 
-
     function dotWindowScroll(step){
-        console.log('scrollTest',);
         if (!!executeScroll ) {
             window.scrollBy({
                 top: step,
                 behaviour: 'smooth'
             });
         } else {
-            console.log('clearInterval');
             clearInterval(scrollInterval);
         }
     }
@@ -341,8 +337,6 @@ export const EDIT_PAGE_JS = `
         if (executeScroll === 0) {
             executeScroll = step;
             scrollInterval = setInterval( ()=> {dotWindowScroll(step)}, 1);
-        }else {
-            console.log(' already in while');
         }
     }
 
@@ -357,7 +351,6 @@ export const EDIT_PAGE_JS = `
         } else if (event.clientY > (document.body.clientHeight - 150)) {
             dotCustomScroll(5)
         } else {
-            console.log('executeScroll 0');
             executeScroll = 0;
         }
 
@@ -453,6 +446,7 @@ export const EDIT_PAGE_JS = `
         window.removeEventListener("dragleave", dragLeaveEvent, false);
         window.removeEventListener("drop", dropEvent, false);
         window.removeEventListener("beforeunload", removeEvents, false);
+        window.removeEventListener("mousemove");
     }
 
     // D&D Img - End
