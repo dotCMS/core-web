@@ -4,6 +4,7 @@ export const EDIT_PAGE_JS = `
 (function () {
     var forbiddenTarget;
     let currentModel;
+    var executeScroll = 1;
 
     function getContainers() {
         var containers = [];
@@ -306,6 +307,10 @@ export const EDIT_PAGE_JS = `
     window.addEventListener("dragleave", dragLeaveEvent, false);
     window.addEventListener("drop", dropEvent, false);
     window.addEventListener("beforeunload", removeEvents, false);
+    window.addEventListener('mousemove', e => {
+        console.log('mouse move');
+        executeScroll = 0;
+    });
 
     function dragEnterEvent(event) {
         event.preventDefault();
@@ -317,11 +322,28 @@ export const EDIT_PAGE_JS = `
         }
     }
 
-     function dotCustomScroll (step) {
-        window.scrollBy({
-          top: step,
-          behaviour: 'smooth'
-        })
+
+    function dotWindowScroll(step){
+        console.log('scrollTest',);
+        if (!!executeScroll ) {
+            window.scrollBy({
+                top: step,
+                behaviour: 'smooth'
+            });
+        } else {
+            console.log('clearInterval');
+            clearInterval(scrollInterval);
+        }
+    }
+
+    var scrollInterval;
+    function dotCustomScroll (step) {
+        if (executeScroll === 0) {
+            executeScroll = step;
+            scrollInterval = setInterval( ()=> {dotWindowScroll(step)}, 1);
+        }else {
+            console.log(' already in while');
+        }
     }
 
     function dragOverEvent(event) {
@@ -331,10 +353,12 @@ export const EDIT_PAGE_JS = `
         const contentlet = event.target.closest('[data-dot-object="contentlet"]');
 
         if (event.clientY < 150) {
-            dotCustomScroll(-10)
-        }
-        if (event.clientY > (document.body.clientHeight - 150)) {
-            dotCustomScroll(10)
+            dotCustomScroll(-5)
+        } else if (event.clientY > (document.body.clientHeight - 150)) {
+            dotCustomScroll(5)
+        } else {
+            console.log('executeScroll 0');
+            executeScroll = 0;
         }
 
         if (contentlet) {
