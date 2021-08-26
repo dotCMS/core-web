@@ -2,8 +2,8 @@ import { isValid, parse } from 'date-fns';
 import { FormControl } from '@angular/forms';
 
 const format = {
-    'com.dotcms.contenttype.model.field.ImmutableDateField': 'YYYY-MM-DD',
-    'com.dotcms.contenttype.model.field.ImmutableDateTimeField': 'YYYY-MM-DD HH:mm:ss',
+    'com.dotcms.contenttype.model.field.ImmutableDateField': 'yyyy-MM-dd',
+    'com.dotcms.contenttype.model.field.ImmutableDateTimeField': 'yyyy-MM-dd HH:mm:ss',
     'com.dotcms.contenttype.model.field.ImmutableTimeField': 'HH:mm:ss'
 };
 

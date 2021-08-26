@@ -37,6 +37,7 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
 
 describe('DotCustomEventHandlerService', () => {
     let service: DotCustomEventHandlerService;
@@ -63,7 +64,7 @@ describe('DotCustomEventHandlerService', () => {
                 { provide: DotRouterService, useClass: MockDotRouterService },
                 { provide: DotUiColorsService, useClass: MockDotUiColorsService },
                 ApiRoot,
-                FormatDateService,
+                { provide: FormatDateService, useClass: FormatDateServiceMock },
                 UserModel,
                 StringUtils,
                 DotcmsEventsService,

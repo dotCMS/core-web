@@ -18,6 +18,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { mockResponseView } from '@tests/response-view.mock';
 import { throwError } from 'rxjs';
 import * as dotUtils from '@shared/dot-utils';
+import { FormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
 
 const mockDotApps = [
     {
@@ -55,7 +56,7 @@ describe('DotAppsService', () => {
                     useClass: LoginServiceMock
                 },
                 { provide: DotRouterService, useClass: MockDotRouterService },
-                FormatDateService,
+                { provide: FormatDateService, useClass: FormatDateServiceMock },
                 ConfirmationService,
                 DotAlertConfirmService,
                 DotAppsService,

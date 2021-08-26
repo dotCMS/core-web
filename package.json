@@ -74,7 +74,6 @@
         "font-awesome": "^4.7.0",
         "lodash": "^4.17.20",
         "md5": "^2.3.0",
-        "moment": "^2.29.1",
         "ng2-dragula": "^2.1.1",
         "ngx-markdown": "^10.1.1",
         "ngx-monaco-editor": "^9.0.0",
