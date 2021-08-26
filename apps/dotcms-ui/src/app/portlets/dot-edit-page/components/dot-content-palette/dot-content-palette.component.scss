@@ -37,34 +37,30 @@
 }
 
 .dot-content-palette__items {
-
-    overflow: hidden auto;
     display: grid;
-    flex-wrap: wrap;
     grid-template-columns: 1fr 1fr;
     grid-gap: $spacing-1;
 
     div {
         border: 1px solid $gray-lighter;
-        display: grid;
-        cursor: grab;
         color: $black;
-        padding: 14% 0.25rem;
-        align-content: center;
-        justify-items: center;
+        cursor: grab;
+        overflow: hidden;
+        padding: 1rem $spacing-1;
+        text-align: center;
 
         &:hover {
             background: $gray-bg;
         }
 
-        span {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            width: 100%;
-            text-align: center;
-            margin-top: $spacing-1;
+        p {
             font-size: $font-size-small;
+            margin: $spacing-1 0 0;
+            overflow: hidden;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
         }
     }
 }
