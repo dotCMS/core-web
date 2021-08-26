@@ -33,7 +33,6 @@ export class DotEditLayoutService {
 
     /**
      *
-     *
      * @readonly
      * @memberof DotEditLayoutService
      */
@@ -42,7 +41,6 @@ export class DotEditLayoutService {
     }
 
     /**
-     *
      *
      * @readonly
      * @memberof DotEditLayoutService
@@ -53,7 +51,6 @@ export class DotEditLayoutService {
 
     /**
      *
-     *
      * @param {boolean} next
      * @memberof DotEditLayoutService
      */
@@ -62,7 +59,6 @@ export class DotEditLayoutService {
     }
 
     /**
-     *
      *
      * @param {boolean} next
      * @memberof DotEditLayoutService
