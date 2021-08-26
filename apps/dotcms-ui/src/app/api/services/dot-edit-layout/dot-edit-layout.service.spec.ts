@@ -258,7 +258,7 @@ describe('DotEditLayoutService', () => {
         })
     });
 
-   it('Should set _showMessage to true', (done) => {
+    it('Should set _showMessage to true', (done) => {
         dotEditLayoutService.changeMessageState(true);
         dotEditLayoutService.showMessage$.subscribe((resp) =>{
             expect(resp).toBeTruthy();

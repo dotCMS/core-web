@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotMessageService } from '../dot-message/dot-messages.service';
 import { Injectable } from '@angular/core';
@@ -22,6 +22,7 @@ export interface DotHttpErrorHandled {
 @Injectable()
 export class DotHttpErrorManagerService {
     private readonly errorHandlers;
+    private _error: Subject<boolean> = new Subject();
 
     constructor(
         private dotDialogService: DotAlertConfirmService,
@@ -41,6 +42,16 @@ export class DotHttpErrorManagerService {
     }
 
     /**
+     *
+     * Get the error notification as an Observable
+     * @readonly
+     * @memberof DotHttpErrorManagerService
+     */
+    error$() {
+        return this._error.asObservable();
+    }
+
+    /**
      * Handle the http error message and return a true if it did a redirect
      *
      * @param ResponseView err
@@ -48,6 +59,7 @@ export class DotHttpErrorManagerService {
      * @memberof DotHttpErrorManagerService
      */
     handle(err: HttpErrorResponse): Observable<DotHttpErrorHandled> {
+        this._error.next(true);
         const result: DotHttpErrorHandled = {
             redirected: this.callErrorHandler(err),
             status: err.status

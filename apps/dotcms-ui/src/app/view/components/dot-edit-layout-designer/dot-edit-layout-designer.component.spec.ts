@@ -32,6 +32,8 @@ import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock'
 import { mockDotThemes } from '@tests/dot-themes.mock';
 import { DotTheme } from '@models/dot-edit-layout-designer';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { mockResponseView } from '@dotcms/app/test/response-view.mock';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -84,6 +86,7 @@ let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotThemesService: DotThemesService;
 let dotGlobalMessageService: DotGlobalMessageService;
 let dotEditLayoutService: DotEditLayoutService;
+let dotHttpErrorManagerService: DotHttpErrorManagerService;
 
 describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
@@ -130,8 +133,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 {
                     provide: DotHttpErrorManagerService,
                     useValue: {
-                        handle: jasmine.createSpy().and.returnValue(of({}))
-                    }
+                        handle: jasmine.createSpy().and.returnValue(of({})),
+                        error$: jasmine.createSpy().and.returnValue(of(true))
+                    } 
                 },
                 {
                     provide: DotTemplateContainersCacheService,
@@ -155,6 +159,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         dotThemesService = TestBed.inject(DotThemesService);
         dotEditLayoutService = TestBed.inject(DotEditLayoutService);
+        dotHttpErrorManagerService = TestBed.inject(DotHttpErrorManagerService);
     });
 
     describe('edit layout', () => {
@@ -220,7 +225,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(dotGlobalMessageService.display).toHaveBeenCalled();
         });
 
-        fit('should save changes when showMessage is true', () => {
+        it('should save changes when showMessage is true', () => {
             spyOn(component.save, 'emit');
             dotEditLayoutService.changeMessageState(true);
             fixture.detectChanges();
@@ -285,6 +290,16 @@ describe('DotEditLayoutDesignerComponent', () => {
                     }
                 }
             });
+        });
+
+        it('should allow to leave the route if an error happens while saving', (done) => {
+            spyOn(dotEditLayoutService.canBeDesactivated$, 'next');
+            dotHttpErrorManagerService.handle(mockResponseView(401));
+            fixture.detectChanges();
+            dotEditLayoutService.canBeDesactivated$.subscribe( (canDeactivate) => {
+                expect(canDeactivate).toBeTruthy();
+                done();
+            })
         });
     });
 

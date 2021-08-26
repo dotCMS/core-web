@@ -40,7 +40,6 @@ import {
 } from '@models/dot-edit-layout-designer';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -74,7 +73,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     initialFormValue: any;
     themeDialogVisibility = false;
 
-    unSaved = true;
     currentTheme: DotTheme;
 
     saveAsTemplate: boolean;
@@ -89,23 +87,14 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
         private dotGlobalMessageService: DotGlobalMessageService,
-        private dotMessageService: DotMessageService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
         this.setupLayout();
-        this.dotEditLayoutService.showMessage$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
-            if(res) {
-                this.dotGlobalMessageService.loading(
-                    this.dotMessageService.get('dot.common.message.saving')
-                );
-                this.onSave()
-                this.cd.detectChanges();
-                this.unSaved = false;
-            } 
-        });
+        this.saveChangesBeforeLeave();
+        this.handleSavingError();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -220,14 +209,13 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(300)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
-                this.unSaved = false;
             }
             this.cd.detectChanges();
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             const isEqual = _.isEqual(this.form.value, this.initialFormValue)
             this.dotEditLayoutService.changeDesactivateState(isEqual);
-            if(this.unSaved && !isEqual){
+            if(!isEqual){
                 this.dotGlobalMessageService.display('unsaved Changes', true);
             }
             this.cd.detectChanges();
@@ -247,7 +235,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 (error) => this.errorHandler(error)
             );
         this.initialFormValue = _.cloneDeep(this.form.value);
-        this.unSaved = true;
     }
 
     private createSidebarForm(): DotLayoutSideBar {
@@ -279,5 +266,28 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 this.currentTheme = err.status === 403 ? null : this.currentTheme;
             })
         );
+    }
+
+    /**
+     * Save unsaved changes if user is leaving
+     */
+    private saveChangesBeforeLeave(): void {
+        this.dotEditLayoutService.showMessage$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
+            if(res) {
+                this.onSave();
+                this.cd.detectChanges();
+            } 
+        });
+    }
+
+    /**
+     * Allow user to leave the route if there's an http error
+     */
+    private handleSavingError(): void {
+        this.dotHttpErrorManagerService.error$().subscribe((resp) => {
+            if(resp) {
+                this.dotEditLayoutService.changeDesactivateState(true);
+            }
+        });
     }
 }
