@@ -53,6 +53,7 @@ describe('DotLoginComponent', () => {
     let dotRouterService: DotRouterService;
     let loginPageStateService: DotLoginPageStateService;
     let dotMessageService: DotMessageService;
+    let formatDateService: FormatDateService;
     let signInButton: DebugElement;
     const credentials = {
         login: 'admin@dotcms.com',
@@ -88,7 +89,7 @@ describe('DotLoginComponent', () => {
                 DotLoadingIndicatorService,
                 DotRouterService,
                 LoggerService,
-                StringUtils,
+                StringUtils
             ]
         });
 
@@ -98,9 +99,9 @@ describe('DotLoginComponent', () => {
 
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
+        formatDateService = de.injector.get(FormatDateService);
         dotMessageService = de.injector.get(DotMessageService);
         loginPageStateService = de.injector.get(DotLoginPageStateService);
-        // spyOn(dotMessageService, 'setRelativeDateMessages').and.callFake(() => {});
         spyOn(dotMessageService, 'init');
     });
 
@@ -167,8 +168,9 @@ describe('DotLoginComponent', () => {
             });
         });
 
-        it('should make a login request correctly and redirect after login', () => {
+        fit('should make a login request correctly and redirect after login', () => {
             component.loginForm.setValue(credentials);
+            spyOn(formatDateService, 'setLang');
             spyOn(dotRouterService, 'goToMain');
             spyOn<any>(loginService, 'loginUser').and.returnValue(
                 of({
@@ -182,9 +184,7 @@ describe('DotLoginComponent', () => {
             signInButton.triggerEventHandler('click', {});
             expect(loginService.loginUser).toHaveBeenCalledWith(credentials);
             expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
-            // expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(
-            //     mockUser().languageId
-            // );
+            expect(formatDateService.setLang).toHaveBeenCalledWith('en');
         });
 
         it('should disable fields while waiting login response', () => {

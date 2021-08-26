@@ -139,10 +139,4 @@ describe('DotMessageService', () => {
         });
     });
 
-    // it('should set relative date messages', () => {
-    //     spyOn(formatDateService, 'setLang');
-    //     dotMessageService.init(true);
-    //     dotMessageService.setRelativeDateMessages('en_US');
-    //     expect(formatDateService.setLang).toHaveBeenCalledWith('en', relativeDateMessages);
-    // });
 });
