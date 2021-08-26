@@ -6,7 +6,7 @@ interface DotLocaleOptions {
 }
 
 @Injectable()
-export class FormatDateService {
+export class DotFormatDateService {
     private _localeOptions: DotLocaleOptions;
 
     constructor() {}

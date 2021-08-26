@@ -6,8 +6,8 @@ import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publi
 import { ApiRoot, CoreWebService, LoggerService, StringUtils, UserModel } from '@dotcms/dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { FormatDateService } from '@services/format-date-service';
-import { FormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
+import { DotFormatDateService } from '@services/dot-format-date-service';
+import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
 
 const mockResponse = {
     errorMessages: [],
@@ -38,7 +38,7 @@ describe('PushPublishService', () => {
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 PushPublishService,
                 DotCurrentUserService,
-                { provide: FormatDateService, useClass: FormatDateServiceMock },
+                { provide: DotFormatDateService, useClass: DotFormatDateServiceMock },
                 ApiRoot,
                 LoggerService,
                 UserModel,

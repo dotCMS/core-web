@@ -10,7 +10,7 @@ import { DotLoginPageStateService } from '@components/login/shared/services/dot-
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { FormatDateService } from '@services/format-date-service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 
 @Component({
     selector: 'dot-login-component',
@@ -39,7 +39,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         public loginPageStateService: DotLoginPageStateService,
         private dotMessageService: DotMessageService,
-        private formatDateService: FormatDateService,
+        private dotFormatDateService: DotFormatDateService,
     ) {}
 
     ngOnInit() {
@@ -81,7 +81,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
                     this.setMessage('');
                     this.dotLoadingIndicatorService.hide();
                     this.dotRouterService.goToMain(user['editModeUrl']);
-                    this.formatDateService.setLang(user.languageId.split('_')[0]);
+                    this.dotFormatDateService.setLang(user.languageId.split('_')[0]);
                 },
                 (res: any) => {
                     if (this.isBadRequestOrUnathorized(res.status)) {

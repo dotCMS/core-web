@@ -8,7 +8,7 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { take } from 'rxjs/operators';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
-import { FormatDateService } from '@services/format-date-service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 
 describe('DotTemplateListResolverService', () => {
     let service: DotTemplateListResolver;
@@ -28,7 +28,7 @@ describe('DotTemplateListResolverService', () => {
                 DotCurrentUserService,
                 DotTemplateListResolver,
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-                FormatDateService
+                DotFormatDateService
             ]
         });
         service = TestBed.inject(DotTemplateListResolver);

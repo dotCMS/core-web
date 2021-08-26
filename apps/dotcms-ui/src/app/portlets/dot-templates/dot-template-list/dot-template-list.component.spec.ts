@@ -48,8 +48,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { mockSites } from '@tests/site-service.mock';
 import { DotSiteBrowserService } from '@services/dot-site-browser/dot-site-browser.service';
-import { FormatDateService } from '@services/format-date-service';
-import { FormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
+import { DotFormatDateService } from '@services/dot-format-date-service';
+import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
 
 const templatesMock: DotTemplate[] = [
     {
@@ -311,7 +311,7 @@ describe('DotTemplateListComponent', () => {
                 DotMessageDisplayService,
                 DialogService,
                 DotSiteBrowserService,
-                { provide: FormatDateService, useClass: FormatDateServiceMock }
+                { provide: DotFormatDateService, useClass: DotFormatDateServiceMock }
             ],
             imports: [
                 DotListingDataTableModule,

@@ -8,7 +8,7 @@ import { format } from 'date-fns'
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 import { DotCurrentUser } from '@models/dot-current-user/dot-current-user';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
-import { FormatDateService } from '@services/format-date-service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 
 /**
  * Provide method to push publish to content types
@@ -30,7 +30,7 @@ export class PushPublishService {
         public _apiRoot: ApiRoot,
         private coreWebService: CoreWebService,
         private currentUser: DotCurrentUserService,
-        private formatDateService: FormatDateService,
+        private dotFormatDateService: DotFormatDateService,
     ) {}
 
     /**
@@ -85,10 +85,10 @@ export class PushPublishService {
 
         let result = '';
         result += `assetIdentifier=${encodeURIComponent(assetIdentifier)}`;
-        result += `&remotePublishDate=${format(new Date(publishDate), "yyyy-MM-dd", this.formatDateService.localeOptions)}`;
-        result += `&remotePublishTime=${format(new Date(publishDate), "HH-mm", this.formatDateService.localeOptions)}`;
-        result += `&remotePublishExpireDate=${format(expireDate ? new Date(expireDate) : new Date(), "yyyy-MM-dd", this.formatDateService.localeOptions)}`;
-        result += `&remotePublishExpireTime=${format(expireDate ? new Date(expireDate) : new Date(), "HH-mm", this.formatDateService.localeOptions)}`;
+        result += `&remotePublishDate=${format(new Date(publishDate), "yyyy-MM-dd", this.dotFormatDateService.localeOptions)}`;
+        result += `&remotePublishTime=${format(new Date(publishDate), "HH-mm", this.dotFormatDateService.localeOptions)}`;
+        result += `&remotePublishExpireDate=${format(expireDate ? new Date(expireDate) : new Date(), "yyyy-MM-dd", this.dotFormatDateService.localeOptions)}`;
+        result += `&remotePublishExpireTime=${format(expireDate ? new Date(expireDate) : new Date(), "HH-mm", this.dotFormatDateService.localeOptions)}`;
         result += `&timezoneId=${timezoneId}`;
         result += `&iWantTo=${pushActionSelected}`;
         result += `&whoToSend=${environment}`;

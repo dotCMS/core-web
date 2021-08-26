@@ -23,7 +23,7 @@ import { Observable } from 'rxjs';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
 import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 import { DotActionBulkRequestOptions } from '@models/dot-action-bulk-request-options/dot-action-bulk-request-options.model';
-import { FormatDateService } from '@services/format-date-service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 
 enum DotActionInputs {
     ASSIGNABLE = 'assignable',
@@ -50,7 +50,7 @@ export class DotWorkflowEventHandlerService {
         private httpErrorManagerService: DotHttpErrorManagerService,
         private dotWorkflowActionsFireService: DotWorkflowActionsFireService,
         private dotGlobalMessageService: DotGlobalMessageService,
-        private formatDateService: FormatDateService
+        private dotFormatDateService: DotFormatDateService
     ) {}
 
     /**
@@ -151,22 +151,22 @@ export class DotWorkflowEventHandlerService {
             data['publishTime'] = format(
                 new Date(data.publishDate),
                 'HH-mm',
-                this.formatDateService.localeOptions
+                this.dotFormatDateService.localeOptions
             );
             data['publishDate'] = format(
                 new Date(data.publishDate),
                 'yyyy-MM-dd',
-                this.formatDateService.localeOptions
+                this.dotFormatDateService.localeOptions
             );
             data['expireTime'] = format(
                 data.expireDate ? new Date(data.expireDate) : new Date(),
                 'HH-mm',
-                this.formatDateService.localeOptions
+                this.dotFormatDateService.localeOptions
             );
             data['expireDate'] = format(
                 data.expireDate ? new Date(data.expireDate) : new Date(),
                 'yyyy-MM-dd',
-                this.formatDateService.localeOptions
+                this.dotFormatDateService.localeOptions
             );
             delete data.environment;
             delete data.pushActionSelected;

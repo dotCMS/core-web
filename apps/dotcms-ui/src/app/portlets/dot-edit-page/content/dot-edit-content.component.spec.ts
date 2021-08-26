@@ -82,7 +82,7 @@ import { DotPageContainer } from '@models/dot-page-container/dot-page-container.
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { DotContentTypeService } from '@services/dot-content-type';
 import { DotContentPaletteModule } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.module';
-import { FormatDateService } from '@services/format-date-service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 
 const responseData: DotCMSContentType[] = [
     {
@@ -276,7 +276,7 @@ describe('DotEditContentComponent', () => {
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 DotcmsConfigService,
                 LoggerService,
-                FormatDateService,
+                DotFormatDateService,
                 StringUtils,
                 ApiRoot,
                 UserModel

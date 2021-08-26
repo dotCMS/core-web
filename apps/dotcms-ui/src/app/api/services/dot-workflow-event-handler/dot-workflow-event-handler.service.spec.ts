@@ -40,8 +40,8 @@ import { DotCMSWorkflowAction, DotCMSWorkflowActionEvent } from '@dotcms/dotcms-
 import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
 import { DotActionBulkRequestOptions } from '@models/dot-action-bulk-request-options/dot-action-bulk-request-options.model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormatDateService } from '@services/format-date-service';
-import { FormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
+import { DotFormatDateService } from '@services/dot-format-date-service';
+import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
 
 const mockWAEvent: DotCMSWorkflowActionEvent = {
     workflow: mockWorkflowsActions[0],
@@ -142,7 +142,7 @@ describe('DotWorkflowEventHandlerService', () => {
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 LoggerService,
                 StringUtils,
-                { provide: FormatDateService, useClass: FormatDateServiceMock },
+                { provide: DotFormatDateService, useClass: DotFormatDateServiceMock },
                 DotRouterService,
                 DotAlertConfirmService,
                 ConfirmationService,
