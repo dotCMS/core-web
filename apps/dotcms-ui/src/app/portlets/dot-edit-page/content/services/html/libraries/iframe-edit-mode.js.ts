@@ -307,9 +307,11 @@ export const EDIT_PAGE_JS = `
     window.addEventListener("dragleave", dragLeaveEvent, false);
     window.addEventListener("drop", dropEvent, false);
     window.addEventListener("beforeunload", removeEvents, false);
-    window.addEventListener('mousemove', e => {
+    window.addEventListener("mousemove", clearScroll, false );
+
+    function clearScroll() {
         executeScroll = 0;
-    });
+    }
 
     function dragEnterEvent(event) {
         event.preventDefault();
@@ -351,7 +353,7 @@ export const EDIT_PAGE_JS = `
         } else if (event.clientY > (document.body.clientHeight - 150)) {
             dotCustomScroll(5)
         } else {
-            executeScroll = 0;
+            clearScroll();
         }
 
         if (contentlet) {
@@ -446,7 +448,7 @@ export const EDIT_PAGE_JS = `
         window.removeEventListener("dragleave", dragLeaveEvent, false);
         window.removeEventListener("drop", dropEvent, false);
         window.removeEventListener("beforeunload", removeEvents, false);
-        window.removeEventListener("mousemove");
+        window.removeEventListener("mousemove", clearScroll, false );
     }
 
     // D&D Img - End
