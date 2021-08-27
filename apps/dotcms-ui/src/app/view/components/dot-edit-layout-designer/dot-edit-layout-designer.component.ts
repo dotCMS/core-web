@@ -40,6 +40,7 @@ import {
 } from '@models/dot-edit-layout-designer';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotMessageService } from '../../../api/services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -87,6 +88,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
         private dotGlobalMessageService: DotGlobalMessageService,
+        private dotMessageService: DotMessageService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef
     ) {}
@@ -216,7 +218,10 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             const isEqual = _.isEqual(this.form.value, this.initialFormValue)
             this.dotEditLayoutService.changeDesactivateState(isEqual);
             if(!isEqual){
-                this.dotGlobalMessageService.display('unsaved Changes', true);
+                this.dotGlobalMessageService.display(
+                    this.dotMessageService.get('dot.common.message.unsaved.changes'),
+                    true
+                );
             }
             this.cd.detectChanges();
         });
