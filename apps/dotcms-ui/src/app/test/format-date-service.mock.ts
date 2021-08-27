@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 export class DotFormatDateServiceMock {
     private _localeOptions: any;
 
@@ -12,6 +13,12 @@ export class DotFormatDateServiceMock {
     }
 
     setLang(lang: string) {}
+
+    isValid(date: string, formatPattern: string) {}
+
+    format(date: Date, formatPattern: string) {
+        return format(date, formatPattern);
+    }
 
     getRelative(time): string {
         return '1 hour ago'
