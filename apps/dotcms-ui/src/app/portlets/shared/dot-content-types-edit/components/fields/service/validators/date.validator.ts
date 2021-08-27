@@ -1,5 +1,5 @@
-import { isValid, parse } from 'date-fns';
 import { FormControl } from '@angular/forms';
+import { _isValid } from '@services/dot-format-date-service';
 
 const format = {
     'com.dotcms.contenttype.model.field.ImmutableDateField': 'yyyy-MM-dd',
@@ -33,7 +33,7 @@ export function validateDateDefaultValue(formControl: FormControl) {
 function isValueValid(formControl: FormControl): boolean {
     const clazz: string = formControl.parent.controls['clazz'].value;
     return format[clazz]
-        ? isValid(parse(formControl.value, format[clazz], new Date())) ||
+        ? _isValid(formControl.value, format[clazz]) ||
               formControl.value === 'now'
         : true;
 }

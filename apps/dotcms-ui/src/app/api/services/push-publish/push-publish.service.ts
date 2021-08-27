@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DotEnvironment } from '@models/dot-environment/dot-environment';
 import { DotAjaxActionResponseView } from '@models/ajax-action-response/dot-ajax-action-response';
-import { format } from 'date-fns'
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 import { DotCurrentUser } from '@models/dot-current-user/dot-current-user';
 import { DotPushPublishData } from '@models/dot-push-publish-data/dot-push-publish-data';
@@ -85,10 +84,10 @@ export class PushPublishService {
 
         let result = '';
         result += `assetIdentifier=${encodeURIComponent(assetIdentifier)}`;
-        result += `&remotePublishDate=${format(new Date(publishDate), "yyyy-MM-dd", this.dotFormatDateService.localeOptions)}`;
-        result += `&remotePublishTime=${format(new Date(publishDate), "HH-mm", this.dotFormatDateService.localeOptions)}`;
-        result += `&remotePublishExpireDate=${format(expireDate ? new Date(expireDate) : new Date(), "yyyy-MM-dd", this.dotFormatDateService.localeOptions)}`;
-        result += `&remotePublishExpireTime=${format(expireDate ? new Date(expireDate) : new Date(), "HH-mm", this.dotFormatDateService.localeOptions)}`;
+        result += `&remotePublishDate=${this.dotFormatDateService.format(new Date(publishDate), 'yyyy-MM-dd')}`;
+        result += `&remotePublishTime=${this.dotFormatDateService.format(new Date(publishDate), 'HH-mm')}`;
+        result += `&remotePublishExpireDate=${this.dotFormatDateService.format(expireDate ? new Date(expireDate) : new Date(), 'yyyy-MM-dd')}`;
+        result += `&remotePublishExpireTime=${this.dotFormatDateService.format(expireDate ? new Date(expireDate) : new Date(), 'HH-mm')}`;
         result += `&timezoneId=${timezoneId}`;
         result += `&iWantTo=${pushActionSelected}`;
         result += `&whoToSend=${environment}`;

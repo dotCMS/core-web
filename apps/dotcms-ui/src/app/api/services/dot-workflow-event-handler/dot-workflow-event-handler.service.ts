@@ -148,25 +148,21 @@ export class DotWorkflowEventHandlerService {
         if (this.containsPushPublish(inputs)) {
             data['whereToSend'] = data.environment.join();
             data['iWantTo'] = data.pushActionSelected;
-            data['publishTime'] = format(
+            data['publishTime'] = this.dotFormatDateService.format(
                 new Date(data.publishDate),
-                'HH-mm',
-                this.dotFormatDateService.localeOptions
+                'HH-mm'
             );
-            data['publishDate'] = format(
+            data['publishDate'] = this.dotFormatDateService.format(
                 new Date(data.publishDate),
-                'yyyy-MM-dd',
-                this.dotFormatDateService.localeOptions
+                'yyyy-MM-dd'
             );
-            data['expireTime'] = format(
+            data['expireTime'] = this.dotFormatDateService.format(
                 data.expireDate ? new Date(data.expireDate) : new Date(),
-                'HH-mm',
-                this.dotFormatDateService.localeOptions
+                'HH-mm'
             );
-            data['expireDate'] = format(
+            data['expireDate'] = this.dotFormatDateService.format(
                 data.expireDate ? new Date(data.expireDate) : new Date(),
-                'yyyy-MM-dd',
-                this.dotFormatDateService.localeOptions
+                'yyyy-MM-dd'
             );
             delete data.environment;
             delete data.pushActionSelected;

@@ -1,5 +1,3 @@
-import { formatDistanceToNowStrict } from 'date-fns';
-
 export class DotFormatDateServiceMock {
     private _localeOptions: any;
 
