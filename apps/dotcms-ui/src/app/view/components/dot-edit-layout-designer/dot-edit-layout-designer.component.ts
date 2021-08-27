@@ -77,6 +77,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     currentTheme: DotTheme;
 
     saveAsTemplate: boolean;
+    showUnsaved = true;
     showTemplateLayoutSelectionDialog = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -211,18 +212,19 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(10000)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
+                this.showUnsaved = false;
             }
             this.cd.detectChanges();
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            const isEqual = _.isEqual(this.form.value, this.initialFormValue)
-            this.dotEditLayoutService.changeDesactivateState(isEqual);
-            if(!isEqual){
+            const isEqual = _.isEqual(this.form.value, this.initialFormValue);
+            if(!isEqual && this.showUnsaved) {
                 this.dotGlobalMessageService.display(
                     this.dotMessageService.get('dot.common.message.unsaved.changes'),
                     true
                 );
             }
+            this.dotEditLayoutService.changeDesactivateState(isEqual);
             this.cd.detectChanges();
         });
         this.updateModel();
@@ -240,6 +242,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 (error) => this.errorHandler(error)
             );
         this.initialFormValue = _.cloneDeep(this.form.value);
+        this.showUnsaved = true;
     }
 
     private createSidebarForm(): DotLayoutSideBar {
