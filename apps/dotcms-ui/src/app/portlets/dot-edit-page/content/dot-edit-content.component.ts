@@ -230,27 +230,21 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Load items in the Content Pallet
-     *
-     * @param string filter
-     * @memberof DotEditContentComponent
-     */
-    loadContentPallet(filter = ''): void {
-        this.dotContentTypeService
-            .getContentTypes(filter)
-            .pipe(take(1))
-            .subscribe((items) => {
-                this.contentPalletItems = items;
-            });
-    }
-
-    /**
      * Execute actions needed when closing the create dialog.
      *
      * @memberof DotEditContentComponent
      */
     handleCloseAction(): void {
         this.dotEditContentHtmlService.removeContentletPlaceholder();
+    }
+
+    private loadContentPallet(filter = ''): void {
+        this.dotContentTypeService
+            .getContentTypes(filter)
+            .pipe(take(1))
+            .subscribe((items) => {
+                this.contentPalletItems = items;
+            });
     }
 
     private isInternallyNavigatingToSamePage(url: string): boolean {

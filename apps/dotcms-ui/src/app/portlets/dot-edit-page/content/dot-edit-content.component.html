@@ -63,7 +63,6 @@
 </div>
 <div class="dot-edit-content__palette" [class.editMode]='isEditMode'  [class.collapsed]="paletteCollapsed">
     <dot-content-palette
-        (filterChange)='loadContentPallet($event)'
         [items]='contentPalletItems'>
     </dot-content-palette>
     <div class="dot-edit-content__palette-visibility"
