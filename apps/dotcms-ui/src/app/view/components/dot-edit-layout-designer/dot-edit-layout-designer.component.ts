@@ -219,10 +219,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             const isEqual = _.isEqual(this.form.value, this.initialFormValue);
             if(!isEqual && this.showUnsaved) {
-                this.dotGlobalMessageService.display(
-                    this.dotMessageService.get('dot.common.message.unsaved.changes'),
-                    true
-                );
+                this.dotGlobalMessageService.customDisplay(this.dotMessageService.get('dot.common.message.unsaved.changes'));
+            } else if(isEqual) {
+                this.dotGlobalMessageService.customDisplay(this.dotMessageService.get('dot.common.message.unsaved.changes'), 100);
             }
             this.dotEditLayoutService.changeDesactivateState(isEqual);
         });
