@@ -40,6 +40,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: $spacing-1;
+    grid-auto-rows: 6rem;
+    overflow: hidden auto;
 
     div {
         border: 1px solid $gray-lighter;
