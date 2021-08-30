@@ -9,7 +9,7 @@ describe('LayoutEditorCanDeactivateGuardService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DotEditLayoutService]
+      providers: [LayoutEditorCanDeactivateGuardService, DotEditLayoutService],
     });
     service = TestBed.inject(LayoutEditorCanDeactivateGuardService);
     dotEditLayoutService = TestBed.inject(DotEditLayoutService);

@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 /**
  *
- *
  * @export
  * @interface CanDeactivateGuarded
  */
@@ -16,7 +15,7 @@ export interface CanDeactivateGuarded {
 
 /**
  *
- * Allows to set whether a route can be disabled.
+ * Allows to set whether a route can be deactivated.
  * @export
  * @class LayoutEditorCanDeactivateGuardService
  * @implements {CanDeactivate<CanDeactivateGuarded>}
