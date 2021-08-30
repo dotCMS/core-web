@@ -146,7 +146,8 @@ describe('DotEditLayoutDesignerComponent', () => {
                     provide: DotGlobalMessageService,
                     useValue: {
                         display: jasmine.createSpy(),
-                        loading: jasmine.createSpy()
+                        loading: jasmine.createSpy(),
+                        customDisplay: jasmine.createSpy()
                     }
                 }
             ]
@@ -203,10 +204,10 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
-        it('should display saving.. message when editing the form.', () => {
+        it('should display unsaved changes message when editing the form.', () => {
             component.form.get('title').setValue('Hello');
             fixture.detectChanges();
-            expect(dotGlobalMessageService.display).toHaveBeenCalled();
+            expect(dotGlobalMessageService.customDisplay).toHaveBeenCalled();
         });
 
         it('should save changes when showMessage is true', () => {
