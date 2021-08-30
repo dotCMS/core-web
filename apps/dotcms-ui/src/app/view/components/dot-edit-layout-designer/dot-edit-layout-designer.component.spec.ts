@@ -134,7 +134,7 @@ describe('DotEditLayoutDesignerComponent', () => {
                     useValue: {
                         handle: jasmine.createSpy().and.returnValue(of({})),
                         error$: jasmine.createSpy().and.returnValue(of(true))
-                    } 
+                    }
                 },
                 {
                     provide: DotTemplateContainersCacheService,
@@ -204,24 +204,10 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
-
         it('should display unsaved changes message when editing the form.', () => {
             component.form.get('title').setValue('Hello');
             fixture.detectChanges();
             expect(dotGlobalMessageService.customDisplay).toHaveBeenCalled();
-        });
-
-        it('should save changes when showMessage is true', () => {
-            spyOn(component.save, 'emit');
-            dotEditLayoutService.changeMessageState(true);
-            fixture.detectChanges();
-            expect(component.save.emit).toHaveBeenCalledTimes(1);
-        });
-
-        it('should display saving.. message when editing the form.', () => {
-            component.form.get('title').setValue('Hello');
-            fixture.detectChanges();
-            expect(dotGlobalMessageService.display).toHaveBeenCalled();
         });
 
         it('should save changes when showMessage is true', () => {
