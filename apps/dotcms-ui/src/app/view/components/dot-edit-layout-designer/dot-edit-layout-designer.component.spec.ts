@@ -33,7 +33,6 @@ import { mockDotThemes } from '@tests/dot-themes.mock';
 import { DotTheme } from '@models/dot-edit-layout-designer';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { mockResponseView } from '@dotcms/app/test/response-view.mock';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
