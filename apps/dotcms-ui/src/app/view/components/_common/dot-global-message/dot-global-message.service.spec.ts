@@ -50,10 +50,10 @@ xdescribe('DotGlobalMessageService', () => {
         });
     });
 
-    it('should not have life if noTime is true for the Display scenario', (done) => {
-        dotGlobalMessageService.display('test', true);
+    it('should set a specific time for the Custom Display scenario', (done) => {
+        dotGlobalMessageService.customDisplay('test', 1000);
         listenerDotGlobalMessage.subscribe((event: DotEvent) => {
-            expect(event.data).toEqual({ value: 'test', life: undefined });
+            expect(event.data).toEqual({ value: 'test', life: 1000 });
             done();
         });
     });
