@@ -40,7 +40,7 @@ import {
 } from '@models/dot-edit-layout-designer';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { DotMessageService } from '../../../api/services/dot-message/dot-messages.service';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -225,7 +225,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 );
             }
             this.dotEditLayoutService.changeDesactivateState(isEqual);
-            this.cd.detectChanges();
         });
         this.updateModel();
     }

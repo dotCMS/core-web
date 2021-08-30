@@ -4,20 +4,24 @@ import { DotEditLayoutService } from '../dot-edit-layout/dot-edit-layout.service
 import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
+/**
+ *
+ *
+ * @export
+ * @interface CanDeactivateGuarded
+ */
 export interface CanDeactivateGuarded {
     canDeactivate: () => Observable<boolean>;
 }
 
 /**
  *
- *  
+ * Allows to set whether a route can be disabled.
  * @export
  * @class LayoutEditorCanDeactivateGuardService
  * @implements {CanDeactivate<CanDeactivateGuarded>}
  */
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class LayoutEditorCanDeactivateGuardService implements CanDeactivate<CanDeactivateGuarded> {
     
     constructor(private dotEditLayoutService: DotEditLayoutService) {}
