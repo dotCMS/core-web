@@ -31,6 +31,7 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { mockDotThemes } from '@tests/dot-themes.mock';
 import { DotTheme } from '@models/dot-edit-layout-designer';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -134,6 +135,14 @@ describe('DotEditLayoutDesignerComponent', () => {
                     useValue: {
                         set: jasmine.createSpy
                     }
+                },
+                {
+                    provide: DotGlobalMessageService,
+                    useValue: {
+                        display: jasmine.createSpy(),
+                        loading: jasmine.createSpy(),
+                        customDisplay: jasmine.createSpy()
+                    }
                 }
             ]
         });
@@ -186,6 +195,22 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
+<<<<<<< HEAD
+=======
+        it('should display unsaved changes message when editing the form.', () => {
+            component.form.get('title').setValue('Hello');
+            fixture.detectChanges();
+            expect(dotGlobalMessageService.customDisplay).toHaveBeenCalled();
+        });
+
+        it('should save changes when showMessage is true', () => {
+            spyOn(component.save, 'emit');
+            dotEditLayoutService.changeMessageState(true);
+            fixture.detectChanges();
+            expect(component.save.emit).toHaveBeenCalledTimes(1);
+        });
+
+>>>>>>> 9ef07c8d... fix: test 2
         it('should save changes when editing the form.', fakeAsync( () => {
             spyOn(component.save, 'emit');
             component.form.get('title').setValue('Hello');
@@ -199,7 +224,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             const layoutProperties: DebugElement = fixture.debugElement.query(
                 By.css('dot-layout-properties')
             );
-            
+
             expect(layoutProperties).toBeTruthy();
             expect(layoutProperties.componentInstance.group).toEqual(component.form.get('layout'));
         });
