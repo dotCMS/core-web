@@ -31,6 +31,8 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { mockDotThemes } from '@tests/dot-themes.mock';
 import { DotTheme } from '@models/dot-edit-layout-designer';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { mockResponseView } from '@dotcms/app/test/response-view.mock';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -66,6 +68,7 @@ class DotThemeSelectorComponentMock {
 }
 
 const messageServiceMock = new MockDotMessageService({
+    'dot.common.message.saving': 'saving...',
     'dot.common.cancel': 'Cancel',
     'editpage.layout.dialog.edit.page': 'Edit Page',
     'editpage.layout.dialog.edit.template': 'Edit Template',
@@ -80,6 +83,9 @@ const messageServiceMock = new MockDotMessageService({
 let component: DotEditLayoutDesignerComponent;
 let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotThemesService: DotThemesService;
+let dotGlobalMessageService: DotGlobalMessageService;
+let dotEditLayoutService: DotEditLayoutService;
+let dotHttpErrorManagerService: DotHttpErrorManagerService;
 
 describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
@@ -126,7 +132,8 @@ describe('DotEditLayoutDesignerComponent', () => {
                 {
                     provide: DotHttpErrorManagerService,
                     useValue: {
-                        handle: jasmine.createSpy().and.returnValue(of({}))
+                        handle: jasmine.createSpy().and.returnValue(of({})),
+                        error$: jasmine.createSpy().and.returnValue(of(true))
                     }
                 },
                 {
@@ -134,13 +141,24 @@ describe('DotEditLayoutDesignerComponent', () => {
                     useValue: {
                         set: jasmine.createSpy
                     }
+                },
+                {
+                    provide: DotGlobalMessageService,
+                    useValue: {
+                        display: jasmine.createSpy(),
+                        loading: jasmine.createSpy(),
+                        customDisplay: jasmine.createSpy()
+                    }
                 }
             ]
         });
 
         fixture = TestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
+        dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         dotThemesService = TestBed.inject(DotThemesService);
+        dotEditLayoutService = TestBed.inject(DotEditLayoutService);
+        dotHttpErrorManagerService = TestBed.inject(DotHttpErrorManagerService);
     });
 
     describe('edit layout', () => {
@@ -186,6 +204,19 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
+        it('should display unsaved changes message when editing the form.', () => {
+            component.form.get('title').setValue('Hello');
+            fixture.detectChanges();
+            expect(dotGlobalMessageService.customDisplay).toHaveBeenCalled();
+        });
+
+        it('should save changes when showMessage is true', () => {
+            spyOn(component.save, 'emit');
+            dotEditLayoutService.changeMessageState(true);
+            fixture.detectChanges();
+            expect(component.save.emit).toHaveBeenCalledTimes(1);
+        });
+
         it('should save changes when editing the form.', fakeAsync( () => {
             spyOn(component.save, 'emit');
             component.form.get('title').setValue('Hello');
@@ -199,7 +230,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             const layoutProperties: DebugElement = fixture.debugElement.query(
                 By.css('dot-layout-properties')
             );
-            
+
             expect(layoutProperties).toBeTruthy();
             expect(layoutProperties.componentInstance.group).toEqual(component.form.get('layout'));
         });
@@ -244,6 +275,16 @@ describe('DotEditLayoutDesignerComponent', () => {
                     }
                 }
             });
+        });
+
+        it('should allow to leave the route if an error happens while saving', (done) => {
+            spyOn(dotEditLayoutService.canBeDesactivated$, 'next');
+            dotHttpErrorManagerService.handle(mockResponseView(401));
+            fixture.detectChanges();
+            dotEditLayoutService.canBeDesactivated$.subscribe( (canDeactivate) => {
+                expect(canDeactivate).toBeTruthy();
+                done();
+            })
         });
     });
 
