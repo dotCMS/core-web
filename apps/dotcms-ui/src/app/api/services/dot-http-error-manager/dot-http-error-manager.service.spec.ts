@@ -229,12 +229,4 @@ describe('DotHttpErrorManagerService', () => {
             header: '204 Header'
         });
     });
-
-    it('should set error true when handle an error', (done) => {
-        service.error$().subscribe(resp => {
-            expect(resp).toBeTruthy();
-            done();
-        });
-        service.handle(mockResponseView(404));
-    })
 });

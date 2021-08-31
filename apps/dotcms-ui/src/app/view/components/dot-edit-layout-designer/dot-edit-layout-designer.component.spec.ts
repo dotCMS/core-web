@@ -32,7 +32,6 @@ import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock'
 import { mockDotThemes } from '@tests/dot-themes.mock';
 import { DotTheme } from '@models/dot-edit-layout-designer';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { mockResponseView } from '@dotcms/app/test/response-view.mock';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -85,7 +84,6 @@ let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotThemesService: DotThemesService;
 let dotGlobalMessageService: DotGlobalMessageService;
 let dotEditLayoutService: DotEditLayoutService;
-let dotHttpErrorManagerService: DotHttpErrorManagerService;
 
 describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
@@ -158,7 +156,6 @@ describe('DotEditLayoutDesignerComponent', () => {
         dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         dotThemesService = TestBed.inject(DotThemesService);
         dotEditLayoutService = TestBed.inject(DotEditLayoutService);
-        dotHttpErrorManagerService = TestBed.inject(DotHttpErrorManagerService);
     });
 
     describe('edit layout', () => {
@@ -275,16 +272,6 @@ describe('DotEditLayoutDesignerComponent', () => {
                     }
                 }
             });
-        });
-
-        it('should allow to leave the route if an error happens while saving', (done) => {
-            spyOn(dotEditLayoutService.canBeDesactivated$, 'next');
-            dotHttpErrorManagerService.handle(mockResponseView(401));
-            fixture.detectChanges();
-            dotEditLayoutService.canBeDesactivated$.subscribe( (canDeactivate) => {
-                expect(canDeactivate).toBeTruthy();
-                done();
-            })
         });
     });
 

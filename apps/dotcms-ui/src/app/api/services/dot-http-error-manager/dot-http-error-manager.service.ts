@@ -22,7 +22,6 @@ export interface DotHttpErrorHandled {
 @Injectable()
 export class DotHttpErrorManagerService {
     private readonly errorHandlers;
-    private _error: Subject<boolean> = new Subject();
 
     constructor(
         private dotDialogService: DotAlertConfirmService,
@@ -42,16 +41,6 @@ export class DotHttpErrorManagerService {
     }
 
     /**
-     * Get the error notification as an Observable
-     *
-     * @return {*}
-     * @memberof DotHttpErrorManagerService
-     */
-    error$() {
-        return this._error.asObservable();
-    }
-
-    /**
      * Handle the http error message and return a true if it did a redirect
      *
      * @param {HttpErrorResponse} err
@@ -59,7 +48,6 @@ export class DotHttpErrorManagerService {
      * @memberof DotHttpErrorManagerService
      */
     handle(err: HttpErrorResponse): Observable<DotHttpErrorHandled> {
-        this._error.next(true);
         const result: DotHttpErrorHandled = {
             redirected: this.callErrorHandler(err),
             status: err.status

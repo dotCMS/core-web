@@ -97,7 +97,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     ngOnInit(): void {
         this.setupLayout();
         this.saveChangesBeforeLeave();
-        this.handleSavingError();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -245,6 +244,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 (error) => this.errorHandler(error)
             );
         this.initialFormValue = _.cloneDeep(this.form.value);
+        this.dotEditLayoutService.changeDesactivateState(true);
         this.showUnsaved = true;
     }
 
@@ -284,14 +284,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             if (res) {
                 this.onSave();
                 this.cd.detectChanges();
-            }
-        });
-    }
-
-    private handleSavingError(): void {
-        this.dotHttpErrorManagerService.error$().subscribe((resp) => {
-            if (resp) {
-                this.dotEditLayoutService.changeDesactivateState(true);
             }
         });
     }

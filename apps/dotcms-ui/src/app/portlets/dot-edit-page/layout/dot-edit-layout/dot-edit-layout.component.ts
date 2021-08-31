@@ -1,4 +1,4 @@
-import { pluck, filter, take } from 'rxjs/operators';
+import { pluck, filter, take, catchError } from 'rxjs/operators';
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotPageRenderState } from '../../shared/models/dot-rendered-page-state.model';
@@ -11,6 +11,9 @@ import { ResponseView } from '@dotcms/dotcms-js';
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotContainerMap, DotContainer } from '@shared/models/container/dot-container.model';
 import { DotLayout } from '@models/dot-edit-layout-designer';
+import { DotHttpErrorManagerService } from '../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotEditLayoutService } from '../../../../api/services/dot-edit-layout/dot-edit-layout.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -27,6 +30,8 @@ export class DotEditLayoutComponent implements OnInit {
         private route: ActivatedRoute,
         private dotRouterService: DotRouterService,
         private dotGlobalMessageService: DotGlobalMessageService,
+        private dotHttpErrorManagerService: DotHttpErrorManagerService,
+        private dotEditLayoutService: DotEditLayoutService,
         private dotPageLayoutService: DotPageLayoutService,
         private dotMessageService: DotMessageService,
         private templateContainersCacheService: DotTemplateContainersCacheService
@@ -89,6 +94,9 @@ export class DotEditLayoutComponent implements OnInit {
                 },
                 (err: ResponseView) => {
                     this.dotGlobalMessageService.error(err.response.statusText);
+                    this.dotHttpErrorManagerService.handle( new HttpErrorResponse(err.response) ).subscribe(() => {
+                        this.dotEditLayoutService.changeDesactivateState(true);
+                    });
                 }
             );
     }
