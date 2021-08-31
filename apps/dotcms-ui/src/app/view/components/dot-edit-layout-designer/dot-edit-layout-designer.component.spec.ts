@@ -220,7 +220,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         it('should save changes when editing the form.', fakeAsync( () => {
             spyOn(component.save, 'emit');
             component.form.get('title').setValue('Hello');
-            tick(500);
+            tick(10500);
             fixture.detectChanges();
             expect(component.save.emit).toHaveBeenCalledTimes(1);
         }));

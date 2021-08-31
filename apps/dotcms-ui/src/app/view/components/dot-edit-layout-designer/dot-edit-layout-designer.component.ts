@@ -209,7 +209,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 sidebar: this.createSidebarForm()
             })
         });
-        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(300)).subscribe(() => {
+        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(10000)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
                 this.showUnsaved = false;
