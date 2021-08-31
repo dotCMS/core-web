@@ -28,10 +28,10 @@ export class DotGlobalMessageService {
     }
 
     /**
-     *
      * Display text messages with custom time.
-     * @param string message
-     * @param number [time]
+     *
+     * @param {string} message
+     * @param {number} [time]
      * @memberof DotGlobalMessageService
      */
     customDisplay(message: string, time?: number) {
@@ -43,7 +43,9 @@ export class DotGlobalMessageService {
 
     /**
      * Display text messages with a loading indicator.
-     * @param string message
+     *
+     * @param {string} [message]
+     * @memberof DotGlobalMessageService
      */
     loading(message?: string): void {
         this.dotEventsService.notify('dot-global-message', {
@@ -54,7 +56,9 @@ export class DotGlobalMessageService {
 
     /**
      * Display text messages with success configuration.
-     * @param string message
+     *
+     * @param {string} [message]
+     * @memberof DotGlobalMessageService
      */
     success(message?: string): void {
         this.dotEventsService.notify('dot-global-message', {
@@ -66,7 +70,9 @@ export class DotGlobalMessageService {
 
     /**
      * Display text messages with error configuration.
-     * @param string message
+     *
+     * @param {string} [message]
+     * @memberof DotGlobalMessageService
      */
     error(message?: string): void {
         // TODO: Define the behaior of error messages.

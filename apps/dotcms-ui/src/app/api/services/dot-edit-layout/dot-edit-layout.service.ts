@@ -30,26 +30,28 @@ export class DotEditLayoutService {
 
     constructor(private templateContainersCacheService: DotTemplateContainersCacheService) {}
 
-
     /**
+     * Get message show
      *
      * @readonly
      * @memberof DotEditLayoutService
      */
-    get showMessage$() {
+    get showMessage$(): Observable<boolean> {
         return this._showMessage;
     }
 
     /**
+     * Get activation property
      *
      * @readonly
      * @memberof DotEditLayoutService
      */
-    get canBeDesactivated$() {
+    get canBeDesactivated$(): Subject<boolean> {
         return this._canBeDesactivated;
     }
 
     /**
+     * Update the activation property
      *
      * @param {boolean} next
      * @memberof DotEditLayoutService
@@ -59,6 +61,7 @@ export class DotEditLayoutService {
     }
 
     /**
+     * Update the message state
      *
      * @param {boolean} next
      * @memberof DotEditLayoutService
@@ -70,8 +73,9 @@ export class DotEditLayoutService {
     /**
      * Take an DotPageView and return an array of DotLayoutGridBox
      *
-     * @param DotLayoutBody dotLayoutBody
-     * @returns DotLayoutGridBox[]
+     * @param {DotLayoutBody} dotLayoutBody
+     * @return {*}  {DotLayoutGrid}
+     * @memberof DotEditLayoutService
      */
     getDotLayoutGridBox(dotLayoutBody: DotLayoutBody): DotLayoutGrid {
         const grid: DotLayoutGridBox[] = [];
@@ -101,8 +105,9 @@ export class DotEditLayoutService {
     /**
      * Take an array of DotLayoutGridBox and return a DotLayoutBody.
      *
-     * @param DotLayoutGridBox[] grid
-     * @returns DotLayoutBody
+     * @param {DotLayoutGrid} grid
+     * @return {*}  {DotLayoutBody}
+     * @memberof DotEditLayoutService
      */
     getDotLayoutBody(grid: DotLayoutGrid): DotLayoutBody {
         return {
@@ -115,8 +120,9 @@ export class DotEditLayoutService {
     /**
      * Take an array of DotPageContainer and return a DotContainerColumnBox.
      *
-     * @param DotPageContainer[] containers
-     * @returns DotContainerColumnBox[]
+     * @param {DotPageContainer[]} containers
+     * @return {*}  {DotContainerColumnBox[]}
+     * @memberof DotEditLayoutService
      */
     getDotLayoutSidebar(containers: DotPageContainer[]): DotContainerColumnBox[] {
         return this.getDotContainerColumnBoxFromDotPageContainer(containers);
@@ -134,7 +140,7 @@ export class DotEditLayoutService {
     /**
      * Get notified when a box is added to the grid system
      *
-     * @returns {Observable<boolean>}
+     * @return {*}  {Observable<boolean>}
      * @memberof DotEditLayoutService
      */
     getBoxes(): Observable<boolean> {

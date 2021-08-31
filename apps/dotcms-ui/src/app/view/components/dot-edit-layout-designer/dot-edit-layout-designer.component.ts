@@ -218,10 +218,15 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             const isEqual = _.isEqual(this.form.value, this.initialFormValue);
-            if(!isEqual && this.showUnsaved) {
-                this.dotGlobalMessageService.customDisplay(this.dotMessageService.get('dot.common.message.unsaved.changes'));
-            } else if(isEqual) {
-                this.dotGlobalMessageService.customDisplay(this.dotMessageService.get('dot.common.message.unsaved.changes'), 100);
+            if (!isEqual && this.showUnsaved) {
+                this.dotGlobalMessageService.customDisplay(
+                    this.dotMessageService.get('dot.common.message.unsaved.changes')
+                );
+            } else if (isEqual) {
+                this.dotGlobalMessageService.customDisplay(
+                    this.dotMessageService.get('dot.common.message.unsaved.changes'),
+                    100
+                );
             }
             this.dotEditLayoutService.changeDesactivateState(isEqual);
         });
@@ -274,24 +279,18 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         );
     }
 
-    /**
-     * Save unsaved changes if user is leaving
-     */
     private saveChangesBeforeLeave(): void {
         this.dotEditLayoutService.showMessage$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
-            if(res) {
+            if (res) {
                 this.onSave();
                 this.cd.detectChanges();
-            } 
+            }
         });
     }
 
-    /**
-     * Allow user to leave the route if there's an http error
-     */
     private handleSavingError(): void {
         this.dotHttpErrorManagerService.error$().subscribe((resp) => {
-            if(resp) {
+            if (resp) {
                 this.dotEditLayoutService.changeDesactivateState(true);
             }
         });
