@@ -46,7 +46,7 @@ export class DotEditLayoutService {
      * @readonly
      * @memberof DotEditLayoutService
      */
-    get canBeDesactivated$(): Observable<boolean> {
+    get canBeDesactivated$(): Subject<boolean> {
         return this._canBeDesactivated;
     }
 
