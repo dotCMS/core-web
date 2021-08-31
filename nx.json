@@ -31,6 +31,8 @@
         "ui": { "tags": [] },
         "dotcdn": { "tags": [] },
         "dotcdn-e2e": { "tags": [], "implicitDependencies": ["dotcdn"] },
-        "block-editor": { "tags": [] }
+        "block-editor": { "tags": [] },
+        "dot-block-editor": { "tags": [] },
+        "dot-block-editor-e2e": { "tags": [], "implicitDependencies": ["dot-block-editor"] }
     }
 }
