@@ -110,6 +110,42 @@ const responseData: DotCMSContentType[] = [
         id: '6044a806-f462-4977-a353-57539eac2a2c',
         name: 'Long name Blog Comment',
         variable: 'long-name'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'persona'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'fileasset'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'host'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'vanityurl'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'languagevariable'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'htmlpageasset'
     }
 ] as DotCMSContentType[];
 
@@ -155,7 +191,7 @@ const mockRenderedPageState = new DotPageRenderState(
     new DotPageRender(mockDotRenderedPage())
 );
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -674,8 +710,7 @@ describe('DotEditContentComponent', () => {
                         By.css('.dot-edit-content__palette-visibility')
                     );
                     const classList = contentPaletteWrapper.nativeElement.classList;
-                    responseData.pop();
-                    expect(contentPalette.items).toEqual(responseData);
+                    expect(contentPalette.items).toEqual(responseData.slice(0, 3));
                     expect(classList.contains('editMode')).toEqual(true);
                     paletteController.triggerEventHandler('click', '');
                     fixture.detectChanges();

@@ -502,18 +502,28 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private setAllowedContentTypes(pageState: DotPageRenderState): void {
+        const blackList = [
+            'persona',
+            'fileasset',
+            'host',
+            'vanityurl',
+            'languagevariable',
+            'htmlpageasset'
+        ];
+
         let allowedContent = new Set();
         Object.values(pageState.containers).forEach((container) => {
             Object.values(container.containerStructures).forEach(
                 (containerStructure: DotContainerStructure) => {
-                    allowedContent.add(containerStructure.contentTypeVar);
+                    allowedContent.add(containerStructure.contentTypeVar.toLocaleLowerCase());
                 }
             );
         });
-
+        blackList.forEach((content) => allowedContent.delete(content));
         this.contentPalletItems = this.contentPalletItems.filter(
             (contentType) =>
-                allowedContent.has(contentType.variable) || contentType.baseType === 'WIDGET'
+                allowedContent.has(contentType.variable.toLocaleLowerCase()) ||
+                contentType.baseType === 'WIDGET'
         );
     }
 }
