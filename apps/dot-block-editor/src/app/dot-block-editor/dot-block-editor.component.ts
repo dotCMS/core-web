@@ -1,0 +1,32 @@
+import { Component, OnInit, ComponentFactoryResolver, Injector } from '@angular/core';
+import { Editor } from '@tiptap/core';
+import StarterKit from '@tiptap/starter-kit';
+
+import { ContentletBlock } from '../../../../../libs/block-editor/src/lib/extensions/blocks/contentlet-block/contentlet-block.extension';
+import { ActionsMenu } from '../../../../../libs/block-editor/src/lib/extensions/actions-menu.extension';
+
+@Component({
+  selector: 'dotcms-dot-block-editor',
+  templateUrl: './dot-block-editor.component.html',
+  styleUrls: ['./dot-block-editor.component.scss']
+})
+export class DotBlockEditorComponent implements OnInit {
+
+  editor: Editor;
+
+  value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
+
+  constructor(private injector: Injector, private resolver: ComponentFactoryResolver) {}
+
+  ngOnInit() {
+      this.editor = new Editor({
+          extensions: [
+              StarterKit,
+              ContentletBlock(this.injector),
+              ActionsMenu(this.injector, this.resolver),
+          ]
+      });
+  }
+
+}
+
