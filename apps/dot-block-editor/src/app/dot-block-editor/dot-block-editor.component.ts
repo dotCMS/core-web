@@ -1,9 +1,9 @@
 import { Component, OnInit, ComponentFactoryResolver, Injector } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
+import { ContentletBlock } from '@dotcms/block-editor';
+import { ActionsMenu } from '@dotcms/block-editor';
 
-import { ContentletBlock } from '../../../../../libs/block-editor/src/lib/extensions/blocks/contentlet-block/contentlet-block.extension';
-import { ActionsMenu } from '../../../../../libs/block-editor/src/lib/extensions/actions-menu.extension';
 
 @Component({
   selector: 'dotcms-dot-block-editor',

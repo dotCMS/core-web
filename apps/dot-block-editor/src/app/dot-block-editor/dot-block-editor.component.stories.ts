@@ -8,15 +8,12 @@ import { OrderListModule } from 'primeng/orderlist';
 import { MenuModule } from 'primeng/menu';
 import { DotBlockEditorComponent } from './dot-block-editor.component';
 
-import { NgxTiptapModule } from '../../../../../libs/block-editor/src/lib/ngx-tiptap.module';
-import { SuggestionsService } from '../../../../../libs/block-editor/src/lib/extensions/services/suggestions.service';
-import { SuggestionsComponent } from '../../../../../libs/block-editor/src/lib/extensions/components/suggestions/suggestions.component';
-import { 
-    ContentletBlockComponent
-} from '../../../../../libs/block-editor/src/lib/extensions/blocks/contentlet-block/contentlet-block.component';
-import { 
-    ActionButtonComponent
-} from '../../../../../libs/block-editor/src/lib/extensions/components/action-button/action-button.component';
+import { NgxTiptapModule } from '@dotcms/block-editor';
+
+import { SuggestionsService } from '@dotcms/block-editor';
+import { SuggestionsComponent } from '@dotcms/block-editor';
+import { ContentletBlockComponent } from '@dotcms/block-editor';
+import { ActionButtonComponent } from '@dotcms/block-editor';
 
 export default {
     title: 'Block Editor'
