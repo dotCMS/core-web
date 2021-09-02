@@ -28,6 +28,19 @@ export class DotGlobalMessageService {
     }
 
     /**
+     * Display text messages with custom time.
+     * @param string message
+     * @param number [time]
+     * @memberof DotGlobalMessageService
+     */
+    customDisplay(message: string, time?: number) {
+        this.dotEventsService.notify('dot-global-message', {
+            value: message,
+            life: time
+        });
+    }
+
+    /**
      * Display text messages with a loading indicator.
      * @param string message
      */

@@ -15,6 +15,7 @@ import { DotLayoutDesignerModule } from './components/dot-layout-designer/dot-la
 import { DotLayoutPropertiesModule } from './components/dot-layout-properties/dot-layout-properties.module';
 import { DotSidebarPropertiesModule } from './components/dot-sidebar-properties/dot-sidebar-properties.module';
 import { DotThemeSelectorModule } from './components/dot-theme-selector/dot-theme-selector.module';
+import { DotDialogModule } from '../dot-dialog/dot-dialog.module';
 
 // @components
 import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
@@ -29,9 +30,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 
 // @portlets
-import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
-import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 
 @NgModule({
     declarations: [DotEditLayoutDesignerComponent],
@@ -55,9 +54,10 @@ import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.
         TooltipModule,
         DotSecondaryToolbarModule,
         DotPipesModule,
-        DotLayoutDesignerModule
+        DotLayoutDesignerModule,
+        DotDialogModule
     ],
     exports: [DotEditLayoutDesignerComponent],
-    providers: [DotEditLayoutService, DotPageLayoutService, DotTemplateContainersCacheService]
+    providers: [DotPageLayoutService]
 })
 export class DotEditLayoutDesignerModule {}
