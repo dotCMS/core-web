@@ -35,13 +35,13 @@ describe('LayoutEditorCanDeactivateGuardService', () => {
     });
 
     it('should set _showMessage when canBeDesactivated is false', (done) => {
-        dotEditLayoutService.changeDesactivateState(false);
-        service.canDeactivate().subscribe(() => {
-            fail('Should not be called if canBeDesactivated is false');
-        });
         dotEditLayoutService.showMessage$.subscribe((resp) => {
             expect(resp).toBeTruthy();
             done();
+        });
+        dotEditLayoutService.changeDesactivateState(false);
+        service.canDeactivate().subscribe(() => {
+            fail('Should not be called if canBeDesactivated is false');
         });
     });
 });
