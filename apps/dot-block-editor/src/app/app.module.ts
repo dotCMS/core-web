@@ -12,10 +12,19 @@ import { DotBlockEditorComponent } from './dot-block-editor/dot-block-editor.com
 import { createCustomElement } from '@angular/elements';
 import { AppComponent } from './app.component';
 import { NgxTiptapModule } from '@dotcms/block-editor';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [AppComponent, DotBlockEditorComponent],
-    imports: [BrowserModule, CommonModule, FormsModule, NgxTiptapModule, OrderListModule, ListboxModule],
+    imports: [
+        BrowserModule,
+        CommonModule,
+        FormsModule,
+        NgxTiptapModule,
+        OrderListModule,
+        ListboxModule,
+        HttpClientModule
+    ],
     providers: [],
     entryComponents: [DotBlockEditorComponent]
 })
