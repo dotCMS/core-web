@@ -26,8 +26,8 @@ import { DotPageContainer } from '@models/dot-page-container/dot-page-container.
 export class DotEditLayoutService {
     private _addGridBox: Subject<boolean> = new Subject();
 
+    private _showMessage: Subject<boolean> = new Subject();
     private _canBeDesactivated = new BehaviorSubject(true);
-    private _showMessage = new BehaviorSubject(false);
 
     constructor(private templateContainersCacheService: DotTemplateContainersCacheService) {}
 
