@@ -35,9 +35,9 @@ import { IframeOverlayService } from '@components/_common/iframe/service/iframe-
 import { DotCustomEventHandlerService } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { DotContentTypeService } from '@services/dot-content-type';
 import { DotContainerStructure } from '@models/container/dot-container.model';
-import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DotConfigurationService } from '@services/dot-configuration/dot-configuration.service';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -70,6 +70,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
     private pageStateInternal: DotPageRenderState;
+    private contentBlackList: string[];
 
     constructor(
         private dotContentletEditorService: DotContentletEditorService,
@@ -89,7 +90,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
         public sanitizer: DomSanitizer,
         public iframeOverlayService: IframeOverlayService,
-        private httpErrorManagerService: DotHttpErrorManagerService
+        private httpErrorManagerService: DotHttpErrorManagerService,
+        private dotConfigurationService: DotConfigurationService
     ) {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
@@ -147,6 +149,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.subscribeOverlayService();
         this.subscribeDraggedContentType();
         this.loadContentPallet();
+        this.setContentBlackList();
     }
 
     ngOnDestroy(): void {
@@ -501,16 +504,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
-    private setAllowedContentTypes(pageState: DotPageRenderState): void {
-        const blackList = [
-            'persona',
-            'fileasset',
-            'host',
-            'vanityurl',
-            'languagevariable',
-            'htmlpageasset'
-        ];
+    private setContentBlackList(): void {
+        const CONTENT_HIDDEN_KEY = 'list:CONTENT_PALETTE_HIDDEN_CONTENT_TYPES';
 
+        this.dotConfigurationService.getKeys(CONTENT_HIDDEN_KEY).subscribe((keys) => {
+            this.contentBlackList = keys[CONTENT_HIDDEN_KEY];
+        });
+    }
+
+    private setAllowedContentTypes(pageState: DotPageRenderState): void {
         let allowedContent = new Set();
         Object.values(pageState.containers).forEach((container) => {
             Object.values(container.containerStructures).forEach(
@@ -519,7 +521,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 }
             );
         });
-        blackList.forEach((content) => allowedContent.delete(content));
+        this.contentBlackList.forEach((content) =>
+            allowedContent.delete(content.toLocaleLowerCase())
+        );
         this.contentPalletItems = this.contentPalletItems.filter(
             (contentType) =>
                 allowedContent.has(contentType.variable.toLocaleLowerCase()) ||

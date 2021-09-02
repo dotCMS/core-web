@@ -84,6 +84,8 @@ import { DotContentTypeService } from '@services/dot-content-type';
 import { DotContentPaletteModule } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.module';
 import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DotConfigurationService } from '@services/dot-configuration/dot-configuration.service';
+import { DotIconModule } from '@dotcms/ui';
 
 const responseData: DotCMSContentType[] = [
     {
@@ -106,22 +108,10 @@ const responseData: DotCMSContentType[] = [
         variable: 'Contact'
     },
     {
-        icon: 'person',
-        id: '6044a806-f462-4977-a353-57539eac2a2c',
-        name: 'Long name Blog Comment',
-        variable: 'long-name'
-    },
-    {
         icon: 'cloud',
         id: 'now-show',
         name: 'now-show',
         variable: 'persona'
-    },
-    {
-        icon: 'cloud',
-        id: 'now-show',
-        name: 'now-show',
-        variable: 'fileasset'
     },
     {
         icon: 'cloud',
@@ -140,12 +130,6 @@ const responseData: DotCMSContentType[] = [
         id: 'now-show',
         name: 'now-show',
         variable: 'languagevariable'
-    },
-    {
-        icon: 'cloud',
-        id: 'now-show',
-        name: 'now-show',
-        variable: 'htmlpageasset'
     }
 ] as DotCMSContentType[];
 
@@ -208,6 +192,7 @@ describe('DotEditContentComponent', () => {
     let dotContentletEditorService: DotContentletEditorService;
     let dotDialogService: DotAlertConfirmService;
     let dotCustomEventHandlerService: DotCustomEventHandlerService;
+    let dotConfigurationService: DotConfigurationService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -248,6 +233,7 @@ describe('DotEditContentComponent', () => {
                 DotOverlayMaskModule,
                 DotWizardModule,
                 DotContentPaletteModule,
+                DotIconModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
@@ -268,6 +254,7 @@ describe('DotEditContentComponent', () => {
                 DotGlobalMessageService,
                 DotPageStateService,
                 DotCustomEventHandlerService,
+                DotConfigurationService,
                 { provide: DotContentTypeService, useClass: MockDotContentTypeService },
                 {
                     provide: LoginService,
@@ -341,11 +328,21 @@ describe('DotEditContentComponent', () => {
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
         dotDialogService = de.injector.get(DotAlertConfirmService);
         dotCustomEventHandlerService = de.injector.get(DotCustomEventHandlerService);
-
+        dotConfigurationService = de.injector.get(DotConfigurationService);
         spyOn(dotPageStateService, 'reload');
 
         spyOn(dotEditContentHtmlService, 'renderAddedForm').and.returnValue(
             of([{ identifier: '123', uuid: 'uui-1' }])
+        );
+        spyOn(dotConfigurationService, 'getKeys').and.returnValue(
+            of({
+                'list:CONTENT_PALETTE_HIDDEN_CONTENT_TYPES': [
+                    'host',
+                    'vanityurl',
+                    'persona',
+                    'languagevariable'
+                ]
+            })
         );
     });
 
