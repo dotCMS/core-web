@@ -10,6 +10,7 @@ import StarterKit from '@tiptap/starter-kit';
 
 import { ActionsMenu } from '../extensions/actions-menu.extension';
 import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentlet-block.extension';
+import { DragHandler } from '../extensions/dragHandler.extention';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -28,8 +29,11 @@ export class BlockEditorComponent implements OnInit {
         this.editor = new Editor({
             extensions: [
                 StarterKit,
-                ContentletBlock(this.injector),
+                ContentletBlock(this.injector).extend({
+                    draggable: true
+                }),
                 ActionsMenu(this.injector, this.resolver),
+                DragHandler
             ]
         });
     }
