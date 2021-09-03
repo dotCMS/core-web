@@ -116,50 +116,36 @@ export const DragHandler = Extension.create({
                         mousemove(view, event) {
                             let coords = { left: event.clientX, top: event.clientY };
                             let pos = view.posAtCoords(coords);
-                            let node: any = view.domAtPos(pos.pos);
-                            console.log('node', node);
+                            let node: any = view.domAtPos(pos.pos, 0);
+                            console.log('node----INICIAL----', node);
 
-                            // node = node.node;
-                            // while (node && node.parentNode) {
-                            //     if (node.parentNode.classList.contains('ProseMirror')) {
-                            //         // todo
-                            //         break;
-                            //     }
-                            //     node = node.parentNode;
-                            // }
                             node = node.node;
                             while (node && node.parentNode) {
                                 console.log('node.parentNode.classList', node.parentNode.classList);
-
                                 if (node.classList?.contains('ProseMirror')) {
                                     break;
                                 }
-
                                 if (node.parentNode.classList?.contains('ProseMirror')) {
                                     break;
                                 }
-                                // if (node.parentNode.classList.contains('ProseMirror')) {
-                                //     // todo
-                                //
-                                //     break;
-                                // }
                                 node = node.parentNode;
                             }
+
                             console.log('node procesado', node);
-                            if (node) {
-                                console.log(node);
+                            if (node && !node.classList?.contains('ProseMirror')) {
+                                // console.log('node.innerText', node.innerText === null);
+                                // if (node.innerText === '') {
+                                //     dropElement.style.left = '-10000px';
+                                // }
                                 let rect = absoluteRect(node);
                                 let win = node.ownerDocument.defaultView;
                                 rect.top += win.pageYOffset;
                                 rect.left += win.pageXOffset;
                                 // rect.width = WIDTH + 'px';
-                                dropElement.style.display = 'block';
                                 dropElement.style.left = -WIDTH + rect.left + 'px';
-                                //dropElement.style.left = rect.left + 'px';
                                 dropElement.style.top = rect.top + 'px';
                             } else {
                                 console.log('no hay node');
-                                //    dropElement.style.display = 'none';
                             }
 
                             return true;
