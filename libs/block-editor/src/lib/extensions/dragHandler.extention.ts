@@ -116,8 +116,8 @@ export const DragHandler = Extension.create({
                         mousemove(view, event) {
                             let coords = { left: event.clientX, top: event.clientY };
                             let pos = view.posAtCoords(coords);
-                            let node: any = view.nodeDOM(pos.pos);
-                            console.log(node, node);
+                            let node: any = view.domAtPos(pos.pos);
+                            console.log('node', node);
 
                             // node = node.node;
                             // while (node && node.parentNode) {
@@ -127,28 +127,41 @@ export const DragHandler = Extension.create({
                             //     }
                             //     node = node.parentNode;
                             // }
-
-                            // node = node.node;
+                            node = node.node;
                             while (node && node.parentNode) {
-                                if (node.classList.contains('ProseMirror')) {
-                                    break;
-                                }
-                                if (node.parentNode.classList.contains('ProseMirror')) {
-                                    // todo
+                                console.log('node.parentNode.classList', node.parentNode.classList);
 
+                                if (node.classList?.contains('ProseMirror')) {
                                     break;
                                 }
+
+                                if (node.parentNode.classList?.contains('ProseMirror')) {
+                                    break;
+                                }
+                                // if (node.parentNode.classList.contains('ProseMirror')) {
+                                //     // todo
+                                //
+                                //     break;
+                                // }
                                 node = node.parentNode;
                             }
-                            console.log(node);
-                            let rect = absoluteRect(node);
-                            let win = node.ownerDocument.defaultView;
-                            rect.top += win.pageYOffset;
-                            rect.left += win.pageXOffset;
-                            // rect.width = WIDTH + 'px';
-                            dropElement.style.left = -WIDTH + rect.left + 'px';
-                            //dropElement.style.left = rect.left + 'px';
-                            dropElement.style.top = rect.top + 'px';
+                            console.log('node procesado', node);
+                            if (node) {
+                                console.log(node);
+                                let rect = absoluteRect(node);
+                                let win = node.ownerDocument.defaultView;
+                                rect.top += win.pageYOffset;
+                                rect.left += win.pageXOffset;
+                                // rect.width = WIDTH + 'px';
+                                dropElement.style.display = 'block';
+                                dropElement.style.left = -WIDTH + rect.left + 'px';
+                                //dropElement.style.left = rect.left + 'px';
+                                dropElement.style.top = rect.top + 'px';
+                            } else {
+                                console.log('no hay node');
+                                //    dropElement.style.display = 'none';
+                            }
+
                             return true;
                         }
                     }
