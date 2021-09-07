@@ -14,16 +14,16 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have as title 'dot-block-editor'`, () => {
+    it(`should have as title 'dotcms-block-editor'`, () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.componentInstance;
-        expect(app.title).toEqual('dot-block-editor');
+        expect(app.title).toEqual('dotcms-block-editor');
     });
 
     it('should render title', () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
         const compiled = fixture.nativeElement;
-        expect(compiled.querySelector('h1').textContent).toContain('Welcome to dot-block-editor!');
+        expect(compiled.querySelector('h1').textContent).toContain('Welcome to dotcms-block-editor!');
     });
 });

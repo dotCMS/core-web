@@ -32,7 +32,7 @@
         "dotcdn": { "tags": [] },
         "dotcdn-e2e": { "tags": [], "implicitDependencies": ["dotcdn"] },
         "block-editor": { "tags": [] },
-        "dot-block-editor": { "tags": [] },
-        "dot-block-editor-e2e": { "tags": [], "implicitDependencies": ["dot-block-editor"] }
+        "dotcms-block-editor": { "tags": [] },
+        "dotcms-block-editor-e2e": { "tags": [], "implicitDependencies": ["dotcms-block-editor"] }
     }
 }

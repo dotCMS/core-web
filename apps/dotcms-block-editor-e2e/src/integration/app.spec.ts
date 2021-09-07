@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('dot-block-editor', () => {
+describe('dotcms-block-editor', () => {
     beforeEach(() => cy.visit('/'));
 
     it('should display welcome message', () => {
@@ -8,6 +8,6 @@ describe('dot-block-editor', () => {
         cy.login('my-email@something.com', 'myPassword');
 
         // Function helper example, see `../support/app.po.ts` file
-        getGreeting().contains('Welcome to dot-block-editor!');
+        getGreeting().contains('Welcome to dotcms-block-editor!');
     });
 });
