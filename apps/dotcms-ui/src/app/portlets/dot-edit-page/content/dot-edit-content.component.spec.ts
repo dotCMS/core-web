@@ -82,7 +82,6 @@ import { DotPageContainer } from '@models/dot-page-container/dot-page-container.
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { DotContentTypeService } from '@services/dot-content-type';
 import { DotContentPaletteModule } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.module';
-import { DotFormatDateService } from '@services/dot-format-date-service';
 import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -283,7 +282,6 @@ describe('DotEditContentComponent', () => {
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 DotcmsConfigService,
                 LoggerService,
-                DotFormatDateService,
                 StringUtils,
                 ApiRoot,
                 UserModel
