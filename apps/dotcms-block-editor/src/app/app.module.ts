@@ -37,7 +37,7 @@ export class AppModule {
           injector: this.injector
         });
      
-        customElements.define('dotcms-block-editor-element', element);
+        customElements.define('dotcms-block-editor', element);
     }
 
 }

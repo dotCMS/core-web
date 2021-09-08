@@ -9,18 +9,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class SuggestionsService {
-    private headers = new HttpHeaders();
 
-    constructor(private http: HttpClient) {
-        this.headers
-                .set('Accept', '*/*')
-                .set('Content-Type', 'application/json');
+    constructor(private http: HttpClient) {}
+
+    get defaultHeaders() {
+        const headers = new HttpHeaders();
+        headers
+            .set('Accept', '*/*')
+            .set('Content-Type', 'application/json');
+        return headers;
     }
 
     getContentTypes(filter = ''): Observable<DotCMSContentType[]> {
         return this.http
             .get(`/api/v1/contenttype?filter=${filter}&orderby=modDate&direction=DESC&per_page=40`, {
-                headers: this.headers
+                headers: this.defaultHeaders
             })
             .pipe(pluck('entity'));
     }
@@ -29,7 +32,7 @@ export class SuggestionsService {
         return this.http
             // eslint-disable-next-line max-len
             .get(`/api/content/render/false/query/+contentType:${contentType}%20+languageId:1%20+deleted:false%20+working:true/orderby/modDate%20desc`, {
-                headers: this.headers
+                headers: this.defaultHeaders
             })
             .pipe(pluck('contentlets'));
     }
