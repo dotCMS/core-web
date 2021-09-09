@@ -720,7 +720,12 @@
                             "apps/dotcms-block-editor/src/assets"
                         ],
                         "styles": ["apps/dotcms-block-editor/src/styles.scss"],
-                        "scripts": []
+                        "scripts": [
+                        {
+                          "bundleName": "generator-runtime",
+                          "input": "node_modules/regenerator-runtime/runtime.js"
+                        }
+                      ]
                     },
                     "configurations": {
                         "production": {
