@@ -39,8 +39,6 @@ import {
     DotLayoutSideBar
 } from '@models/dot-edit-layout-designer';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
-import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -73,12 +71,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     form: FormGroup;
     initialFormValue: any;
     themeDialogVisibility = false;
-
     currentTheme: DotTheme;
 
     saveAsTemplate: boolean;
-    showUnsaved = true;
-    leaving = false;
     showTemplateLayoutSelectionDialog = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -89,15 +84,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
-        private dotGlobalMessageService: DotGlobalMessageService,
-        private dotMessageService: DotMessageService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
         this.setupLayout();
-        this.saveChangesBeforeLeave();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -209,26 +201,11 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 sidebar: this.createSidebarForm()
             })
         });
-        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(10000)).subscribe(() => {
+        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(300)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
-                this.showUnsaved = false;
             }
             this.cd.detectChanges();
-        });
-        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            const isEqual = _.isEqual(this.form.value, this.initialFormValue);
-            if (!isEqual && this.showUnsaved) {
-                this.dotGlobalMessageService.customDisplay(
-                    this.dotMessageService.get('dot.common.message.unsaved.changes')
-                );
-            } else if (isEqual) {
-                this.dotGlobalMessageService.customDisplay(
-                    this.dotMessageService.get('dot.common.message.unsaved.changes'),
-                    100
-                );
-            }
-            this.dotEditLayoutService.changeDesactivateState(isEqual);
         });
         this.updateModel();
     }
@@ -244,9 +221,8 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 },
                 (error) => this.errorHandler(error)
             );
+
         this.initialFormValue = _.cloneDeep(this.form.value);
-        this.dotEditLayoutService.changeDesactivateState(true);
-        this.showUnsaved = true;
     }
 
     private createSidebarForm(): DotLayoutSideBar {
@@ -278,15 +254,5 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 this.currentTheme = err.status === 403 ? null : this.currentTheme;
             })
         );
-    }
-
-    private saveChangesBeforeLeave(): void {
-        this.dotEditLayoutService.showMessage$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
-            if (res && !this.leaving) {
-                this.onSave();
-                this.showUnsaved = false;
-                this.leaving = true;
-            }
-        });
     }
 }

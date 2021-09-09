@@ -2,6 +2,7 @@ import { pluck, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { DotLocalstorageService } from '@services/dot-localstorage/dot-localstorage.service';
+import { FormatDateService } from '@services/format-date-service';
 import { formatMessage } from '@shared/dot-utils';
 
 @Injectable({
@@ -12,6 +13,7 @@ export class DotMessageService {
     private MESSAGES_LOCALSTORAGE_KEY = 'dotMessagesKeys';
 
     constructor(
+        private formatDateService: FormatDateService,
         private coreWebService: CoreWebService,
         private dotLocalstorageService: DotLocalstorageService
     ) {}
@@ -51,6 +53,30 @@ export class DotMessageService {
                 ? formatMessage(this.messageMap[key], args)
                 : this.messageMap[key]
             : key;
+    }
+
+    setRelativeDateMessages(languageId: string): void {
+        const relativeDateKeys = [
+            'relativetime.future',
+            'relativetime.past',
+            'relativetime.s',
+            'relativetime.m',
+            'relativetime.mm',
+            'relativetime.h',
+            'relativetime.hh',
+            'relativetime.d',
+            'relativetime.dd',
+            'relativetime.M',
+            'relativetime.MM',
+            'relativetime.y',
+            'relativetime.yy'
+        ];
+
+        const relativeDateMessages = Object.assign(
+            {},
+            ...relativeDateKeys.map((p) => ({ [p.split('.')[1]]: this.messageMap[p] }))
+        );
+        this.formatDateService.setLang(languageId.split('_')[0], relativeDateMessages);
     }
 
     private getAll(lang: string): void {

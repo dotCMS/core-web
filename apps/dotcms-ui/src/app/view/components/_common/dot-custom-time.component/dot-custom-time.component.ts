@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, Input, OnInit, AfterViewChecked } from '@angular/core';
-import { DotFormatDateService } from '@services/dot-format-date-service';
+import { FormatDateService } from '@services/format-date-service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -13,15 +13,15 @@ export class CustomTimeComponent implements OnInit, AfterViewChecked {
 
     formattedTime = '';
 
-    constructor(private dotFormatDateService: DotFormatDateService) {}
+    constructor(private formatDateService: FormatDateService) {}
 
     ngOnInit(): void {
-        this.formattedTime = this.dotFormatDateService.getRelative(this.time);
+        this.formattedTime = this.formatDateService.getRelative(this.time);
     }
 
     // TODO: this it's running every time the UI changes no matter where, need to fix it, should only run when custom-time shows
     ngAfterViewChecked(): void {
         // TODO: this is triggering even when open other dropdown component instance, need to check that.
-        this.formattedTime = this.dotFormatDateService.getRelative(this.time);
+        this.formattedTime = this.formatDateService.getRelative(this.time);
     }
 }

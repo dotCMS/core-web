@@ -44,7 +44,6 @@ import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/
 import { Menu, MenuModule } from 'primeng/menu';
 import { ConfirmationService } from 'primeng/api';
 import { UiDotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { DotFormatDateService } from '@services/dot-format-date-service';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -112,7 +111,6 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                 DotEventsService,
                 DotcmsEventsService,
                 DotEventsSocket,
-                DotFormatDateService,
                 { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                 DotcmsConfigService,
                 LoggerService,

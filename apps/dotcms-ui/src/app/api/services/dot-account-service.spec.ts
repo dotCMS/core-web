@@ -11,8 +11,7 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { ConfirmationService } from 'primeng/api';
-import { DotFormatDateService } from '@services/dot-format-date-service';
-import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
+import { FormatDateService } from '@services/format-date-service';
 
 describe('DotAccountService', () => {
     let service: DotAccountService;
@@ -28,7 +27,7 @@ describe('DotAccountService', () => {
                     DotHttpErrorManagerService,
                     DotAlertConfirmService,
                     ConfirmationService,
-                    { provide: DotFormatDateService, useClass: DotFormatDateServiceMock },
+                    FormatDateService,
                     { provide: CoreWebService, useClass: CoreWebServiceMock },
                     { provide: DotRouterService, useClass: MockDotRouterService },
                     {

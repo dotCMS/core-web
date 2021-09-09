@@ -13,7 +13,7 @@ import { DotMenuService } from '@services/dot-menu.service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotSaveOnDeactivateService } from './shared/dot-save-on-deactivate-service/dot-save-on-deactivate.service';
-import { DotFormatDateService } from '@services/dot-format-date-service';
+import { FormatDateService } from '@services/format-date-service';
 import { IframeOverlayService } from './view/components/_common/iframe/service/iframe-overlay.service';
 import { MenuGuardService } from '@services/guards/menu-guard.service';
 import { NotificationsService } from '@services/notifications-service';
@@ -31,7 +31,6 @@ import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-han
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { ConfirmationService } from 'primeng/api';
-import { LayoutEditorCanDeactivateGuardService } from '@services/guards/layout-editor-can-deactivate-guard.service';
 
 export const LOCATION_TOKEN = new InjectionToken<Location>('Window location object');
 
@@ -55,7 +54,7 @@ const PROVIDERS: any[] = [
     DotRouterService,
     DotSaveOnDeactivateService,
     DotUiColorsService,
-    DotFormatDateService,
+    FormatDateService,
     IframeOverlayService,
     MenuGuardService,
     NotificationsService,
@@ -68,8 +67,7 @@ const PROVIDERS: any[] = [
     DotPushPublishDialogService,
     DotWorkflowEventHandlerService,
     DotWorkflowActionsFireService,
-    DotGlobalMessageService,
-    LayoutEditorCanDeactivateGuardService
+    DotGlobalMessageService
 ];
 
 export const ENV_PROVIDERS = [...PROVIDERS];

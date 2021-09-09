@@ -31,7 +31,6 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { mockDotLayout, mockDotRenderedPage } from '@tests/dot-page-render.mock';
 import { mockDotThemes } from '@tests/dot-themes.mock';
 import { DotTheme } from '@models/dot-edit-layout-designer';
-import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -67,7 +66,6 @@ class DotThemeSelectorComponentMock {
 }
 
 const messageServiceMock = new MockDotMessageService({
-    'dot.common.message.saving': 'saving...',
     'dot.common.cancel': 'Cancel',
     'editpage.layout.dialog.edit.page': 'Edit Page',
     'editpage.layout.dialog.edit.template': 'Edit Template',
@@ -82,8 +80,6 @@ const messageServiceMock = new MockDotMessageService({
 let component: DotEditLayoutDesignerComponent;
 let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotThemesService: DotThemesService;
-let dotGlobalMessageService: DotGlobalMessageService;
-let dotEditLayoutService: DotEditLayoutService;
 
 describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
@@ -138,23 +134,13 @@ describe('DotEditLayoutDesignerComponent', () => {
                     useValue: {
                         set: jasmine.createSpy
                     }
-                },
-                {
-                    provide: DotGlobalMessageService,
-                    useValue: {
-                        display: jasmine.createSpy(),
-                        loading: jasmine.createSpy(),
-                        customDisplay: jasmine.createSpy()
-                    }
                 }
             ]
         });
 
         fixture = TestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
-        dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         dotThemesService = TestBed.inject(DotThemesService);
-        dotEditLayoutService = TestBed.inject(DotEditLayoutService);
     });
 
     describe('edit layout', () => {
@@ -200,23 +186,10 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
-        it('should display unsaved changes message when editing the form.', () => {
-            component.form.get('title').setValue('Hello');
-            fixture.detectChanges();
-            expect(dotGlobalMessageService.customDisplay).toHaveBeenCalled();
-        });
-
-        it('should save changes when showMessage is true', () => {
-            spyOn(component.save, 'emit');
-            dotEditLayoutService.changeMessageState(true);
-            fixture.detectChanges();
-            expect(component.save.emit).toHaveBeenCalledTimes(1);
-        });
-
         it('should save changes when editing the form.', fakeAsync( () => {
             spyOn(component.save, 'emit');
             component.form.get('title').setValue('Hello');
-            tick(10500);
+            tick(500);
             fixture.detectChanges();
             expect(component.save.emit).toHaveBeenCalledTimes(1);
         }));

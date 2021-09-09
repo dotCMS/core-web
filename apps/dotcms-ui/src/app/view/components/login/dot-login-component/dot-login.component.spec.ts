@@ -17,8 +17,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { Dropdown, DropdownModule } from 'primeng/dropdown';
 import { BehaviorSubject, of, throwError } from 'rxjs';
-import { DotFormatDateService } from '@services/dot-format-date-service';
-import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
+import { FormatDateService } from '@services/format-date-service';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotLoginInformation } from '@models/dot-login';
@@ -53,7 +52,6 @@ describe('DotLoginComponent', () => {
     let dotRouterService: DotRouterService;
     let loginPageStateService: DotLoginPageStateService;
     let dotMessageService: DotMessageService;
-    let dotFormatDateService: DotFormatDateService;
     let signInButton: DebugElement;
     const credentials = {
         login: 'admin@dotcms.com',
@@ -84,12 +82,12 @@ describe('DotLoginComponent', () => {
                 { provide: DotLoginPageStateService, useClass: MockDotLoginPageStateService },
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 { provide: ActivatedRoute, useClass: ActivatedRouteMock },
-                { provide: DotFormatDateService, useClass: DotFormatDateServiceMock },
                 DotMessageService,
                 DotLoadingIndicatorService,
                 DotRouterService,
                 LoggerService,
-                StringUtils
+                StringUtils,
+                FormatDateService
             ]
         });
 
@@ -99,9 +97,9 @@ describe('DotLoginComponent', () => {
 
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
-        dotFormatDateService = de.injector.get(DotFormatDateService);
         dotMessageService = de.injector.get(DotMessageService);
         loginPageStateService = de.injector.get(DotLoginPageStateService);
+        spyOn(dotMessageService, 'setRelativeDateMessages').and.callFake(() => {});
         spyOn(dotMessageService, 'init');
     });
 
@@ -170,7 +168,6 @@ describe('DotLoginComponent', () => {
 
         it('should make a login request correctly and redirect after login', () => {
             component.loginForm.setValue(credentials);
-            spyOn(dotFormatDateService, 'setLang');
             spyOn(dotRouterService, 'goToMain');
             spyOn<any>(loginService, 'loginUser').and.returnValue(
                 of({
@@ -184,18 +181,15 @@ describe('DotLoginComponent', () => {
             signInButton.triggerEventHandler('click', {});
             expect(loginService.loginUser).toHaveBeenCalledWith(credentials);
             expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
-            expect(dotFormatDateService.setLang).toHaveBeenCalledWith('en');
+            expect(dotMessageService.setRelativeDateMessages).toHaveBeenCalledWith(
+                mockUser().languageId
+            );
         });
 
         it('should disable fields while waiting login response', () => {
             component.loginForm.setValue(credentials);
             spyOn(dotRouterService, 'goToMain');
-            spyOn<any>(loginService, 'loginUser').and.returnValue(
-                of({
-                    ...mockUser(),
-                    editModeUrl: 'redirect/to'
-                })
-            );
+            spyOn(loginService, 'loginUser').and.callThrough();
             signInButton.triggerEventHandler('click', {});
 
             const languageDropdown: Dropdown = de.query(By.css('[data-testId="language"]'))

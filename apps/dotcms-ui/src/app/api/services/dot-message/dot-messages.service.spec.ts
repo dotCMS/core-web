@@ -1,17 +1,16 @@
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { of } from 'rxjs';
-import { DotFormatDateService } from '@services/dot-format-date-service';
+import { FormatDateService } from '@services/format-date-service';
 import { DotLocalstorageService } from '@services/dot-localstorage/dot-localstorage.service';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
-import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
 
 describe('DotMessageService', () => {
     let dotMessageService: DotMessageService;
     let coreWebService: CoreWebService;
-    let dotFormatDateService: DotFormatDateService;
+    let formatDateService: FormatDateService;
     let dotLocalstorageService: DotLocalstorageService;
     const MESSAGES_LOCALSTORAGE_KEY = 'dotMessagesKeys';
     let injector: TestBed;
@@ -56,14 +55,14 @@ describe('DotMessageService', () => {
             providers: [
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
                 DotMessageService,
-                { provide: DotFormatDateService, useClass: DotFormatDateServiceMock },
+                FormatDateService,
                 DotLocalstorageService
             ]
         });
         injector = getTestBed();
         dotMessageService = injector.get(DotMessageService);
         coreWebService = injector.get(CoreWebService);
-        dotFormatDateService = injector.get(DotFormatDateService);
+        formatDateService = injector.get(FormatDateService);
         dotLocalstorageService = injector.get(DotLocalstorageService);
 
         spyOn<any>(coreWebService, 'requestView').and.returnValue(
@@ -139,4 +138,10 @@ describe('DotMessageService', () => {
         });
     });
 
+    it('should set relative date messages', () => {
+        spyOn(formatDateService, 'setLang');
+        dotMessageService.init(true);
+        dotMessageService.setRelativeDateMessages('en_US');
+        expect(formatDateService.setLang).toHaveBeenCalledWith('en', relativeDateMessages);
+    });
 });

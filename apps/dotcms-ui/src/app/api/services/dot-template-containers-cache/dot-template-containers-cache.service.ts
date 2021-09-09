@@ -8,9 +8,7 @@ import {
 /**
  * Save into cache the containers used by the current template
  */
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DotTemplateContainersCacheService {
     private containers: DotContainerMap;
 

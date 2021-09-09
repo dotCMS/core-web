@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { DotcmsConfigService, LoggerService } from '@dotcms/dotcms-js';
 import { FormsModule } from '@angular/forms';
+import { FormatDateService } from '@services/format-date-service';
 import { DotListingDataTableComponent } from './dot-listing-data-table.component';
 import { NgModule } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
@@ -30,6 +31,6 @@ import { ContextMenuModule } from 'primeng/contextmenu';
         CheckboxModule,
         ContextMenuModule
     ],
-    providers: [DotCrudService, DotcmsConfigService, LoggerService]
+    providers: [DotCrudService, FormatDateService, DotcmsConfigService, LoggerService]
 })
 export class DotListingDataTableModule {}

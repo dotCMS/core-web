@@ -19,8 +19,6 @@ import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
 import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 import { HttpResponse } from '@angular/common/http';
 import { mockResponseView } from '@tests/response-view.mock';
-import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
-import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -58,21 +56,12 @@ describe('DotEditLayoutComponent', () => {
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotTemplateContainersCacheService: DotTemplateContainersCacheService;
     let fakeLayout: DotLayout;
-    let dotHttpErrorManagerService: DotHttpErrorManagerService;
-    let dotEditLayoutService: DotEditLayoutService;
 
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [DotEditLayoutDesignerComponentMock, DotEditLayoutComponent],
                 providers: [
-                    DotEditLayoutService,
-                    {
-                        provide: DotHttpErrorManagerService,
-                        useValue: {
-                            handle: jasmine.createSpy().and.returnValue(of({}))
-                        }
-                    },
                     {
                         provide: DotMessageService,
                         useValue: messageServiceMock
@@ -129,8 +118,6 @@ describe('DotEditLayoutComponent', () => {
         dotPageLayoutService = TestBed.inject(DotPageLayoutService);
         dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         dotTemplateContainersCacheService = TestBed.inject(DotTemplateContainersCacheService);
-        dotHttpErrorManagerService = TestBed.inject(DotHttpErrorManagerService);
-        dotEditLayoutService = TestBed.inject(DotEditLayoutService);
 
         fakeLayout = {
             body: null,
@@ -181,7 +168,7 @@ describe('DotEditLayoutComponent', () => {
             expect(component.pageState).toEqual(new DotPageRender(mockDotRenderedPage()));
         });
 
-        it('should handle error when save fail', (done) => {
+        it('should handle error when save fail', () => {
             spyOn(dotPageLayoutService, 'save').and.returnValue(
                 throwError(
                     new ResponseView(new HttpResponse(mockResponseView(HttpCode.BAD_REQUEST)))
@@ -190,11 +177,6 @@ describe('DotEditLayoutComponent', () => {
 
             layoutDesignerDe.triggerEventHandler('save', fakeLayout);
             expect(dotGlobalMessageService.error).toHaveBeenCalledWith('Unknown Error');
-            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
-            dotEditLayoutService.canBeDesactivated$.subscribe((resp) => {
-                expect(resp).toBeTruthy();
-                done();
-            });
         });
     });
 });

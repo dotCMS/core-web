@@ -7,6 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
 import { FormsModule } from '@angular/forms';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
+import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 
 @NgModule({
     declarations: [DotEditLayoutSidebarComponent],
@@ -20,6 +22,6 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         DotPipesModule
     ],
     exports: [DotEditLayoutSidebarComponent],
-    providers: []
+    providers: [DotEditLayoutService, DotTemplateContainersCacheService]
 })
 export class DotEditLayoutSidebarModule {}

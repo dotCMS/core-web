@@ -3,9 +3,13 @@
 
 dotcms-block-editor {
     display: block;
-    font-family: 'Roboto', Helvetica, sans-serif, Arial;
     height: 100%;
     width: 100%;
+}
+
+tiptap-editor {
+    height: 100%;
+    font-family: 'Roboto', Helvetica, sans-serif, Arial;
     .ProseMirror {
         box-sizing: border-box;
         -webkit-box-sizing: border-box;

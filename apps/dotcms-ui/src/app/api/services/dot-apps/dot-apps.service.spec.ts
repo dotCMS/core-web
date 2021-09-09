@@ -12,13 +12,12 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
-import { DotFormatDateService } from '@services/dot-format-date-service';
+import { FormatDateService } from '@services/format-date-service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { mockResponseView } from '@tests/response-view.mock';
 import { throwError } from 'rxjs';
 import * as dotUtils from '@shared/dot-utils';
-import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
 
 const mockDotApps = [
     {
@@ -56,7 +55,7 @@ describe('DotAppsService', () => {
                     useClass: LoginServiceMock
                 },
                 { provide: DotRouterService, useClass: MockDotRouterService },
-                { provide: DotFormatDateService, useClass: DotFormatDateServiceMock },
+                FormatDateService,
                 ConfirmationService,
                 DotAlertConfirmService,
                 DotAppsService,
