@@ -3,8 +3,8 @@
 
 dotcms-block-editor {
     display: block;
-    height: calc(100vh - 2rem); // 1rem sb boddy padding;
-    width: calc(100vw - 2rem); // 1rem sb boddy padding;
+    min-height: 500px; // 1rem sb boddy padding;
+    width: 100% // 1rem sb boddy padding;
 }
 
 tiptap-editor {

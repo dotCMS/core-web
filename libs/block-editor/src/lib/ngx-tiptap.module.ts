@@ -15,7 +15,6 @@ import { SuggestionsComponent } from './extensions/components/suggestions/sugges
 import { SuggestionListComponent } from './extensions/components/suggestion-list/suggestion-list.component';
 import { ActionButtonComponent } from './extensions/components/action-button/action-button.component';
 import { SuggestionsListItemComponent } from './extensions/components/suggestions-list-item/suggestions-list-item.component';
-import { CoreWebService } from '@dotcms/dotcms-js';
 import { LoggerService } from '@dotcms/dotcms-js';
 import { StringUtils } from '@dotcms/dotcms-js';
 
@@ -32,7 +31,7 @@ import { StringUtils } from '@dotcms/dotcms-js';
         ContentletBlockComponent,
         ActionButtonComponent
     ],
-    providers: [SuggestionsService, CoreWebService, LoggerService, StringUtils],
+    providers: [SuggestionsService, LoggerService, StringUtils],
     exports: [
         SuggestionsComponent,
         EditorDirective,

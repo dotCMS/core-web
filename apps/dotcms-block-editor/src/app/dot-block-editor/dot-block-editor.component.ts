@@ -12,7 +12,8 @@ import { ContentletBlock } from '@dotcms/block-editor';
 import { ActionsMenu } from '@dotcms/block-editor';
 
 @Component({
-    selector: 'dotcms-dot-block-editor',
+    // eslint-disable-next-line
+    selector: 'dot-block-editor',
     templateUrl: './dot-block-editor.component.html',
     styleUrls: ['./dot-block-editor.component.scss'],
     encapsulation: ViewEncapsulation.None
