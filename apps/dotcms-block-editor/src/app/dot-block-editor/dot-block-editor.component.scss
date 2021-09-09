@@ -3,7 +3,7 @@
 
 dotcms-block-editor {
     display: block;
-    min-height: 500px;
+    height: 100%;
     width: 100%;
 }
 
@@ -17,6 +17,7 @@ tiptap-editor {
         border: solid 2px #222;
         display: block;
         height: 100%;
+        min-height: 500px;
         border-radius: 4px;
         padding: 1rem 4rem;
     }
