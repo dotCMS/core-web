@@ -83,9 +83,7 @@ export class DotNavigationService {
                     this.dotMenuService.loadMenu().pipe(
                         map((m) => {
                             const menus: DotMenu[] = [...m];
-                            let isActive = false;
                             const parent = this.router.getCurrentNavigation().extras.state?.parent;
-                            console.log(parent);
 
                             if (parent) {
                                 return menus.map(menu => {
@@ -105,6 +103,8 @@ export class DotNavigationService {
                                     return menu;
                                 })
                             }
+
+                            let isActive = false;
 
                             for (let i = 0; i < menus.length; i++) {
                                 for (let k = 0; k < menus[i].menuItems.length; k++) {
