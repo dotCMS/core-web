@@ -128,7 +128,6 @@ export class DotNavigationService {
                 )
             )
             .subscribe((menus: DotMenu[]) => {
-                console.log(menus);
                 this.setMenu(menus);
             });
 
