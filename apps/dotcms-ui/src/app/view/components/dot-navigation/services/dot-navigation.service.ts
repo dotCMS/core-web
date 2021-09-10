@@ -34,17 +34,20 @@ interface DotActiveItemsFromParentProps extends DotActiveItemsProps {
 
 function getActiveMenuFromParent({ menus, parent, collapsed, id }: DotActiveItemsFromParentProps) {
     return menus.map((menu) => {
+        menu.active = false;
+
+        menu.menuItems = menu.menuItems.map((item) => ({
+            ...item,
+            active: false
+        }));
+
         if (menu.id === parent) {
             menu.active = true;
-            menu.isOpen = !collapsed && menu.active;
-            menu.menuItems = menu.menuItems.map((item) => {
-                item.active = false;
-
-                if (item.id === id) {
-                    item.active = true;
-                }
-                return item;
-            });
+            menu.isOpen = !collapsed && menu.active; // TODO: this menu.active what?
+            menu.menuItems = menu.menuItems.map((item) => ({
+                ...item,
+                active: item.id === id
+            }));
         }
 
         return menu;
