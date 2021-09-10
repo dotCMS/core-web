@@ -35,6 +35,7 @@ export class DotNavigationComponent implements OnInit {
      * @memberof MainNavigationComponent
      */
     onItemClick($event: { originalEvent: MouseEvent; data: DotMenuItem }): void {
+        console.log('onItemClick')
         $event.originalEvent.stopPropagation();
 
         if (!$event.originalEvent.ctrlKey && !$event.originalEvent.metaKey) {
@@ -52,8 +53,10 @@ export class DotNavigationComponent implements OnInit {
      */
     onMenuClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
         if (this.dotNavigationService.collapsed$.getValue()) {
+            console.log('onMenuClick goTo');
             this.dotNavigationService.goTo(event.data.menuItems[0].menuLink);
         } else {
+            console.log('onMenuClick setOpen');
             this.dotNavigationService.setOpen(event.data.id);
         }
     }

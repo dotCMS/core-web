@@ -80,12 +80,55 @@ export class DotNavigationService {
             .pipe(
                 map((event: NavigationEnd) => this.getTheUrlId(event.url)),
                 switchMap((id: string) =>
-                    this.dotMenuService
-                        .loadMenu()
-                        .pipe(setActiveItems(id, this._collapsed$.getValue()))
+                    this.dotMenuService.loadMenu().pipe(
+                        map((m) => {
+                            const menus: DotMenu[] = [...m];
+                            let isActive = false;
+                            const parent = this.router.getCurrentNavigation().extras.state?.parent;
+                            console.log(parent);
+
+                            if (parent) {
+                                return menus.map(menu => {
+                                    if (menu.id === parent) {
+                                        menu.isOpen = true;
+                                        menu.active = true;
+                                        menu.menuItems = menu.menuItems.map(item => {
+                                            item.active = false;
+
+                                            if (item.id === id) {
+                                                item.active = true;
+                                            }
+                                            return item;
+                                        })
+                                    }
+
+                                    return menu;
+                                })
+                            }
+
+                            for (let i = 0; i < menus.length; i++) {
+                                for (let k = 0; k < menus[i].menuItems.length; k++) {
+                                    if (menus[i].menuItems[k].id === id) {
+                                        isActive = true;
+                                        menus[i].active = isActive;
+                                        menus[i].isOpen = isActive;
+                                        menus[i].menuItems[k].active = isActive;
+                                        break;
+                                    }
+
+                                    if (isActive) {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            return menus;
+                        })
+                    )
                 )
             )
             .subscribe((menus: DotMenu[]) => {
+                console.log(menus);
                 this.setMenu(menus);
             });
 
