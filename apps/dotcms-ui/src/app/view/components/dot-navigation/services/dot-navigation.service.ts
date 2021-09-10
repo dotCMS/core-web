@@ -28,6 +28,29 @@ interface DotActiveItemsProps {
     parent: string;
 }
 
+interface DotActiveItemsFromParentProps extends DotActiveItemsProps {
+    menus: DotMenu[];
+}
+
+function getActiveMenuFromParent({ menus, parent, collapsed, id }: DotActiveItemsFromParentProps) {
+    return menus.map((menu) => {
+        if (menu.id === parent) {
+            menu.active = true;
+            menu.isOpen = !collapsed && menu.active;
+            menu.menuItems = menu.menuItems.map((item) => {
+                item.active = false;
+
+                if (item.id === id) {
+                    item.active = true;
+                }
+                return item;
+            });
+        }
+
+        return menu;
+    });
+}
+
 const setActiveItems = ({ id, collapsed, parent }: DotActiveItemsProps) => (
     source: Observable<DotMenu[]>
 ) => {
@@ -39,22 +62,7 @@ const setActiveItems = ({ id, collapsed, parent }: DotActiveItemsProps) => (
             let isActive = false;
 
             if (parent) {
-                return menus.map((menu) => {
-                    if (menu.id === parent) {
-                        menu.active = true;
-                        menu.isOpen = !collapsed && menu.active;
-                        menu.menuItems = menu.menuItems.map((item) => {
-                            item.active = false;
-
-                            if (item.id === id) {
-                                item.active = true;
-                            }
-                            return item;
-                        });
-                    }
-
-                    return menu;
-                });
+                return getActiveMenuFromParent({ menus, parent, collapsed, id });
             }
 
             for (let i = 0; i < menus.length; i++) {
