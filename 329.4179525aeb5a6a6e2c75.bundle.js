@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[329],{1384:function(module,exports,__webpack_require__){"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=function formatRelative(token){return formatRelativeLocale[token]};var formatRelativeLocale={lastWeek:"'verlede' eeee 'om' p",yesterday:"'gister om' p",today:"'vandag om' p",tomorrow:"'môre om' p",nextWeek:"eeee 'om' p",other:"P"};module.exports=exports.default}}]);
+//# sourceMappingURL=329.4179525aeb5a6a6e2c75.bundle.js.map

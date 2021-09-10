@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[402],{1564:function(module,exports,__webpack_require__){"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=function formatRelative(token,_date,_baseDate,_options){return formatRelativeLocale[token]};var formatRelativeLocale={lastWeek:"'წინა' eeee LT'-ზე'",yesterday:"'გუშინ' LT'-ზე'",today:"'დღეს' LT'-ზე'",tomorrow:"'ხვალ' LT'-ზე'",nextWeek:"'შემდეგი' eeee LT'-ზე'",other:"L"};module.exports=exports.default}}]);
-//# sourceMappingURL=402.1b8588ac6c7befb356c8.bundle.js.map
