@@ -9,6 +9,7 @@ import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-di
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotNavLogoService } from '@services/dot-nav-logo/dot-nav-logo.service';
+import { DotDynamicDialogService } from '@services/dot-dynamic-dialog/dot-dynamic-dialog.service';
 /**
  * Handle Custom events
  *
@@ -28,7 +29,8 @@ export class DotCustomEventHandlerService {
         private dotIframeService: DotIframeService,
         private dotPushPublishDialogService: DotPushPublishDialogService,
         private dotDownloadBundleDialogService: DotDownloadBundleDialogService,
-        private dotWorkflowEventHandlerService: DotWorkflowEventHandlerService
+        private dotWorkflowEventHandlerService: DotWorkflowEventHandlerService,
+        private dotDynamicDialogService: DotDynamicDialogService
     ) {
         if (!this.handlers) {
             this.handlers = {
@@ -39,7 +41,8 @@ export class DotCustomEventHandlerService {
                 'company-info-updated': this.setPersonalization.bind(this),
                 'push-publish': this.pushPublishDialog.bind(this),
                 'download-bundle': this.downloadBundleDialog.bind(this),
-                'workflow-wizard': this.executeWorkflowWizard.bind(this)
+                'workflow-wizard': this.executeWorkflowWizard.bind(this),
+                'generate-secure-password': this.generateSecurePassword.bind(this)
             };
         }
     }
@@ -54,6 +57,10 @@ export class DotCustomEventHandlerService {
         if (event && this.handlers[event.detail.name]) {
             this.handlers[event.detail.name](event);
         }
+    }
+
+    private generateSecurePassword($event: CustomEvent): void {
+        this.dotDynamicDialogService.open('generate-secure-password', $event.detail.data)
     }
 
     private createContentlet($event: CustomEvent): void {
