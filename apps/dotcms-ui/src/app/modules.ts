@@ -40,7 +40,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { TabViewModule } from 'primeng/tabview';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TreeTableModule } from 'primeng/treetable';
-import { DotDynamicDialogModule } from './view/components/_common/dot-dynamic-dialog/dot-dynamic-dialog.module';
+import { DotGenerateSecurePasswordModule } from './view/components/_common/dot-generate-secure-password/dot-generate-secure-password.module';
 
 
 export const CUSTOM_MODULES = [
@@ -62,7 +62,7 @@ export const CUSTOM_MODULES = [
     DotPushPublishDialogModule,
     DotDownloadBundleDialogModule,
     DotWizardModule,
-    DotDynamicDialogModule
+    DotGenerateSecurePasswordModule
 ];
 
 export const NGFACES_MODULES = [

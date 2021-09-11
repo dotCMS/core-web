@@ -9,7 +9,7 @@ import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-di
 import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-handler/dot-workflow-event-handler.service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotNavLogoService } from '@services/dot-nav-logo/dot-nav-logo.service';
-import { DotDynamicDialogService } from '@services/dot-dynamic-dialog/dot-dynamic-dialog.service';
+import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 /**
  * Handle Custom events
  *
@@ -30,7 +30,7 @@ export class DotCustomEventHandlerService {
         private dotPushPublishDialogService: DotPushPublishDialogService,
         private dotDownloadBundleDialogService: DotDownloadBundleDialogService,
         private dotWorkflowEventHandlerService: DotWorkflowEventHandlerService,
-        private dotDynamicDialogService: DotDynamicDialogService
+        private dotGenerateSecurePasswordService: DotGenerateSecurePasswordService
     ) {
         if (!this.handlers) {
             this.handlers = {
@@ -60,7 +60,7 @@ export class DotCustomEventHandlerService {
     }
 
     private generateSecurePassword($event: CustomEvent): void {
-        this.dotDynamicDialogService.open('generate-secure-password', $event.detail.data)
+        this.dotGenerateSecurePasswordService.open($event.detail.data)
     }
 
     private createContentlet($event: CustomEvent): void {
