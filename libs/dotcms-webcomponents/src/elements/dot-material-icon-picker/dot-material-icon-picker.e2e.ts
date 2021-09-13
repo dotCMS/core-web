@@ -96,6 +96,16 @@ describe('dot-material-icon-picker', () => {
             expect(await input.getProperty('value')).toEqual('360');
         });
 
+        it('should allow wildcard on search', async () => {
+            dotSelectButton.setProperty('value', '');
+            await page.waitForChanges();
+            await input.type('tool');
+            await input.press('ArrowDown');
+            await page.waitForChanges();
+            await input.press('Enter');
+            expect(await dotSelectButton.getProperty('value')).toEqual('pan_tool');
+        });
+
         // TODO: Find a way to trigger the change event on Input type="color"
         xit('should emit input color when picked', async () => {
             await inputColor.type('#777');
