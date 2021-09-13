@@ -159,6 +159,7 @@ export class DotMaterialIcon {
                     'dot-material-icon__option ' +
                     (isSelected ? 'dot-material-icon__option-selected' : '')
                 }
+                data-icon={suggestion}
                 onClick={() => this.onSelect(suggestion)}
             >
                 <label id={suggestion + '_Id'}>

@@ -97,13 +97,14 @@ describe('dot-material-icon-picker', () => {
         });
 
         it('should allow wildcard on search', async () => {
+            const resutls = [];
             dotSelectButton.setProperty('value', '');
             await page.waitForChanges();
             await input.type('tool');
-            await input.press('ArrowDown');
             await page.waitForChanges();
-            await input.press('Enter');
-            expect(await dotSelectButton.getProperty('value')).toEqual('pan_tool');
+            const icons: E2EElement[] = await page.findAll('.dot-material-icon__option');
+            await icons.forEach(async (icon) =>  resutls.push( await icon.getAttribute('data-icon')));
+            expect(resutls).toContain('pan_tool');
         });
 
         // TODO: Find a way to trigger the change event on Input type="color"
