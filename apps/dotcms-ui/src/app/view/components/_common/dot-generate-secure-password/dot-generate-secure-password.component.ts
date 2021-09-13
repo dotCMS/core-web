@@ -55,7 +55,6 @@ export class DotGenerateSecurePasswordComponent implements OnInit, OnDestroy {
      * @memberof DotGenerateSecurePasswordComponent
      */
     copyToClipboard(): void {
-        console.log('click');
         this.dotClipboardUtil.copy(this.value);
     }
 
