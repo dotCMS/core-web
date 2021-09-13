@@ -16,10 +16,10 @@ export class DotConfigurationService {
      * @returns {Observable<string>}
      * @memberof DotConfigurationService
      */
-    getKeys(keys: string): Observable<{ [key: string]: any }> {
+    getKeys<T>(key: string): Observable<{ [key: string]: T }> {
         return this.coreWebService
             .requestView({
-                url: `/api/v1/configuration/config?keys=${keys}`
+                url: `/api/v1/configuration/config?keys=${key}`
             })
             .pipe(take(1), pluck('bodyJsonObject'));
     }

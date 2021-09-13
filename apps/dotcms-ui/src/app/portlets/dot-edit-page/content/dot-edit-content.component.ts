@@ -1,4 +1,4 @@
-import { Observable, Subject, fromEvent, merge, of } from 'rxjs';
+import { Observable, Subject, fromEvent, merge, of, forkJoin } from 'rxjs';
 
 import { filter, takeUntil, pluck, take, tap, skip, catchError } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -70,7 +70,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
     private pageStateInternal: DotPageRenderState;
-    private contentBlackList: string[];
 
     constructor(
         private dotContentletEditorService: DotContentletEditorService,
@@ -148,8 +147,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.subscribePageModelChange();
         this.subscribeOverlayService();
         this.subscribeDraggedContentType();
-        this.loadContentPallet();
-        this.setContentBlackList();
     }
 
     ngOnDestroy(): void {
@@ -241,13 +238,18 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotEditContentHtmlService.removeContentletPlaceholder();
     }
 
-    private loadContentPallet(filter = ''): void {
-        this.dotContentTypeService
-            .getContentTypes(filter)
-            .pipe(take(1))
-            .subscribe((items) => {
-                this.contentPalletItems = items;
-            });
+    private loadContentPallet(pageState: DotPageRenderState): void {
+        const CONTENT_HIDDEN_KEY = 'list:CONTENT_PALETTE_HIDDEN_CONTENT_TYPES';
+        forkJoin([
+            this.dotContentTypeService.getContentTypes(),
+            this.dotConfigurationService.getKeys<string[]>(CONTENT_HIDDEN_KEY)
+        ]).subscribe((results) => {
+            this.contentPalletItems = this.setAllowedContentTypes(
+                results[0],
+                results[1][CONTENT_HIDDEN_KEY],
+                pageState
+            );
+        });
     }
 
     private isInternallyNavigatingToSamePage(url: string): boolean {
@@ -420,7 +422,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private renderPage(pageState: DotPageRenderState): void {
         if (this.shouldEditMode(pageState)) {
-            this.setAllowedContentTypes(pageState);
+            this.loadContentPallet(pageState);
             this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
             this.isEditMode = true;
         } else {
@@ -504,15 +506,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
-    private setContentBlackList(): void {
-        const CONTENT_HIDDEN_KEY = 'list:CONTENT_PALETTE_HIDDEN_CONTENT_TYPES';
-
-        this.dotConfigurationService.getKeys(CONTENT_HIDDEN_KEY).subscribe((keys) => {
-            this.contentBlackList = keys[CONTENT_HIDDEN_KEY];
-        });
-    }
-
-    private setAllowedContentTypes(pageState: DotPageRenderState): void {
+    private setAllowedContentTypes(
+        contentTypeList: DotCMSContentType[],
+        blackList: string[],
+        pageState: DotPageRenderState
+    ): DotCMSContentType[] {
         let allowedContent = new Set();
         Object.values(pageState.containers).forEach((container) => {
             Object.values(container.containerStructures).forEach(
@@ -521,10 +519,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 }
             );
         });
-        this.contentBlackList.forEach((content) =>
-            allowedContent.delete(content.toLocaleLowerCase())
-        );
-        this.contentPalletItems = this.contentPalletItems.filter(
+        blackList.forEach((content) => allowedContent.delete(content.toLocaleLowerCase()));
+
+        return contentTypeList.filter(
             (contentType) =>
                 allowedContent.has(contentType.variable.toLocaleLowerCase()) ||
                 contentType.baseType === 'WIDGET'
