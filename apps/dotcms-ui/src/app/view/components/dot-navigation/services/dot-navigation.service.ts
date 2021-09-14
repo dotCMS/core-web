@@ -77,10 +77,10 @@ const setActiveItems = ({ id, collapsed, parent }: DotActiveItemsProps) => (
                         menus[i].menuItems[k].active = isActive;
                         break;
                     }
+                }
 
-                    if (isActive) {
-                        break;
-                    }
+                if (isActive) {
+                    break;
                 }
             }
 
