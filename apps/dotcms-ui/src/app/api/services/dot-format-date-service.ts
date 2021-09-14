@@ -27,7 +27,14 @@ export class DotFormatDateService {
     }
 
     async setLang(lang: string) {
-        const localeLang = await import(`date-fns/locale/${lang}/index.js`);
+        const customLangPath = {
+            'ar': 'ar-DZ',
+            'en': 'en-US',
+            'fa': 'fa-IR',
+            'zh': 'zh-CN',
+            
+        };
+        const localeLang = await import(`date-fns/locale/${customLangPath[lang] || lang}/index.js`);
         this.localeOptions = { locale: localeLang.default };
     }
 
