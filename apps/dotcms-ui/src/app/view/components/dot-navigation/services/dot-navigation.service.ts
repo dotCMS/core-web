@@ -23,16 +23,21 @@ const replaceIdForNonMenuSection = (id) => {
 };
 
 interface DotActiveItemsProps {
-    id: string;
+    urlId: string;
     collapsed: boolean;
-    parent: string;
+    menuId: string;
 }
 
 interface DotActiveItemsFromParentProps extends DotActiveItemsProps {
     menus: DotMenu[];
 }
 
-function getActiveMenuFromParent({ menus, parent, collapsed, id }: DotActiveItemsFromParentProps) {
+function getActiveMenuFromMenuId({
+    menus,
+    menuId,
+    collapsed,
+    urlId
+}: DotActiveItemsFromParentProps) {
     return menus.map((menu) => {
         menu.active = false;
 
@@ -41,12 +46,12 @@ function getActiveMenuFromParent({ menus, parent, collapsed, id }: DotActiveItem
             active: false
         }));
 
-        if (menu.id === parent) {
+        if (menu.id === menuId) {
             menu.active = true;
             menu.isOpen = !collapsed && menu.active; // TODO: this menu.active what?
             menu.menuItems = menu.menuItems.map((item) => ({
                 ...item,
-                active: item.id === id
+                active: item.id === urlId
             }));
         }
 
@@ -54,26 +59,25 @@ function getActiveMenuFromParent({ menus, parent, collapsed, id }: DotActiveItem
     });
 }
 
-const setActiveItems = ({ id, collapsed, parent }: DotActiveItemsProps) => (
+const setActiveItems = ({ urlId, collapsed, menuId }: DotActiveItemsProps) => (
     source: Observable<DotMenu[]>
 ) => {
-    id = replaceIdForNonMenuSection(id) || id;
+    urlId = replaceIdForNonMenuSection(urlId) || urlId;
 
     return source.pipe(
         map((m: DotMenu[]) => {
             const menus: DotMenu[] = [...m];
             let isActive = false;
 
-
             // When user browse using the navigation (Angular Routing)
-            if (parent) {
-                return getActiveMenuFromParent({ menus, parent, collapsed, id });
+            if (menuId) {
+                return getActiveMenuFromMenuId({ menus, menuId, collapsed, urlId });
             }
 
             // When user browse using the browser url bar, direct links or reload page
             for (let i = 0; i < menus.length; i++) {
                 for (let k = 0; k < menus[i].menuItems.length; k++) {
-                    if (menus[i].menuItems[k].id === id) {
+                    if (menus[i].menuItems[k].id === urlId) {
                         isActive = true;
                         menus[i].active = isActive;
                         menus[i].isOpen = isActive;
@@ -122,9 +126,9 @@ export class DotNavigationService {
                 switchMap((id: string) =>
                     this.dotMenuService.loadMenu().pipe(
                         setActiveItems({
-                            id,
+                            urlId: id,
                             collapsed: this._collapsed$.getValue(),
-                            parent: this.router.getCurrentNavigation().extras.state?.parent
+                            menuId: this.router.getCurrentNavigation().extras.state?.menuId
                         })
                     )
                 )
@@ -323,9 +327,9 @@ export class DotNavigationService {
     private reloadNavigation(): Observable<DotMenu[]> {
         return this.dotMenuService.reloadMenu().pipe(
             setActiveItems({
-                id: this.dotRouterService.currentPortlet.id,
+                urlId: this.dotRouterService.currentPortlet.id,
                 collapsed: this._collapsed$.getValue(),
-                parent: this.router.getCurrentNavigation().extras.state?.parent
+                menuId: this.router.getCurrentNavigation().extras.state?.menuId
             }),
             tap((menus: DotMenu[]) => {
                 this.setMenu(menus);
