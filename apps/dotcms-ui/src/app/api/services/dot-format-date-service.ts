@@ -27,14 +27,19 @@ export class DotFormatDateService {
     }
 
     async setLang(lang: string) {
-        const customLangPath = {
-            'ar': 'ar-DZ',
-            'en': 'en-US',
-            'fa': 'fa-IR',
-            'zh': 'zh-CN',
-            
-        };
-        const localeLang = await import(`date-fns/locale/${customLangPath[lang] || lang}/index.js`);
+        const dateFnsLang = lang.replace('_', '-');
+        let localeLang;
+
+        try {
+            localeLang = await import(`date-fns/locale/${dateFnsLang}/index.js`);
+        } catch (error) {
+            try {
+                localeLang = await import(`date-fns/locale/${dateFnsLang.split('-')[0]}/index.js`);
+            } catch (error) {
+                localeLang = await import(`date-fns/locale/en-US/index.js`);
+            }
+        }
+        
         this.localeOptions = { locale: localeLang.default };
     }
 
