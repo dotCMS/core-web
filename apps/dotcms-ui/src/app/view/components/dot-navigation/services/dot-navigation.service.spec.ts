@@ -20,6 +20,16 @@ class RouterMock {
 
     url = '';
 
+    getCurrentNavigation() {
+        return {
+            extras: {
+                state: {
+                    menuId: '123'
+                }
+            }
+        };
+    }
+
     get events() {
         return this._events.asObservable();
     }
@@ -314,7 +324,6 @@ describe('DotNavigationService', () => {
     it('should go to first portlet on auth change', () => {
         ((loginService as unknown) as LoginServiceMock).triggerNewAuth(baseMockAuth);
 
-
         spyOn(dotMenuService, 'loadMenu').and.returnValue(
             of([
                 {
@@ -339,16 +348,16 @@ describe('DotNavigationService', () => {
 
         service.items$.subscribe((menus: DotMenu[]) => {
             if (counter === 0) {
-                expect(menus[1].isOpen).toBe(false);
-                expect(menus[1].menuItems[0].active).toBe(true);
+                expect(menus[0].isOpen).toBe(true);
+                expect(menus[0].menuItems[0].active).toBe(false);
             } else {
                 expect(menus[1].isOpen).toBe(false);
-                expect(menus[1].menuItems[0].active).toBe(true);
+                expect(menus[1].menuItems[0].active).toBe(false);
             }
             counter++;
         });
 
-        router.triggerNavigationEnd('/789');
+        router.triggerNavigationEnd('/123');
     });
 
     // TODO: needs to fix this, looks like the dotcmsEventsService instance is different here not sure why.
