@@ -230,9 +230,15 @@ export class DotNavigationService {
      */
     goToFirstPortlet(): Promise<boolean> {
         return this.getFirstMenuLink()
-            .pipe(map((link: string) => this.dotRouterService.gotoPortlet(link)))
+            .pipe(
+                map((link: string) => {
+                    console.log({ link }, this.dotRouterService.gotoPortlet);
+                    return this.dotRouterService.gotoPortlet(link);
+                })
+            )
             .toPromise()
             .then((isRouted: Promise<boolean>) => {
+                console.log({isRouted})
                 if (!isRouted) {
                     this.reloadIframePage();
                 }
