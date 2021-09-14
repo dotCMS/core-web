@@ -66,6 +66,7 @@ describe('DotGenerateSecurePasswordComponent', () => {
 
         it('should set dialog params', () => {
             expect(dialog.visible).toEqual(comp.dialogShow);
+            expect(dialog.width).toEqual('34.25rem');
             expect(comp.value).toEqual(passwordGenerateData.password);
             expect(comp.typeInput).toBe('password');
         });
