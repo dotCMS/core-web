@@ -44,9 +44,7 @@ export class DotConfigurationService {
             .pipe(
                 take(1),
                 pluck('bodyJsonObject'),
-                map((response) => {
-                    return response[finalKey];
-                })
+                map((response) => response[finalKey])
             );
     }
 }
