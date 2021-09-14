@@ -244,13 +244,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         forkJoin([
             this.dotContentTypeService.getContentTypes(),
             this.dotConfigurationService.getKeyAsList(CONTENT_HIDDEN_KEY)
-        ]).subscribe((results) => {
-            this.contentPalletItems = this.setAllowedContentTypes(
-                results[0],
-                results[1],
-                pageState
-            );
-        });
+        ])
+            .pipe(take(1))
+            .subscribe((results) => {
+                this.contentPalletItems = this.getAllowedContentTypes(
+                    results[0],
+                    results[1],
+                    pageState
+                );
+            });
     }
 
     private isInternallyNavigatingToSamePage(url: string): boolean {
@@ -507,7 +509,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
-    private setAllowedContentTypes(
+    private getAllowedContentTypes(
         contentTypeList: DotCMSContentType[],
         blackList: string[],
         pageState: DotPageRenderState
