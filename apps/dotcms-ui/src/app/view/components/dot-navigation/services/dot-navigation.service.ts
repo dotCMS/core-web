@@ -64,10 +64,13 @@ const setActiveItems = ({ id, collapsed, parent }: DotActiveItemsProps) => (
             const menus: DotMenu[] = [...m];
             let isActive = false;
 
+
+            // When user browse using the navigation (Angular Routing)
             if (parent) {
                 return getActiveMenuFromParent({ menus, parent, collapsed, id });
             }
 
+            // When user browse using the browser url bar, direct links or reload page
             for (let i = 0; i < menus.length; i++) {
                 for (let k = 0; k < menus[i].menuItems.length; k++) {
                     if (menus[i].menuItems[k].id === id) {
