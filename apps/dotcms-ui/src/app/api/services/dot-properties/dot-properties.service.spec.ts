@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { DotConfigurationService } from './dot-configuration.service';
+import { DotPropertiesService } from './dot-properties.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 
 const fakeResponse = {
     key1: 'data',
-    'list:key1': [1, 2]
+    'list:key1': ['1', '2']
 };
 
-describe('DotConfigurationService', () => {
-    let service: DotConfigurationService;
+fdescribe('DotPropertiesService', () => {
+    let service: DotPropertiesService;
     let httpMock: HttpTestingController;
 
     beforeEach(() => {
@@ -18,10 +18,10 @@ describe('DotConfigurationService', () => {
             imports: [HttpClientTestingModule],
             providers: [
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-                DotConfigurationService
+                DotPropertiesService
             ]
         });
-        service = TestBed.inject(DotConfigurationService);
+        service = TestBed.inject(DotPropertiesService);
         httpMock = TestBed.inject(HttpTestingController);
     });
 
@@ -29,7 +29,7 @@ describe('DotConfigurationService', () => {
         const key = 'key1';
         expect(service).toBeTruthy();
 
-        service.getKey<string>(key).subscribe((response) => {
+        service.getKey(key).subscribe((response) => {
             expect(response).toEqual(fakeResponse.key1);
         });
         const req = httpMock.expectOne(`/api/v1/configuration/config?keys=${key}`);
@@ -41,7 +41,7 @@ describe('DotConfigurationService', () => {
         const key = 'key1';
         expect(service).toBeTruthy();
 
-        service.getKeyAsList<number[]>(key).subscribe((response) => {
+        service.getKeyAsList(key).subscribe((response) => {
             expect(response).toEqual(fakeResponse['list:key1']);
         });
         const req = httpMock.expectOne(`/api/v1/configuration/config?keys=list:${key}`);

@@ -84,7 +84,7 @@ import { DotContentTypeService } from '@services/dot-content-type';
 import { DotContentPaletteModule } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.module';
 import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DotConfigurationService } from '@services/dot-configuration/dot-configuration.service';
+import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
 import { DotIconModule } from '@dotcms/ui';
 
 const responseData: DotCMSContentType[] = [
@@ -175,7 +175,7 @@ const mockRenderedPageState = new DotPageRenderState(
     new DotPageRender(mockDotRenderedPage())
 );
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -192,7 +192,7 @@ describe('DotEditContentComponent', () => {
     let dotContentletEditorService: DotContentletEditorService;
     let dotDialogService: DotAlertConfirmService;
     let dotCustomEventHandlerService: DotCustomEventHandlerService;
-    let dotConfigurationService: DotConfigurationService;
+    let dotConfigurationService: DotPropertiesService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -254,7 +254,7 @@ describe('DotEditContentComponent', () => {
                 DotGlobalMessageService,
                 DotPageStateService,
                 DotCustomEventHandlerService,
-                DotConfigurationService,
+                DotPropertiesService,
                 { provide: DotContentTypeService, useClass: MockDotContentTypeService },
                 {
                     provide: LoginService,
@@ -328,7 +328,7 @@ describe('DotEditContentComponent', () => {
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
         dotDialogService = de.injector.get(DotAlertConfirmService);
         dotCustomEventHandlerService = de.injector.get(DotCustomEventHandlerService);
-        dotConfigurationService = de.injector.get(DotConfigurationService);
+        dotConfigurationService = de.injector.get(DotPropertiesService);
         spyOn(dotPageStateService, 'reload');
 
         spyOn(dotEditContentHtmlService, 'renderAddedForm').and.returnValue(

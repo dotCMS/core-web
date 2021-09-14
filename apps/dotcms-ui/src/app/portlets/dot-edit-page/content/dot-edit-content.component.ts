@@ -37,7 +37,7 @@ import { DotContentTypeService } from '@services/dot-content-type';
 import { DotContainerStructure } from '@models/container/dot-container.model';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DotConfigurationService } from '@services/dot-configuration/dot-configuration.service';
+import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -90,7 +90,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         public sanitizer: DomSanitizer,
         public iframeOverlayService: IframeOverlayService,
         private httpErrorManagerService: DotHttpErrorManagerService,
-        private dotConfigurationService: DotConfigurationService
+        private dotConfigurationService: DotPropertiesService
     ) {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
@@ -243,7 +243,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         const CONTENT_HIDDEN_KEY = 'CONTENT_PALETTE_HIDDEN_CONTENT_TYPES';
         forkJoin([
             this.dotContentTypeService.getContentTypes(),
-            this.dotConfigurationService.getKeyAsList<string[]>(CONTENT_HIDDEN_KEY)
+            this.dotConfigurationService.getKeyAsList(CONTENT_HIDDEN_KEY)
         ]).subscribe((results) => {
             this.contentPalletItems = this.setAllowedContentTypes(
                 results[0],

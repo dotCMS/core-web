@@ -6,17 +6,18 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class DotConfigurationService {
+export class DotPropertiesService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
      * Get the value of specific key
      * from the dotmarketing-config.properties
      *
-     * @returns {Observable<T>}
-     * @memberof DotConfigurationService
+     * @param string key
+     * @returns {Observable<string>}
+     * @memberof DotPropertiesService
      */
-    getKey<T>(key: string): Observable<T> {
+    getKey(key: string): Observable<string> {
         return this.coreWebService
             .requestView({
                 url: `/api/v1/configuration/config?keys=${key}`
@@ -32,10 +33,11 @@ export class DotConfigurationService {
      * Get the value of specific key as a list
      * from the dotmarketing-config.properties
      *
-     * @returns {Observable<T>}
-     * @memberof DotConfigurationService
+     * @param string key
+     * @returns {Observable<string[]>}
+     * @memberof DotPropertiesService
      */
-    getKeyAsList<T>(key: string): Observable<T> {
+    getKeyAsList(key: string): Observable<string[]> {
         const finalKey = `list:${key}`;
         return this.coreWebService
             .requestView<{ [key: string]: any }>({
