@@ -239,14 +239,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private loadContentPallet(pageState: DotPageRenderState): void {
-        const CONTENT_HIDDEN_KEY = 'list:CONTENT_PALETTE_HIDDEN_CONTENT_TYPES';
+        const CONTENT_HIDDEN_KEY = 'CONTENT_PALETTE_HIDDEN_CONTENT_TYPES';
         forkJoin([
             this.dotContentTypeService.getContentTypes(),
-            this.dotConfigurationService.getKeys<string[]>(CONTENT_HIDDEN_KEY)
+            this.dotConfigurationService.getKeyAsList<string[]>(CONTENT_HIDDEN_KEY)
         ]).subscribe((results) => {
             this.contentPalletItems = this.setAllowedContentTypes(
                 results[0],
-                results[1][CONTENT_HIDDEN_KEY],
+                results[1],
                 pageState
             );
         });

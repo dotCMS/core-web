@@ -334,15 +334,8 @@ describe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderAddedForm').and.returnValue(
             of([{ identifier: '123', uuid: 'uui-1' }])
         );
-        spyOn(dotConfigurationService, 'getKeys').and.returnValue(
-            of({
-                'list:CONTENT_PALETTE_HIDDEN_CONTENT_TYPES': [
-                    'host',
-                    'vanityurl',
-                    'persona',
-                    'languagevariable'
-                ]
-            })
+        spyOn(dotConfigurationService, 'getKeyAsList').and.returnValue(
+            of(['host', 'vanityurl', 'persona', 'languagevariable'])
         );
     });
 
