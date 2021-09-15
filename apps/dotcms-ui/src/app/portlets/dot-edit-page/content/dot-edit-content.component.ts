@@ -511,7 +511,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private getAllowedContentTypes(
         contentTypeList: DotCMSContentType[],
-        blackList: string[],
+        blackList: string[] = [],
         pageState: DotPageRenderState
     ): DotCMSContentType[] {
         let allowedContent = new Set();
@@ -522,6 +522,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 }
             );
         });
+        debugger;
         blackList.forEach((content) => allowedContent.delete(content.toLocaleLowerCase()));
 
         return contentTypeList.filter(
