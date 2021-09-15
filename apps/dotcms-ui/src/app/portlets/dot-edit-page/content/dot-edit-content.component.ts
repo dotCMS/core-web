@@ -522,7 +522,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 }
             );
         });
-        debugger;
         blackList.forEach((content) => allowedContent.delete(content.toLocaleLowerCase()));
 
         return contentTypeList.filter(
