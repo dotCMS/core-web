@@ -143,9 +143,12 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.dotLicenseService.isEnterprise().subscribe((isEnterprise) => {
-            this.isEnterpriseLicense = isEnterprise;
-        });
+        this.dotLicenseService
+            .isEnterprise()
+            .pipe(take(1))
+            .subscribe((isEnterprise) => {
+                this.isEnterpriseLicense = isEnterprise;
+            });
         this.dotLoadingIndicatorService.show();
         this.setInitalData();
         this.subscribeSwitchSite();
