@@ -45,6 +45,7 @@ jobs:
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
           echo "testing connection...."
+          echo "$(curl http://127.0.0.1:8000 -v)"
           echo "$(docker ps -a)"
       - name: Checkout
         uses: actions/checkout@v2
