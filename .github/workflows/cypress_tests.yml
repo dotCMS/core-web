@@ -45,8 +45,7 @@ jobs:
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
           echo "$(docker ps -a)"
-          myIP="$(curl ifconfig.me)"
-          echo "myIP=${myIP}" >> $GITHUB_ENV
+          echo "$(curl http://localhost:8000 -v)"
         if: env.jobRun == 'true'
         env:
           BUNDLE_LOCATION: core-web/apps/dotcms-ui-e2e/src/fixtures/Cypress-DB-Seed.tar.gz
@@ -63,8 +62,6 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           build: npm run build:prod
-          # quote the url to be safe against YML parsing surprises
-          wait-on: 'http://127.0.0.1:8000'
-          wait-on-timeout: 120
+          env: host=127.0.0.1,port=8000
           browser: chrome
           headless: true
