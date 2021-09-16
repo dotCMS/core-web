@@ -64,7 +64,7 @@ jobs:
         with:
           build: npm run build:prod
           # quote the url to be safe against YML parsing surprises
-          wait-on: 'http://${{ env.myIP }}:8080'
+          wait-on: 'http://127.0.0.1:8000'
           wait-on-timeout: 120
           browser: chrome
           headless: true
