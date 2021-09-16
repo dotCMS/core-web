@@ -44,16 +44,9 @@ jobs:
       - name: Run Cypress Tests
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
+          echo "testing connection...."
+          echo "$(curl http://127.0.0.1:8000 -v)"
           echo "$(docker ps -a)"
-          echo "$(curl http://localhost:8000 -v)"
-        if: env.jobRun == 'true'
-        env:
-          BUNDLE_LOCATION: core-web/apps/dotcms-ui-e2e/src/fixtures/Cypress-DB-Seed.tar.gz
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-          LICENSE_KEY: ${{ secrets.DOTCMS_LICENSE }}
-          # WAIT_DOTCMS_FOR: 3m
-          # BUILD_ID: master ask in dot-cdci if exist, or use master instead
       - name: Checkout
         uses: actions/checkout@v2
       - name: Test Docker
