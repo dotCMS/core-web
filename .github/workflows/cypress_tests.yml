@@ -44,6 +44,7 @@ jobs:
       - name: Run Cypress Tests
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
+          echo "$(docker ps -a)"
           myIP="$(ipconfig)"
           echo "myIP=${myIP}" >> $GITHUB_ENV
         if: env.jobRun == 'true'
