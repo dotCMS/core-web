@@ -45,7 +45,7 @@ jobs:
         run: |
           ../dotcicd/library/pipeline.sh runSidecar
           echo "$(docker ps -a)"
-          myIP="$(ipconfig)"
+          myIP="$(curl ifconfig.me)"
           echo "myIP=${myIP}" >> $GITHUB_ENV
         if: env.jobRun == 'true'
         env:
