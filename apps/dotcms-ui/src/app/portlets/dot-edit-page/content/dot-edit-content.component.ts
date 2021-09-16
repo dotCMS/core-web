@@ -521,7 +521,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private getAllowedContentTypes(
-        contentTypeList: DotCMSContentType[],
+        contentTypeList: DotCMSContentType[] = [],
         blackList: string[] = [],
         pageState: DotPageRenderState
     ): DotCMSContentType[] {
