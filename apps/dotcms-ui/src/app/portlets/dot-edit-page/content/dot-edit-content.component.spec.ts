@@ -61,7 +61,7 @@ import { SiteServiceMock } from '@tests/site-service.mock';
 import { LoginServiceMock, mockUser } from '@tests/login-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
-import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
+import { mockDotRenderedPage, processedContainers } from '@tests/dot-page-render.mock';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotPageContent } from '../shared/models';
@@ -85,6 +85,8 @@ import { DotContentPaletteModule } from '@portlets/dot-edit-page/components/dot-
 import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
+import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
+import { DotIconModule } from '@dotcms/ui';
 
 const responseData: DotCMSContentType[] = [
     {
@@ -107,10 +109,28 @@ const responseData: DotCMSContentType[] = [
         variable: 'Contact'
     },
     {
-        icon: 'person',
-        id: '6044a806-f462-4977-a353-57539eac2a2c',
-        name: 'Long name Blog Comment',
-        variable: 'long-name'
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'persona'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'host'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'vanityurl'
+    },
+    {
+        icon: 'cloud',
+        id: 'now-show',
+        name: 'now-show',
+        variable: 'languagevariable'
     }
 ] as DotCMSContentType[];
 
@@ -181,6 +201,15 @@ describe('DotEditContentComponent', () => {
     let dotContentletEditorService: DotContentletEditorService;
     let dotDialogService: DotAlertConfirmService;
     let dotCustomEventHandlerService: DotCustomEventHandlerService;
+    let dotConfigurationService: DotPropertiesService;
+    let dotLicenseService: DotLicenseService;
+
+    function detectChangesForIframeRender(fix) {
+        fix.detectChanges();
+        tick(1);
+        fix.detectChanges();
+        tick(10);
+    }
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -222,6 +251,7 @@ describe('DotEditContentComponent', () => {
                 DotOverlayMaskModule,
                 DotWizardModule,
                 DotContentPaletteModule,
+                DotIconModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
@@ -243,6 +273,7 @@ describe('DotEditContentComponent', () => {
                 DotPageStateService,
                 DotGenerateSecurePasswordService,
                 DotCustomEventHandlerService,
+                DotPropertiesService,
                 { provide: DotContentTypeService, useClass: MockDotContentTypeService },
                 {
                     provide: LoginService,
@@ -316,7 +347,8 @@ describe('DotEditContentComponent', () => {
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
         dotDialogService = de.injector.get(DotAlertConfirmService);
         dotCustomEventHandlerService = de.injector.get(DotCustomEventHandlerService);
-
+        dotConfigurationService = de.injector.get(DotPropertiesService);
+        dotLicenseService = de.injector.get(DotLicenseService);
         spyOn(dotPageStateService, 'reload');
 
         spyOn(dotEditContentHtmlService, 'renderAddedForm').and.returnValue(
@@ -327,6 +359,9 @@ describe('DotEditContentComponent', () => {
     describe('elements', () => {
         beforeEach(() => {
             spyOn<any>(dotEditPageService, 'save').and.returnValue(of({}));
+            spyOn(dotConfigurationService, 'getKeyAsList').and.returnValue(
+                of(['host', 'vanityurl', 'persona', 'languagevariable'])
+            );
         });
 
         describe('dot-form-selector', () => {
@@ -579,13 +614,6 @@ describe('DotEditContentComponent', () => {
         });
 
         describe('iframe', () => {
-            function detectChangesForIframeRender(fix) {
-                fix.detectChanges();
-                tick(1);
-                fix.detectChanges();
-                tick(10);
-            }
-
             function getIframe() {
                 return de.query(
                     By.css(
@@ -659,6 +687,7 @@ describe('DotEditContentComponent', () => {
                 }));
 
                 it('should show/hide content palette in edit mode with correct content', fakeAsync(() => {
+                    spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(true));
                     const state = new DotPageRenderState(
                         mockUser(),
                         new DotPageRender({
@@ -668,7 +697,8 @@ describe('DotEditContentComponent', () => {
                                 lockedBy: null
                             },
                             viewAs: {
-                                mode: DotPageMode.EDIT
+                                mode: DotPageMode.EDIT,
+                                language: 1
                             }
                         })
                     );
@@ -685,12 +715,36 @@ describe('DotEditContentComponent', () => {
                         By.css('.dot-edit-content__palette-visibility')
                     );
                     const classList = contentPaletteWrapper.nativeElement.classList;
-                    responseData.pop();
-                    expect(contentPalette.items).toEqual(responseData);
+                    expect(contentPalette.items).toEqual(responseData.slice(0, 3));
                     expect(classList.contains('editMode')).toEqual(true);
                     paletteController.triggerEventHandler('click', '');
                     fixture.detectChanges();
                     expect(classList.contains('collapsed')).toEqual(true);
+                }));
+
+                it('should not display palette when is not enterprise', fakeAsync(() => {
+                    spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(false));
+                    const state = new DotPageRenderState(
+                        mockUser(),
+                        new DotPageRender({
+                            ...mockDotRenderedPage(),
+                            page: {
+                                ...mockDotRenderedPage().page,
+                                lockedBy: null
+                            },
+                            viewAs: {
+                                mode: DotPageMode.EDIT,
+                                language: 1
+                            }
+                        })
+                    );
+                    route.parent.parent.data = of({
+                        content: state
+                    });
+                    detectChangesForIframeRender(fixture);
+                    fixture.detectChanges();
+                    const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
+                    expect(contentPaletteWrapper).toBeNull();
                 }));
             });
 
@@ -1199,6 +1253,9 @@ describe('DotEditContentComponent', () => {
         let httpErrorManagerService: DotHttpErrorManagerService;
         beforeEach(() => {
             httpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
+            spyOn(dotConfigurationService, 'getKeyAsList').and.returnValue(
+                of(['host', 'vanityurl', 'persona', 'languagevariable'])
+            );
         });
 
         describe('iframe events', () => {
@@ -1219,5 +1276,53 @@ describe('DotEditContentComponent', () => {
                 expect(dotPageStateService.reload).toHaveBeenCalledTimes(1);
             });
         });
+    });
+
+    describe('empty scenarios', () => {
+        let httpErrorManagerService: DotHttpErrorManagerService;
+        beforeEach(() => {
+            httpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
+            spyOn(dotConfigurationService, 'getKeyAsList').and.returnValue(of(undefined));
+        });
+
+        it('should show content palette correctly when blacklist list is empty', fakeAsync(() => {
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(true));
+            const state = new DotPageRenderState(
+                mockUser(),
+                new DotPageRender({
+                    ...mockDotRenderedPage(),
+                    page: {
+                        ...mockDotRenderedPage().page,
+                        lockedBy: null
+                    },
+                    viewAs: {
+                        mode: DotPageMode.EDIT,
+                        language: 1
+                    },
+                    containers: {
+                        ...mockDotRenderedPage().containers,
+                        '/persona/': {
+                            container: processedContainers[0].container,
+                            containerStructures: [{ contentTypeVar: 'persona' }]
+                        },
+                        '/host/': {
+                            container: processedContainers[0].container,
+                            containerStructures: [{ contentTypeVar: 'host' }]
+                        }
+                    }
+                })
+            );
+
+            route.parent.parent.data = of({
+                content: state
+            });
+            detectChangesForIframeRender(fixture);
+            fixture.detectChanges();
+            const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
+            const contentPalette: DotContentPaletteComponent = de.query(
+                By.css('dot-content-palette')
+            ).componentInstance;
+            expect(contentPalette.items).toEqual(responseData.slice(0, 5));
+        }));
     });
 });
