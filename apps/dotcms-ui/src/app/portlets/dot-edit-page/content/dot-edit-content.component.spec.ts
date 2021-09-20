@@ -86,7 +86,6 @@ import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/d
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
-import { DotIconModule } from '@dotcms/ui';
 
 const responseData: DotCMSContentType[] = [
     {
@@ -251,7 +250,6 @@ describe('DotEditContentComponent', () => {
                 DotOverlayMaskModule,
                 DotWizardModule,
                 DotContentPaletteModule,
-                DotIconModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
