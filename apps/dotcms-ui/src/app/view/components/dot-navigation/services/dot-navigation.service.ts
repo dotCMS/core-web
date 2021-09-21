@@ -62,7 +62,6 @@ function getActiveMenuFromMenuId({
 const setActiveItems = ({ urlId, collapsed, menuId }: DotActiveItemsProps) => (
     source: Observable<DotMenu[]>
 ) => {
-    urlId = replaceIdForNonMenuSection(urlId) || urlId;
 
     return source.pipe(
         map((m: DotMenu[]) => {
@@ -71,10 +70,18 @@ const setActiveItems = ({ urlId, collapsed, menuId }: DotActiveItemsProps) => (
 
             // When user browse using the navigation (Angular Routing)
             if (menuId) {
+
+                // If we get to the edit page from site browser we don't update the menu
+                if (menuId === 'edit-page') {
+                    return null;
+                }
+
                 return getActiveMenuFromMenuId({ menus, menuId, collapsed, urlId });
             }
 
             // When user browse using the browser url bar, direct links or reload page
+            urlId = replaceIdForNonMenuSection(urlId) || urlId;
+
             for (let i = 0; i < menus.length; i++) {
                 for (let k = 0; k < menus[i].menuItems.length; k++) {
                     if (menus[i].menuItems[k].id === urlId) {
@@ -122,10 +129,6 @@ export class DotNavigationService {
 
         this.onNavigationEnd()
             .pipe(
-                filter((event: NavigationEnd) => {
-                    const [ path ] = event.url.split('/').filter(Boolean);
-                    return path !== 'edit-page'
-                }),
                 map((event: NavigationEnd) => this.getTheUrlId(event.url)),
                 switchMap((id: string) =>
                     this.dotMenuService.loadMenu().pipe(
@@ -135,7 +138,8 @@ export class DotNavigationService {
                             menuId: this.router.getCurrentNavigation().extras.state?.menuId
                         })
                     )
-                )
+                ),
+                filter((menu) => !!menu)
             )
             .subscribe((menus: DotMenu[]) => {
                 this.setMenu(menus);
@@ -324,7 +328,7 @@ export class DotNavigationService {
     }
 
     private getTheUrlId(url: string): string {
-        const urlSegments: string[] = url.split('/').filter((item: string) => item.length);
+        const urlSegments: string[] = url.split('/').filter(Boolean);
         return urlSegments[0] === 'c' ? urlSegments.pop() : urlSegments[0];
     }
 

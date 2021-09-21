@@ -144,7 +144,7 @@ const baseMockAuth: Auth = {
     user: basemockUser
 };
 
-fdescribe('DotNavigationService', () => {
+describe('DotNavigationService', () => {
     let service: DotNavigationService;
     let dotRouterService: DotRouterService;
     let dotcmsEventsService: DotcmsEventsService;
@@ -358,13 +358,6 @@ fdescribe('DotNavigationService', () => {
         });
 
         router.triggerNavigationEnd('/123');
-    });
-
-    it('should not update navigation state on /edit-page', () => {
-        const spy = jasmine.createSpy('nav callback');
-        service.items$.subscribe(spy);
-        router.triggerNavigationEnd('/edit-page');
-        expect(spy).toHaveBeenCalledTimes(1)
     });
 
     // TODO: needs to fix this, looks like the dotcmsEventsService instance is different here not sure why.
