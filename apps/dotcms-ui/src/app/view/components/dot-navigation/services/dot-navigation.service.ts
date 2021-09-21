@@ -122,6 +122,10 @@ export class DotNavigationService {
 
         this.onNavigationEnd()
             .pipe(
+                filter((event: NavigationEnd) => {
+                    const [ path ] = event.url.split('/').filter(Boolean);
+                    return path !== 'edit-page'
+                }),
                 map((event: NavigationEnd) => this.getTheUrlId(event.url)),
                 switchMap((id: string) =>
                     this.dotMenuService.loadMenu().pipe(
@@ -138,9 +142,11 @@ export class DotNavigationService {
             });
 
         this.dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe(() => {
-            this.reloadNavigation().pipe(take(1)).subscribe((menus: DotMenu[]) => {
-                this.setMenu(menus);
-            });
+            this.reloadNavigation()
+                .pipe(take(1))
+                .subscribe((menus: DotMenu[]) => {
+                    this.setMenu(menus);
+                });
         });
 
         this.loginService.auth$
