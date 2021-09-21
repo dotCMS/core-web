@@ -269,6 +269,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private saveContent(event: PageModelChangeEvent): void {
+        debugger;
         this.saveToPage(event.model)
             .pipe(
                 filter((message: string) => {
