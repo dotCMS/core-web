@@ -26,15 +26,18 @@ export class DotFormatDateService {
         this._localeOptions = locale;
     }
 
-    async setLang(lang: string) {
-        const dateFnsLang = lang.replace('_', '-');
+    async setLang(languageId: string) {
+        let [langCode, countryCode] = languageId.replace('_', '-').split('-');
         let localeLang;
 
+        langCode = langCode?.toLowerCase() || 'en'
+        countryCode = countryCode?.toLocaleUpperCase() || 'US';
+
         try {
-            localeLang = await import(`date-fns/locale/${dateFnsLang}/index.js`);
+            localeLang = await import(`date-fns/locale/${langCode}-${countryCode}/index.js`);
         } catch (error) {
             try {
-                localeLang = await import(`date-fns/locale/${dateFnsLang.split('-')[0]}/index.js`);
+                localeLang = await import(`date-fns/locale/${langCode}/index.js`);
             } catch (error) {
                 localeLang = await import(`date-fns/locale/en-US/index.js`);
             }
