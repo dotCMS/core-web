@@ -23,7 +23,7 @@ const replaceIdForNonMenuSection = (id) => {
 };
 
 interface DotActiveItemsProps {
-    urlId: string;
+    url: string;
     collapsed: boolean;
     menuId?: string;
 }
@@ -32,12 +32,7 @@ interface DotActiveItemsFromParentProps extends DotActiveItemsProps {
     menus: DotMenu[];
 }
 
-function getActiveMenuFromMenuId({
-    menus,
-    menuId,
-    collapsed,
-    urlId
-}: DotActiveItemsFromParentProps) {
+function getActiveMenuFromMenuId({ menus, menuId, collapsed, url }: DotActiveItemsFromParentProps) {
     return menus.map((menu) => {
         menu.active = false;
 
@@ -51,7 +46,7 @@ function getActiveMenuFromMenuId({
             menu.isOpen = !collapsed && menu.active; // TODO: this menu.active what?
             menu.menuItems = menu.menuItems.map((item) => ({
                 ...item,
-                active: item.id === urlId
+                active: item.id === url
             }));
         }
 
@@ -59,9 +54,18 @@ function getActiveMenuFromMenuId({
     });
 }
 
-const setActiveItems = ({ urlId, collapsed, menuId }: DotActiveItemsProps) => (
+function isDetailPage(id: string, url: string): boolean {
+    return url.includes('edit') && url.includes(id);
+}
+
+function isMenuActive(menus: DotMenu[]): boolean {
+    return !!menus.find((item) => item.active);
+}
+
+const setActiveItems = ({ url, collapsed, menuId }: DotActiveItemsProps) => (
     source: Observable<DotMenu[]>
 ) => {
+    let urlId = getTheUrlId(url);
 
     return source.pipe(
         map((m: DotMenu[]) => {
@@ -71,12 +75,22 @@ const setActiveItems = ({ urlId, collapsed, menuId }: DotActiveItemsProps) => (
             // When user browse using the navigation (Angular Routing)
             if (menuId) {
 
+                // If is a detail page we don't do anything because to get there user opens the menu
+                if (isDetailPage(urlId, url)) {
+                    return null;
+                }
+
                 // If we get to the edit page from site browser we don't update the menu
                 if (menuId === 'edit-page') {
                     return null;
                 }
 
-                return getActiveMenuFromMenuId({ menus, menuId, collapsed, urlId });
+                return getActiveMenuFromMenuId({ menus, menuId, collapsed, url: urlId });
+            }
+
+            // If we're browsing to a detail page from a listing page we don't do anything
+            if (isDetailPage(urlId, url) && isMenuActive(menus)) {
+                return null;
             }
 
             // When user browse using the browser url bar, direct links or reload page
@@ -105,6 +119,11 @@ const setActiveItems = ({ urlId, collapsed, menuId }: DotActiveItemsProps) => (
 
 const DOTCMS_MENU_STATUS = 'dotcms.menu.status';
 
+function getTheUrlId(url: string): string {
+    const urlSegments: string[] = url.split('/').filter(Boolean);
+    return urlSegments[0] === 'c' ? urlSegments.pop() : urlSegments[0];
+}
+
 @Injectable()
 export class DotNavigationService {
     private _collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(true);
@@ -129,11 +148,10 @@ export class DotNavigationService {
 
         this.onNavigationEnd()
             .pipe(
-                map((event: NavigationEnd) => this.getTheUrlId(event.url)),
-                switchMap((id: string) =>
+                switchMap((event: NavigationEnd) =>
                     this.dotMenuService.loadMenu().pipe(
                         setActiveItems({
-                            urlId: id,
+                            url: event.url,
                             collapsed: this._collapsed$.getValue(),
                             menuId: this.router.getCurrentNavigation().extras.state?.menuId
                         })
@@ -327,11 +345,6 @@ export class DotNavigationService {
         return `/c/${menuItemId}`;
     }
 
-    private getTheUrlId(url: string): string {
-        const urlSegments: string[] = url.split('/').filter(Boolean);
-        return urlSegments[0] === 'c' ? urlSegments.pop() : urlSegments[0];
-    }
-
     private reloadIframePage(): void {
         if (this.router.url.indexOf('c/') > -1) {
             this.dotIframeService.reload();
@@ -341,7 +354,7 @@ export class DotNavigationService {
     private reloadNavigation(): Observable<DotMenu[]> {
         return this.dotMenuService.reloadMenu().pipe(
             setActiveItems({
-                urlId: this.dotRouterService.currentPortlet.id,
+                url: this.dotRouterService.currentPortlet.id,
                 collapsed: this._collapsed$.getValue()
             }),
             tap((menus: DotMenu[]) => {
