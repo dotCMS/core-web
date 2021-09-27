@@ -4,7 +4,8 @@ import { DotHttpRequestOptions } from '../../../../models/dot-http-request-optio
 
 export const fallbackErrorMessages = {
     500: '500 Internal Server Error',
-    400: '400 Bad Request',
+    400: '400 Unfortunately there was an error. Please try again, and if the error persists, please contact support.',
+    403: `403 You don't have permissions to perform this action. Please contact your administrator to request access.`,
     401: '401 Unauthorized Error'
 };
 
@@ -123,7 +124,7 @@ export class DotUploadService {
         try {
             message = response.message || fallbackErrorMessages[status];
         } catch (e) {
-            message = fallbackErrorMessages[status | 500];
+            message = fallbackErrorMessages[500];
         }
         return {
             message: message,
