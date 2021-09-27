@@ -26,6 +26,7 @@ interface DotActiveItemsProps {
     url: string;
     collapsed: boolean;
     menuId?: string;
+    previousUrl: string;
 }
 
 interface DotActiveItemsFromParentProps extends DotActiveItemsProps {
@@ -55,14 +56,18 @@ function getActiveMenuFromMenuId({ menus, menuId, collapsed, url }: DotActiveIte
 }
 
 function isDetailPage(id: string, url: string): boolean {
-    return url.includes('edit') && url.includes(id);
+    return url.split('/').includes('edit') && url.includes(id);
 }
 
 function isMenuActive(menus: DotMenu[]): boolean {
     return !!menus.find((item) => item.active);
 }
 
-const setActiveItems = ({ url, collapsed, menuId }: DotActiveItemsProps) => (
+function isEditPageFromSiteBrowser(menuId: string, previousUrl: string): boolean {
+    return menuId === 'edit-page' && previousUrl === '/c/site-browser'
+}
+
+const setActiveItems = ({ url, collapsed, menuId, previousUrl }: DotActiveItemsProps) => (
     source: Observable<DotMenu[]>
 ) => {
     let urlId = getTheUrlId(url);
@@ -72,43 +77,40 @@ const setActiveItems = ({ url, collapsed, menuId }: DotActiveItemsProps) => (
             const menus: DotMenu[] = [...m];
             let isActive = false;
 
-            // When user browse using the navigation (Angular Routing)
-            if (menuId) {
-
-                // If is a detail page we don't do anything because to get there user opens the menu
-                if (isDetailPage(urlId, url)) {
-                    return null;
-                }
-
-                // If we get to the edit page from site browser we don't update the menu
-                if (menuId === 'edit-page') {
-                    return null;
-                }
-
-                return getActiveMenuFromMenuId({ menus, menuId, collapsed, url: urlId });
+            if (isEditPageFromSiteBrowser(menuId, previousUrl) || isDetailPage(urlId, url) && isMenuActive(menus)) {
+                return null;
             }
 
-            // If we're browsing to a detail page from a listing page we don't do anything
-            if (isDetailPage(urlId, url) && isMenuActive(menus)) {
-                return null;
+            // When user browse using the navigation (Angular Routing)
+            if (menuId && menuId !== 'edit-page') {
+                return getActiveMenuFromMenuId({
+                    menus,
+                    menuId,
+                    collapsed,
+                    url: urlId,
+                    previousUrl
+                });
             }
 
             // When user browse using the browser url bar, direct links or reload page
             urlId = replaceIdForNonMenuSection(urlId) || urlId;
 
             for (let i = 0; i < menus.length; i++) {
-                for (let k = 0; k < menus[i].menuItems.length; k++) {
-                    if (menus[i].menuItems[k].id === urlId) {
-                        isActive = true;
-                        menus[i].active = isActive;
-                        menus[i].isOpen = isActive;
-                        menus[i].menuItems[k].active = isActive;
-                        break;
-                    }
-                }
+                menus[i].active = false;
+                menus[i].isOpen = false;
 
-                if (isActive) {
-                    break;
+                for (let k = 0; k < menus[i].menuItems.length; k++) {
+                    // Once we activate the first one all the others are close
+                    if (isActive) {
+                        menus[i].menuItems[k].active = false;
+                    }
+
+                    if (!isActive && menus[i].menuItems[k].id === urlId) {
+                        isActive = true;
+                        menus[i].active = true;
+                        menus[i].isOpen = true;
+                        menus[i].menuItems[k].active = true;
+                    }
                 }
             }
 
@@ -153,7 +155,8 @@ export class DotNavigationService {
                         setActiveItems({
                             url: event.url,
                             collapsed: this._collapsed$.getValue(),
-                            menuId: this.router.getCurrentNavigation().extras.state?.menuId
+                            menuId: this.router.getCurrentNavigation().extras.state?.menuId,
+                            previousUrl: this.dotRouterService.previousUrl
                         })
                     )
                 ),
@@ -355,7 +358,8 @@ export class DotNavigationService {
         return this.dotMenuService.reloadMenu().pipe(
             setActiveItems({
                 url: this.dotRouterService.currentPortlet.id,
-                collapsed: this._collapsed$.getValue()
+                collapsed: this._collapsed$.getValue(),
+                previousUrl: this.dotRouterService.previousUrl
             }),
             tap((menus: DotMenu[]) => {
                 this.setMenu(menus);
