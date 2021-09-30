@@ -6,6 +6,7 @@
     [actions]="dialogActions"
     [appendToBody]="true"
     (hide)="closeExportDialog()"
+    width="26rem"
 >
     <form [formGroup]="form" [ngSwitch]="action" novalidate>
         <ng-container *ngSwitchCase="'Export'">
@@ -16,13 +17,14 @@
                 formControlName="password"
                 name="export-password"
                 type="password"
-                class="dot-apps-import-export-dialog__password"
+                class="dot-apps-export-dialog__password"
                 [placeholder]="'apps.confirmation.export.password.label' | dm"
             />
         </ng-container>
         <ng-container *ngSwitchCase="'Import'">
+            <input #importFile type="file" dotAutofocus (change)="onFileChange($event.target.files)" />
             <input
-                dotAutofocus
+                class="dot-apps-import-dialog__password"
                 autocomplete="new-password"
                 formControlName="password"
                 name="import-password"
@@ -30,8 +32,6 @@
                 type="password"
                 [placeholder]="'apps.confirmation.import.password.label' | dm"
             />
-            <p></p>
-            <input #importFile type="file" (change)="onFileChange($event.target.files)" />
             <input type="hidden" name="fileHidden" formControlName="importFile" />
             <!-- Validation Field -->
         </ng-container>
