@@ -1,9 +1,6 @@
 @use "variables" as *;
 
-.dot-apps-export-dialog__password {
+.dot-apps-export-dialog__password,
+#import-file {
     margin-bottom: $spacing-3;
-}
-
-.dot-apps-import-dialog__password {
-    margin-top: $spacing-3;
 }
