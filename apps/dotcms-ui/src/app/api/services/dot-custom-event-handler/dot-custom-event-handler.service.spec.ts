@@ -25,7 +25,7 @@ import { PushPublishService } from '@services/push-publish/push-publish.service'
 import { CoreWebServiceMock } from '../../../test/core-web.service.mock';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
-import { FormatDateService } from '@services/format-date-service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotWizardService } from '@services/dot-wizard/dot-wizard.service';
@@ -37,6 +37,8 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
+import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 
 describe('DotCustomEventHandlerService', () => {
     let service: DotCustomEventHandlerService;
@@ -44,6 +46,7 @@ describe('DotCustomEventHandlerService', () => {
     let dotRouterService: DotRouterService;
     let dotUiColorsService: DotUiColorsService;
     let dotPushPublishDialogService: DotPushPublishDialogService;
+    let dotGenerateSecurePasswordService: DotGenerateSecurePasswordService;
     let dotContentletEditorService: DotContentletEditorService;
     let dotDownloadBundleDialogService: DotDownloadBundleDialogService;
     let dotWorkflowEventHandlerService: DotWorkflowEventHandlerService;
@@ -63,7 +66,7 @@ describe('DotCustomEventHandlerService', () => {
                 { provide: DotRouterService, useClass: MockDotRouterService },
                 { provide: DotUiColorsService, useClass: MockDotUiColorsService },
                 ApiRoot,
-                FormatDateService,
+                { provide: DotFormatDateService, useClass: DotFormatDateServiceMock },
                 UserModel,
                 StringUtils,
                 DotcmsEventsService,
@@ -83,19 +86,21 @@ describe('DotCustomEventHandlerService', () => {
                 DotEventsService,
                 DotIframeService,
                 DotDownloadBundleDialogService,
+                DotGenerateSecurePasswordService,
                 LoginService
             ],
             imports: [RouterTestingModule, HttpClientTestingModule]
         });
 
-        service = TestBed.get(DotCustomEventHandlerService);
-        dotLoadingIndicatorService = TestBed.get(DotLoadingIndicatorService);
-        dotRouterService = TestBed.get(DotRouterService);
-        dotUiColorsService = TestBed.get(DotUiColorsService);
-        dotContentletEditorService = TestBed.get(DotContentletEditorService);
-        dotPushPublishDialogService = TestBed.get(DotPushPublishDialogService);
-        dotDownloadBundleDialogService = TestBed.get(DotDownloadBundleDialogService);
-        dotWorkflowEventHandlerService = TestBed.get(DotWorkflowEventHandlerService);
+        service = TestBed.inject(DotCustomEventHandlerService);
+        dotLoadingIndicatorService = TestBed.inject(DotLoadingIndicatorService);
+        dotRouterService = TestBed.inject(DotRouterService);
+        dotUiColorsService = TestBed.inject(DotUiColorsService);
+        dotContentletEditorService = TestBed.inject(DotContentletEditorService);
+        dotPushPublishDialogService = TestBed.inject(DotPushPublishDialogService);
+        dotGenerateSecurePasswordService = TestBed.inject(DotGenerateSecurePasswordService);
+        dotDownloadBundleDialogService = TestBed.inject(DotDownloadBundleDialogService);
+        dotWorkflowEventHandlerService = TestBed.inject(DotWorkflowEventHandlerService);
     });
 
     it('should show loading indicator and go to edit page when event is emited by iframe', () => {
@@ -192,6 +197,24 @@ describe('DotCustomEventHandlerService', () => {
             secondary: '#000',
             background: '#ccc'
         });
+    });
+
+    it('should notify to open generate secure password dialog', () => {
+        const dataMock = {
+            password: '123'
+        };
+
+        spyOn(dotGenerateSecurePasswordService, 'open');
+        service.handle(
+            new CustomEvent('ng-event', {
+                detail: {
+                    name: 'generate-secure-password',
+                    data: dataMock
+                }
+            })
+        );
+
+        expect<any>(dotGenerateSecurePasswordService.open).toHaveBeenCalledWith(dataMock);
     });
 
     it('should notify to open push publish dialog', () => {

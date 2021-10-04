@@ -268,7 +268,7 @@ export const EDIT_PAGE_JS = `
         }
 
         // Container reached max contentlet's limit
-        if (container.querySelectorAll('[data-dot-object="contentlet"]').length === parseInt(container.dataset.maxContentlets, 10)) {
+        if (container.querySelectorAll('div:not(.gu-transit)[data-dot-object="contentlet"]').length === parseInt(container.dataset.maxContentlets, 10)) {
             return false;
         }
 
@@ -276,13 +276,13 @@ export const EDIT_PAGE_JS = `
     }
 
     function checkIfContainerAllowContentType(container) {
-        if (container.querySelectorAll('[data-dot-object="contentlet"]').length === parseInt(container.dataset.maxContentlets, 10)) {
+        if (container.querySelectorAll('div:not(.gu-transit)[data-dot-object="contentlet"]').length === parseInt(container.dataset.maxContentlets, 10)) {
             return false;
         }
 
         // draggedContent is set by dotContentletEditorService.draggedContentType$
         const dotAcceptTypes = container.dataset.dotAcceptTypes.toLocaleLowerCase();
-        return (window.hasOwnProperty('draggedContent') && (dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase()) || dotAcceptTypes.includes('widget')))
+        return (window.hasOwnProperty('draggedContent') && (draggedContent.baseType.toLocaleLowerCase() === 'widget') || dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase()))
     }
 
     function setPlaceholderContentlet() {

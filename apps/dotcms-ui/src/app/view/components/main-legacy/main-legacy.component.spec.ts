@@ -26,7 +26,6 @@ import { DotWizardModule } from '@components/_common/dot-wizard/dot-wizard.modul
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
-import { FormatDateService } from '@services/format-date-service';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
@@ -37,6 +36,8 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
+import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 
 @Component({
     selector: 'dot-alert-confirm',
@@ -51,6 +52,12 @@ class MockDotDialogComponent {}
 class MockDotToolbarComponent {
     @Input() collapsed: boolean;
 }
+
+@Component({
+    selector: 'dot-generate-secure-password',
+    template: ''
+})
+class MockDotGenerateSecurePasswordComponent {}
 
 @Component({
     selector: 'dot-main-nav',
@@ -100,7 +107,7 @@ describe('MainLegacyComponent', () => {
                 DotMenuService,
                 DotCustomEventHandlerService,
                 DotIframeService,
-                FormatDateService,
+                DotFormatDateService,
                 DotAlertConfirmService,
                 ConfirmationService,
                 DotcmsEventsService,
@@ -117,13 +124,15 @@ describe('MainLegacyComponent', () => {
                 DotHttpErrorManagerService,
                 DotWorkflowActionsFireService,
                 DotGlobalMessageService,
-                DotEventsService
+                DotEventsService,
+                DotGenerateSecurePasswordService
             ],
             declarations: [
                 MainComponentLegacyComponent,
                 MockDotDialogComponent,
                 MockDotMainNavComponent,
                 MockDotToolbarComponent,
+                MockDotGenerateSecurePasswordComponent,
                 MockDotMessageDisplayComponent,
                 MockDotLargeMessageDisplayComponent,
                 MockDotPushPublishDialogComponent
@@ -144,6 +153,7 @@ describe('MainLegacyComponent', () => {
         expect(de.query(By.css('router-outlet')) !== null).toBe(true);
         expect(de.query(By.css('dot-push-publish-dialog')) !== null).toBe(true);
         expect(de.query(By.css('dot-download-bundle-dialog')) !== null).toBe(true);
+        expect(de.query(By.css('dot-generate-secure-password')) !== null).toBe(true);
         expect(de.query(By.css('dot-wizard')) !== null).toBe(true);
     });
 

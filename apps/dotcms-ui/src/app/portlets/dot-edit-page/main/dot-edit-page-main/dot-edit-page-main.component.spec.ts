@@ -36,7 +36,7 @@ import {
     UserModel
 } from '@dotcms/dotcms-js';
 import { CoreWebServiceMock } from '../../../../test/core-web.service.mock';
-import { FormatDateService } from '@services/format-date-service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '@tests/dot-test-bed';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
@@ -53,6 +53,7 @@ import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/
 import { DotDownloadBundleDialogModule } from '@components/_common/dot-download-bundle-dialog/dot-download-bundle-dialog.module';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 
 @Injectable()
 class MockDotContentletEditorService {
@@ -144,11 +145,12 @@ describe('DotEditPageMainComponent', () => {
                     { provide: DotUiColorsService, useClass: MockDotUiColorsService },
                     PushPublishService,
                     ApiRoot,
-                    FormatDateService,
+                    DotFormatDateService,
                     UserModel,
                     StringUtils,
                     DotcmsEventsService,
                     LoggerService,
+                    DotGenerateSecurePasswordService,
                     DotEventsSocket,
                     { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory },
                     DotcmsConfigService,

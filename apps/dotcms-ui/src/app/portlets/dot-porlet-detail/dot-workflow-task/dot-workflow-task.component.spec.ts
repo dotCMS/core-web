@@ -43,6 +43,8 @@ import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fi
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotFormatDateService } from '@services/dot-format-date-service';
+import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 @Injectable()
 class MockDotWorkflowTaskDetailService {
     view = jasmine.createSpy('view');
@@ -118,8 +120,10 @@ describe('DotWorkflowTaskComponent', () => {
                 DotHttpErrorManagerService,
                 DotAlertConfirmService,
                 ConfirmationService,
+                DotFormatDateService,
                 DotWorkflowActionsFireService,
                 DotGlobalMessageService,
+                DotGenerateSecurePasswordService,
                 DotEventsService
             ]
         });

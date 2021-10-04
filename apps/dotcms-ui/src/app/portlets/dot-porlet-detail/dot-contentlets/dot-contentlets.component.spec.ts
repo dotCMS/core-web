@@ -28,7 +28,7 @@ import { PushPublishService } from '@services/push-publish/push-publish.service'
 import { CoreWebServiceMock } from '../../../test/core-web.service.mock';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
-import { FormatDateService } from '@services/format-date-service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotWizardService } from '@services/dot-wizard/dot-wizard.service';
@@ -40,6 +40,7 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotDownloadBundleDialogService } from '@services/dot-download-bundle-dialog/dot-download-bundle-dialog.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 
 @Injectable()
 class MockDotContentletEditorService {
@@ -89,7 +90,7 @@ describe('DotContentletsComponent', () => {
                 { provide: DotUiColorsService, useClass: MockDotUiColorsService },
                 PushPublishService,
                 ApiRoot,
-                FormatDateService,
+                DotFormatDateService,
                 UserModel,
                 StringUtils,
                 DotcmsEventsService,
@@ -109,6 +110,7 @@ describe('DotContentletsComponent', () => {
                 DotEventsService,
                 DotIframeService,
                 LoginService,
+                DotGenerateSecurePasswordService,
                 DotDownloadBundleDialogService
             ]
         });
