@@ -1,13 +1,14 @@
 import { Extension } from '@tiptap/core';
 import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
-import { serializeForClipboard } from 'prosemirror-view/src/clipboard';
 import { EditorView } from 'prosemirror-view';
 
 export const DragHandler = Extension.create({
     name: 'dragHandler',
 
     addProseMirrorPlugins() {
-        const brokenClipboardAPI = false; // (browser.ie && browser.ie_version < 15) || (browser.ios && browser.webkit_version < 604)
+        let nodeToBeDragged = null;
+        const WIDTH = 24;
+        let dragHandler;
 
         function createRect(rect) {
             if (rect == null) {
@@ -38,20 +39,13 @@ export const DragHandler = Extension.create({
 
         function blockPosAtCoords(coords, view) {
             let pos = view.posAtCoords(coords);
-            let node = view.domAtPos(pos.pos);
-
-            node = node.node;
-            while (node && node.parentNode) {
-                if (node.parentNode.classList.contains('ProseMirror')) {
-                    // todo
-                    break;
-                }
-                node = node.parentNode;
-            }
-            if (node && node.nodeType === 1) {
-                let desc = view.docView.nearestDesc(node, true);
-                if (!(!desc || desc === view.docView)) {
-                    return desc.posBefore;
+            if (pos) {
+                let node = getDirectChild(view.nodeDOM(pos.inside));
+                if (node && node.nodeType === 1) {
+                    let desc = view.docView.nearestDesc(node, true);
+                    if (!(!desc || desc === view.docView)) {
+                        return desc.posBefore;
+                    }
                 }
             }
             return null;
@@ -59,95 +53,99 @@ export const DragHandler = Extension.create({
 
         function dragStart(e, view: EditorView) {
             if (!e.dataTransfer) return;
-
             let coords = { left: e.clientX + 50, top: e.clientY };
             let pos = blockPosAtCoords(coords, view);
             if (pos != null) {
                 view.dispatch(
                     view.state.tr.setSelection(NodeSelection.create(view.state.doc, pos))
                 );
-
                 let slice = view.state.selection.content();
-                let { dom, text } = serializeForClipboard(view, slice);
-
                 e.dataTransfer.clearData();
-                e.dataTransfer.setData(brokenClipboardAPI ? 'Text' : 'text/html', dom.innerHTML);
-                if (!brokenClipboardAPI) e.dataTransfer.setData('text/plain', text);
-
+                debugger;
+                e.dataTransfer.setDragImage(nodeToBeDragged, 10, 10);
                 view.dragging = { slice, move: true };
             }
         }
 
-        let dropElement;
-        const WIDTH = 24;
+        // Get the direct child of the Editor.
+        function getDirectChild(node) {
+            while (node && node.parentNode) {
+                if (
+                    node.classList?.contains('ProseMirror') ||
+                    node.parentNode.classList?.contains('ProseMirror')
+                ) {
+                    break;
+                }
+                node = node.parentNode;
+            }
+            return node;
+        }
+
+        // Check if not has content.
+        function nodeHasContent(view: EditorView, inside: number): boolean {
+            return !!view.nodeDOM(inside)?.textContent;
+        }
+
+        function createDragHandler(editorView: EditorView) {
+            dragHandler = document.createElement('span');
+            dragHandler.setAttribute('draggable', 'true');
+            dragHandler.textContent = 'drag_indicator';
+            dragHandler.className = 'material-icons';
+            dragHandler.style.position = 'absolute';
+            dragHandler.style.cursor = 'grab';
+            dragHandler.addEventListener('dragstart', (e) => dragStart(e, editorView));
+            document.body.appendChild(dragHandler);
+        }
 
         return [
             new Plugin({
                 key: new PluginKey('dragHandler'),
                 view: (editorView) => {
-                    dropElement = document.createElement('div');
-                    dropElement.setAttribute('draggable', 'true');
-                    dropElement.className = 'noteDragHandle';
-                    dropElement.setAttribute('data-drag-handle', '');
-                    dropElement.addEventListener('dragstart', (e) => dragStart(e, editorView));
-                    dropElement.textContent = '⠿';
-                    document.body.appendChild(dropElement);
+                    createDragHandler(editorView);
                     return {
                         update(view, prevState) {},
                         destroy() {
-                            removeNode(dropElement);
-                            dropElement = null;
+                            removeNode(dragHandler);
+                            dragHandler = null;
                         }
                     };
                 },
                 props: {
                     handleDOMEvents: {
                         drop(view, event) {
-                            // debugger;
-                            // setTimeout(() => {
-                            //     let node = document.querySelector('.ProseMirror-hideselection');
-                            //     if (node) {
-                            //         node.classList.remove('ProseMirror-hideselection');
-                            //     }
-                            // }, 50);
+                            setTimeout(() => {
+                                debugger;
+                                let node = document.querySelector('.ProseMirror-hideselection');
+                                if (node) {
+                                    node.classList.remove('ProseMirror-hideselection');
+                                }
+                            }, 50);
                             event.stopPropagation();
                             return false;
                         },
                         mousemove(view, event) {
-                            let coords = { left: event.clientX, top: event.clientY };
-                            let pos = view.posAtCoords(coords);
-                            let node: any = view.domAtPos(pos.pos, 0);
-                            console.log('node----INICIAL----', node);
-
-                            node = node.node;
-                            while (node && node.parentNode) {
-                                console.log('node.parentNode.classList', node.parentNode.classList);
-                                if (node.classList?.contains('ProseMirror')) {
-                                    break;
+                            let coords = { left: event.clientX + 50, top: event.clientY };
+                            const position = view.posAtCoords(coords);
+                            if (position && nodeHasContent(view, position.inside)) {
+                                nodeToBeDragged = getDirectChild(view.nodeDOM(position.inside));
+                                if (
+                                    nodeToBeDragged &&
+                                    !nodeToBeDragged.classList?.contains('ProseMirror')
+                                ) {
+                                    let rect = absoluteRect(nodeToBeDragged);
+                                    let win = nodeToBeDragged.ownerDocument.defaultView;
+                                    rect.top += win.pageYOffset;
+                                    rect.left += win.pageXOffset;
+                                    dragHandler.style.left = rect.left - WIDTH + 'px';
+                                    dragHandler.style.top = rect.top - 4 + 'px';
+                                    dragHandler.style.visibility = 'visible';
+                                } else {
+                                    dragHandler.style.visibility = 'hidden';
                                 }
-                                if (node.parentNode.classList?.contains('ProseMirror')) {
-                                    break;
-                                }
-                                node = node.parentNode;
-                            }
-
-                            console.log('node procesado', node);
-                            if (node && !node.classList?.contains('ProseMirror')) {
-                                // console.log('node.innerText', node.innerText === null);
-                                // if (node.innerText === '') {
-                                //     dropElement.style.left = '-10000px';
-                                // }
-                                let rect = absoluteRect(node);
-                                let win = node.ownerDocument.defaultView;
-                                rect.top += win.pageYOffset;
-                                rect.left += win.pageXOffset;
-                                // rect.width = WIDTH + 'px';
-                                dropElement.style.left = -WIDTH + rect.left + 'px';
-                                dropElement.style.top = rect.top + 'px';
                             } else {
-                                console.log('no hay node');
+                                nodeToBeDragged = null;
+                                dragHandler.style.visibility = 'hidden';
                             }
-
                             return true;
                         }
                     }
