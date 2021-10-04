@@ -29,9 +29,7 @@ export class BlockEditorComponent implements OnInit {
         this.editor = new Editor({
             extensions: [
                 StarterKit,
-                ContentletBlock(this.injector).extend({
-                    draggable: true
-                }),
+                ContentletBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
                 DragHandler
             ]
