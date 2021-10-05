@@ -47,7 +47,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
 
-    currentSiteSub$: Subject<Site> = new Subject();
+    currentSite: Site;
 
     sitesCurrentPage: Site[];
     moreThanOneSite = false;
@@ -59,10 +59,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         public paginationService: PaginatorService,
         private dotEventsService: DotEventsService
     ) {}
-
-    get currentSite$(): Observable<Site> {
-        return this.currentSiteSub$;
-    }
 
     ngOnInit(): void {
         this.paginationService.url = 'v1/site';
@@ -199,8 +195,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof DotSiteSelectorComponent
      */
     updateCurrentSite(site: Site): void {
-        const newSite = { ...site };
-        this.currentSiteSub$.next(newSite);
+        this.currentSite = site;
     }
 
     private getSiteByIdFromCurrentPage(siteId: string): Site {
@@ -227,6 +222,9 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private updateValues(items: Site[]): void {
         this.sitesCurrentPage = [...items];
+        setTimeout(() => {
+            this.moreThanOneSite = items.length > 1;
+        }, 100);
         this.updateCurrentSite(this.siteService.currentSite);
     }
 }
