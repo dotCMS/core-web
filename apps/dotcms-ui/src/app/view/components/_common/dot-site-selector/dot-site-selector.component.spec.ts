@@ -283,14 +283,13 @@ describe('SiteSelectorComponent', () => {
         }));
 
         it('should update until site is present after add', fakeAsync(() => {
-            spyOn<any>(siteService, 'getSiteById').and.callFake(() =>
-                mockFunction(2, sites[1], undefined)
+            const subSites = sites.slice(0, 2);
+            spyOn(paginatorService, 'getCurrentPage').and.callFake(() =>
+                mockFunction(3, subSites, [])
             );
-            spyOn(paginatorService, 'getCurrentPage').and.returnValue(of(sites));
             comp.handleSitesRefresh(sites[0]);
-            tick(2500);
-            expect(siteService.getSiteById).toHaveBeenCalledWith(sites[0].identifier);
-            expect(paginatorService.getCurrentPage).toHaveBeenCalledTimes(1);
+            tick(3500);
+            expect(comp.sitesCurrentPage).toEqual(subSites);
         }));
     });
 

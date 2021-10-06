@@ -103,45 +103,24 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
      * @memberof SiteSelectorComponent
      */
     handleSitesRefresh(site: Site): void {
-        if (site.archived) {
-            this.paginationService
-                .getCurrentPage()
-                .pipe(
-                    takeUntil(this.destroy$),
-                    tap((items: Site[]) => {
-                        if (
-                            items.findIndex((item: Site) => site.identifier === item.identifier) >=
-                            0
-                        ) {
-                            throw new Error('Indexing... site still present');
-                        }
-                    }),
-                    retryWhen((error) => error.pipe(delay(1000)))
-                )
-                .subscribe((items: Site[]) => {
-                    this.updateValues(items);
-                });
-        } else {
-            this.siteService
-                .getSiteById(site.identifier)
-                .pipe(
-                    takeUntil(this.destroy$),
-                    tap((item: Site) => {
-                        if (item === undefined) {
-                            throw new Error('Indexing... site not present');
-                        }
-                    }),
-                    retryWhen((error) => error.pipe(delay(1000)))
-                )
-                .subscribe(() => {
-                    this.paginationService
-                        .getCurrentPage()
-                        .pipe(take(1))
-                        .subscribe((items: Site[]) => {
-                            this.updateValues(items);
-                        });
-                });
-        }
+        this.paginationService
+            .getCurrentPage()
+            .pipe(
+                takeUntil(this.destroy$),
+                tap((items: Site[]) => {
+                    const siteIndex = items.findIndex(
+                        (item: Site) => site.identifier === item.identifier
+                    );
+                    const shouldRetry = site.archived ? siteIndex >= 0 : siteIndex === -1;
+                    if (shouldRetry) {
+                        throw new Error('Indexing... site still present');
+                    }
+                }),
+                retryWhen((error) => error.pipe(delay(1000), take(10)))
+            )
+            .subscribe((items: Site[]) => {
+                this.updateValues(items);
+            });
     }
 
     /**
