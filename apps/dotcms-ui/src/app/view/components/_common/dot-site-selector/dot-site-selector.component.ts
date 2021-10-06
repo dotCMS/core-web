@@ -62,7 +62,6 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         this.paginationService.url = 'v1/site';
-
         this.paginationService.setExtraParams('archive', this.archive);
         this.paginationService.setExtraParams('live', this.live);
         this.paginationService.setExtraParams('system', this.system);
@@ -222,9 +221,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private updateValues(items: Site[]): void {
         this.sitesCurrentPage = [...items];
-        setTimeout(() => {
-            this.moreThanOneSite = items.length > 1;
-        }, 100);
+        this.moreThanOneSite = items.length > 1;
         this.updateCurrentSite(this.siteService.currentSite);
     }
 }
