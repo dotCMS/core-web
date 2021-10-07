@@ -462,6 +462,7 @@ export const EDIT_PAGE_JS = `
         we do not have a way to listen to the web component event,
         so this setInterval is used.
     */
+
     var attempts = 0;
     var initScript = setInterval(function() {
         var containers = document.querySelector('[data-dot-object="container"]');
