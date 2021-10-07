@@ -106,7 +106,7 @@ export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService
             .getCurrentPage()
             .pipe(
-                takeUntil(this.destroy$),
+                take(1),
                 tap((items: Site[]) => {
                     const siteIndex = items.findIndex(
                         (item: Site) => site.identifier === item.identifier
