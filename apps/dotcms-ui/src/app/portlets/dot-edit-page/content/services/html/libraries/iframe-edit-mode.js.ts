@@ -462,11 +462,11 @@ function initDragAndDrop () {
         so this setInterval is used.
     */
 
-    var attempts = 0;
-    var initScript = setInterval(function() {
-        var containers = document.querySelector('[data-dot-object="container"]');
+    let attempts = 0;
+    const initScript = setInterval(function() {
+        const isContainer = document.querySelector('[data-dot-object="container"]');
         attempts++;
-        if(containers) {
+        if(isContainer) {
             clearInterval(initScript);
             initDragAndDrop();
         } else if( attempts === 10) {
