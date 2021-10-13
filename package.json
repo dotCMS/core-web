@@ -114,7 +114,7 @@
         "@nrwl/storybook": "^11.4.0",
         "@nrwl/tao": "11.4.0",
         "@nrwl/workspace": "11.4.0",
-        "@nxext/stencil": "^11.2.0",
+        "@nxext/stencil": "11.2.0",
         "@stencil/core": "^2.3.0",
         "@stencil/sass": "1.4.1",
         "@storybook/addon-actions": "^6.1.21",
