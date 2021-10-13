@@ -20,7 +20,7 @@ import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentle
 export class BlockEditorComponent implements OnInit {
     editor: Editor;
 
-    value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
+    value = ''; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
     constructor(private injector: Injector, private resolver: ComponentFactoryResolver) {}
 
@@ -29,7 +29,7 @@ export class BlockEditorComponent implements OnInit {
             extensions: [
                 StarterKit,
                 ContentletBlock(this.injector),
-                ActionsMenu(this.injector, this.resolver),
+                ActionsMenu(this.injector, this.resolver)
             ]
         });
     }

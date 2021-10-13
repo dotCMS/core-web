@@ -77,6 +77,7 @@ export class FloatingActionsView {
         this.command = command;
         this.key = key;
         this.createTooltip(tippyOptions);
+        this.editor.on('focus', this.focusHandler);
     }
 
     /**
@@ -113,6 +114,12 @@ export class FloatingActionsView {
         });
     }
 
+    focusHandler = () => {
+        console.log('focusHandler');
+        // we use `setTimeout` to make sure `selection` is already updated
+        setTimeout(() => this.update(this.editor.view), 10);
+    };
+
     /**
      * Check the EditorState and based on that modify the DOM
      *
@@ -121,20 +128,22 @@ export class FloatingActionsView {
      * @return {*}  {void}
      * @memberof FloatingActionsView
      */
-    update(view: EditorView, prevState: EditorState): void {
+    update(view: EditorView, prevState?: EditorState): void {
+        console.log('update, floating.menu');
         const { selection } = view.state;
         const { $anchor, empty, from, to } = selection;
         const isRootDepth = $anchor.depth === 1;
         const isNodeEmpty =
             !selection.$anchor.parent.isLeaf && !selection.$anchor.parent.textContent;
         const isActive = isRootDepth && isNodeEmpty;
-
+        console.log('!empty || !isActive', !empty || !isActive);
         if (!empty || !isActive) {
             this.hide();
 
             return;
         }
-
+        var b = posToDOMRect(view, from, to);
+        console.log('b', b);
         this.tippy.setProps({
             getReferenceClientRect: () => posToDOMRect(view, from, to)
         });
@@ -142,7 +151,7 @@ export class FloatingActionsView {
         this.show();
 
         const next = this.key?.getState(view.state);
-        const prev = this.key?.getState(prevState);
+        const prev = prevState ? this.key?.getState(prevState) : null;
 
         if (next.open) {
             const { from, to } = this.editor.state.selection;
@@ -154,7 +163,7 @@ export class FloatingActionsView {
                 editor: this.editor,
                 command: this.command
             });
-        } else if (prev.open) {
+        } else if (prev?.open) {
             this.render().onExit(null);
         }
     }
@@ -187,8 +196,9 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
              * @return {*}  {PluginState}
              */
             init(): PluginState {
+                console.log('FloatingActionsPlugin init');
                 return {
-                    open: false
+                    open: true
                 };
             },
             /**
@@ -199,7 +209,7 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
              */
             apply(transaction: Transaction): PluginState {
                 const transactionMeta = transaction.getMeta(FLOATING_ACTIONS_MENU_KEYBOARD);
-
+                console.log('apply', transactionMeta);
                 if (transactionMeta?.open) {
                     return {
                         open: transactionMeta?.open

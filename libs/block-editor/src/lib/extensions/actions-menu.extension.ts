@@ -36,6 +36,7 @@ export type FloatingMenuOptions = Omit<FloatingMenuPluginProps, 'editor' | 'elem
 };
 
 function getSuggestionComponent(injector: Injector, resolver: ComponentFactoryResolver) {
+    console.log('getSuggestionComponent');
     const factory = resolver.resolveComponentFactory(SuggestionsComponent);
     const component = factory.create(injector);
     component.changeDetectorRef.detectChanges();
@@ -53,6 +54,7 @@ function getTippyInstance({
     rect: GetReferenceClientRect;
     onHide?: () => void;
 }) {
+    console.log('getTippyInstance');
     return tippy(element, {
         appendTo: document.body,
         content: content,
@@ -75,6 +77,7 @@ function execCommand({
     range: Range;
     props: SuggestionsCommandProps;
 }) {
+    console.log('execCommand');
     const whatToDo = {
         dotContent: () => {
             editor.chain().addContentletBlock({ range, payload: props.payload }).run();
@@ -98,13 +101,14 @@ function execCommand({
 export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
     let myTippy;
     let suggestionsComponent: ComponentRef<SuggestionsComponent>;
-
+    console.log('ActionsMenu');
     /**
      * Get's called on button click or suggestion char
      *
      * @param {(SuggestionProps | FloatingActionsProps)} { editor, range, clientRect }
      */
     function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
+        console.log('onStart');
         suggestionsComponent = getSuggestionComponent(injector, resolver);
         suggestionsComponent.instance.onSelection = (item) => {
             execCommand({ editor: editor, range: range, props: item });
@@ -131,6 +135,7 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
      * @return {*}  {boolean}
      */
     function onKeyDown({ event }: FloatingActionsKeydownProps): boolean {
+        console.log('onKeyDown');
         const { key } = event;
 
         if (key === 'Escape') {
@@ -152,6 +157,7 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
     }
 
     function onExit() {
+        console.log('exit');
         myTippy?.destroy();
     }
 
@@ -162,7 +168,7 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
             suggestion: {
                 char: '/c',
                 allowSpaces: true,
-                startOfLine: true,
+                startOfLine: false,
                 render: () => {
                     return {
                         onStart,
@@ -202,13 +208,14 @@ export const ActionsMenu = (injector: Injector, resolver: ComponentFactoryResolv
         addProseMirrorPlugins() {
             const factoryButton = resolver.resolveComponentFactory(ActionButtonComponent);
             const button = factoryButton.create(injector);
-
+            console.log('addProseMirrorPlugins');
             return [
                 FloatingActionsPlugin({
                     command: execCommand,
                     editor: this.editor,
                     element: button.location.nativeElement,
                     render: () => {
+                        console.log('render');
                         return {
                             onStart,
                             onKeyDown,
