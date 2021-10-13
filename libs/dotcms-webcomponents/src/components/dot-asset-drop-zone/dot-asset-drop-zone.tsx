@@ -62,8 +62,16 @@ export class DotAssetDropZone {
     /** Error to be shown when an error happened on the uploading process*/
     @Prop() uploadErrorLabel = 'Drop action not allowed.';
 
+    /* custom function to upload files */
+    @Prop() customUploadFile: (props: {
+        data: File[],
+        hideOverlay: () => void,
+        progressCallBack: (progress: number) => void,
+        showDialog: (header: string, message: string) => void
+    }) => Promise<any>;
+
     /** Emit an array of Contentlets just created or array of errors */
-    @Event() uploadComplete: EventEmitter<DotCMSContentlet[] | DotHttpErrorResponse[]>;
+    @Event() uploadComplete: EventEmitter<DotCMSContentlet[] | DotHttpErrorResponse[] | any>;
 
     @State() dropState: DotDropStatus = DotDropStatus.NONE;
     @State() progressIndicator = 0;
@@ -158,7 +166,16 @@ export class DotAssetDropZone {
                 files.push(file);
             });
         }
-        if (files.length) {
+        if(this.customUploadFile) {
+            this.customUploadFile({
+                data: files,
+                hideOverlay: this.hideOverlay.bind(this),
+                progressCallBack: this.updateProgressBar.bind(this),
+                showDialog: this.showDialog.bind(this)
+            })
+            .then((response: any) => this.uploadComplete.emit(response))
+            .catch((errors: any) => this.uploadComplete.emit(errors))
+        } else if (files.length) {
             uploadService
                 .uploadBinaryFile(files, this.updateProgressBar.bind(this), this.maxFileSize)
                 .then((data: DotCMSTempFile | DotCMSTempFile[]) => {

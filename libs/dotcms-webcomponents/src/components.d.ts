@@ -19,6 +19,12 @@ export namespace Components {
           * Legend to be shown when creating dotAssets
          */
         "createAssetsText": string;
+        "customUploadFile": (props: {
+        data: File[],
+        hideOverlay: () => void,
+        progressCallBack: (progress: number) => void,
+        showDialog: (header: string, message: string) => void
+    }) => Promise<any>;
         /**
           * Labels to be shown in error dialog
          */
@@ -1344,6 +1350,12 @@ declare namespace LocalJSX {
           * Legend to be shown when creating dotAssets
          */
         "createAssetsText"?: string;
+        "customUploadFile"?: (props: {
+        data: File[],
+        hideOverlay: () => void,
+        progressCallBack: (progress: number) => void,
+        showDialog: (header: string, message: string) => void
+    }) => Promise<any>;
         /**
           * Labels to be shown in error dialog
          */
@@ -1372,7 +1384,7 @@ declare namespace LocalJSX {
         /**
           * Emit an array of Contentlets just created or array of errors
          */
-        "onUploadComplete"?: (event: CustomEvent<DotCMSContentlet[] | DotHttpErrorResponse[]>) => void;
+        "onUploadComplete"?: (event: CustomEvent<DotCMSContentlet[] | DotHttpErrorResponse[] | any>) => void;
         /**
           * Error to be shown when try to upload a bigger size file than allowed
          */
