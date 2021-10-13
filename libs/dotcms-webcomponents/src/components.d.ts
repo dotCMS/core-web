@@ -19,10 +19,10 @@ export namespace Components {
           * Legend to be shown when creating dotAssets
          */
         "createAssetsText": string;
-        "customUploadFile": (props: {
-        data: File[],
-        hideOverlay: () => void,
-        progressCallBack: (progress: number) => void,
+        "customUploadFiles": (props: {
+        files: File[],
+        onSuccess: () => void,
+        updateProgress: (progress: number) => void,
         showDialog: (header: string, message: string) => void
     }) => Promise<any>;
         /**
@@ -1350,10 +1350,10 @@ declare namespace LocalJSX {
           * Legend to be shown when creating dotAssets
          */
         "createAssetsText"?: string;
-        "customUploadFile"?: (props: {
-        data: File[],
-        hideOverlay: () => void,
-        progressCallBack: (progress: number) => void,
+        "customUploadFiles"?: (props: {
+        files: File[],
+        onSuccess: () => void,
+        updateProgress: (progress: number) => void,
         showDialog: (header: string, message: string) => void
     }) => Promise<any>;
         /**
