@@ -4,6 +4,7 @@ on:
         branches:
             - release-*
             - master
+            - publist-dotcms-ui-test
 jobs:
     changes:
         runs-on: ubuntu-latest
