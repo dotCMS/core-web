@@ -67,7 +67,7 @@ export class DotAssetDropZone {
         files: File[],
         onSuccess: () => void,
         updateProgress: (progress: number) => void,
-        showDialog: (header: string, message: string) => void
+        onError: (header: string, message: string) => void
     }) => Promise<any>;
 
     /** Emit an array of Contentlets just created or array of errors */
@@ -168,19 +168,19 @@ export class DotAssetDropZone {
         }
 
         // In case there are no files
-        if(!files.length) { return; }
+        if (!files.length) {
+            return;
+        }
 
-        if(this.customUploadFiles) {
-
+        if (this.customUploadFiles) {
             this.customUploadFiles({
                 files: files,
                 onSuccess: this.hideOverlay.bind(this),
                 updateProgress: this.updateProgressBar.bind(this),
-                showDialog: this.showDialog.bind(this)
+                onError: this.showDialog.bind(this)
             })
-            .then((response: any) => this.uploadComplete.emit(response))
-            .catch((errors: any) => this.uploadComplete.emit(errors))
-
+                .then((response: any) => this.uploadComplete.emit(response))
+                .catch((errors: any) => this.uploadComplete.emit(errors));
         } else {
             uploadService
                 .uploadBinaryFile(files, this.updateProgressBar.bind(this), this.maxFileSize)

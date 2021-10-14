@@ -23,7 +23,7 @@ export namespace Components {
         files: File[],
         onSuccess: () => void,
         updateProgress: (progress: number) => void,
-        showDialog: (header: string, message: string) => void
+        onError: (header: string, message: string) => void
     }) => Promise<any>;
         /**
           * Labels to be shown in error dialog
@@ -1354,7 +1354,7 @@ declare namespace LocalJSX {
         files: File[],
         onSuccess: () => void,
         updateProgress: (progress: number) => void,
-        showDialog: (header: string, message: string) => void
+        onError: (header: string, message: string) => void
     }) => Promise<any>;
         /**
           * Labels to be shown in error dialog
