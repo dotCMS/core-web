@@ -167,7 +167,10 @@ export class DotAssetDropZone {
             });
         }
 
-        if(files.length && this.customUploadFiles) {
+        // In case there are no files
+        if(!files.length) { return; }
+
+        if(this.customUploadFiles) {
 
             this.customUploadFiles({
                 files: files,
@@ -178,7 +181,7 @@ export class DotAssetDropZone {
             .then((response: any) => this.uploadComplete.emit(response))
             .catch((errors: any) => this.uploadComplete.emit(errors))
 
-        } else if (files.length) {
+        } else {
             uploadService
                 .uploadBinaryFile(files, this.updateProgressBar.bind(this), this.maxFileSize)
                 .then((data: DotCMSTempFile | DotCMSTempFile[]) => {
