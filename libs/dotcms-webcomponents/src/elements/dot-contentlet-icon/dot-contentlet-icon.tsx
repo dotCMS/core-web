@@ -128,7 +128,10 @@ export class DotContentletIcon {
     private ext: string;
 
     componentWillRender() {
-        // if doesn't match "Icon", then the Material Icon name is passed and it should be displayed as is
+        /*
+            If it doesn't contain "Icon" (with uppercase) we're assuming that is coming to a material icon name,
+            which is the only way we have to differentiate between new and legacy icons without passing an extra attribute.
+        */
         this.ext = this.icon.match('Icon') ? this.icon.replace('Icon', '') : '';
     }
 
