@@ -31,7 +31,7 @@ export class BlockEditorComponent implements OnInit {
                 StarterKit,
                 ContentletBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
-                DragHandler
+                DragHandler(this.injector, this.resolver)
             ]
         });
     }
