@@ -86,6 +86,7 @@ import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/d
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
+import { PageModelChangeEventType } from './services/dot-edit-content-html/models';
 
 const responseData: DotCMSContentType[] = [
     {
@@ -1267,7 +1268,7 @@ describe('DotEditContentComponent', () => {
 
                 dotEditContentHtmlService.pageModel$.next({
                     model: [{ identifier: 'test', uuid: '111' }],
-                    type: 1
+                    type: PageModelChangeEventType.ADD_CONTENT
                 });
 
                 expect(httpErrorManagerService.handle).toHaveBeenCalledOnceWith(errorResponse);
