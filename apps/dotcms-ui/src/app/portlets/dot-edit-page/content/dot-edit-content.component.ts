@@ -273,7 +273,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .pipe(
                 filter((message: string) => {
                     return this.shouldReload(event.type) || message === 'error';
-                })
+                }),
+                take(1)
             )
             .subscribe(() => {
                 this.reload(null);
@@ -282,7 +283,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private shouldReload(type: PageModelChangeEventType): boolean {
         return (
-            type !== PageModelChangeEventType.MOVE_CONTENT &&
+            type !== PageModelChangeEventType.REMOVE_CONTENT &&
             this.pageStateInternal.page.remoteRendered
         );
     }
