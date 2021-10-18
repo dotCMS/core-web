@@ -167,6 +167,7 @@ export class DotNavigationService {
             });
 
         this.dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe(() => {
+            console.log('HERE');
             this.reloadNavigation()
                 .pipe(take(1))
                 .subscribe((menus: DotMenu[]) => {

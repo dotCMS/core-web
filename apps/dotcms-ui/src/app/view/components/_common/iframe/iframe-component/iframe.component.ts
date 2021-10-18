@@ -10,7 +10,7 @@ import {
     OnDestroy
 } from '@angular/core';
 
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { DotcmsEventsService, DotEventTypeWrapper, LoggerService } from '@dotcms/dotcms-js';
@@ -56,6 +56,7 @@ export class IframeComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        console.log('Init');
         this.iframeOverlayService.overlay
             .pipe(takeUntil(this.destroy$))
             .subscribe((val: boolean) => (this.showOverlay = val));
@@ -179,6 +180,13 @@ export class IframeComponent implements OnInit, OnDestroy {
             )
             .subscribe(() => {
                 this.iframeElement.nativeElement.contentWindow.postMessage('reload');
+            });
+        
+        this.dotcmsEventsService.subscribeTo('OSGI_BUNDLES_LOADED')
+            .pipe(takeUntil(this.destroy$), delay(1000))
+            .subscribe((event: DotEventTypeWrapper<any>) => {
+                console.log('EVENT', event);
+                this.dotIframeService.run({ name: 'getBundlesData' });
             });
     }
 
