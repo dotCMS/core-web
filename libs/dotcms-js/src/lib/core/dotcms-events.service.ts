@@ -64,7 +64,6 @@ export class DotcmsEventsService {
      * @memberof DotcmsEventsService
      */
     subscribeTo<T>(clientEventType: string): Observable<T> {
-        // console.log(clientEventType);
         if (!this.subjects[clientEventType]) {
             this.subjects[clientEventType] = new Subject<T>();
         }

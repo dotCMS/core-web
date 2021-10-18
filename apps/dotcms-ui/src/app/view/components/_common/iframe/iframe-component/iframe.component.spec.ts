@@ -292,7 +292,7 @@ describe('IframeComponent', () => {
         dotcmsEventsService.triggerSubscribeTo('OSGI_BUNDLES_LOADED', {
             name: 'OSGI_BUNDLES_LOADED'
         });
-        tick(1500);
+        tick(4500);
         expect(comp.iframeElement.nativeElement.contentWindow.getBundlesData).toHaveBeenCalledTimes(
             1
         );
