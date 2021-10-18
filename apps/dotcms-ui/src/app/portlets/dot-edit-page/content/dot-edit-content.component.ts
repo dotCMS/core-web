@@ -65,7 +65,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     showOverlay = false;
     dotPageMode = DotPageMode;
     contentPalletItems: DotCMSContentType[] = [];
-    isEditMode: boolean = false;
+    isEditMode = false;
     paletteCollapsed = false;
     isEnterpriseLicense = false;
 
@@ -488,7 +488,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private subscribePageModelChange(): void {
         this.dotEditContentHtmlService.pageModel$
             .pipe(
-                filter((event: PageModelChangeEvent) => !!event.model.length),
+                filter((event: PageModelChangeEvent) => {
+                    return !!event.model.length;
+                }),
                 takeUntil(this.destroy$)
             )
             .subscribe((event: PageModelChangeEvent) => {
