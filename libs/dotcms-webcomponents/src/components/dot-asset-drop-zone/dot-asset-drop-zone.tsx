@@ -62,6 +62,12 @@ export class DotAssetDropZone {
     /** Error to be shown when an error happened on the uploading process*/
     @Prop() uploadErrorLabel = 'Drop action not allowed.';
 
+    /** Allowed file extensions*/
+    @Prop() acceptTypes: string[] = [];
+
+    /** Allowed file extensions*/
+    @Prop() typesErrorLabel: string = 'This action only allows $0 files.';
+
     /* custom function to upload files */
     @Prop() customUploadFiles: (props: {
         files: File[],
@@ -172,6 +178,15 @@ export class DotAssetDropZone {
             return;
         }
 
+        // Validate that the uploaded files are allowed.
+        if (this.acceptTypes.length && this.fileValidation(files, this.acceptTypes)) {
+            this.showDialog(
+                this.dialogLabels.errorHeader,
+                this.typesErrorLabel.replace('$0', this.acceptTypes.join(', '))
+            );
+            return;
+        }
+
         if (this.customUploadFiles) {
             this.customUploadFiles({
                 files: files,
@@ -275,5 +290,13 @@ export class DotAssetDropZone {
     private hideDialog(): void {
         this.dialogHeader = '';
         this.errorMessage = '';
+    }
+
+    private fileValidation(files: File[], acceptTypes: string[]): boolean {
+        return files.some((file: File) => {
+            const fileName = file.name;
+            const extension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+            return !acceptTypes.includes(extension);
+        });
     }
 }

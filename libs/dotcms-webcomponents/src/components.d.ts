@@ -16,6 +16,10 @@ import { DotSelectButtonOption } from "./models/dotSelectButtonOption";
 export namespace Components {
     interface DotAssetDropZone {
         /**
+          * Allowed file extensions
+         */
+        "acceptTypes": string[];
+        /**
           * Legend to be shown when creating dotAssets
          */
         "createAssetsText": string;
@@ -54,6 +58,10 @@ export namespace Components {
           * Error to be shown when try to upload a bigger size file than allowed
          */
         "singeMaxSizeErrorLabel": string;
+        /**
+          * Allowed file extensions
+         */
+        "typesErrorLabel": string;
         /**
           * Error to be shown when an error happened on the uploading process
          */
@@ -1347,6 +1355,10 @@ declare global {
 declare namespace LocalJSX {
     interface DotAssetDropZone {
         /**
+          * Allowed file extensions
+         */
+        "acceptTypes"?: string[];
+        /**
           * Legend to be shown when creating dotAssets
          */
         "createAssetsText"?: string;
@@ -1389,6 +1401,10 @@ declare namespace LocalJSX {
           * Error to be shown when try to upload a bigger size file than allowed
          */
         "singeMaxSizeErrorLabel"?: string;
+        /**
+          * Allowed file extensions
+         */
+        "typesErrorLabel"?: string;
         /**
           * Error to be shown when an error happened on the uploading process
          */
