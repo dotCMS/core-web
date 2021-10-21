@@ -71,10 +71,17 @@ describe('DotGenerateSecurePasswordComponent', () => {
             expect(comp.typeInput).toBe('password');
         });
 
-        it('should copy password to clipboard', () => {
+        it('should copy password to clipboard', (done) => {
             const copyButton = fixture.debugElement.query(By.css('[data-testId="copyBtn"]'));
-            copyButton.triggerEventHandler('click', null);
+            copyButton.nativeElement.click();
+            fixture.detectChanges();
             expect(dotClipboardUtil.copy).toHaveBeenCalledWith(comp.value);
+            expect(copyButton.nativeElement.innerText).toBe('COPIED');
+            setTimeout(() => {
+                fixture.detectChanges();
+                expect(copyButton.nativeElement.innerText).toBe('COPY');
+                done();
+            }, 2000);
         });
 
         it('should Reveal password', () => {
@@ -84,6 +91,7 @@ describe('DotGenerateSecurePasswordComponent', () => {
             revealButton.nativeElement.click();
             fixture.detectChanges();
             expect(comp.typeInput).toBe('text');
+            expect(revealButton.nativeElement.text).toBe('hide');
         });
     });
 
