@@ -89,6 +89,7 @@ describe('DotGenerateSecurePasswordComponent', () => {
                 By.css('.dot-generate-secure-password__reveal-link')
             );
             revealButton.nativeElement.click();
+            expect(revealButton.nativeElement.text).toBe('Reveal');
             fixture.detectChanges();
             expect(comp.typeInput).toBe('text');
             expect(revealButton.nativeElement.text).toBe('hide');
