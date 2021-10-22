@@ -21,7 +21,7 @@ import { DragHandler } from '../extensions/dragHandler.extention';
 export class BlockEditorComponent implements OnInit {
     editor: Editor;
 
-    value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
+    value = ''; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
     constructor(private injector: Injector, private resolver: ComponentFactoryResolver) {}
 

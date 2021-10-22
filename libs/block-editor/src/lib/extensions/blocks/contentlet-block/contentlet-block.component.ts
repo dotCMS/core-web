@@ -14,6 +14,7 @@ export class ContentletBlockComponent extends AngularNodeViewComponent implement
     };
 
     ngOnInit() {
-        this.data = this.props.node.attrs.data;
+        this.data = this.node.attrs.data;
+        console.log(this.node.attrs.data);
     }
 }
