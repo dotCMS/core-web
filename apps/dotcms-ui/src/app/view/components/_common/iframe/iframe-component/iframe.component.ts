@@ -180,7 +180,6 @@ export class IframeComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.iframeElement.nativeElement.contentWindow.postMessage('reload');
             });
-        
 
         /**
          * The debouncetime is required because when the websocket event is received,
