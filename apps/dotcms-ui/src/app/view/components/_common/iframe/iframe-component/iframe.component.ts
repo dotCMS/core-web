@@ -181,6 +181,13 @@ export class IframeComponent implements OnInit, OnDestroy {
                 this.iframeElement.nativeElement.contentWindow.postMessage('reload');
             });
         
+
+        /**
+         * The debouncetime is required because when the websocket event is received,
+         * the list of plugins still cannot be updated, thi is because the framework (OSGI)
+         * needs to restart before the list can be refreshed.
+         * Currently, an event cannot be emitted when the framework finishes restarting.
+         */
         this.dotcmsEventsService
             .subscribeTo('OSGI_BUNDLES_LOADED')
             .pipe(takeUntil(this.destroy$), debounceTime(4000))

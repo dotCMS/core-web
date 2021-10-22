@@ -179,7 +179,7 @@ export class DotAssetDropZone {
         }
 
         // Validate that the uploaded files are allowed.
-        if (this.acceptTypes.length && this.fileValidation(files, this.acceptTypes)) {
+        if (!this.areFilesAccepted(files)) {
             this.showDialog(
                 this.dialogLabels.errorHeader,
                 this.typesErrorLabel.replace('$0', this.acceptTypes.join(', '))
@@ -292,11 +292,14 @@ export class DotAssetDropZone {
         this.errorMessage = '';
     }
 
-    private fileValidation(files: File[], acceptTypes: string[]): boolean {
-        return files.some((file: File) => {
-            const fileName = file.name;
-            const extension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
-            return !acceptTypes.includes(extension);
-        });
+    private areFilesAccepted(files: File[]): boolean {
+        // If there are no acceptTypes, every type is accepted by default.
+        return this.acceptTypes.length
+            ? files.some((file: File) => {
+                  const fileName = file.name;
+                  const extension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+                  return this.acceptTypes.includes(extension);
+              })
+            : true; 
     }
 }
