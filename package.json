@@ -68,6 +68,7 @@
         "@tiptap/extension-floating-menu": "^2.0.0-beta.36",
         "@tiptap/starter-kit": "^2.0.0-beta.127",
         "@tiptap/suggestion": "^2.0.0-beta.74",
+        "@tiptap/extension-image": "^2.0.0-beta.20",
         "@webcomponents/webcomponentsjs": "^2.6.0",
         "chart.js": "^2.9.4",
         "core-js": "^3.9.1",

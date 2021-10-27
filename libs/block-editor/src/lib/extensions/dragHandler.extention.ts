@@ -106,6 +106,7 @@ export const DragHandler = (injector: Injector, resolver: ComponentFactoryResolv
                     props: {
                         handleDOMEvents: {
                             drop(view, event) {
+                                console.log('drop');
                                 setTimeout(() => {
                                     let node = document.querySelector('.ProseMirror-hideselection');
                                     if (node) {
@@ -113,7 +114,7 @@ export const DragHandler = (injector: Injector, resolver: ComponentFactoryResolv
                                     }
                                 });
                                 event.stopPropagation();
-                                return false;
+                                return true;
                             },
                             mousemove(view, event) {
                                 let coords = {
