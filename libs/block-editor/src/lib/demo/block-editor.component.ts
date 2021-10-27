@@ -7,10 +7,12 @@ import {
 } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
 
 import { ActionsMenu } from '../extensions/actions-menu.extension';
 import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentlet-block.extension';
 import { DragHandler } from '../extensions/dragHandler.extention';
+import { ImageUploadExtension } from '../extensions/imageUpload.extention';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -29,9 +31,11 @@ export class BlockEditorComponent implements OnInit {
         this.editor = new Editor({
             extensions: [
                 StarterKit,
+                Image,
                 ContentletBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
-                DragHandler(this.injector, this.resolver)
+                DragHandler(this.injector, this.resolver),
+                ImageUploadExtension(this.injector, this.resolver)
             ]
         });
     }
