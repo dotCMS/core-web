@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DotAssetService, DotUploadService } from '@dotcms/utils';
-import { from, Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { from, Observable, Observer, of, Subject } from 'rxjs';
+import { map, mergeMap, pluck, switchMap, take } from 'rxjs/operators';
+import { DotCMSContentlet, DotCMSTempFile, DotHttpErrorResponse } from '@dotcms/dotcms-models';
 
 @Injectable({
     providedIn: 'root'
@@ -16,21 +17,43 @@ export class DotImageService {
     }
 
     get(data: File | File[], progressCallBack?, maxSize?: string): Observable<any> {
-        const files = Array.isArray(data) ? data : [data];
         return this.setTempResource(data, progressCallBack, maxSize).pipe(
-            take(1),
-            map((data) => {
-                return from(
-                    this.assetService.create({
-                        files: files,
-                        updateCallback: (filesCreated: number) => {
-                            console.log('updateCallback');
-                            // progressCallBack(files.length, filesCreated);
-                        },
-                        url: 'http://localhost:8080/api/v1/workflow/actions/default/fire/PUBLISH',
-                        folder: ''
-                    })
-                );
+            switchMap((response: DotCMSTempFile | DotCMSTempFile[]) => {
+                const files = Array.isArray(response) ? response : [response];
+                return new Observable((observer: Observer<object>) => {
+                    files.forEach((file: DotCMSTempFile) => {
+                        const data = {
+                            contentlet: {
+                                baseType: 'dotAsset',
+                                asset: file.id,
+                                hostFolder: '',
+                                indexPolicy: 'WAIT_FOR'
+                            }
+                        };
+                        this.assetService
+                            .fetchAsset(
+                                'http://localhost:8080/api/v1/workflow/actions/default/fire/PUBLISH',
+                                data
+                            )
+                            .then((response) => {
+                                response.json().then((data) => {
+                                    observer.next(data.entity);
+                                });
+                            });
+
+                        // observer.next(
+                        //     // from(
+                        //     this.assetService.fetchAsset(
+                        //         'http://localhost:8080/api/v1/workflow/actions/default/fire/PUBLISH',
+                        //         data
+                        //     )
+                        //     // ).pipe(
+                        //     //     switchMap((response: Response) => response.json()),
+                        //     //     pluck('entity')
+                        //     // )
+                        // );
+                    });
+                });
             })
         );
     }

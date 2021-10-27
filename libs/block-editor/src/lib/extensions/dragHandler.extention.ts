@@ -112,8 +112,8 @@ export const DragHandler = (injector: Injector, resolver: ComponentFactoryResolv
                                         node.classList.remove('ProseMirror-hideselection');
                                     }
                                 });
-                                event.stopPropagation();
-                                return false;
+                                // event.stopPropagation();
+                                return true;
                             },
                             mousemove(view, event) {
                                 let coords = {

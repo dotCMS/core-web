@@ -2,7 +2,6 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { ComponentFactoryResolver, Injector } from '@angular/core';
 import { Extension } from '@tiptap/core';
 import { DotImageService } from './services/dot-image/dot-image.service';
-import { take } from 'rxjs/operators';
 
 export const ImageUploadExtension = (injector: Injector, resolver: ComponentFactoryResolver) => {
     return Extension.create({
@@ -12,7 +11,6 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
             const dotImageService = injector.get(DotImageService);
 
             function areImageFiles(files: FileList): boolean {
-                debugger;
                 for (let i = 0; i < files.length; i++) {
                     if (!files[i].type.startsWith('image/')) {
                         return false;
@@ -38,17 +36,14 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                                 }
                                 return false;
                             },
-                            dragover(view, event) {
-                                // event.preventDefault();
-                                return true;
-                            },
+
                             drop(view, event) {
-                                event.preventDefault();
-                                console.log('drop drag & drop');
+                                console.log('drop ImageUploadExtension');
                                 if (
                                     !!event.dataTransfer.files.length &&
                                     areImageFiles(event.dataTransfer.files)
                                 ) {
+                                    event.preventDefault();
                                     let files: File[] = [];
                                     // this.updateProgressBar(0, this.uploadFileText);
                                     if (event.dataTransfer.items) {
@@ -75,21 +70,18 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                                         });
                                     }
                                     if (files.length) {
-                                        dotImageService
-                                            .get(files)
-                                            .pipe(take(1))
-                                            .subscribe((data) => {
-                                                debugger;
-                                                console.log(data);
-                                                const { schema } = view.state;
-                                                const node = schema.nodes.image.create({
-                                                    src: 'http://localhost:8080/' + data[0].asset
-                                                });
-                                                const transaction = view.state.tr.replaceSelectionWith(
-                                                    node
-                                                );
-                                                view.dispatch(transaction);
+                                        dotImageService.get(files).subscribe((data) => {
+                                            const { schema } = view.state;
+                                            console.log(schema);
+                                            debugger;
+                                            const node = schema.nodes.image.create({
+                                                src: 'http://localhost:8080/' + data.asset
                                             });
+                                            const transaction = view.state.tr.replaceSelectionWith(
+                                                node
+                                            );
+                                            view.dispatch(transaction);
+                                        });
                                     }
                                 }
                                 return true;

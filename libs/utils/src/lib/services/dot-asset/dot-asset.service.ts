@@ -28,17 +28,8 @@ export class DotAssetService {
                     indexPolicy: 'WAIT_FOR'
                 }
             };
-
             promises.push(
-                fetch(options.url, {
-                    method: 'PUT',
-                    headers: {
-                        Origin: window.location.hostname,
-                        'Content-Type': 'application/json;charset=UTF-8',
-                        Authorization: 'Basic YWRtaW5AZG90Y21zLmNvbTphZG1pbg=='
-                    },
-                    body: JSON.stringify(data)
-                })
+                this.fetchAsset(options.url, data)
                     .then((response: Response) => {
                         options.updateCallback(filesCreated++);
                         return response;
@@ -72,6 +63,18 @@ export class DotAssetService {
             } else {
                 return data;
             }
+        });
+    }
+
+    fetchAsset(url, data): Promise<Response> {
+        return fetch(url, {
+            method: 'PUT',
+            headers: {
+                Origin: window.location.hostname,
+                'Content-Type': 'application/json;charset=UTF-8',
+                Authorization: 'Basic YWRtaW5AZG90Y21zLmNvbTphZG1pbg=='
+            },
+            body: JSON.stringify(data)
         });
     }
 }
