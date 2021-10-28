@@ -1,0 +1,7 @@
+<div class="bubble-menu" #menu>
+    <div *ngFor="let item of items">
+        <button class="btn-bubble-menu" (click)="execMark(item)">
+            <span class="material-icons material-icons.md-18">{{item.icon}}</span>
+        </button>
+    </div>
+</div>

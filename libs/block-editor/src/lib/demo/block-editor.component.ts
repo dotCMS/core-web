@@ -11,6 +11,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { ActionsMenu } from '../extensions/actions-menu.extension';
 import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentlet-block.extension';
 import { DragHandler } from '../extensions/dragHandler.extention';
+import { BubbleMenu } from '../extensions/bubble-menu.extension';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -31,7 +32,8 @@ export class BlockEditorComponent implements OnInit {
                 StarterKit,
                 ContentletBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
-                DragHandler(this.injector, this.resolver)
+                DragHandler(this.injector, this.resolver),
+                BubbleMenu(this.injector, this.resolver)
             ]
         });
     }

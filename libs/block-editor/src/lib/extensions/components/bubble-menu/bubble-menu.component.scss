@@ -1,0 +1,21 @@
+:host {
+    position: absolute;
+}
+
+.bubble-menu {
+    display: flex;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border: 1px solid rgb(229, 229, 229);
+    border-radius: 2px;
+    overflow: auto;
+    .btn-bubble-menu {
+        background: #fff;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+}
+
