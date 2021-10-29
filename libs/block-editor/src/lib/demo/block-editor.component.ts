@@ -13,6 +13,13 @@ import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentle
 import { DragHandler } from '../extensions/dragHandler.extention';
 import { BubbleMenu } from '../extensions/bubble-menu.extension';
 
+// Marks Extensions
+import { TextAlign } from '@tiptap/extension-text-align';
+import { Underline } from '@tiptap/extension-underline';
+import { ListItem } from '@tiptap/extension-list-item';
+import { BulletList } from '@tiptap/extension-bullet-list';
+import { OrderedList } from '@tiptap/extension-ordered-list';
+
 @Component({
     selector: 'dotcms-block-editor',
     templateUrl: './block-editor.component.html',
@@ -33,7 +40,15 @@ export class BlockEditorComponent implements OnInit {
                 ContentletBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
                 DragHandler(this.injector, this.resolver),
-                BubbleMenu(this.injector, this.resolver)
+                BubbleMenu(this.injector, this.resolver),
+                // Marks Extensions
+                ListItem,
+                Underline,
+                BulletList,
+                OrderedList,
+                TextAlign.configure({
+                    types: ['heading', 'paragraph'],
+                })
             ]
         });
     }

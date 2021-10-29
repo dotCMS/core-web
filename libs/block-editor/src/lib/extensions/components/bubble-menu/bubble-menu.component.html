@@ -1,7 +1,7 @@
-<div class="bubble-menu" #menu>
-    <div *ngFor="let item of items">
-        <button class="btn-bubble-menu" (click)="execMark(item)">
-            <span class="material-icons material-icons.md-18">{{item.icon}}</span>
-        </button>
-    </div>
+<div class="bubble-menu" (mousedown)="preventDeSelection($event)">
+    <dotcms-bubble-menu-button
+        *ngFor="let item of items"
+        [item]="item"
+        (click)="command(item)"
+    ></dotcms-bubble-menu-button>
 </div>

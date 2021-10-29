@@ -1,36 +1,79 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+export interface BubbleMenuItem {
+  icon: string;
+  markAction: string;
+}
 
 @Component({
   selector: 'dotcms-bubble-menu',
   templateUrl: './bubble-menu.component.html',
   styleUrls: ['./bubble-menu.component.scss']
 })
-export class BubbleMenuComponent implements OnInit {
+export class BubbleMenuComponent {
 
-  @Input() execMark: (item: any) => void;
+  @Input() execMark: (item: BubbleMenuItem) => void;
 
-  public items = [];
-
-  ngOnInit(): void {
-    this.items = [{
+  public items = [
+    {
       icon: 'format_bold',
-      mark: 'bold'
-    },{
+      markAction: 'bold'
+    },
+    {
       icon: 'format_underlined',
-      mark: 'underline'
-    },{
+      markAction: 'underline'
+    },
+    {
       icon: 'format_italic',
-      mark: 'italic'
-    },{
+      markAction: 'italic'
+    },
+    {
       icon: 'strikethrough_s',
-      mark: 'strike'
-    },{
+      markAction: 'strike'
+    },
+    {
       icon: 'format_clear',
-      mark: 'clearAll'
-    }];
+      markAction: 'clearAll'
+    },
+    {
+      icon: 'format_align_left',
+      markAction: 'textLeft'
+    },
+    {
+      icon: 'format_align_center',
+      markAction: 'textCenter'
+    },
+    {
+      icon: 'format_align_right',
+      markAction: 'textRight'
+    },
+    {
+      icon: 'format_list_bulleted',
+      markAction: 'bulletList'
+    },
+    {
+      icon: 'format_list_numbered',
+      markAction: 'orderedList'
+    }
+  ];
+
+  /**
+   *
+   *
+   * @param {BubbleMenuItem} item
+   * @memberof BubbleMenuComponent
+   */
+  command(item: BubbleMenuItem): void {
+    this.execMark(item);
   }
 
-  command(item: any): void {
-    this.execMark(item);
+  /**
+   *
+   * Prevent De-Selection text when click on the bubble menu
+   * @param {MouseEvent} event
+   * @memberof BubbleMenuComponent
+   */
+  preventDeSelection(event: MouseEvent): void {
+    event.preventDefault();
   }
 }
