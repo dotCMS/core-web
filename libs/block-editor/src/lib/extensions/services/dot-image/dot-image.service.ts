@@ -21,6 +21,7 @@ export class DotImageService {
             switchMap((response: DotCMSTempFile | DotCMSTempFile[]) => {
                 const files = Array.isArray(response) ? response : [response];
                 return new Observable((observer: Observer<object>) => {
+                    let cont = 0;
                     files.forEach((file: DotCMSTempFile) => {
                         const data = {
                             contentlet: {
@@ -38,20 +39,12 @@ export class DotImageService {
                             .then((response) => {
                                 response.json().then((data) => {
                                     observer.next(data.entity);
+                                    cont++;
+                                    if (cont === files.length) {
+                                        observer.complete();
+                                    }
                                 });
                             });
-
-                        // observer.next(
-                        //     // from(
-                        //     this.assetService.fetchAsset(
-                        //         'http://localhost:8080/api/v1/workflow/actions/default/fire/PUBLISH',
-                        //         data
-                        //     )
-                        //     // ).pipe(
-                        //     //     switchMap((response: Response) => response.json()),
-                        //     //     pluck('entity')
-                        //     // )
-                        // );
                     });
                 });
             })

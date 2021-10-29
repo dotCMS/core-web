@@ -2,6 +2,7 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { ComponentFactoryResolver, Injector } from '@angular/core';
 import { Extension } from '@tiptap/core';
 import { DotImageService } from './services/dot-image/dot-image.service';
+import { EditorView } from 'prosemirror-view';
 
 export const ImageUploadExtension = (injector: Injector, resolver: ComponentFactoryResolver) => {
     return Extension.create({
@@ -19,6 +20,38 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                 return true;
             }
 
+            function loadingPlaceHolder(view: EditorView) {
+                const { schema } = view.state;
+                let text = schema.text('Uploading...');
+                let uploadingNode = schema.nodes.paragraph.create(
+                    { class: 'uploading-image' },
+                    text
+                );
+                const transaction = view.state.tr.replaceSelectionWith(uploadingNode);
+                view.dispatch(transaction);
+            }
+
+            function uploadImages(view: EditorView, files) {
+                const { schema } = view.state;
+                loadingPlaceHolder(view);
+                dotImageService
+                    .get(files)
+                    .pipe()
+                    .subscribe(
+                        (data) => {
+                            const node = schema.nodes.image.create({
+                                src: 'http://localhost:8080/' + data.asset
+                            });
+                            const transaction = view.state.tr.insert(view.state.selection.to, node);
+                            view.dispatch(transaction);
+                        },
+                        (error) => {
+                            //TODO: Display Error.
+                            alert(error.message);
+                        }
+                    );
+            }
+
             return [
                 new Plugin({
                     key: new PluginKey('imageUpload'),
@@ -32,9 +65,12 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                                     event.clipboardData.files &&
                                     areImageFiles(event.clipboardData.files)
                                 ) {
+                                    event.preventDefault();
+                                    debugger;
+                                    uploadImages(view, Array.from(event.clipboardData.files));
                                     console.log('paste');
                                 }
-                                return false;
+                                return true;
                             },
 
                             drop(view, event) {
@@ -44,45 +80,8 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                                     areImageFiles(event.dataTransfer.files)
                                 ) {
                                     event.preventDefault();
-                                    let files: File[] = [];
-                                    // this.updateProgressBar(0, this.uploadFileText);
-                                    if (event.dataTransfer.items) {
-                                        for (let item of Array.from(event.dataTransfer.items)) {
-                                            try {
-                                                if (item.webkitGetAsEntry().isFile) {
-                                                    files.push(item.getAsFile());
-                                                } else {
-                                                    // this.showDialog(
-                                                    //     this.dialogLabels.errorHeader,
-                                                    //     this.uploadErrorLabel
-                                                    // );
-                                                    files = [];
-                                                    break;
-                                                }
-                                            } catch {
-                                                //    this.showDialog(this.dialogLabels.errorHeader, this.uploadErrorLabel);
-                                                files = [];
-                                            }
-                                        }
-                                    } else {
-                                        Array.from(event.dataTransfer.files).map((file: File) => {
-                                            files.push(file);
-                                        });
-                                    }
-                                    if (files.length) {
-                                        dotImageService.get(files).subscribe((data) => {
-                                            const { schema } = view.state;
-                                            console.log(schema);
-                                            debugger;
-                                            const node = schema.nodes.image.create({
-                                                src: 'http://localhost:8080/' + data.asset
-                                            });
-                                            const transaction = view.state.tr.replaceSelectionWith(
-                                                node
-                                            );
-                                            view.dispatch(transaction);
-                                        });
-                                    }
+
+                                    uploadImages(view, Array.from(event.dataTransfer.files));
                                 }
                                 return true;
                             }
@@ -93,36 +92,3 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
         }
     });
 };
-
-// export default class ImageUploadExtension extends Image {
-//
-//     uploader;
-//
-//     constructor(options: {uploader: any}) {
-//         super(options);
-//         this.uploader = options.uploader;
-//     }
-//
-//     get name() {
-//         return 'image';
-//     }
-//
-//     get plugins() {
-//         const uploader = this.uploader;
-//         return [
-//             new Plugin({
-//                 props: {
-//                     handleDOMEvents: {
-//                         paste(view, event) {
-//                             console.log('paste');
-//                             return true;
-//                         },
-//                         drop (view, event) {
-//                             console.log('drop');
-//                             return true;
-//                         }
-//                     }
-//                 }
-//             })
-//     }
-// }
