@@ -3,18 +3,22 @@
     (goBack)="showContentTypesList()"
     (filter)="filterContentlets($event)"
 ></dot-palette-input-filter>
-<div class="dot-content-palette__items" *ngIf="items.length; else noResults">
+<div class="dot-content-palette__items" *ngIf="items?.length; else noResults">
     <div
         *ngFor="let item of items | dotFilter: 'title':filter"
         draggable="true"
         data-testId="paletteItem"
         (dragstart)="dragStart(item)"
     >
-        <img src="/dA/{{ item.inode }}/titleImage/48w" />
+        <img src="/dA/{{ item.inode }}/titleImage/48w" *ngIf="item?.hasTitleImage === true" />
+        <dot-contentlet-icon
+            *ngIf="item?.hasTitleImage !== true"
+            [icon]="item?.baseType !== 'FILEASSET' ? item?.contentTypeIcon : item?.__icon__"
+            size="45px"
+        ></dot-contentlet-icon>
         <p>{{ item.title }}</p>
     </div>
 </div>
-
 <ng-template #noResults>
     <span class="dot-content-palette__empty">{{ 'No-Results' | dm }}</span>
 </ng-template>

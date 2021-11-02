@@ -33,7 +33,7 @@ export class DotPaletteContentletsComponent implements OnInit {
     ngOnInit() {
         // this.paginatorESService.url = `/api/content/render/false/query/+contentType:${this.contentTypeVariable}`;
         this.paginatorESService.setExtraParams('+contentType', this.contentTypeVariable);
-        this.paginatorESService.paginationPerPage = 10;
+        this.paginatorESService.paginationPerPage = 20;
 
         this.loadData();
     }
@@ -53,7 +53,7 @@ export class DotPaletteContentletsComponent implements OnInit {
                 console.log('****data', data, this.paginatorESService.totalRecords)
                 this.items = data;
 
-                
+
                 // const app = [].concat(apps)[0];
                 // this.apps.sites = event ? this.apps.sites.concat(app.sites) : app.sites;
                 // this.apps.configurationsCount = app.configurationsCount;
