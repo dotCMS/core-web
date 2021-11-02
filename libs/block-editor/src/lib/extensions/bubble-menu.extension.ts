@@ -1,5 +1,5 @@
 import { ComponentFactoryResolver, Injector, ComponentRef } from '@angular/core';
-import { Extension } from '@tiptap/core';
+import { Editor, Extension } from '@tiptap/core';
 
 // ProseMirror
 import { PluginKey } from 'prosemirror-state';
@@ -10,7 +10,7 @@ import { BubbleMenuComponent, BubbleMenuItem } from './components/bubble-menu/bu
 import { BubbleMenuPlugin } from '../plugins/bubble-menu.plugin';
 
 
-function menuActions(editor, item: BubbleMenuItem): void {
+function menuActions(editor: Editor, item: BubbleMenuItem): void {
     const markActions = {
         bold: () => {
             editor.commands.toggleBold();
@@ -25,13 +25,13 @@ function menuActions(editor, item: BubbleMenuItem): void {
             editor.commands.toggleUnderline()
         },
         left: () => {
-            editor.commands.setTextAlign('left');
+            toggleTextAlign(editor, 'left', item.active);
         },
         center: () => {
-            editor.commands.setTextAlign('center');
+            toggleTextAlign(editor, 'center', item.active);
         },
         right: () => {
-            editor.commands.setTextAlign('right');
+            toggleTextAlign(editor, 'right', item.active);
         },
         bulletList: () => {
             editor.commands.toggleBulletList();
@@ -41,9 +41,19 @@ function menuActions(editor, item: BubbleMenuItem): void {
         },
         clearAll: () => {
             editor.commands.unsetAllMarks();
+            editor.commands.unsetTextAlign();
         }
     };
+
     markActions[item.markAction] ? markActions[item.markAction]() : null;
+}
+
+function toggleTextAlign(editor: Editor, aligment: string, active: boolean) {
+    if(active) {
+        editor.commands.unsetTextAlign();
+    } else {
+        editor.commands.setTextAlign(aligment);        
+    }
 }
 
 export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
@@ -66,6 +76,7 @@ export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolve
 
             function updateActiveMarks( marks: string[] ) {
                 bubbleMenu.instance.activeMarks = marks;
+                bubbleMenu.instance.updateActiveItems();
                 bubbleMenu.changeDetectorRef.detectChanges();
             }
 

@@ -116,7 +116,7 @@ export class BubbleMenuView {
     getActiveMarks(): string[] {
         return [
             ...this.enabledMarks.filter((mark) => this.editor.isActive(mark)),
-            ...this.textAlings.filter((aligmengt) => this.editor.isActive({ textAlign: aligmengt }))
+            ...this.textAlings.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
         ];
     }
 

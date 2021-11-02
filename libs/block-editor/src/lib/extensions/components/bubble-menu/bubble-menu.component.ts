@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 export interface BubbleMenuItem {
   icon: string;
   markAction: string;
+  active: boolean;
 }
 
 @Component({
@@ -15,46 +16,56 @@ export class BubbleMenuComponent {
   @Input() execMark: (item: BubbleMenuItem) => void;
   @Input() activeMarks: string[] = [];
 
-  public items = [
+  public items: BubbleMenuItem[] = [
     {
       icon: 'format_bold',
-      markAction: 'bold'
+      markAction: 'bold',
+      active: false
     },
     {
       icon: 'format_underlined',
-      markAction: 'underline'
+      markAction: 'underline',
+      active: false
     },
     {
       icon: 'format_italic',
-      markAction: 'italic'
+      markAction: 'italic',
+      active: false
     },
     {
       icon: 'strikethrough_s',
-      markAction: 'strike'
+      markAction: 'strike',
+      active: false
     },
     {
       icon: 'format_clear',
-      markAction: 'clearAll'
+      markAction: 'clearAll',
+      active: false
     },
     {
       icon: 'format_align_left',
-      markAction: 'left'
+      markAction: 'left',
+      active: false
     },
     {
       icon: 'format_align_center',
-      markAction: 'center'
+      markAction: 'center',
+      active: false
     },
     {
       icon: 'format_align_right',
-      markAction: 'right'
+      markAction: 'right',
+      active: false
     },
     {
       icon: 'format_list_bulleted',
-      markAction: 'bulletList'
+      markAction: 'bulletList',
+      active: false
     },
     {
       icon: 'format_list_numbered',
-      markAction: 'orderedList'
+      markAction: 'orderedList',
+      active: false
     }
   ];
 
@@ -76,5 +87,15 @@ export class BubbleMenuComponent {
    */
   preventDeSelection(event: MouseEvent): void {
     event.preventDefault();
+  }
+
+  updateActiveItems(): void {
+    this.items.forEach((item) => {
+      if(this.activeMarks.includes(item.markAction)) {
+        item.active = true;
+      } else {
+        item.active = false;
+      }
+    })
   }
 }
