@@ -18,6 +18,13 @@
         ></dot-contentlet-icon>
         <p>{{ item.title }}</p>
     </div>
+    <p-paginator
+        pageLinkSize="2"
+        [rows]="paginatorESService.paginationPerPage"
+        [showFirstLastIcon]="false"
+        [totalRecords]="paginatorESService.totalRecords"
+        (onPageChange)="paginate($event)"
+    ></p-paginator>
 </div>
 <ng-template #noResults>
     <span class="dot-content-palette__empty">{{ 'No-Results' | dm }}</span>

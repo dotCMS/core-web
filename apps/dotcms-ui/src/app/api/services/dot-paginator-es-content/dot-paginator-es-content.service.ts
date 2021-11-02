@@ -24,7 +24,7 @@ export class DotPaginatorESContentService {
     public links: Links = {};
 
     public paginationPerPage = 40;
-    public currentPage: number;
+    public currentPage: number = 1;
     public maxLinksPage: number;
     public totalRecords: number;
 
@@ -154,11 +154,12 @@ saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Obse
 */
 
     public getESQuery(params: { [key: string]: any }): any {
+        debugger
         const query = {
             query: JSON.stringify(params).replace(/"|{|}|,/g, ' '),
             sort: '',
             limit: this.paginationPerPage,
-            offset: 0
+            offset: (this.currentPage - 1) * this.paginationPerPage
         };
 
         return query;
@@ -226,6 +227,7 @@ saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Obse
      * @memberof PaginatorServic
      */
     public getPage(pageParam = 1): Observable<any[]> {
+        this.currentPage = pageParam;
         // const urlPage = this.links['x-page']
         //     ? this.links['x-page'].replace('pageValue', String(pageParam))
         //     : undefined;

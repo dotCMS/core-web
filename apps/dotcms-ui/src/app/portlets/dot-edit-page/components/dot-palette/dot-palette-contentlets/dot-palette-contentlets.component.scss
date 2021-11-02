@@ -95,6 +95,12 @@
             top: 0;
         }
     }
+
+    p-paginator {
+        bottom: 0;
+        position: absolute;
+        width: 100%;
+    }
 }
 
 .dot-content-palette__empty {

@@ -33,7 +33,8 @@ export class DotPaletteContentletsComponent implements OnInit {
     ngOnInit() {
         // this.paginatorESService.url = `/api/content/render/false/query/+contentType:${this.contentTypeVariable}`;
         this.paginatorESService.setExtraParams('+contentType', this.contentTypeVariable);
-        this.paginatorESService.paginationPerPage = 20;
+        this.paginatorESService.paginationPerPage = 10;
+        this.paginatorESService.deleteExtraParams('+title');
 
         this.loadData();
     }
@@ -45,14 +46,12 @@ export class DotPaletteContentletsComponent implements OnInit {
      * @memberof DotAppsConfigurationComponent
      */
     loadData(event?: LazyLoadEvent): void {
-
         this.paginatorESService
             .getWithOffset((event && event.first) || 0)
             .pipe(take(1))
             .subscribe((data: any[]) => {
-                console.log('****data', data, this.paginatorESService.totalRecords)
+                console.log('****data', data, this.paginatorESService.totalRecords);
                 this.items = data;
-
 
                 // const app = [].concat(apps)[0];
                 // this.apps.sites = event ? this.apps.sites.concat(app.sites) : app.sites;
@@ -60,7 +59,6 @@ export class DotPaletteContentletsComponent implements OnInit {
                 // this.totalRecords = this.paginationService.totalRecords;
                 // this.hideLoadDataButton = !this.isThereMoreData(this.apps.sites.length);
             });
-
 
         // TODO: remove later
         // this.coreWebService
@@ -73,6 +71,15 @@ export class DotPaletteContentletsComponent implements OnInit {
         //         this.items = data
 
         //     });
+    }
+
+    paginate(event: LazyLoadEvent) {
+        console.log('**event', event);
+        this.loadData(event);
+        //event.first = Index of the first record
+        //event.rows = Number of rows to display in new page
+        //event.page = Index of the new page
+        //event.pageCount = Total number of pages
     }
 
     showContentTypesList(): void {
@@ -90,7 +97,9 @@ export class DotPaletteContentletsComponent implements OnInit {
     }
 
     filterContentlets(value: string): void {
-        console.log('**filter', value)
+        console.log('**filter', value);
+        this.paginatorESService.setExtraParams('+title', `${value}*`);
+        this.loadData();
     }
 
     // ngOnDestroy(): void {
