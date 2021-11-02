@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DotAssetService, DotUploadService } from '@dotcms/utils';
-import { from, Observable, Observer, of, Subject } from 'rxjs';
-import { map, mergeMap, pluck, switchMap, take } from 'rxjs/operators';
-import { DotCMSContentlet, DotCMSTempFile, DotHttpErrorResponse } from '@dotcms/dotcms-models';
+import { from, Observable, Observer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { DotCMSTempFile } from '@dotcms/dotcms-models';
 
 @Injectable({
     providedIn: 'root'
@@ -16,8 +16,8 @@ export class DotImageService {
         this.assetService = new DotAssetService();
     }
 
-    get(data: File | File[], progressCallBack?, maxSize?: string): Observable<any> {
-        return this.setTempResource(data, progressCallBack, maxSize).pipe(
+    get(data: File | File[], maxSize?: string): Observable<any> {
+        return this.setTempResource(data, maxSize).pipe(
             switchMap((response: DotCMSTempFile | DotCMSTempFile[]) => {
                 const files = Array.isArray(response) ? response : [response];
                 return new Observable((observer: Observer<object>) => {
@@ -51,11 +51,7 @@ export class DotImageService {
         );
     }
 
-    private setTempResource(
-        data: File | File[],
-        progressCallBack?,
-        maxSize?: string
-    ): Observable<any> {
-        return from(this.uploadService.uploadBinaryFile(data, progressCallBack, maxSize));
+    private setTempResource(data: File | File[], maxSize?: string): Observable<any> {
+        return from(this.uploadService.uploadBinaryFile(data, () => {}, maxSize));
     }
 }

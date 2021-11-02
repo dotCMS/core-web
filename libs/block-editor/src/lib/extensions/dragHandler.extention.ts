@@ -83,7 +83,7 @@ export const DragHandler = (injector: Injector, resolver: ComponentFactoryResolv
 
             // Check if node has content. If not, the handler don't need to be shown.
             function nodeHasContent(view: EditorView, inside: number): boolean {
-                return !!view.nodeDOM(inside)?.textContent;
+                return !!view.nodeDOM(inside)?.hasChildNodes();
             }
 
             function bindEventsToDragHandler(editorView: EditorView) {
@@ -112,8 +112,7 @@ export const DragHandler = (injector: Injector, resolver: ComponentFactoryResolv
                                         node.classList.remove('ProseMirror-hideselection');
                                     }
                                 });
-                                // event.stopPropagation();
-                                return true;
+                                return false;
                             },
                             mousemove(view, event) {
                                 let coords = {
@@ -143,7 +142,7 @@ export const DragHandler = (injector: Injector, resolver: ComponentFactoryResolv
                                     nodeToBeDragged = null;
                                     dragHandler.style.visibility = 'hidden';
                                 }
-                                return true;
+                                return false;
                             }
                         }
                     }

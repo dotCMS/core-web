@@ -18,6 +18,8 @@ import { SuggestionsListItemComponent } from './extensions/components/suggestion
 import { LoggerService } from '@dotcms/dotcms-js';
 import { StringUtils } from '@dotcms/dotcms-js';
 import { DragHandlerComponent } from './extensions/components/drag-handler/drag-handler.component';
+import { ImageBlockComponent } from './extensions/blocks/image-block/image-block.component';
+import { MessageBlockComponent } from './extensions/blocks/message-block/message-block.component';
 
 @NgModule({
     imports: [CommonModule, CardModule, MenuModule],
@@ -31,7 +33,9 @@ import { DragHandlerComponent } from './extensions/components/drag-handler/drag-
         SuggestionsListItemComponent,
         ContentletBlockComponent,
         ActionButtonComponent,
-        DragHandlerComponent
+        DragHandlerComponent,
+        ImageBlockComponent,
+        MessageBlockComponent
     ],
     providers: [SuggestionsService, LoggerService, StringUtils],
     exports: [
