@@ -16,12 +16,13 @@
     color: $gray;
     position: sticky;
     align-self: flex-start;
+    margin-bottom: $spacing-3;
     top: 0;
     width: 100%;
 
     input {
+        border: 1px solid $gray-lighter;
         width: 100%;
-        border: none;
         outline: 0px;
         background: transparent;
         padding: $spacing-2 $spacing-5 $spacing-2 $spacing-1;
@@ -49,6 +50,7 @@
         cursor: grab;
         overflow: hidden;
         padding: 1rem $spacing-1;
+        position: relative;
         text-align: center;
 
         &:hover {
@@ -63,6 +65,17 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             width: 100%;
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+            color: $gray;
+            cursor: pointer;
+            padding: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
         }
     }
 }

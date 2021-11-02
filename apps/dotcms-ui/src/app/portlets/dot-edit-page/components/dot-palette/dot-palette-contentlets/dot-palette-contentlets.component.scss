@@ -1,0 +1,104 @@
+@use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
+
+:host {
+    width: $content-palette-width;
+    min-width: $content-palette-width;
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-1;
+    border-left: 1px solid $gray-lighter;
+    background: $white;
+    transition: all $basic-speed ease-in-out;
+    height: 100%;
+}
+
+.dot-content-palette__search {
+    display: flex;
+    color: $gray;
+    position: sticky;
+    align-self: flex-start;
+    margin-bottom: $spacing-3;
+    margin-top: $spacing-3;
+    top: 0;
+    width: 100%;
+
+    button[data-testId="goBackBtn"] {
+        background-color: transparent;
+        border: 0;
+        cursor: pointer;
+        margin: 0 $spacing-1 0 0;
+        padding: 0;
+    }
+
+    input {
+        border: 1px solid $gray-lighter;
+        background: transparent;
+        color: $gray;
+        flex: 1;
+        font-size: $font-size-x-small;
+        height: 24px;
+        outline: 0px;
+        padding-right: 2rem;
+        padding-left: 0.5rem;
+    }
+
+    dot-icon[data-testId="searchIcon"] {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: $spacing-1;
+    }
+}
+
+.dot-content-palette__items {
+    overflow: hidden auto;
+
+    div {
+        color: $black;
+        cursor: grab;
+        display: flex;
+        overflow: hidden;
+        padding: 0.25rem $spacing-1;
+        position: relative;
+        text-align: center;
+
+        &:hover {
+            background: $gray-bg;
+        }
+
+        img {
+            height: 48px;
+            object-fit: contain;
+            width: 48px;
+        }
+
+        p {
+            align-self: center;
+            display: -webkit-box;
+            font-size: $font-size-small;
+            margin: 0 0 0 $spacing-1;
+            overflow: hidden;
+            text-align: left;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+            color: $gray;
+            cursor: pointer;
+            padding: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
+}
+
+.dot-content-palette__empty {
+    text-align: center;
+    padding: $spacing-1 0;
+    margin: $spacing-4;
+}

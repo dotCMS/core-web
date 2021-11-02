@@ -1,15 +1,16 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { Subject } from 'rxjs';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 
 @Component({
-    selector: 'dot-content-palette',
-    templateUrl: './dot-content-palette.component.html',
-    styleUrls: ['./dot-content-palette.component.scss']
+    selector: 'dot-palette-content-type',
+    templateUrl: './dot-palette-content-type.component.html',
+    styleUrls: ['./dot-palette-content-type.component.scss']
 })
-export class DotContentPaletteComponent implements OnDestroy {
+export class DotPaletteContentTypeComponent {
     @Input() items: DotCMSContentType[] = [];
+    @Output() show = new EventEmitter<string>();
     filter: string;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -26,8 +27,11 @@ export class DotContentPaletteComponent implements OnDestroy {
         this.dotContentletEditorService.setDraggedContentType(contentType);
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next(true);
-        this.destroy$.complete();
+    showContentTypesList(contentTypeVariable: string): void {
+        this.show.emit(contentTypeVariable);
+    }
+
+    filterContentTypes(value: string): void {
+        this.filter = value;
     }
 }

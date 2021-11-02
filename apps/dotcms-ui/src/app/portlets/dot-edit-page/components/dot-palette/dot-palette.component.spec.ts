@@ -1,6 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { DotContentPaletteComponent } from './dot-content-palette.component';
+import { DotPaletteComponent } from './dot-palette.component';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotIconModule } from '@dotcms/ui';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
@@ -41,8 +41,8 @@ class MockDotContentletEditorService {
 }
 
 describe('DotContentPaletteComponent', () => {
-    let component: DotContentPaletteComponent;
-    let fixture: ComponentFixture<DotContentPaletteComponent>;
+    let component: DotPaletteComponent;
+    let fixture: ComponentFixture<DotPaletteComponent>;
     let dotContentletEditorService: DotContentletEditorService;
 
     const messageServiceMock = new MockDotMessageService({
@@ -51,7 +51,7 @@ describe('DotContentPaletteComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [DotContentPaletteComponent],
+            declarations: [DotPaletteComponent],
             imports: [DotPipesModule, DotIconModule, DotFilterPipeModule, FormsModule],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
@@ -62,7 +62,7 @@ describe('DotContentPaletteComponent', () => {
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(DotContentPaletteComponent);
+        fixture = TestBed.createComponent(DotPaletteComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -283,7 +283,8 @@ function initDragAndDrop () {
 
         // draggedContent is set by dotContentletEditorService.draggedContentType$
         const dotAcceptTypes = container.dataset.dotAcceptTypes.toLocaleLowerCase();
-        return (window.hasOwnProperty('draggedContent') && (draggedContent.baseType.toLocaleLowerCase() === 'widget') || dotAcceptTypes.includes(draggedContent.variable.toLocaleLowerCase()))
+        return (window.hasOwnProperty('draggedContent') && (draggedContent.baseType.toLocaleLowerCase() === 'widget') || 
+                dotAcceptTypes.includes(draggedContent.variable?.toLocaleLowerCase() || draggedContent.contentType?.toLocaleLowerCase()))
     }
 
     function setPlaceholderContentlet() {
@@ -425,14 +426,24 @@ function initDragAndDrop () {
                 }).catch(e => {
                     handleHttpErrors(e);
                 })
-            } else { // Adding specific Content Type
-                window.contentletEvents.next({
-                    name: 'add-content',
-                    data: {
-                        container: container.dataset,
-                        contentType: draggedContent
-                    }
-                });
+            } else { // Adding specific Content Type / Contentlet
+                // Content Type
+                if (!draggedContent.contentType) {
+                    window.contentletEvents.next({
+                        name: 'add-content',
+                        data: {
+                            container: container.dataset,
+                            contentType: draggedContent
+                        }
+                    });
+                } else if (draggedContent.contentType) { // Contentlet
+                    window.contentletEvents.next({
+                        name: 'add-contentlet',
+                        data: {
+                            contentlet: draggedContent
+                        }
+                    });
+                }
             }
         }
         if (container) {

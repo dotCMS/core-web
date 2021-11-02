@@ -81,8 +81,8 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { DotContentTypeService } from '@services/dot-content-type';
-import { DotContentPaletteModule } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.module';
-import { DotContentPaletteComponent } from '@portlets/dot-edit-page/components/dot-content-palette/dot-content-palette.component';
+import { DotPaletteModule } from '@dotcms/app/portlets/dot-edit-page/components/dot-palette/dot-palette.module';
+import { DotPaletteComponent } from '@dotcms/app/portlets/dot-edit-page/components/dot-palette/dot-palette.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
@@ -249,7 +249,7 @@ describe('DotEditContentComponent', () => {
                 DotEditPageWorkflowsActionsModule,
                 DotOverlayMaskModule,
                 DotWizardModule,
-                DotContentPaletteModule,
+                DotPaletteModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
@@ -706,7 +706,7 @@ describe('DotEditContentComponent', () => {
                     detectChangesForIframeRender(fixture);
                     fixture.detectChanges();
                     const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
-                    const contentPalette: DotContentPaletteComponent = de.query(
+                    const contentPalette: DotPaletteComponent = de.query(
                         By.css('dot-content-palette')
                     ).componentInstance;
                     const paletteController = de.query(
@@ -1317,7 +1317,7 @@ describe('DotEditContentComponent', () => {
             detectChangesForIframeRender(fixture);
             fixture.detectChanges();
             const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
-            const contentPalette: DotContentPaletteComponent = de.query(
+            const contentPalette: DotPaletteComponent = de.query(
                 By.css('dot-content-palette')
             ).componentInstance;
             expect(contentPalette.items).toEqual(responseData.slice(0, 5));

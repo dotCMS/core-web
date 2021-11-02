@@ -672,6 +672,9 @@ export class DotEditContentHtmlService {
                     data: data
                 });
             },
+            'add-contentlet': (dotAssetData: DotAssetPayload) => {
+                this.renderAddedContentlet(dotAssetData.contentlet, true);
+            },
             'handle-http-error': (err: HttpErrorResponse) => {
                 this.dotHttpErrorManagerService
                     .handle(err)

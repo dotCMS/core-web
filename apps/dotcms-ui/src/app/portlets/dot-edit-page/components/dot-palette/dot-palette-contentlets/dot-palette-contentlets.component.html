@@ -1,0 +1,20 @@
+<dot-palette-input-filter
+    [goBackBtn]="true"
+    (goBack)="showContentTypesList()"
+    (filter)="filterContentlets($event)"
+></dot-palette-input-filter>
+<div class="dot-content-palette__items" *ngIf="items.length; else noResults">
+    <div
+        *ngFor="let item of items | dotFilter: 'title':filter"
+        draggable="true"
+        data-testId="paletteItem"
+        (dragstart)="dragStart(item)"
+    >
+        <img src="/dA/{{ item.inode }}/titleImage/48w" />
+        <p>{{ item.title }}</p>
+    </div>
+</div>
+
+<ng-template #noResults>
+    <span class="dot-content-palette__empty">{{ 'No-Results' | dm }}</span>
+</ng-template>
