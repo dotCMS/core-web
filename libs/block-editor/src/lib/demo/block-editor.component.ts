@@ -19,7 +19,6 @@ import { Underline } from '@tiptap/extension-underline';
 import { ListItem } from '@tiptap/extension-list-item';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { OrderedList } from '@tiptap/extension-ordered-list';
-// import BubbleMenu from '@tiptap/extension-bubble-menu';
 
 @Component({
     selector: 'dotcms-block-editor',

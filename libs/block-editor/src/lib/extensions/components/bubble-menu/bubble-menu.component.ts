@@ -66,6 +66,16 @@ export class BubbleMenuComponent {
       icon: 'format_list_numbered',
       markAction: 'orderedList',
       active: false
+    },
+    {
+      icon: 'format_indent_decrease',
+      markAction: 'outdent',
+      active: false
+    },
+    {
+      icon: 'format_indent_increase',
+      markAction: 'indent',
+      active: false
     }
   ];
 

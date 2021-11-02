@@ -39,6 +39,16 @@ function menuActions(editor: Editor, item: BubbleMenuItem): void {
         orderedList: () => {
             editor.commands.toggleOrderedList();
         },
+        indent: () => {
+            if (isListNode(editor)) {
+                editor.commands.sinkListItem('listItem');
+            }
+        },
+        outdent: () => {
+            if (isListNode(editor)) {
+                editor.commands.liftListItem('listItem');
+            }
+        },
         clearAll: () => {
             editor.commands.unsetAllMarks();
             editor.commands.unsetTextAlign();
@@ -54,6 +64,10 @@ function toggleTextAlign(editor: Editor, aligment: string, active: boolean) {
     } else {
         editor.commands.setTextAlign(aligment);        
     }
+}
+
+function isListNode(editor: Editor) {
+    return editor.isActive('bulletList') || editor.isActive('orderedList')
 }
 
 export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
