@@ -11,5 +11,6 @@ import { BubbleMenuItem } from '../bubble-menu/bubble-menu.component';
 export class BubbleMenuButtonComponent {
 
   @Input() item: BubbleMenuItem;
+  @Input() active = false;
 
 }

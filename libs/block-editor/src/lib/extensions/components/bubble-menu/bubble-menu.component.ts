@@ -13,6 +13,7 @@ export interface BubbleMenuItem {
 export class BubbleMenuComponent {
 
   @Input() execMark: (item: BubbleMenuItem) => void;
+  @Input() activeMarks: string[] = [];
 
   public items = [
     {
@@ -37,15 +38,15 @@ export class BubbleMenuComponent {
     },
     {
       icon: 'format_align_left',
-      markAction: 'textLeft'
+      markAction: 'left'
     },
     {
       icon: 'format_align_center',
-      markAction: 'textCenter'
+      markAction: 'center'
     },
     {
       icon: 'format_align_right',
-      markAction: 'textRight'
+      markAction: 'right'
     },
     {
       icon: 'format_list_bulleted',

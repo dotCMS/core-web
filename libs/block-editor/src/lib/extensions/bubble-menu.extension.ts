@@ -1,5 +1,5 @@
 import { ComponentFactoryResolver, Injector, ComponentRef } from '@angular/core';
-import { Editor, posToDOMRect, Extension } from '@tiptap/core';
+import { Extension } from '@tiptap/core';
 
 // ProseMirror
 import { PluginKey } from 'prosemirror-state';
@@ -24,13 +24,13 @@ function menuActions(editor, item: BubbleMenuItem): void {
         underline: () => {
             editor.commands.toggleUnderline()
         },
-        textLeft: () => {
+        left: () => {
             editor.commands.setTextAlign('left');
         },
-        textCenter: () => {
+        center: () => {
             editor.commands.setTextAlign('center');
         },
-        textRight: () => {
+        right: () => {
             editor.commands.setTextAlign('right');
         },
         bulletList: () => {
@@ -63,7 +63,12 @@ export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolve
                 bubbleMenu.changeDetectorRef.detectChanges();
                 changeState(view, key, true);
             }
-        
+
+            function updateActiveMarks( marks: string[] ) {
+                bubbleMenu.instance.activeMarks = marks;
+                bubbleMenu.changeDetectorRef.detectChanges();
+            }
+
             function changeState(view: EditorView, key: PluginKey, open: boolean) {
                 const transaction = view.state.tr.setMeta(key, {
                     open: open
@@ -76,6 +81,7 @@ export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolve
                     editor: this.editor,
                     element: bubbleMenu.location.nativeElement,
                     onOpen,
+                    updateActiveMarks,
                     changeState
                 })
             ]

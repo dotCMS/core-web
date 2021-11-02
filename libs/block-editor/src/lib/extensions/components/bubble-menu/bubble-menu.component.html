@@ -2,6 +2,7 @@
     <dotcms-bubble-menu-button
         *ngFor="let item of items"
         [item]="item"
+        [active]="activeMarks.includes(item.markAction)"
         (click)="command(item)"
     ></dotcms-bubble-menu-button>
 </div>

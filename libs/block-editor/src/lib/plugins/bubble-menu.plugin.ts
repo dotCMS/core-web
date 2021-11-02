@@ -1,5 +1,5 @@
 import { EditorView } from 'prosemirror-view';
-import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
 
 import { Editor, posToDOMRect } from '@tiptap/core';
 
@@ -16,6 +16,7 @@ interface BubbleMenuPluginPorps {
     editor: Editor;
     element: HTMLElement;
     onOpen: (view:EditorView, key: PluginKey) => void;
+    updateActiveMarks: ( marks: string[] ) => void;
     changeState: (view:EditorView, key: PluginKey, open:boolean) => void;
 }
 
@@ -25,15 +26,17 @@ interface BubbleMenuViewProps extends BubbleMenuPluginPorps {
 }
 
 export class BubbleMenuView {
-
     editor: Editor;
     element: HTMLElement;
     view: EditorView;
-    tippy:  Instance;
+    tippy: Instance;
     key: PluginKey;
+    enabledMarks: string[] = [];
+    textAlings: string[] = ['left', 'center', 'right'];
 
-    onOpen: (view:EditorView, key: PluginKey) => void;
-    changeState: (view:EditorView, Key: PluginKey, open:boolean) => void;
+    onOpen: (view: EditorView, key: PluginKey) => void;
+    updateActiveMarks: (marks: string[]) => void;
+    changeState: (view: EditorView, Key: PluginKey, open: boolean) => void;
 
     constructor({
         editor,
@@ -41,6 +44,7 @@ export class BubbleMenuView {
         view,
         key,
         onOpen,
+        updateActiveMarks,
         changeState
     }: BubbleMenuViewProps) {
         this.editor = editor;
@@ -48,36 +52,41 @@ export class BubbleMenuView {
         this.view = view;
         this.key = key;
         this.onOpen = onOpen;
+        this.updateActiveMarks = updateActiveMarks;
+        this.enabledMarks = this.getEnabledMarks();
         this.changeState = changeState;
         this.createTooltip();
         this.addEventListeners();
     }
 
-    update(view: EditorView) {
-        const { selection } = view.state;
+    update(view: EditorView, oldState: EditorState) {
+        const { state, composing } = view;
+        const { doc, selection } = state;
+        const isSame = oldState && oldState.doc.eq(doc) && oldState.selection.eq(selection);
+
         const { empty, from, to } = selection;
-        const state = this.key.getState(view.state);
+        const pluginState = this.key.getState(view.state);
 
         this.tippy.setProps({
             getReferenceClientRect: () => posToDOMRect(view, from, to)
         });
 
-        
-        if(empty || from === to) {
+        if (composing || isSame) {
+            return;
+        }
+
+        if (empty || from === to) {
             this.tippy.hide();
             return;
         }
-        
-        if (state.open) {
+
+        if (pluginState.open) {
             return;
         }
 
-        // For some reason, it's no empty
-        // console.log('After empty', empty, from, to);
-        // TODO: SET MARK TYPES ACTIVE ON TE MENU
-        // console.log(selection.$head.parent);
+        this.updateActiveMarks(this.getActiveMarks());
 
-        if( !state.open ) {
+        if (!pluginState.open) {
             this.onOpen(view, this.key);
             this.tippy.show();
         }
@@ -100,6 +109,17 @@ export class BubbleMenuView {
         });
     }
 
+    getEnabledMarks() {
+        return [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
+    }
+
+    getActiveMarks(): string[] {
+        return [
+            ...this.enabledMarks.filter((mark) => this.editor.isActive(mark)),
+            ...this.textAlings.filter((aligmengt) => this.editor.isActive({ textAlign: aligmengt }))
+        ];
+    }
+
     addEventListeners() {
         this.view.dom.addEventListener('click', this.onClickDocument.bind(this));
         this.element.addEventListener('click', this.onClickMenu);
@@ -112,7 +132,7 @@ export class BubbleMenuView {
 
     onClickDocument(): void {
         const state = this.key.getState(this.view.state);
-        if( state.open ){
+        if (state.open) {
             this.changeState(this.view, this.key, false);
         }
     }
@@ -125,30 +145,26 @@ export class BubbleMenuView {
 export const BubbleMenuPlugin = (options: BubbleMenuPluginPorps) => {
     return new Plugin({
         key: BUBBLE_MENU_KEY,
-        view: (view) =>
-            new BubbleMenuView({view, key: BUBBLE_MENU_KEY, ...options}),
-            state: {
-                init(): BubbleMenuState {
+        view: (view) => new BubbleMenuView({ view, key: BUBBLE_MENU_KEY, ...options }),
+        state: {
+            init(): BubbleMenuState {
+                return {
+                    open: false
+                };
+            },
+            apply(transaction: Transaction): BubbleMenuState {
+                const transactionMeta = transaction.getMeta(BUBBLE_MENU_KEY);
+                // TODO: Better way to manage state
+                const open = transactionMeta?.open;
+                if (open) {
                     return {
-                        open: false
-                    };
-                },
-                apply(transaction: Transaction, oldState:any): BubbleMenuState {
-                    const transactionMeta = transaction.getMeta(BUBBLE_MENU_KEY);
-                    // TODO: Better way to manage state
-                    const open =
-                        typeof transactionMeta?.open === 'boolean'
-                            ? transactionMeta?.open
-                            : oldState.open;
-                    if (open) {
-                        return {
-                            open: open,
-                        };
-                    }
-                    return {
-                        open: false
+                        open: open
                     };
                 }
+                return {
+                    open: false
+                };
             }
+        }
     });
 };
