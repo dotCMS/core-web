@@ -9,6 +9,8 @@ import { EditorView } from 'prosemirror-view';
 import { BubbleMenuComponent, BubbleMenuItem } from './components/bubble-menu/bubble-menu.component';
 import { BubbleMenuPlugin } from '../plugins/bubble-menu.plugin';
 
+// BubbleMenuOptions
+import { BubbleMenuOptions } from '@tiptap/extension-bubble-menu';
 
 function menuActions(editor: Editor, item: BubbleMenuItem): void {
     const markActions = {
@@ -72,11 +74,8 @@ function isListNode(editor: Editor) {
 
 export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
 
-    return Extension.create<any>({
+    return Extension.create<BubbleMenuOptions>({
         name: 'bubbleMenu',
-        defaultOptions: {
-            element: null
-        },
 
         addProseMirrorPlugins() {
             const factoryMenu = resolver.resolveComponentFactory(BubbleMenuComponent);
