@@ -3,11 +3,10 @@
 </button>
 
 <input
+    #searchInput
     data-testId="searchInput"
     [placeholder]="'structure' | dm | uppercase"
     pInputText
-    [(ngModel)]="value"
-    (keyup)="filter.emit(value)"
     type="text"
 />
 <dot-icon name="search" data-testId="searchIcon" size="18"></dot-icon>

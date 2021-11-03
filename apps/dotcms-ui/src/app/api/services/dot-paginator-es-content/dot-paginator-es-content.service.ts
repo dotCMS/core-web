@@ -154,7 +154,6 @@ saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Obse
 */
 
     public getESQuery(params: { [key: string]: any }): any {
-        debugger
         const query = {
             query: JSON.stringify(params).replace(/"|{|}|,/g, ' '),
             sort: '',

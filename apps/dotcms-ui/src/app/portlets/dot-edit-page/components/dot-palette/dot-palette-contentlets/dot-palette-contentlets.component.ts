@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotContentletEditorService } from '@dotcms/app/view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { CoreWebService } from '@dotcms/dotcms-js';
+// import { CoreWebService } from '@dotcms/dotcms-js';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { DotPaginatorESContentService } from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
-import { th } from 'date-fns/locale';
+// import { th } from 'date-fns/locale';
 import { LazyLoadEvent } from 'primeng/api';
-import { pluck, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 // import { DotCMSContentType } from '@dotcms/dotcms-models';
 // import { Subject } from 'rxjs';
 // import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
@@ -21,19 +21,20 @@ export class DotPaletteContentletsComponent implements OnInit {
     @Input() contentTypeVariable: string;
     @Output() hide = new EventEmitter();
     items: DotCMSContentlet[];
+    hideNoResults = true;
 
     // private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         public paginatorESService: DotPaginatorESContentService,
-        private coreWebService: CoreWebService,
+        // private coreWebService: CoreWebService,
         private dotContentletEditorService: DotContentletEditorService
     ) {}
 
     ngOnInit() {
         // this.paginatorESService.url = `/api/content/render/false/query/+contentType:${this.contentTypeVariable}`;
         this.paginatorESService.setExtraParams('+contentType', this.contentTypeVariable);
-        this.paginatorESService.paginationPerPage = 10;
+        this.paginatorESService.paginationPerPage = 15;
         this.paginatorESService.deleteExtraParams('+title');
 
         this.loadData();
@@ -46,12 +47,15 @@ export class DotPaletteContentletsComponent implements OnInit {
      * @memberof DotAppsConfigurationComponent
      */
     loadData(event?: LazyLoadEvent): void {
+        console.log(this.hideNoResults)
         this.paginatorESService
             .getWithOffset((event && event.first) || 0)
             .pipe(take(1))
             .subscribe((data: any[]) => {
                 console.log('****data', data, this.paginatorESService.totalRecords);
                 this.items = data;
+                this.hideNoResults = !!data?.length;
+                console.log(this.hideNoResults)
 
                 // const app = [].concat(apps)[0];
                 // this.apps.sites = event ? this.apps.sites.concat(app.sites) : app.sites;
@@ -98,6 +102,10 @@ export class DotPaletteContentletsComponent implements OnInit {
 
     filterContentlets(value: string): void {
         console.log('**filter', value);
+        value = value.trim();
+        if (value.indexOf(' ') > 0) {
+            value = `'${value.replace(/'/g, '\\\'')}'`;
+        }
         this.paginatorESService.setExtraParams('+title', `${value}*`);
         this.loadData();
     }

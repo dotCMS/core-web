@@ -12,7 +12,7 @@ export class DotPaletteComponent {
 
     constructor() {}
 
-    switchView(variableName: string): void {
+    switchView(variableName?: string): void {
         console.log('***fateher', variableName)
         this.contentTypeVariable = variableName ? variableName : '';
     }

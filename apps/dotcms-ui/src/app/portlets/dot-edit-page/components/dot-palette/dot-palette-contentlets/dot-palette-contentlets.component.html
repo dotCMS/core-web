@@ -3,7 +3,8 @@
     (goBack)="showContentTypesList()"
     (filter)="filterContentlets($event)"
 ></dot-palette-input-filter>
-<div class="dot-content-palette__items" *ngIf="items?.length; else noResults">
+
+<div class="dot-content-palette__items" *ngIf="items?.length; else Loading">
     <div
         *ngFor="let item of items | dotFilter: 'title':filter"
         draggable="true"
@@ -26,6 +27,9 @@
         (onPageChange)="paginate($event)"
     ></p-paginator>
 </div>
-<ng-template #noResults>
-    <span class="dot-content-palette__empty">{{ 'No-Results' | dm }}</span>
+
+<ng-template #Loading>
+    <dot-spinner *ngIf="hideNoResults" [size]="'40px'" [borderSize]="'8px'"></dot-spinner>
 </ng-template>
+
+<span *ngIf="!hideNoResults" class="dot-content-palette__empty">{{ 'No-Results' | dm }}</span>
