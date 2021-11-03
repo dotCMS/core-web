@@ -5,6 +5,6 @@
             [active]="activeMarks.includes(item.markAction)"
             (click)="command(item)"
         ></dotcms-bubble-menu-button>
-        <div *ngIf="item?.divider" class="divider"></div>
+        <div *ngIf="item.divider" class="divider"></div>
     </ng-container>
 </div>

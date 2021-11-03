@@ -1,7 +1,7 @@
 import { EditorView } from 'prosemirror-view';
 import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
 
-import { Editor, posToDOMRect } from '@tiptap/core';
+import { Editor, isNodeSelection, posToDOMRect } from '@tiptap/core';
 
 import { Instance } from 'tippy.js';
 import tippy from 'tippy.js';
@@ -12,7 +12,7 @@ interface BubbleMenuState {
     open: boolean;
 }
 
-interface BubbleMenuPluginPorps {
+interface BubbleMenuPluginProps {
     editor: Editor;
     element: HTMLElement;
     onOpen: (view:EditorView, key: PluginKey) => void;
@@ -20,7 +20,7 @@ interface BubbleMenuPluginPorps {
     changeState: (view:EditorView, key: PluginKey, open:boolean) => void;
 }
 
-interface BubbleMenuViewProps extends BubbleMenuPluginPorps {
+interface BubbleMenuViewProps extends BubbleMenuPluginProps {
     key: PluginKey;
     view:EditorView;
 }
@@ -67,9 +67,7 @@ export class BubbleMenuView {
         const { empty, from, to } = selection;
         const pluginState = this.key.getState(view.state);
 
-        this.tippy.setProps({
-            getReferenceClientRect: () => posToDOMRect(view, from, to)
-        });
+        this.setTippyPosition(view);
 
         if (composing || isSame) {
             return;
@@ -110,6 +108,26 @@ export class BubbleMenuView {
         });
     }
 
+    setTippyPosition(view: EditorView) {
+        const { state } = view;
+        const selection = state.selection;
+        const { from, to } = selection;
+
+        this.tippy.setProps({
+            getReferenceClientRect: () => {
+                if (isNodeSelection(selection)) {
+                    const node = view.nodeDOM(from) as HTMLElement;
+
+                    if (node) {
+                        return node.getBoundingClientRect();
+                    }
+                }
+
+                return posToDOMRect(view, from, to);
+            }
+        });
+    }
+
     getEnabledMarks() {
         return [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
     }
@@ -143,7 +161,7 @@ export class BubbleMenuView {
     }
 }
 
-export const BubbleMenuPlugin = (options: BubbleMenuPluginPorps) => {
+export const BubbleMenuPlugin = (options: BubbleMenuPluginProps) => {
     return new Plugin({
         key: BUBBLE_MENU_KEY,
         view: (view) => new BubbleMenuView({ view, key: BUBBLE_MENU_KEY, ...options }),

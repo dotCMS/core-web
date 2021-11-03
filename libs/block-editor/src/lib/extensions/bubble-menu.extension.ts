@@ -77,17 +77,32 @@ export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolve
     return Extension.create<BubbleMenuOptions>({
         name: 'bubbleMenu',
 
+        addKeyboardShortcuts() {
+            return {
+                Tab: () => {
+                    if (isListNode(this.editor)) {
+                        return this.editor.commands.sinkListItem('listItem');
+                    }
+                },
+                'Shift-Tab': () => {
+                    if (isListNode(this.editor)) {
+                        return this.editor.commands.liftListItem('listItem');
+                    }
+                }
+            };
+        },
+
         addProseMirrorPlugins() {
             const factoryMenu = resolver.resolveComponentFactory(BubbleMenuComponent);
             const bubbleMenu: ComponentRef<BubbleMenuComponent> = factoryMenu.create(injector);
-            
+
             function onOpen(view: EditorView, key: PluginKey): void {
                 bubbleMenu.instance.execMark = (item: BubbleMenuItem) => menuActions(this.editor, item);
                 bubbleMenu.changeDetectorRef.detectChanges();
                 changeState(view, key, true);
             }
 
-            function updateActiveMarks( marks: string[] ) {
+            function updateActiveMarks(marks: string[]) {
                 bubbleMenu.instance.activeMarks = marks;
                 bubbleMenu.instance.updateActiveItems();
                 bubbleMenu.changeDetectorRef.detectChanges();
@@ -108,7 +123,7 @@ export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolve
                     updateActiveMarks,
                     changeState
                 })
-            ]
+            ];
         }
     });
 };

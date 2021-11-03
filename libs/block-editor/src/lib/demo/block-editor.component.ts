@@ -16,9 +16,6 @@ import { BubbleMenu } from '../extensions/bubble-menu.extension';
 // Marks Extensions
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Underline } from '@tiptap/extension-underline';
-import { ListItem } from '@tiptap/extension-list-item';
-import { BulletList } from '@tiptap/extension-bullet-list';
-import { OrderedList } from '@tiptap/extension-ordered-list';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -42,10 +39,7 @@ export class BlockEditorComponent implements OnInit {
                 DragHandler(this.injector, this.resolver),
                 BubbleMenu(this.injector, this.resolver),
                 // Marks Extensions
-                ListItem,
                 Underline,
-                BulletList,
-                OrderedList,
                 TextAlign.configure({
                     types: ['heading', 'paragraph'],
                 })
