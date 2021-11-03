@@ -1,3 +1,9 @@
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .btn-bubble-menu {
     background: #fff;
     border: none;
@@ -5,15 +11,13 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    border-radius: 5px;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
+    &.btn-active {
+        background: #000;
+        color: #fff;
+    }
     span {
         font-size: 20px;
     }
-}
-
-.btn-active {
-    background: #000;
-    color: #fff;
 }

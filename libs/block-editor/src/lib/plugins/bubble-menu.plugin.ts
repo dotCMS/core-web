@@ -105,7 +105,8 @@ export class BubbleMenuView {
             interactive: true,
             placement: 'bottom-start',
             trigger: 'manual',
-            hideOnClick: false
+            hideOnClick: false,
+            maxWidth: 'none'
         });
     }
 

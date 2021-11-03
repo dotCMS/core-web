@@ -1,14 +1,19 @@
 :host {
-    position: absolute;
+    height: 100%;
 }
 
 .bubble-menu {
     display: flex;
+    align-items: center;
+    justify-content: center;
     background: #fff;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border: 1px solid rgb(229, 229, 229);
     gap: 2px;
-    border-radius: 5px;
     overflow: auto;
 }
 
+.divider {
+    border-left: 1px solid #cccc;
+    height: 25px;
+    margin: 0px 2px;
+}

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 
 import { BubbleMenuComponent } from './bubble-menu.component';
 
@@ -22,4 +22,13 @@ describe('BubbleMenuComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  fit('should call command when a button is clicked', fakeAsync(() => {
+    spyOn(component, 'command');
+    const button = fixture.debugElement.nativeElement.querySelector('dotcms-bubble-menu-button');
+    button.click();
+    fixture.whenStable().then(() => {
+      expect(component.command).toHaveBeenCalled();
+    });
+  }));
 });

@@ -4,6 +4,7 @@ export interface BubbleMenuItem {
   icon: string;
   markAction: string;
   active: boolean;
+  divider?: boolean;
 }
 
 @Component({
@@ -35,12 +36,8 @@ export class BubbleMenuComponent {
     {
       icon: 'strikethrough_s',
       markAction: 'strike',
-      active: false
-    },
-    {
-      icon: 'format_clear',
-      markAction: 'clearAll',
-      active: false
+      active: false,
+      divider: true
     },
     {
       icon: 'format_align_left',
@@ -55,7 +52,8 @@ export class BubbleMenuComponent {
     {
       icon: 'format_align_right',
       markAction: 'right',
-      active: false
+      active: false,
+      divider: true
     },
     {
       icon: 'format_list_bulleted',
@@ -75,6 +73,12 @@ export class BubbleMenuComponent {
     {
       icon: 'format_indent_increase',
       markAction: 'indent',
+      active: false,
+      divider: true
+    },
+    {
+      icon: 'format_clear',
+      markAction: 'clearAll',
       active: false
     }
   ];
