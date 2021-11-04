@@ -1,7 +1,13 @@
-<dot-palette-input-filter (filter)="filterContentTypes($event)"></dot-palette-input-filter>
-<div class="dot-content-palette__items" *ngIf="items.length; else noResults">
+<dot-palette-input-filter
+    #filterInput
+    (filter)="filterContentTypes($event)"
+></dot-palette-input-filter>
+<div
+    class="dot-content-palette__items"
+    *ngIf="itemsFiltered === undefined || itemsFiltered?.length; else noResults"
+>
     <div
-        *ngFor="let item of items | dotFilter: 'name':filter"
+        *ngFor="let item of itemsFiltered"
         draggable="true"
         data-testId="paletteItem"
         (dragstart)="dragStart(item)"
