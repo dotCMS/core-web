@@ -1,11 +1,10 @@
 <dot-palette-content-type
-    *ngIf="!contentTypeVariable"
+    [class.switch-view]="switch"
     [items]="items"
     (show)="switchView($event)"
 ></dot-palette-content-type>
-
 <dot-palette-contentlets
-    *ngIf="contentTypeVariable"
+    [class.switch-view]="switch"
     [contentTypeVariable]="contentTypeVariable"
     (hide)="switchView()"
 ></dot-palette-contentlets>
