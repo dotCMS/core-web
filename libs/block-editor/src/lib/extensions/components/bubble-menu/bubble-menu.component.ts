@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Editor, EditorEvents } from '@tiptap/core';
+import { Editor } from '@tiptap/core';
 
 export interface BubbleMenuItem {
     icon: string;
