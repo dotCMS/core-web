@@ -83,22 +83,10 @@ export class BubbleMenuComponent {
     }
   ];
 
-  /**
-   *
-   *
-   * @param {BubbleMenuItem} item
-   * @memberof BubbleMenuComponent
-   */
   command(item: BubbleMenuItem): void {
     this.execMark(item);
   }
 
-  /**
-   *
-   * Prevent De-Selection text when click on the bubble menu
-   * @param {MouseEvent} event
-   * @memberof BubbleMenuComponent
-   */
   preventDeSelection(event: MouseEvent): void {
     event.preventDefault();
   }

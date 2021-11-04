@@ -9,8 +9,11 @@ import { EditorView } from 'prosemirror-view';
 import { BubbleMenuComponent, BubbleMenuItem } from './components/bubble-menu/bubble-menu.component';
 import { BubbleMenuPlugin } from '../plugins/bubble-menu.plugin';
 
-// BubbleMenuOptions
-import { BubbleMenuOptions } from '@tiptap/extension-bubble-menu';
+export interface BubbleMenuPluginProps {
+    pluginKey: PluginKey | string;
+    editor: Editor;
+    element: HTMLElement;
+}
 
 function menuActions(editor: Editor, item: BubbleMenuItem): void {
     const markActions = {
@@ -74,7 +77,7 @@ function isListNode(editor: Editor) {
 
 export const BubbleMenu = (injector: Injector, resolver: ComponentFactoryResolver) => {
 
-    return Extension.create<BubbleMenuOptions>({
+    return Extension.create<BubbleMenuPluginProps>({
         name: 'bubbleMenu',
 
         addKeyboardShortcuts() {
