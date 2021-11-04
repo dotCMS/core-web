@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { DotContentletEditorService } from '@dotcms/app/view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
-import { DotPaginatorESContentService } from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
+import { DotPaginatorESContentService, OrderDirection } from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { take } from 'rxjs/operators';
 import { DotPaletteInputFilterComponent } from '../dot-palette-input-filter/dot-palette-input-filter.component';

@@ -7,7 +7,7 @@
 
 <div class="dot-content-palette__items" *ngIf="items?.length; else Loading">
     <div
-        *ngFor="let item of items | dotFilter: 'title':filter"
+        *ngFor="let item of items"
         draggable="true"
         data-testId="paletteItem"
         (dragstart)="dragStart(item)"

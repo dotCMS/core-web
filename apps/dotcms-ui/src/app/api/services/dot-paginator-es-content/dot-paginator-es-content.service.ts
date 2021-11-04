@@ -4,36 +4,26 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export enum OrderDirection {
-    ASC = 1,
-    DESC = -1
+    ASC = 'ASC',
+    DESC = 'DESC'
 }
 
 /**
  * Provides util listing methods
  * @export
- * @class PaginatorService
+ * @class DotPaginatorESContentService
  */
 @Injectable()
 export class DotPaginatorESContentService {
-    // public static readonly LINK_HEADER_NAME = 'Link';
-    // public static readonly PAGINATION_PER_PAGE_HEADER_NAME = 'X-Pagination-Per-Page';
-    // public static readonly PAGINATION_CURRENT_PAGE_HEADER_NAME = 'X-Pagination-Current-Page';
-    // public static readonly PAGINATION_MAX_LINK_PAGES_HEADER_NAME = 'X-Pagination-Link-Pages';
-    // public static readonly PAGINATION_TOTAL_ENTRIES_HEADER_NAME = 'X-Pagination-Total-Entries';
-
-    public links: Links = {};
-
     public paginationPerPage = 40;
     public currentPage: number = 1;
-    public maxLinksPage: number;
     public totalRecords: number;
 
     private _url = '/api/content/_search';
     private defaultQueryParams = { '+languageId': '1', '+deleted': 'false', '+working': 'true' };
     private _filter: string;
-    // private _searchParam: string;
-    private _sortField: string;
-    private _sortOrder: OrderDirection;
+    private _sortField: string = 'modDate';
+    private _sortOrder: OrderDirection = OrderDirection.ASC;
     private _extraParams: Map<string, any> = new Map(Object.entries(this.defaultQueryParams));
 
     constructor(private coreWebService: CoreWebService) {}
@@ -44,7 +34,6 @@ export class DotPaginatorESContentService {
 
     set url(url: string) {
         if (this._url !== url) {
-            this.links = {};
             this._url = url;
         }
     }
@@ -55,44 +44,8 @@ export class DotPaginatorESContentService {
 
     set filter(filter: string) {
         if (this._filter !== filter) {
-            this.links = {};
             this._filter = filter;
         }
-    }
-
-    // set searchParam(searchParam: string) {
-    //     if (this._searchParam !== searchParam) {
-    //         this.links = searchParam.length > 0 ? {} : this.links;
-    //         this._searchParam = searchParam;
-    //     }
-    // }
-
-    // get searchParam(): string {
-    //     return this._searchParam;
-    // }
-
-    /**
-     * Set value of extra parameters of the eventual request.
-     * @param string name
-     * @param value
-     *
-     * @memberof DotThemeSelectorComponent
-     */
-    setExtraParams(name: string, value?: any): void {
-        if (value !== null && value !== undefined) {
-            this.extraParams.set(name, value.toString());
-            this.links = {};
-        }
-    }
-
-    /**
-     * Delete extra parameters of the eventual request.
-     * @param string name
-     *
-     * @memberof DotThemeSelectorComponent
-     */
-    deleteExtraParams(name: string): void {
-        this.extraParams.delete(name);
     }
 
     get extraParams(): Map<string, any> {
@@ -105,7 +58,6 @@ export class DotPaginatorESContentService {
 
     set sortField(sortField: string) {
         if (this._sortField !== sortField) {
-            this.links = {};
             this._sortField = sortField;
         }
     }
@@ -116,54 +68,39 @@ export class DotPaginatorESContentService {
 
     set sortOrder(sortOrder: OrderDirection) {
         if (this._sortOrder !== sortOrder) {
-            this.links = {};
             this._sortOrder = sortOrder;
         }
     }
 
     /**
-     * Send a pagination request with url as base URL, if url is null or undefined then
-     * it use the url property value instead.
-     * Also it use the values of sortField, sortOrder and filter properties like query parameters,
-     * so the finally url will be:
-     * <url>/orderby=[sortField-value]&direction=[sortOrder-value]&filter=[filter-value]
-     * @param url base url
+     * Set value of extra parameters of the eventual request.
+     * @param string name
+     * @param value
+     *
+     * @memberof DotThemeSelectorComponent
      */
-    // tslint:disable-next-line:cyclomatic-complexity
-
-    /*
-saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Observable<string> {
-    return this.coreWebService
-        .requestView({
-            body: {
-                ...params
-            },
-            method: 'POST',
-            url: `${appsUrl}/${appKey}/${id}`
-        })
-        .pipe(
-            pluck('entity'),
-            catchError((error: HttpErrorResponse) => {
-                return this.httpErrorManagerService.handle(error).pipe(
-                    take(1),
-                    map(() => null)
-                );
-            })
-        );
-}
-*/
-
-    public getESQuery(params: { [key: string]: any }): any {
-        const query = {
-            query: JSON.stringify(params).replace(/"|{|}|,/g, ' '),
-            sort: '',
-            limit: this.paginationPerPage,
-            offset: (this.currentPage - 1) * this.paginationPerPage
-        };
-
-        return query;
+    public setExtraParams(name: string, value?: any): void {
+        if (value !== null && value !== undefined) {
+            this.extraParams.set(name, value.toString());
+        }
     }
 
+    /**
+     * Delete extra parameters of the eventual request.
+     * @param string name
+     *
+     * @memberof DotThemeSelectorComponent
+     */
+    public deleteExtraParams(name: string): void {
+        this.extraParams.delete(name);
+    }
+
+    /**
+     * Send a pagination request with url as base URL, if url is null or undefined then
+     * it use the url property value instead.
+     * Also it use the values of sortField, sortOrder in the Body request
+     * @param url base url
+     */
     public get(url?: string): Observable<any> {
         const queryParams = this.getESQuery(this.getObjectFromMap(this.extraParams));
 
@@ -175,48 +112,11 @@ saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Obse
             })
             .pipe(
                 map((response: ResponseView<any>) => {
-                    console.log('==== res', response);
-                    // this.setLinks(response.header(DotPaginatorESContentService.LINK_HEADER_NAME));
-                    // this.paginationPerPage = parseInt(
-                    //     response.header(DotPaginatorESContentService.PAGINATION_PER_PAGE_HEADER_NAME),
-                    //     10
-                    // );
-                    // this.currentPage = parseInt(
-                    //     response.header(DotPaginatorESContentService.PAGINATION_CURRENT_PAGE_HEADER_NAME),
-                    //     10
-                    // );
-                    // this.maxLinksPage = parseInt(
-                    //     response.header(DotPaginatorESContentService.PAGINATION_MAX_LINK_PAGES_HEADER_NAME),
-                    //     10
-                    // );
-                    // this.totalRecords = parseInt(
-                    //     response.header(DotPaginatorESContentService.PAGINATION_TOTAL_ENTRIES_HEADER_NAME),
-                    //     10
-                    // );
                     this.totalRecords = response.entity?.resultsSize;
-
                     return response.entity?.jsonObjectView?.contentlets || null;
                 }),
                 take(1)
             );
-    }
-
-    /**
-     * Request the last page
-     * @returns Observable<any[]>
-     * @memberof PaginatorService
-     */
-    public getLastPage(): Observable<any[]> {
-        return this.get(this.links.last);
-    }
-
-    /**
-     * Request the first page
-     * @returns Observable<any[]>
-     * @memberof PaginatorService
-     */
-    public getFirstPage(): Observable<any[]> {
-        return this.get(this.links.first);
     }
 
     /**
@@ -227,9 +127,6 @@ saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Obse
      */
     public getPage(pageParam = 1): Observable<any[]> {
         this.currentPage = pageParam;
-        // const urlPage = this.links['x-page']
-        //     ? this.links['x-page'].replace('pageValue', String(pageParam))
-        //     : undefined;
         return this.get();
     }
 
@@ -243,24 +140,6 @@ saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Obse
     }
 
     /**
-     * Request the next page
-     * @returns Observable<any[]>
-     * @memberof PaginatorService
-     */
-    public getNextPage(): Observable<any[]> {
-        return this.get(this.links.next);
-    }
-
-    /**
-     * Request the previous page
-     * @returns Observable<any[]>
-     * @memberof PaginatorService
-     */
-    public getPrevPage(): Observable<any[]> {
-        return this.get(this.links.prev);
-    }
-
-    /**
      * Use the offset to request a page.
      * @param number offset Offset to be request
      * @returns Observable<any[]>
@@ -271,45 +150,19 @@ saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Obse
         return this.getPage(page);
     }
 
+    private getESQuery(params: { [key: string]: any }): any {
+        const query = {
+            query: JSON.stringify(params).replace(/"|{|}|,/g, ' '),
+            sort: `${this._sortField || ''} ${this._sortOrder || ''}`,
+            limit: this.paginationPerPage,
+            offset: (this.currentPage - 1) * this.paginationPerPage
+        };
+
+        return query;
+    }
+
     private getPageFromOffset(offset: number): number {
         return parseInt(String(offset / this.paginationPerPage), 10) + 1;
-    }
-
-    private setLinks(linksString: string): void {
-        const linkSplit = linksString.split(',');
-
-        linkSplit.forEach((linkRel) => {
-            const linkrealSplit = linkRel.split(';');
-            const url = linkrealSplit[0].substring(1, linkrealSplit[0].length - 1);
-            const relSplit = linkrealSplit[1].split('=');
-            const rel = relSplit[1].substring(1, relSplit[1].length - 1);
-            this.links[rel] = url.trim();
-        });
-    }
-
-    private getParams(): { [key: string]: any } {
-        const params = new Map();
-
-        if (this.filter) {
-            params.set('filter', this.filter);
-        }
-
-        // if (this.searchParam) {
-        //     params.set('searchParam', this.searchParam);
-        // }
-
-        if (this.sortField) {
-            params.set('orderby', this.sortField);
-        }
-
-        if (this.sortOrder) {
-            params.set('direction', OrderDirection[this.sortOrder]);
-        }
-
-        if (this.paginationPerPage) {
-            params.set('per_page', String(this.paginationPerPage));
-        }
-        return this.getObjectFromMap(params);
     }
 
     private getObjectFromMap(map: Map<string, any>): { [key: string]: any } {
@@ -320,12 +173,4 @@ saveSiteConfiguration(appKey: string, id: string, params: DotAppsSaveData): Obse
 
         return result;
     }
-}
-
-interface Links {
-    first?: string;
-    last?: string;
-    next?: string;
-    'x-page'?: string;
-    prev?: string;
 }

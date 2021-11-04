@@ -3,9 +3,7 @@ import { DotPaletteContentletsComponent } from '@dotcms/app/portlets/dot-edit-pa
 import { CommonModule } from '@angular/common';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import {PaginatorModule} from 'primeng/paginator';
-import { DotIconModule, DotSpinnerModule } from '@dotcms/ui';
-import { DotFilterPipeModule } from '@pipes/dot-filter/dot-filter-pipe.module';
-import { FormsModule } from '@angular/forms';
+import { DotSpinnerModule } from '@dotcms/ui';
 import { DotPaletteInputFilterModule } from '../dot-palette-input-filter/dot-palette-input-filter.module';
 import { DotPaginatorESContentService } from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
 
@@ -13,10 +11,7 @@ import { DotPaginatorESContentService } from '@services/dot-paginator-es-content
     imports: [
         CommonModule,
         DotPipesModule,
-        DotIconModule,
-        DotFilterPipeModule,
         DotPaletteInputFilterModule,
-        FormsModule,
         PaginatorModule,
         DotSpinnerModule
     ],

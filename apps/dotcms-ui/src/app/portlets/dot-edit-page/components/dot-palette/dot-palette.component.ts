@@ -9,11 +9,10 @@ import { DotCMSContentType } from '@dotcms/dotcms-models';
 export class DotPaletteComponent {
     @Input() items: DotCMSContentType[] = [];
     contentTypeVariable: string = '';
-    switch = false;
+
     constructor() {}
 
     switchView(variableName?: string): void {
         this.contentTypeVariable = variableName ? variableName : '';
-        this.switch = !!variableName;
     }
 }
