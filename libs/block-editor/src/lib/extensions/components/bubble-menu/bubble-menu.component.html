@@ -1,0 +1,10 @@
+<div class="bubble-menu">
+    <ng-container *ngFor="let item of items; let i = index"> 
+        <dotcms-bubble-menu-button
+            [item]="item"
+            [active]="activeMarks.includes(item.markAction)"
+            (click)="command(item)"
+        ></dotcms-bubble-menu-button>
+        <div *ngIf="item.divider" class="divider"></div>
+    </ng-container>
+</div>
