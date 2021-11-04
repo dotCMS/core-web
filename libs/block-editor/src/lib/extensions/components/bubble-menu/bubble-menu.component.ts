@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Editor, EditorEvents } from '@tiptap/core';
+import { Editor } from '@tiptap/core';
 
 export interface BubbleMenuItem {
     icon: string;
@@ -95,13 +95,17 @@ export class BubbleMenuComponent implements OnInit {
         this.editor.on('selectionUpdate', () => {
             this.activeMarks = this.getActiveMarks();
             this.updateActiveItems();
-        })
+        });
     }
 
     command(item: BubbleMenuItem): void {
         this.menuActions(item);
         this.activeMarks = this.getActiveMarks();
         this.updateActiveItems();
+    }
+
+    preventDeSelection(event: MouseEvent): void {
+        event.preventDefault();
     }
 
     private menuActions(item: BubbleMenuItem): void {
