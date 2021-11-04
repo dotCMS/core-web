@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Editor } from '@tiptap/core';
+import { Editor, EditorEvents } from '@tiptap/core';
 
 export interface BubbleMenuItem {
     icon: string;
@@ -88,6 +88,14 @@ export class BubbleMenuComponent implements OnInit {
 
     ngOnInit() {
         this.enabledMarks = this.getEnabledMarks();
+
+        /**
+         * Every time the selection is updated, the active state of the buttons must be updated.
+         */
+        this.editor.on('selectionUpdate', () => {
+            this.activeMarks = this.getActiveMarks();
+            this.updateActiveItems();
+        })
     }
 
     command(item: BubbleMenuItem): void {
