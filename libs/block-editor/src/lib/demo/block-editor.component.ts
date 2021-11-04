@@ -12,7 +12,6 @@ import { ActionsMenu } from '../extensions/actions-menu.extension';
 import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentlet-block.extension';
 import { DragHandler } from '../extensions/dragHandler.extention';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
-// import { BubbleMenu } from '../extensions/bubble-menu.extension';
 
 // Marks Extensions
 import { TextAlign } from '@tiptap/extension-text-align';
