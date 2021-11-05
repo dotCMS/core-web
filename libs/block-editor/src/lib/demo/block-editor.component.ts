@@ -13,7 +13,6 @@ import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentle
 import { DragHandler } from '../extensions/dragHandler.extention';
 import { ImageUploadExtension } from '../extensions/imageUpload.extention';
 import { ImageBlock } from '../extensions/blocks/image-block/image-block.extention';
-import { MessageBlock } from '../extensions/blocks/message-block/message-block.extention';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -34,10 +33,9 @@ export class BlockEditorComponent implements OnInit {
                 StarterKit,
                 ContentletBlock(this.injector),
                 ImageBlock(this.injector),
-                MessageBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
                 DragHandler(this.injector, this.resolver),
-                ImageUploadExtension(this.injector)
+                ImageUploadExtension(this.injector, this.resolver)
             ]
         });
     }

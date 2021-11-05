@@ -19,7 +19,7 @@ import { LoggerService } from '@dotcms/dotcms-js';
 import { StringUtils } from '@dotcms/dotcms-js';
 import { DragHandlerComponent } from './extensions/components/drag-handler/drag-handler.component';
 import { ImageBlockComponent } from './extensions/blocks/image-block/image-block.component';
-import { MessageBlockComponent } from './extensions/blocks/message-block/message-block.component';
+import { MessageComponent } from './extensions/components/message/message.component';
 
 @NgModule({
     imports: [CommonModule, CardModule, MenuModule],
@@ -35,7 +35,7 @@ import { MessageBlockComponent } from './extensions/blocks/message-block/message
         ActionButtonComponent,
         DragHandlerComponent,
         ImageBlockComponent,
-        MessageBlockComponent
+        MessageComponent
     ],
     providers: [SuggestionsService, LoggerService, StringUtils],
     exports: [
@@ -47,4 +47,4 @@ import { MessageBlockComponent } from './extensions/blocks/message-block/message
         ActionButtonComponent
     ]
 })
-export class NgxTiptapModule { }
+export class NgxTiptapModule {}

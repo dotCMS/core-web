@@ -21,29 +21,30 @@ export class DotImageService {
             switchMap((response: DotCMSTempFile | DotCMSTempFile[]) => {
                 const files = Array.isArray(response) ? response : [response];
                 return new Observable((observer: Observer<object>) => {
-                    let cont = 0;
+                    let contentlets = [];
                     files.forEach((file: DotCMSTempFile) => {
-                        const data = {
-                            contentlet: {
-                                baseType: 'dotAsset',
-                                asset: file.id,
-                                hostFolder: '',
-                                indexPolicy: 'WAIT_FOR'
+                        contentlets.push({
+                            baseType: 'dotAsset',
+                            asset: file.id,
+                            hostFolder: '',
+                            indexPolicy: 'WAIT_FOR'
+                        });
+
+                        fetch(
+                            'http://localhost:8080/api/v1/workflow/actions/default/fire/PUBLISH',
+                            {
+                                method: 'POST',
+                                headers: {
+                                    Origin: window.location.hostname,
+                                    'Content-Type': 'application/json;charset=UTF-8',
+                                    Authorization: 'Basic YWRtaW5AZG90Y21zLmNvbTphZG1pbg=='
+                                },
+                                body: JSON.stringify({ contentlets })
                             }
-                        };
-                        this.assetService
-                            .fetchAsset(
-                                'http://localhost:8080/api/v1/workflow/actions/default/fire/PUBLISH',
-                                data
-                            )
-                            .then((response) => {
-                                response.json().then((data) => {
-                                    observer.next(data.entity);
-                                    cont++;
-                                    if (cont === files.length) {
-                                        observer.complete();
-                                    }
-                                });
+                        )
+                            .then((response) => response.json())
+                            .then((data) => {
+                                observer.next(data.entity.results);
                             });
                     });
                 });

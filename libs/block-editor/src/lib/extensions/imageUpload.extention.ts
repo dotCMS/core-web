@@ -1,15 +1,19 @@
-import { NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
-import { Injector } from '@angular/core';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core';
 import { Extension } from '@tiptap/core';
 import { DotImageService } from './services/dot-image/dot-image.service';
 import { EditorView } from 'prosemirror-view';
+import { MessageComponent, MessageType } from './components/message/message.component';
+import { PlaceholderPlugin } from '../plugins/placeholder.plugin';
+import { take } from 'rxjs/operators';
 
-export const ImageUploadExtension = (injector: Injector) => {
+export const ImageUploadExtension = (injector: Injector, resolver: ComponentFactoryResolver) => {
     return Extension.create({
         name: 'imageUpload',
 
         addProseMirrorPlugins() {
             const dotImageService = injector.get(DotImageService);
+            const messageBlockFactory = resolver.resolveComponentFactory(MessageComponent);
 
             function areImageFiles(files: FileList): boolean {
                 for (let i = 0; i < files.length; i++) {
@@ -20,48 +24,82 @@ export const ImageUploadExtension = (injector: Injector) => {
                 return !!files.length;
             }
 
-            function loadingPlaceHolder(view: EditorView, position = 0) {
-                const { schema } = view.state;
-                const dotMessage = schema.nodes.dotMessage.create({
-                    data: { message: 'Uploading...', type: 0 }
-                });
-                const transaction = view.state.tr.insert(position, dotMessage);
-                debugger;
-                view.dispatch(transaction);
-                // view.dispatch(
-                //     view.state.tr.setSelection(NodeSelection.create(view.state.doc, position))
-                // );
-                // view.dispatch(
-                //     view.state.tr.setSelection(NodeSelection.create(view.state.doc, pos))
-                // );
+            function findPlaceholder(state, id) {
+                let decos = PlaceholderPlugin.getState(state);
+                let found = decos.find(null, null, (spec) => spec.id == id);
+                return found.length ? found[0].from : null;
             }
 
-            function uploadImages(view: EditorView, files, position = 0) {
+            function setPlaceHolder(view: EditorView, position: number, id: string) {
+                const messageBlock: ComponentRef<MessageComponent> = messageBlockFactory.create(
+                    injector
+                );
+                let tr = view.state.tr;
+                messageBlock.instance.data = {
+                    message: 'Uploading...',
+                    type: MessageType.INFO
+                };
+                messageBlock.changeDetectorRef.detectChanges();
+
+                if (!tr.selection.empty) {
+                    tr.deleteSelection();
+                }
+
+                tr.setMeta(PlaceholderPlugin, {
+                    add: {
+                        id: id,
+                        pos: position,
+                        element: messageBlock.location.nativeElement
+                    }
+                });
+
+                view.dispatch(tr);
+            }
+
+            function uploadImages(view: EditorView, files: File[], position = 0) {
                 const { schema } = view.state;
-                loadingPlaceHolder(view, position);
+
+                files.forEach((file) => {
+                    setPlaceHolder(view, position, file.name);
+                });
+
                 dotImageService
                     .get(files)
-                    .pipe()
+                    .pipe(take(1))
                     .subscribe(
-                        (dotAsset) => {
-                            const imageNode = schema.nodes.dotImage.create({ data: dotAsset });
-                            view.dispatch(view.state.tr.insert(position + 1, imageNode));
+                        (dotAssets: []) => {
+                            const tr = view.state.tr;
+                            dotAssets.forEach((asset: any) => {
+                                const data = asset[Object.keys(asset)[0]];
+                                let pos = findPlaceholder(view.state, data.name);
+                                debugger;
+                                const imageNode = schema.nodes.dotImage.create({
+                                    data: data
+                                });
+                                view.dispatch(
+                                    tr.replaceWith(pos, pos, imageNode).setMeta(PlaceholderPlugin, {
+                                        remove: { id: data.name }
+                                    })
+                                );
+                            });
                         },
                         (error) => {
                             //TODO: Display Error.
                             alert(error.message);
-                            view.dispatch(view.state.tr.replaceWith(position, position + 1, null));
+                            view.dispatch(
+                                view.state.tr.setMeta(PlaceholderPlugin, {
+                                    remove: { id: 'placeholder' }
+                                })
+                            );
                         },
                         () => {
                             console.log('complete');
-
-                            //  view.dispatch(view.state.tr.deleteSelection());
-                            view.dispatch(view.state.tr.replaceWith(position, position + 1, null));
                         }
                     );
             }
 
             return [
+                PlaceholderPlugin,
                 new Plugin({
                     key: new PluginKey('imageUpload'),
                     view: (editorView) => {
@@ -74,14 +112,18 @@ export const ImageUploadExtension = (injector: Injector) => {
                                     !!event.clipboardData.files.length &&
                                     areImageFiles(event.clipboardData.files)
                                 ) {
+                                    if (event.clipboardData.files.length !== 1) {
+                                        alert('Can paste just one image at a time');
+                                        return false;
+                                    }
                                     event.preventDefault();
-                                    debugger;
                                     uploadImages(
                                         view,
                                         Array.from(event.clipboardData.files),
                                         view.state.selection.to
                                     );
                                 }
+
                                 return false;
                             },
 
@@ -91,7 +133,10 @@ export const ImageUploadExtension = (injector: Injector) => {
                                     areImageFiles(event.dataTransfer.files)
                                 ) {
                                     event.preventDefault();
-
+                                    if (event.dataTransfer.files.length !== 1) {
+                                        alert('Can drop just one image at a time');
+                                        return false;
+                                    }
                                     const position = view.posAtCoords({
                                         left: event.clientX,
                                         top: event.clientY

@@ -81,9 +81,14 @@ export const DragHandler = (injector: Injector, resolver: ComponentFactoryResolv
                 return node;
             }
 
-            // Check if node has content. If not, the handler don't need to be shown.
-            function nodeHasContent(view: EditorView, inside: number): boolean {
-                return !!view.nodeDOM(inside)?.hasChildNodes();
+            // Check if node has content and is not an empty <p>. To show the handler.
+            function nodeHasContent(view: EditorView, positon: number): boolean {
+                const node = view.nodeDOM(positon);
+
+                return (
+                    !!node?.hasChildNodes() &&
+                    !(node.childNodes.length === 1 && node.childNodes[0].nodeName == 'BR')
+                );
             }
 
             function bindEventsToDragHandler(editorView: EditorView) {

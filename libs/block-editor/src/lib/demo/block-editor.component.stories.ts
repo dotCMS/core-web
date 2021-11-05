@@ -16,7 +16,7 @@ import { ActionButtonComponent } from '../extensions/components/action-button/ac
 import { ContentletBlockComponent } from '../extensions/blocks/contentlet-block/contentlet-block.component';
 import { DragHandlerComponent } from '../extensions/components/drag-handler/drag-handler.component';
 import { ImageBlockComponent } from '../extensions/blocks/image-block/image-block.component';
-import { MessageBlockComponent } from '../extensions/blocks/message-block/message-block.component';
+import { MessageComponent } from '../extensions/components/message/message.component';
 
 export default {
     title: 'Block Editor'
@@ -103,7 +103,7 @@ export const primary = () => ({
             ActionButtonComponent,
             DragHandlerComponent,
             ImageBlockComponent,
-            MessageBlockComponent
+            MessageComponent
         ]
     },
     component: BlockEditorComponent
