@@ -11,10 +11,10 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     gap: 2px;
     overflow: auto;
-}
 
-.divider {
-    border-left: 1px solid #cccc;
-    height: 25px;
-    margin: 0px 2px;
+    .divider {
+        border-left: 1px solid #cccc;
+        height: 25px;
+        margin: 0px 2px;
+    }
 }
