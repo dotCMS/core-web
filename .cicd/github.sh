@@ -93,6 +93,7 @@ function persistResults {
     fi
   fi
 
+  git status && pwd && ls -las .
   addResults ./${GITHUB_SHA::8}
   git add .
   git commit -m "Adding tests results for ${GITHUB_SHA::8} from ${CURRENT_BRANCH}"
