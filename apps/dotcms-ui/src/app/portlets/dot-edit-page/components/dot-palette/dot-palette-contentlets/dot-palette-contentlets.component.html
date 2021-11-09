@@ -15,16 +15,26 @@
         <img src="/dA/{{ item.inode }}/titleImage/48w" *ngIf="item?.hasTitleImage === true" />
         <dot-contentlet-icon
             *ngIf="item?.hasTitleImage !== true"
-            [icon]="item?.baseType !== 'FILEASSET' ? item?.contentTypeIcon : item?.__icon__"
+            [icon]="
+                item?.baseType !== 'FILEASSET'
+                    ? item?.contentTypeIcon || item?.icon
+                    : item?.__icon__
+            "
             size="45px"
         ></dot-contentlet-icon>
-        <p>{{ item.title }}</p>
+        <p>{{ item.title || item.name }}</p>
     </div>
     <p-paginator
         pageLinkSize="2"
-        [rows]="paginatorESService.paginationPerPage"
+        [rows]="
+            isFormContentType
+                ? paginationService.paginationPerPage
+                : paginatorESService.paginationPerPage
+        "
         [showFirstLastIcon]="false"
-        [totalRecords]="paginatorESService.totalRecords"
+        [totalRecords]="
+            isFormContentType ? paginationService.totalRecords : paginatorESService.totalRecords
+        "
         (onPageChange)="paginate($event)"
     ></p-paginator>
 </div>

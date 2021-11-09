@@ -284,7 +284,7 @@ function initDragAndDrop () {
         // draggedContent is set by dotContentletEditorService.draggedContentType$
         const dotAcceptTypes = container.dataset.dotAcceptTypes.toLocaleLowerCase();
         return (window.hasOwnProperty('draggedContent') && (draggedContent.baseType.toLocaleLowerCase() === 'widget') || 
-                dotAcceptTypes.includes(draggedContent.variable?.toLocaleLowerCase() || draggedContent.contentType?.toLocaleLowerCase()))
+                dotAcceptTypes.includes(draggedContent.variable?.toLocaleLowerCase() || draggedContent.contentType?.toLocaleLowerCase() || draggedContent.baseType?.toLocaleLowerCase()))
     }
 
     function setPlaceholderContentlet() {
@@ -400,6 +400,15 @@ function initDragAndDrop () {
         }
     }
 
+    function sendCreateContentletEvent(contentlet) {
+        window.contentletEvents.next({
+            name: 'add-contentlet',
+            data: {
+                contentlet
+            }
+        });
+    }
+
     function dropEvent(event) {
 
         event.preventDefault();
@@ -437,12 +446,23 @@ function initDragAndDrop () {
                         }
                     });
                 } else if (draggedContent.contentType) { // Contentlet
-                    window.contentletEvents.next({
-                        name: 'add-contentlet',
-                        data: {
-                            contentlet: draggedContent
+
+                    if (draggedContent.contentType === 'FORM') {
+                        const requestForm = async () => {
+                            const url = 'api/v1/containers/form/' + draggedContent.id + '?containerId=' + container.dataset['dotIdentifier'];
+                            const response = await fetch(url);
+                            const json = await response.json();
+
+                            sendCreateContentletEvent({ 
+                                identifier: json.entity.content.identifier,
+                                inode: json.entity.content.inode
+                            });
                         }
-                    });
+                        requestForm();
+
+                    } else {
+                        sendCreateContentletEvent(draggedContent);
+                    }
                 }
             }
         }
