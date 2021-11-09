@@ -454,6 +454,7 @@ function initDragAndDrop () {
                             const json = await response.json();
 
                             sendCreateContentletEvent({ 
+                                baseType: 'FORM',
                                 identifier: json.entity.content.identifier,
                                 inode: json.entity.content.inode
                             });
