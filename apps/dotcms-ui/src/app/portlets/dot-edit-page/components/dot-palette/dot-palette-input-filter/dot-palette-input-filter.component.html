@@ -1,11 +1,11 @@
 <button *ngIf="goBackBtn" data-testId="goBackBtn" (click)="goBack.emit()">
-    <dot-icon name="keyboard_arrow_left" size="18"></dot-icon>
+    <dot-icon data-testId="goBack" name="keyboard_arrow_left" size="18"></dot-icon>
 </button>
 
 <input
     #searchInput
     data-testId="searchInput"
-    [placeholder]="'structure' | dm | uppercase"
+    [placeholder]="'Search' | dm | uppercase"
     pInputText
     type="text"
 />

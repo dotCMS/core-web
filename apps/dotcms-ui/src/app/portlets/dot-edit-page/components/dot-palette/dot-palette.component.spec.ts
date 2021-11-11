@@ -1,118 +1,93 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 
 import { DotPaletteComponent } from './dot-palette.component';
-import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { DotIconModule } from '@dotcms/ui';
-import { DotCMSContentType } from '@dotcms/dotcms-models';
+import { Component, DebugElement, EventEmitter, Injectable, Input, Output } from '@angular/core';
+import { DOTTestBed } from '@dotcms/app/test/dot-test-bed';
 import { By } from '@angular/platform-browser';
-import { MockDotMessageService } from '@tests/dot-message-service.mock';
-import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { Injectable } from '@angular/core';
-import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { DotFilterPipeModule } from '@pipes/dot-filter/dot-filter-pipe.module';
-import { FormsModule } from '@angular/forms';
+import { dotcmsContentTypeBasicMock } from '@dotcms/app/test/dot-content-types.mock';
 
-const data = [
-    {
-        icon: 'cloud',
-        id: 'a1661fbc-9e84-4c00-bd62-76d633170da3',
-        name: 'Product'
-    },
-    {
-        icon: 'alt_route',
-        id: '799f176a-d32e-4844-a07c-1b5fcd107578',
-        name: 'Blog'
-    },
-    {
-        icon: 'cloud',
-        id: '897cf4a9-171a-4204-accb-c1b498c813fe',
-        name: 'Contact'
-    },
-    {
-        icon: 'person',
-        id: '6044a806-f462-4977-a353-57539eac2a2c',
-        name: 'Long name Blog Comment'
-    }
-];
+@Component({
+    selector: 'dot-palette-content-type',
+    template: ''
+})
+export class DotPaletteContentTypeMockComponent {
+    @Input() items: any[];
+    @Output() show = new EventEmitter<any>();
 
-@Injectable()
-class MockDotContentletEditorService {
-    setDraggedContentType = jasmine.createSpy('setDraggedContentType');
+    constructor() {}
 }
 
-describe('DotContentPaletteComponent', () => {
-    let component: DotPaletteComponent;
+@Component({
+    selector: 'dot-palette-contentlets',
+    template: ''
+})
+export class DotPaletteContentletsMockComponent {
+    @Input() contentTypeVariable: string;
+    @Output() hide = new EventEmitter<any>();
+
+    constructor() {}
+}
+
+const itemMock = {
+    ...dotcmsContentTypeBasicMock,
+    clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
+    id: '1234567890',
+    name: 'Nuevo',
+    variable: 'Nuevo',
+    defaultType: false,
+    fixed: false,
+    folder: 'SYSTEM_FOLDER',
+    host: null,
+    owner: '123',
+    system: false
+};
+
+describe('DotPaletteComponent', () => {
+    let comp: DotPaletteComponent;
     let fixture: ComponentFixture<DotPaletteComponent>;
-    let dotContentletEditorService: DotContentletEditorService;
-
-    const messageServiceMock = new MockDotMessageService({
-        structure: 'Content Type'
-    });
-
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [DotPaletteComponent],
-            imports: [DotPipesModule, DotIconModule, DotFilterPipeModule, FormsModule],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: DotContentletEditorService, useClass: MockDotContentletEditorService }
-            ]
-        }).compileComponents();
-        dotContentletEditorService = TestBed.inject(DotContentletEditorService);
-    });
+    let de: DebugElement;
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(DotPaletteComponent);
-        component = fixture.componentInstance;
+        DOTTestBed.configureTestingModule({
+            declarations: [
+                DotPaletteComponent,
+                DotPaletteContentletsMockComponent,
+                DotPaletteContentTypeMockComponent
+            ]
+        });
+
+        fixture = DOTTestBed.createComponent(DotPaletteComponent);
+        de = fixture.debugElement;
+        comp = fixture.componentInstance;
+    });
+
+    it('should dot-palette-content-type have items assigned', () => {
+        comp.items = [itemMock];
         fixture.detectChanges();
+        const contentTypeComp = fixture.debugElement.query(By.css('dot-palette-content-type'));
+        expect(contentTypeComp.componentInstance.items).toEqual([itemMock]);
     });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
-
-    it('should list items correctly', () => {
-        component.items = (data as unknown) as DotCMSContentType[];
+    it('should change view to contentlets and set Content Type Variable on contentlets palette view', () => {
+        const contentTypeComp = fixture.debugElement.query(By.css('dot-palette-content-type'));
+        contentTypeComp.componentInstance.show.emit('Blog');
         fixture.detectChanges();
-        const contents = fixture.debugElement.queryAll(By.css('[data-testId="paletteItem"]'));
-        expect(contents.length).toEqual(4);
-        expect(contents[0].nativeElement.draggable).toEqual(true);
-    });
-
-    it('should show empty state', () => {
-        component.items = [];
-        fixture.detectChanges();
-        const emptyState = fixture.debugElement.query(By.css('.dot-content-palette__empty'));
-
-        expect(emptyState).not.toBeNull();
-    });
-
-    it('should show correct search Box', () => {
-        const icon = fixture.debugElement.query(By.css('[data-testId="searchIcon"]'));
-        const input = fixture.debugElement.query(By.css('[data-testId="searchInput"]'));
-        expect(icon.componentInstance.name).toEqual('search');
-        expect(icon.componentInstance.size).toEqual('18');
-        expect(input.nativeElement.placeholder).toEqual('CONTENT TYPE');
-    });
-
-    it('should filter items on search', () => {
-        component.items = (data as unknown) as DotCMSContentType[];
-        const input = fixture.debugElement.query(By.css('[data-testId="searchInput"]'))
-            .nativeElement;
-        input.value = 'Product';
-        input.dispatchEvent(new Event('input'));
-        fixture.detectChanges();
-        const contents = fixture.debugElement.queryAll(By.css('[data-testId="paletteItem"]'));
-        expect(contents.length).toEqual(1);
-    });
-
-    it('should set Dragged ContentType on dragStart', () => {
-        component.items = (data as unknown) as DotCMSContentType[];
-        fixture.detectChanges();
-        const content = fixture.debugElement.query(By.css('[data-testId="paletteItem"]'));
-        content.triggerEventHandler('dragstart', data[0]);
-        expect(dotContentletEditorService.setDraggedContentType).toHaveBeenCalledOnceWith(
-            data[0] as DotCMSContentType
+        const contentContentletsComp = fixture.debugElement.query(
+            By.css('dot-palette-contentlets')
         );
+        expect(contentTypeComp.nativeElement.className).toEqual('switch-view');
+        expect(contentContentletsComp.nativeElement.className).toEqual('switch-view');
+        expect(contentContentletsComp.componentInstance.contentTypeVariable).toEqual('Blog');
+    });
+
+    it('should change view to content type and unset Content Type Variable on contentlets palette view', () => {
+        const contentContentletsComp = fixture.debugElement.query(
+            By.css('dot-palette-contentlets')
+        );
+        contentContentletsComp.componentInstance.hide.emit('');
+        fixture.detectChanges();
+        const contentTypeComp = fixture.debugElement.query(By.css('dot-palette-content-type'));
+        expect(contentTypeComp.nativeElement.className).toEqual('');
+        expect(contentContentletsComp.nativeElement.className).toEqual('');
     });
 });
