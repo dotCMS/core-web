@@ -11,7 +11,7 @@ jobs:
         if: github.event.pull_request.draft == false
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            GH_TOKEN: ${{ secrets.GH_USER_TOKEN }}
+            GH_TOKEN: ${{ secrets.CICD_GITHUB_TOKEN }}
             GITHUB_CONTEXT: ${{ toJson(github) }}
             PULL_REQUEST_URL: ${{ github.event.pull_request._links.html.href }}
             IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
@@ -35,11 +35,11 @@ jobs:
             - name: Installing dependencies
               run: npm install
             - name: Building for production
-              run: npm run build:prod
+              run: npm run nx build dotcms-ui -- --with-deps --prod
             - name: Running tests
               id: test_run
               run: |
-                  if ! (npm run test -- dotcms-ui --watch=false --reporters=html,progress --source-map=false) then
+                  if ! (npm run nx test --target=dotcms-ui --prod) then
                     echo "::set-output name=status::failure";
                     echo "::set-output name=color::#ff2400";
                     exit 1;

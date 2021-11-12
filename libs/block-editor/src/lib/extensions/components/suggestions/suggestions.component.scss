@@ -1,0 +1,31 @@
+:host {
+    display: block;
+    min-width: 240px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+    background: #ffffff;
+    font-family: 'Roboto', Helvetica, sans-serif, Arial;
+}
+
+h3 {
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin: 0.5rem 1rem;
+    color: #999999
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}

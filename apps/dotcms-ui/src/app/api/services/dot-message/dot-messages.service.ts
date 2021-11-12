@@ -1,0 +1,74 @@
+import { pluck, take } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { CoreWebService } from '@dotcms/dotcms-js';
+import { DotLocalstorageService } from '@services/dot-localstorage/dot-localstorage.service';
+import { formatMessage } from '@shared/dot-utils';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class DotMessageService {
+    private messageMap: { [key: string]: string } = {};
+    private MESSAGES_LOCALSTORAGE_KEY = 'dotMessagesKeys';
+
+    constructor(
+        private coreWebService: CoreWebService,
+        private dotLocalstorageService: DotLocalstorageService
+    ) {}
+
+    /**
+     * Get all messages keys form endpoint if they are not set in the localStorage.
+     * If a language is passed replace what is in localStorage
+     *
+     * @param string language
+     * @memberof DotMessageService
+     */
+    init(force: boolean, language?: string): void {
+        if (force) {
+            this.getAll(language);
+        } else {
+            const keys: { [key: string]: string } = this.dotLocalstorageService.getItem(
+                this.MESSAGES_LOCALSTORAGE_KEY
+            );
+            if (!keys) {
+                this.getAll(language);
+            } else {
+                this.messageMap = keys;
+            }
+        }
+    }
+
+    /**
+     * Return the message key value, formatted if more values are passed.
+     *
+     * @param string key
+     * @returns string
+     * @memberof DotMessageService
+     */
+    get(key: string, ...args: string[]): string {
+        return this.messageMap[key]
+            ? args.length
+                ? formatMessage(this.messageMap[key], args)
+                : this.messageMap[key]
+            : key;
+    }
+
+    private getAll(lang: string): void {
+        this.coreWebService
+            .requestView({
+                url: this.geti18nURL(lang)
+            })
+            .pipe(take(1), pluck('entity'))
+            .subscribe((messages: { [key: string]: string }) => {
+                this.messageMap = messages;
+                this.dotLocalstorageService.setItem(
+                    this.MESSAGES_LOCALSTORAGE_KEY,
+                    this.messageMap
+                );
+            });
+    }
+
+    private geti18nURL(lang: string): string {
+        return `/api/v2/languages/${lang ? lang : 'default'}/keys`;
+    }
+}

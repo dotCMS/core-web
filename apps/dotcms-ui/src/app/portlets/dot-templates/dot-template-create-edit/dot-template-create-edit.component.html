@@ -1,0 +1,23 @@
+<ng-container *ngIf="vm$ | async as vm">
+    <dot-portlet-base [boxed]="false" *ngIf="vm.original.identifier">
+        <dot-portlet-toolbar [title]="vm.original.title">
+            <ng-container left *ngIf="vm.original.title">
+                <button
+                    data-testId="editTemplateButton"
+                    pButton
+                    class="p-button-text"
+                    icon="pi pi-pencil"
+                    [label]="'templates.edit' | dm"
+                    (click)="editTemplateProps()"
+                ></button>
+                <dot-api-link [href]="vm.apiLink"></dot-api-link>
+            </ng-container>
+        </dot-portlet-toolbar>
+        <dot-template-builder
+            [item]="vm.original"
+            (save)="saveTemplate($event)"
+            (cancel)="cancelTemplate()"
+            (custom)="onCustomEvent($event)"
+        ></dot-template-builder>
+    </dot-portlet-base>
+</ng-container>
