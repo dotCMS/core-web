@@ -59,8 +59,8 @@ export class DotPaletteContentletsComponent implements OnChanges {
     /**
      * Loads data through pagination service
      *
-     * @param LazyLoadEvent event
-     * @memberof DotAppsConfigurationComponent
+     * @param LazyLoadEvent [event]
+     * @memberof DotPaletteContentletsComponent
      */
     loadData(event?: LazyLoadEvent): void {
         if (this.isFormContentType) {
@@ -87,10 +87,23 @@ export class DotPaletteContentletsComponent implements OnChanges {
         }
     }
 
+    /**
+     * Calls loads data function with a specific page to load
+     *
+     * @param LazyLoadEvent event
+     * @memberof DotPaletteContentletsComponent
+     */
     paginate(event: LazyLoadEvent) {
         this.loadData(event);
     }
 
+    /**
+     * Emits notification to show content type's component and clears
+     * component's local variables
+     *
+     * @param LazyLoadEvent event
+     * @memberof DotPaletteContentletsComponent
+     */
     showContentTypesList(): void {
         this.items = null;
         this.filterInput.searchInput.nativeElement.value = '';
@@ -98,15 +111,22 @@ export class DotPaletteContentletsComponent implements OnChanges {
     }
 
     /**
-     * Notify the dragging element to the service, and finally to the edit iframe.
+     * Set the contentlet being dragged from the Content palette to dotContentletEditorService
      *
      * @param DotCMSContentType contentType
-     * @memberof DotContentPaletteComponent
+     * @memberof DotPaletteContentletsComponent
      */
     dragStart(contentType: DotCMSContentlet): void {
         this.dotContentletEditorService.setDraggedContentType(contentType);
     }
 
+    /**
+     * Does the string formatting in order to do a filtering of the Contentlets,
+     * finally call the loadData() to request the data
+     *
+     * @param DotCMSContentType contentType
+     * @memberof DotPaletteContentletsComponent
+     */
     filterContentlets(value: string): void {
         value = value.trim();
 

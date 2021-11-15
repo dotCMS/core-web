@@ -436,16 +436,7 @@ function initDragAndDrop () {
                     handleHttpErrors(e);
                 })
             } else { // Adding specific Content Type / Contentlet
-                // Content Type
-                if (!draggedContent.contentType) {
-                    window.contentletEvents.next({
-                        name: 'add-content',
-                        data: {
-                            container: container.dataset,
-                            contentType: draggedContent
-                        }
-                    });
-                } else if (draggedContent.contentType) { // Contentlet
+                if (draggedContent.contentType) { // Contentlet
 
                     if (draggedContent.contentType === 'FORM') {
                         const requestForm = async () => {
@@ -464,6 +455,14 @@ function initDragAndDrop () {
                     } else {
                         sendCreateContentletEvent(draggedContent);
                     }
+                } else { // Content Type
+                    window.contentletEvents.next({
+                        name: 'add-content',
+                        data: {
+                            container: container.dataset,
+                            contentType: draggedContent
+                        }
+                    });
                 }
             }
         }

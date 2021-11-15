@@ -12,6 +12,12 @@ export class DotPaletteComponent {
 
     constructor() {}
 
+    /**
+     * Sets value on contentTypeVariable variable to show/hide components on the UI
+     *
+     * @param string [variableName]
+     * @memberof DotPaletteContentletsComponent
+     */
     switchView(variableName?: string): void {
         this.contentTypeVariable = variableName ? variableName : '';
     }

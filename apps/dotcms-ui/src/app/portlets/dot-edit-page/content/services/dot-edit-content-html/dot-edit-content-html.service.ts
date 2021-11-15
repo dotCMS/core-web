@@ -679,8 +679,8 @@ export class DotEditContentHtmlService {
             },
             'add-contentlet': (dotAssetData: DotAssetPayload) => {
                 this.renderAddedContentlet(dotAssetData.contentlet, true).then(
-                    (resolve: boolean) => {
-                        if (resolve && dotAssetData.contentlet.baseType === 'FORM') {
+                    (shouldSave: boolean) => {
+                        if (shouldSave && dotAssetData.contentlet.baseType === 'FORM') {
                             this.iframeActions$.next({
                                 name: 'save'
                             });

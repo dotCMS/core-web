@@ -1,4 +1,9 @@
-<button *ngIf="goBackBtn" data-testId="goBackBtn" (click)="goBack.emit()">
+<button
+    *ngIf="goBackBtn"
+    class="dot-palette-input-filter__back-btn"
+    data-testId="goBackBtn"
+    (click)="goBack.emit()"
+>
     <dot-icon data-testId="goBack" name="keyboard_arrow_left" size="18"></dot-icon>
 </button>
 
@@ -9,4 +14,9 @@
     pInputText
     type="text"
 />
-<dot-icon name="search" data-testId="searchIcon" size="18"></dot-icon>
+<dot-icon
+    name="search"
+    class="dot-palette-input-filter__search-icon"
+    data-testId="searchIcon"
+    size="18"
+></dot-icon>
