@@ -1,9 +1,10 @@
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement, Input } from '@angular/core';
-import { DOTTestBed } from '@dotcms/app/test/dot-test-bed';
 import { By } from '@angular/platform-browser';
 import { DotPaletteInputFilterComponent } from './dot-palette-input-filter.component';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { CoreWebService, CoreWebServiceMock } from '@dotcms/dotcms-js';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
     selector: 'dot-icon',
@@ -20,12 +21,13 @@ describe('DotPaletteInputFilterComponent', () => {
     let de: DebugElement;
 
     beforeEach(() => {
-        DOTTestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             declarations: [DotPaletteInputFilterComponent, MockDotIconComponent],
-            imports: [DotPipesModule]
+            imports: [DotPipesModule, HttpClientTestingModule],
+            providers: [{ provide: CoreWebService, useClass: CoreWebServiceMock }]
         });
 
-        fixture = DOTTestBed.createComponent(DotPaletteInputFilterComponent);
+        fixture = TestBed.createComponent(DotPaletteInputFilterComponent);
         de = fixture.debugElement;
         comp = fixture.componentInstance;
         comp.goBackBtn = true;

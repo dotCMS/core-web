@@ -1,10 +1,11 @@
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotPaletteComponent } from './dot-palette.component';
 import { Component, DebugElement, EventEmitter, Injectable, Input, Output } from '@angular/core';
-import { DOTTestBed } from '@dotcms/app/test/dot-test-bed';
 import { By } from '@angular/platform-browser';
 import { dotcmsContentTypeBasicMock } from '@dotcms/app/test/dot-content-types.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CoreWebService, CoreWebServiceMock } from '@dotcms/dotcms-js';
 
 @Component({
     selector: 'dot-palette-content-type',
@@ -48,15 +49,17 @@ describe('DotPaletteComponent', () => {
     let de: DebugElement;
 
     beforeEach(() => {
-        DOTTestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             declarations: [
                 DotPaletteComponent,
                 DotPaletteContentletsMockComponent,
                 DotPaletteContentTypeMockComponent
-            ]
+            ],
+            imports: [HttpClientTestingModule],
+            providers: [{ provide: CoreWebService, useClass: CoreWebServiceMock }]
         });
 
-        fixture = DOTTestBed.createComponent(DotPaletteComponent);
+        fixture = TestBed.createComponent(DotPaletteComponent);
         de = fixture.debugElement;
         comp = fixture.componentInstance;
     });

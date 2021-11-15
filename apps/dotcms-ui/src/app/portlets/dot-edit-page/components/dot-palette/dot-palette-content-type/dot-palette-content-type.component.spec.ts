@@ -1,4 +1,4 @@
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DotIconModule } from '@dotcms/ui';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
@@ -8,8 +8,9 @@ import { DotContentletEditorService } from '@components/dot-contentlet-editor/se
 import { DotFilterPipeModule } from '@pipes/dot-filter/dot-filter-pipe.module';
 import { FormsModule } from '@angular/forms';
 import { DotPaletteContentTypeComponent } from './dot-palette-content-type.component';
-import { DOTTestBed } from '@dotcms/app/test/dot-test-bed';
 import { DotPaletteInputFilterModule } from '../dot-palette-input-filter/dot-palette-input-filter.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CoreWebService, CoreWebServiceMock } from '@dotcms/dotcms-js';
 
 const data = [
     {
@@ -38,15 +39,6 @@ const data = [
     }
 ];
 
-// @Component({
-//     selector: 'dot-palette-input-filter',
-//     template: ''
-// })
-// export class DotPaletteInputFilterMockComponent {
-//     @Output() filter = new EventEmitter<any>();
-//     constructor() {}
-// }
-
 @Component({
     selector: 'dot-test-host-component',
     template: ` <dot-palette-content-type [items]="items"></dot-palette-content-type> `
@@ -61,32 +53,33 @@ class MockDotContentletEditorService {
     setDraggedContentType = jasmine.createSpy('setDraggedContentType');
 }
 
-fdescribe('DotPaletteContentTypeComponent', () => {
+describe('DotPaletteContentTypeComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     let componentHost: TestHostComponent;
     let dotContentletEditorService: DotContentletEditorService;
     let de: DebugElement;
 
     beforeEach(() => {
-        DOTTestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             declarations: [
                 TestHostComponent,
                 DotPaletteContentTypeComponent
-                // DotPaletteInputFilterMockComponent
             ],
             imports: [
                 DotPipesModule,
                 DotIconModule,
                 DotFilterPipeModule,
                 FormsModule,
-                DotPaletteInputFilterModule
+                DotPaletteInputFilterModule,
+                HttpClientTestingModule
             ],
             providers: [
-                { provide: DotContentletEditorService, useClass: MockDotContentletEditorService }
+                { provide: DotContentletEditorService, useClass: MockDotContentletEditorService },
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
             ]
         });
 
-        fixtureHost = DOTTestBed.createComponent(TestHostComponent);
+        fixtureHost = TestBed.createComponent(TestHostComponent);
         componentHost = fixtureHost.componentInstance;
 
         de = fixtureHost.debugElement.query(By.css('dot-palette-content-type'));
