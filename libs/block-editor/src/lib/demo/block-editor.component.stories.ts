@@ -17,6 +17,7 @@ import { ContentletBlockComponent } from '../extensions/blocks/contentlet-block/
 import { DragHandlerComponent } from '../extensions/components/drag-handler/drag-handler.component';
 import { ImageBlockComponent } from '../extensions/blocks/image-block/image-block.component';
 import { MessageComponent } from '../extensions/components/message/message.component';
+import { DotImageService } from '../extensions/services/dot-image/dot-image.service';
 
 export default {
     title: 'Block Editor'
@@ -34,6 +35,23 @@ export const primary = () => ({
             BrowserAnimationsModule
         ],
         providers: [
+            {
+                provide: DotImageService,
+                useValue: {
+                    get() {
+                        return of([
+                            {
+                                cd769844de530f7b5d3434b1b5cfdd62: {
+                                    asset:
+                                        'https://media.istockphoto.com/vectors/costa-rica-vector-id652225694?s=170667a',
+                                    mimeType: 'image/png',
+                                    name: 'costarica.png'
+                                }
+                            }
+                        ]);
+                    }
+                }
+            },
             {
                 provide: SuggestionsService,
                 useValue: {
