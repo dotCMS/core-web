@@ -707,7 +707,7 @@ describe('DotEditContentComponent', () => {
                     fixture.detectChanges();
                     const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
                     const contentPalette: DotPaletteComponent = de.query(
-                        By.css('dot-content-palette')
+                        By.css('dot-palette')
                     ).componentInstance;
                     const paletteController = de.query(
                         By.css('.dot-edit-content__palette-visibility')
@@ -1318,7 +1318,7 @@ describe('DotEditContentComponent', () => {
             fixture.detectChanges();
             const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
             const contentPalette: DotPaletteComponent = de.query(
-                By.css('dot-content-palette')
+                By.css('dot-palette')
             ).componentInstance;
             expect(contentPalette.items).toEqual(responseData.slice(0, 5));
         }));
