@@ -24,9 +24,9 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                 return !!files.length;
             }
 
-            function findPlaceholder(state, id) {
-                let decos = PlaceholderPlugin.getState(state);
-                let found = decos.find(null, null, (spec) => spec.id == id);
+            function findPlaceholder(state, id): number {
+                let decorations = PlaceholderPlugin.getState(state);
+                let found = decorations.find(null, null, (spec) => spec.id == id);
                 return found.length ? found[0].from : null;
             }
 
@@ -72,7 +72,7 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                             dotAssets.forEach((asset: any) => {
                                 const data = asset[Object.keys(asset)[0]];
                                 let pos = findPlaceholder(view.state, data.name);
-                                debugger;
+
                                 const imageNode = schema.nodes.dotImage.create({
                                     data: data
                                 });
@@ -84,16 +84,12 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                             });
                         },
                         (error) => {
-                            //TODO: Display Error.
                             alert(error.message);
                             view.dispatch(
                                 view.state.tr.setMeta(PlaceholderPlugin, {
-                                    remove: { id: 'placeholder' }
+                                    remove: { id: files[0].name }
                                 })
                             );
-                        },
-                        () => {
-                            console.log('complete');
                         }
                     );
             }
