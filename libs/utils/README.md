@@ -1,7 +1,6 @@
 # utils
 
-This library was generated with [Nx](https://nx.dev).
+Library with common functions. 
 
-## Running unit tests
-
-Run `nx test utils` to execute the unit tests.
+- Create Temporary Resources
+- Create DotAssets

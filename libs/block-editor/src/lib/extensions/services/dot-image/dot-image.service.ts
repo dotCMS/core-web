@@ -5,9 +5,7 @@ import { map } from 'rxjs/operators';
 import { DotCMSTempFile } from '@dotcms/dotcms-models';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class DotImageService {
     constructor(private http: HttpClient) {}
 
