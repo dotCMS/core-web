@@ -1,0 +1,95 @@
+.overlay {
+    background: transparent;
+    height: 100vh;
+    left: 0;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    width: 100vw;
+    z-index: 10000;
+}
+
+form {
+    background: #ffffff;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+
+    .input-container {
+        width: 100%;
+        padding: 1rem 10px;
+        input {
+            background: #f8f9fa;
+            border: 2px solid #90e0ef;
+            padding: 5px;
+            width: 100%;
+            &:focus {
+                border: 2px solid #90e0ef;
+                outline: none;
+            }
+        }
+    }
+
+    .separator {
+        border: none;
+        border-top: 1px solid #cccccc;
+    }
+
+    .info-box {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    
+        .sub-title {
+            color: #8b8c89;
+            font-size: 0.85rem;
+            font-weight: medium;
+            padding: 0 10px;
+        }
+
+        .link-box {
+            cursor: pointer;
+            overflow: hidden;
+            white-space: nowrap;
+            word-wrap: normal;
+            a {
+                color: #212529;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 10px;
+                font-size: 1rem;
+                height: 100%;
+                padding: 10px;
+                text-decoration: none;
+                width: 100%;
+            }
+            &:hover {
+                background-color: #f8f9fa;
+            }
+        }
+    }
+
+    .buttons-box {
+        padding-bottom: 0.625rem;
+        button {
+            align-items: center;
+            background: #ffffff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            padding: 10px;
+            width: 100%;
+            span {
+                font-size: 1.25rem;
+            }
+            &:hover {
+                background-color: #f8f9fa;
+            }
+        }
+    }
+}

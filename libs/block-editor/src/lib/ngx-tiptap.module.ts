@@ -20,6 +20,7 @@ import { StringUtils } from '@dotcms/dotcms-js';
 import { DragHandlerComponent } from './extensions/components/drag-handler/drag-handler.component';
 import { BubbleMenuComponent } from './extensions/components/bubble-menu/bubble-menu.component';
 import { BubbleMenuButtonComponent } from './extensions/components/bubble-menu-button/bubble-menu-button.component';
+import { BubbleMenuLinkFormComponent } from './extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 
 @NgModule({
     imports: [CommonModule, CardModule, MenuModule],
@@ -35,7 +36,8 @@ import { BubbleMenuButtonComponent } from './extensions/components/bubble-menu-b
         ActionButtonComponent,
         DragHandlerComponent,
         BubbleMenuComponent,
-        BubbleMenuButtonComponent
+        BubbleMenuButtonComponent,
+        BubbleMenuLinkFormComponent
     ],
     providers: [SuggestionsService, LoggerService, StringUtils],
     exports: [
@@ -45,7 +47,8 @@ import { BubbleMenuButtonComponent } from './extensions/components/bubble-menu-b
         DraggableDirective,
         NodeViewContentDirective,
         ActionButtonComponent,
-        BubbleMenuComponent
+        BubbleMenuComponent,
+        BubbleMenuLinkFormComponent
     ]
 })
 export class NgxTiptapModule { }

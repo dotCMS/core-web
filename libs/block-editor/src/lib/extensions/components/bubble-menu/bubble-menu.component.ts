@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Editor } from '@tiptap/core';
 
 export interface BubbleMenuItem {
@@ -15,6 +15,7 @@ export interface BubbleMenuItem {
 })
 export class BubbleMenuComponent implements OnInit {
     @Input() editor: Editor;
+    @Output() openForm: EventEmitter<boolean> =  new EventEmitter();
 
     public enabledMarks: string[] = [];
     public textAlings: string[] = ['left', 'center', 'right'];
@@ -83,6 +84,11 @@ export class BubbleMenuComponent implements OnInit {
             icon: 'format_clear',
             markAction: 'clearAll',
             active: false
+        },
+        {
+            icon: 'link',
+            markAction: 'link',
+            active: false
         }
     ];
 
@@ -146,6 +152,9 @@ export class BubbleMenuComponent implements OnInit {
                 if (this.isListNode()) {
                     this.editor.commands.liftListItem('listItem');
                 }
+            },
+            link: () => {
+                this.openForm.emit(true);
             },
             clearAll: () => {
                 this.editor.commands.unsetAllMarks();
