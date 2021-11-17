@@ -61,6 +61,6 @@ export class BlockEditorComponent implements OnInit {
     }
 
     openForm() {
-        this.linkForm.toggleTippy();
+        this.linkForm.showForm();
     }
 }

@@ -6,8 +6,8 @@
 >
     <form
         autoComplete="off"
-        (click)="$event.stopPropagation()"
-        (mousedown)="focusInput($event)"
+        (click)="preventHideOnFormClick( $event )"
+        (mousedown)="focusInput()"
         (submit)="addLink()"
         #form
     >

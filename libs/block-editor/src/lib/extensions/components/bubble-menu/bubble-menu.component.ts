@@ -98,7 +98,7 @@ export class BubbleMenuComponent implements OnInit {
         /**
          * Every time the selection is updated, the active state of the buttons must be updated.
          */
-        this.editor.on('selectionUpdate', () => {
+        this.editor.on('update', () => {
             this.setActiveMarks();
             this.updateActiveItems();
         });
