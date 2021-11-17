@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AngularNodeViewComponent } from '@dotcms/block-editor';
+import { AngularNodeViewComponent } from '../../../NodeViewRenderer';
 
 @Component({
     selector: 'dotcms-image-block',

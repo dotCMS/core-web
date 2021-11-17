@@ -1,7 +1,8 @@
 import { Node, mergeAttributes, NodeViewRenderer } from '@tiptap/core';
 import { Injector } from '@angular/core';
 import { DOMOutputSpec, ParseRule } from 'prosemirror-model';
-import { AngularNodeViewRenderer, ImageBlockComponent } from '@dotcms/block-editor';
+import { ImageBlockComponent } from './image-block.component';
+import { AngularNodeViewRenderer } from '../../../NodeViewRenderer';
 
 export const ImageBlock = (injector: Injector): Node => {
     return Node.create({

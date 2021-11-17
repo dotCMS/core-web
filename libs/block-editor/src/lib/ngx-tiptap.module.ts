@@ -20,6 +20,7 @@ import { StringUtils } from '@dotcms/dotcms-js';
 import { DragHandlerComponent } from './extensions/components/drag-handler/drag-handler.component';
 import { ImageBlockComponent } from './extensions/blocks/image-block/image-block.component';
 import { MessageComponent } from './extensions/components/message/message.component';
+import { DotImageService } from './extensions/services/dot-image/dot-image.service';
 
 @NgModule({
     imports: [CommonModule, CardModule, MenuModule],
@@ -37,7 +38,7 @@ import { MessageComponent } from './extensions/components/message/message.compon
         ImageBlockComponent,
         MessageComponent
     ],
-    providers: [SuggestionsService, LoggerService, StringUtils],
+    providers: [SuggestionsService, DotImageService, LoggerService, StringUtils],
     exports: [
         SuggestionsComponent,
         EditorDirective,

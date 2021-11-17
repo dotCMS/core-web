@@ -1,15 +1,15 @@
-import { 
-  Component,
-  OnInit,
-  ComponentFactoryResolver,
-  Injector,
-  ViewEncapsulation
+import {
+    Component,
+    OnInit,
+    ComponentFactoryResolver,
+    Injector,
+    ViewEncapsulation
 } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 
-import { ContentletBlock } from '@dotcms/block-editor';
-import { ActionsMenu } from '@dotcms/block-editor';
+import { ContentletBlock, ImageBlock } from '@dotcms/block-editor';
+import { ActionsMenu, ImageUploadExtension, DragHandler } from '@dotcms/block-editor';
 
 @Component({
     // eslint-disable-next-line
@@ -31,6 +31,9 @@ export class DotBlockEditorComponent implements OnInit {
                 StarterKit,
                 ContentletBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
+                DragHandler(this.injector, this.resolver),
+                ImageUploadExtension(this.injector, this.resolver),
+                ImageBlock(this.injector)
             ]
         });
     }

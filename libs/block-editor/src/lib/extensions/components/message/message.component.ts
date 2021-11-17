@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { AngularNodeViewComponent } from '@dotcms/block-editor';
+import { AngularNodeViewComponent } from '../../../NodeViewRenderer';
 
 export const enum MessageType {
     INFO = 'info',
