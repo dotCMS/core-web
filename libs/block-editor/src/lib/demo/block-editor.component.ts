@@ -53,9 +53,9 @@ export class BlockEditorComponent implements OnInit {
                 }),
                 // Marks Extensions
                 Underline,
-                TextAlign.configure({ types: ['heading', 'paragraph'] }),
-                Link.configure({ openOnClick: false }),
-                Highlight.configure({ multicolor: true } )
+                TextAlign.configure({ types: ['heading', 'paragraph', 'listItem'] }),
+                Highlight.configure({ HTMLAttributes: { class: 'highlighted'} }),
+                Link.configure({ openOnClick: true })
             ]
         });
     }

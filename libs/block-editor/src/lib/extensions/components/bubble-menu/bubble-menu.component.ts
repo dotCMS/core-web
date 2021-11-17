@@ -93,20 +93,20 @@ export class BubbleMenuComponent implements OnInit {
     ];
 
     ngOnInit() {
-        this.enabledMarks = this.getEnabledMarks();
+        this.setEnabledMarks();
 
         /**
          * Every time the selection is updated, the active state of the buttons must be updated.
          */
         this.editor.on('selectionUpdate', () => {
-            this.activeMarks = this.getActiveMarks();
+            this.setActiveMarks();
             this.updateActiveItems();
         });
     }
 
     command(item: BubbleMenuItem): void {
         this.menuActions(item);
-        this.activeMarks = this.getActiveMarks();
+        this.setActiveMarks();
         this.updateActiveItems();
     }
 
@@ -187,12 +187,12 @@ export class BubbleMenuComponent implements OnInit {
         return this.editor.isActive('bulletList') || this.editor.isActive('orderedList');
     }
 
-    private getEnabledMarks() {
-        return [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
+    private setEnabledMarks() {
+        this.enabledMarks = [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
     }
 
-    private getActiveMarks(): string[] {
-        return [
+    private setActiveMarks(): void {
+        this.activeMarks = [
             ...this.enabledMarks.filter((mark) => this.editor.isActive(mark)),
             ...this.textAlings.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
         ];

@@ -20,9 +20,9 @@ import { Editor, isTextSelection, posToDOMRect } from '@tiptap/core';
 export class BubbleMenuLinkFormComponent implements OnInit, AfterViewInit {
 
     @ViewChild('form') form: ElementRef;
-    @ViewChild('formContainer') formContainer: ElementRef;
     @ViewChild('input') input: ElementRef;
-
+    @ViewChild('formContainer') formContainer: ElementRef;
+    
     @Input() editor: Editor;
 
     public nodeLink = '';
@@ -41,13 +41,14 @@ export class BubbleMenuLinkFormComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         this.tippy = tippy(this.formContainer.nativeElement as HTMLElement, {
-            duration: 0,
+            duration: 150,
             getReferenceClientRect: null,
             content: this.form.nativeElement,
             interactive: true,
             trigger: 'manual',
             placement: 'bottom',
             hideOnClick: 'toggle',
+            animation: 'fade',
             appendTo: this.formContainer.nativeElement
         });
         this.tippy.show();
