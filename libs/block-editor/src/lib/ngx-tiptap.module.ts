@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { EditorDirective } from './editor.directive';
 import { BubbleMenuDirective } from './bubble-menu.directive';
@@ -23,7 +24,7 @@ import { BubbleMenuButtonComponent } from './extensions/components/bubble-menu-b
 import { BubbleMenuLinkFormComponent } from './extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 
 @NgModule({
-    imports: [CommonModule, CardModule, MenuModule],
+    imports: [CommonModule, FormsModule, CardModule, MenuModule],
     declarations: [
         EditorDirective,
         BubbleMenuDirective,

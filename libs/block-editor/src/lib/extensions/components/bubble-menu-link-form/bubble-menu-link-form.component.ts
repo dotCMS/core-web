@@ -26,6 +26,7 @@ export class BubbleMenuLinkFormComponent implements OnInit, AfterViewInit {
     @Input() editor: Editor;
 
     public nodeLink = '';
+    public newLink = '';
     public tippy: Instance;
 
     ngOnInit(): void {
@@ -54,11 +55,11 @@ export class BubbleMenuLinkFormComponent implements OnInit, AfterViewInit {
         this.tippy.show();
     }
 
-    addLink(newLink: string) {
-        if (!newLink) {
+    addLink() {
+        if (!this.newLink) {
             return;
         }
-        this.editor.commands.setLink({ href: newLink });
+        this.editor.commands.setLink({ href: this.newLink });
         this.editor.commands.unsetHighlight();
         this.hideForm();
     }
@@ -100,6 +101,7 @@ export class BubbleMenuLinkFormComponent implements OnInit, AfterViewInit {
 
 
     hideForm() {
+        this.newLink = '';
         this.tippy.hide();
         this.formContainer.nativeElement.style.visibility = 'hidden';
         this.editor.view.focus();

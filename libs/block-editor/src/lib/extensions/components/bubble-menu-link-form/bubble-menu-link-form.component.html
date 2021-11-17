@@ -8,7 +8,7 @@
         autoComplete="off"
         (click)="$event.stopPropagation()"
         (mousedown)="focusInput($event)"
-        (submit)="addLink(input.value)"
+        (submit)="addLink()"
         #form
     >
         <div class="input-container">
@@ -18,6 +18,7 @@
                 type="text"
                 (focus)="addHighlight()"
                 (focusout)="removeHighlight()"
+                [(ngModel)]="newLink"
                 #input
             />
         </div>
