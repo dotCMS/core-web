@@ -3,6 +3,7 @@ import {
     ComponentFactoryResolver,
     Injector,
     OnInit,
+    ViewChild,
     ViewEncapsulation
 } from '@angular/core';
 import { Editor } from '@tiptap/core';
@@ -14,8 +15,11 @@ import { DragHandler } from '../extensions/dragHandler.extention';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 
 // Marks Extensions
+import { Highlight } from '@tiptap/extension-highlight';
+import { Link } from '@tiptap/extension-link';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Underline } from '@tiptap/extension-underline';
+import { BubbleMenuLinkFormComponent } from '../extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -26,6 +30,8 @@ import { Underline } from '@tiptap/extension-underline';
 export class BlockEditorComponent implements OnInit {
     editor: Editor;
 
+    @ViewChild('linkForm') linkForm: BubbleMenuLinkFormComponent;
+ 
     value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
     constructor(private injector: Injector, private resolver: ComponentFactoryResolver) {}
@@ -41,16 +47,20 @@ export class BlockEditorComponent implements OnInit {
                     element: document.querySelector('#bubbleMenu'),
                     tippyOptions: {
                         maxWidth: 'none',
-                        placement: 'bottom-start',
+                        placement: 'top-start',
                         trigger: 'manual'
                     }
                 }),
                 // Marks Extensions
                 Underline,
-                TextAlign.configure({
-                    types: ['heading', 'paragraph'],
-                })
+                TextAlign.configure({ types: ['heading', 'paragraph', 'listItem'] }),
+                Highlight.configure({ HTMLAttributes: { class: 'highlighted'} }),
+                Link.configure({ openOnClick: true })
             ]
         });
+    }
+
+    openForm() {
+        this.linkForm.showForm();
     }
 }

@@ -1,0 +1,50 @@
+
+<div
+    class="overlay"
+    (click)="hideForm()"
+    #formContainer
+>
+    <form
+        autoComplete="off"
+        (click)="preventHideOnFormClick( $event )"
+        (mousedown)="focusInput()"
+        (submit)="addLink()"
+        #form
+    >
+        <div class="input-container">
+            <input
+                name="link" 
+                placeholder="Paste Link"
+                type="text"
+                (focus)="addHighlight()"
+                (focusout)="removeHighlight()"
+                [(ngModel)]="newLink"
+                #input
+            />
+        </div>
+        <div *ngIf="nodeLink">
+            <div class="info-box">
+                <span class="sub-title">LINKED TO</span>
+                <div class="link-box">
+                    <a [href]="nodeLink">
+                        <span class="material-icons">language</span>
+                        <span>
+                            {{ nodeLink.length > 35 ? (nodeLink | slice:0:35 ) + '...' : nodeLink}}
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <hr class="separator" />
+            <div class="buttons-box">
+                <button (click)="copyLink()">
+                    <span class="material-icons">content_copy</span>
+                    Copy Link
+                </button>
+                <button (click)="removeLink()">
+                    <span class="material-icons">delete_outline</span>
+                    Remove Link
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

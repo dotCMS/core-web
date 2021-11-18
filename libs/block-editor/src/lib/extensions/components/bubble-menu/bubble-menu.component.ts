@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Editor } from '@tiptap/core';
 
 export interface BubbleMenuItem {
@@ -15,6 +15,7 @@ export interface BubbleMenuItem {
 })
 export class BubbleMenuComponent implements OnInit {
     @Input() editor: Editor;
+    @Output() openForm: EventEmitter<boolean> =  new EventEmitter();
 
     public enabledMarks: string[] = [];
     public textAlings: string[] = ['left', 'center', 'right'];
@@ -80,6 +81,12 @@ export class BubbleMenuComponent implements OnInit {
             divider: true
         },
         {
+            icon: 'link',
+            markAction: 'link',
+            active: false,
+            divider: true
+        },
+        {
             icon: 'format_clear',
             markAction: 'clearAll',
             active: false
@@ -87,20 +94,20 @@ export class BubbleMenuComponent implements OnInit {
     ];
 
     ngOnInit() {
-        this.enabledMarks = this.getEnabledMarks();
+        this.setEnabledMarks();
 
         /**
          * Every time the selection is updated, the active state of the buttons must be updated.
          */
-        this.editor.on('selectionUpdate', () => {
-            this.activeMarks = this.getActiveMarks();
+        this.editor.on('update', () => {
+            this.setActiveMarks();
             this.updateActiveItems();
         });
     }
 
     command(item: BubbleMenuItem): void {
         this.menuActions(item);
-        this.activeMarks = this.getActiveMarks();
+        this.setActiveMarks();
         this.updateActiveItems();
     }
 
@@ -147,6 +154,9 @@ export class BubbleMenuComponent implements OnInit {
                     this.editor.commands.liftListItem('listItem');
                 }
             },
+            link: () => {
+                this.openForm.emit(true);
+            },
             clearAll: () => {
                 this.editor.commands.unsetAllMarks();
                 this.editor.commands.unsetTextAlign();
@@ -178,12 +188,12 @@ export class BubbleMenuComponent implements OnInit {
         return this.editor.isActive('bulletList') || this.editor.isActive('orderedList');
     }
 
-    private getEnabledMarks() {
-        return [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
+    private setEnabledMarks() {
+        this.enabledMarks = [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
     }
 
-    private getActiveMarks(): string[] {
-        return [
+    private setActiveMarks(): void {
+        this.activeMarks = [
             ...this.enabledMarks.filter((mark) => this.editor.isActive(mark)),
             ...this.textAlings.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
         ];
