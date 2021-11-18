@@ -149,7 +149,7 @@ export class BubbleMenuComponent implements OnInit {
             },
             clearAll: () => {
                 this.editor.commands.unsetAllMarks();
-                this.editor.commands.unsetTextAlign();
+                this.editor.commands.clearNodes();
             }
         };
 

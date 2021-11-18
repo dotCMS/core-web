@@ -40,6 +40,7 @@ export class BlockEditorComponent implements OnInit {
                 BubbleMenu.configure({
                     element: document.querySelector('#bubbleMenu'),
                     tippyOptions: {
+                        duration: 500,
                         maxWidth: 'none',
                         placement: 'bottom-start',
                         trigger: 'manual'

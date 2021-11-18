@@ -7,17 +7,20 @@
 .btn-bubble-menu {
     background: #fff;
     border: none;
+    color: #222222;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
-    &.btn-active {
-        background: #000;
-        color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    &:hover {
+        background: #F2F2F2;
     }
-    span {
-        font-size: 20px;
+    &.btn-active {
+        background: #F2F2F2;
+        color: #222222;
+        border: 1px solid #C2C1C8;
     }
 }
