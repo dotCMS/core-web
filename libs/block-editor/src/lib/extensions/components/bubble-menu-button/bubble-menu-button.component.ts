@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 // Interface
-import { BubbleMenuItem } from '../bubble-menu/bubble-menu.component';
+import type { BubbleMenuItem } from '../bubble-menu/bubble-menu.component';
 
 @Component({
   selector: 'dotcms-bubble-menu-button',
