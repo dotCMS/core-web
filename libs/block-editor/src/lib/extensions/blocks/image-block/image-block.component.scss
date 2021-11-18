@@ -1,3 +1,7 @@
 dotcms-image-block {
     display: block;
+
+    img {
+        max-width: 100%;
+    }
 }
