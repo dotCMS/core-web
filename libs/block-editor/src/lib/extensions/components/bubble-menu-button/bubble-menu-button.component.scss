@@ -1,3 +1,5 @@
+@import "variables";
+
 :host {
     display: flex;
     align-items: center;
@@ -5,22 +7,24 @@
 }
 
 .btn-bubble-menu {
-    background: #fff;
+    background: $white;
     border: none;
-    color: #222222;
+    color: $black;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
+    width: 2.286rem;
+    height: 2.286rem;
+    border-radius: $border-radius;
+
     &:hover {
-        background: #F2F2F2;
+        background: $gray-bg;
     }
+
     &.btn-active {
-        background: #F2F2F2;
-        color: #222222;
-        border: 1px solid #C2C1C8;
+        background: $gray-bg;
+        color: $black;
+        border: 1px solid $gray-light;
     }
 }
