@@ -14,7 +14,6 @@ const TEMP_API_URL = '/api/v1/temp';
  * @param file
  * @param maxSize
  *
- * @memberof DotUploadService
  */
 export function uploadFile(file: string | File, maxSize?: string): Promise<DotCMSTempFile> {
     if (typeof file === 'string') {
@@ -52,7 +51,6 @@ function uploadFileByURL(url: string): Promise<DotCMSTempFile> {
  * @param progressCallBack
  * @param maxSize
  *
- * @memberof DotUploadService
  */
 export function uploadBinaryFile(
     data: File | File[],
