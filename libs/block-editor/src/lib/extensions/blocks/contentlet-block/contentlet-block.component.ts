@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularNodeViewComponent } from '../../../NodeViewRenderer';
 
 @Component({
@@ -8,6 +8,7 @@ import { AngularNodeViewComponent } from '../../../NodeViewRenderer';
     encapsulation: ViewEncapsulation.None
 })
 export class ContentletBlockComponent extends AngularNodeViewComponent implements OnInit {
+    @HostBinding('attr.data-drag-handle') handle = true;
     data: {
         title: string;
         inode: string;

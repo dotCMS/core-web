@@ -30,8 +30,7 @@ export class BlockEditorComponent implements OnInit {
             extensions: [
                 StarterKit,
                 ContentletBlock(this.injector),
-                ActionsMenu(this.injector, this.resolver),
-                DragHandler(this.injector, this.resolver)
+                ActionsMenu(this.injector, this.resolver)
             ]
         });
     }
