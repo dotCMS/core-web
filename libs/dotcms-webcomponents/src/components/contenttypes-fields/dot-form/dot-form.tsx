@@ -50,6 +50,7 @@ export class DotFormComponent {
     @State()
     uploadFileInProgress = false;
 
+    /**Emit when submit the form */
     @Event()
     submit: EventEmitter<DotCMSContentlet>;
 
