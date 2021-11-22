@@ -159,7 +159,7 @@ export class BubbleMenuComponent implements OnInit {
             },
             clearAll: () => {
                 this.editor.commands.unsetAllMarks();
-                this.editor.commands.unsetTextAlign();
+                this.editor.commands.clearNodes();
             }
         };
 
@@ -176,7 +176,7 @@ export class BubbleMenuComponent implements OnInit {
         });
     }
 
-    private toggleTextAlign(aligment: string, active: boolean) {
+    private toggleTextAlign(aligment: string, active: boolean): void {
         if (active) {
             this.editor.commands.unsetTextAlign();
         } else {
@@ -184,11 +184,11 @@ export class BubbleMenuComponent implements OnInit {
         }
     }
 
-    private isListNode() {
+    private isListNode(): boolean {
         return this.editor.isActive('bulletList') || this.editor.isActive('orderedList');
     }
 
-    private setEnabledMarks() {
+    private setEnabledMarks(): void {
         this.enabledMarks = [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
     }
 

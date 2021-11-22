@@ -17,9 +17,9 @@ import BubbleMenu from '@tiptap/extension-bubble-menu';
 // Marks Extensions
 import { Highlight } from '@tiptap/extension-highlight';
 import { Link } from '@tiptap/extension-link';
+import { BubbleMenuLinkFormComponent } from '../extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Underline } from '@tiptap/extension-underline';
-import { BubbleMenuLinkFormComponent } from '../extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -46,8 +46,9 @@ export class BlockEditorComponent implements OnInit {
                 BubbleMenu.configure({
                     element: document.querySelector('#bubbleMenu'),
                     tippyOptions: {
+                        duration: 500,
                         maxWidth: 'none',
-                        placement: 'top-start',
+                        placement: 'bottom-start',
                         trigger: 'manual'
                     }
                 }),
