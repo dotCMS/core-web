@@ -14,35 +14,31 @@
         <div class="input-container">
             <input
                 name="link" 
-                placeholder="Paste Link"
+                placeholder="Type or Paste Link"
                 type="text"
                 (focus)="addHighlight()"
                 (focusout)="removeHighlight()"
                 [(ngModel)]="newLink"
                 #input
             />
+            <button class="btn btn-add">ADD</button>
         </div>
-        <div *ngIf="nodeLink">
-            <div class="info-box">
-                <span class="sub-title">LINKED TO</span>
-                <div class="link-box">
-                    <a [href]="nodeLink">
+        <div class="card-container" *ngIf="nodeLink">
+            <div class="card-header">
+                <span class="linked-to">LINKED TO</span>
+                <div class="link-container">
+                    <a class="link" [href]="nodeLink">
                         <span class="material-icons">language</span>
-                        <span>
-                            {{ nodeLink.length > 35 ? (nodeLink | slice:0:35 ) + '...' : nodeLink}}
-                        </span>
+                        {{ nodeLink.length > 50 ? (nodeLink | slice:0:50 ) + '...' : nodeLink}}
                     </a>
                 </div>
             </div>
-            <hr class="separator" />
-            <div class="buttons-box">
-                <button (click)="copyLink()">
-                    <span class="material-icons">content_copy</span>
-                    Copy Link
+            <div class="card-footer">
+                <button class="btn btn-copy" (click)="copyLink()">
+                    COPY LINK
                 </button>
-                <button (click)="removeLink()">
-                    <span class="material-icons">delete_outline</span>
-                    Remove Link
+                <button class="btn btn-remove" (click)="removeLink()">
+                    REMOVE LINK
                 </button>
             </div>
         </div>

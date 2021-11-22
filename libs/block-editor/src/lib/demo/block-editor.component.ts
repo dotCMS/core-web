@@ -48,7 +48,7 @@ export class BlockEditorComponent implements OnInit {
                     tippyOptions: {
                         duration: 500,
                         maxWidth: 'none',
-                        placement: 'bottom-start',
+                        placement: 'top-start',
                         trigger: 'manual'
                     }
                 }),

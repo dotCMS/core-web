@@ -1,3 +1,5 @@
+@import "variables";
+
 .overlay {
     background: transparent;
     height: 100vh;
@@ -10,86 +12,106 @@
 }
 
 form {
-    background: #ffffff;
-    border-radius: 2px;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    background: $white;
+    border-radius: $border-radius;
+    box-shadow: 0px 4px 10px rgba(10, 7, 37, 0.1);
     display: flex;
     flex-direction: column;
-    width: 300px;
+    padding: 0.5rem;
+    width: 400px;
+}
 
-    .input-container {
-        width: 100%;
-        padding: 1rem 10px;
-        input {
-            background: #f8f9fa;
-            border: 2px solid #90e0ef;
-            padding: 5px;
-            width: 100%;
-            &:focus {
-                border: 2px solid #90e0ef;
-                outline: none;
-            }
+.input-container {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: space-between;
+    width: 100%;
+    input {
+        background: #FFFFFF;
+        border-radius: $border-radius;
+        border: 1px solid #B3B1B8;
+        box-sizing: border-box;
+        padding: 0.85rem;
+        width: calc(100% - 5.5rem);
+        &:focus {
+            outline: none;
         }
     }
+}
 
-    .separator {
-        border: none;
-        border-top: 1px solid #cccccc;
+.card-container {
+    padding: 0.5rem;
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+    padding-top: 1rem;
+}
+
+.linked-to {
+    color: $gray;
+    font-size: $font-size-small;
+    font-weight: $font-weight-semi-bold;
+}
+
+.link-container {
+    cursor: pointer;
+    white-space: nowrap;
+    word-wrap: normal;
+    &:hover {
+        background-color: $gray-bg;
     }
+}
 
-    .info-box {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    
-        .sub-title {
-            color: #8b8c89;
-            font-size: 0.85rem;
-            font-weight: medium;
-            padding: 0 10px;
-        }
+.link {
+    align-items: center;
+    color: $black;
+    display: flex;
+    font-size: $font-size-medium;
+    gap: 0.625rem;
+    height: 100%;
+    justify-content: flex-start;
+    padding: 0.5rem 0;
+    text-decoration: none;
+    width: 100%;
+}
 
-        .link-box {
-            cursor: pointer;
-            overflow: hidden;
-            white-space: nowrap;
-            word-wrap: normal;
-            a {
-                color: #212529;
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                gap: 10px;
-                font-size: 1rem;
-                height: 100%;
-                padding: 10px;
-                text-decoration: none;
-                width: 100%;
-            }
-            &:hover {
-                background-color: #f8f9fa;
-            }
-        }
-    }
+.card-footer {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
 
-    .buttons-box {
-        padding-bottom: 0.625rem;
-        button {
-            align-items: center;
-            background: #ffffff;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            gap: 10px;
-            justify-content: flex-start;
-            padding: 10px;
-            width: 100%;
-            span {
-                font-size: 1.25rem;
-            }
-            &:hover {
-                background-color: #f8f9fa;
-            }
-        }
-    }
+.btn {
+    align-items: center;
+    background: $white;
+    border-radius: $border-radius;
+    cursor: pointer;
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+    width: 180px;
+}
+
+.btn-add {
+    width: 5.5rem;
+    background: #576BE8;
+    border: 1px solid #576BE8;
+    color: $white;
+}
+
+.btn-copy { 
+    border: 1px solid #576BE8;
+    color: #576BE8;
+}
+
+.btn-remove {
+    border: 1px solid #EC4B41;
+    color: #EC4B41;
 }
