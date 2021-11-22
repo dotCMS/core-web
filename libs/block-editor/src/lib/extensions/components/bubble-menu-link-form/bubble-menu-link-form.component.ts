@@ -78,8 +78,8 @@ export class BubbleMenuLinkFormComponent implements OnInit, AfterViewInit {
     }
 
     showForm() {
-        this.newLink = '';
         this.isLink();
+        this.newLink = this.nodeLink;
         this.tippy.show();
         this.formContainer.nativeElement.style.visibility = 'visible';
         // tippy.show() has a delay before mounting the element
