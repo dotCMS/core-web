@@ -8,8 +8,8 @@ import {
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 
-import { ContentletBlock, ImageBlock } from '@dotcms/block-editor';
-import { ActionsMenu, ImageUploadExtension, DragHandler } from '@dotcms/block-editor';
+import { ContentletBlock, ImageBlock, ImageUpload } from '@dotcms/block-editor';
+import { ActionsMenu, DragHandler } from '@dotcms/block-editor';
 
 @Component({
     // eslint-disable-next-line
@@ -32,7 +32,7 @@ export class DotBlockEditorComponent implements OnInit {
                 ContentletBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
                 DragHandler(this.injector, this.resolver),
-                ImageUploadExtension(this.injector, this.resolver),
+                ImageUpload(this.injector, this.resolver),
                 ImageBlock(this.injector)
             ]
         });

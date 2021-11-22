@@ -19,7 +19,7 @@ import { LoggerService } from '@dotcms/dotcms-js';
 import { StringUtils } from '@dotcms/dotcms-js';
 import { DragHandlerComponent } from './extensions/components/drag-handler/drag-handler.component';
 import { ImageBlockComponent } from './extensions/blocks/image-block/image-block.component';
-import { MessageComponent } from './extensions/components/message/message.component';
+import { LoaderComponent } from './extensions/components/loader/loader.component';
 import { DotImageService } from './extensions/services/dot-image/dot-image.service';
 
 @NgModule({
@@ -36,7 +36,7 @@ import { DotImageService } from './extensions/services/dot-image/dot-image.servi
         ActionButtonComponent,
         DragHandlerComponent,
         ImageBlockComponent,
-        MessageComponent
+        LoaderComponent
     ],
     providers: [SuggestionsService, DotImageService, LoggerService, StringUtils],
     exports: [

@@ -8,11 +8,11 @@ export const enum MessageType {
 
 @Component({
     selector: 'dotcms-message',
-    templateUrl: './message.component.html',
-    styleUrls: ['./message.component.scss'],
+    templateUrl: './loader.component.html',
+    styleUrls: ['./loader.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class MessageComponent extends AngularNodeViewComponent {
+export class LoaderComponent extends AngularNodeViewComponent {
     data: {
         type: MessageType;
         message: string;

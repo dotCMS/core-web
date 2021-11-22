@@ -16,8 +16,9 @@ import { ActionButtonComponent } from '../extensions/components/action-button/ac
 import { ContentletBlockComponent } from '../extensions/blocks/contentlet-block/contentlet-block.component';
 import { DragHandlerComponent } from '../extensions/components/drag-handler/drag-handler.component';
 import { ImageBlockComponent } from '../extensions/blocks/image-block/image-block.component';
-import { MessageComponent } from '../extensions/components/message/message.component';
+import { LoaderComponent } from '../extensions/components/loader/loader.component';
 import { DotImageService } from '../extensions/services/dot-image/dot-image.service';
+import { delay } from 'rxjs/operators';
 
 export default {
     title: 'Block Editor'
@@ -48,7 +49,7 @@ export const primary = () => ({
                                     name: 'costarica.png'
                                 }
                             }
-                        ]);
+                        ]).pipe(delay(500));
                     }
                 }
             },
@@ -121,7 +122,7 @@ export const primary = () => ({
             ActionButtonComponent,
             DragHandlerComponent,
             ImageBlockComponent,
-            MessageComponent
+            LoaderComponent
         ]
     },
     component: BlockEditorComponent

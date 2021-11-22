@@ -3,24 +3,35 @@ import { ComponentFactoryResolver, ComponentRef, Injector } from '@angular/core'
 import { Extension } from '@tiptap/core';
 import { DotImageService } from './services/dot-image/dot-image.service';
 import { EditorView } from 'prosemirror-view';
-import { MessageComponent, MessageType } from './components/message/message.component';
+import { LoaderComponent, MessageType } from './components/loader/loader.component';
 import { PlaceholderPlugin } from '../plugins/placeholder.plugin';
 import { take } from 'rxjs/operators';
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
-export const ImageUploadExtension = (injector: Injector, resolver: ComponentFactoryResolver) => {
+export const ImageUpload = (injector: Injector, resolver: ComponentFactoryResolver) => {
     return Extension.create({
         name: 'imageUpload',
 
         addProseMirrorPlugins() {
             const dotImageService = injector.get(DotImageService);
-            const messageBlockFactory = resolver.resolveComponentFactory(MessageComponent);
+            const loaderComponentFactory = resolver.resolveComponentFactory(LoaderComponent);
 
-            function areImageFiles(files: FileList): boolean {
-                for (let i = 0; i < files.length; i++) {
-                    if (!files[i].type.startsWith('image/')) {
-                        return false;
+            function areImageFiles(event: ClipboardEvent | DragEvent): boolean {
+                let files: FileList;
+                if (event.type === 'drop') {
+                    files = (event as DragEvent).dataTransfer.files;
+                } else {
+                    //paste
+                    files = (event as ClipboardEvent).clipboardData.files;
+                }
+                if (!!files.length) {
+                    for (let i = 0; i < files.length; i++) {
+                        if (!files[i].type.startsWith('image/')) {
+                            return false;
+                        }
                     }
                 }
+
                 return !!files.length;
             }
 
@@ -31,15 +42,15 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
             }
 
             function setPlaceHolder(view: EditorView, position: number, id: string) {
-                const messageBlock: ComponentRef<MessageComponent> = messageBlockFactory.create(
+                const loadingBlock: ComponentRef<LoaderComponent> = loaderComponentFactory.create(
                     injector
                 );
                 let tr = view.state.tr;
-                messageBlock.instance.data = {
+                loadingBlock.instance.data = {
                     message: 'Uploading...',
                     type: MessageType.INFO
                 };
-                messageBlock.changeDetectorRef.detectChanges();
+                loadingBlock.changeDetectorRef.detectChanges();
 
                 if (!tr.selection.empty) {
                     tr.deleteSelection();
@@ -49,7 +60,7 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                     add: {
                         id: id,
                         pos: position,
-                        element: messageBlock.location.nativeElement
+                        element: loadingBlock.location.nativeElement
                     }
                 });
 
@@ -59,29 +70,24 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
             function uploadImages(view: EditorView, files: File[], position = 0) {
                 const { schema } = view.state;
 
-                files.forEach((file) => {
-                    setPlaceHolder(view, position, file.name);
-                });
+                setPlaceHolder(view, position, files[0].name);
 
                 dotImageService
-                    .get(files)
+                    .publishContent(files)
                     .pipe(take(1))
                     .subscribe(
-                        (dotAssets: []) => {
+                        (dotAssets: DotCMSContentlet[]) => {
                             const tr = view.state.tr;
-                            dotAssets.forEach((asset: any) => {
-                                const data = asset[Object.keys(asset)[0]];
-                                let pos = findPlaceholder(view.state, data.name);
-
-                                const imageNode = schema.nodes.dotImage.create({
-                                    data: data
-                                });
-                                view.dispatch(
-                                    tr.replaceWith(pos, pos, imageNode).setMeta(PlaceholderPlugin, {
-                                        remove: { id: data.name }
-                                    })
-                                );
+                            const data = dotAssets[0][Object.keys(dotAssets[0])[0]];
+                            let pos = findPlaceholder(view.state, data.name);
+                            const imageNode = schema.nodes.dotImage.create({
+                                data: data
                             });
+                            view.dispatch(
+                                tr.replaceWith(pos, pos, imageNode).setMeta(PlaceholderPlugin, {
+                                    remove: { id: data.name }
+                                })
+                            );
                         },
                         (error) => {
                             alert(error.message);
@@ -104,10 +110,7 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                     props: {
                         handleDOMEvents: {
                             paste(view, event) {
-                                if (
-                                    !!event.clipboardData.files.length &&
-                                    areImageFiles(event.clipboardData.files)
-                                ) {
+                                if (areImageFiles(event)) {
                                     if (event.clipboardData.files.length !== 1) {
                                         alert('Can paste just one image at a time');
                                         return false;
@@ -124,24 +127,17 @@ export const ImageUploadExtension = (injector: Injector, resolver: ComponentFact
                             },
 
                             drop(view, event) {
-                                if (
-                                    !!event.dataTransfer.files.length &&
-                                    areImageFiles(event.dataTransfer.files)
-                                ) {
+                                if (areImageFiles(event)) {
                                     event.preventDefault();
                                     if (event.dataTransfer.files.length !== 1) {
                                         alert('Can drop just one image at a time');
                                         return false;
                                     }
-                                    const position = view.posAtCoords({
+                                    const { pos } = view.posAtCoords({
                                         left: event.clientX,
                                         top: event.clientY
                                     });
-                                    uploadImages(
-                                        view,
-                                        Array.from(event.dataTransfer.files),
-                                        position.pos
-                                    );
+                                    uploadImages(view, Array.from(event.dataTransfer.files), pos);
                                 }
                                 return false;
                             }

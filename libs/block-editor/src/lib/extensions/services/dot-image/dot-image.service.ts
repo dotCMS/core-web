@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class DotImageService {
     constructor(private http: HttpClient) {}
 
-    get(data: File | File[], maxSize?: string): Observable<any> {
+    publishContent(data: File | File[], maxSize?: string): Observable<any> {
         return this.setTempResource(data, maxSize).pipe(
             switchMap((response: DotCMSTempFile | DotCMSTempFile[]) => {
                 const files = Array.isArray(response) ? response : [response];
@@ -29,8 +29,7 @@ export class DotImageService {
                         {
                             headers: {
                                 Origin: window.location.hostname,
-                                'Content-Type': 'application/json;charset=UTF-8',
-                                Authorization: 'Basic YWRtaW5AZG90Y21zLmNvbTphZG1pbg=='
+                                'Content-Type': 'application/json;charset=UTF-8'
                             }
                         }
                     )
@@ -39,7 +38,10 @@ export class DotImageService {
         );
     }
 
-    private setTempResource(data: File | File[], maxSize?: string): Observable<any> {
+    private setTempResource(
+        data: File | File[],
+        maxSize?: string
+    ): Observable<DotCMSTempFile | DotCMSTempFile[]> {
         return from(uploadBinaryFile(data, () => {}, maxSize));
     }
 }

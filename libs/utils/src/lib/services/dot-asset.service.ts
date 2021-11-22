@@ -68,8 +68,7 @@ function fetchAsset(url, data): Promise<Response> {
         method: 'PUT',
         headers: {
             Origin: window.location.hostname,
-            'Content-Type': 'application/json;charset=UTF-8',
-            Authorization: 'Basic YWRtaW5AZG90Y21zLmNvbTphZG1pbg=='
+            'Content-Type': 'application/json;charset=UTF-8'
         },
         body: JSON.stringify(data)
     });

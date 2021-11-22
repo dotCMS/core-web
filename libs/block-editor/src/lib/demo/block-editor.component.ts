@@ -11,7 +11,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { ActionsMenu } from '../extensions/actions-menu.extension';
 import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentlet-block.extension';
 import { DragHandler } from '../extensions/dragHandler.extention';
-import { ImageUploadExtension } from '../extensions/imageUpload.extention';
+import { ImageUpload } from '../extensions/imageUpload.extention';
 import { ImageBlock } from '../extensions/blocks/image-block/image-block.extention';
 
 @Component({
@@ -35,7 +35,7 @@ export class BlockEditorComponent implements OnInit {
                 ImageBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
                 DragHandler(this.injector, this.resolver),
-                ImageUploadExtension(this.injector, this.resolver)
+                ImageUpload(this.injector, this.resolver)
             ]
         });
     }
