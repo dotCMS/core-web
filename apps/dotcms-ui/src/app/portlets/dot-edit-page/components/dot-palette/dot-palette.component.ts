@@ -8,6 +8,7 @@ import { DotCMSContentType } from '@dotcms/dotcms-models';
 })
 export class DotPaletteComponent {
     @Input() items: DotCMSContentType[] = [];
+    @Input() languageId: string;
     contentTypeVariable: string = '';
 
     constructor() {}

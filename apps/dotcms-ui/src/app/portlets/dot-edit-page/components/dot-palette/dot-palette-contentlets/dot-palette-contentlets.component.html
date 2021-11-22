@@ -12,16 +12,20 @@
         data-testId="paletteItem"
         (dragstart)="dragStart(item)"
     >
-        <img src="/dA/{{ item.inode }}/titleImage/48w" *ngIf="item?.hasTitleImage === true" />
-        <dot-contentlet-icon
-            *ngIf="item?.hasTitleImage !== true"
-            [icon]="
-                item?.baseType !== 'FILEASSET'
-                    ? item?.contentTypeIcon || item?.icon
-                    : item?.__icon__
-            "
-            size="45px"
-        ></dot-contentlet-icon>
+        <img
+            src="/dA/{{ item.inode }}/titleImage/48w"
+            *ngIf="item?.hasTitleImage === true; else showIcon"
+        />
+        <ng-template #showIcon>
+            <dot-contentlet-icon
+                [icon]="
+                    item?.baseType !== 'FILEASSET'
+                        ? item?.contentTypeIcon || item?.icon
+                        : item?.__icon__
+                "
+                size="45px"
+            ></dot-contentlet-icon>
+        </ng-template>
         <p>{{ item.title || item.name }}</p>
     </div>
     <p-paginator

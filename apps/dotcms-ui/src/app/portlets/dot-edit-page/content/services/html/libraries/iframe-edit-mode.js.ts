@@ -441,14 +441,17 @@ function initDragAndDrop () {
                     if (draggedContent.contentType === 'FORM') {
                         const requestForm = async () => {
                             const url = 'api/v1/containers/form/' + draggedContent.id + '?containerId=' + container.dataset['dotIdentifier'];
-                            const response = await fetch(url);
-                            const json = await response.json();
-
-                            sendCreateContentletEvent({ 
-                                baseType: 'FORM',
-                                identifier: json.entity.content.identifier,
-                                inode: json.entity.content.inode
-                            });
+                            try {
+                                const response = await fetch(url);
+                                const json = await response.json();
+                                sendCreateContentletEvent({ 
+                                    baseType: 'FORM',
+                                    identifier: json.entity.content.identifier,
+                                    inode: json.entity.content.inode
+                                });
+                            } catch(e) {
+                                handleHttpErrors(e);
+                            }
                         }
                         requestForm();
 

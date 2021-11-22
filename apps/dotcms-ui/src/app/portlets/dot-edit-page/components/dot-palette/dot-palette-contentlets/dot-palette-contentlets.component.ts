@@ -3,13 +3,17 @@ import {
     EventEmitter,
     Input,
     OnChanges,
+    OnInit,
     Output,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
 import { DotContentletEditorService } from '@dotcms/app/view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
-import { DotPaginatorESContentService } from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
+import {
+    DotPaginatorESContentService,
+    queryEsParams
+} from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
 import { PaginatorService } from '@services/paginator';
 import { LazyLoadEvent } from 'primeng/api';
 import { take } from 'rxjs/operators';
@@ -20,21 +24,33 @@ import { DotPaletteInputFilterComponent } from '../dot-palette-input-filter/dot-
     templateUrl: './dot-palette-contentlets.component.html',
     styleUrls: ['./dot-palette-contentlets.component.scss']
 })
-export class DotPaletteContentletsComponent implements OnChanges {
+export class DotPaletteContentletsComponent implements OnInit, OnChanges {
     @ViewChild('filterInput', { static: true })
     filterInput: DotPaletteInputFilterComponent;
 
     @Input() contentTypeVariable: string;
+    @Input() languageId: string;
     @Output() hide = new EventEmitter();
-    items: DotCMSContentlet[] | DotCMSContentType[];
+    items: DotCMSContentlet[] | DotCMSContentType[] = [];
     isFormContentType: boolean;
     hideNoResults = true;
+
+    private _ESParams: queryEsParams;
+    private _filter: string;
 
     constructor(
         public paginatorESService: DotPaginatorESContentService,
         public paginationService: PaginatorService,
         private dotContentletEditorService: DotContentletEditorService
     ) {}
+
+    ngOnInit(): void {
+        this._ESParams = {
+            itemsPerPage: 15,
+            lang: this.languageId || '1',
+            query: ''
+        };
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.contentTypeVariable?.currentValue) {
@@ -46,10 +62,6 @@ export class DotPaletteContentletsComponent implements OnChanges {
                 this.paginationService.sortField = 'modDate';
                 this.paginationService.setExtraParams('type', 'Form');
                 this.paginationService.sortOrder = 1;
-            } else {
-                this.paginatorESService.setExtraParams('+contentType', this.contentTypeVariable);
-                this.paginatorESService.deleteExtraParams('+title');
-                this.paginatorESService.paginationPerPage = 15;
             }
 
             this.loadData();
@@ -78,9 +90,14 @@ export class DotPaletteContentletsComponent implements OnChanges {
                 });
         } else {
             this.paginatorESService
-                .getWithOffset((event && event.first) || 0)
+                .get({
+                    ...this._ESParams,
+                    filter: this._filter || '',
+                    offset: (event && event.first) || 0,
+                    query: `+contentType: ${this.contentTypeVariable}`
+                })
                 .pipe(take(1))
-                .subscribe((data: DotCMSContentlet[]) => {
+                .subscribe((data: DotCMSContentType[] | DotCMSContentlet[]) => {
                     this.items = data;
                     this.hideNoResults = !!data?.length;
                 });
@@ -93,7 +110,7 @@ export class DotPaletteContentletsComponent implements OnChanges {
      * @param LazyLoadEvent event
      * @memberof DotPaletteContentletsComponent
      */
-    paginate(event: LazyLoadEvent) {
+    paginate(event: LazyLoadEvent): void {
         this.loadData(event);
     }
 
@@ -106,6 +123,7 @@ export class DotPaletteContentletsComponent implements OnChanges {
      */
     showContentTypesList(): void {
         this.items = null;
+        this._filter = '';
         this.filterInput.searchInput.nativeElement.value = '';
         this.hide.emit();
     }
@@ -134,10 +152,7 @@ export class DotPaletteContentletsComponent implements OnChanges {
             this.paginationService.searchParam = 'variable';
             this.paginationService.filter = value;
         } else {
-            if (value.indexOf(' ') > 0) {
-                value = `'${value.replace(/'/g, "\\'")}'`;
-            }
-            this.paginatorESService.setExtraParams('+title', `${value}*`);
+            this._filter = value;
         }
 
         this.loadData();

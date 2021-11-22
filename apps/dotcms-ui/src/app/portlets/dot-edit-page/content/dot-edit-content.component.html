@@ -66,6 +66,7 @@
      [class.editMode]="isEditMode"
      [class.collapsed]="paletteCollapsed">
     <dot-palette
+        [languageId]="pageStateInternal.page?.languageId"
         [items]='contentPalletItems'>
     </dot-palette>
     <div class="dot-edit-content__palette-visibility"

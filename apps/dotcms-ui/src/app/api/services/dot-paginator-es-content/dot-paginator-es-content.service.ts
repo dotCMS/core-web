@@ -2,113 +2,47 @@ import { take, map } from 'rxjs/operators';
 import { CoreWebService, ResponseView } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
-export enum OrderDirection {
-    ASC = 'ASC',
-    DESC = 'DESC'
+export interface queryEsParams {
+    itemsPerPage?: number;
+    filter?: string;
+    lang?: string;
+    offset?: number;
+    query: string;
+    sortField?: string;
+    sortOrder?: string;
 }
 
 /**
- * Provides util listing methods
+ * Provides util listing methods to get contentlets data from Elastic Search endpoint
  * @export
  * @class DotPaginatorESContentService
  */
 @Injectable()
 export class DotPaginatorESContentService {
-    public paginationPerPage = 40;
-    public currentPage: number = 1;
-    public totalRecords: number;
+    paginationPerPage = 40;
+    totalRecords: number;
 
+    private _currentPage: number = 1;
     private _url = '/api/content/_search';
-    private defaultQueryParams = { '+languageId': '1', '+deleted': 'false', '+working': 'true' };
-    private _filter: string;
+    private _defaultQueryParams = { '+languageId': '1', '+deleted': 'false', '+working': 'true' };
     private _sortField: string = 'modDate';
-    private _sortOrder: OrderDirection = OrderDirection.ASC;
-    private _extraParams: Map<string, any> = new Map(Object.entries(this.defaultQueryParams));
+    private _sortOrder: string = 'ASC';
+    private _extraParams: Map<string, string> = new Map(Object.entries(this._defaultQueryParams));
 
     constructor(private coreWebService: CoreWebService) {}
 
-    get url(): string {
-        return this._url;
-    }
-
-    set url(url: string) {
-        if (this._url !== url) {
-            this._url = url;
-        }
-    }
-
-    get filter(): string {
-        return this._filter;
-    }
-
-    set filter(filter: string) {
-        if (this._filter !== filter) {
-            this._filter = filter;
-        }
-    }
-
-    get extraParams(): Map<string, any> {
-        return this._extraParams;
-    }
-
-    get sortField(): string {
-        return this._sortField;
-    }
-
-    set sortField(sortField: string) {
-        if (this._sortField !== sortField) {
-            this._sortField = sortField;
-        }
-    }
-
-    get sortOrder(): OrderDirection {
-        return this._sortOrder;
-    }
-
-    set sortOrder(sortOrder: OrderDirection) {
-        if (this._sortOrder !== sortOrder) {
-            this._sortOrder = sortOrder;
-        }
-    }
-
-    /**
-     * Set value of extra parameters of the eventual request.
-     * @param string name
-     * @param value
-     *
-     * @memberof DotThemeSelectorComponent
-     */
-    public setExtraParams(name: string, value?: any): void {
-        if (value !== null && value !== undefined) {
-            this.extraParams.set(name, value.toString());
-        }
-    }
-
-    /**
-     * Delete extra parameters of the eventual request.
-     * @param string name
-     *
-     * @memberof DotThemeSelectorComponent
-     */
-    public deleteExtraParams(name: string): void {
-        this.extraParams.delete(name);
-    }
-
-    /**
-     * Send a pagination request with url as base URL, if url is null or undefined then
-     * it use the url property value instead.
-     * Also it use the values of sortField, sortOrder in the Body request
-     * @param url base url
-     */
-    public get(url?: string): Observable<any> {
-        const queryParams = this.getESQuery(this.getObjectFromMap(this.extraParams));
+    public get(params: queryEsParams): Observable<DotCMSContentlet[]> {
+        this.setBaseParams(params);
+        this._currentPage = params.offset ? this.getPageFromOffset(params.offset) : 1;
+        const queryParams = this.getESQuery(this.getObjectFromMap(this._extraParams));
 
         return this.coreWebService
             .requestView({
                 body: JSON.stringify(queryParams),
                 method: 'POST',
-                url: url || this.url
+                url: this._url
             })
             .pipe(
                 map((response: ResponseView<any>) => {
@@ -119,53 +53,60 @@ export class DotPaginatorESContentService {
             );
     }
 
-    /**
-     * request the  pageParam page
-     * @param number [pageParam=1] Page to request
-     * @returns Observable<any[]>
-     * @memberof PaginatorServic
-     */
-    public getPage(pageParam = 1): Observable<any[]> {
-        this.currentPage = pageParam;
-        return this.get();
+    private setExtraParams(name: string, value?: string | number): void {
+        if (value !== null && value !== undefined) {
+            this._extraParams.set(name, value.toString());
+        }
     }
 
-    /**
-     * Request the current page
-     * @returns Observable<any[]>
-     * @memberof PaginatorService
-     */
-    public getCurrentPage(): Observable<any[]> {
-        return this.getPage(this.currentPage);
+    private deleteExtraParams(name: string): void {
+        this._extraParams.delete(name);
     }
 
-    /**
-     * Use the offset to request a page.
-     * @param number offset Offset to be request
-     * @returns Observable<any[]>
-     * @memberof PaginatorService
-     */
-    public getWithOffset(offset: number): Observable<any[]> {
-        const page = this.getPageFromOffset(offset);
-        return this.getPage(page);
-    }
-
-    private getESQuery(params: { [key: string]: any }): any {
+    private getESQuery(params: {
+        [key: string]: string | number;
+    }): { [key: string]: string | number } {
         const query = {
             query: JSON.stringify(params).replace(/"|{|}|,/g, ' '),
             sort: `${this._sortField || ''} ${this._sortOrder || ''}`,
             limit: this.paginationPerPage,
-            offset: (this.currentPage - 1) * this.paginationPerPage
+            offset: (this._currentPage - 1) * this.paginationPerPage
         };
 
         return query;
+    }
+
+    private setBaseParams(params: queryEsParams): void {
+        this.paginationPerPage = params.itemsPerPage || this.paginationPerPage;
+        this._sortField = params.sortField || this._sortField;
+        this._sortOrder = params.sortOrder || this._sortOrder;
+        this.deleteExtraParams('+languageId');
+        this.deleteExtraParams('+title');
+
+        // Getting values from Query string param
+        const queryParamsArray = params.query.split('+').map((item) => {
+            return item.split(':');
+        });
+
+        // Populating ExtraParams map
+        queryParamsArray.forEach(([param, value]) => {
+            if (param.length > 1) this.setExtraParams(`+${param}`, value);
+        });
+
+        if (params.lang) this.setExtraParams('+languageId', params.lang);
+
+        let filterValue = '';
+        if (params.filter && params.filter.indexOf(' ') > 0) {
+            filterValue = `'${params.filter.replace(/'/g, "\\'")}'`;
+        }
+        this.setExtraParams('+title', `${filterValue || params.filter}*`);
     }
 
     private getPageFromOffset(offset: number): number {
         return parseInt(String(offset / this.paginationPerPage), 10) + 1;
     }
 
-    private getObjectFromMap(map: Map<string, any>): { [key: string]: any } {
+    private getObjectFromMap(map: Map<string, string>): { [key: string]: string | number } {
         let result = Array.from(map).reduce(
             (obj, [key, value]) => Object.assign(obj, { [key]: value }),
             {}
