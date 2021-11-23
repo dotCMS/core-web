@@ -1,7 +1,5 @@
-// @import "variables";
-
 dotcms-message {
-    background-color: green;
+    background-color: var(--color-sec);
     display: block;
     padding: 1rem;
 }
