@@ -39,7 +39,7 @@ export const primary = () => ({
             {
                 provide: DotImageService,
                 useValue: {
-                    get() {
+                    publishContent() {
                         return of([
                             {
                                 cd769844de530f7b5d3434b1b5cfdd62: {
@@ -49,7 +49,7 @@ export const primary = () => ({
                                     name: 'costarica.png'
                                 }
                             }
-                        ]).pipe(delay(500));
+                        ]).pipe(delay(800));
                     }
                 }
             },
