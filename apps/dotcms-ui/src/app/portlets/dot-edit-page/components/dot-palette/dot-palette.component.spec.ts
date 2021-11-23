@@ -24,6 +24,7 @@ export class DotPaletteContentTypeMockComponent {
 })
 export class DotPaletteContentletsMockComponent {
     @Input() contentTypeVariable: string;
+    @Input() languageId: string;
     @Output() hide = new EventEmitter<any>();
 
     constructor() {}
@@ -88,9 +89,11 @@ describe('DotPaletteComponent', () => {
             By.css('dot-palette-contentlets')
         );
         contentContentletsComp.componentInstance.hide.emit('');
+        comp.languageId = '2';
         fixture.detectChanges();
         const contentTypeComp = fixture.debugElement.query(By.css('dot-palette-content-type'));
         expect(contentTypeComp.nativeElement.className).toEqual('');
+        expect(contentContentletsComp.componentInstance.languageId).toEqual('2');
         expect(contentContentletsComp.nativeElement.className).toEqual('');
     });
 });

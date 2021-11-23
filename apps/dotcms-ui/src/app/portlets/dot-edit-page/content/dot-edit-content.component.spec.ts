@@ -714,6 +714,7 @@ describe('DotEditContentComponent', () => {
                     );
                     const classList = contentPaletteWrapper.nativeElement.classList;
                     expect(contentPalette.items).toEqual(responseData.slice(0, 3));
+                    expect(parseInt(contentPalette.languageId)).toEqual(mockDotRenderedPage().page.languageId);
                     expect(classList.contains('editMode')).toEqual(true);
                     paletteController.triggerEventHandler('click', '');
                     fixture.detectChanges();

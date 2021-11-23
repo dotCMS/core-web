@@ -92,6 +92,7 @@ export class DotPaletteContentletsComponent implements OnInit, OnChanges {
             this.paginatorESService
                 .get({
                     ...this._ESParams,
+                    lang: this.languageId || '1',
                     filter: this._filter || '',
                     offset: (event && event.first) || 0,
                     query: `+contentType: ${this.contentTypeVariable}`

@@ -99,7 +99,7 @@ export class DotPaginatorESContentService {
         if (params.filter && params.filter.indexOf(' ') > 0) {
             filterValue = `'${params.filter.replace(/'/g, "\\'")}'`;
         }
-        this.setExtraParams('+title', `${filterValue || params.filter}*`);
+        this.setExtraParams('+title', `${filterValue || params.filter || ''}*`);
     }
 
     private getPageFromOffset(offset: number): number {
