@@ -52,10 +52,6 @@ export const ImageUpload = (injector: Injector, resolver: ComponentFactoryResolv
                 };
                 loadingBlock.changeDetectorRef.detectChanges();
 
-                if (!tr.selection.empty) {
-                    tr.deleteSelection();
-                }
-
                 tr.setMeta(PlaceholderPlugin, {
                     add: {
                         id: id,
