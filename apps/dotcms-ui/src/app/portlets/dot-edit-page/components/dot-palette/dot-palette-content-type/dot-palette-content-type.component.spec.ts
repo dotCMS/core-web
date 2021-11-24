@@ -99,7 +99,7 @@ describe('DotPaletteContentTypeComponent', () => {
     it('should show empty state', () => {
         componentHost.items = [];
         fixtureHost.detectChanges();
-        const emptyState = fixtureHost.debugElement.query(By.css('.dot-content-palette__empty'));
+        const emptyState = fixtureHost.debugElement.query(By.css('[data-testId="emptyState"]'));
         expect(emptyState).not.toBeNull();
     });
 

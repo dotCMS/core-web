@@ -3,17 +3,14 @@ import {
     EventEmitter,
     Input,
     OnChanges,
-    OnInit,
     Output,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
+import { ESContent } from '@dotcms/app/shared/models/dot-es-content/dot-es-content.model';
 import { DotContentletEditorService } from '@dotcms/app/view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
-import {
-    DotPaginatorESContentService,
-    queryEsParams
-} from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
+import { DotESContentService } from '@services/dot-es-content/dot-es-content.service';
 import { PaginatorService } from '@services/paginator';
 import { LazyLoadEvent } from 'primeng/api';
 import { take } from 'rxjs/operators';
@@ -24,33 +21,22 @@ import { DotPaletteInputFilterComponent } from '../dot-palette-input-filter/dot-
     templateUrl: './dot-palette-contentlets.component.html',
     styleUrls: ['./dot-palette-contentlets.component.scss']
 })
-export class DotPaletteContentletsComponent implements OnInit, OnChanges {
-    @ViewChild('filterInput', { static: true })
-    filterInput: DotPaletteInputFilterComponent;
-
+export class DotPaletteContentletsComponent implements OnChanges {
     @Input() contentTypeVariable: string;
     @Input() languageId: string;
     @Output() hide = new EventEmitter();
     items: DotCMSContentlet[] | DotCMSContentType[] = [];
     isFormContentType: boolean;
     hideNoResults = true;
-
-    private _ESParams: queryEsParams;
-    private _filter: string;
+    filter: string;
+    itemsPerPage = 15;
+    totalRecords = 0;
 
     constructor(
-        public paginatorESService: DotPaginatorESContentService,
+        public paginatorESService: DotESContentService,
         public paginationService: PaginatorService,
         private dotContentletEditorService: DotContentletEditorService
     ) {}
-
-    ngOnInit(): void {
-        this._ESParams = {
-            itemsPerPage: 15,
-            lang: this.languageId || '1',
-            query: ''
-        };
-    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.contentTypeVariable?.currentValue) {
@@ -58,7 +44,7 @@ export class DotPaletteContentletsComponent implements OnInit, OnChanges {
 
             if (this.isFormContentType) {
                 this.paginationService.url = `v1/contenttype`;
-                this.paginationService.paginationPerPage = 15;
+                this.paginationService.paginationPerPage = this.itemsPerPage;
                 this.paginationService.sortField = 'modDate';
                 this.paginationService.setExtraParams('type', 'Form');
                 this.paginationService.sortOrder = 1;
@@ -76,31 +62,30 @@ export class DotPaletteContentletsComponent implements OnInit, OnChanges {
      */
     loadData(event?: LazyLoadEvent): void {
         if (this.isFormContentType) {
-            this.paginationService.setExtraParams(
-                'filter',
-                this.filterInput.searchInput.nativeElement.value
-            );
+            this.paginationService.setExtraParams('filter', this.filter);
             this.paginationService
                 .getWithOffset((event && event.first) || 0)
                 .pipe(take(1))
                 .subscribe((data: DotCMSContentType[] | DotCMSContentlet[]) => {
                     data.forEach((item) => (item.contentType = item.variable = 'FORM'));
                     this.items = data;
+                    this.totalRecords = this.paginationService.totalRecords;
                     this.hideNoResults = !!data?.length;
                 });
         } else {
             this.paginatorESService
                 .get({
-                    ...this._ESParams,
+                    itemsPerPage: this.itemsPerPage,
                     lang: this.languageId || '1',
-                    filter: this._filter || '',
-                    offset: (event && event.first) || 0,
+                    filter: this.filter || '',
+                    offset: (event && event.first.toString()) || '0',
                     query: `+contentType: ${this.contentTypeVariable}`
                 })
                 .pipe(take(1))
-                .subscribe((data: DotCMSContentType[] | DotCMSContentlet[]) => {
-                    this.items = data;
-                    this.hideNoResults = !!data?.length;
+                .subscribe((response: ESContent) => {
+                    this.totalRecords = response.resultsSize;
+                    this.items = response.jsonObjectView.contentlets;
+                    this.hideNoResults = !!response.jsonObjectView.contentlets?.length;
                 });
         }
     }
@@ -124,8 +109,7 @@ export class DotPaletteContentletsComponent implements OnInit, OnChanges {
      */
     showContentTypesList(): void {
         this.items = null;
-        this._filter = '';
-        this.filterInput.searchInput.nativeElement.value = '';
+        this.filter = '';
         this.hide.emit();
     }
 
@@ -148,14 +132,13 @@ export class DotPaletteContentletsComponent implements OnInit, OnChanges {
      */
     filterContentlets(value: string): void {
         value = value.trim();
+        this.filter = value;
 
         if (this.isFormContentType) {
             this.paginationService.searchParam = 'variable';
             this.paginationService.filter = value;
-        } else {
-            this._filter = value;
         }
 
-        this.loadData();
+        this.loadData({ first: 0 });
     }
 }

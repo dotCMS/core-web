@@ -3,6 +3,7 @@ import {
     ElementRef,
     EventEmitter,
     Input,
+    OnDestroy,
     OnInit,
     Output,
     ViewChild
@@ -15,8 +16,9 @@ import { fromEvent as observableFromEvent, Subject } from 'rxjs';
     templateUrl: './dot-palette-input-filter.component.html',
     styleUrls: ['./dot-palette-input-filter.component.scss']
 })
-export class DotPaletteInputFilterComponent implements OnInit {
+export class DotPaletteInputFilterComponent implements OnInit, OnDestroy {
     @Input() goBackBtn: boolean;
+    @Input() value: string;
     @Output() goBack: EventEmitter<boolean> = new EventEmitter();
     @Output() filter: EventEmitter<string> = new EventEmitter();
 
@@ -30,8 +32,8 @@ export class DotPaletteInputFilterComponent implements OnInit {
     ngOnInit() {
         observableFromEvent(this.searchInput.nativeElement, 'keyup')
             .pipe(debounceTime(500), takeUntil(this.destroy$))
-            .subscribe((keyboardEvent: Event) => {
-                this.filter.emit(keyboardEvent.target['value']);
+            .subscribe(() => {
+                this.filter.emit(this.value);
             });
     }
 

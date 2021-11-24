@@ -12,7 +12,7 @@ import { CoreWebService, CoreWebServiceMock } from '@dotcms/dotcms-js';
 import { DotPaletteContentletsComponent } from './dot-palette-contentlets.component';
 import { Observable, of } from 'rxjs';
 import { PaginatorService } from '@services/paginator';
-import { DotPaginatorESContentService } from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
+import { DotESContentService } from '@services/dot-es-content/dot-es-content.service';
 import { PaginatorModule } from 'primeng/paginator';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
@@ -117,7 +117,7 @@ describe('DotPaletteContentletsComponent', () => {
     let componentHost: TestHostComponent;
     let dotContentletEditorService: DotContentletEditorService;
     let paginatorService: PaginatorService;
-    let paginatorESService: DotPaginatorESContentService;
+    let paginatorESService: DotESContentService;
     let de: DebugElement;
 
     beforeEach(() => {
@@ -140,7 +140,7 @@ describe('DotPaletteContentletsComponent', () => {
             providers: [
                 { provide: DotContentletEditorService, useClass: MockDotContentletEditorService },
                 { provide: PaginatorService, useClass: MockPaginatorService },
-                { provide: DotPaginatorESContentService, useClass: MockESPaginatorService },
+                { provide: DotESContentService, useClass: MockESPaginatorService },
 
                 { provide: CoreWebService, useClass: CoreWebServiceMock }
             ]
@@ -152,13 +152,13 @@ describe('DotPaletteContentletsComponent', () => {
         de = fixtureHost.debugElement.query(By.css('dot-palette-contentlets'));
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
         paginatorService = de.injector.get(PaginatorService);
-        paginatorESService = de.injector.get(DotPaginatorESContentService);
+        paginatorESService = de.injector.get(DotESContentService);
         spyOn(paginatorService, 'setExtraParams').and.callThrough();
 
         fixtureHost.detectChanges();
     });
 
-    it('should load initial params correctly and loading Forms', async () => {
+    it('should load initial params correctly and loading Forms via PaginatorService', async () => {
         spyOn(paginatorService, 'getWithOffset').and.returnValue(of([formData]));
         componentHost.languageId = '1';
         componentHost.contentTypeVariable = 'forms';
@@ -180,8 +180,15 @@ describe('DotPaletteContentletsComponent', () => {
         expect(contentletIcon.componentInstance.size).toBe('45px');
     });
 
-    it('should load intital Product data', async () => {
-        spyOn(paginatorESService, 'get').and.returnValue(<any>of([productData]));
+    it('should load intital Product data via DotESContent', async () => {
+        spyOn(paginatorESService, 'get').and.returnValue(
+            <any>of({
+                contentTook: 0,
+                jsonObjectView: { contentlets: [productData] },
+                queryTook: 1,
+                resultsSize: 20
+            })
+        );
         componentHost.languageId = '1';
         componentHost.contentTypeVariable = 'Product';
 
@@ -192,16 +199,11 @@ describe('DotPaletteContentletsComponent', () => {
             By.css('[data-testId="paletteItem"] img')
         );
 
-        expect(de.componentInstance._ESParams).toEqual({
-            itemsPerPage: 15,
-            lang: '1',
-            query: ''
-        });
         expect(paginatorESService.get).toHaveBeenCalledWith({
             itemsPerPage: 15,
             lang: '1',
             filter: '',
-            offset: 0,
+            offset: '0',
             query: `+contentType: ${productData.contentType}`
         });
         expect(de.componentInstance.items.length).toBe(1);
@@ -212,7 +214,14 @@ describe('DotPaletteContentletsComponent', () => {
     });
 
     it('should load with No Results data', async () => {
-        spyOn(paginatorESService, 'get').and.returnValue(<any>of([]));
+        spyOn(paginatorESService, 'get').and.returnValue(
+            <any>of({
+                contentTook: 0,
+                jsonObjectView: { contentlets: [] },
+                queryTook: 1,
+                resultsSize: 0
+            })
+        );
         componentHost.languageId = '1';
         componentHost.contentTypeVariable = 'Product';
 
@@ -220,17 +229,24 @@ describe('DotPaletteContentletsComponent', () => {
         await fixtureHost.whenStable();
 
         const noResultsContainer = fixtureHost.debugElement.query(
-            By.css('.dot-content-palette__empty')
+            By.css('[data-testId="emptyState"]')
         );
         expect(noResultsContainer).toBeTruthy();
     });
 
-    it('should paginate products data', async () => {
+    it('should paginate products data via DotESContent', async () => {
         let productsArray = [];
         for (let index = 0; index < 20; index++) {
             productsArray.push(productData);
         }
-        spyOn(paginatorESService, 'get').and.returnValue(<any>of(productsArray));
+        spyOn(paginatorESService, 'get').and.returnValue(
+            <any>of({
+                contentTook: 0,
+                jsonObjectView: { contentlets: productsArray },
+                queryTook: 1,
+                resultsSize: 20
+            })
+        );
         componentHost.languageId = '1';
         componentHost.contentTypeVariable = 'Product';
 
@@ -254,12 +270,12 @@ describe('DotPaletteContentletsComponent', () => {
             itemsPerPage: 15,
             lang: '1',
             filter: '',
-            offset: 15,
+            offset: '15',
             query: `+contentType: ${productData.contentType}`
         });
     });
 
-    it('should paginate forms data', async () => {
+    it('should paginate forms data via PaginatorService', async () => {
         let formsArray = [];
         for (let index = 0; index < 20; index++) {
             formsArray.push(formData);
@@ -298,7 +314,14 @@ describe('DotPaletteContentletsComponent', () => {
     });
 
     it('should go back to show Content Type components', async () => {
-        spyOn(paginatorESService, 'get').and.returnValue(<any>of([productData]));
+        spyOn(paginatorESService, 'get').and.returnValue(
+            <any>of({
+                contentTook: 0,
+                jsonObjectView: { contentlets: [productData] },
+                queryTook: 1,
+                resultsSize: 2
+            })
+        );
         spyOn(de.componentInstance.hide, 'emit').and.callThrough();
         componentHost.languageId = '1';
         componentHost.contentTypeVariable = 'Product';
@@ -311,14 +334,21 @@ describe('DotPaletteContentletsComponent', () => {
 
         expect(filterComp.componentInstance.goBackBtn).toBe(true);
         expect(de.componentInstance.items).toEqual(null);
-        expect(de.componentInstance._filter).toEqual('');
+        expect(de.componentInstance.filter).toEqual('');
         expect(de.componentInstance.hide.emit).toHaveBeenCalled();
     });
 
-    it('should filter Product items on search', async () => {
+    it('should filter Product items on search via DotESContent', async () => {
         componentHost.languageId = '1';
         componentHost.contentTypeVariable = 'Product';
-        spyOn(paginatorESService, 'get').and.returnValue(of([]));
+        spyOn(paginatorESService, 'get').and.returnValue(
+            of({
+                contentTook: 0,
+                jsonObjectView: { contentlets: [] },
+                queryTook: 1,
+                resultsSize: 2
+            })
+        );
 
         fixtureHost.detectChanges();
         await fixtureHost.whenStable();
@@ -332,12 +362,12 @@ describe('DotPaletteContentletsComponent', () => {
             itemsPerPage: 15,
             lang: '1',
             filter: 'test',
-            offset: 0,
+            offset: '0',
             query: `+contentType: ${productData.contentType}`
         });
     });
 
-    it('should filter Forms items on search', async () => {
+    it('should filter Forms items on search via PaginatorService', async () => {
         componentHost.languageId = '1';
         componentHost.contentTypeVariable = 'forms';
         spyOn(paginatorService, 'getWithOffset').and.returnValue(of([]));

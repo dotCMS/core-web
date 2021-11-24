@@ -1,56 +1,57 @@
-import { take, map } from 'rxjs/operators';
-import { CoreWebService, ResponseView } from '@dotcms/dotcms-js';
+import { take, map, pluck } from 'rxjs/operators';
+import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { ESContent } from '@dotcms/app/shared/models/dot-es-content/dot-es-content.model';
 
+export enum ESOrderDirection {
+    ASC = 'ASC',
+    DESC = 'DESC'
+}
 export interface queryEsParams {
     itemsPerPage?: number;
     filter?: string;
     lang?: string;
-    offset?: number;
+    offset?: string;
     query: string;
     sortField?: string;
-    sortOrder?: string;
+    sortOrder?: ESOrderDirection;
 }
 
 /**
  * Provides util listing methods to get contentlets data from Elastic Search endpoint
  * @export
- * @class DotPaginatorESContentService
+ * @class DotESContentService
  */
 @Injectable()
-export class DotPaginatorESContentService {
-    paginationPerPage = 40;
-    totalRecords: number;
-
-    private _currentPage: number = 1;
+export class DotESContentService {
+    private _paginationPerPage = 40;
+    private _offset: string = '0';
     private _url = '/api/content/_search';
     private _defaultQueryParams = { '+languageId': '1', '+deleted': 'false', '+working': 'true' };
     private _sortField: string = 'modDate';
-    private _sortOrder: string = 'ASC';
+    private _sortOrder: ESOrderDirection = ESOrderDirection.ASC;
     private _extraParams: Map<string, string> = new Map(Object.entries(this._defaultQueryParams));
 
     constructor(private coreWebService: CoreWebService) {}
 
-    public get(params: queryEsParams): Observable<DotCMSContentlet[]> {
+    /**
+     * Returns a list of contentlets from Elastic Search endpoint
+     * @param queryEsParams params
+     * @returns Observable<ESContent>
+     * @memberof DotESContentService
+     */
+    public get(params: queryEsParams): Observable<ESContent> {
         this.setBaseParams(params);
-        this._currentPage = params.offset ? this.getPageFromOffset(params.offset) : 1;
         const queryParams = this.getESQuery(this.getObjectFromMap(this._extraParams));
 
         return this.coreWebService
-            .requestView({
+            .requestView<ESContent>({
                 body: JSON.stringify(queryParams),
                 method: 'POST',
                 url: this._url
             })
-            .pipe(
-                map((response: ResponseView<any>) => {
-                    this.totalRecords = response.entity?.resultsSize;
-                    return response.entity?.jsonObjectView?.contentlets || null;
-                }),
-                take(1)
-            );
+            .pipe(pluck('entity'), take(1));
     }
 
     private setExtraParams(name: string, value?: string | number): void {
@@ -69,17 +70,18 @@ export class DotPaginatorESContentService {
         const query = {
             query: JSON.stringify(params).replace(/"|{|}|,/g, ' '),
             sort: `${this._sortField || ''} ${this._sortOrder || ''}`,
-            limit: this.paginationPerPage,
-            offset: (this._currentPage - 1) * this.paginationPerPage
+            limit: this._paginationPerPage,
+            offset: this._offset
         };
 
         return query;
     }
 
     private setBaseParams(params: queryEsParams): void {
-        this.paginationPerPage = params.itemsPerPage || this.paginationPerPage;
+        this._paginationPerPage = params.itemsPerPage || this._paginationPerPage;
         this._sortField = params.sortField || this._sortField;
         this._sortOrder = params.sortOrder || this._sortOrder;
+        this._offset = params.offset || this._offset;
         this.deleteExtraParams('+languageId');
         this.deleteExtraParams('+title');
 
@@ -100,10 +102,6 @@ export class DotPaginatorESContentService {
             filterValue = `'${params.filter.replace(/'/g, "\\'")}'`;
         }
         this.setExtraParams('+title', `${filterValue || params.filter || ''}*`);
-    }
-
-    private getPageFromOffset(offset: number): number {
-        return parseInt(String(offset / this.paginationPerPage), 10) + 1;
     }
 
     private getObjectFromMap(map: Map<string, string>): { [key: string]: string | number } {

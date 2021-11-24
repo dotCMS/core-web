@@ -1,5 +1,5 @@
 <dot-palette-input-filter
-    #filterInput
+    [value]="filter"
     [goBackBtn]="true"
     (goBack)="showContentTypesList()"
     (filter)="filterContentlets($event)"
@@ -30,15 +30,9 @@
     </div>
     <p-paginator
         pageLinkSize="2"
-        [rows]="
-            isFormContentType
-                ? paginationService.paginationPerPage
-                : paginatorESService.paginationPerPage
-        "
+        [rows]="itemsPerPage"
         [showFirstLastIcon]="false"
-        [totalRecords]="
-            isFormContentType ? paginationService.totalRecords : paginatorESService.totalRecords
-        "
+        [totalRecords]="totalRecords"
         (onPageChange)="paginate($event)"
     ></p-paginator>
 </div>
@@ -47,4 +41,6 @@
     <dot-spinner *ngIf="hideNoResults" [size]="'40px'" [borderSize]="'8px'"></dot-spinner>
 </ng-template>
 
-<span *ngIf="!hideNoResults" class="dot-content-palette__empty">{{ 'No-Results' | dm }}</span>
+<span *ngIf="!hideNoResults" data-testId="emptyState" class="dot-content-palette__empty">{{
+    'No-Results' | dm
+}}</span>

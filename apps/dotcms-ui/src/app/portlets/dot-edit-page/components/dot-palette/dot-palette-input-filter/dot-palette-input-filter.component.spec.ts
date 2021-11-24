@@ -5,6 +5,7 @@ import { DotPaletteInputFilterComponent } from './dot-palette-input-filter.compo
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { CoreWebService, CoreWebServiceMock } from '@dotcms/dotcms-js';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'dot-icon',
@@ -23,7 +24,7 @@ describe('DotPaletteInputFilterComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [DotPaletteInputFilterComponent, MockDotIconComponent],
-            imports: [DotPipesModule, HttpClientTestingModule],
+            imports: [DotPipesModule, HttpClientTestingModule, FormsModule],
             providers: [{ provide: CoreWebService, useClass: CoreWebServiceMock }]
         });
 
@@ -39,10 +40,10 @@ describe('DotPaletteInputFilterComponent', () => {
         expect(goBackBtn.componentInstance).toBeTruthy();
     });
 
-    it('should show Go Back button', async () => {
+    it('should go Back when Go Back button clicked', async () => {
         spyOn(comp.filter, 'emit').and.callThrough();
         const input = de.query(By.css('[data-testId="searchInput"]')).nativeElement;
-        input.value = 'hello';
+        comp.value = 'hello';
         const event = new KeyboardEvent('keyup');
         input.dispatchEvent(event);
         await fixture.whenStable();

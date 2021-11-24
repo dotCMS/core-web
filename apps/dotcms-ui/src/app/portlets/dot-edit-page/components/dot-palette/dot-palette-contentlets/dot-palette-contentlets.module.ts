@@ -5,7 +5,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 import {PaginatorModule} from 'primeng/paginator';
 import { DotSpinnerModule } from '@dotcms/ui';
 import { DotPaletteInputFilterModule } from '../dot-palette-input-filter/dot-palette-input-filter.module';
-import { DotPaginatorESContentService } from '@services/dot-paginator-es-content/dot-paginator-es-content.service';
+import { DotESContentService } from '@services/dot-es-content/dot-es-content.service';
 
 @NgModule({
     imports: [
@@ -17,6 +17,6 @@ import { DotPaginatorESContentService } from '@services/dot-paginator-es-content
     ],
     declarations: [DotPaletteContentletsComponent],
     exports: [DotPaletteContentletsComponent],
-    providers: [DotPaginatorESContentService]
+    providers: [DotESContentService]
 })
 export class DotPaletteContentletsModule {}
