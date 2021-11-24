@@ -36,7 +36,7 @@ export class BlockEditorComponent implements OnInit {
     tippy: Instance;
     componentLinkForm: ComponentRef<BubbleMenuLinkFormComponent>;
 
-    value = '<p><a href="www.google.com">Hello</a>, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
+    value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
     constructor(private injector: Injector, private resolver: ComponentFactoryResolver, private renderer: Renderer2) {}
 
