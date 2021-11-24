@@ -36,7 +36,7 @@ export class BlockEditorComponent implements OnInit {
     tippy: Instance;
     componentLinkForm: ComponentRef<BubbleMenuLinkFormComponent>;
 
-    value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
+    value = '<p><a href="www.google.com">Hello</a>, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
     constructor(private injector: Injector, private resolver: ComponentFactoryResolver, private renderer: Renderer2) {}
 
@@ -87,7 +87,7 @@ export class BlockEditorComponent implements OnInit {
     initLinkFormComponent(injector: Injector, resolver: ComponentFactoryResolver): ComponentRef<BubbleMenuLinkFormComponent> {
         const factory = resolver.resolveComponentFactory(BubbleMenuLinkFormComponent);
         const component = factory.create(injector);
-        
+
         // Attach Events
         component.instance.hideForm.subscribe(() => this.hideLinkForm());
         component.instance.removeLink.subscribe(() => this.removeLink());
@@ -98,22 +98,22 @@ export class BlockEditorComponent implements OnInit {
         return component;
     }
 
-    // tippy logic and Overlay here
     toggleLinkForm() {
 
-        // Create component dinamically
         if(!this.componentLinkForm) {
             this.componentLinkForm = this.initLinkFormComponent(this.injector, this.resolver);
             this.createTippy();
         }
+
         if( this.tippy.state.isShown ) {
             this.hideLinkForm();
         } else {
             this.tippy.show();
+            this.setTippyPosition();
             this.setInputLink();
             this.focusInputLink();
-            this.setTippyPosition();
         }
+        this.detectLinkFormChanges();
     }
 
     hideLinkForm() {
@@ -137,17 +137,6 @@ export class BlockEditorComponent implements OnInit {
         this.hideLinkForm();
     }
 
-    setInputLink() {
-        this.componentLinkForm.instance.nodeLink = this.getNodeLink();
-        this.componentLinkForm.instance.newLink = this.getNodeLink();
-        this.componentLinkForm.changeDetectorRef.detectChanges();
-    }
-
-    focusInputLink() {
-        this.componentLinkForm.instance.focusInput();
-        this.componentLinkForm.changeDetectorRef.detectChanges();
-    }
-
     removeLink() {
         this.editor.commands.unsetLink();
         this.hideLinkForm();        
@@ -159,6 +148,19 @@ export class BlockEditorComponent implements OnInit {
         } else {
             this.editor.commands.unsetHighlight();
         }
+    }
+
+    setInputLink() {
+        this.componentLinkForm.instance.nodeLink = this.getNodeLink();
+        this.componentLinkForm.instance.newLink = this.getNodeLink();
+    }
+
+    detectLinkFormChanges() {
+        this.componentLinkForm.changeDetectorRef.detectChanges();
+    }
+
+    focusInputLink() {
+        this.componentLinkForm.instance.focusInput();
     }
 
     private getNodeLink(): string {
