@@ -91,7 +91,7 @@ export class DotPaletteContentletsComponent implements OnChanges {
     }
 
     /**
-     * Calls loads data function with a specific page to load
+     * Loads data with a specific page
      *
      * @param LazyLoadEvent event
      * @memberof DotPaletteContentletsComponent
@@ -104,7 +104,6 @@ export class DotPaletteContentletsComponent implements OnChanges {
      * Emits notification to show content type's component and clears
      * component's local variables
      *
-     * @param LazyLoadEvent event
      * @memberof DotPaletteContentletsComponent
      */
     showContentTypesList(): void {
@@ -127,7 +126,7 @@ export class DotPaletteContentletsComponent implements OnChanges {
      * Does the string formatting in order to do a filtering of the Contentlets,
      * finally call the loadData() to request the data
      *
-     * @param DotCMSContentType contentType
+     * @param string value
      * @memberof DotPaletteContentletsComponent
      */
     filterContentlets(value: string): void {

@@ -225,7 +225,7 @@ export class DotEditContentHtmlService {
      * @param boolean isDroppedAsset
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): Promise<boolean> {
+    renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): Observable<boolean> {
         const doc = this.getEditPageDocument();
         if (isDroppedAsset) {
             const container: HTMLElement = doc
@@ -243,7 +243,7 @@ export class DotEditContentHtmlService {
 
         if (this.isContentExistInContainer(contentlet, containerEl)) {
             this.showContentAlreadyAddedError();
-            return new Promise((resolve) => resolve(false));
+            return of(false);
         } else {
             let contentletPlaceholder = doc.querySelector(CONTENTLET_PLACEHOLDER_SELECTOR);
             if (!contentletPlaceholder) {
@@ -251,11 +251,11 @@ export class DotEditContentHtmlService {
                 containerEl.appendChild(contentletPlaceholder);
             }
 
-            return new Promise((resolve) => {
-                this.dotContainerContentletService
-                    .getContentletToContainer(this.currentContainer, contentlet)
-                    .pipe(take(1))
-                    .subscribe((contentletHtml: string) => {
+            return this.dotContainerContentletService
+                .getContentletToContainer(this.currentContainer, contentlet)
+                .pipe(
+                    take(1),
+                    map((contentletHtml: string) => {
                         const contentletEl: HTMLElement = this.generateNewContentlet(
                             contentletHtml
                         );
@@ -267,9 +267,9 @@ export class DotEditContentHtmlService {
                         });
                         this.currentAction = DotContentletAction.EDIT;
                         this.updateContainerToolbar(containerEl.dataset.dotIdentifier);
-                        resolve(true);
-                    });
-            });
+                        return true;
+                    })
+                );
         }
     }
 
@@ -678,15 +678,15 @@ export class DotEditContentHtmlService {
                 });
             },
             'add-contentlet': (dotAssetData: DotAssetPayload) => {
-                this.renderAddedContentlet(dotAssetData.contentlet, true).then(
-                    (shouldSave: boolean) => {
+                this.renderAddedContentlet(dotAssetData.contentlet, true)
+                    .pipe(take(1))
+                    .subscribe((shouldSave: boolean) => {
                         if (shouldSave && dotAssetData.contentlet.baseType === 'FORM') {
                             this.iframeActions$.next({
                                 name: 'save'
                             });
                         }
-                    }
-                );
+                    });
             },
             'handle-http-error': (err: HttpErrorResponse) => {
                 this.dotHttpErrorManagerService
