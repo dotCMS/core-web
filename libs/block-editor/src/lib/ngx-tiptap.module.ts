@@ -21,6 +21,8 @@ import { DragHandlerComponent } from './extensions/components/drag-handler/drag-
 import { ImageBlockComponent } from './extensions/blocks/image-block/image-block.component';
 import { LoaderComponent } from './extensions/components/loader/loader.component';
 import { DotImageService } from './extensions/services/dot-image/dot-image.service';
+import { BubbleMenuComponent } from './extensions/components/bubble-menu/bubble-menu.component';
+import { BubbleMenuButtonComponent } from './extensions/components/bubble-menu-button/bubble-menu-button.component';
 
 @NgModule({
     imports: [CommonModule, CardModule, MenuModule],
@@ -37,6 +39,8 @@ import { DotImageService } from './extensions/services/dot-image/dot-image.servi
         DragHandlerComponent,
         ImageBlockComponent,
         LoaderComponent
+        BubbleMenuComponent,
+        BubbleMenuButtonComponent
     ],
     providers: [SuggestionsService, DotImageService, LoggerService, StringUtils],
     exports: [
@@ -45,7 +49,8 @@ import { DotImageService } from './extensions/services/dot-image/dot-image.servi
         BubbleMenuDirective,
         DraggableDirective,
         NodeViewContentDirective,
-        ActionButtonComponent
+        ActionButtonComponent,
+        BubbleMenuComponent
     ]
 })
 export class NgxTiptapModule {}

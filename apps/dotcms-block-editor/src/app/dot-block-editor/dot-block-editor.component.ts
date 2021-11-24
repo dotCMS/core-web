@@ -11,6 +11,10 @@ import StarterKit from '@tiptap/starter-kit';
 import { ContentletBlock, ImageBlock, ImageUpload } from '@dotcms/block-editor';
 import { ActionsMenu, DragHandler } from '@dotcms/block-editor';
 
+// Marks Extensions
+import { TextAlign } from '@tiptap/extension-text-align';
+import { Underline } from '@tiptap/extension-underline';
+
 @Component({
     // eslint-disable-next-line
     selector: 'dot-block-editor',
@@ -34,6 +38,10 @@ export class DotBlockEditorComponent implements OnInit {
                 DragHandler(this.injector, this.resolver),
                 ImageUpload(this.injector, this.resolver),
                 ImageBlock(this.injector)
+                Underline,
+                TextAlign.configure({
+                    types: ['heading', 'paragraph']
+                })
             ]
         });
     }
