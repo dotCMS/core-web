@@ -13,7 +13,6 @@ export * from './lib/AngularRenderer';
 export * from './lib/NodeViewRenderer';
 
 //Angular Components
-// export * from './lib/extensions/blocks/image-block/image-block.component';
 export * from './lib/extensions/components/suggestions/suggestions.component';
 export * from './lib/extensions/components/action-button/action-button.component';
 
