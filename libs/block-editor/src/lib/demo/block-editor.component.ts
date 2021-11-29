@@ -84,7 +84,7 @@ export class BlockEditorComponent implements OnInit {
         });
     }
 
-    initLinkFormComponent(injector: Injector, resolver: ComponentFactoryResolver): ComponentRef<BubbleMenuLinkFormComponent> {
+    getLinkFormComponent(injector: Injector, resolver: ComponentFactoryResolver): ComponentRef<BubbleMenuLinkFormComponent> {
         const factory = resolver.resolveComponentFactory(BubbleMenuLinkFormComponent);
         const component = factory.create(injector);
 
@@ -101,7 +101,7 @@ export class BlockEditorComponent implements OnInit {
     toggleLinkForm() {
 
         if(!this.componentLinkForm) {
-            this.componentLinkForm = this.initLinkFormComponent(this.injector, this.resolver);
+            this.componentLinkForm = this.getLinkFormComponent(this.injector, this.resolver);
             this.createTippy();
         }
 
@@ -152,7 +152,7 @@ export class BlockEditorComponent implements OnInit {
 
     setInputLink() {
         this.componentLinkForm.instance.nodeLink = this.getNodeLink();
-        this.componentLinkForm.instance.newLink = this.getNodeLink();
+        this.componentLinkForm.instance.newLink = this.getNodeLink() || this.getLinkSelect();
     }
 
     detectLinkFormChanges() {
@@ -163,6 +163,24 @@ export class BlockEditorComponent implements OnInit {
         this.componentLinkForm.instance.focusInput();
     }
 
+    private getLinkSelect() {
+        const { state } = this.editor;
+        const { from, to } = state.selection;
+        const text = state.doc.textBetween(from, to, ' ');
+
+        return this.isLink(text) ? text: '';
+    }
+
+    private isLink(text) {
+        const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+          '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return !!pattern.test(text);
+    }
+      
     private getNodeLink(): string {
         return this.editor.isActive('link')
             ? this.editor.getAttributes('link').href
