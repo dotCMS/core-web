@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[79],{712:function(module,exports,__webpack_require__){"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var formatRelativeLocale={lastWeek:"'last' eeee 'at' p",yesterday:"'yesterday at' p",today:"'today at' p",tomorrow:"'tomorrow at' p",nextWeek:"eeee 'at' p",other:"P"},_default=function(token,_date,_baseDate,_options){return formatRelativeLocale[token]};exports.default=_default,module.exports=exports.default}}]);
+//# sourceMappingURL=79.4a4505c71178cfe30033.bundle.js.map
