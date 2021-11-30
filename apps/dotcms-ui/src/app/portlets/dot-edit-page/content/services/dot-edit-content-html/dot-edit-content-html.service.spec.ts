@@ -444,7 +444,8 @@ xdescribe('DotEditContentHtmlService', () => {
 
         expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(
             { identifier: '123', uuid: '456' },
-            { identifier: '456', inode: '456' }
+            { identifier: '456', inode: '456' },
+            null
         );
 
         expect(replaceChild).toHaveBeenCalledWith(
@@ -567,7 +568,8 @@ xdescribe('DotEditContentHtmlService', () => {
 
         expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(
             currentContainer,
-            contentlet
+            contentlet,
+            null
         );
 
         expect(service.currentContainer).toEqual(
@@ -617,7 +619,8 @@ xdescribe('DotEditContentHtmlService', () => {
 
         expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(
             currentContainer,
-            contentlet
+            contentlet,
+            null
         );
 
         expect(service.currentContainer).toEqual(
@@ -791,11 +794,13 @@ xdescribe('DotEditContentHtmlService', () => {
 
         expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(
             currentContainer,
-            contentlet
+            contentlet,
+            null
         );
         expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(
             anotherContainer,
-            contentlet
+            contentlet,
+            null
         );
         expect(window.top['changed']).toEqual(true);
     });

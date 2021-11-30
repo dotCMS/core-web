@@ -646,6 +646,7 @@ describe('DotEditContentComponent', () => {
                 beforeEach(() => {
                     spyOn(dotEditContentHtmlService, 'renderPage');
                     spyOn(dotEditContentHtmlService, 'initEditMode');
+                    spyOn(dotEditContentHtmlService, 'setCurrentPage');
                 });
 
                 it('should render in preview mode', fakeAsync(() => {
@@ -656,6 +657,7 @@ describe('DotEditContentComponent', () => {
                         jasmine.any(ElementRef)
                     );
                     expect(dotEditContentHtmlService.initEditMode).not.toHaveBeenCalled();
+                    expect(dotEditContentHtmlService.setCurrentPage).toHaveBeenCalledWith(mockRenderedPageState.page);
                 }));
 
                 it('should render in edit mode', fakeAsync(() => {
@@ -682,6 +684,7 @@ describe('DotEditContentComponent', () => {
                         jasmine.any(ElementRef)
                     );
                     expect(dotEditContentHtmlService.renderPage).not.toHaveBeenCalled();
+                    expect(dotEditContentHtmlService.setCurrentPage).toHaveBeenCalledWith(state.page);
                 }));
 
                 it('should show/hide content palette in edit mode with correct content', fakeAsync(() => {
@@ -718,6 +721,8 @@ describe('DotEditContentComponent', () => {
                     paletteController.triggerEventHandler('click', '');
                     fixture.detectChanges();
                     expect(classList.contains('collapsed')).toEqual(true);
+
+                    expect(dotEditContentHtmlService.setCurrentPage).toHaveBeenCalledWith(state.page);
                 }));
 
                 it('should not display palette when is not enterprise', fakeAsync(() => {
@@ -743,6 +748,7 @@ describe('DotEditContentComponent', () => {
                     fixture.detectChanges();
                     const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
                     expect(contentPaletteWrapper).toBeNull();
+                    expect(dotEditContentHtmlService.setCurrentPage).toHaveBeenCalledWith(state.page);
                 }));
             });
 
