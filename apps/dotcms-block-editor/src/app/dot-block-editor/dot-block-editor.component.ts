@@ -17,8 +17,7 @@ import { Underline } from '@tiptap/extension-underline';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 
 @Component({
-    // eslint-disable-next-line
-    selector: 'dot-block-editor',
+    selector: 'dotcms-block-editor',
     templateUrl: './dot-block-editor.component.html',
     styleUrls: ['./dot-block-editor.component.scss'],
     encapsulation: ViewEncapsulation.None
