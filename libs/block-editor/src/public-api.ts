@@ -12,9 +12,14 @@ export * from './lib/ngx-tiptap.module';
 export * from './lib/AngularRenderer';
 export * from './lib/NodeViewRenderer';
 
-//Angular Components
+// Editor blocks components
 export * from './lib/extensions/components/suggestions/suggestions.component';
 export * from './lib/extensions/components/action-button/action-button.component';
+export * from './lib/extensions/components/loader/loader.component'
+export * from './lib/extensions/components/drag-handler/drag-handler.component'
+
+export * from './lib/extensions/blocks/contentlet-block/contentlet-block.component';
+export * from './lib/extensions/blocks/image-block/image-block.component';
 
 // Editor Extensions
 export * from './lib/extensions/actions-menu.extension';
@@ -24,6 +29,7 @@ export * from './lib/extensions/dragHandler.extention';
 
 //Editor Blocks
 export * from './lib/extensions/blocks/contentlet-block/contentlet-block.extension';
-export * from './lib/extensions/blocks/contentlet-block/contentlet-block.component';
 
-export * from './lib/extensions/services/suggestions.service';
+// Services
+export * from './lib/extensions/services/suggestions/suggestions.service';
+export * from './lib/extensions/services/dot-image/dot-image.service';

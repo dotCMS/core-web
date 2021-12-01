@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ContentletBlockComponent } from './extensions/blocks/contentlet-block/contentlet-block.component';
 
-import { SuggestionsService } from './extensions/services/suggestions.service';
+import { SuggestionsService } from './extensions/services/suggestions/suggestions.service';
 import { SuggestionsComponent } from './extensions/components/suggestions/suggestions.component';
 import { SuggestionListComponent } from './extensions/components/suggestion-list/suggestion-list.component';
 import { ActionButtonComponent } from './extensions/components/action-button/action-button.component';
