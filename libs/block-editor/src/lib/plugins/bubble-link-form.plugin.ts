@@ -75,7 +75,8 @@ export class BubbleLinkFormView {
         const currentPluginState = this.pluginKey.getState(prevState);
 
         // Check that the current plugin state is different to previous plugin state.
-        if (prePluginState.toggle === currentPluginState.toggle) { 
+        if (prePluginState.toggle === currentPluginState.toggle) {
+            this.detectLinkFormChanges();
             return;
         }
         
@@ -107,16 +108,18 @@ export class BubbleLinkFormView {
     }
 
     show() {
+        this.tippy?.show();
+        // Afther show the component set values
         this.setInputValues();
         this.focusInput();
-        this.tippy?.show();
         this.setTippyPosition();
     }
 
     hide() {
+        this.tippy?.hide();
+        // Afther show the component focus editor
         this.editor.view.focus();
         this.editor.commands.unsetHighlight();
-        this.tippy?.hide();
     }
 
     setTippyPosition() {
