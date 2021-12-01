@@ -84,6 +84,22 @@ export class DotContentTypeService {
         );
     }
 
+    /**
+     * Get the Content Type History by language.
+     *
+     * @param string identifier
+     * @param string language
+     * @returns Observable<DotCMSContentType[]>
+     * @memberof ContentletService
+     */
+    getContentTypeHistory(identifier: string, language: string): Observable<DotCMSContentType[]> {
+        return this.coreWebService
+            .requestView({
+                url: `/api/v1/content/versions?identifier=${identifier}&groupByLang=1`
+            })
+            .pipe(take(1), pluck('entity', 'versions', language));
+    }
+
     private isRecentContentType(type: StructureTypeView): boolean {
         return type.name.startsWith('RECENT');
     }
