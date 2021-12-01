@@ -74,19 +74,13 @@ export class BubbleLinkFormView {
         const prePluginState = this.pluginKey.getState(view.state);
         const currentPluginState = this.pluginKey.getState(prevState);
 
-        // Check that the plugin state is different
-        if (prePluginState.toggle != currentPluginState.toggle) {
-            if (this.tippy.state.isVisible) {
-                this.hide();
-            } else if (!this.tippy.state.isVisible) {
-                this.show();
-                this.setInputValues();
-                this.focusInput();
-                this.setTippyPosition();
-            }
-
-            this.detectLinkFormChanges();
+        // Check that the current plugin state is different to previous plugin state.
+        if (prePluginState.toggle === currentPluginState.toggle) { 
+            return;
         }
+        
+        this.tippy?.state.isVisible ? this.hide() : this.show();
+        this.detectLinkFormChanges();
     }
 
     focusHandler = () => {
@@ -113,14 +107,16 @@ export class BubbleLinkFormView {
     }
 
     show() {
+        this.setInputValues();
+        this.focusInput();
         this.tippy?.show();
+        this.setTippyPosition();
     }
 
     hide() {
         this.editor.view.focus();
-        this.tippy?.hide();
         this.editor.commands.unsetHighlight();
-        this.detectLinkFormChanges();
+        this.tippy?.hide();
     }
 
     setTippyPosition() {
