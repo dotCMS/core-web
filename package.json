@@ -1,6 +1,6 @@
 {
     "name": "dotcms-ui",
-    "version": "21.1.0-next.6",
+    "version": "21.1.0-next.7",
     "license": "MIT",
     "scripts": {
         "ng": "nx",
@@ -66,6 +66,8 @@
         "@tiptap/core": "^2.0.0-beta.125",
         "@tiptap/extension-bubble-menu": "^2.0.0-beta.46",
         "@tiptap/extension-floating-menu": "^2.0.0-beta.36",
+        "@tiptap/extension-highlight": "^2.0.0-beta.30",
+        "@tiptap/extension-link": "^2.0.0-beta.28",
         "@tiptap/extension-text-align": "^2.0.0-beta.25",
         "@tiptap/extension-underline": "^2.0.0-beta.18",
         "@tiptap/starter-kit": "^2.0.0-beta.127",
