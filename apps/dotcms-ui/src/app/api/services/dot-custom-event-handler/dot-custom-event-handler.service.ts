@@ -42,7 +42,8 @@ export class DotCustomEventHandlerService {
                 'push-publish': this.pushPublishDialog.bind(this),
                 'download-bundle': this.downloadBundleDialog.bind(this),
                 'workflow-wizard': this.executeWorkflowWizard.bind(this),
-                'generate-secure-password': this.generateSecurePassword.bind(this)
+                'generate-secure-password': this.generateSecurePassword.bind(this),
+                'compare-contentlet': this.openCompareDialog.bind(this)
             };
         }
     }
@@ -60,7 +61,7 @@ export class DotCustomEventHandlerService {
     }
 
     private generateSecurePassword($event: CustomEvent): void {
-        this.dotGenerateSecurePasswordService.open($event.detail.data)
+        this.dotGenerateSecurePasswordService.open($event.detail.data);
     }
 
     private createContentlet($event: CustomEvent): void {
@@ -108,5 +109,10 @@ export class DotCustomEventHandlerService {
 
     private executeWorkflowWizard($event: CustomEvent): void {
         this.dotWorkflowEventHandlerService.open($event.detail.data);
+    }
+
+    private openCompareDialog($event: CustomEvent): void {
+        debugger;
+        console.log('Data from Dialog:', $event.detail.data);
     }
 }
