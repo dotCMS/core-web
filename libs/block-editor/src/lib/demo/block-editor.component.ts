@@ -5,10 +5,11 @@ import {
     OnInit,
     ViewEncapsulation
 } from '@angular/core';
-import { Editor, posToDOMRect } from '@tiptap/core';
+import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 
 import { ActionsMenu } from '../extensions/actions-menu.extension';
+import { BubbleLinkFormExtension } from '../extensions/bubble-link-form.extension';
 import { ContentletBlock } from '../extensions/blocks/contentlet-block/contentlet-block.extension';
 import { DragHandler } from '../extensions/dragHandler.extention';
 
@@ -21,10 +22,7 @@ import { Link } from '@tiptap/extension-link';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Underline } from '@tiptap/extension-underline';
 
-import { BubbleMenuLinkFormComponent } from '../extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 
-import tippy, { Instance } from 'tippy.js';
-import { ComponentRef } from '@angular/core';
 @Component({
     selector: 'dotcms-block-editor',
     templateUrl: './block-editor.component.html',
@@ -34,15 +32,12 @@ import { ComponentRef } from '@angular/core';
 export class BlockEditorComponent implements OnInit {
 
     editor: Editor;
-    tippy: Instance;
     bubbleMenuTippyOption = {
         duration: 500,
         maxWidth: 'none',
         placement: 'top-start',
         trigger: 'manual'
     }
-    componentLinkForm: ComponentRef<BubbleMenuLinkFormComponent>;
-
     value = '<p>Hello, Tiptap!</p>'; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
     constructor(private injector: Injector, private resolver: ComponentFactoryResolver) {}
@@ -56,6 +51,7 @@ export class BlockEditorComponent implements OnInit {
                 ActionsMenu(this.injector, this.resolver),
                 DragHandler(this.injector, this.resolver),
                 ImageUpload(this.injector, this.resolver),
+                BubbleLinkFormExtension(this.injector, this.resolver),
                 // Marks Extensions
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph', 'listItem'] }),
@@ -63,127 +59,6 @@ export class BlockEditorComponent implements OnInit {
                 Link.configure({ openOnClick: true })
             ]
         });
-
-        this.editor.on('focus', () => {
-            if(this.tippy?.state.isShown) {
-                this.hideLinkForm();
-            }
-        })
     }
 
-    createTippy() {
-        this.tippy = tippy(this.editor.view.dom, {
-            duration: 150,
-            getReferenceClientRect: null,
-            content: this.componentLinkForm.location.nativeElement,
-            interactive: true,
-            trigger: 'manual',
-            placement: 'bottom',
-            hideOnClick: 'toggle',
-            animation: 'fade'
-        });
-    }
-
-    getLinkFormComponent(injector: Injector, resolver: ComponentFactoryResolver): ComponentRef<BubbleMenuLinkFormComponent> {
-        const factory = resolver.resolveComponentFactory(BubbleMenuLinkFormComponent);
-        const component = factory.create(injector);
-
-        // Attach Events
-        component.instance.hideForm.subscribe(() => this.hideLinkForm());
-        component.instance.removeLink.subscribe(() => this.removeLink());
-        component.instance.setLink.subscribe((event) => this.setLink(event));
-        component.instance.toggleHighlight.subscribe((event) => this.toggleHighlight(event));
-        
-        component.changeDetectorRef.detectChanges();
-        return component;
-    }
-
-    toggleLinkForm() {
-
-        if(!this.componentLinkForm) {
-            this.componentLinkForm = this.getLinkFormComponent(this.injector, this.resolver);
-            this.createTippy();
-        }
-
-        if( this.tippy.state.isShown ) {
-            this.hideLinkForm();
-        } else {
-            this.tippy.show();
-            this.setTippyPosition();
-            this.setInputLink();
-            this.focusInputLink();
-        }
-        this.detectLinkFormChanges();
-    }
-
-    hideLinkForm() {
-        this.editor.view.focus();
-        this.tippy.hide();
-        this.toggleHighlight(false);
-    }
-
-    setTippyPosition() {
-        const { view } = this.editor;
-        const { selection } = this.editor.state;
-        this.tippy.setProps({
-            getReferenceClientRect: () => posToDOMRect(view, selection.from, selection.to)
-        });
-    }
-
-    setLink( link: string ) {
-        if( link ) {
-            this.editor.commands.setLink({ href: link });
-        }
-        this.hideLinkForm();
-    }
-
-    removeLink() {
-        this.editor.commands.unsetLink();
-        this.hideLinkForm();        
-    }
-
-    toggleHighlight( add: boolean ) {
-        if ( add ) {
-            this.editor.commands.setHighlight();
-        } else {
-            this.editor.commands.unsetHighlight();
-        }
-    }
-
-    setInputLink() {
-        this.componentLinkForm.instance.nodeLink = this.getNodeLink();
-        this.componentLinkForm.instance.newLink = this.getNodeLink() || this.getLinkSelect();
-    }
-
-    detectLinkFormChanges() {
-        this.componentLinkForm.changeDetectorRef.detectChanges();
-    }
-
-    focusInputLink() {
-        this.componentLinkForm.instance.focusInput();
-    }
-
-    private getLinkSelect() {
-        const { state } = this.editor;
-        const { from, to } = state.selection;
-        const text = state.doc.textBetween(from, to, ' ');
-
-        return this.isLink(text) ? text: '';
-    }
-
-    private isLink(text) {
-        const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-          '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-        return !!pattern.test(text);
-    }
-      
-    private getNodeLink(): string {
-        return this.editor.isActive('link')
-            ? this.editor.getAttributes('link').href
-            : '';
-    }
 }

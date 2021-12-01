@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Editor } from '@tiptap/core';
 
 export interface BubbleMenuItem {
@@ -15,7 +15,6 @@ export interface BubbleMenuItem {
 })
 export class BubbleMenuComponent implements OnInit {
     @Input() editor: Editor;
-    @Output() toggleLinkForm: EventEmitter<boolean> =  new EventEmitter();
 
     public enabledMarks: string[] = [];
     public textAlings: string[] = ['left', 'center', 'right'];
@@ -155,7 +154,7 @@ export class BubbleMenuComponent implements OnInit {
                 }
             },
             link: () => {
-                this.toggleLinkForm.emit(true);
+                this.editor.commands.toogleLinkForm();
             },
             clearAll: () => {
                 this.editor.commands.unsetAllMarks();

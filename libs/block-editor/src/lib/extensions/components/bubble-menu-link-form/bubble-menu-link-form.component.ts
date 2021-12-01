@@ -19,7 +19,6 @@ export class BubbleMenuLinkFormComponent {
     @Output() hideForm: EventEmitter<boolean> = new EventEmitter(false);
     @Output() removeLink: EventEmitter<boolean> = new EventEmitter(false);
     @Output() setLink: EventEmitter<string> = new EventEmitter();
-    @Output() toggleHighlight: EventEmitter<boolean> = new EventEmitter(false);
 
     @Input() nodeLink = '';
     @Input() newLink = '';
