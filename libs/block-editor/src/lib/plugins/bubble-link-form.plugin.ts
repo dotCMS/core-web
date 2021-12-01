@@ -26,7 +26,7 @@ export type BubbleLinkFormViewProps = BubbleLinkFormProps & {
     view: EditorView;
 };
 
-export class bubbleLinkFormView {
+export class BubbleLinkFormView {
     public editor: Editor;
 
     public element: HTMLElement;
@@ -208,7 +208,7 @@ export class bubbleLinkFormView {
 export const bubbleLinkFormPlugin = (options: BubbleLinkFormProps) => {
     return new Plugin({
         key: options.pluginKey as PluginKey,
-        view: (view) => new bubbleLinkFormView({ view, ...options }),
+        view: (view) => new BubbleLinkFormView({ view, ...options }),
         state: {
             init(): PluginState {
                 return {
