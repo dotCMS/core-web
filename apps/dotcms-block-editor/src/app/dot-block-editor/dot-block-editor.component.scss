@@ -1,4 +1,4 @@
-@use "../../../../../libs/dot-primeng-theme-styles/src/scss/variables" as *;
+@use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
@@ -10,15 +10,15 @@ dotcms-block-editor {
     width: 100%;
 
     .ProseMirror {
-        box-sizing: border-box;
-        -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
-        outline: $gray-light solid 1px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border-radius: 4px;
         display: block;
         height: 100%;
         min-height: 500px;
-        border-radius: 4px;
-        padding: 2rem 4rem;
+        outline: $gray-light solid 1px;
+        padding: $spacing-5 $spacing-8;
     }
 
     .ProseMirror-focused {
@@ -28,5 +28,5 @@ dotcms-block-editor {
 
 .highlighted {
     background: #ACCEF7;
-    border-radius: 2px;
+    border-radius: $border-radius;
 }
