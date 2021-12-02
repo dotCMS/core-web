@@ -800,7 +800,7 @@
                     "builder": "@nrwl/storybook:storybook",
                     "options": {
                         "uiFramework": "@storybook/angular",
-                        "port": 4400,
+                        "port": 6600,
                         "config": {
                             "configFolder": "apps/dotcms-block-editor/.storybook"
                         }
