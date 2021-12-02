@@ -25,9 +25,9 @@ export * from './lib/extensions/blocks/image-block/image-block.component';
 // Editor Extensions
 export * from './lib/extensions/actions-menu.extension';
 export * from './lib/extensions/blocks/image-block/image-block.extention';
-export * from './lib/extensions/imageUpload.extention';
-export * from './lib/extensions/dragHandler.extention';
-export * from './lib/extensions/bubble-link-form.extention';
+export * from './lib/extensions/imageUpload.extension';
+export * from './lib/extensions/dragHandler.extension';
+export * from './lib/extensions/bubble-link-form.extension';
 
 //Editor Blocks
 export * from './lib/extensions/blocks/contentlet-block/contentlet-block.extension';

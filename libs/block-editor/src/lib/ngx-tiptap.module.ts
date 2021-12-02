@@ -25,7 +25,6 @@ import { DotImageService } from './extensions/services/dot-image/dot-image.servi
 import { BubbleMenuComponent } from './extensions/components/bubble-menu/bubble-menu.component';
 import { BubbleMenuButtonComponent } from './extensions/components/bubble-menu-button/bubble-menu-button.component';
 import { BubbleMenuLinkFormComponent } from './extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
-// import { BubbleMenuComponent } from './extensions/components/bubble-menu/bubble-menu.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, CardModule, MenuModule],

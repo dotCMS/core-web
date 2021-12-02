@@ -7,7 +7,7 @@ import { ComponentRef } from '@angular/core';
 import { BubbleMenuLinkFormComponent } from '../extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 
 // Interface
-import { PluginStorage } from '../extensions/bubble-link-form.extention';
+import { PluginStorage } from '../extensions/bubble-link-form.extension';
 
 interface PluginState {
     toggle: boolean;
