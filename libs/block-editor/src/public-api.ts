@@ -15,8 +15,9 @@ export * from './lib/NodeViewRenderer';
 // Editor blocks components
 export * from './lib/extensions/components/suggestions/suggestions.component';
 export * from './lib/extensions/components/action-button/action-button.component';
-export * from './lib/extensions/components/loader/loader.component'
-export * from './lib/extensions/components/drag-handler/drag-handler.component'
+export * from './lib/extensions/components/loader/loader.component';
+export * from './lib/extensions/components/drag-handler/drag-handler.component';
+export * from './lib/extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 
 export * from './lib/extensions/blocks/contentlet-block/contentlet-block.component';
 export * from './lib/extensions/blocks/image-block/image-block.component';
@@ -26,6 +27,7 @@ export * from './lib/extensions/actions-menu.extension';
 export * from './lib/extensions/blocks/image-block/image-block.extention';
 export * from './lib/extensions/imageUpload.extention';
 export * from './lib/extensions/dragHandler.extention';
+export * from './lib/extensions/bubble-link-form.extention';
 
 //Editor Blocks
 export * from './lib/extensions/blocks/contentlet-block/contentlet-block.extension';

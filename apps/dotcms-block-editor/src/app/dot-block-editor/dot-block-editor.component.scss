@@ -18,10 +18,15 @@ dotcms-block-editor {
         height: 100%;
         min-height: 500px;
         border-radius: 4px;
-        padding: 1rem 4rem;
+        padding: 2rem 4rem;
     }
 
     .ProseMirror-focused {
         outline-color: $brand-primary;
     }
+}
+
+.highlighted {
+    background: #ACCEF7;
+    border-radius: 2px;
 }

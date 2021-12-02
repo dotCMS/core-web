@@ -9,6 +9,7 @@ import { MenuModule } from 'primeng/menu';
 
 import { delay } from 'rxjs/operators';
 import { DotBlockEditorComponent } from './dot-block-editor.component';
+import { BubbleMenuLinkFormComponent } from '@dotcms/block-editor';
 import {
     ActionButtonComponent,
     ContentletBlockComponent,
@@ -123,7 +124,8 @@ export const primary = () => ({
             ActionButtonComponent,
             DragHandlerComponent,
             ImageBlockComponent,
-            LoaderComponent
+            LoaderComponent,
+            BubbleMenuLinkFormComponent
         ]
     },
     component: DotBlockEditorComponent
