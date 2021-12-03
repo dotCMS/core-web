@@ -3,7 +3,7 @@ import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StructureTypeView, ContentTypeView } from '@models/contentlet';
-import { DotCMSContentType } from '@dotcms/dotcms-models';
+import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
 
 @Injectable()
 export class DotContentTypeService {
@@ -92,7 +92,7 @@ export class DotContentTypeService {
      * @returns Observable<DotCMSContentType[]>
      * @memberof ContentletService
      */
-    getContentTypeHistory(identifier: string, language: string): Observable<DotCMSContentType[]> {
+    getContentTypeHistory(identifier: string, language: string): Observable<DotCMSContentlet[]> {
         return this.coreWebService
             .requestView({
                 url: `/api/v1/content/versions?identifier=${identifier}&groupByLang=1`

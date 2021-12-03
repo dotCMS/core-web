@@ -1,8 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { take, takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { COMPARE_CUSTOM_EVENT } from '@services/dot-custom-event-handler/dot-custom-event-handler.service';
 import { Subject } from 'rxjs';
+import { DotContentCompareComponent } from '@components/dot-content-compare/dot-content-compare.component';
+import { DotEvent } from '@models/dot-event/dot-event';
 
 @Component({
     selector: 'dot-content-compare-dialog',
@@ -10,17 +12,20 @@ import { Subject } from 'rxjs';
     styleUrls: ['./dot-content-compare-dialog.component.scss']
 })
 export class DotContentCompareDialogComponent implements OnInit, OnDestroy {
+    @ViewChild('contentCompare', { static: false })
+    contentCompareComponent: DotContentCompareComponent;
+    show = false;
+
     constructor(private dotEventsService: DotEventsService) {}
 
-    show = true;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     ngOnInit(): void {
         this.dotEventsService
             .listen(COMPARE_CUSTOM_EVENT)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
-                debugger;
+            .subscribe((event: DotEvent) => {
+                this.contentCompareComponent.data = event.data;
                 this.show = true;
             });
     }

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { DotCMSContentlet, DotCMSContentTypeField } from '@dotcms/dotcms-models';
 
 @Component({
     selector: 'dot-content-compare-table',
@@ -6,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./dot-content-compare-table.component.scss']
 })
 export class DotContentCompareTableComponent implements OnInit {
+    @Input() original: DotCMSContentlet;
+    @Input() compare: DotCMSContentlet;
+    @Input() fields: DotCMSContentTypeField[];
+
     constructor() {}
 
     ngOnInit(): void {}
