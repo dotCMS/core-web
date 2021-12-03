@@ -1,2 +1,10 @@
-<dot-content-compare-table></dot-content-compare-table>
+<ng-container *ngIf="vm$ | async as vm">
+    <dot-content-compare-table
+        [original]="vm.working"
+        [compare]= "vm.compare"
+        [fields]="vm.fields"
+        [versions]="vm.versions">
+    </dot-content-compare-table>
+</ng-container>
+
 

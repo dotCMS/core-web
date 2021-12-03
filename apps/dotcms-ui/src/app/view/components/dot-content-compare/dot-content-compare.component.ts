@@ -1,5 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DotContentCompareStore } from '@components/dot-content-compare/store/dot-content-compare.store';
+import {
+    DotContentCompareState,
+    DotContentCompareStore
+} from '@components/dot-content-compare/store/dot-content-compare.store';
+import { Observable } from 'rxjs';
 
 export interface DotContentCompareEvent {
     inode: string;
@@ -17,6 +21,7 @@ export class DotContentCompareComponent implements OnInit {
     @Input() set data(data: DotContentCompareEvent) {
         this.store.loadData(data);
     }
+    vm$: Observable<DotContentCompareState> = this.store.vm$;
 
     constructor(private store: DotContentCompareStore) {}
 

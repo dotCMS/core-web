@@ -1,1 +1,60 @@
-<p>dot-content-compare-table works!</p>
+<p-table [value]='fields' *ngIf='fields'>
+    <ng-template pTemplate='header'>
+        <tr>
+            <th> </th>
+            <th>{{original?.title ? original?.title : original?.identifier}}</th>
+            <th>
+                <p-dropdown [options]="versions" >
+                    <ng-template let-version pTemplate="selectedItem">
+                        {{version.modDate | date: 'MM/dd/YYYY - HH:MM'}}
+                    </ng-template>
+                    <ng-template let-version pTemplate="item">
+                        {{version.modDate | date: 'MM/dd/YYYY - HH:MM'}}
+                    </ng-template>
+                </p-dropdown>
+                <p-selectButton [options]="displayOptions" ></p-selectButton>
+            </th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-field>
+        <tr *ngIf="field.fieldType === 'Image'">
+            <td>{{field.name}}</td>
+            <td><img [src]="'/dA/'+original[field.variable]+'/250w/20q'"></td>
+            <td><img [src]="'/dA/'+compare[field.variable]+'/250w/20q'"></td>
+        </tr>
+        <tr *ngIf="field.fieldType === 'File'">
+            <td>{{field.name}}</td>
+            <td>
+                {{original | json}}
+                <span>{{original[field.identifier]}}</span>
+                <button>{{original[field.identifier]}}</button>
+            </td>
+            <td>
+                <span>{{compare[field.identifier]}}</span>
+                <button>{{compare[field.identifier]}}</button>
+            </td>
+        </tr>
+        <tr *ngIf="field.fieldType === 'Category'">
+            <td>{{field.name}}</td>
+            <td>
+                {{original[field.variable] | json}}
+            </td>
+            <td>
+                <dot-compare-field
+                    [value]="{old: (original[field.variable] | json), new: (compare[field.variable] | json)}">
+                </dot-compare-field>
+
+            </td>
+        </tr>
+        <tr *ngIf="field.fieldType !== 'Image'">
+            <td>{{field.name}}</td>
+            <td>{{ original[field.variable]}}</td>
+            <td>
+                <dot-compare-field
+                    [value]="{old: original[field.variable], new: compare[field.variable]}">
+                </dot-compare-field>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

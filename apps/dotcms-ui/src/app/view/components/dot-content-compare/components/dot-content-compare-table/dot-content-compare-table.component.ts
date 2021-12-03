@@ -10,6 +10,12 @@ export class DotContentCompareTableComponent implements OnInit {
     @Input() original: DotCMSContentlet;
     @Input() compare: DotCMSContentlet;
     @Input() fields: DotCMSContentTypeField[];
+    @Input() versions: DotCMSContentlet[];
+
+    displayOptions = [
+        { label: 'Diff', value: 'diff' },
+        { label: 'Plain', value: 'plain' }
+    ];
 
     constructor() {}
 
