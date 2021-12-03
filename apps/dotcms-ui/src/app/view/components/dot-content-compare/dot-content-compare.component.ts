@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DotContentCompareStore } from '@components/dot-content-compare/store/dot-content-compare.store';
+
+export interface DotContentCompareEvent {
+    inode: string;
+    identifier: string;
+    language: string;
+}
 
 @Component({
     selector: 'dot-content-compare',
@@ -8,13 +14,11 @@ import { DotContentCompareStore } from '@components/dot-content-compare/store/do
     providers: [DotContentCompareStore]
 })
 export class DotContentCompareComponent implements OnInit {
-    constructor() {}
+    @Input() set data(data: DotContentCompareEvent) {
+        this.store.loadData(data);
+    }
+
+    constructor(private store: DotContentCompareStore) {}
 
     ngOnInit(): void {}
-
-    show = true;
-
-    close(): void {
-        this.show = false;
-    }
 }

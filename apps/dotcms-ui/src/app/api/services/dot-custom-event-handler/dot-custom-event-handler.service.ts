@@ -10,6 +10,10 @@ import { DotWorkflowEventHandlerService } from '@services/dot-workflow-event-han
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotNavLogoService } from '@services/dot-nav-logo/dot-nav-logo.service';
 import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
+
+export const COMPARE_CUSTOM_EVENT = 'compare-contentlet';
+
 /**
  * Handle Custom events
  *
@@ -30,7 +34,8 @@ export class DotCustomEventHandlerService {
         private dotPushPublishDialogService: DotPushPublishDialogService,
         private dotDownloadBundleDialogService: DotDownloadBundleDialogService,
         private dotWorkflowEventHandlerService: DotWorkflowEventHandlerService,
-        private dotGenerateSecurePasswordService: DotGenerateSecurePasswordService
+        private dotGenerateSecurePasswordService: DotGenerateSecurePasswordService,
+        private dotEventsService: DotEventsService
     ) {
         if (!this.handlers) {
             this.handlers = {
@@ -112,7 +117,6 @@ export class DotCustomEventHandlerService {
     }
 
     private openCompareDialog($event: CustomEvent): void {
-        debugger;
-        console.log('Data from Dialog:', $event.detail.data);
+        this.dotEventsService.notify(COMPARE_CUSTOM_EVENT, $event.detail.data);
     }
 }
