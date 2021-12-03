@@ -9,15 +9,33 @@ import { map, take } from 'rxjs/operators';
 export interface DotContentCompareTable {}
 
 export interface DotContentCompareState {
-    working: string;
-    compare: string;
-    diff: {
-        working: DotCMSContentlet;
-        compare: DotCMSContentlet;
-    };
+    working: DotCMSContentlet;
+    compare: DotCMSContentlet;
     versions: DotCMSContentlet[];
     fields: DotCMSContentTypeField[];
-    contentType: DotCMSContentType;
+}
+
+export enum FieldWhiteList {
+    Text = 'Text',
+    Textarea = 'Textarea',
+    Checkbox = 'Checkbox',
+    'Constant-Field' = 'Constant-Field',
+    'Key-Value' = 'Key-Value',
+    Radio = 'Radio',
+    Select = 'Select',
+    'Multi-Select' = 'Multi-Select',
+    Tag = 'Tag',
+    'Custom-Field' = 'Custom-Field',
+    'Hidden-Field' = 'Hidden-Field',
+    Image = 'image',
+    File = 'File',
+    Binary = 'Binary',
+    Category = 'Category',
+    Date = 'Date',
+    'Date-and-Time' = 'Date-and-Time',
+    Time = 'Time',
+    'WYSIWYG' = 'WYSIWYG',
+    'Host-Folder' = 'Host-Folder'
 }
 
 @Injectable()
@@ -27,9 +45,7 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
             working: null,
             compare: null,
             versions: [],
-            fields: null,
-            diff: null,
-            contentType: null
+            fields: null
         });
     }
 
@@ -38,17 +54,20 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
     private readonly versions$: Observable<DotCMSContentlet[]> = this.select(
         (state) => state.versions
     );
-    private readonly working$: Observable<string> = this.select((state) => state.working);
-    private readonly compare$: Observable<string> = this.select((state) => state.compare);
+    private readonly working$: Observable<DotCMSContentlet> = this.select((state) => state.working);
+    private readonly compare$: Observable<DotCMSContentlet> = this.select((state) => state.compare);
 
     // UPDATERS
     private readonly updateVersions = this.updater((state, versions: DotCMSContentlet[]) => {
-        this.filterFields(state.contentType);
         return { ...state, versions };
     });
 
-    private readonly updateContentType = this.updater((state, contentType: DotCMSContentType) => {
-        return { ...state, contentType };
+    private readonly updateWorking = this.updater((state, working: DotCMSContentlet) => {
+        return { ...state, working };
+    });
+
+    private readonly updateCompare = this.updater((state, compare: DotCMSContentlet) => {
+        return { ...state, compare };
     });
 
     private readonly updateFields = this.updater((state, fields: DotCMSContentTypeField[]) => {
@@ -56,11 +75,24 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
     });
 
     private filterFields(contentType: DotCMSContentType): void {
-        const fields = contentType.fields.filter((field) => field.dataType !== 'SYSTEM');
+        const fields = contentType.fields.filter(
+            (field) => FieldWhiteList[field.fieldType] != undefined
+        );
         this.updateFields(fields);
     }
 
-    // //Effects
+    private assignCompareVersions(
+        data: DotContentCompareEvent,
+        contents: DotCMSContentlet[]
+    ): void {
+        this.updateCompare(contents.find((content) => content.inode === data.inode));
+        this.updateWorking(contents.find((content) => content.working === true));
+    }
+
+    private mapFieldValues(): void {}
+
+    //Effects
+
     readonly loadData = this.effect((data$: Observable<DotContentCompareEvent>) => {
         return data$.pipe(
             map((data) => {
@@ -72,8 +104,9 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
                             .getContentType(contents[0].contentType)
                             .pipe(take(1))
                             .subscribe((contentType: DotCMSContentType) => {
-                                this.updateContentType(contentType);
                                 this.updateVersions(contents);
+                                this.filterFields(contentType);
+                                this.assignCompareVersions(data, contents);
                             });
                     });
             })
