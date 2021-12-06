@@ -243,7 +243,7 @@ export class DotEditContentHtmlService {
 
         if (this.isContentExistInContainer(contentlet, containerEl)) {
             this.showContentAlreadyAddedError();
-            return of(false);
+            return of(false).pipe(take(1));
         } else {
             let contentletPlaceholder = doc.querySelector(CONTENTLET_PLACEHOLDER_SELECTOR);
             if (!contentletPlaceholder) {
@@ -635,7 +635,7 @@ export class DotEditContentHtmlService {
             // When an user create or edit a contentlet from the jsp
             save: (contentlet: DotPageContent) => {
                 if (this.currentAction === DotContentletAction.ADD) {
-                    this.renderAddedContentlet(contentlet);
+                    this.renderAddedContentlet(contentlet).subscribe();
                 } else {
                     if (this.updateContentletInode) {
                         this.currentContentlet.inode = contentlet.inode;
@@ -654,7 +654,7 @@ export class DotEditContentHtmlService {
             },
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {
-                this.renderAddedContentlet(contentlet);
+                this.renderAddedContentlet(contentlet).subscribe();
                 this.iframeActions$.next({
                     name: 'select'
                 });
@@ -669,7 +669,7 @@ export class DotEditContentHtmlService {
                 this.removeCurrentContentlet();
             },
             'add-uploaded-dotAsset': (dotAssetData: DotAssetPayload) => {
-                this.renderAddedContentlet(dotAssetData.contentlet, true);
+                this.renderAddedContentlet(dotAssetData.contentlet, true).subscribe();
             },
             'add-content': (data: any) => {
                 this.iframeActions$.next({
@@ -679,12 +679,13 @@ export class DotEditContentHtmlService {
             },
             'add-contentlet': (dotAssetData: DotAssetPayload) => {
                 this.renderAddedContentlet(dotAssetData.contentlet, true)
-                    .pipe(take(1))
                     .subscribe((shouldSave: boolean) => {
                         if (shouldSave && dotAssetData.contentlet.baseType === 'FORM') {
                             this.iframeActions$.next({
                                 name: 'save'
                             });
+                        } else if(!shouldSave) {
+                            this.removeContentletPlaceholder();
                         }
                     });
             },
