@@ -42,15 +42,20 @@
             width: 100%;
         }
 
-        button {
-            background-color: transparent;
-            border: none;
-            color: $gray;
-            cursor: pointer;
-            padding: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
+        .arrow {
+        background-color: transparent;
+        border: none;
+        color: $gray;
+        cursor: pointer;
+        padding: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
         }
     }
 }
