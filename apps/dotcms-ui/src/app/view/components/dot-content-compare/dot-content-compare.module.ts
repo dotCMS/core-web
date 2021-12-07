@@ -5,9 +5,14 @@ import { DotContentCompareTableComponent } from '@components/dot-content-compare
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotContentCompareDialogComponent } from './components/dot-content-compare-dialog/dot-content-compare-dialog.component';
 import { TableModule } from 'primeng/table';
-import { DotCompareFieldComponent } from './components/dot-compare-field/dot-compare-field.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { DotContentCompareFileFieldComponent } from './components/fields/dot-content-compare-file-field/dot-content-compare-file-field.component';
+import { DotContentCompareBinaryFieldComponent } from './components/fields/dot-content-compare-binary-field/dot-content-compare-binary-field.component';
+import { DotContentCompareDateFieldComponent } from './components/fields/dot-content-compare-date-field/dot-content-compare-date-field.component';
+import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
+import { DotDiffPipeModule } from '@pipes/dot-diff/dot-diff.pipe.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -15,9 +20,20 @@ import { SelectButtonModule } from 'primeng/selectbutton';
         DotContentCompareTableComponent,
         DotContentCompareDialogComponent,
         DotContentCompareDialogComponent,
-        DotCompareFieldComponent
+        DotContentCompareFileFieldComponent,
+        DotContentCompareBinaryFieldComponent,
+        DotContentCompareDateFieldComponent
     ],
     exports: [DotContentCompareComponent, DotContentCompareDialogComponent],
-    imports: [CommonModule, DotDialogModule, TableModule, DropdownModule, SelectButtonModule]
+    imports: [
+        CommonModule,
+        DotDialogModule,
+        TableModule,
+        DropdownModule,
+        SelectButtonModule,
+        DotDiffPipeModule,
+        FormsModule
+    ],
+    providers: [DotContentletService]
 })
 export class DotContentCompareModule {}
