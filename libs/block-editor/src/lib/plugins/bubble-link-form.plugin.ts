@@ -67,7 +67,6 @@ export class BubbleLinkFormView {
 
         this.editor.on('focus', this.focusHandler);
         this.setComponentEvents();
-        this.createTooltip();
     }
 
     update(view: EditorView, prevState?: EditorState): void {
@@ -80,6 +79,8 @@ export class BubbleLinkFormView {
             return;
         }
         
+        this.createTooltip();
+
         this.tippy?.state.isVisible ? this.hide() : this.show();
         this.detectLinkFormChanges();
     }
@@ -91,11 +92,14 @@ export class BubbleLinkFormView {
     };
 
     createTooltip() {
-        if (this.tippy) {
-            return;
+        const { element: editorElement } = this.editor.options
+        const editorIsAttached = !!editorElement.parentElement
+    
+        if (this.tippy || !editorIsAttached) {
+          return
         }
 
-        this.tippy = tippy(this.editor.view.dom, {
+        this.tippy = tippy(editorElement, {
             duration: 250,
             getReferenceClientRect: null,
             content: this.element,
