@@ -1,4 +1,3 @@
-import { detectOverflow, VirtualElement } from '@popperjs/core';
 import { Editor, posToDOMRect, Range } from '@tiptap/core';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -114,34 +113,9 @@ export class FloatingActionsView {
             trigger: 'manual',
             placement: 'left',
             hideOnClick: 'toggle',
-            popperOptions: {
-                modifiers: [ 
-                    {
-                        name: 'flip',
-                        enabled: false,
-                        options: {
-                            enabled: false,
-                            flipVariations: false
-                        }
-                    }
-                ]
-            },
             ...options
         });
     }
-
-    getSideOffsets(
-        overflow: any,
-        rect: any,
-        preventedOffsets: any = { x: 0, y: 0 }
-      ): any {
-        return {
-          top: overflow.top - rect.height - preventedOffsets.y,
-          right: overflow.right - rect.width + preventedOffsets.x,
-          bottom: overflow.bottom - rect.height + preventedOffsets.y,
-          left: overflow.left - rect.width - preventedOffsets.x,
-        };
-      }
 
     /**
      * Check the EditorState and based on that modify the DOM
@@ -159,27 +133,14 @@ export class FloatingActionsView {
             !selection.$anchor.parent.isLeaf && !selection.$anchor.parent.textContent;
         const isActive = isRootDepth && isNodeEmpty;
 
-        // console.log(view.dom.getBoundingClientRect());
-        // console.log(posToDOMRect(view, from, to));
         if (!empty || !isActive) {
             this.hide();
 
             return;
         }
-
         this.tippy.setProps({
             getReferenceClientRect: () => posToDOMRect(view, from, to)
         });
-
-        // const { element: editorElement } = this.editor.options;
-        // console.log(editorElement);
-        // console.log(view.dom);
-
-
-        // console.log(this.tippy.popperInstance.state.modifiersData.hide);
-        // console.log('element', this.tippy.reference.getBoundingClientRect());
-        // console.log('Popper', this.tippy.props.getReferenceClientRect());
-        // console.log('Popper', this.tippy.props.offset);
 
         this.show();
 
