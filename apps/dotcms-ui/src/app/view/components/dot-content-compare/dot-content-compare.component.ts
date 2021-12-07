@@ -25,5 +25,9 @@ export class DotContentCompareComponent implements OnInit {
 
     constructor(private store: DotContentCompareStore) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.vm$.subscribe((data) => {
+            console.log(data);
+        });
+    }
 }

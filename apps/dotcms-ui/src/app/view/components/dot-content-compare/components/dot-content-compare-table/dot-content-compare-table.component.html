@@ -1,10 +1,10 @@
-<p-table [value]='fields' *ngIf='fields'>
+<p-table [value]='data.fields' *ngIf='data' autoLayout="true" styleClass="p-datatable-gridlines">
     <ng-template pTemplate='header'>
         <tr>
             <th> </th>
-            <th>{{original?.title ? original?.title : original?.identifier}}</th>
-            <th>
-                <p-dropdown [options]="versions" >
+            <th>{{data.working?.title ? data.working?.title : data.working?.identifier}}</th>
+            <th class="dot-content-compare-table__controls">
+                <p-dropdown [options]="data.versions" (onChange)='version.emit($event.value)' >
                     <ng-template let-version pTemplate="selectedItem">
                         {{version.modDate | date: 'MM/dd/YYYY - HH:MM'}}
                     </ng-template>
@@ -12,49 +12,50 @@
                         {{version.modDate | date: 'MM/dd/YYYY - HH:MM'}}
                     </ng-template>
                 </p-dropdown>
-                <p-selectButton [options]="displayOptions" ></p-selectButton>
+                <p-selectButton
+                    [options]="displayOptions"
+                    [(ngModel)]="showDiff"
+                    class="p-button-tabbed"
+                    (onChange)="diff.emit($event.value)" >
+                </p-selectButton>
             </th>
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-field>
-        <tr *ngIf="field.fieldType === 'Image'">
-            <td>{{field.name}}</td>
-            <td><img [src]="'/dA/'+original[field.variable]+'/250w/20q'"></td>
-            <td><img [src]="'/dA/'+compare[field.variable]+'/250w/20q'"></td>
-        </tr>
-        <tr *ngIf="field.fieldType === 'File'">
-            <td>{{field.name}}</td>
-            <td>
-                {{original | json}}
-                <span>{{original[field.identifier]}}</span>
-                <button>{{original[field.identifier]}}</button>
-            </td>
-            <td>
-                <span>{{compare[field.identifier]}}</span>
-                <button>{{compare[field.identifier]}}</button>
-            </td>
-        </tr>
-        <tr *ngIf="field.fieldType === 'Category'">
-            <td>{{field.name}}</td>
-            <td>
-                {{original[field.variable] | json}}
-            </td>
-            <td>
-                <dot-compare-field
-                    [value]="{old: (original[field.variable] | json), new: (compare[field.variable] | json)}">
-                </dot-compare-field>
+    <ng-template pTemplate="body" let-field >
+        <tr [ngSwitch]="field?.fieldType" >
 
-            </td>
-        </tr>
-        <tr *ngIf="field.fieldType !== 'Image'">
-            <td>{{field.name}}</td>
-            <td>{{ original[field.variable]}}</td>
-            <td>
-                <dot-compare-field
-                    [value]="{old: original[field.variable], new: compare[field.variable]}">
-                </dot-compare-field>
-            </td>
+           <td>{{field.name}}</td>
+            <ng-container *ngSwitchCase="'Image'">
+               <td><img [src]="'/dA/'+data.working[field.variable]+'/250w/20q'"></td>
+               <td><img [src]="'/dA/'+data.compare[field.variable]+'/250w/20q'"></td>
+            </ng-container>
+            <ng-container *ngSwitchCase="'File'">
+                <td>
+                    <span>{{data.working.identifier}}</span>
+                    <button>{{data.working.identifier}}</button>
+                </td>
+                <td>
+                    <span>{{data.compare.identifier}}</span>
+                    <button p-button>{{data.compare.identifier}}</button>
+                </td>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Category'">
+                <td>
+                    {{data.working[field.variable] | json}}
+                </td>
+                <td [innerHTML]="showDiff ?
+                ((data.working[field.variable] | json) | dotDiff:(data.compare[field.variable] | json))
+                : data.compare[field.variable]" >
+                </td>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+                <td [innerHTML]="data.working[field.variable]"></td>
+                <td [innerHTML]="showDiff ?
+                (data.working[field.variable] | dotDiff:data.compare[field.variable])
+                : data.compare[field.variable]" >
+                </td>
+            </ng-container>
         </tr>
     </ng-template>
 </p-table>

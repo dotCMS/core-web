@@ -1,0 +1,25 @@
+
+.dot-content-compare-table__controls{
+    display: flex;
+    justify-content: space-between;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+.layout-news-active :host ::ng-deep .p-datatable tr > th {
+    top: 0;
+}
+
+@media screen and (max-width: 64em) {
+    :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+        top: 0;
+    }
+
+    .layout-news-active :host ::ng-deep .p-datatable tr > th {
+        top: 0;
+    }
+}

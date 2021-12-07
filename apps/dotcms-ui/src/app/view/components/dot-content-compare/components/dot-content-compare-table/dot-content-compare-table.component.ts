@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DotCMSContentlet, DotCMSContentTypeField } from '@dotcms/dotcms-models';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { DotContentCompareTableData } from '@components/dot-content-compare/store/dot-content-compare.store';
 
 @Component({
     selector: 'dot-content-compare-table',
@@ -7,14 +8,15 @@ import { DotCMSContentlet, DotCMSContentTypeField } from '@dotcms/dotcms-models'
     styleUrls: ['./dot-content-compare-table.component.scss']
 })
 export class DotContentCompareTableComponent implements OnInit {
-    @Input() original: DotCMSContentlet;
-    @Input() compare: DotCMSContentlet;
-    @Input() fields: DotCMSContentTypeField[];
-    @Input() versions: DotCMSContentlet[];
+    @Input() data: DotContentCompareTableData;
+    @Input() showDiff: boolean;
+
+    @Output() version = new EventEmitter<DotCMSContentlet>();
+    @Output() diff = new EventEmitter<boolean>();
 
     displayOptions = [
-        { label: 'Diff', value: 'diff' },
-        { label: 'Plain', value: 'plain' }
+        { label: 'Diff', value: true },
+        { label: 'Plain', value: false }
     ];
 
     constructor() {}

@@ -3,7 +3,7 @@ import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StructureTypeView, ContentTypeView } from '@models/contentlet';
-import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
+import { DotCMSContentType } from '@dotcms/dotcms-models';
 
 @Injectable()
 export class DotContentTypeService {
@@ -82,22 +82,6 @@ export class DotContentTypeService {
             map((url: string) => !!url),
             defaultIfEmpty(false)
         );
-    }
-
-    /**
-     * Get the Content Type History by language.
-     *
-     * @param string identifier
-     * @param string language
-     * @returns Observable<DotCMSContentType[]>
-     * @memberof ContentletService
-     */
-    getContentTypeHistory(identifier: string, language: string): Observable<DotCMSContentlet[]> {
-        return this.coreWebService
-            .requestView({
-                url: `/api/v1/content/versions?identifier=${identifier}&groupByLang=1`
-            })
-            .pipe(take(1), pluck('entity', 'versions', language));
     }
 
     private isRecentContentType(type: StructureTypeView): boolean {
