@@ -74,6 +74,7 @@ export class BubbleLinkFormView {
         const prePluginState = this.pluginKey.getState(view.state);
         const currentPluginState = this.pluginKey.getState(prevState);
 
+        // Check that the current plugin state is different to previous plugin state.
         if (prePluginState.toggle === currentPluginState.toggle) {
             this.detectLinkFormChanges();
             return;
