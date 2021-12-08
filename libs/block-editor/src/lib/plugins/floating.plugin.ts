@@ -1,5 +1,3 @@
-
-   
 import { Editor, posToDOMRect, Range } from '@tiptap/core';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
