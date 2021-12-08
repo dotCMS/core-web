@@ -4,12 +4,12 @@
             <th> </th>
             <th>{{data.working?.title ? data.working?.title : data.working?.identifier}}</th>
             <th class="dot-content-compare-table__controls">
-                <p-dropdown [options]="data.versions" (onChange)='version.emit($event.value)' >
-                    <ng-template let-version pTemplate="selectedItem">
-                        {{version.modDate | date: 'MM/dd/YYYY - HH:MM'}}
+                <p-dropdown [options]="data.versions" (onChange)='version.emit($event.value)' appendTo="body" >
+                    <ng-template let-selected pTemplate="selectedItem">
+                        {{selected.modDate | date:'MM/dd/YYYY - hh:mm'}}
                     </ng-template>
-                    <ng-template let-version pTemplate="item">
-                        {{version.modDate | date: 'MM/dd/YYYY - HH:MM'}}
+                    <ng-template let-item pTemplate="item">
+                        {{item.modDate | date:'MM/dd/YYYY - hh:mm'}}
                     </ng-template>
                 </p-dropdown>
                 <p-selectButton
@@ -32,15 +32,38 @@
             </ng-container>
             <ng-container *ngSwitchCase="'File'">
                 <td>
-                    <span>{{data.working.identifier}}</span>
-                    <button>{{data.working.identifier}}</button>
+                    <dot-content-compare-file-field
+                        [fileId]="data.working[field.variable]"
+                        [label]=" data.compare[field.variable]" >
+                    </dot-content-compare-file-field>
                 </td>
                 <td>
-                    <span>{{data.compare.identifier}}</span>
-                    <button p-button>{{data.compare.identifier}}</button>
+                    <dot-content-compare-file-field
+                        [fileId]="data.compare[field.variable]"
+                        [label]="showDiff ? (data.working[field.variable] | dotDiff:data.compare[field.variable]) : data.compare[field.variable]" >
+                    </dot-content-compare-file-field>
                 </td>
             </ng-container>
-            <ng-container *ngSwitchCase="'Category'">
+            <ng-container *ngSwitchCase="'Binary'">
+                <td>
+                    <dot-content-compare-binary-field [label]="data.working[field.variable]" [fileURL]="data.working[field.variable]"></dot-content-compare-binary-field>
+                </td>
+                <td>
+                    <dot-content-compare-binary-field [label]="showDiff ? (data.working[field.variable] | dotDiff:data.compare[field.variable]) : data.compare[field.variable]"
+                                                      [fileURL]="data.compare[field.variable]">
+                    </dot-content-compare-binary-field>
+                </td>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Date'">
+                <td>
+                    <dot-content-compare-date-field [format]="field.variable" [value]="data.working[field.variable]"></dot-content-compare-date-field>
+                </td>
+                <td [innerHTML]="showDiff ?
+                ((data.working[field.variable] | json) | dotDiff:(data.compare[field.variable] | json))
+                : data.compare[field.variable]" >
+                </td>
+            </ng-container>
+            <!--<ng-container *ngSwitchCase="'Category'">
                 <td>
                     {{data.working[field.variable] | json}}
                 </td>
@@ -48,7 +71,7 @@
                 ((data.working[field.variable] | json) | dotDiff:(data.compare[field.variable] | json))
                 : data.compare[field.variable]" >
                 </td>
-            </ng-container>
+            </ng-container>-->
             <ng-container *ngSwitchDefault>
                 <td [innerHTML]="data.working[field.variable]"></td>
                 <td [innerHTML]="showDiff ?
