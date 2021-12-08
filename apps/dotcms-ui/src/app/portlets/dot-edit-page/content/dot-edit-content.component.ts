@@ -289,7 +289,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private saveToPage(model: DotPageContainer[]): Observable<string> {
-        console.log('saveToPage');
         this.dotGlobalMessageService.loading(
             this.dotMessageService.get('dot.common.message.saving')
         );
