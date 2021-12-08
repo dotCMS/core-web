@@ -289,6 +289,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private saveToPage(model: DotPageContainer[]): Observable<string> {
+        console.log('saveToPage');
         this.dotGlobalMessageService.loading(
             this.dotMessageService.get('dot.common.message.saving')
         );
@@ -297,9 +298,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .pipe(
                 take(1),
                 tap(() => {
-                    this.dotGlobalMessageService.success(
-                        this.dotMessageService.get('dot.common.message.saved')
-                    );
+                    this.dotGlobalMessageService.success();
                 }),
                 catchError((error: HttpErrorResponse) => {
                     this.httpErrorManagerService.handle(error);
