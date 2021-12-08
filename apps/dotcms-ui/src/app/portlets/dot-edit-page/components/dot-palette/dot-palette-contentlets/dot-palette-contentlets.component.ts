@@ -30,7 +30,7 @@ export class DotPaletteContentletsComponent implements OnChanges {
     isFormContentType: boolean;
     hideNoResults = true;
     filter: string;
-    itemsPerPage = 15;
+    itemsPerPage = 25;
     totalRecords = 0;
 
     @ViewChild('inputFilter') inputFilter: DotPaletteInputFilterComponent;
