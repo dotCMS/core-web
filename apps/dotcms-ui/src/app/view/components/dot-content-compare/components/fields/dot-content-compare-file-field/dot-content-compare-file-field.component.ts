@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
 @Component({
     selector: 'dot-content-compare-file-field',
@@ -7,7 +6,8 @@ import { DotCMSContentlet } from '@dotcms/dotcms-models';
     styleUrls: ['./dot-content-compare-file-field.component.scss']
 })
 export class DotContentCompareFileFieldComponent implements OnInit {
-    @Input() content: DotCMSContentlet;
+    @Input() fileId: string;
+    @Input() label: string;
 
     constructor() {}
 

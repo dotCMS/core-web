@@ -9,7 +9,13 @@ import { DotCMSContentlet } from '@dotcms/dotcms-models';
 export class DotContentCompareBinaryFieldComponent implements OnInit {
     constructor() {}
 
-    @Input() content: DotCMSContentlet;
+    @Input() fileURL: string;
+    @Input() label: string;
+    imageError = false;
 
     ngOnInit(): void {}
+
+    handleError(): void {
+        this.imageError = true;
+    }
 }
