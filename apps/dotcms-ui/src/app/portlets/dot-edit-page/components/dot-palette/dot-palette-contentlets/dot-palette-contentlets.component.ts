@@ -108,7 +108,7 @@ export class DotPaletteContentletsComponent implements OnChanges {
      *
      * @memberof DotPaletteContentletsComponent
      */
-    backHandlder(): void {
+    backHandler(): void {
         this.filter = '';
         this.back.emit();
         this.items = null;
