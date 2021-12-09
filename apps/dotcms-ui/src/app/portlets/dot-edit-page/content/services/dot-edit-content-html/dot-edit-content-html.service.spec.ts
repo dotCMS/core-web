@@ -367,7 +367,7 @@ xdescribe('DotEditContentHtmlService', () => {
         expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(errorResponse);
     });
 
-    fit('should render relocated contentlet', () => {
+    it('should render relocated contentlet', () => {
         spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue(
             of('<h1>new container</h1>')
         );
