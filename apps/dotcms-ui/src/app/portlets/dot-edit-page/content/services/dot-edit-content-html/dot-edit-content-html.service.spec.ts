@@ -35,6 +35,7 @@ import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fi
 import { mockResponseView } from '@dotcms/app/test/response-view.mock';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotPage } from '@dotcms/app/shared/models/dot-page/dot-page.model';
 
 @Injectable()
 class MockDotLicenseService {
@@ -366,7 +367,7 @@ xdescribe('DotEditContentHtmlService', () => {
         expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(errorResponse);
     });
 
-    it('should render relocated contentlet', () => {
+    fit('should render relocated contentlet', () => {
         spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue(
             of('<h1>new container</h1>')
         );
@@ -384,6 +385,9 @@ xdescribe('DotEditContentHtmlService', () => {
                 }
             })
         );
+
+        service.setCurrentPage(pageState.page);
+
         service.initEditMode(pageState, {
             nativeElement: {
                 ...fakeIframeEl,
@@ -445,7 +449,7 @@ xdescribe('DotEditContentHtmlService', () => {
         expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(
             { identifier: '123', uuid: '456' },
             { identifier: '456', inode: '456' },
-            null
+            pageState.page
         );
 
         expect(replaceChild).toHaveBeenCalledWith(

@@ -100,6 +100,11 @@ export class DotEditContentHtmlService {
         }
     }
 
+    /**
+     * Set the current page
+     * 
+     * @param page
+     */
     setCurrentPage(page: DotPage) {
         this.currentPage = page;
     }

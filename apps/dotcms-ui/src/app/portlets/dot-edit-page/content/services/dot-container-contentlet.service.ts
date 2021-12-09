@@ -16,6 +16,7 @@ export class DotContainerContentletService {
      *
      * @param DotPageContainer container
      * @param DotPageContent content
+     * @param DotPage page
      * @returns Observable<string>
      * @memberof DotContainerContentletService
      */
