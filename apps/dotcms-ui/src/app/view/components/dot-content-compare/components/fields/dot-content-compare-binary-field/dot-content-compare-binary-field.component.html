@@ -2,7 +2,7 @@
 
 <ng-template #fallback>
     <span [innerHTML]="label"></span>
-    <a [href]="fileURL" download>
-        <button pbutton class="p-button-secondary p-button p-component">Download</button>
+    <a [href]="fileURL" download  class="p-button p-button-secondary">
+        {{'Download' | dm}}
     </a>
 </ng-template>

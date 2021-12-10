@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { DotContentCompareEvent } from '@components/dot-content-compare/dot-content-compare.component';
 import { map, take } from 'rxjs/operators';
 import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
+import { DotFormatDateService } from '@services/dot-format-date-service';
 
 export interface DotContentCompareTableData {
     working: DotCMSContentlet;
@@ -17,6 +18,12 @@ export interface DotContentCompareTableData {
 export interface DotContentCompareState {
     data: DotContentCompareTableData;
     showDiff: boolean;
+}
+
+enum DateFormat {
+    Date = 'MM/dd/yyyy',
+    Time = 'hh:mm aa',
+    'Date-and-Time' = 'MM/dd/yyyy - hh:mm aa'
 }
 
 export enum FieldWhiteList {
@@ -46,7 +53,8 @@ export enum FieldWhiteList {
 export class DotContentCompareStore extends ComponentStore<DotContentCompareState> {
     constructor(
         private dotContentTypeService: DotContentTypeService,
-        private dotContentletService: DotContentletService
+        private dotContentletService: DotContentletService,
+        private dotFormatDateService: DotFormatDateService
     ) {
         super({
             data: null,
@@ -81,26 +89,56 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         return contents.find((content) => content.working === true);
     }
 
+    private convertContentDates(
+        contents: DotCMSContentlet[],
+        fields: DotCMSContentTypeField[]
+    ): DotCMSContentlet[] {
+        Object.keys(DateFormat).map((key) => {
+            const index = fields.findIndex((field) => field.fieldType === key);
+            if (index >= 0) {
+                contents.forEach((content) => {
+                    content[fields[index].variable] = this.dotFormatDateService.formatTZ(
+                        new Date(content[fields[index].variable]),
+                        DateFormat[key]
+                    );
+                });
+            }
+        });
+        contents.forEach((content) => {
+            content.modDate = this.dotFormatDateService.formatTZ(
+                new Date(content.modDate),
+                'MM/dd/yyyy - hh:mm aa'
+            );
+        });
+
+        return contents;
+    }
+
     //Effects
 
     readonly loadData = this.effect((data$: Observable<DotContentCompareEvent>) => {
         return data$.pipe(
             map((data) => {
                 this.dotContentletService
-                    .getContentTypeHistory(data.identifier, data.language)
+                    .getContentletVersions(data.identifier, data.language)
                     .pipe(take(1))
                     .subscribe((contents) => {
                         this.dotContentTypeService
                             .getContentType(contents[0].contentType)
                             .pipe(take(1))
                             .subscribe((contentType: DotCMSContentType) => {
+                                const fields = this.filterFields(contentType);
+                                const formattedContents = this.convertContentDates(
+                                    contents,
+                                    fields
+                                );
                                 this.updateData({
-                                    working: this.getWorkingVersion(contents),
-                                    compare: this.getCompareVersion(data.inode, contents),
-                                    versions: contents.filter(
+                                    working: this.getWorkingVersion(formattedContents),
+                                    compare: this.getCompareVersion(data.inode, formattedContents),
+                                    versions: formattedContents.filter(
                                         (content) => content.working === false
                                     ),
-                                    fields: this.filterFields(contentType)
+                                    fields: fields
                                 });
                             });
                     });

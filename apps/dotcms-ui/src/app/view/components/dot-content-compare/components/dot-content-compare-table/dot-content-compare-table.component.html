@@ -4,19 +4,19 @@
             <th> </th>
             <th>{{data.working?.title ? data.working?.title : data.working?.identifier}}</th>
             <th class="dot-content-compare-table__controls">
-                <p-dropdown [options]="data.versions" (onChange)='version.emit($event.value)' appendTo="body" >
+                <p-dropdown [options]="data.versions" (onChange)='changeVersion.emit($event.value)' appendTo="body" >
                     <ng-template let-selected pTemplate="selectedItem">
-                        {{selected.modDate | date:'MM/dd/YYYY - hh:mm'}}
+                        {{selected.modDate}}
                     </ng-template>
                     <ng-template let-item pTemplate="item">
-                        {{item.modDate | date:'MM/dd/YYYY - hh:mm'}}
+                        {{item.modDate}}
                     </ng-template>
                 </p-dropdown>
                 <p-selectButton
                     [options]="displayOptions"
                     [(ngModel)]="showDiff"
                     class="p-button-tabbed"
-                    (onChange)="diff.emit($event.value)" >
+                    (onChange)="changeDiff.emit($event.value)" >
                 </p-selectButton>
             </th>
         </tr>
@@ -24,11 +24,10 @@
 
     <ng-template pTemplate="body" let-field >
         <tr [ngSwitch]="field?.fieldType" >
-
            <td>{{field.name}}</td>
             <ng-container *ngSwitchCase="'Image'">
-               <td><img [src]="'/dA/'+data.working[field.variable]+'/250w/20q'"></td>
-               <td><img [src]="'/dA/'+data.compare[field.variable]+'/250w/20q'"></td>
+               <td><img [alt]="data.working[field.variable]" [src]="'/dA/'+data.working[field.variable]+'/250w/20q'"></td>
+               <td><img [alt]="data.compare[field.variable]" [src]="'/dA/'+data.compare[field.variable]+'/250w/20q'"></td>
             </ng-container>
             <ng-container *ngSwitchCase="'File'">
                 <td>
@@ -40,7 +39,7 @@
                 <td>
                     <dot-content-compare-file-field
                         [fileId]="data.compare[field.variable]"
-                        [label]="showDiff ? (data.working[field.variable] | dotDiff:data.compare[field.variable]) : data.compare[field.variable]" >
+                        [label]="data.working[field.variable] | dotDiff:data.compare[field.variable]:showDiff" >
                     </dot-content-compare-file-field>
                 </td>
             </ng-container>
@@ -49,34 +48,14 @@
                     <dot-content-compare-binary-field [label]="data.working[field.variable]" [fileURL]="data.working[field.variable]"></dot-content-compare-binary-field>
                 </td>
                 <td>
-                    <dot-content-compare-binary-field [label]="showDiff ? (data.working[field.variable] | dotDiff:data.compare[field.variable]) : data.compare[field.variable]"
+                    <dot-content-compare-binary-field [label]="data.working[field.variable] | dotDiff:data.compare[field.variable]:showDiff"
                                                       [fileURL]="data.compare[field.variable]">
                     </dot-content-compare-binary-field>
                 </td>
             </ng-container>
-            <ng-container *ngSwitchCase="'Date'">
-                <td>
-                    <dot-content-compare-date-field [format]="field.variable" [value]="data.working[field.variable]"></dot-content-compare-date-field>
-                </td>
-                <td [innerHTML]="showDiff ?
-                ((data.working[field.variable] | json) | dotDiff:(data.compare[field.variable] | json))
-                : data.compare[field.variable]" >
-                </td>
-            </ng-container>
-            <!--<ng-container *ngSwitchCase="'Category'">
-                <td>
-                    {{data.working[field.variable] | json}}
-                </td>
-                <td [innerHTML]="showDiff ?
-                ((data.working[field.variable] | json) | dotDiff:(data.compare[field.variable] | json))
-                : data.compare[field.variable]" >
-                </td>
-            </ng-container>-->
             <ng-container *ngSwitchDefault>
                 <td [innerHTML]="data.working[field.variable]"></td>
-                <td [innerHTML]="showDiff ?
-                (data.working[field.variable] | dotDiff:data.compare[field.variable])
-                : data.compare[field.variable]" >
+                <td [innerHTML]=" data.working[field.variable] | dotDiff:data.compare[field.variable]:showDiff" >
                 </td>
             </ng-container>
         </tr>

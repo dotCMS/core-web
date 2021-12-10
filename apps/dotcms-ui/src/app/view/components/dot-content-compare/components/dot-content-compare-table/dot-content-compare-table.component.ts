@@ -11,8 +11,8 @@ export class DotContentCompareTableComponent implements OnInit {
     @Input() data: DotContentCompareTableData;
     @Input() showDiff: boolean;
 
-    @Output() version = new EventEmitter<DotCMSContentlet>();
-    @Output() diff = new EventEmitter<boolean>();
+    @Output() changeVersion = new EventEmitter<DotCMSContentlet>();
+    @Output() changeDiff = new EventEmitter<boolean>();
 
     displayOptions = [
         { label: 'Diff', value: true },
