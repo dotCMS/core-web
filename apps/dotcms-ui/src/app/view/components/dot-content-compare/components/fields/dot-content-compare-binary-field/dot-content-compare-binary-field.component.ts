@@ -1,19 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
     selector: 'dot-content-compare-binary-field',
     templateUrl: './dot-content-compare-binary-field.component.html',
     styleUrls: ['./dot-content-compare-binary-field.component.scss']
 })
-export class DotContentCompareBinaryFieldComponent implements OnInit {
+export class DotContentCompareBinaryFieldComponent implements OnChanges {
     constructor() {}
 
     @Input() fileURL: string;
     @Input() label: string;
     imageError = false;
 
-    ngOnInit(): void {}
+    ngOnChanges(changes: SimpleChanges) {
+        console.log('changes', changes);
+        this.imageError = false;
+    }
 
     handleError(): void {
         this.imageError = true;

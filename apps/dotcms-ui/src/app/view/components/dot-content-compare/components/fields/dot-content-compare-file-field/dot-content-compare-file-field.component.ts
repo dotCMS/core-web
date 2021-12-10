@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
     styleUrls: ['./dot-content-compare-file-field.component.scss']
 })
 export class DotContentCompareFileFieldComponent implements OnInit {
-    @Input() fileId: string;
+    @Input() fileURL: string;
     @Input() label: string;
 
     constructor() {}
