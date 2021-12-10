@@ -17,17 +17,13 @@ export interface DotContentCompareEvent {
     styleUrls: ['./dot-content-compare.component.scss'],
     providers: [DotContentCompareStore]
 })
-export class DotContentCompareComponent implements OnInit {
+export class DotContentCompareComponent {
     @Input() set data(data: DotContentCompareEvent) {
-        this.store.loadData(data);
+        if (data != null) {
+            this.store.loadData(data);
+        }
     }
     vm$: Observable<DotContentCompareState> = this.store.vm$;
 
     constructor(private store: DotContentCompareStore) {}
-
-    ngOnInit(): void {
-        this.vm$.subscribe((data) => {
-            console.log(data);
-        });
-    }
 }

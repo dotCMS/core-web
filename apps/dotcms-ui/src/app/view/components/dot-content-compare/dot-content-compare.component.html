@@ -2,8 +2,8 @@
     <dot-content-compare-table
         [data]="vm.data"
         [showDiff]="vm.showDiff"
-        (diff)="store.updateShowDiff($event)"
-        (version)="store.updateCompare($event)"
+        (changeDiff)="store.updateShowDiff($event)"
+        (changeVersion)="store.updateCompare($event)"
     >
     </dot-content-compare-table>
 </ng-container>

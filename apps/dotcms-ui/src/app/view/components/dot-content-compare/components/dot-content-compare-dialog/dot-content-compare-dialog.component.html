@@ -2,5 +2,5 @@
             (hide)="close()"
             width="90vw"
             height="90vh" >
-    <dot-content-compare #contentCompare></dot-content-compare>
+    <dot-content-compare [data]='data$ | async' ></dot-content-compare>
 </dot-dialog>

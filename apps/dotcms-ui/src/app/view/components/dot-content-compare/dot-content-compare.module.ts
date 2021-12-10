@@ -9,30 +9,29 @@ import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DotContentCompareFileFieldComponent } from './components/fields/dot-content-compare-file-field/dot-content-compare-file-field.component';
 import { DotContentCompareBinaryFieldComponent } from './components/fields/dot-content-compare-binary-field/dot-content-compare-binary-field.component';
-import { DotContentCompareDateFieldComponent } from './components/fields/dot-content-compare-date-field/dot-content-compare-date-field.component';
 import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
 import { DotDiffPipeModule } from '@pipes/dot-diff/dot-diff.pipe.module';
 import { FormsModule } from '@angular/forms';
+import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
 
 @NgModule({
     declarations: [
         DotContentCompareComponent,
         DotContentCompareTableComponent,
         DotContentCompareDialogComponent,
-        DotContentCompareDialogComponent,
         DotContentCompareFileFieldComponent,
-        DotContentCompareBinaryFieldComponent,
-        DotContentCompareDateFieldComponent
+        DotContentCompareBinaryFieldComponent
     ],
-    exports: [DotContentCompareComponent, DotContentCompareDialogComponent],
+    exports: [DotContentCompareDialogComponent],
     imports: [
         CommonModule,
         DotDialogModule,
         TableModule,
         DropdownModule,
         SelectButtonModule,
-        DotDiffPipeModule,
-        FormsModule
+        FormsModule,
+        DotMessagePipeModule,
+        DotDiffPipeModule
     ],
     providers: [DotContentletService]
 })

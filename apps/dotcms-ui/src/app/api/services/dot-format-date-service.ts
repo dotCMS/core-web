@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { isValid, format, formatDistanceToNowStrict, parse } from 'date-fns';
-
+import { utcToZonedTime, format as formatTZ, zonedTimeToUtc } from 'date-fns-tz';
 interface DotLocaleOptions {
     locale: Locale;
 }
@@ -30,7 +30,7 @@ export class DotFormatDateService {
         let [langCode, countryCode] = languageId.replace('_', '-').split('-');
         let localeLang;
 
-        langCode = langCode?.toLowerCase() || 'en'
+        langCode = langCode?.toLowerCase() || 'en';
         countryCode = countryCode?.toLocaleUpperCase() || 'US';
 
         try {
@@ -42,7 +42,7 @@ export class DotFormatDateService {
                 localeLang = await import(`date-fns/locale/en-US`);
             }
         }
-        
+
         this.localeOptions = { locale: localeLang.default };
     }
 
@@ -67,7 +67,21 @@ export class DotFormatDateService {
      * @memberof DotFormatDateService
      */
     format(date: Date, formatPattern: string): string {
-        return format(date, formatPattern, this.localeOptions);
+        return format(date, formatPattern, { ...this.localeOptions });
+    }
+
+    /**
+     * Format a date based on a pattern and in the serverTime
+     *
+     * @param {Date} date
+     * @param {string} formatPattern
+     * @returns {string}
+     * @memberof DotFormatDateService
+     */
+    formatTZ(date: Date, formatPattern: string): string {
+        //TODO: getserver timezone code.
+        const zonedDate = utcToZonedTime(date, 'UTC');
+        return formatTZ(zonedDate, formatPattern, { timeZone: 'UTC' });
     }
 
     /**

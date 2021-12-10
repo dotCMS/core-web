@@ -9,14 +9,14 @@ export class DotContentletService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
-     * Get the Contentlet History by language.
+     * Get the Contentlet versions by language.
      *
      * @param string identifier
      * @param string language
      * @returns Observable<DotCMSContentlet[]>
      * @memberof DotContentletService
      */
-    getContentTypeHistory(identifier: string, language: string): Observable<DotCMSContentlet[]> {
+    getContentletVersions(identifier: string, language: string): Observable<DotCMSContentlet[]> {
         return this.coreWebService
             .requestView({
                 url: `/api/v1/content/versions?identifier=${identifier}&groupByLang=1`
