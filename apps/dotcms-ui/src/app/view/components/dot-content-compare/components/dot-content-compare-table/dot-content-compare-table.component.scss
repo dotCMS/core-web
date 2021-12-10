@@ -7,7 +7,12 @@
 :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
     position: -webkit-sticky;
     position: sticky;
+    overflow-wrap: anywhere;
     top: 0;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    overflow-wrap: anywhere;
 }
 
 .layout-news-active :host ::ng-deep .p-datatable tr > th {
