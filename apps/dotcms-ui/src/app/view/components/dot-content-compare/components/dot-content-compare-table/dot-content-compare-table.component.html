@@ -24,7 +24,7 @@
 
     <ng-template pTemplate="body" let-field >
         <tr [ngSwitch]="field?.fieldType" >
-           <td>{{field.name}}</td>
+           <td>{{field.fieldType}}</td>
             <ng-container *ngSwitchCase="'Image'">
                <td><img [alt]="data.working[field.variable]" [src]="'/dA/'+data.working[field.variable]+'/250w/20q'"></td>
                <td><img [alt]="data.compare[field.variable]" [src]="'/dA/'+data.compare[field.variable]+'/250w/20q'"></td>
@@ -55,7 +55,7 @@
             </ng-container>
             <ng-container *ngSwitchDefault>
                 <td [innerHTML]="data.working[field.variable]"></td>
-                <td [innerHTML]=" data.working[field.variable] | dotDiff:data.compare[field.variable]:showDiff" >
+                <td [innerHTML]="data.working[field.variable] | dotDiff:data.compare[field.variable] :showDiff" >
                 </td>
             </ng-container>
         </tr>

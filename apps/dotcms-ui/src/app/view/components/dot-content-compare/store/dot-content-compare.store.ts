@@ -89,22 +89,50 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         return contents.find((content) => content.working === true);
     }
 
+    private getFieldFormattedValue(value: any, fieldType: string): string {
+        switch (fieldType) {
+            case FieldWhiteList.Category: {
+                return value
+                    .map((obj) => {
+                        return Object.values(obj)[0];
+                    })
+                    .join(',');
+            }
+            case FieldWhiteList['Key-Value']: {
+                let string = '';
+                Object.entries(value).forEach(([key, value]) => {
+                    string += `${key}: ${value} <br/>`;
+                });
+                return string;
+            }
+            default: {
+                //is a Date related field.
+                return this.dotFormatDateService.formatTZ(
+                    new Date(value as string),
+                    DateFormat[fieldType]
+                );
+            }
+        }
+    }
+
     private convertContentDates(
         contents: DotCMSContentlet[],
         fields: DotCMSContentTypeField[]
     ): DotCMSContentlet[] {
-        Object.keys(DateFormat).map((key) => {
-            const index = fields.findIndex((field) => field.fieldType === key);
-            if (index >= 0) {
-                contents.forEach((content) => {
-                    content[fields[index].variable] = this.dotFormatDateService.formatTZ(
-                        new Date(content[fields[index].variable]),
-                        DateFormat[key]
-                    );
-                });
+        const types = ['Date', 'Time', 'Date-and-Time', 'Category', 'Key-Value'];
+        let fieldNeedFormat: DotCMSContentTypeField[] = [];
+        fields.forEach((field) => {
+            if (types.includes(field.fieldType)) {
+                fieldNeedFormat.push(field);
             }
         });
         contents.forEach((content) => {
+            fieldNeedFormat.forEach((field) => {
+                content[field.variable] = this.getFieldFormattedValue(
+                    content[field.variable],
+                    field.fieldType
+                );
+            });
             content.modDate = this.dotFormatDateService.formatTZ(
                 new Date(content.modDate),
                 'MM/dd/yyyy - hh:mm aa'
