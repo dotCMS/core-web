@@ -82,10 +82,10 @@ function execCommand({
         heading: () => {
             editor.chain().addHeading({ range, type: props.type }).run();
         },
-        listOrdered: () => {
+        orderedList: () => {
             editor.chain().deleteRange(range).toggleOrderedList().focus().run();
         },
-        listUnordered: () => {
+        bulletList: () => {
             editor.chain().deleteRange(range).toggleBulletList().focus().run();
         }
     };

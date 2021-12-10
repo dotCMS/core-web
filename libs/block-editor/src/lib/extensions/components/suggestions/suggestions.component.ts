@@ -29,7 +29,7 @@ export class SuggestionsComponent implements OnInit {
     @Input() onSelection: (props: SuggestionsCommandProps) => void;
     items: DotMenuItem[] = [];
 
-    title = 'Select a block';
+    @Input() title = 'Select a block';
 
     constructor(
         private suggestionsService: SuggestionsService,
@@ -75,7 +75,7 @@ export class SuggestionsComponent implements OnInit {
                 command: () => {
                     this.onSelection({
                         type: {
-                            name: 'listOrdered'
+                            name: 'orderedList'
                         }
                     });
                 }
@@ -86,7 +86,7 @@ export class SuggestionsComponent implements OnInit {
                 command: () => {
                     this.onSelection({
                         type: {
-                            name: 'listUnordered'
+                            name: 'bulletList'
                         }
                     });
                 }
@@ -155,6 +155,7 @@ export class SuggestionsComponent implements OnInit {
         this.list.updateActiveItem(index);
     }
 
+    // HERE OUTOUT?
     /**
      * Execute the item command on mouse down
      *

@@ -1,11 +1,23 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Editor } from '@tiptap/core';
 
+// Interfaces
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
+
+type Level = 1 | 2 | 3 | 4 | 5 | 6;
+
 export interface BubbleMenuItem {
     icon: string;
-    markAction: string;
+    type: string;
     active: boolean;
     divider?: boolean;
+}
+
+export interface MenuActionProps {
+    type: string;
+    active?: boolean;
+    payload?: DotCMSContentlet
+    level: number;
 }
 
 @Component({
@@ -16,78 +28,78 @@ export interface BubbleMenuItem {
 export class BubbleMenuComponent implements OnInit {
     @Input() editor: Editor;
 
-    public enabledMarks: string[] = [];
-    public textAlings: string[] = ['left', 'center', 'right'];
-    public activeMarks: string[] = [];
+    public enabledMarks : string[] = [];
+    public textAlings   : string[] = ['left', 'center', 'right'];
+    public activeMarks  : string[] = [];
 
     public items: BubbleMenuItem[] = [
         {
             icon: 'format_bold',
-            markAction: 'bold',
+            type: 'bold',
             active: false
         },
         {
             icon: 'format_underlined',
-            markAction: 'underline',
+            type: 'underline',
             active: false
         },
         {
             icon: 'format_italic',
-            markAction: 'italic',
+            type: 'italic',
             active: false
         },
         {
             icon: 'strikethrough_s',
-            markAction: 'strike',
+            type: 'strike',
             active: false,
             divider: true
         },
         {
             icon: 'format_align_left',
-            markAction: 'left',
+            type: 'left',
             active: false
         },
         {
             icon: 'format_align_center',
-            markAction: 'center',
+            type: 'center',
             active: false
         },
         {
             icon: 'format_align_right',
-            markAction: 'right',
+            type: 'right',
             active: false,
             divider: true
         },
         {
             icon: 'format_list_bulleted',
-            markAction: 'bulletList',
+            type: 'bulletList',
             active: false
         },
         {
             icon: 'format_list_numbered',
-            markAction: 'orderedList',
+            type: 'orderedList',
             active: false
         },
         {
             icon: 'format_indent_decrease',
-            markAction: 'outdent',
+            type: 'outdent',
             active: false
         },
         {
             icon: 'format_indent_increase',
-            markAction: 'indent',
+            type: 'indent',
             active: false,
             divider: true
         },
         {
             icon: 'link',
-            markAction: 'link',
+            type: 'link',
             active: false,
             divider: true
         },
         {
             icon: 'format_clear',
-            markAction: 'clearAll',
+            type: 'clearAll',
             active: false
         }
     ];
@@ -104,7 +116,7 @@ export class BubbleMenuComponent implements OnInit {
         });
     }
 
-    command(item: BubbleMenuItem): void {
+    command(item: MenuActionProps): void {
         this.menuActions(item);
         this.setActiveMarks();
         this.updateActiveItems();
@@ -114,10 +126,13 @@ export class BubbleMenuComponent implements OnInit {
         event.preventDefault();
     }
 
-    private menuActions(item: BubbleMenuItem): void {
-        const markActions = {
+    private menuActions(item: MenuActionProps): void {
+        const actions = {
             bold: () => {
                 this.editor.commands.toggleBold();
+            },
+            heading: () => {
+                this.editor.commands.setHeading({ level: item.level as Level });
             },
             italic: () => {
                 this.editor.commands.toggleItalic();
@@ -162,16 +177,12 @@ export class BubbleMenuComponent implements OnInit {
             }
         };
 
-        markActions[item.markAction] ? markActions[item.markAction]() : null;
+        actions[item.type] ? actions[item.type]() : null;
     }
 
     private updateActiveItems(): void {
         this.items.forEach((item) => {
-            if (this.activeMarks.includes(item.markAction)) {
-                item.active = true;
-            } else {
-                item.active = false;
-            }
+            item.active = this.activeMarks.includes(item.type);
         });
     }
 
@@ -188,7 +199,10 @@ export class BubbleMenuComponent implements OnInit {
     }
 
     private setEnabledMarks(): void {
-        this.enabledMarks = [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
+        this.enabledMarks = [
+            ...Object.keys(this.editor.schema.marks),
+            ...Object.keys(this.editor.schema.nodes)
+        ];
     }
 
     private setActiveMarks(): void {

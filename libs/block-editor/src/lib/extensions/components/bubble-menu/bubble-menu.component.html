@@ -1,10 +1,15 @@
 <div class="bubble-menu" (mousedown)="preventDeSelection($event)">
+
+    <dotcms-dropdown (changeTo)="command($event)"></dotcms-dropdown>
+    <div class="divider"></div>
+
     <ng-container *ngFor="let item of items; let i = index">
         <dotcms-bubble-menu-button 
             (click)="command(item)"
-            [active]="activeMarks.includes(item.markAction)"
+            [active]="activeMarks.includes(item.type)"
             [item]="item"
         ></dotcms-bubble-menu-button>
         <div *ngIf="item.divider" class="divider"></div>
     </ng-container>
+
 </div>

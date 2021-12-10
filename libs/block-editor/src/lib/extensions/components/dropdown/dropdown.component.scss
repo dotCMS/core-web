@@ -1,0 +1,26 @@
+@use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
+
+:host {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    position: relative;
+    width: 80px;
+}
+
+.select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.options {
+    position: absolute;
+    top: 30px;
+    left: 0px;
+}
