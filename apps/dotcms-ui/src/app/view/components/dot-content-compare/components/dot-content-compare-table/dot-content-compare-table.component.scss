@@ -1,7 +1,13 @@
+@use "variables" as *;
 
 .dot-content-compare-table__controls{
     display: flex;
     justify-content: space-between;
+}
+
+.dot-content-compare-table__title {
+    color: $black;
+    font-size: $font-size-large;
 }
 
 :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {

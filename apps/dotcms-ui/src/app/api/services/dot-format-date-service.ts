@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { isValid, format, formatDistanceToNowStrict, parse } from 'date-fns';
 import { utcToZonedTime, format as formatTZ, zonedTimeToUtc } from 'date-fns-tz';
+import { DotcmsConfigService, DotTimeZone } from '@dotcms/dotcms-js';
 interface DotLocaleOptions {
     locale: Locale;
 }
@@ -15,8 +16,14 @@ export function _isValid(date: string, formatPattern: string) {
 })
 export class DotFormatDateService {
     private _localeOptions: DotLocaleOptions;
+    private _systemTimeZone: DotTimeZone;
 
-    constructor() {}
+    constructor(dotcmsConfigService: DotcmsConfigService) {
+        console.log('_systemTimeZone');
+        dotcmsConfigService
+            .getSystemTimeZone()
+            .subscribe((timezone) => (this._systemTimeZone = timezone));
+    }
 
     get localeOptions(): DotLocaleOptions {
         return this._localeOptions;
@@ -79,9 +86,8 @@ export class DotFormatDateService {
      * @memberof DotFormatDateService
      */
     formatTZ(date: Date, formatPattern: string): string {
-        //TODO: getserver timezone code.
-        const zonedDate = utcToZonedTime(date, 'UTC');
-        return formatTZ(zonedDate, formatPattern, { timeZone: 'UTC' });
+        const zonedDate = utcToZonedTime(date, this._systemTimeZone.id);
+        return formatTZ(zonedDate, formatPattern, { timeZone: this._systemTimeZone.id });
     }
 
     /**
