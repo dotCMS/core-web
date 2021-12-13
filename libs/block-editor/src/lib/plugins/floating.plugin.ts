@@ -204,6 +204,7 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
                 const transactionMeta = transaction.getMeta(FLOATING_ACTIONS_MENU_KEYBOARD);
 
                 if (transactionMeta?.open) {
+                    console.log('HERE');
                     return {
                         open: transactionMeta?.open
                     };

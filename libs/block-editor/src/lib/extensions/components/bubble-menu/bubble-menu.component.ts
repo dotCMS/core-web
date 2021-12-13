@@ -117,6 +117,9 @@ export class BubbleMenuComponent implements OnInit {
         this.editor.on('transaction', () => {
             this.setActiveMarks();
             this.updateActiveItems();
+            if ( this.editor.isFocused) {
+                this.dropdownComponent.hide();
+            }
         });
         
         this.editor.view.setProps({
@@ -138,6 +141,10 @@ export class BubbleMenuComponent implements OnInit {
 
     private menuActions(item: MenuActionProps): void {
         const actions = {
+            dotContent: () => {
+                const { from, to } = this.editor.state.selection;
+                this.editor.chain().addContentletBlock({ range: { from, to }, payload: item.payload }).run();
+            },
             bold: () => {
                 this.editor.commands.toggleBold();
             },
@@ -184,6 +191,9 @@ export class BubbleMenuComponent implements OnInit {
             clearAll: () => {
                 this.editor.commands.unsetAllMarks();
                 this.editor.commands.clearNodes();
+            },
+            paragraph: () => {
+                this.editor.commands.setParagraph();
             }
         };
 

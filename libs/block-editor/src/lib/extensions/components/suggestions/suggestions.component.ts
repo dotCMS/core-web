@@ -155,7 +155,6 @@ export class SuggestionsComponent implements OnInit {
         this.list.updateActiveItem(index);
     }
 
-    // HERE OUTOUT?
     /**
      * Execute the item command on mouse down
      *

@@ -3,6 +3,6 @@
     <span class="material-icons">expand_more</span>
 </div>
 
-<div [ngStyle]="{ visibility: show ? 'visible' : 'hidden' }" class="options" #div>
+<div *ngIf="show" class="options" #div>
     <dotcms-suggestions #suggestionsComponent [title]="optionsTitle" [onSelection]="onSelection.bind(this)"></dotcms-suggestions>
 </div>

@@ -22,8 +22,14 @@ export class DropdownComponent {
   
   toggleShow() {
     this.show = !this.show;
-    this.suggestionsComponent.setFirstItemActive();
-    this.setListPostion();
+    if( this.show ) {
+      setTimeout(() => this.initSuggestionsComponent());
+    }
+  }
+
+  hide() {
+    this.show = false;
+    console.log('HEY?');
   }
 
   onSelection(item: SuggestionsCommandProps) {
@@ -35,6 +41,12 @@ export class DropdownComponent {
       level: item.type.level
     });
   }
+
+  initSuggestionsComponent(){ 
+    this.suggestionsComponent.setFirstItemActive();
+    this.setListPostion();
+  }
+
 
   setListPostion() {
     const { bottom: parentBotton } = this.editorParent.getBoundingClientRect();
@@ -54,16 +66,19 @@ export class DropdownComponent {
     }
 
     if (key === 'Escape') {
-        this.show = false;
+      this.show = false;
+      return true;
     }
     if (key === 'Enter') {
-        this.suggestionsComponent.execCommand();
+      this.suggestionsComponent.execCommand();
+      return true;
     }
     if (key === 'ArrowDown' || key === 'ArrowUp') {
-        this.suggestionsComponent.updateSelection(event);
+      this.suggestionsComponent.updateSelection(event);
+      return true;
     }
 
-    return true;
+    return false;
   }
 
 }
