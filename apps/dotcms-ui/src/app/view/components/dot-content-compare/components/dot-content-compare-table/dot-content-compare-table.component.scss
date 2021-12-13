@@ -10,11 +10,12 @@
     font-size: $font-size-large;
 }
 
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+:host ::ng-deep .p-datatable .p-datatable-thead > tr {
     position: -webkit-sticky;
     position: sticky;
     overflow-wrap: anywhere;
     top: 0;
+    z-index: 1;
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
