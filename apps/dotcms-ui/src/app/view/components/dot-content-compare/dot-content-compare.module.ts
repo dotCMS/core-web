@@ -7,20 +7,18 @@ import { DotContentCompareDialogComponent } from './components/dot-content-compa
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { DotContentCompareFileFieldComponent } from './components/fields/dot-content-compare-file-field/dot-content-compare-file-field.component';
-import { DotContentCompareBinaryFieldComponent } from './components/fields/dot-content-compare-binary-field/dot-content-compare-binary-field.component';
 import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
 import { DotDiffPipeModule } from '@pipes/dot-diff/dot-diff.pipe.module';
 import { FormsModule } from '@angular/forms';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
+import { DotContentComparePreviewFieldComponent } from '@components/dot-content-compare/components/fields/dot-content-compare-binary-field/dot-content-compare-preview-field.component';
 
 @NgModule({
     declarations: [
         DotContentCompareComponent,
         DotContentCompareTableComponent,
         DotContentCompareDialogComponent,
-        DotContentCompareFileFieldComponent,
-        DotContentCompareBinaryFieldComponent
+        DotContentComparePreviewFieldComponent
     ],
     exports: [DotContentCompareDialogComponent],
     imports: [

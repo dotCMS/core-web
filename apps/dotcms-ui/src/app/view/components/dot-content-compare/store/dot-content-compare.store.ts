@@ -51,6 +51,8 @@ export enum FieldWhiteList {
 
 @Injectable()
 export class DotContentCompareStore extends ComponentStore<DotContentCompareState> {
+    systemTime;
+
     constructor(
         private dotContentTypeService: DotContentTypeService,
         private dotContentletService: DotContentletService,
@@ -168,6 +170,7 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
                                     ),
                                     fields: fields
                                 });
+                                this.updateShowDiff(true);
                             });
                     });
             })
