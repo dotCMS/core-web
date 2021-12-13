@@ -1,8 +1,8 @@
-<div class="select" (click)="show=!show">
+<div class="select" (click)="toggleShow()">
     <span>{{ title }}</span>
     <span class="material-icons">expand_more</span>
 </div>
 
-<div *ngIf="show" class="options" >
-    <dotcms-suggestions [title]="optionsTitle" [onSelection]="onSelection.bind(this)"></dotcms-suggestions>
+<div [ngStyle]="{ visibility: show ? 'visible' : 'hidden' }" class="options" #div>
+    <dotcms-suggestions #suggestionsComponent [title]="optionsTitle" [onSelection]="onSelection.bind(this)"></dotcms-suggestions>
 </div>

@@ -1,6 +1,6 @@
 <div class="bubble-menu" (mousedown)="preventDeSelection($event)">
 
-    <dotcms-dropdown (changeTo)="command($event)"></dotcms-dropdown>
+    <dotcms-dropdown #dropdownComponent [editorParent]="editorParent" (changeTo)="command($event)"></dotcms-dropdown>
     <div class="divider"></div>
 
     <ng-container *ngFor="let item of items; let i = index">

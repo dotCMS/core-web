@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Editor } from '@tiptap/core';
 
 // Interfaces
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { DropdownComponent } from '../dropdown/dropdown.component';
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -27,7 +28,9 @@ export interface MenuActionProps {
 })
 export class BubbleMenuComponent implements OnInit {
     @Input() editor: Editor;
+    @ViewChild('dropdownComponent') dropdownComponent: DropdownComponent;
 
+    public editorParent : Element;
     public enabledMarks : string[] = [];
     public textAlings   : string[] = ['left', 'center', 'right'];
     public activeMarks  : string[] = [];
@@ -105,6 +108,7 @@ export class BubbleMenuComponent implements OnInit {
     ];
 
     ngOnInit() {
+        this.editor.on('create', () => this.editorParent = this.editor.options.element);
         this.setEnabledMarks();
 
         /**
@@ -114,6 +118,12 @@ export class BubbleMenuComponent implements OnInit {
             this.setActiveMarks();
             this.updateActiveItems();
         });
+        
+        this.editor.view.setProps({
+            handleKeyDown: (view, event) => {
+                return this.dropdownComponent.onKeyDown(event);
+            }
+        })
     }
 
     command(item: MenuActionProps): void {

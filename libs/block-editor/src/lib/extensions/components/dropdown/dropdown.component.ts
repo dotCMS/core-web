@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, Input, ElementRef } from '@angular/core';
 
 // Interfaces
-import { SuggestionsCommandProps } from '../suggestions/suggestions.component';
+import { SuggestionsCommandProps, SuggestionsComponent } from '../suggestions/suggestions.component';
 import { MenuActionProps } from '../bubble-menu/bubble-menu.component';
 
 @Component({
@@ -9,30 +9,61 @@ import { MenuActionProps } from '../bubble-menu/bubble-menu.component';
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss']
 })
-export class DropdownComponent implements OnInit {
+export class DropdownComponent {
+
+  @Input() editorParent: Element;
+  @Output() changeTo = new EventEmitter<MenuActionProps>();
+  @ViewChild('suggestionsComponent') suggestionsComponent: SuggestionsComponent;
+  @ViewChild('div') div: ElementRef<HTMLElement>;
 
   public optionsTitle = 'Change to';
   public title = 'Paragraph'
   public show = false;
-
-  @Output() changeTo = new EventEmitter<MenuActionProps>();
-
-  constructor() { 
-    console.log('Constructor');
-  }
-
-  ngOnInit(): void {
-    console.log('Init');
+  
+  toggleShow() {
+    this.show = !this.show;
+    this.suggestionsComponent.setFirstItemActive();
+    this.setListPostion();
   }
 
   onSelection(item: SuggestionsCommandProps) {
-    this.optionsTitle = item.type.name;
     this.show = false;
+    this.optionsTitle = item.type.name;
     this.changeTo.emit({
       payload: item.payload,
       type: item.type.name,
       level: item.type.level
     });
+  }
+
+  setListPostion() {
+    const { bottom: parentBotton } = this.editorParent.getBoundingClientRect();
+    const { bottom: listBotton } = this.div.nativeElement.getBoundingClientRect();
+    if ( parentBotton < listBotton ) {
+      this.div.nativeElement.classList.add('options-up');
+    } else {
+      this.div.nativeElement.classList.remove('options-up');
+    } 
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    const { key } = event;
+
+    if(!this.show) {
+      return false;
+    }
+
+    if (key === 'Escape') {
+        this.show = false;
+    }
+    if (key === 'Enter') {
+        this.suggestionsComponent.execCommand();
+    }
+    if (key === 'ArrowDown' || key === 'ArrowUp') {
+        this.suggestionsComponent.updateSelection(event);
+    }
+
+    return true;
   }
 
 }
