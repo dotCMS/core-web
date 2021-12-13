@@ -92,29 +92,32 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
     }
 
     private getFieldFormattedValue(value: any, fieldType: string): string {
-        switch (fieldType) {
-            case FieldWhiteList.Category: {
-                return value
-                    .map((obj) => {
-                        return Object.values(obj)[0];
-                    })
-                    .join(',');
-            }
-            case FieldWhiteList['Key-Value']: {
-                let string = '';
-                Object.entries(value).forEach(([key, value]) => {
-                    string += `${key}: ${value} <br/>`;
-                });
-                return string;
-            }
-            default: {
-                //is a Date related field.
-                return this.dotFormatDateService.formatTZ(
-                    new Date(value as string),
-                    DateFormat[fieldType]
-                );
+        if (value) {
+            switch (fieldType) {
+                case FieldWhiteList.Category: {
+                    return value
+                        .map((obj) => {
+                            return Object.values(obj)[0];
+                        })
+                        .join(',');
+                }
+                case FieldWhiteList['Key-Value']: {
+                    let string = '';
+                    Object.entries(value).forEach(([key, value]) => {
+                        string += `${key}: ${value} <br/>`;
+                    });
+                    return string;
+                }
+                default: {
+                    //is a Date related field.
+                    return this.dotFormatDateService.formatTZ(
+                        new Date(value as string),
+                        DateFormat[fieldType]
+                    );
+                }
             }
         }
+        return value;
     }
 
     private convertContentDates(
