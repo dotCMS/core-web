@@ -35,7 +35,7 @@
                <td><img *ngIf="data.working[field.variable]" [alt]="data.working[field.variable]" [src]="'/dA/'+data.working[field.variable]+'/250w/20q'"></td>
                <td><img *ngIf="data.compare[field.variable]" [alt]="data.compare[field.variable]" [src]="'/dA/'+data.compare[field.variable]+'/250w/20q'"></td>
             </ng-container>
-            <ng-container *ngSwitchCase="['File','Binary'].includes(field.fieldType) ? field.fieldType : false" >
+            <ng-container *ngSwitchCase="'File'" >
                 <td>
                     <dot-content-compare-preview-field *ngIf="data.working[field.variable]"
                         [fileURL]="'/dA/'+data.working[field.variable]+'/fileAsset/'"
@@ -46,6 +46,20 @@
                     <dot-content-compare-preview-field *ngIf="data.compare[field.variable]"
                         [fileURL]="'/dA/'+data.compare[field.variable]+'/fileAsset/'"
                         [label]="'/dA/'+data.working[field.variable]+'/fileAsset/' | dotDiff:'/dA/'+data.compare[field.variable]+'/fileAsset/':showDiff" >
+                    </dot-content-compare-preview-field>
+                </td>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Binary'" >
+                <td>
+                    <dot-content-compare-preview-field *ngIf="data.working[field.variable]"
+                                                       [fileURL]="data.working[field.variable]+'/fileAsset/'"
+                                                       [label]="data.working[field.variable]+'/fileAsset/'" >
+                    </dot-content-compare-preview-field>
+                </td>
+                <td>
+                    <dot-content-compare-preview-field *ngIf="data.compare[field.variable]"
+                                                       [fileURL]="data.compare[field.variable]+'/fileAsset/'"
+                                                       [label]="data.working[field.variable]+'/fileAsset/' | dotDiff:data.compare[field.variable]+'/fileAsset/':showDiff" >
                     </dot-content-compare-preview-field>
                 </td>
             </ng-container>
