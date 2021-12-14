@@ -65,7 +65,7 @@
             </ng-container>
             <ng-container *ngSwitchDefault>
                 <td [innerHTML]="data.working[field.variable]"></td>
-                <td [innerHTML]="data.working[field.variable] | dotDiff:data.compare[field.variable] :showDiff" >
+                <td [innerHTML]="(data.working[field.variable] ? data.working[field.variable] : '')  | dotDiff:(data.compare[field.variable] ? data.compare[field.variable] : '') :showDiff" >
                 </td>
             </ng-container>
         </tr>
