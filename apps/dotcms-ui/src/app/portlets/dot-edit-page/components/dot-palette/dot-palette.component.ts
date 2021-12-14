@@ -42,7 +42,6 @@ export class DotPaletteComponent {
      * @memberof DotPaletteContentletsComponent
      */
     switchView(variableName?: string): void {
-        console.log('variableName', variableName);
         this.contentTypeVariable = variableName ? variableName : '';
         this.stateContentlet = variableName ? 'contentlet:in' : 'contentlet:out';
     }
