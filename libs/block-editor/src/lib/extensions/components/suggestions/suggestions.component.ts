@@ -30,6 +30,7 @@ export class SuggestionsComponent implements OnInit {
     items: DotMenuItem[] = [];
 
     title = 'Select a block';
+    mousePosition = { x: 0, y: 0};
 
     constructor(
         private suggestionsService: SuggestionsService,
@@ -181,6 +182,17 @@ export class SuggestionsComponent implements OnInit {
         this.list.resetKeyManager();
     }
 
+    /**
+     * Avoid closing the seggestions on manual scroll
+     *
+     * @param {MouseEvent} e
+     * @memberof SuggestionsComponent
+     */
+    onMouseDownHandler(e: MouseEvent) {
+        e.preventDefault();
+    }
+
+    
     /**
      * Handle the active item on menu events
      *
