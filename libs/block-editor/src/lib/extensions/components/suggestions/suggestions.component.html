@@ -4,8 +4,7 @@
     <dotcms-suggestions-list-item
         *ngFor="let item of items; let i = index"
         (mousedown)="onMouseDown($event, item)"
-        (mouseover)="onMouseEnter($event)"
-        (mouseleave)="onMouseLeave($event)"
+        (mousenter)="onMouseEnter($event)"
         [command]="item.command"
         [index]="i"
         [label]="item.label"
