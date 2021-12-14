@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { DotContentCompareTableData } from '@components/dot-content-compare/store/dot-content-compare.store';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 @Component({
     selector: 'dot-content-compare-table',
@@ -15,11 +16,11 @@ export class DotContentCompareTableComponent implements OnInit {
     @Output() changeDiff = new EventEmitter<boolean>();
 
     displayOptions = [
-        { label: 'Diff', value: true },
-        { label: 'Plain', value: false }
+        { label: this.dotMessageService.get('diff'), value: true },
+        { label: this.dotMessageService.get('plain'), value: false }
     ];
 
-    constructor() {}
+    constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {}
 }
