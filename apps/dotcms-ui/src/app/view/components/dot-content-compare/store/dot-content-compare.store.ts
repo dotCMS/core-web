@@ -83,7 +83,7 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         return contentType.fields.filter((field) => FieldWhiteList[field.fieldType] != undefined);
     }
 
-    private getCompareVersion(inode: string, contents: DotCMSContentlet[]): DotCMSContentlet {
+    private getContentByInode(inode: string, contents: DotCMSContentlet[]): DotCMSContentlet {
         return contents.find((content) => content.inode === inode);
     }
 
@@ -167,7 +167,7 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
                                 );
                                 this.updateData({
                                     working: this.getWorkingVersion(formattedContents),
-                                    compare: this.getCompareVersion(data.inode, formattedContents),
+                                    compare: this.getContentByInode(data.inode, formattedContents),
                                     versions: formattedContents.filter(
                                         (content) => content.working === false
                                     ),
