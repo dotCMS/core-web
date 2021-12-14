@@ -4,7 +4,7 @@ import { DotCMSContentlet, DotCMSContentType, DotCMSContentTypeField } from '@do
 import { DotContentTypeService } from '@services/dot-content-type';
 import { Observable } from 'rxjs';
 import { DotContentCompareEvent } from '@components/dot-content-compare/dot-content-compare.component';
-import { map, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
 import { DotFormatDateService } from '@services/dot-format-date-service';
 
@@ -154,28 +154,40 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
             map((data) => {
                 this.dotContentletService
                     .getContentletVersions(data.identifier, data.language)
-                    .pipe(take(1))
-                    .subscribe((contents) => {
-                        this.dotContentTypeService
-                            .getContentType(contents[0].contentType)
-                            .pipe(take(1))
-                            .subscribe((contentType: DotCMSContentType) => {
-                                const fields = this.filterFields(contentType);
-                                const formattedContents = this.convertContentDates(
-                                    contents,
-                                    fields
+                    .pipe(
+                        take(1),
+                        switchMap((contents: DotCMSContentlet[]) => {
+                            return this.dotContentTypeService
+                                .getContentType(contents[0].contentType)
+                                .pipe(
+                                    take(1),
+                                    map((contentType: DotCMSContentType) => {
+                                        return { contentType, contents };
+                                    })
                                 );
-                                this.updateData({
-                                    working: this.getWorkingVersion(formattedContents),
-                                    compare: this.getContentByInode(data.inode, formattedContents),
-                                    versions: formattedContents.filter(
-                                        (content) => content.working === false
-                                    ),
-                                    fields: fields
-                                });
-                                this.updateShowDiff(true);
+                        })
+                    )
+                    .subscribe(
+                        (value: {
+                            contentType: DotCMSContentType;
+                            contents: DotCMSContentlet[];
+                        }) => {
+                            const fields = this.filterFields(value.contentType);
+                            const formattedContents = this.convertContentDates(
+                                value.contents,
+                                fields
+                            );
+                            this.updateData({
+                                working: this.getWorkingVersion(formattedContents),
+                                compare: this.getContentByInode(data.inode, formattedContents),
+                                versions: formattedContents.filter(
+                                    (content) => content.working === false
+                                ),
+                                fields: fields
                             });
-                    });
+                            this.updateShowDiff(true);
+                        }
+                    );
             })
         );
     });
