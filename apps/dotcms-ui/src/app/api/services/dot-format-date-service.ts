@@ -19,7 +19,6 @@ export class DotFormatDateService {
     private _systemTimeZone: DotTimeZone;
 
     constructor(dotcmsConfigService: DotcmsConfigService) {
-        console.log('_systemTimeZone');
         dotcmsConfigService
             .getSystemTimeZone()
             .subscribe((timezone) => (this._systemTimeZone = timezone));
