@@ -95,7 +95,6 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         if (value) {
             switch (fieldType) {
                 case FieldWhiteList.Category: {
-                    console.log('value', value);
                     return value
                         .map((obj) => {
                             return Object.values(obj)[0];

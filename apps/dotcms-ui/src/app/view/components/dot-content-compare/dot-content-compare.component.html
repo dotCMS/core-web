@@ -1,5 +1,4 @@
 <ng-container *ngIf="vm$ | async as vm">
-    {{vm.data | json}}
     <dot-content-compare-table
         [data]="vm.data"
         [showDiff]="vm.showDiff"
