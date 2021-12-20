@@ -5,7 +5,7 @@ import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 
-describe('DotContentCompareBinaryFieldComponent', () => {
+describe('DotContentComparePreviewFieldComponent', () => {
     let component: DotContentComparePreviewFieldComponent;
     let fixture: ComponentFixture<DotContentComparePreviewFieldComponent>;
     let de: DebugElement;
