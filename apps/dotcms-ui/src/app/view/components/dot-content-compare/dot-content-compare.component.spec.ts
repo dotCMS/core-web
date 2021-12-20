@@ -37,7 +37,7 @@ class TestHostComponent {
     @Input() data: DotContentCompareEvent;
 }
 
-fdescribe('DotContentCompareComponent', () => {
+describe('DotContentCompareComponent', () => {
     let hostComponent: TestHostComponent;
     let hostFixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
