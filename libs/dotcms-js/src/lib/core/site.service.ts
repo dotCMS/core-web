@@ -72,7 +72,7 @@ export class SiteService {
             if (name !== 'ARCHIVE_SITE') {
                 this.loadCurrentSite();
             } else if (name === 'ARCHIVE_SITE') {
-                this.switchToDefaultSite().subscribe((currentSite: Site) => {
+                this.switchToDefaultSite().pipe(take(1)).subscribe((currentSite: Site) => {
                     this.switchSite(currentSite);
                 });
             }
