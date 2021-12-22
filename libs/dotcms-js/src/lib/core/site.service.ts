@@ -69,13 +69,15 @@ export class SiteService {
 
         const siteIdentifier = data.identifier;
         if (siteIdentifier === this.selectedSite.identifier) {
-            if (name !== 'ARCHIVE_SITE') {
-                this.loadCurrentSite();
-            } else if (name === 'ARCHIVE_SITE') {
-                this.switchToDefaultSite().pipe(take(1)).subscribe((currentSite: Site) => {
-                    this.switchSite(currentSite);
-                });
-            }
+
+            name === 'ARCHIVE_SITE'
+                ? this.switchToDefaultSite()
+                      .pipe(take(1))
+                      .subscribe((currentSite: Site) => {
+                          this.switchSite(currentSite);
+                      })
+                : this.loadCurrentSite();
+
         }
     }
 
