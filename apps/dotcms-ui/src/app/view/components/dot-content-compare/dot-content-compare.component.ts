@@ -1,9 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
     DotContentCompareState,
     DotContentCompareStore
 } from '@components/dot-content-compare/store/dot-content-compare.store';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
 export interface DotContentCompareEvent {
     inode: string;
@@ -23,7 +26,25 @@ export class DotContentCompareComponent {
             this.store.loadData(data);
         }
     }
+    @Output() close = new EventEmitter<boolean>();
     vm$: Observable<DotContentCompareState> = this.store.vm$;
 
-    constructor(private store: DotContentCompareStore) {}
+    constructor(
+        private store: DotContentCompareStore,
+        private dotAlertConfirmService: DotAlertConfirmService,
+        private dotMessageService: DotMessageService
+    ) {}
+
+    bringBack(inode: string) {
+        this.dotAlertConfirmService.confirm({
+            accept: () => {
+                this.store.bringBack(inode).subscribe(() => {
+                    this.close.emit(true);
+                });
+            },
+            reject: () => {},
+            header: this.dotMessageService.get('Confirm'),
+            message: this.dotMessageService.get('folder.replace.contentlet.working.version')
+        });
+    }
 }

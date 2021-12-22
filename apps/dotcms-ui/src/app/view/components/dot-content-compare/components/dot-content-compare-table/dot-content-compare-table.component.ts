@@ -14,6 +14,7 @@ export class DotContentCompareTableComponent implements OnInit {
 
     @Output() changeVersion = new EventEmitter<DotCMSContentlet>();
     @Output() changeDiff = new EventEmitter<boolean>();
+    @Output() bringBack = new EventEmitter<string>();
 
     displayOptions = [
         { label: this.dotMessageService.get('diff'), value: true },

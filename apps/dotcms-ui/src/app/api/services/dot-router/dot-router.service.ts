@@ -7,6 +7,7 @@ import { DotAppsSites } from '@shared/models/dot-apps/dot-apps.model';
 import { NavigationExtras } from '@angular/router';
 import { LOGOUT_URL } from '@dotcms/dotcms-js';
 import { filter } from 'rxjs/operators';
+import { nodeDebugInfo } from '@angular/compiler-cli/src/ngtsc/util/src/typescript';
 
 @Injectable()
 export class DotRouterService {
@@ -25,8 +26,9 @@ export class DotRouterService {
                     previousUrl: this._routeHistory.url
                 };
             });
+        // force route reload whenever params change;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
-
     get currentSavedURL(): string {
         return this._routeHistory.url;
     }
@@ -110,6 +112,7 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     goToEditContentlet(inode: string): Promise<boolean> {
+        debugger;
         return this.router.navigate([`${this.currentPortlet.url}/${inode}`]);
     }
 
@@ -198,6 +201,7 @@ export class DotRouterService {
     }
 
     goToURL(url: string): void {
+        debugger;
         this.router.navigate([url]);
     }
 
