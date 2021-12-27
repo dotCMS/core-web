@@ -5,6 +5,9 @@ import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.se
 import { DotFormatDateService } from '@services/dot-format-date-service';
 import { DotcmsConfigService } from '@dotcms/dotcms-js';
 import { of } from 'rxjs';
+import { DotVersionableService } from '@services/dot-verionable/dot-versionable.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { MockDotRouterService } from '@tests/dot-router-service.mock';
 
 const getContentTypeMOCKResponse = {
     baseType: 'CONTENT',
@@ -616,12 +619,20 @@ const newCompare = {
 
 describe('DotContentCompareStore', () => {
     let dotContentCompareStore: DotContentCompareStore;
+    let dotRouterService: DotRouterService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
                 DotContentCompareStore,
                 DotFormatDateService,
+                { provide: DotRouterService, useClass: MockDotRouterService },
+                {
+                    provide: DotVersionableService,
+                    useValue: {
+                        bringBack: jasmine.createSpy().and.returnValue(of({ inode: '123' }))
+                    }
+                },
                 {
                     provide: DotContentTypeService,
                     useValue: {
@@ -652,6 +663,7 @@ describe('DotContentCompareStore', () => {
             ]
         });
         dotContentCompareStore = TestBed.inject(DotContentCompareStore);
+        dotRouterService = TestBed.inject(DotRouterService);
     });
 
     it('should load initial data correctly', (done) => {
@@ -678,5 +690,10 @@ describe('DotContentCompareStore', () => {
         dotContentCompareStore.state$.subscribe((data) => {
             expect(data.showDiff).toEqual(false);
         });
+    });
+
+    it('should bring back version', () => {
+        dotContentCompareStore.bringBack('123').subscribe();
+        expect(dotRouterService.goToURL).toHaveBeenCalledOnceWith('/c/content/123');
     });
 });

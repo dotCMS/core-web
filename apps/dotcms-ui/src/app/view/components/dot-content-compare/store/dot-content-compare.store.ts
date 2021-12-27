@@ -4,12 +4,14 @@ import { DotCMSContentlet, DotCMSContentType, DotCMSContentTypeField } from '@do
 import { DotContentTypeService } from '@services/dot-content-type';
 import { Observable } from 'rxjs';
 import { DotContentCompareEvent } from '@components/dot-content-compare/dot-content-compare.component';
-import { map, switchMap, take, timeout } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
 import { DotFormatDateService } from '@services/dot-format-date-service';
-import { DotVersionableService } from '@services/dot-verionable/dot-versionable.service';
+import {
+    DotVersionable,
+    DotVersionableService
+} from '@services/dot-verionable/dot-versionable.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 
 export interface DotContentCompareTableData {
     working: DotCMSContentlet;
@@ -61,8 +63,7 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         private dotContentletService: DotContentletService,
         private dotFormatDateService: DotFormatDateService,
         private dotVersionableService: DotVersionableService,
-        private dotRouterService: DotRouterService,
-        private dotIframeService: DotIframeService
+        private dotRouterService: DotRouterService
     ) {
         super({
             data: null,
@@ -153,18 +154,12 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         return contents;
     }
 
-    bringBack(inode: string): Observable<DotCMSContentlet> {
+    bringBack(inode: string): Observable<DotVersionable> {
         return this.dotVersionableService.bringBack(inode).pipe(
             take(1),
-            map((content) => {
-                this.dotRouterService.goToURL(`/c/content/${inode}`);
-
-                // location.href = `/c/content/${inode}`;
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 0);
-                // debugger;
-                return content;
+            map((version: DotVersionable) => {
+                this.dotRouterService.goToURL(`/c/content/${version.inode}`);
+                return version;
             })
         );
     }

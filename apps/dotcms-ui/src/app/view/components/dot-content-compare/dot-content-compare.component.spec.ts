@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
     DotContentCompareComponent,
     DotContentCompareEvent
 } from './dot-content-compare.component';
 import { DotContentCompareStore } from '@components/dot-content-compare/store/dot-content-compare.store';
-import { Component, DebugElement, Input } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { of } from 'rxjs';
 import { dotContentCompareTableDataMock } from '@components/dot-content-compare/components/dot-content-compare-table/dot-content-compare-table.component.spec';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
@@ -14,6 +14,8 @@ import { DotContentCompareModule } from '@components/dot-content-compare/dot-con
 import { DotContentCompareTableComponent } from '@components/dot-content-compare/components/dot-content-compare-table/dot-content-compare-table.component';
 import { By } from '@angular/platform-browser';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { ConfirmationService } from 'primeng/api';
 
 const DotContentCompareEventMOCK = {
     inode: '1',
@@ -23,7 +25,7 @@ const DotContentCompareEventMOCK = {
 
 const storeMock = jasmine.createSpyObj(
     'DotContentCompareStore',
-    ['loadData', 'updateShowDiff', 'updateCompare'],
+    ['loadData', 'updateShowDiff', 'updateCompare', 'bringBack'],
     {
         vm$: of({ data: dotContentCompareTableDataMock, showDiff: false })
     }
@@ -31,10 +33,12 @@ const storeMock = jasmine.createSpyObj(
 
 @Component({
     selector: 'dot-test-host-component',
-    template: '<dot-content-compare [data]="data" ></dot-content-compare>'
+    template:
+        '<dot-content-compare [data]="data"  (close)="close.emit(true)" ></dot-content-compare>'
 })
 class TestHostComponent {
     @Input() data: DotContentCompareEvent;
+    @Output() close = new EventEmitter<boolean>();
 }
 
 describe('DotContentCompareComponent', () => {
@@ -43,19 +47,31 @@ describe('DotContentCompareComponent', () => {
     let de: DebugElement;
     let dotContentCompareStore: DotContentCompareStore;
     let contentCompareTableComponent: DotContentCompareTableComponent;
-    const messageServiceMock = new MockDotMessageService({});
+    let dotAlertConfirmService: DotAlertConfirmService;
+    let confirmationService: ConfirmationService;
+    const messageServiceMock = new MockDotMessageService({
+        Confirm: 'Confirm',
+        'folder.replace.contentlet.working.version':
+            'Are you sure you would like to replace your working version with this contentlet version?'
+    });
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [DotContentCompareComponent, TestHostComponent],
             imports: [DotContentCompareModule],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            providers: [
+                { provide: DotMessageService, useValue: messageServiceMock },
+                DotAlertConfirmService,
+                ConfirmationService
+            ]
         });
         TestBed.overrideProvider(DotContentCompareStore, { useValue: storeMock });
 
         hostFixture = TestBed.createComponent(TestHostComponent);
         de = hostFixture.debugElement;
         dotContentCompareStore = TestBed.inject(DotContentCompareStore);
+        dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
+        confirmationService = TestBed.inject(ConfirmationService);
         hostComponent = hostFixture.componentInstance;
         hostComponent.data = DotContentCompareEventMOCK;
         hostFixture.detectChanges();
@@ -79,5 +95,26 @@ describe('DotContentCompareComponent', () => {
         expect(dotContentCompareStore.updateCompare).toHaveBeenCalledOnceWith(
             ('value' as unknown) as DotCMSContentlet
         );
+    });
+
+    it('should bring back version after confirm and emit close', () => {
+        spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
+            conf.accept();
+        });
+        spyOn(hostComponent.close, 'emit');
+        storeMock.bringBack.and.callFake(() => {
+            return of({ inode: '123' });
+        });
+        contentCompareTableComponent.bringBack.emit('123');
+
+        expect<any>(dotAlertConfirmService.confirm).toHaveBeenCalledWith({
+            accept: jasmine.any(Function),
+            reject: jasmine.any(Function),
+            header: 'Confirm',
+            message:
+                'Are you sure you would like to replace your working version with this contentlet version?'
+        });
+        expect(dotContentCompareStore.bringBack).toHaveBeenCalledWith('123');
+        expect(hostComponent.close.emit).toHaveBeenCalledOnceWith(true);
     });
 });
