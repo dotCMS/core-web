@@ -15,6 +15,10 @@ class RouterMock {
         }
     };
 
+    routeReuseStrategy = {
+        shouldReuseRoute: jasmine.createSpy('shouldReuseRoute')
+    };
+
     navigate = jasmine.createSpy('navigate').and.callFake(() => {
         return new Promise((resolve) => {
             resolve(true);
@@ -76,6 +80,10 @@ describe('DotRouterService', () => {
 
     it('should set current url value', () => {
         expect(service.currentSavedURL).toEqual(router.url);
+    });
+
+    it('should set routeReuseStrategy', () => {
+        expect(router.routeReuseStrategy.shouldReuseRoute()).toEqual(false);
     });
 
     it('should set previous & current url value', () => {
