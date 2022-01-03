@@ -1,3 +1,5 @@
+@use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
+
 :host {
     box-sizing: border-box;
     display: flex;
@@ -7,6 +9,9 @@
     cursor: pointer;
     align-items: center;
     height: 40px;
+    &:hover {
+        background: var($gray-hover, #eee) ;
+    }
 }
 
 .icon-wrapper {
