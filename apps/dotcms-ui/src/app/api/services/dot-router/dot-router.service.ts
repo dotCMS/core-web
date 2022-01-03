@@ -26,6 +26,7 @@ export class DotRouterService {
                 };
             });
     }
+
     get currentSavedURL(): string {
         return this._routeHistory.url;
     }
