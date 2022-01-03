@@ -139,7 +139,6 @@ export class SuggestionsComponent implements OnInit {
                 }
             },
             ...headings,
-            ...headings,
             ...paragraph,
             ...list,
             ...block
