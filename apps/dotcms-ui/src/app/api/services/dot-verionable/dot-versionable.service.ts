@@ -12,7 +12,7 @@ export class DotVersionableService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
-     * Bring backc specific version of based on the inode.
+     * Bring back specific version of based on the inode.
      *
      * @param string inode
      * @returns Observable<DotVersionable>
