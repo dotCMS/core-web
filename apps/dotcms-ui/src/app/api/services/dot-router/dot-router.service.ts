@@ -25,8 +25,6 @@ export class DotRouterService {
                     previousUrl: this._routeHistory.url
                 };
             });
-        // force route reload whenever params change;
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
     get currentSavedURL(): string {
         return this._routeHistory.url;
