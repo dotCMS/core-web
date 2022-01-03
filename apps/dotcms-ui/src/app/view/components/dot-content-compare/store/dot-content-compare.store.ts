@@ -7,11 +7,6 @@ import { DotContentCompareEvent } from '@components/dot-content-compare/dot-cont
 import { map, switchMap, take } from 'rxjs/operators';
 import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
 import { DotFormatDateService } from '@services/dot-format-date-service';
-import {
-    DotVersionable,
-    DotVersionableService
-} from '@services/dot-verionable/dot-versionable.service';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 export interface DotContentCompareTableData {
     working: DotCMSContentlet;
@@ -61,9 +56,7 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
     constructor(
         private dotContentTypeService: DotContentTypeService,
         private dotContentletService: DotContentletService,
-        private dotFormatDateService: DotFormatDateService,
-        private dotVersionableService: DotVersionableService,
-        private dotRouterService: DotRouterService
+        private dotFormatDateService: DotFormatDateService
     ) {
         super({
             data: null,
@@ -152,16 +145,6 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         });
 
         return contents;
-    }
-
-    bringBack(inode: string): Observable<DotVersionable> {
-        return this.dotVersionableService.bringBack(inode).pipe(
-            take(1),
-            map((version: DotVersionable) => {
-                this.dotRouterService.goToURL(`/c/content/${version.inode}`);
-                return version;
-            })
-        );
     }
 
     //Effects

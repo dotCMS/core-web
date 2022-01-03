@@ -24,6 +24,6 @@ export class DotVersionableService {
                 method: 'PUT',
                 url: `/api/v1/versionables/${inode}/_bringback`
             })
-            .pipe(take(1), pluck('entity'));
+            .pipe(pluck('entity'));
     }
 }

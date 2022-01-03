@@ -16,6 +16,9 @@ import { By } from '@angular/platform-browser';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { MockDotRouterService } from '@tests/dot-router-service.mock';
+import { DotVersionableService } from '@services/dot-verionable/dot-versionable.service';
 
 const DotContentCompareEventMOCK = {
     inode: '1',
@@ -49,6 +52,8 @@ describe('DotContentCompareComponent', () => {
     let contentCompareTableComponent: DotContentCompareTableComponent;
     let dotAlertConfirmService: DotAlertConfirmService;
     let confirmationService: ConfirmationService;
+    let dotRouterService: DotRouterService;
+
     const messageServiceMock = new MockDotMessageService({
         Confirm: 'Confirm',
         'folder.replace.contentlet.working.version':
@@ -61,17 +66,27 @@ describe('DotContentCompareComponent', () => {
             imports: [DotContentCompareModule],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
+                { provide: DotRouterService, useClass: MockDotRouterService },
                 DotAlertConfirmService,
-                ConfirmationService
+                ConfirmationService,
+                {
+                    provide: DotVersionableService,
+                    useValue: {
+                        bringBack: jasmine.createSpy().and.returnValue(of({ inode: '123' }))
+                    }
+                }
             ]
         });
         TestBed.overrideProvider(DotContentCompareStore, { useValue: storeMock });
 
         hostFixture = TestBed.createComponent(TestHostComponent);
         de = hostFixture.debugElement;
+
         dotContentCompareStore = TestBed.inject(DotContentCompareStore);
         dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
         confirmationService = TestBed.inject(ConfirmationService);
+        dotRouterService = TestBed.inject(DotRouterService);
+
         hostComponent = hostFixture.componentInstance;
         hostComponent.data = DotContentCompareEventMOCK;
         hostFixture.detectChanges();
@@ -102,9 +117,7 @@ describe('DotContentCompareComponent', () => {
             conf.accept();
         });
         spyOn(hostComponent.close, 'emit');
-        storeMock.bringBack.and.callFake(() => {
-            return of({ inode: '123' });
-        });
+
         contentCompareTableComponent.bringBack.emit('123');
 
         expect<any>(dotAlertConfirmService.confirm).toHaveBeenCalledWith({
@@ -114,7 +127,8 @@ describe('DotContentCompareComponent', () => {
             message:
                 'Are you sure you would like to replace your working version with this contentlet version?'
         });
-        expect(dotContentCompareStore.bringBack).toHaveBeenCalledWith('123');
+
+        expect(dotRouterService.goToURL).toHaveBeenCalledOnceWith('/c/content/123');
         expect(hostComponent.close.emit).toHaveBeenCalledOnceWith(true);
     });
 });
