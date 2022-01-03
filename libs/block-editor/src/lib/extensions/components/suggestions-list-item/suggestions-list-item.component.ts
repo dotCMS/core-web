@@ -39,6 +39,6 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
     }
 
     scrollIntoView() {
-        this.element.nativeElement.scrollIntoViewIfNeeded(false);
+        this.element.nativeElement.scrollIntoView(false);
     }
 }
