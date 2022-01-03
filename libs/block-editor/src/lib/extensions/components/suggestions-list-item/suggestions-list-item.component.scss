@@ -7,6 +7,9 @@
     cursor: pointer;
     align-items: center;
     height: 40px;
+    &:hover {
+        background: #eee;
+    }
 }
 
 .icon-wrapper {

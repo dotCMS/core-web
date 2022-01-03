@@ -30,6 +30,7 @@ export class SuggestionsComponent implements OnInit {
     items: DotMenuItem[] = [];
 
     title = 'Select a block';
+    selectionUpdated = false;
 
     constructor(
         private suggestionsService: SuggestionsService,
@@ -138,6 +139,7 @@ export class SuggestionsComponent implements OnInit {
                 }
             },
             ...headings,
+            ...headings,
             ...paragraph,
             ...list,
             ...block
@@ -161,6 +163,9 @@ export class SuggestionsComponent implements OnInit {
      */
     updateSelection(e: KeyboardEvent) {
         this.list.updateSelection(e);
+        this.selectionUpdated = true;
+        // Needs to wait until the item has been updated
+        setTimeout(() => this.selectionUpdated = false, 0);
     }
 
     /**
@@ -191,7 +196,6 @@ export class SuggestionsComponent implements OnInit {
         e.preventDefault();
     }
 
-    
     /**
      * Handle the active item on menu events
      *
@@ -199,6 +203,10 @@ export class SuggestionsComponent implements OnInit {
      * @memberof SuggestionsComponent
      */
     onMouseEnter(e: MouseEvent) {
+        // If it's called right after updateSelection, do not update active Item
+        if (this.selectionUpdated) {
+            return;
+        }
         e.preventDefault();
         const index = Number((e.target as HTMLElement).dataset.index);
         this.list.updateActiveItem(index);
