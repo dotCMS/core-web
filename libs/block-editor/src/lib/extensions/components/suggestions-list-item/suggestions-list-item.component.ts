@@ -39,6 +39,25 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
     }
 
     scrollIntoView() {
-        this.element.nativeElement.scrollIntoView(false);
+        if (!this.isIntoView()) {
+            this.element.nativeElement.scrollIntoView(this.alignToTop());
+        }
+    }
+
+    isIntoView(): boolean {
+        const { bottom, top } = this.element.nativeElement.getBoundingClientRect();
+        const containerRect = this.element.nativeElement.parentElement.getBoundingClientRect();
+        return top >= containerRect.top && bottom <= containerRect.bottom;
+    }
+
+    /**
+     * If true, the top of the element will be aligned to the top of the visible area
+     * of the scrollable ancestorIf true, the top of the element will be aligned to 
+     * the top of the visible area of the scrollable ancestor.
+     */
+    alignToTop(): boolean {
+        const { top } = this.element.nativeElement.getBoundingClientRect();
+        const { top: containerTop} = this.element.nativeElement.parentElement.getBoundingClientRect();
+        return top < containerTop;
     }
 }
