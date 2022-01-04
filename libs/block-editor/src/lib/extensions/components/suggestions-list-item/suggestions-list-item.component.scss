@@ -3,12 +3,11 @@
 :host {
     box-sizing: border-box;
     display: flex;
-    gap: 1rem;
+    gap: $spacing-3;
     padding: 0.25rem 0.5rem;
-    background-color: #fff;
+    background-color: $white;
     cursor: pointer;
     align-items: center;
-    height: 40px;
     &:hover {
         background: var($gray-hover, #eee) ;
     }

@@ -44,18 +44,31 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
         }
     }
 
-    isIntoView(): boolean {
+    /**
+     *
+     * Check if the element is a visible area 
+     * 
+     * @private
+     * @return {*}  {boolean}
+     * @memberof SuggestionsListItemComponent
+     */
+    private isIntoView(): boolean {
         const { bottom, top } = this.element.nativeElement.getBoundingClientRect();
         const containerRect = this.element.nativeElement.parentElement.getBoundingClientRect();
         return top >= containerRect.top && bottom <= containerRect.bottom;
     }
 
     /**
+     *
      * If true, the top of the element will be aligned to the top of the visible area
      * of the scrollable ancestorIf true, the top of the element will be aligned to 
      * the top of the visible area of the scrollable ancestor.
+     *
+     * @private
+     * @return {*}  {boolean}
+     * @memberof SuggestionsListItemComponent
      */
-    alignToTop(): boolean {
+    private alignToTop(): boolean {
         const { top } = this.element.nativeElement.getBoundingClientRect();
         const { top: containerTop} = this.element.nativeElement.parentElement.getBoundingClientRect();
         return top < containerTop;
