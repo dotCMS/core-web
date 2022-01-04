@@ -3,7 +3,7 @@ import { of as observableOf, of, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, tick, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, tick, fakeAsync, TestBed, discardPeriodicTasks, flush } from '@angular/core/testing';
 import {
     Component,
     DebugElement,
@@ -647,6 +647,7 @@ describe('DotEditContentComponent', () => {
                 beforeEach(() => {
                     spyOn(dotEditContentHtmlService, 'renderPage');
                     spyOn(dotEditContentHtmlService, 'initEditMode');
+                    spyOn(dotEditContentHtmlService, 'setCurrentPage');
                 });
 
                 it('should render in preview mode', fakeAsync(() => {
@@ -657,6 +658,7 @@ describe('DotEditContentComponent', () => {
                         jasmine.any(ElementRef)
                     );
                     expect(dotEditContentHtmlService.initEditMode).not.toHaveBeenCalled();
+                    expect(dotEditContentHtmlService.setCurrentPage).toHaveBeenCalledWith(mockRenderedPageState.page);
                 }));
 
                 it('should render in edit mode', fakeAsync(() => {
@@ -683,6 +685,7 @@ describe('DotEditContentComponent', () => {
                         jasmine.any(ElementRef)
                     );
                     expect(dotEditContentHtmlService.renderPage).not.toHaveBeenCalled();
+                    expect(dotEditContentHtmlService.setCurrentPage).toHaveBeenCalledWith(state.page);
                 }));
 
                 it('should show/hide content palette in edit mode with correct content', fakeAsync(() => {
@@ -720,6 +723,8 @@ describe('DotEditContentComponent', () => {
                     paletteController.triggerEventHandler('click', '');
                     fixture.detectChanges();
                     expect(classList.contains('collapsed')).toEqual(true);
+
+                    expect(dotEditContentHtmlService.setCurrentPage).toHaveBeenCalledWith(state.page);
                 }));
 
                 it('should not display palette when is not enterprise', fakeAsync(() => {
@@ -745,6 +750,7 @@ describe('DotEditContentComponent', () => {
                     fixture.detectChanges();
                     const contentPaletteWrapper = de.query(By.css('.dot-edit-content__palette'));
                     expect(contentPaletteWrapper).toBeNull();
+                    expect(dotEditContentHtmlService.setCurrentPage).toHaveBeenCalledWith(state.page);
                 }));
 
                 it('should reload the page because of EMA', fakeAsync(() => {
@@ -776,10 +782,13 @@ describe('DotEditContentComponent', () => {
                     });
 
                     expect(dotPageStateService.reload).toHaveBeenCalledTimes(1);
+
+                    flush();
                 }))
 
                 it('should NOT reload the page', fakeAsync(() => {
                     spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(false));
+
                     const state = new DotPageRenderState(
                         mockUser(),
                         new DotPageRender({
@@ -794,10 +803,13 @@ describe('DotEditContentComponent', () => {
                             }
                         })
                     );
+
                     route.parent.parent.data = of({
                         content: state
                     });
+
                     detectChangesForIframeRender(fixture);
+
                     fixture.detectChanges();
 
                     dotEditContentHtmlService.pageModel$.next({
@@ -806,6 +818,8 @@ describe('DotEditContentComponent', () => {
                     });
 
                     expect(dotPageStateService.reload).toHaveBeenCalledTimes(0);
+
+                    flush();
                 }))
             });
 

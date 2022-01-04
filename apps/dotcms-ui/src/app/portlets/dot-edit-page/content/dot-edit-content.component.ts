@@ -297,9 +297,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .pipe(
                 take(1),
                 tap(() => {
-                    this.dotGlobalMessageService.success(
-                        this.dotMessageService.get('dot.common.message.saved')
-                    );
+                    this.dotGlobalMessageService.success();
                 }),
                 catchError((error: HttpErrorResponse) => {
                     this.httpErrorManagerService.handle(error);
@@ -434,6 +432,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private renderPage(pageState: DotPageRenderState): void {
+        this.dotEditContentHtmlService.setCurrentPage(pageState.page);
+
         if (this.shouldEditMode(pageState)) {
             if (this.isEnterpriseLicense) {
                 this.loadContentPallet(pageState);
