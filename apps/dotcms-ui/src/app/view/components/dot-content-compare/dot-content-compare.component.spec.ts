@@ -19,6 +19,7 @@ import { ConfirmationService } from 'primeng/api';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { DotVersionableService } from '@services/dot-verionable/dot-versionable.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 const DotContentCompareEventMOCK = {
     inode: '1',
@@ -73,6 +74,18 @@ describe('DotContentCompareComponent', () => {
                     provide: DotVersionableService,
                     useValue: {
                         bringBack: jasmine.createSpy().and.returnValue(of({ inode: '123' }))
+                    }
+                },
+                {
+                    provide: DotHttpErrorManagerService,
+                    useValue: {
+                        handle: jasmine.createSpy().and.returnValue(
+                            of({
+                                status: {
+                                    toString: () => ''
+                                }
+                            })
+                        )
                     }
                 }
             ]

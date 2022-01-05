@@ -4,7 +4,7 @@ import {
     DotContentCompareStore
 } from '@components/dot-content-compare/store/dot-content-compare.store';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { catchError, filter, map, take } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import {
@@ -12,6 +12,8 @@ import {
     DotVersionableService
 } from '@services/dot-verionable/dot-versionable.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface DotContentCompareEvent {
     inode: string;
@@ -39,7 +41,8 @@ export class DotContentCompareComponent {
         private dotAlertConfirmService: DotAlertConfirmService,
         private dotVersionableService: DotVersionableService,
         private dotRouterService: DotRouterService,
-        private dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService,
+        private dotHttpErrorManagerService: DotHttpErrorManagerService
     ) {}
 
     /**
@@ -52,7 +55,15 @@ export class DotContentCompareComponent {
             accept: () => {
                 this.dotVersionableService
                     .bringBack(inode)
-                    .pipe(take(1))
+                    .pipe(
+                        take(1),
+                        catchError((err: HttpErrorResponse) => {
+                            return this.dotHttpErrorManagerService
+                                .handle(err)
+                                .pipe(map(() => null));
+                        }),
+                        filter((version: DotVersionable) => version != null)
+                    )
                     .subscribe((version: DotVersionable) => {
                         this.dotRouterService.goToURL(`/c/content/${version.inode}`);
                         this.close.emit(true);
