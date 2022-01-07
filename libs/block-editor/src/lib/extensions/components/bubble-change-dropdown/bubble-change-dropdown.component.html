@@ -1,0 +1,20 @@
+<p-dropdown [options]="options" (onChange)="onChange($event.value)" [(ngModel)]="selectedOption" >
+    <ng-template pTemplate="selectedItem">
+        <div>{{selectedOption?.label}}</div>
+    </ng-template>
+    <ng-template let-item pTemplate="item">
+        <dotcms-suggestions-list-item
+            [label]="item.label"
+            [url]="item.icon"
+        >
+        </dotcms-suggestions-list-item>
+        <div>{{item.name}}</div>
+    </ng-template>
+</p-dropdown>
+<!--<p-overlayPanel #op>-->
+<!--    <ng-template pTemplate>-->
+<!--        Content-->
+<!--    </ng-template>-->
+<!--</p-overlayPanel>-->
+
+<!--<button type="text" pButton label="Basic" (click)="op.toggle($event)"></button>-->

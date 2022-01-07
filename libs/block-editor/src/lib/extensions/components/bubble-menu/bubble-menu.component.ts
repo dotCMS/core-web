@@ -188,7 +188,10 @@ export class BubbleMenuComponent implements OnInit {
     }
 
     private setEnabledMarks(): void {
-        this.enabledMarks = [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
+        this.enabledMarks = [
+            ...Object.keys(this.editor.schema.marks),
+            ...Object.keys(this.editor.schema.nodes)
+        ];
     }
 
     private setActiveMarks(): void {

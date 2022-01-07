@@ -1,6 +1,8 @@
-<div class="bubble-menu" (mousedown)="preventDeSelection($event)">
+<div class="bubble-menu">
+    <dotcms-bubble-change-dropdown [editor]="editor" ></dotcms-bubble-change-dropdown>
+    <div class="divider"></div>
     <ng-container *ngFor="let item of items; let i = index">
-        <dotcms-bubble-menu-button 
+        <dotcms-bubble-menu-button
             (click)="command(item)"
             [active]="activeMarks.includes(item.markAction)"
             [item]="item"
