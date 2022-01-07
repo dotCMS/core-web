@@ -61,130 +61,145 @@ export const primary = () => ({
                     getContentTypes() {
                         return of([
                             {
+                                name: 'Empty Content',
+                                icon: 'hourglass_disabled',
+                                variable: 'empty'
+                            },
+                            {
                                 name: 'Blog',
-                                icon: 'article'
+                                icon: 'article',
+                                variable: 'blog'
                             },
                             {
                                 name: 'Persona',
-                                icon: 'face'
+                                icon: 'face',
+                                variable: 'persona'
                             },
                             {
                                 name: 'News Item',
-                                icon: 'mic'
+                                icon: 'mic',
+                                variable: 'news_item'
                             },
                             {
                                 name: 'Banner',
-                                icon: 'view_carousel'
+                                icon: 'view_carousel',
+                                variable: 'banner'
                             },
                             {
                                 name: 'Product in the store',
-                                icon: 'inventory_2'
+                                icon: 'inventory_2',
+                                variable: 'inventory'
                             },
                             {
                                 name: 'Reatil information',
-                                icon: 'storefront'
+                                icon: 'storefront',
+                                variable: 'retail'
                             }
                         ]);
                     },
-                    getContentlets() {
+                    getContentlets(type) {
+                        if (type === 'empty') {
+                            return of([]).pipe(delay(800));
+                        }
+
                         return of([
-                            // {
-                            //     title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-                            //     inode: '123'
-                            // },
-                            // {
-                            //     title: 'Aliquam tincidunt mauris eu risus.',
-                            //     inode: '456'
-                            // },
-                            // {
-                            //     title: 'Vestibulum auctor dapibus neque.',
-                            //     inode: '789'
-                            // },
-                            // {
-                            //     title: 'Nunc dignissim risus id metus.',
-                            //     inode: '1011'
-                            // },
-                            // {
-                            //     title: 'Cras ornare tristique elit.',
-                            //     inode: '1213'
-                            // },
-                            // {
-                            //     title: 'Vivamus vestibulum ntulla nec ante.',
-                            //     inode: '1415'
-                            // },
-                            // {
-                            //     title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-                            //     inode: '123'
-                            // },
-                            // {
-                            //     title: 'Aliquam tincidunt mauris eu risus.',
-                            //     inode: '456'
-                            // },
-                            // {
-                            //     title: 'Vestibulum auctor dapibus neque.',
-                            //     inode: '789'
-                            // },
-                            // {
-                            //     title: 'Nunc dignissim risus id metus.',
-                            //     inode: '1011'
-                            // },
-                            // {
-                            //     title: 'Cras ornare tristique elit.',
-                            //     inode: '1213'
-                            // },
-                            // {
-                            //     title: 'Vivamus vestibulum ntulla nec ante.',
-                            //     inode: '1415'
-                            // },
-                            // {
-                            //     title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-                            //     inode: '123'
-                            // },
-                            // {
-                            //     title: 'Aliquam tincidunt mauris eu risus.',
-                            //     inode: '456'
-                            // },
-                            // {
-                            //     title: 'Vestibulum auctor dapibus neque.',
-                            //     inode: '789'
-                            // },
-                            // {
-                            //     title: 'Nunc dignissim risus id metus.',
-                            //     inode: '1011'
-                            // },
-                            // {
-                            //     title: 'Cras ornare tristique elit.',
-                            //     inode: '1213'
-                            // },
-                            // {
-                            //     title: 'Vivamus vestibulum ntulla nec ante.',
-                            //     inode: '1415'
-                            // },
-                            // {
-                            //     title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-                            //     inode: '123'
-                            // },
-                            // {
-                            //     title: 'Aliquam tincidunt mauris eu risus.',
-                            //     inode: '456'
-                            // },
-                            // {
-                            //     title: 'Vestibulum auctor dapibus neque.',
-                            //     inode: '789'
-                            // },
-                            // {
-                            //     title: 'Nunc dignissim risus id metus.',
-                            //     inode: '1011'
-                            // },
-                            // {
-                            //     title: 'Cras ornare tristique elit.',
-                            //     inode: '1213'
-                            // },
-                            // {
-                            //     title: 'Vivamus vestibulum ntulla nec ante.',
-                            //     inode: '1415'
-                            // },
-                        ]);
+                            {
+                                title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+                                inode: '123'
+                            },
+                            {
+                                title: 'Aliquam tincidunt mauris eu risus.',
+                                inode: '456'
+                            },
+                            {
+                                title: 'Vestibulum auctor dapibus neque.',
+                                inode: '789'
+                            },
+                            {
+                                title: 'Nunc dignissim risus id metus.',
+                                inode: '1011'
+                            },
+                            {
+                                title: 'Cras ornare tristique elit.',
+                                inode: '1213'
+                            },
+                            {
+                                title: 'Vivamus vestibulum ntulla nec ante.',
+                                inode: '1415'
+                            },
+                            {
+                                title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+                                inode: '123'
+                            },
+                            {
+                                title: 'Aliquam tincidunt mauris eu risus.',
+                                inode: '456'
+                            },
+                            {
+                                title: 'Vestibulum auctor dapibus neque.',
+                                inode: '789'
+                            },
+                            {
+                                title: 'Nunc dignissim risus id metus.',
+                                inode: '1011'
+                            },
+                            {
+                                title: 'Cras ornare tristique elit.',
+                                inode: '1213'
+                            },
+                            {
+                                title: 'Vivamus vestibulum ntulla nec ante.',
+                                inode: '1415'
+                            },
+                            {
+                                title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+                                inode: '123'
+                            },
+                            {
+                                title: 'Aliquam tincidunt mauris eu risus.',
+                                inode: '456'
+                            },
+                            {
+                                title: 'Vestibulum auctor dapibus neque.',
+                                inode: '789'
+                            },
+                            {
+                                title: 'Nunc dignissim risus id metus.',
+                                inode: '1011'
+                            },
+                            {
+                                title: 'Cras ornare tristique elit.',
+                                inode: '1213'
+                            },
+                            {
+                                title: 'Vivamus vestibulum ntulla nec ante.',
+                                inode: '1415'
+                            },
+                            {
+                                title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+                                inode: '123'
+                            },
+                            {
+                                title: 'Aliquam tincidunt mauris eu risus.',
+                                inode: '456'
+                            },
+                            {
+                                title: 'Vestibulum auctor dapibus neque.',
+                                inode: '789'
+                            },
+                            {
+                                title: 'Nunc dignissim risus id metus.',
+                                inode: '1011'
+                            },
+                            {
+                                title: 'Cras ornare tristique elit.',
+                                inode: '1213'
+                            },
+                            {
+                                title: 'Vivamus vestibulum ntulla nec ante.',
+                                inode: '1415'
+                            }
+                        ]).pipe(delay(800));
                     }
                 }
             }

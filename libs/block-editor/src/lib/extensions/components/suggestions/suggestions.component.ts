@@ -182,8 +182,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     setFirstItemActive() {
-        console.log(this.list)
-
         this.list.setFirstItemActive();
     }
 
