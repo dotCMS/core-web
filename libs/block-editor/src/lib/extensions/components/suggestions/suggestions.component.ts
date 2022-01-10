@@ -240,7 +240,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     handleBackButton(event: MouseEvent): void {
-        console.log('handleBackButton');
         event.preventDefault();
         event.stopPropagation();
         this.initContentletSelection();
