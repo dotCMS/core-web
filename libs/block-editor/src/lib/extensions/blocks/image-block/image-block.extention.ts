@@ -15,13 +15,11 @@ export const ImageBlock = (injector: Injector): Node => {
             return {
                 data: {
                     default: null,
-                    parseHTML: (element) => {
-                        data: element.getAttribute('data');
-                    },
+                    parseHTML: (element) =>  element.getAttribute('data'),
                     renderHTML: (attributes) => {
                         return { data: attributes.data };
                     }
-                }
+                },
             };
         },
 
@@ -29,8 +27,12 @@ export const ImageBlock = (injector: Injector): Node => {
             return [{ tag: 'dotcms-image-block' }];
         },
 
-        renderHTML({ HTMLAttributes }): DOMOutputSpec {
-            return ['dotcms-image-block', mergeAttributes(HTMLAttributes)];
+        renderHTML({ HTMLAttributes }) {
+            const containerHTMLAttributes = { style: HTMLAttributes.style || null }
+            return [
+                'div', containerHTMLAttributes,
+                [ 'dotcms-image-block', HTMLAttributes ]
+            ]
         },
 
         addNodeView(): NodeViewRenderer {

@@ -11,6 +11,7 @@ export * from './lib/ngx-tiptap.module';
 
 export * from './lib/AngularRenderer';
 export * from './lib/NodeViewRenderer';
+export * from './lib/Image.extension';
 
 // Editor blocks components
 export * from './lib/extensions/components/suggestions/suggestions.component';

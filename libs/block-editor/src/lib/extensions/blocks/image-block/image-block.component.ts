@@ -14,4 +14,5 @@ export class ImageBlockComponent extends AngularNodeViewComponent implements OnI
     ngOnInit(): void {
         this.data = this.node.attrs.data;
     }
+
 }
