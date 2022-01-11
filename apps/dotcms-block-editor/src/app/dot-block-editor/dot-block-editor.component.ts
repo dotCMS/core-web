@@ -13,7 +13,6 @@ import {
     BubbleLinkFormExtension,
     ContentletBlock,
     DragHandler,
-    Image,
     ImageBlock,
     ImageUpload,
     shouldShowBubbleMenu
@@ -43,7 +42,6 @@ export class DotBlockEditorComponent implements OnInit {
         this.editor = new Editor({
             extensions: [
                 StarterKit,
-                Image,
                 ContentletBlock(this.injector),
                 ImageBlock(this.injector),
                 ActionsMenu(this.injector, this.resolver),
@@ -62,7 +60,7 @@ export class DotBlockEditorComponent implements OnInit {
                 }),
                 // Marks Extensions
                 Underline,
-                TextAlign.configure({ types: ['heading', 'paragraph', 'listItem', 'image', 'dotImage'] }),
+                TextAlign.configure({ types: ['heading', 'paragraph', 'listItem', 'dotImage'] }),
                 Highlight.configure({ HTMLAttributes: { class: 'highlighted' } }),
                 Link.configure({ openOnClick: true })
             ]

@@ -148,13 +148,21 @@ export class BubbleLinkFormView {
 
     addLink(link: string) {
         if (link) {
-            this.editor.commands.setLink({ href: link });
+            if(this.isDotImageNode) {
+                this.editor.commands.setImageLink({ href: link });
+            } else {
+                this.editor.commands.setLink({ href: link });
+            }
         }
         this.hide();
     }
 
     removeLink() {
-        this.editor.commands.unsetLink();
+        if(this.isDotImageNode) {
+            this.editor.commands.unsetImageLink();
+        } else {
+            this.editor.commands.unsetLink();
+        }
         this.hide();
     }
 
@@ -178,7 +186,11 @@ export class BubbleLinkFormView {
     }
 
     getNodeLink(): string {
-        return this.editor.isActive('link') ? this.editor.getAttributes('link').href : '';
+        return this.editor.isActive('link')
+            ? this.editor.getAttributes('link').href
+            : this.editor.getAttributes('dotImage').href
+            ? this.editor.getAttributes('dotImage').href
+            : '';
     }
 
     getLinkSelect() {
@@ -200,6 +212,11 @@ export class BubbleLinkFormView {
             'i'
         ); // fragment locator
         return !!pattern.test(nodeText);
+    }
+
+    isDotImageNode() {
+        const { type } = this.editor.state.doc.nodeAt(this.editor.state.selection.from);
+        return type.name === 'dotImage';
     }
 
     destroy() {

@@ -34,3 +34,99 @@ export const shouldShowBubbleMenu = ({ editor, state, from, to }: ShouldShowProp
     return true;
 
 };
+
+export const bubbleMenuItems = [
+    {
+        icon: 'format_bold',
+        markAction: 'bold',
+        active: false
+    },
+    {
+        icon: 'format_underlined',
+        markAction: 'underline',
+        active: false
+    },
+    {
+        icon: 'format_italic',
+        markAction: 'italic',
+        active: false
+    },
+    {
+        icon: 'strikethrough_s',
+        markAction: 'strike',
+        active: false,
+        divider: true
+    },
+    {
+        icon: 'format_align_left',
+        markAction: 'left',
+        active: false
+    },
+    {
+        icon: 'format_align_center',
+        markAction: 'center',
+        active: false
+    },
+    {
+        icon: 'format_align_right',
+        markAction: 'right',
+        active: false,
+        divider: true
+    },
+    {
+        icon: 'format_list_bulleted',
+        markAction: 'bulletList',
+        active: false
+    },
+    {
+        icon: 'format_list_numbered',
+        markAction: 'orderedList',
+        active: false
+    },
+    {
+        icon: 'format_indent_decrease',
+        markAction: 'outdent',
+        active: false
+    },
+    {
+        icon: 'format_indent_increase',
+        markAction: 'indent',
+        active: false,
+        divider: true
+    },
+    {
+        icon: 'link',
+        markAction: 'link',
+        active: false,
+        divider: true
+    },
+    {
+        icon: 'format_clear',
+        markAction: 'clearAll',
+        active: false
+    }
+];
+
+export const bubbleMenuImageItems = [
+    {
+        icon: 'format_align_left',
+        markAction: 'left',
+        active: false
+    },
+    {
+        icon: 'format_align_center',
+        markAction: 'center',
+        active: false
+    },
+    {
+        icon: 'format_align_right',
+        markAction: 'right',
+        active: false,
+        divider: true
+    },
+    {
+        icon: 'link',
+        markAction: 'link',
+        active: false,
+    },
+];
