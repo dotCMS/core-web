@@ -30,6 +30,7 @@ import { DotSiteSelectorComponent } from '@components/_common/dot-site-selector/
  * @class DotThemeSelectorComponent
  */
 @Component({
+    providers: [PaginatorService],
     selector: 'dot-theme-selector',
     templateUrl: './dot-theme-selector.component.html',
     styleUrls: ['./dot-theme-selector.component.scss']
@@ -43,6 +44,7 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
     @Output()
     selected = new EventEmitter<DotTheme>();
 
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output()
     close = new EventEmitter<boolean>();
 
