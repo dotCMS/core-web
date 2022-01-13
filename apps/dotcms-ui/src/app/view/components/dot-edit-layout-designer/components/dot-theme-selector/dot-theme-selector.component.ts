@@ -44,7 +44,6 @@ export class DotThemeSelectorComponent implements OnInit, OnDestroy {
     @Output()
     selected = new EventEmitter<DotTheme>();
 
-    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output()
     close = new EventEmitter<boolean>();
 

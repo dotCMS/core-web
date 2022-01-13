@@ -15,7 +15,6 @@ import { map, take } from 'rxjs/operators';
     styleUrls: ['./dot-container-selector.component.scss']
 })
 export class DotContainerSelectorComponent implements OnInit {
-    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() change: EventEmitter<DotContainer> = new EventEmitter();
 
     @Input() data: DotContainerColumnBox[] = [];
