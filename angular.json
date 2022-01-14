@@ -1,37 +1,5 @@
 {
     "version": 1,
-    "cli": {
-        "defaultCollection": "@nrwl/angular",
-        "analytics": false
-    },
-    "defaultProject": "dotcms-ui",
-    "schematics": {
-        "@nrwl/angular": {
-            "application": {
-                "linter": "eslint"
-            },
-            "library": {
-                "linter": "eslint"
-            },
-            "storybook-configuration": {
-                "linter": "eslint"
-            }
-        },
-        "@nrwl/angular:application": {
-            "style": "scss",
-            "linter": "eslint",
-            "unitTestRunner": "karma",
-            "e2eTestRunner": "cypress"
-        },
-        "@nrwl/angular:library": {
-            "style": "scss",
-            "linter": "eslint",
-            "unitTestRunner": "karma"
-        },
-        "@nrwl/angular:component": {
-            "style": "scss"
-        }
-    },
     "projects": {
         "block-editor": {
             "projectType": "library",
@@ -46,7 +14,8 @@
                             "libs/block-editor/src/**/*.ts",
                             "libs/block-editor/src/**/*.html"
                         ]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@nrwl/jest:jest",
@@ -103,7 +72,8 @@
                             "libs/dot-layout-grid/src/**/*.ts",
                             "libs/dot-layout-grid/src/**/*.html"
                         ]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
@@ -129,7 +99,8 @@
                             "libs/dot-primeng-theme-styles/src/**/*.ts",
                             "libs/dot-primeng-theme-styles/src/**/*.html"
                         ]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 }
             }
         },
@@ -146,7 +117,8 @@
                             "libs/dot-rules/src/**/*.ts",
                             "libs/dot-rules/src/**/*.html"
                         ]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
@@ -173,7 +145,6 @@
                         "main": "apps/dotcdn/src/main.ts",
                         "polyfills": "apps/dotcdn/src/polyfills.ts",
                         "tsConfig": "apps/dotcdn/tsconfig.app.json",
-                        "aot": true,
                         "assets": ["apps/dotcdn/src/favicon.ico", "apps/dotcdn/src/assets"],
                         "styles": [
                             "libs/dot-primeng-theme-styles/src/scss/styles.scss",
@@ -185,7 +156,13 @@
                         "stylePreprocessorOptions": {
                             "includePaths": ["libs/dot-primeng-theme-styles/src/scss"]
                         },
-                        "scripts": ["node_modules/chart.js/dist/Chart.js"]
+                        "scripts": ["node_modules/chart.js/dist/Chart.js"],
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
@@ -215,7 +192,8 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "defaultConfiguration": ""
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
@@ -239,7 +217,8 @@
                     "builder": "@nrwl/linter:eslint",
                     "options": {
                         "lintFilePatterns": ["apps/dotcdn/src/**/*.ts", "apps/dotcdn/src/**/*.html"]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@nrwl/jest:jest",
@@ -285,7 +264,8 @@
                     "builder": "@nrwl/linter:eslint",
                     "options": {
                         "lintFilePatterns": ["apps/dotcdn-e2e/**/*.{js,ts}"]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 }
             }
         },
@@ -311,7 +291,8 @@
                     "builder": "@nrwl/linter:eslint",
                     "options": {
                         "lintFilePatterns": ["libs/dotcms/src/**/*.ts", "libs/dotcms/src/**/*.html"]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@nrwl/jest:jest",
@@ -337,7 +318,6 @@
                         "main": "apps/dotcms-block-editor/src/main.ts",
                         "polyfills": "apps/dotcms-block-editor/src/polyfills.ts",
                         "tsConfig": "apps/dotcms-block-editor/tsconfig.app.json",
-                        "aot": true,
                         "assets": [
                             "apps/dotcms-block-editor/src/favicon.ico",
                             "apps/dotcms-block-editor/src/assets"
@@ -348,7 +328,13 @@
                                 "bundleName": "generator-runtime",
                                 "input": "node_modules/regenerator-runtime/runtime.js"
                             }
-                        ]
+                        ],
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
@@ -378,7 +364,8 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "defaultConfiguration": ""
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
@@ -404,7 +391,8 @@
                             "apps/dotcms-block-editor/src/**/*.ts",
                             "apps/dotcms-block-editor/src/**/*.html"
                         ]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
@@ -473,7 +461,8 @@
                     "builder": "@nrwl/linter:eslint",
                     "options": {
                         "lintFilePatterns": ["apps/dotcms-block-editor-e2e/**/*.{js,ts}"]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 }
             }
         },
@@ -533,7 +522,8 @@
                             "libs/dotcms-js/src/**/*.ts",
                             "libs/dotcms-js/src/**/*.html"
                         ]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
@@ -571,7 +561,8 @@
                             "libs/dotcms-models/src/**/*.ts",
                             "libs/dotcms-models/src/**/*.html"
                         ]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 }
             }
         },
@@ -590,7 +581,6 @@
                         "main": "apps/dotcms-ui/src/main.ts",
                         "polyfills": "apps/dotcms-ui/src/polyfills.ts",
                         "tsConfig": "apps/dotcms-ui/tsconfig.app.json",
-                        "aot": true,
                         "allowedCommonJsDependencies": [
                             "lodash",
                             "dragula",
@@ -625,7 +615,13 @@
                         "scripts": ["node_modules/marked/lib/marked.js"],
                         "stylePreprocessorOptions": {
                             "includePaths": ["libs/dot-primeng-theme-styles/src/scss"]
-                        }
+                        },
+                        "vendorChunk": true,
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true
                     },
                     "configurations": {
                         "production": {
@@ -655,7 +651,8 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "defaultConfiguration": ""
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
@@ -683,7 +680,8 @@
                             "apps/dotcms-ui/src/**/*.ts",
                             "apps/dotcms-ui/src/**/*.html"
                         ]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
@@ -755,7 +753,8 @@
                     "builder": "@nrwl/linter:eslint",
                     "options": {
                         "lintFilePatterns": ["apps/dotcms-ui-e2e/**/*.{js,ts}"]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 }
             }
         },
@@ -843,7 +842,8 @@
                     "builder": "@nrwl/linter:eslint",
                     "options": {
                         "lintFilePatterns": ["libs/ui/src/**/*.ts", "libs/ui/src/**/*.html"]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
@@ -865,7 +865,8 @@
                     "builder": "@nrwl/linter:eslint",
                     "options": {
                         "lintFilePatterns": ["libs/utils/src/**/*.ts", "libs/utils/src/**/*.html"]
-                    }
+                    },
+                    "outputs": ["{options.outputFile}"]
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
