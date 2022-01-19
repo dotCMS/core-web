@@ -95,16 +95,6 @@ import { DotMdIconSelectorModule } from '@dotcms/app/view/components/_common/dot
         ValuesPropertyComponent
     ],
     exports: [DotContentTypesEditComponent],
-    entryComponents: [
-        CategoriesPropertyComponent,
-        CheckboxPropertyComponent,
-        DataTypePropertyComponent,
-        DefaultValuePropertyComponent,
-        HintPropertyComponent,
-        NamePropertyComponent,
-        RegexCheckPropertyComponent,
-        ValuesPropertyComponent
-    ],
     imports: [
         ButtonModule,
         CheckboxModule,

@@ -32,7 +32,8 @@
                         "port": 6600,
                         "config": {
                             "configFolder": "libs/block-editor/.storybook"
-                        }
+                        },
+                        "projectBuildConfig": "block-editor:build-storybook"
                     },
                     "configurations": {
                         "ci": {
@@ -49,7 +50,8 @@
                         "deleteOutputPath": false,
                         "config": {
                             "configFolder": "libs/block-editor/.storybook"
-                        }
+                        },
+                        "projectBuildConfig": "block-editor:build-storybook"
                     },
                     "configurations": {
                         "ci": {
@@ -57,7 +59,8 @@
                         }
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dot-layout-grid": {
             "projectType": "library",
@@ -84,7 +87,8 @@
                         "tsConfig": "libs/dot-layout-grid/tsconfig.spec.json"
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dot-primeng-theme-styles": {
             "projectType": "library",
@@ -102,7 +106,8 @@
                     },
                     "outputs": ["{options.outputFile}"]
                 }
-            }
+            },
+            "tags": []
         },
         "dot-rules": {
             "projectType": "library",
@@ -129,7 +134,8 @@
                         "tsConfig": "libs/dot-rules/tsconfig.spec.json"
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dotcdn": {
             "projectType": "application",
@@ -240,7 +246,8 @@
                         "scripts": ["node_modules/chart.js/dist/Chart.js"]
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dotcdn-e2e": {
             "root": "apps/dotcdn-e2e",
@@ -267,7 +274,9 @@
                     },
                     "outputs": ["{options.outputFile}"]
                 }
-            }
+            },
+            "tags": [],
+            "implicitDependencies": ["dotcdn"]
         },
         "dotcms": {
             "projectType": "library",
@@ -302,7 +311,8 @@
                         "passWithNoTests": true
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dotcms-block-editor": {
             "projectType": "application",
@@ -413,7 +423,8 @@
                         "port": 6600,
                         "config": {
                             "configFolder": "apps/dotcms-block-editor/.storybook"
-                        }
+                        },
+                        "projectBuildConfig": "dotcms-block-editor"
                     },
                     "configurations": {
                         "ci": {
@@ -429,7 +440,8 @@
                         "outputPath": "dist/storybook/dotcms-block-editor",
                         "config": {
                             "configFolder": "apps/dotcms-block-editor/.storybook"
-                        }
+                        },
+                        "projectBuildConfig": "dotcms-block-editor"
                     },
                     "configurations": {
                         "ci": {
@@ -437,7 +449,8 @@
                         }
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dotcms-block-editor-e2e": {
             "root": "apps/dotcms-block-editor-e2e",
@@ -464,7 +477,9 @@
                     },
                     "outputs": ["{options.outputFile}"]
                 }
-            }
+            },
+            "tags": [],
+            "implicitDependencies": ["dotcms-block-editor"]
         },
         "dotcms-field-elements": {
             "projectType": "library",
@@ -507,7 +522,8 @@
                         "watch": true
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dotcms-js": {
             "projectType": "library",
@@ -534,7 +550,8 @@
                         "tsConfig": "libs/dotcms-js/tsconfig.spec.json"
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dotcms-models": {
             "projectType": "library",
@@ -564,7 +581,8 @@
                     },
                     "outputs": ["{options.outputFile}"]
                 }
-            }
+            },
+            "tags": []
         },
         "dotcms-ui": {
             "projectType": "application",
@@ -657,7 +675,6 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "baseHref": "/",
                         "browserTarget": "dotcms-ui:build",
                         "proxyConfig": "apps/dotcms-ui/proxy.conf.json"
                     },
@@ -704,7 +721,8 @@
                         "port": 4400,
                         "config": {
                             "configFolder": "apps/dotcms-ui/.storybook"
-                        }
+                        },
+                        "projectBuildConfig": "dotcms-ui"
                     },
                     "configurations": {
                         "ci": {
@@ -721,7 +739,8 @@
                         "deleteOutputPath": false,
                         "config": {
                             "configFolder": "apps/dotcms-ui/.storybook"
-                        }
+                        },
+                        "projectBuildConfig": "dotcms-ui"
                     },
                     "configurations": {
                         "ci": {
@@ -729,7 +748,8 @@
                         }
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "dotcms-ui-e2e": {
             "root": "apps/dotcms-ui-e2e",
@@ -756,7 +776,9 @@
                     },
                     "outputs": ["{options.outputFile}"]
                 }
-            }
+            },
+            "tags": [],
+            "implicitDependencies": ["dotcms-ui"]
         },
         "dotcms-webcomponents": {
             "projectType": "library",
@@ -831,7 +853,8 @@
                         }
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "ui": {
             "projectType": "library",
@@ -854,7 +877,8 @@
                         "karmaConfig": "libs/ui/karma.conf.js"
                     }
                 }
-            }
+            },
+            "tags": []
         },
         "utils": {
             "projectType": "library",
@@ -877,7 +901,8 @@
                         "karmaConfig": "libs/utils/karma.conf.js"
                     }
                 }
-            }
+            },
+            "tags": []
         }
     }
 }
