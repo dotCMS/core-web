@@ -16,10 +16,10 @@
                         appendTo="body"
                     >
                         <ng-template let-selected pTemplate="selectedItem">
-                            {{ transformVersionItemLabel(selected) }}
+                            {{ selected | dotTransformVersionLabel }}
                         </ng-template>
                         <ng-template let-item pTemplate="item">
-                            {{ transformVersionItemLabel(item) }}
+                            {{ item | dotTransformVersionLabel }}
                         </ng-template>
                     </p-dropdown>
                     <p-selectButton
@@ -119,10 +119,8 @@
                 <td
                     data-testId="table-field-compare"
                     [innerHTML]="
-                        (data.working[field.variable] ? data.working[field.variable] : '')
-                            | dotDiff
-                                : (data.compare[field.variable] ? data.compare[field.variable] : '')
-                                : showDiff
+                        data.working[field.variable]
+                            | dotDiff: data.compare[field.variable]:showDiff
                     "
                 ></td>
             </ng-container>

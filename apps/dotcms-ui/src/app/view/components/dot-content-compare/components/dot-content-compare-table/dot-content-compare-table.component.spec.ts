@@ -15,6 +15,7 @@ import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module
 import { DotcmsConfigService } from '@dotcms/dotcms-js';
 import { DotFormatDateService } from '@services/dot-format-date-service';
 import { of } from 'rxjs';
+import { DotTransformVersionLabelPipe } from '../../pipes/dot-transform-version-label.pipe';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -255,7 +256,8 @@ describe('DotContentCompareTableComponent', () => {
             declarations: [
                 TestHostComponent,
                 DotContentCompareTableComponent,
-                DotContentComparePreviewFieldComponent
+                DotContentComparePreviewFieldComponent,
+                DotTransformVersionLabelPipe
             ],
             imports: [
                 TableModule,
