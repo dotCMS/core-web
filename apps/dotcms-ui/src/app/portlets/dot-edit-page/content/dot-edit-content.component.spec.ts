@@ -1184,7 +1184,7 @@ describe('DotEditContentComponent', () => {
                         ).toHaveBeenCalledWith(container);
                     });
 
-                    fit('should display Form Selector when handle add content event of form Type', () => {
+                    it('should display Form Selector when handle add content event of form Type', () => {
                         
                         spyOn( dotEditContentHtmlService, 'setContainterToAppendContentlet' ).and.callFake(() => {});
                         spyOn( dotEditContentHtmlService, 'removeContentletPlaceholder' ).and.callFake(() => {});
