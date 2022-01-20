@@ -1188,7 +1188,7 @@ describe('DotEditContentComponent', () => {
                         
                         spyOn( dotEditContentHtmlService, 'setContainterToAppendContentlet' ).and.callFake(() => {});
                         spyOn( dotEditContentHtmlService, 'removeContentletPlaceholder' ).and.callFake(() => {});
-                        spyOn( component, 'displayFormSelector' ).and.callThrough();
+                        spyOn( component, 'addFormContentType' ).and.callThrough();
 
                         fixture.detectChanges();
 
@@ -1212,7 +1212,7 @@ describe('DotEditContentComponent', () => {
 
                         expect( dotEditContentHtmlService.setContainterToAppendContentlet ).toHaveBeenCalledWith(container);
                         expect( dotEditContentHtmlService.removeContentletPlaceholder ).toHaveBeenCalled();
-                        expect( component.displayFormSelector ).toHaveBeenCalled();
+                        expect( component.addFormContentType ).toHaveBeenCalled();
                         expect( component.editForm ).toBeTruthy();
                     });
 

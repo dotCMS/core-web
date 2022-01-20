@@ -249,11 +249,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     *
-     *  
+     * Handle add Form ContentType from Content Palette.
+     * 
      * @memberof DotEditContentComponent
      */
-    displayFormSelector() {
+    addFormContentType(): void {
         this.editForm = true;
         this.dotEditContentHtmlService.removeContentletPlaceholder();
     }
@@ -353,7 +353,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                
             });
         } else {
-            this.displayFormSelector();
+            this.addFormContentType();
         }
     }
 
