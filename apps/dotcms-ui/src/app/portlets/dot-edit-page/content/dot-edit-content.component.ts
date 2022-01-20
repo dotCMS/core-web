@@ -342,7 +342,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .getActionUrl($event.data.contentType.variable)
             .pipe(take(1))
             .subscribe((url) => {
-                console.log( $event.data.contentType.variable );
                 this.dotContentletEditorService.create({
                     data: { url },
                     events: {
@@ -353,7 +352,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 });
                
             });
-        }else {
+        } else {
             this.displayFormSelector();
         }
     }
