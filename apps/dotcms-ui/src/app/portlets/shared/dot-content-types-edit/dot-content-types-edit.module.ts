@@ -148,7 +148,7 @@ import { DotMdIconSelectorModule } from '@dotcms/app/view/components/_common/dot
         DragulaService,
         FieldDragDropService,
         FieldPropertyService,
-        FieldService,
+        FieldService
     ],
     schemas: []
 })
