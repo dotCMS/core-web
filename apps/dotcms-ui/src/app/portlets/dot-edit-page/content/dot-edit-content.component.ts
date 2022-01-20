@@ -248,6 +248,16 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotEditContentHtmlService.removeContentletPlaceholder();
     }
 
+    /**
+     *
+     *  
+     * @memberof DotEditContentComponent
+     */
+    displayFormSelector() {
+        this.editForm = true;
+        this.dotEditContentHtmlService.removeContentletPlaceholder();
+    }
+
     private loadContentPallet(pageState: DotPageRenderState): void {
         const CONTENT_HIDDEN_KEY = 'CONTENT_PALETTE_HIDDEN_CONTENT_TYPES';
         forkJoin([
@@ -326,10 +336,13 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             uuid: $event.data.container.dotUuid
         };
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
+
+        if( $event.data.contentType.variable !== 'forms' ) {
         this.dotContentletEditorService
             .getActionUrl($event.data.contentType.variable)
             .pipe(take(1))
             .subscribe((url) => {
+                console.log( $event.data.contentType.variable );
                 this.dotContentletEditorService.create({
                     data: { url },
                     events: {
@@ -338,7 +351,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                         }
                     }
                 });
+               
             });
+        }else {
+            this.displayFormSelector();
+        }
     }
 
     private searchContentlet($event: any): void {
