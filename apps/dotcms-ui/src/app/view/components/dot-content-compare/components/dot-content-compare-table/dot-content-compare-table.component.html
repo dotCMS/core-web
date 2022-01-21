@@ -11,20 +11,22 @@
                 <div class="dot-content-compare-table__controls">
                     <p-dropdown
                         [options]="data.versions"
+                        data-testid="versions-dropdown"
                         (onChange)="changeVersion.emit($event.value)"
                         appendTo="body"
                     >
                         <ng-template let-selected pTemplate="selectedItem">
-                            {{ selected.modDate }}
+                            {{ selected | dotTransformVersionLabel }}
                         </ng-template>
                         <ng-template let-item pTemplate="item">
-                            {{ item.modDate }}
+                            {{ item | dotTransformVersionLabel }}
                         </ng-template>
                     </p-dropdown>
                     <p-selectButton
+                        data-testid="show-diff"
                         [options]="displayOptions"
                         [(ngModel)]="showDiff"
-                        class="p-button-tabbed"
+                        class="p-button-compact"
                         (onChange)="changeDiff.emit($event.value)"
                     >
                     </p-selectButton>
@@ -117,10 +119,8 @@
                 <td
                     data-testId="table-field-compare"
                     [innerHTML]="
-                        (data.working[field.variable] ? data.working[field.variable] : '')
-                            | dotDiff
-                                : (data.compare[field.variable] ? data.compare[field.variable] : '')
-                                : showDiff
+                        data.working[field.variable]
+                            | dotDiff: data.compare[field.variable]:showDiff
                     "
                 ></td>
             </ng-container>
