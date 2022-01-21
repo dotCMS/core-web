@@ -9,6 +9,7 @@
                 ></p>
             </div>
             <p-checkbox
+                [binary]="true"
                 [label]="'starter.dont.show' | dm"
                 (onChange)="handleVisibility($event.checked)"
             ></p-checkbox>

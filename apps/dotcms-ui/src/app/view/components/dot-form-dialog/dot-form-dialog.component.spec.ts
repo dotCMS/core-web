@@ -96,8 +96,7 @@ describe('DotFormDialogComponent', () => {
         it('should have cancel button', () => {
             const cancelButton = de.query(By.css('[data-testId="dotFormDialogCancel"]'));
 
-            expect(cancelButton.attributes.class).toBe('p-button-secondary p-button p-component');
-            expect(cancelButton.attributes['ng-reflect-label']).toBe('Cancel');
+            expect(cancelButton.nativeNode.innerText).toBe('Cancel');
             expect(cancelButton.attributes.pButton).toBeDefined();
         });
 

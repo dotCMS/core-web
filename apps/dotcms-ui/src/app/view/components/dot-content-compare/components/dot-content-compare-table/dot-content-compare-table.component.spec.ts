@@ -275,7 +275,9 @@ describe('DotContentCompareTableComponent', () => {
     describe('header', () => {
         it('should show tittle correctly', () => {
             expect(
-                de.query(By.css('[data-testId="table-tittle"]')).nativeElement.innerText
+                de
+                    .query(By.css('[data-testId="table-tittle"]'))
+                    .nativeElement.innerText.replace(/^\s+|\s+$/gm, '')
             ).toEqual(dotContentCompareTableDataMock.working.identifier);
         });
         it('should show dropdown', () => {
