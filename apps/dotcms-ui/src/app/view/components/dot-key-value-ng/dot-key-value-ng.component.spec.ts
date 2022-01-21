@@ -153,13 +153,15 @@ describe('DotKeyValueComponent', () => {
         expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
     });
 
-    it('should load the component with hidden header', () => {
+    fit('should load the component with hidden header', () => {
         componentHost.value = [];
         componentHost.showHiddenField = true;
         fixtureHost.detectChanges();
 
-        const dataTable = de.query(By.css('p-table'));
-        expect(dataTable.nativeElement.innerText).toContain('Hidden');
+        const labels = de
+            .queryAll(By.css('[data-testId="header"] th'))
+            .map((el) => el.nativeElement.textContent.replace(/^\s+|\s+$/gm, ''));
+        expect(labels).toEqual(['Key', 'Value', 'Hidden', 'Actions']);
     });
 
     it('should save a hidden variable', () => {
