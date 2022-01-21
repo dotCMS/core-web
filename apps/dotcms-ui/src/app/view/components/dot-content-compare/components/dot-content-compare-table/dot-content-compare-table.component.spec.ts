@@ -304,8 +304,9 @@ describe('DotContentCompareTableComponent', () => {
             expect(dropdown.options).toEqual(dotContentCompareTableDataMock.versions);
         });
         it('should show selectButton', () => {
-            const select: SelectButton = de.query(By.css('[data-testId="show-diff"]'))
-                .componentInstance;
+            const select: SelectButton = de.query(
+                By.css('[data-testId="show-diff"]')
+            ).componentInstance;
             expect(select.options).toEqual([
                 { label: 'Diff', value: true },
                 { label: 'Plain', value: false }
@@ -313,7 +314,7 @@ describe('DotContentCompareTableComponent', () => {
         });
         it('should show versions selectButton with transformed label', () => {
             const dropdown = de.query(By.css('[data-testId="versions-dropdown"]')).nativeElement;
-            expect(dropdown.innerText).toEqual(
+            expect(dropdown.innerText.replace(/^\s+|\s+$/gm, '')).toEqual(
                 `${dotContentCompareTableDataMock.versions[0].modDate} by ${dotContentCompareTableDataMock.versions[0].modUserName}`
             );
         });

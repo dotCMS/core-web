@@ -80,8 +80,7 @@ describe('DotFormDialogComponent', () => {
         it('should have save button', () => {
             const saveButton = de.query(By.css('[data-testId="dotFormDialogSave"]'));
 
-            expect(saveButton.attributes.class).toBe('p-button p-component');
-            expect(saveButton.attributes['ng-reflect-label']).toBe('Save');
+            expect(saveButton.nativeNode.innerText).toBe('Save');
             expect(saveButton.attributes.pButton).toBeDefined();
         });
 

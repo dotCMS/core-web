@@ -84,11 +84,13 @@ describe('DotKeyValueComponent', () => {
         componentHost.value = [];
         fixtureHost.detectChanges();
 
-        const dataTable = de.query(By.css('p-table'));
-        expect(dataTable.nativeElement.innerText).toContain('Key');
-        expect(dataTable.nativeElement.innerText).toContain('Value');
-        expect(dataTable.nativeElement.innerText).toContain('Actions');
-        expect(dataTable.nativeElement.innerText).toContain('No Rows');
+        const labels = de
+            .queryAll(By.css('[data-testId="header"] th'))
+            .map((el) => el.nativeElement.textContent.replace(/^\s+|\s+$/gm, ''));
+        expect(labels).toEqual(['Key', 'Value', 'Actions']);
+
+        const noRows = de.query(By.css('[data-testId="no-rows"] td')).nativeElement.innerText;
+        expect(noRows).toBe('No Rows');
     });
 
     it('should load the component with data', () => {

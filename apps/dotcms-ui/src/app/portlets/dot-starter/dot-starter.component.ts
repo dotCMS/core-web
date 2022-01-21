@@ -60,7 +60,6 @@ export class DotStarterComponent implements OnInit {
      * @memberof DotStarterComponent
      */
     handleVisibility(hide: boolean): void {
-        console.log('hide', hide);
         hide
             ? this.dotAccountService.removeStarterPage().subscribe()
             : this.dotAccountService.addStarterPage().subscribe();
