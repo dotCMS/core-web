@@ -153,7 +153,7 @@ describe('DotKeyValueComponent', () => {
         expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
     });
 
-    fit('should load the component with hidden header', () => {
+    it('should load the component with hidden header', () => {
         componentHost.value = [];
         componentHost.showHiddenField = true;
         fixtureHost.detectChanges();
