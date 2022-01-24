@@ -7,8 +7,9 @@ module.exports = {
 
     stories: [
         ...rootMain.stories,
-        '../src/**/*.stories.mdx',
-        '../src/**/*.stories.@(js|jsx|ts|tsx)'
+        // '../src/**/*.stories.mdx',
+        // '../src/**/*.stories.@(js|jsx|ts|tsx)'
+        '../src/components/dot-card-contentlet/*.stories.@(js|jsx|ts|tsx)'
     ],
     addons: [...rootMain.addons],
     webpackFinal: async (config, { configType }) => {

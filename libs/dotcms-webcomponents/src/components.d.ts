@@ -156,7 +156,7 @@ export namespace Components {
          */
         "previewImageUrl": string;
         /**
-          * (optional) Determine if it is mandatory
+          * (optional) Determine if it is required
          */
         "required": boolean;
         /**
@@ -1500,7 +1500,7 @@ declare namespace LocalJSX {
          */
         "previewImageUrl"?: string;
         /**
-          * (optional) Determine if it is mandatory
+          * (optional) Determine if it is required
          */
         "required"?: boolean;
         /**

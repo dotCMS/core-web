@@ -1,23 +1,29 @@
-import { withKnobs, object } from '@storybook/addon-knobs';
 import { withActions } from '@storybook/addon-actions';
 
 import readme from './readme.md';
+
 export default {
     title: 'Components',
-    decorators: [withKnobs, withActions('valueChange')],
+    decorators: [withActions('valueChange')],
     parameters: {
         notes: readme
-    }
-};
-export const ContentletCard = () => {
-    const props = [
-        {
-            name: 'item',
-            content: object('Item', {
+    },
+    argTypes: {
+        item: {
+            type: 'object',
+            defaultValue: {
+
                 data: {
+                    baseType: 'HTMLPAGE',
                     title: 'Hola Mundo',
                     language: 'es-es',
-                    locked: 'true'
+                    locked: 'true',
+                    live: 'true',
+                    working: 'false',
+                    deleted: 'false',
+                    hasLiveVersion: 'true',
+                    hasTitleImage: 'false',
+                    contentTypeIcon: 'description'
                 },
                 actions: [
                     {
@@ -33,7 +39,16 @@ export const ContentletCard = () => {
                         }
                     }
                 ]
-            })
+            }
+        }
+    }
+};
+
+const Template = ({ item }) => {
+    const props = [
+        {
+            name: 'item',
+            content: item
         }
     ];
 
@@ -42,5 +57,14 @@ export const ContentletCard = () => {
         cardContentlet[name] = content;
     });
 
-    return cardContentlet;
+    const div = document.createElement('div');
+    div.style.display = 'flex';
+    div.style.width = '250px';
+    div.style.height = '300px';
+
+    div.appendChild(cardContentlet);
+
+    return div;
 };
+
+export const ContentletCard = Template.bind({})
