@@ -2,9 +2,10 @@ import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { DotDiffPipe } from '@dotcms/app/view/pipes';
 import { IframeComponent } from '@components/_common/iframe/iframe-component';
 import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.service';
-import { take } from 'rxjs/operators';
+import { catchError, take } from 'rxjs/operators';
 import { DotWhatChanged } from '@models/dot-what-changed/dot-what-changed.model';
 import { DotDOMHtmlUtilService } from '@portlets/dot-edit-page/content/services/html/dot-dom-html-util.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 export const SHOW_DIFF_STYLES =
     'del{text-decoration: line-through; background-color:#fdb8c0 } ins{ text-decoration: underline; background-color: #ddffdd}';
@@ -28,7 +29,8 @@ export class DotWhatsChangedComponent implements OnInit, OnChanges {
 
     constructor(
         private dotEditPageService: DotEditPageService,
-        private dotDOMHtmlUtilService: DotDOMHtmlUtilService
+        private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
+        private httpErrorManagerService: DotHttpErrorManagerService
     ) {}
 
     ngOnInit(): void {
@@ -39,8 +41,13 @@ export class DotWhatsChangedComponent implements OnInit, OnChanges {
         if (this.pageId && this.languageId) {
             this.dotEditPageService
                 .whatChange(this.pageId, this.languageId)
-                .pipe(take(1))
-                .subscribe((data) => {
+                .pipe(
+                    take(1),
+                    catchError((error) => {
+                        return this.httpErrorManagerService.handle(error);
+                    })
+                )
+                .subscribe((data: DotWhatChanged) => {
                     this.whatsChanged = data;
                     if (this.whatsChanged.diff) {
                         const doc = this.getEditPageDocument();

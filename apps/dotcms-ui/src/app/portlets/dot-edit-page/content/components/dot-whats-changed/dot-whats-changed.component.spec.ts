@@ -7,6 +7,7 @@ import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.servic
 import { of } from 'rxjs';
 import { DotDOMHtmlUtilService } from '@portlets/dot-edit-page/content/services/html/dot-dom-html-util.service';
 import { DotMessagePipeModule } from '@pipes/dot-message/dot-message-pipe.module';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 @Component({
     selector: 'dot-test',
@@ -53,6 +54,12 @@ describe('DotWhatsChangedComponent', () => {
                         createStyleElement: jasmine
                             .createSpy()
                             .and.returnValue(document.createElement('style'))
+                    }
+                },
+                {
+                    provide: DotHttpErrorManagerService,
+                    useValue: {
+                        handle: jasmine.createSpy()
                     }
                 }
             ],
