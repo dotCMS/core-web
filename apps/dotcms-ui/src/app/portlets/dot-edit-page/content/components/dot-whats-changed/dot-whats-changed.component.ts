@@ -6,6 +6,9 @@ import { take } from 'rxjs/operators';
 import { DotWhatChanged } from '@models/dot-what-changed/dot-what-changed.model';
 import { DotDOMHtmlUtilService } from '@portlets/dot-edit-page/content/services/html/dot-dom-html-util.service';
 
+export const SHOW_DIFF_STYLES =
+    'del{text-decoration: line-through; background-color:#fdb8c0 } ins{ text-decoration: underline; background-color: #ddffdd}';
+
 @Component({
     selector: 'dot-whats-changed',
     templateUrl: './dot-whats-changed.component.html',
@@ -29,32 +32,32 @@ export class DotWhatsChangedComponent implements OnInit, OnChanges {
     ) {}
 
     ngOnInit(): void {
-        this.styles = this.dotDOMHtmlUtilService.createStyleElement(
-            `del{text-decoration: line-through; background-color:#fdb8c0 } ins{ text-decoration: underline; background-color: #ddffdd}`
-        );
+        this.styles = this.dotDOMHtmlUtilService.createStyleElement(SHOW_DIFF_STYLES);
     }
 
     ngOnChanges(): void {
-        this.dotEditPageService
-            .whatChange(this.pageId, this.languageId)
-            .pipe(take(1))
-            .subscribe((data) => {
-                this.whatsChanged = data;
-                if (this.whatsChanged.diff) {
-                    const doc = this.getEditPageDocument();
-                    doc.open();
-                    doc.write(
-                        this.updateHtml(
-                            this.dotDiffPipe.transform(
-                                this.whatsChanged.renderLive,
-                                this.whatsChanged.renderWorking
+        if (this.pageId && this.languageId) {
+            this.dotEditPageService
+                .whatChange(this.pageId, this.languageId)
+                .pipe(take(1))
+                .subscribe((data) => {
+                    this.whatsChanged = data;
+                    if (this.whatsChanged.diff) {
+                        const doc = this.getEditPageDocument();
+                        doc.open();
+                        doc.write(
+                            this.updateHtml(
+                                this.dotDiffPipe.transform(
+                                    this.whatsChanged.renderLive,
+                                    this.whatsChanged.renderWorking
+                                )
                             )
-                        )
-                    );
-                    doc.head.appendChild(this.styles);
-                    doc.close();
-                }
-            });
+                        );
+                        doc.head.appendChild(this.styles);
+                        doc.close();
+                    }
+                });
+        }
     }
 
     private getEditPageDocument(): Document {
