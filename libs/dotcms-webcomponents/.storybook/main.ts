@@ -9,7 +9,7 @@ module.exports = {
         ...rootMain.stories,
         // '../src/**/*.stories.mdx',
         // '../src/**/*.stories.@(js|jsx|ts|tsx)'
-        '../src/components/dot-card-contentlet/*.stories.@(js|jsx|ts|tsx)'
+        '../src/collections/dot-card-view/*.stories.@(js|jsx|ts|tsx)'
     ],
     addons: [...rootMain.addons],
     webpackFinal: async (config, { configType }) => {
