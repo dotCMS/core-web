@@ -25,7 +25,7 @@ class TestDotIframeComponent {
     @ViewChild('iframeElement') iframeElement: ElementRef;
 }
 
-fdescribe('DotWhatsChangedComponent', () => {
+describe('DotWhatsChangedComponent', () => {
     let component: DotWhatsChangedComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
