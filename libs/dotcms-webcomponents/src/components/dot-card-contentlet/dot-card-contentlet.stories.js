@@ -1,61 +1,62 @@
-import { withActions } from '@storybook/addon-actions';
-
 import readme from './readme.md';
 
 export default {
     title: 'Components',
-    decorators: [withActions('valueChange')],
     parameters: {
-        notes: readme
+        docs: {
+            title: 'Card Contentlet',
+            description: {
+                component:
+                    'Display the contentlet information in a card.',
+            },
+            page: readme
+        },
+        layout: 'centered'
     },
     argTypes: {
-        item: {
-            type: 'object',
-            defaultValue: {
-
-                data: {
-                    baseType: 'HTMLPAGE',
-                    title: 'Hola Mundo',
-                    language: 'es-es',
-                    locked: 'true',
-                    live: 'true',
-                    working: 'false',
-                    deleted: 'false',
-                    hasLiveVersion: 'true',
-                    hasTitleImage: 'false',
-                    contentTypeIcon: 'description'
-                },
-                actions: [
-                    {
-                        label: 'Action 1',
-                        action: (e) => {
-                            console.log(e);
-                        }
-                    },
-                    {
-                        label: 'Action 2',
-                        action: (e) => {
-                            console.log(e);
-                        }
-                    }
-                ]
+        data: {
+            table: {
+                expanded: true
+            },
+        },
+        actions: {
+            table: {
+                disable: true
             }
-        }
+        },
+    },
+    args: {
+        data: {
+            title: 'Hola Mundo',
+            language: 'es-es',
+            locked: true,
+            live: true,
+            working: false,
+            deleted: false,
+            hasLiveVersion: true,
+            hasTitleImage: false,
+            contentTypeIcon: 'description'
+        },
+        actions: [
+            {
+                label: 'Action 1',
+                action: (e) => {
+                    console.log(e);
+                }
+            },
+            {
+                label: 'Action 2',
+                action: (e) => {
+                    console.log(e);
+                }
+            }
+        ]
     }
 };
 
-const Template = ({ item }) => {
-    const props = [
-        {
-            name: 'item',
-            content: item
-        }
-    ];
-
+const Template = (args) => {
     const cardContentlet = document.createElement('dot-card-contentlet');
-    props.forEach(({ name, content }) => {
-        cardContentlet[name] = content;
-    });
+    cardContentlet.item = args
 
     const div = document.createElement('div');
     div.style.display = 'flex';
