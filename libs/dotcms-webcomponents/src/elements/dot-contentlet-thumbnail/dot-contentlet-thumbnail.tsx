@@ -30,9 +30,8 @@ export class DotContentletThumbnail {
     }
 
     render() {
-        console.log(this.contentlet);
-        console.log(this.contentlet?.baseType !== 'FILEASSET' ? this.contentlet?.contentTypeIcon : this.contentlet?.__icon__)
         const image = this.contentlet ? `url(${this.getImageURL()})` : '';
+
         return (
             <Host>
                 {this.renderImage ? (

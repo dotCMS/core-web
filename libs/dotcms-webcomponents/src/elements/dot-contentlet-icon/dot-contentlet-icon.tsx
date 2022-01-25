@@ -137,8 +137,6 @@ export class DotContentletIcon {
 
     render() {
         const { icon, color } = this.ext ? this.getIconName() : { icon: this.icon, color: '' };
-        console.log('icon', this.ext, this.icon)
-
 
         return (
             <Host>
