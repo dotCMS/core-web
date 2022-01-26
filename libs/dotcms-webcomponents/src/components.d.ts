@@ -876,7 +876,7 @@ export namespace Components {
          */
         "hint": string;
         /**
-          * (optional) Text to be rendered next to <textarea> element
+          * (optional) Text to be rendered next to textarea element
          */
         "label": string;
         /**
@@ -905,7 +905,7 @@ export namespace Components {
          */
         "validationMessage": string;
         /**
-          * Value specifies the value of the <textarea> element
+          * Value specifies the value of the textarea element
          */
         "value": string;
     }
@@ -2205,7 +2205,7 @@ declare namespace LocalJSX {
          */
         "hint"?: string;
         /**
-          * (optional) Text to be rendered next to <textarea> element
+          * (optional) Text to be rendered next to textarea element
          */
         "label"?: string;
         /**
@@ -2231,7 +2231,7 @@ declare namespace LocalJSX {
          */
         "validationMessage"?: string;
         /**
-          * Value specifies the value of the <textarea> element
+          * Value specifies the value of the textarea element
          */
         "value"?: string;
     }
