@@ -577,23 +577,23 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * (optional) Label for the add button in the <key-value-form>
+          * (optional) Label for the add button in the key-value-form
          */
         "formAddButtonLabel": string;
         /**
-          * (optional) The string to use in the key label in the <key-value-form>
+          * (optional) The string to use in the key label in the key-value-form
          */
         "formKeyLabel": string;
         /**
-          * (optional) Placeholder for the key input text in the <key-value-form>
+          * (optional) Placeholder for the key input text in the key-value-form
          */
         "formKeyPlaceholder": string;
         /**
-          * (optional) The string to use in the value label in the <key-value-form>
+          * (optional) The string to use in the value label in the key-value-form
          */
         "formValueLabel": string;
         /**
-          * (optional) Placeholder for the value input text in the <key-value-form>
+          * (optional) Placeholder for the value input text in the key-value-form
          */
         "formValuePlaceholder": string;
         /**
@@ -1916,23 +1916,23 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * (optional) Label for the add button in the <key-value-form>
+          * (optional) Label for the add button in the key-value-form
          */
         "formAddButtonLabel"?: string;
         /**
-          * (optional) The string to use in the key label in the <key-value-form>
+          * (optional) The string to use in the key label in the key-value-form
          */
         "formKeyLabel"?: string;
         /**
-          * (optional) Placeholder for the key input text in the <key-value-form>
+          * (optional) Placeholder for the key input text in the key-value-form
          */
         "formKeyPlaceholder"?: string;
         /**
-          * (optional) The string to use in the value label in the <key-value-form>
+          * (optional) The string to use in the value label in the key-value-form
          */
         "formValueLabel"?: string;
         /**
-          * (optional) Placeholder for the value input text in the <key-value-form>
+          * (optional) Placeholder for the value input text in the key-value-form
          */
         "formValuePlaceholder"?: string;
         /**
