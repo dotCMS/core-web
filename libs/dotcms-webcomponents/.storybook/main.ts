@@ -9,7 +9,7 @@ module.exports = {
         ...rootMain.stories,
         // '../src/**/*.stories.mdx',
         // '../src/**/*.stories.@(js|jsx|ts|tsx)'
-        '../src/components/contenttypes-fields/dot-radio/*.stories.@(js|jsx|ts|tsx)'
+        '../src/components/contenttypes-fields/dot-select/*.stories.@(js|jsx|ts|tsx)'
     ],
     addons: [...rootMain.addons],
     webpackFinal: async (config, { configType }) => {
