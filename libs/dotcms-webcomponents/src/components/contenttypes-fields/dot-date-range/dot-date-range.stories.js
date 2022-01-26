@@ -19,7 +19,7 @@ export default {
     }
 };
 
-export const Template = (args) => {
+const Template = (args) => {
     const daterange = document.createElement('dot-date-range');
 
     for (const item in args) {
