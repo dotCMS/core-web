@@ -45,7 +45,7 @@ export class DotPaletteComponent implements OnInit {
     constructor(private store: DotPaletteStore) {}
 
     ngOnInit(): void {
-        this.store.languageId(this.languageId);
+        this.store.setLanguageId(this.languageId);
     }
 
     /**
@@ -57,8 +57,8 @@ export class DotPaletteComponent implements OnInit {
     switchView(variableName?: string): void {
         const viewContentlet = variableName ? 'contentlet:in' : 'contentlet:out';
 
-        this.store.viewContentlet(viewContentlet);
-        this.store.filter('');
+        this.store.setViewContentlet(viewContentlet);
+        this.store.setFilter('');
         this.store.loadContentlets(variableName);
     }
 

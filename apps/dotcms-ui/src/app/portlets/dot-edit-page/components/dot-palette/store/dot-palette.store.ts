@@ -67,8 +67,8 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
                 .subscribe((data: DotCMSContentlet[] | DotCMSContentType[]) => {
                     data.forEach((item) => (item.contentType = item.variable = 'FORM'));
                     this.setLoaded();
-                    this.contentlets(data);
-                    this.totalRecords(this.paginationService.totalRecords);
+                    this.setContentlets(data);
+                    this.setTotalRecords(this.paginationService.totalRecords);
                 });
         } else {
             let langId: string;
@@ -87,8 +87,8 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
                 .pipe(take(1))
                 .subscribe((response: ESContent) => {
                     this.setLoaded();
-                    this.totalRecords(response.resultsSize);
-                    this.contentlets(response.jsonObjectView.contentlets);
+                    this.setTotalRecords(response.resultsSize);
+                    this.setContentlets(response.jsonObjectView.contentlets);
                 });
         }
     }
@@ -144,31 +144,31 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
     );
 
     // UPDATERS
-    private readonly contentlets = this.updater(
+    private readonly setContentlets = this.updater(
         (state: DotPaletteState, data: DotCMSContentlet[] | DotCMSContentType[]) => {
             return { ...state, contentlets: data };
         }
     );
 
-    private readonly contentTypes = this.updater(
+    private readonly setContentTypes = this.updater(
         (state: DotPaletteState, data: DotCMSContentType[]) => {
             return { ...state, contentTypes: data };
         }
     );
 
-    private readonly totalRecords = this.updater((state: DotPaletteState, data: number) => {
+    private readonly setTotalRecords = this.updater((state: DotPaletteState, data: number) => {
         return { ...state, totalRecords: data };
     });
 
-    readonly filter = this.updater((state: DotPaletteState, data: string) => {
+    readonly setFilter = this.updater((state: DotPaletteState, data: string) => {
         return { ...state, filter: data };
     });
 
-    readonly languageId = this.updater((state: DotPaletteState, data: string) => {
+    readonly setLanguageId = this.updater((state: DotPaletteState, data: string) => {
         return { ...state, languageId: data };
     });
 
-    readonly viewContentlet = this.updater((state: DotPaletteState, data: string) => {
+    readonly setViewContentlet = this.updater((state: DotPaletteState, data: string) => {
         return { ...state, viewContentlet: data };
     });
 
@@ -190,7 +190,7 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
     readonly loadContentTypes = this.effect((data$: Observable<DotCMSContentType[]>) => {
         return data$.pipe(
             map((data) => {
-                this.contentTypes(data);
+                this.setContentTypes(data);
             })
         );
     });
@@ -198,7 +198,7 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
     readonly filterContentlets = this.effect((filterValue$: Observable<string>) => {
         return filterValue$.pipe(
             map((value: string) => {
-                this.filter(value);
+                this.setFilter(value);
 
                 if (this.isFormContentType) {
                     this.paginationService.searchParam = 'variable';

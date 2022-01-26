@@ -84,9 +84,9 @@ const storeMock = jasmine.createSpyObj(
     'DotPaletteStore',
     [
         'getContentletsData',
-        'filter',
-        'languageId',
-        'viewContentlet',
+        'setFilter',
+        'setLanguageId',
+        'setViewContentlet',
         'setLoading',
         'setLoaded',
         'loadContentTypes',
@@ -153,8 +153,8 @@ describe('DotPaletteComponent', () => {
 
         const wrapper = fixture.debugElement.query(By.css('[data-testid="wrapper"]'));
         expect(wrapper.nativeElement.style.transform).toEqual('translateX(0%)');
-        expect(store.viewContentlet).toHaveBeenCalledWith('contentlet:in');
-        expect(store.filter).toHaveBeenCalledWith('');
+        expect(store.setViewContentlet).toHaveBeenCalledWith('contentlet:in');
+        expect(store.setFilter).toHaveBeenCalledWith('');
         expect(store.loadContentlets).toHaveBeenCalledWith('Blog');
         expect(contentContentletsComp.componentInstance.totalRecords).toBe(20);
         expect(contentContentletsComp.componentInstance.items).toEqual([contentletProductDataMock]);
@@ -169,7 +169,7 @@ describe('DotPaletteComponent', () => {
         fixture.detectChanges();
         await fixture.whenStable();
 
-        expect(store.viewContentlet).toHaveBeenCalledWith('contentlet:out');
+        expect(store.setViewContentlet).toHaveBeenCalledWith('contentlet:out');
     });
 
     it('should set value on store on filtering event', async () => {

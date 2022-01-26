@@ -56,21 +56,21 @@ describe('DotPaletteStore', () => {
     });
 
     it('should update filter', () => {
-        dotPaletteStore.filter('test');
+        dotPaletteStore.setFilter('test');
         dotPaletteStore.state$.subscribe((data) => {
             expect(data.filter).toEqual('test');
         });
     });
 
     it('should update languageId', () => {
-        dotPaletteStore.languageId('1');
+        dotPaletteStore.setLanguageId('1');
         dotPaletteStore.state$.subscribe((data) => {
             expect(data.languageId).toEqual('1');
         });
     });
 
     it('should update viewContentlet', () => {
-        dotPaletteStore.viewContentlet('in');
+        dotPaletteStore.setViewContentlet('in');
         dotPaletteStore.state$.subscribe((data) => {
             expect(data.viewContentlet).toEqual('in');
         });
