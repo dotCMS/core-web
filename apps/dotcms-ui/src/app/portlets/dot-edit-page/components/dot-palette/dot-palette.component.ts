@@ -37,7 +37,6 @@ export class DotPaletteComponent implements OnInit {
         }
     }
     @Input() languageId: string;
-    contentTypeVariable = '';
     vm$: Observable<any> = this.store.vm$;
 
     @ViewChild('contentlets') contentlets: DotPaletteContentletsComponent;
@@ -50,13 +49,12 @@ export class DotPaletteComponent implements OnInit {
     }
 
     /**
-     * Sets value on contentTypeVariable variable to show/hide components on the UI
+     * Sets value on store variables to show/hide components on the UI
      *
      * @param string [variableName]
      * @memberof DotPaletteContentletsComponent
      */
     switchView(variableName?: string): void {
-        this.contentTypeVariable = variableName ? variableName : '';
         const viewContentlet = variableName ? 'contentlet:in' : 'contentlet:out';
 
         this.store.viewContentlet(viewContentlet);

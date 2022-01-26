@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DotContentletEditorService } from '@dotcms/app/view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
-import { DotESContentService } from '@services/dot-es-content/dot-es-content.service';
-import { PaginatorService } from '@services/paginator';
 import { LazyLoadEvent } from 'primeng/api';
 import { DotPaletteInputFilterComponent } from '../dot-palette-input-filter/dot-palette-input-filter.component';
 
@@ -24,11 +22,7 @@ export class DotPaletteContentletsComponent {
 
     @ViewChild('inputFilter') inputFilter: DotPaletteInputFilterComponent;
 
-    constructor(
-        public paginatorESService: DotESContentService,
-        public paginationService: PaginatorService,
-        private dotContentletEditorService: DotContentletEditorService
-    ) {}
+    constructor(private dotContentletEditorService: DotContentletEditorService) {}
 
     /**
      * Loads data with a specific page

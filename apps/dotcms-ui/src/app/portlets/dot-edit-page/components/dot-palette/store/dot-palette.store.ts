@@ -204,7 +204,6 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
                     this.paginationService.searchParam = 'variable';
                     this.paginationService.filter = value;
                 }
-
                 this.getContentletsData({ first: 0 });
             })
         );
@@ -215,7 +214,6 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
             map((contentTypeVariable: string) => {
                 this.contentTypeVarName = contentTypeVariable;
                 this.isFormContentType = contentTypeVariable === 'forms';
-
                 if (this.isFormContentType) {
                     this.paginationService.url = `v1/contenttype`;
                     this.paginationService.paginationPerPage = this.itemsPerPage;
