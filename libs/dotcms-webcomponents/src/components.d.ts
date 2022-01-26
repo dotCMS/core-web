@@ -563,11 +563,11 @@ export namespace Components {
          */
         "step": string;
         /**
-          * type specifies the type of <input> element to display
+          * type specifies the type of input element to display
          */
         "type": string;
         /**
-          * Value specifies the value of the <input> element
+          * Value specifies the value of the input element
          */
         "value": string;
     }
@@ -1902,11 +1902,11 @@ declare namespace LocalJSX {
          */
         "step"?: string;
         /**
-          * type specifies the type of <input> element to display
+          * type specifies the type of input element to display
          */
         "type"?: string;
         /**
-          * Value specifies the value of the <input> element
+          * Value specifies the value of the input element
          */
         "value"?: string;
     }
