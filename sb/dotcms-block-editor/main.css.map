@@ -1,0 +1,1 @@
+{"version":3,"file":"main.css","mappings":"AAAA;EACI;EACA;AACJ,C","sources":["./apps/dotcms-block-editor/src/styles.scss"],"sourcesContent":["html, body {\n    font-family: Roboto, sans-serif;\n    font-size: 14px;\n}\n"],"names":[],"sourceRoot":"webpack:///"}
