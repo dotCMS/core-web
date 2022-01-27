@@ -3,7 +3,9 @@ import readme from './readme.md';
 export default {
     title: 'Components/Content Types Fields',
     parameters: {
-        page: readme
+        docs: {
+            page: readme
+        }
     },
     args: {
         content: 'This is the error message'

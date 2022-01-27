@@ -4,11 +4,6 @@ export default {
     title: 'Components',
     parameters: {
         docs: {
-            title: 'Context Menu',
-            description: {
-                component:
-                    'Context menu component that can be used to show a list of actions to the user.',
-            },
             page: readme
         },
     },

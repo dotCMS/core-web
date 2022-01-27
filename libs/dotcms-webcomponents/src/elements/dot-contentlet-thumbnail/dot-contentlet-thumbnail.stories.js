@@ -4,11 +4,6 @@ export default {
     title: 'Elements',
     parameters: {
         docs: {
-            title: 'Contentlet Thumbnail',
-            description: {
-                component:
-                    'A component to display the thumbnail of a contentlet'
-            },
             page: readme
         },
     },

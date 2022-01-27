@@ -4,11 +4,6 @@ export default {
     title: 'Components',
     parameters: {
         docs: {
-            title: 'Card Contentlet',
-            description: {
-                component:
-                    'Display the contentlet information in a card.',
-            },
             page: readme
         },
         layout: 'centered'

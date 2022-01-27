@@ -4,11 +4,6 @@ export default {
     title: 'Components/Content Types Fields',
     parameters: {
         docs: {
-            title: 'Time Field',
-            description: {
-                component:
-                    'Time input with a label and a hint. You can also add a required field and a validation message.'
-            },
             page: readme
         },
     },

@@ -431,7 +431,9 @@ export default {
         layout: dataFields
     },
     parameters: {
-        page: readme
+        docs: {
+            page: readme
+        }
     }
 };
 

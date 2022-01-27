@@ -4,11 +4,6 @@ export default {
     title: 'Elements',
     parameters: {
         docs: {
-            title: 'Card',
-            description: {
-                component:
-                    'A card component.'
-            },
             page: readme
         },
     },

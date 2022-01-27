@@ -4,11 +4,6 @@ export default {
     title: 'Elements',
     parameters: {
         docs: {
-            title: 'Contentlet Lock Icon',
-            description: {
-                component:
-                    'Lock icon'
-            },
             page: readme
         },
     },

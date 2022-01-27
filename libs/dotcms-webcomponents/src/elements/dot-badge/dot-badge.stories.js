@@ -4,11 +4,6 @@ export default {
     title: 'Elements',
     parameters: {
         docs: {
-            title: 'Badge',
-            description: {
-                component:
-                    'Display a badge with a number.'
-            },
             page: readme
         },
     },

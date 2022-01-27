@@ -2,14 +2,11 @@ import readme from './readme.md';
 
 export default {
     title: 'Components / State Icon',
-    docs: {
-        title: 'State Icon',
-        description: {
-            component:
-                'Display the state of a component'
-        },
-        page: readme
-    }
+    parameters: {
+        docs: {
+            page: readme
+        }
+    },
 };
 
 export const Draft = () => {

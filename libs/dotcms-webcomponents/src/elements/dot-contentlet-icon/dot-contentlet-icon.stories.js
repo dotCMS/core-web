@@ -4,11 +4,6 @@ export default {
     title: 'Elements',
     parameters: {
         docs: {
-            title: 'Contentlet Icon',
-            description: {
-                component:
-                    'Icon for the contentlets'
-            },
             page: readme
         },
     },

@@ -1356,11 +1356,6 @@ export default {
     title: 'Collections',
     parameters: {
         docs: {
-            title: 'Card View',
-            description: {
-                component:
-                    'Display a collection of contentlet cards.',
-            },
             page: readme
         },
     },

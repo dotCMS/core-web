@@ -4,11 +4,6 @@ export default {
     title: 'Components/Content Types Fields',
     parameters: {
         docs: {
-            title: 'Textfield',
-            description: {
-                component:
-                    'Textfield with a label and a hint. You can also add a required field and a validation message.'
-            },
             page: readme
         },
     },

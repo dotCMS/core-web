@@ -4,11 +4,6 @@ export default {
     title: 'Content Types Fields',
     parameters: {
         docs: {
-            title: 'Asset drop zone',
-            description: {
-                component:
-                    'Display a zone to drop assets. It will be used to upload files to dotcms instance.'
-            },
             page: readme
         },
     },

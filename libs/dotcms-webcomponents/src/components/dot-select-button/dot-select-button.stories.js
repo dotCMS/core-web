@@ -4,11 +4,6 @@ export default {
     title: 'Components',
     parameters: {
         docs: {
-            title: 'Select Button',
-            description: {
-                component:
-                    'A select button you can pass different options to the component.'
-            },
             page: readme
         },
     },
