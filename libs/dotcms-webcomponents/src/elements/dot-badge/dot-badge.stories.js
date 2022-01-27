@@ -1,39 +1,33 @@
-import { withKnobs, text } from '@storybook/addon-knobs';
 import readme from './readme.md';
 
 export default {
     title: 'Elements',
-    decorators: [withKnobs],
     parameters: {
-        notes: readme
+        docs: {
+            title: 'Badge',
+            description: {
+                component:
+                    'Displat a badge with a number.'
+            },
+            page: readme
+        },
+    },
+    args: {
+        innerText: '99',
+        color: '#000000',
+        size: '16px',
+        bgColor: 'lightblue'
     }
 };
 
-export const Badge = () => {
-    const props = [
-        {
-            name: 'innerText',
-            content: text('Text', 'Hello World')
-        },
-        {
-            name: 'color',
-            content: text('Color', '#000')
-        },
-        {
-            name: 'size',
-            content: text('Font Size', '16px')
-        },
-        {
-            name: 'bgColor',
-            content: text('Background Color', 'lightblue')
-        }
-    ];
-
+const Template = (args) => {
     const contentletLockIcon = document.createElement('dot-badge');
 
-    props.forEach(({ name, content }) => {
-        contentletLockIcon[name] = content;
-    });
+    for (const item in args) {
+        contentletLockIcon[item] = args[item];
+    }
 
     return contentletLockIcon;
 };
+
+export const Badge = Template.bind({});
