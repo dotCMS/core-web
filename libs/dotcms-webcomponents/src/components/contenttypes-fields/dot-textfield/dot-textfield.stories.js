@@ -27,7 +27,7 @@ export default {
     }
 };
 
-export const Template = (args) => {
+const Template = (args) => {
     const textfield = document.createElement('dot-textfield');
 
     for (const item in args) {
