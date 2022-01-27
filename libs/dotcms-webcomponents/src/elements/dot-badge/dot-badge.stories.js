@@ -7,7 +7,7 @@ export default {
             title: 'Badge',
             description: {
                 component:
-                    'Displat a badge with a number.'
+                    'Display a badge with a number.'
             },
             page: readme
         },
