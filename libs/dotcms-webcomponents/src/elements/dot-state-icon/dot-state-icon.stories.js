@@ -1,11 +1,14 @@
-import { withKnobs, object } from '@storybook/addon-knobs';
 import readme from './readme.md';
 
 export default {
-    title: 'Components/ State Icon',
-    decorators: [withKnobs],
-    parameters: {
-        notes: readme
+    title: 'Components / State Icon',
+    docs: {
+        title: 'State Icon',
+        description: {
+            component:
+                'Display the state of a component'
+        },
+        page: readme
     }
 };
 
@@ -13,11 +16,11 @@ export const Draft = () => {
     const props = [
         {
             name: 'state',
-            content: object('state', {
+            content: {
                 live: 'false',
                 working: 'true',
                 deleted: 'false',
-            })
+            }
         }
     ];
 
@@ -34,9 +37,9 @@ export const Archived = () => {
     const props = [
         {
             name: 'state',
-            content: object('state', {
+            content: {
                 deleted: 'true'
-            })
+            }
         }
     ];
 
@@ -53,12 +56,12 @@ export const Drafted = () => {
     const props = [
         {
             name: 'state',
-            content: object('state', {
+            content: {
                 hasLiveVersion: true,
                 live: false,
                 working: true,
                 deleted: false
-            })
+            }
         }
     ];
 
@@ -75,12 +78,12 @@ export const Published = () => {
     const props = [
         {
             name: 'state',
-            content: object('state', {
+            content: {
                 live: 'true',
                 hasLiveVersion: 'true',
                 working: 'true',
                 deleted: 'false'
-            })
+            }
         }
     ];
 
