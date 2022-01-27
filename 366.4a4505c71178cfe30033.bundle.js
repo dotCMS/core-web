@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[366],{1503:function(module,exports,__webpack_require__){"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=function formatRelative(token,_date,_baseDate,_options){return formatRelativeLocale[token]};var formatRelativeLocale={lastWeek:"'sonuncu' eeee p -'də'",yesterday:"'dünən' p -'də'",today:"'bugün' p -'də'",tomorrow:"'sabah' p -'də'",nextWeek:"eeee p -'də'",other:"P"};module.exports=exports.default}}]);
-//# sourceMappingURL=366.4a4505c71178cfe30033.bundle.js.map

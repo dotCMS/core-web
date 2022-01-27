@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkdotcms_ui=self.webpackChunkdotcms_ui||[]).push([[78142],{"./node_modules/date-fns/locale/te/_lib/formatRelative/index.js":(module,exports)=>{Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=function formatRelative(token,_date,_baseDate,_options){return formatRelativeLocale[token]};var formatRelativeLocale={lastWeek:"'గత' eeee p",yesterday:"'నిన్న' p",today:"'ఈ రోజు' p",tomorrow:"'రేపు' p",nextWeek:"'తదుపరి' eeee p",other:"P"};module.exports=exports.default}}]);
+//# sourceMappingURL=78142.7fe27063.iframe.bundle.js.map

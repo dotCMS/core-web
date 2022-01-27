@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkdotcms_ui=self.webpackChunkdotcms_ui||[]).push([[20378],{"./node_modules/date-fns/locale/lt/_lib/formatRelative/index.js":(module,exports)=>{Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=function formatRelative(token,_date,_baseDate,_options){return formatRelativeLocale[token]};var formatRelativeLocale={lastWeek:"'Praėjusį' eeee p",yesterday:"'Vakar' p",today:"'Šiandien' p",tomorrow:"'Rytoj' p",nextWeek:"eeee p",other:"P"};module.exports=exports.default}}]);
+//# sourceMappingURL=20378.7dc0660f.iframe.bundle.js.map
