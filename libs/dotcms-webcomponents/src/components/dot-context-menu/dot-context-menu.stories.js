@@ -1,45 +1,44 @@
-import { withKnobs, array } from '@storybook/addon-knobs';
-
 import readme from './readme.md';
+
 export default {
     title: 'Components',
-    decorators: [withKnobs],
     parameters: {
         docs: {
             title: 'Context Menu',
             description: {
                 component:
-                    'Time input with a label and a hint. You can also add a required field and a validation message.'
+                    'Context menu component that can be used to show a list of actions to the user.',
             },
             page: readme
         },
     },
-};
-export const ContextMenu = () => {
-    const props = [
-        {
-            name: 'options',
-            content: array('Options', [
-                {
-                    label: 'Publish',
-                    action: (e) => {
-                        console.log(e);
-                    }
-                },
-                {
-                    label: 'Archived',
-                    action: (e) => {
-                        console.log(e);
-                    }
+    args: {
+        options: [
+            {
+                label: 'Publish',
+                action: (e) => {
+                    console.log(e);
                 }
-            ])
-        }
-    ];
+            },
+            {
+                label: 'Archived',
+                action: (e) => {
+                    console.log(e);
+                }
+            }
+        ]
+    }
+};
 
+const Template = (args) => {
     const menu = document.createElement('dot-context-menu');
-    props.forEach(({ name, content }) => {
-        menu[name] = content;
-    });
+
+    for (const item in args) {
+        menu[item] = args[item];
+    }
 
     return menu;
-};
+}
+
+
+export const ContextMenu = Template.bind({});

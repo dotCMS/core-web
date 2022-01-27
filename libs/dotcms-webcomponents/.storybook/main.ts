@@ -9,7 +9,7 @@ module.exports = {
         ...rootMain.stories,
         // '../src/**/*.stories.mdx',
         // '../src/**/*.stories.@(js|jsx|ts|tsx)'
-        '../src/components/dot-context-menu.stories/*.stories.@(js|jsx|ts|tsx)'
+        '../src/components/dot-context-menu/*.stories.@(js|jsx|ts|tsx)'
     ],
     addons: [...rootMain.addons],
     webpackFinal: async (config, { configType }) => {
