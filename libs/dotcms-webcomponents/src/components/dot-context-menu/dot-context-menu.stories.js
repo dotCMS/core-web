@@ -5,8 +5,15 @@ export default {
     title: 'Components',
     decorators: [withKnobs],
     parameters: {
-        notes: readme
-    }
+        docs: {
+            title: 'Context Menu',
+            description: {
+                component:
+                    'Time input with a label and a hint. You can also add a required field and a validation message.'
+            },
+            page: readme
+        },
+    },
 };
 export const ContextMenu = () => {
     const props = [
