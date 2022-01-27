@@ -947,7 +947,7 @@ export namespace Components {
          */
         "reset": () => Promise<void>;
         /**
-          * type specifies the type of <input> element to display
+          * type specifies the type of input element to display
          */
         "type": string;
         /**
@@ -955,7 +955,7 @@ export namespace Components {
          */
         "validationMessage": string;
         /**
-          * Value specifies the value of the <input> element
+          * Value specifies the value of the input element
          */
         "value": string;
     }
@@ -2271,7 +2271,7 @@ declare namespace LocalJSX {
          */
         "requiredMessage"?: string;
         /**
-          * type specifies the type of <input> element to display
+          * type specifies the type of input element to display
          */
         "type"?: string;
         /**
@@ -2279,7 +2279,7 @@ declare namespace LocalJSX {
          */
         "validationMessage"?: string;
         /**
-          * Value specifies the value of the <input> element
+          * Value specifies the value of the input element
          */
         "value"?: string;
     }
