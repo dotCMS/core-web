@@ -9,7 +9,7 @@ module.exports = {
         ...rootMain.stories,
         // '../src/**/*.stories.mdx',
         // '../src/**/*.stories.@(js|jsx|ts|tsx)'
-        '../src/components/dot-data-view-button/*.stories.@(js|jsx|ts|tsx)'
+        '../src/components/dot-select-button/*.stories.@(js|jsx|ts|tsx)'
     ],
     addons: [...rootMain.addons],
     webpackFinal: async (config, { configType }) => {
