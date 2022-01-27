@@ -3,20 +3,15 @@ const rootMain = require('../../../.storybook/main');
 module.exports = {
     ...rootMain,
 
-    refs: (config, { configType }) => {
-        if (configType === 'PRODUCTION') {
-            return {
-                "web-components": {
-                    title: 'Web Components',
-                    url: 'https://dotcms.github.io/core-web/sb/dotcms-webcomponents',
-                },
-                "block-editor": {
-                    title: 'Block Editor',
-                    url: 'https://dotcms.github.io/core-web/sb/dotcms-block-editor',
-                }
-            };
+    refs: {
+        "web-components": {
+            title: 'Web Components',
+            url: 'https://dotcms.github.io/core-web/sb/dotcms-webcomponents',
+        },
+        "block-editor": {
+            title: 'Block Editor',
+            url: 'https://dotcms.github.io/core-web/sb/dotcms-block-editor',
         }
-        return {};
     },
 
     core: { ...rootMain.core, builder: 'webpack5' },
