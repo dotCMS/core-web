@@ -82,6 +82,19 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
         });
     }
 
+    /**
+     * Sets value to show/hide components, clears filter value and starts loding data
+     *
+     * @param string [variableName]
+     * @memberof DotPaletteContentletsComponent
+     */
+    switchView(variableName?: string): void {
+        const viewContentlet = variableName ? 'contentlet:in' : 'contentlet:out';
+        this.setViewContentlet(viewContentlet);
+        this.setFilter('');
+        this.loadContentlets(variableName);
+    }
+
     private isFormContentType: boolean;
     private itemsPerPage = 25;
     private contentTypeVarName: string;
@@ -168,17 +181,6 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
                 }
 
                 this.getContentletsData();
-            })
-        );
-    });
-
-    readonly switchView = this.effect((variableName$: Observable<string>) => {
-        return variableName$.pipe(
-            map((variableName: string) => {
-                const viewContentlet = variableName ? 'contentlet:in' : 'contentlet:out';
-                this.setViewContentlet(viewContentlet);
-                this.setFilter('');
-                this.loadContentlets(variableName);
             })
         );
     });
