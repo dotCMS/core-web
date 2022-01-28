@@ -79,14 +79,14 @@ describe('DotPaletteStore', () => {
     it('should update setLoading', () => {
         dotPaletteStore.setLoading();
         dotPaletteStore.state$.subscribe((data) => {
-            expect(data.callState).toEqual(LoadingState.LOADING);
+            expect(data.loading).toEqual(true);
         });
     });
 
     it('should update setLoaded', () => {
         dotPaletteStore.setLoaded();
         dotPaletteStore.state$.subscribe((data) => {
-            expect(data.callState).toEqual(LoadingState.LOADED);
+            expect(data.loading).toEqual(false);
         });
     });
 

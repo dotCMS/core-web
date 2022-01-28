@@ -15,7 +15,7 @@ export interface DotPaletteState {
     languageId: string;
     totalRecords: number;
     viewContentlet: string;
-    callState: CallState;
+    loading: boolean;
 }
 
 export const enum LoadingState {
@@ -23,8 +23,6 @@ export const enum LoadingState {
     LOADING = 'LOADING',
     LOADED = 'LOADED'
 }
-
-export type CallState = LoadingState;
 
 @Injectable()
 export class DotPaletteStore extends ComponentStore<DotPaletteState> {
@@ -39,7 +37,7 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
             languageId: '1',
             totalRecords: 0,
             viewContentlet: 'contentlet:out',
-            callState: LoadingState.INIT
+            loading: false
         });
     }
 
@@ -50,98 +48,45 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
      * @memberof DotPaletteStore
      */
     getContentletsData(event?: LazyLoadEvent): void {
-        let filter: string;
-
         this.setLoading();
 
-        this.filter$.pipe(take(1)).subscribe((value: string) => {
-            filter = value;
+        this.state$.pipe(take(1)).subscribe(({ filter, languageId }) => {
+            if (this.isFormContentType) {
+                this.paginationService.setExtraParams('filter', filter);
+
+                this.paginationService
+                    .getWithOffset((event && event.first) || 0)
+                    .pipe(take(1))
+                    .subscribe((data: DotCMSContentlet[] | DotCMSContentType[]) => {
+                        data.forEach((item) => (item.contentType = item.variable = 'FORM'));
+                        this.setLoaded();
+                        this.setContentlets(data);
+                        this.setTotalRecords(this.paginationService.totalRecords);
+                    });
+            } else {
+                this.paginatorESService
+                    .get({
+                        itemsPerPage: this.itemsPerPage,
+                        lang: languageId || '1',
+                        filter: filter || '',
+                        offset: (event && event.first.toString()) || '0',
+                        query: `+contentType: ${this.contentTypeVarName}`
+                    })
+                    .pipe(take(1))
+                    .subscribe((response: ESContent) => {
+                        this.setLoaded();
+                        this.setTotalRecords(response.resultsSize);
+                        this.setContentlets(response.jsonObjectView.contentlets);
+                    });
+            }
         });
-
-        if (this.isFormContentType) {
-            this.paginationService.setExtraParams('filter', filter);
-
-            this.paginationService
-                .getWithOffset((event && event.first) || 0)
-                .pipe(take(1))
-                .subscribe((data: DotCMSContentlet[] | DotCMSContentType[]) => {
-                    data.forEach((item) => (item.contentType = item.variable = 'FORM'));
-                    this.setLoaded();
-                    this.setContentlets(data);
-                    this.setTotalRecords(this.paginationService.totalRecords);
-                });
-        } else {
-            let langId: string;
-            this.languageId$.pipe(take(1)).subscribe((value: string) => {
-                langId = value;
-            });
-
-            this.paginatorESService
-                .get({
-                    itemsPerPage: this.itemsPerPage,
-                    lang: langId || '1',
-                    filter: filter || '',
-                    offset: (event && event.first.toString()) || '0',
-                    query: `+contentType: ${this.contentTypeVarName}`
-                })
-                .pipe(take(1))
-                .subscribe((response: ESContent) => {
-                    this.setLoaded();
-                    this.setTotalRecords(response.resultsSize);
-                    this.setContentlets(response.jsonObjectView.contentlets);
-                });
-        }
     }
-
-    // SELECTORS
-    private readonly contentlets$ = this.select(({ contentlets }) => {
-        return contentlets;
-    });
-
-    private readonly contentTypes$ = this.select(({ contentTypes }) => {
-        return contentTypes;
-    });
-
-    private readonly filter$ = this.select(({ filter }) => {
-        return filter;
-    });
-
-    private readonly totalRecords$ = this.select(({ totalRecords }) => {
-        return totalRecords;
-    });
-
-    private readonly languageId$ = this.select(({ languageId }) => {
-        return languageId;
-    });
-
-    private readonly viewContentlet$ = this.select(({ viewContentlet }) => {
-        return viewContentlet;
-    });
-
-    private readonly loading$: Observable<boolean> = this.select(
-        (state) => state.callState === LoadingState.LOADING
-    );
 
     private isFormContentType: boolean;
     private itemsPerPage = 25;
     private contentTypeVarName: string;
 
-    readonly vm$ = this.select(
-        this.contentlets$,
-        this.contentTypes$,
-        this.filter$,
-        this.totalRecords$,
-        this.viewContentlet$,
-        this.loading$,
-        (contentlets, contentTypes, filter, totalRecords, viewContentlet, loading) => ({
-            contentlets,
-            contentTypes,
-            filter,
-            totalRecords,
-            viewContentlet,
-            loading
-        })
-    );
+    readonly vm$ = this.state$;
 
     // UPDATERS
     private readonly setContentlets = this.updater(
@@ -175,14 +120,14 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
     readonly setLoading = this.updater((state: DotPaletteState) => {
         return {
             ...state,
-            callState: LoadingState.LOADING
+            loading: LoadingState.LOADING === LoadingState.LOADING
         };
     });
 
     readonly setLoaded = this.updater((state: DotPaletteState) => {
         return {
             ...state,
-            callState: LoadingState.LOADED
+            loading: !(LoadingState.LOADED === LoadingState.LOADED)
         };
     });
 
@@ -223,6 +168,17 @@ export class DotPaletteStore extends ComponentStore<DotPaletteState> {
                 }
 
                 this.getContentletsData();
+            })
+        );
+    });
+
+    readonly switchView = this.effect((variableName$: Observable<string>) => {
+        return variableName$.pipe(
+            map((variableName: string) => {
+                const viewContentlet = variableName ? 'contentlet:in' : 'contentlet:out';
+                this.setViewContentlet(viewContentlet);
+                this.setFilter('');
+                this.loadContentlets(variableName);
             })
         );
     });

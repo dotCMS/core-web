@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DotPaletteComponent } from './dot-palette.component';
 import { Component, DebugElement, EventEmitter, Injectable, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -11,7 +10,6 @@ import { Observable, of } from 'rxjs';
 import { DotESContentService } from '@dotcms/app/api/services/dot-es-content/dot-es-content.service';
 import { PaginatorService } from '@dotcms/app/api/services/paginator';
 import { DotPaletteStore, LoadingState } from './store/dot-palette.store';
-import { take } from 'rxjs/operators';
 import { contentletProductDataMock } from './dot-palette-contentlets/dot-palette-contentlets.component.spec';
 
 @Component({
@@ -91,7 +89,8 @@ const storeMock = jasmine.createSpyObj(
         'setLoaded',
         'loadContentTypes',
         'filterContentlets',
-        'loadContentlets'
+        'loadContentlets',
+        'switchView'
     ],
     {
         vm$: of({
@@ -153,9 +152,7 @@ describe('DotPaletteComponent', () => {
 
         const wrapper = fixture.debugElement.query(By.css('[data-testid="wrapper"]'));
         expect(wrapper.nativeElement.style.transform).toEqual('translateX(0%)');
-        expect(store.setViewContentlet).toHaveBeenCalledWith('contentlet:in');
-        expect(store.setFilter).toHaveBeenCalledWith('');
-        expect(store.loadContentlets).toHaveBeenCalledWith('Blog');
+        expect(store.switchView).toHaveBeenCalledWith('Blog');
         expect(contentContentletsComp.componentInstance.totalRecords).toBe(20);
         expect(contentContentletsComp.componentInstance.items).toEqual([contentletProductDataMock]);
     });
@@ -169,7 +166,7 @@ describe('DotPaletteComponent', () => {
         fixture.detectChanges();
         await fixture.whenStable();
 
-        expect(store.setViewContentlet).toHaveBeenCalledWith('contentlet:out');
+        expect(store.switchView).toHaveBeenCalledWith(undefined);
     });
 
     it('should set value on store on filtering event', async () => {

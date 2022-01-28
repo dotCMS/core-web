@@ -49,17 +49,13 @@ export class DotPaletteComponent implements OnInit {
     }
 
     /**
-     * Sets value on store variables to show/hide components on the UI
+     * Sets value on store to show/hide components on the UI
      *
      * @param string [variableName]
      * @memberof DotPaletteContentletsComponent
      */
     switchView(variableName?: string): void {
-        const viewContentlet = variableName ? 'contentlet:in' : 'contentlet:out';
-
-        this.store.setViewContentlet(viewContentlet);
-        this.store.setFilter('');
-        this.store.loadContentlets(variableName);
+        this.store.switchView(variableName);
     }
 
     /**
