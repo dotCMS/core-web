@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ComponentStore } from '@ngrx/component-store';
-import { Observable, zip, of } from 'rxjs';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import { Observable, zip, of, EMPTY } from 'rxjs';
 import { pluck, switchMap, take, tap, catchError } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -84,8 +84,9 @@ export const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
 
 @Injectable()
 export class DotTemplateStore extends ComponentStore<DotTemplateState> {
-    readonly vm$ = this.select(({ original, apiLink }: DotTemplateState) => {
+    readonly vm$ = this.select(({ working, original, apiLink }: DotTemplateState) => {
         return {
+            working,
             original,
             apiLink
         };
@@ -102,6 +103,18 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
             body
         }
     }));
+
+    readonly updateWorkingTemplate = this.updater<DotTemplateItem>(
+        (state: DotTemplateState, template: DotTemplateItem) => {
+            return {
+                ...state,
+                working: {
+                    ...state.working,
+                    ...template
+                },
+            };
+        }
+    );
 
     readonly updateTemplate = this.updater<DotTemplateItem>(
         (state: DotTemplateState, template: DotTemplateItem) => {

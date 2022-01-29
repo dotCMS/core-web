@@ -24,7 +24,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     vm$ = this.store.vm$;
 
     form: FormGroup;
-
+    title: 'title';
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
@@ -36,16 +36,16 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original }: DotTemplateState) => {
+        this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ working }: DotTemplateState) => {
             if (this.form) {
-                const value = this.getFormValue(original);
+                const value = this.getFormValue(working);
 
                 this.form.setValue(value);
             } else {
-                this.form = this.getForm(original);
+                this.form = this.getForm(working);
             }
 
-            if (!original.identifier) {
+            if (!working.identifier) {
                 this.createTemplate();
             }
         });
@@ -93,10 +93,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 theme: themeId
             };
         }
-        this.store.saveTemplate({
-            ...this.form.value,
-            ...value
-        });
+        this.store.updateWorkingTemplate(value);
     }
 
     /**

@@ -187,7 +187,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 body: this.cleanUpBody(layout.body),
                 header: layout.header,
                 footer: layout.footer,
-                sidebar: layout.sidebar
+                sidebar: layout.sidebar,
+                title: layout.title,
+                width: layout.width
             }
         });
         this.updateModel();
@@ -201,10 +203,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 body: this.cleanUpBody(this.layout.body),
                 header: this.layout.header,
                 footer: this.layout.footer,
-                sidebar: this.createSidebarForm()
+                sidebar: this.createSidebarForm(),
+                title: this.layout.title,
+                width: this.layout.width
             })
         });
-        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(10000)).subscribe(() => {
+        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(2000)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)){
                 this.onSave();
             }
