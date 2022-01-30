@@ -22,9 +22,9 @@ import { Site, SiteService } from '@dotcms/dotcms-js';
 })
 export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     vm$ = this.store.vm$;
+    didTemplateChanged = false;
 
     form: FormGroup;
-    title: 'title';
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
@@ -36,19 +36,22 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ working }: DotTemplateState) => {
+        this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original }: DotTemplateState) => {
             if (this.form) {
-                const value = this.getFormValue(working);
+                const value = this.getFormValue(original);
 
                 this.form.setValue(value);
             } else {
-                this.form = this.getForm(working);
+                this.form = this.getForm(original);
             }
 
-            if (!working.identifier) {
+            if (!original.identifier) {
                 this.createTemplate();
             }
         });
+        this.store.didTemplateChanged$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(( didTemplateChanged ) => this.didTemplateChanged = didTemplateChanged);
         this.setSwitchSiteListener();
     }
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { Observable, zip, of, EMPTY } from 'rxjs';
+import { ComponentStore } from '@ngrx/component-store';
+import { Observable, zip, of } from 'rxjs';
 import { pluck, switchMap, take, tap, catchError } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -136,6 +136,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
               return this.persistTemplate(template)
             }),
             tap((template: DotTemplate) => {
+                // SAVE TEMPALTES CACHE
                 if (template.drawed) {
                     this.templateContainersCacheService.set(template.containers);
                 }
