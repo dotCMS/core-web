@@ -79,6 +79,28 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     }
 
     /**
+     * Save changes on working template to store
+     *
+     * @memberof DotTemplateCreateEditComponent
+     */
+    updateTemplate({ layout, body, themeId }: DotTemplate): void {
+        let value = {
+            ...this.form.value,
+            body
+        };
+
+        if (layout) {
+            value = {
+                ...this.form.value,
+                layout,
+                theme: themeId
+            };
+        }
+        this.store.updateDraftTemplate(value);
+    }
+
+        
+    /**
      * Save template to store
      *
      * @memberof DotTemplateCreateEditComponent
@@ -96,7 +118,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 theme: themeId
             };
         }
-        this.store.updateWorkingTemplate(value);
+        this.store.saveTemplate(value);
     }
 
     /**

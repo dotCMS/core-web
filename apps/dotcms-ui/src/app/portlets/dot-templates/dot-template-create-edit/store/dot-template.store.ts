@@ -104,7 +104,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         }
     }));
 
-    readonly updateWorkingTemplate = this.updater<DotTemplateItem>(
+    readonly updateDraftTemplate = this.updater<DotTemplateItem>(
         (state: DotTemplateState, template: DotTemplateItem) => {
             return {
                 ...state,
@@ -121,6 +121,17 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
             return {
                 ...state,
                 working: template,
+                original: template
+            };
+        }
+    );
+
+    readonly updateProperties = this.updater<DotTemplateItem>(
+        (state: DotTemplateState, template: DotTemplateItem) => {
+            const working = this.updateDraftTemplateProperties(state.working, template);
+            return {
+                ...state,
+                working: working,
                 original: template
             };
         }
@@ -162,7 +173,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         return origin$.pipe(
             switchMap((template: DotTemplateItem) => this.persistTemplate(template)),
             tap((template: DotTemplate) => {
-                this.updateTemplate(this.getTemplateItem(template));
+                this.updateProperties(this.getTemplateItem(template));
             })
         );
     });
@@ -280,6 +291,24 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 drawed: false,
                 image: template.image
             };
+        }
+
+        return result;
+    }
+
+    private updateDraftTemplateProperties(currentTemplate: DotTemplateItem, template: DotTemplateItem): DotTemplateItem {
+        let result: DotTemplateItem;
+
+        if (template.type === 'design') {
+            result = {
+                ...template,
+                layout: (currentTemplate as DotTemplateItemDesign).layout
+            }
+        } else {
+            result = {
+                ...template,
+                body: (currentTemplate as DotTemplateItemadvanced).body
+            }
         }
 
         return result;

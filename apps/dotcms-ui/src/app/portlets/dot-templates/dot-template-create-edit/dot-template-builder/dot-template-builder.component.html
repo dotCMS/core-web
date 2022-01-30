@@ -7,6 +7,7 @@
             <dot-template-advanced
                 [didTemplateChanged]="didTemplateChanged"
                 [body]="item.body"
+                (updateTemplate)="updateTemplate.emit($event)"
                 (save)="save.emit($event)"
                 (cancel)="cancel.emit()"
             ></dot-template-advanced>
