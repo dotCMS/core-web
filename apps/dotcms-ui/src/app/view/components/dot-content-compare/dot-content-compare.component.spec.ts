@@ -16,7 +16,6 @@ import { By } from '@angular/platform-browser';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
 
 const DotContentCompareEventMOCK = {
@@ -71,6 +70,18 @@ describe('DotContentCompareComponent', () => {
                     provide: DotIframeService,
                     useValue: {
                         run: jasmine.createSpy()
+                    }
+                },
+                DotFormatDateService,
+                {
+                    provide: DotcmsConfigService,
+                    useValue: {
+                        getSystemTimeZone: () =>
+                            of({
+                                id: 'America/Costa_Rica',
+                                label: 'Central Standard Time (America/Costa_Rica)',
+                                offset: -21600000
+                            })
                     }
                 }
             ]
