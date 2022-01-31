@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ComponentStore } from '@ngrx/component-store';
 import { Observable, zip, of } from 'rxjs';
-import { pluck, switchMap, take, tap, catchError } from 'rxjs/operators';
+import { pluck, switchMap, take, tap, catchError, filter, debounceTime, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
@@ -111,7 +111,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 working: {
                     ...state.working,
                     ...template
-                },
+                }
             };
         }
     );
@@ -138,34 +138,32 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     );
 
     readonly saveTemplate = this.effect((origin$: Observable<DotTemplateItem>) => {
-
         return origin$.pipe(
             switchMap((template: DotTemplateItem) => {
                 this.dotGlobalMessageService.loading(
                     this.dotMessageService.get('dot.common.message.saving')
                 );
-              return this.persistTemplate(template)
+                return this.persistTemplate(template);
             }),
-            tap((template: DotTemplate) => {
-                // SAVE TEMPALTES CACHE
-                if (template.drawed) {
-                    this.templateContainersCacheService.set(template.containers);
-                }
-                this.updateTemplate(this.getTemplateItem(template));
-                this.dotGlobalMessageService.success(
-                    this.dotMessageService.get('dot.common.message.saved')
+            tap((template: DotTemplate) => this.onSaveTemplate(template)),
+            catchError((err: HttpErrorResponse) => this.onSaveTemplateError(err))
+        );
+    });
+
+    readonly saveTemplateDebounce = this.effect((origin$: Observable<DotTemplateItem>) => {
+        return origin$.pipe(
+            debounceTime(10000),
+            switchMap((template: DotTemplateItem) => {
+                return this.didTemplateChangedBeforeSave(template);
+            }),
+            switchMap((template: DotTemplateItem) => {
+                this.dotGlobalMessageService.loading(
+                    this.dotMessageService.get('dot.common.message.saving')
                 );
-                if (this.activatedRoute?.snapshot?.params['inode']) {
-                    this.dotRouterService.goToEditTemplate(template.identifier);
-                }
+                return this.persistTemplate(template);
             }),
-            catchError((err: HttpErrorResponse) => {
-                this.dotGlobalMessageService.error(err.statusText);
-                this.dotHttpErrorManagerService.handle(err).subscribe(() => {
-                    this.dotEditLayoutService.changeDesactivateState(true);
-                });
-                return of(null);
-            })
+            tap((template: DotTemplate) => this.onSaveTemplate(template)),
+            catchError((err: HttpErrorResponse) => this.onSaveTemplateError(err))
         );
     });
 
@@ -252,6 +250,27 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         this.dotRouterService.goToEditTemplate(id, inode);
     };
 
+    private onSaveTemplate(template: DotTemplate) {
+        if (template.drawed) {
+            this.templateContainersCacheService.set(template.containers);
+        }
+        this.updateTemplate(this.getTemplateItem(template));
+        this.dotGlobalMessageService.success(
+            this.dotMessageService.get('dot.common.message.saved')
+        );
+        if (this.activatedRoute?.snapshot?.params['inode']) {
+            this.dotRouterService.goToEditTemplate(template.identifier);
+        }
+    }
+
+    private onSaveTemplateError(err: HttpErrorResponse) {
+        this.dotGlobalMessageService.error(err.statusText);
+        this.dotHttpErrorManagerService.handle(err).subscribe(() => {
+            this.dotEditLayoutService.changeDesactivateState(true);
+        });
+        return of(null);
+    }
+
     private getApiLink(identifier: string): string {
         return identifier ? `/api/v1/templates/${identifier}/working` : '';
     }
@@ -296,22 +315,37 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         return result;
     }
 
-    private updateDraftTemplateProperties(currentTemplate: DotTemplateItem, template: DotTemplateItem): DotTemplateItem {
+    /**
+     * When we save the properties, we do not want to save the body/layout.
+     * Therefore, we keep the same body/layout of the working template
+     */
+    private updateDraftTemplateProperties(
+        currentTemplate: DotTemplateItem,
+        template: DotTemplateItem
+    ): DotTemplateItem {
         let result: DotTemplateItem;
 
         if (template.type === 'design') {
             result = {
                 ...template,
                 layout: (currentTemplate as DotTemplateItemDesign).layout
-            }
+            };
         } else {
             result = {
                 ...template,
                 body: (currentTemplate as DotTemplateItemadvanced).body
-            }
+            };
         }
 
         return result;
+    }
+
+    private didTemplateChangedBeforeSave(template: DotTemplateItem): Observable<DotTemplateItem> {
+        return this.didTemplateChanged$.pipe(
+            take(1),
+            filter((res) => res),
+            map(() => template)
+        );
     }
 
     private persistTemplate(template: DotTemplateItem): Observable<DotTemplate> {

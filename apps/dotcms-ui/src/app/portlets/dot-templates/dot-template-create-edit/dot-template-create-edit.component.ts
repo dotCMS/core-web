@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-
 import { DialogService } from 'primeng/dynamicdialog';
 
 import { DotTemplate } from '@shared/models/dot-edit-layout-designer/dot-template.model';
@@ -95,6 +94,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 layout,
                 theme: themeId
             };
+            this.store.saveTemplateDebounce(value);
         }
         this.store.updateDraftTemplate(value);
     }

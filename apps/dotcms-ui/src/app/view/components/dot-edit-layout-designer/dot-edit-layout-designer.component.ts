@@ -65,17 +65,22 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     @Input()
     url: string;
 
+    @Input()
+    didTemplateChanged: boolean;
+
     @Output()
     save: EventEmitter<Event> = new EventEmitter();
 
+    @Output()
+    updateTemplate: EventEmitter<Event> = new EventEmitter();
+
     form: FormGroup;
-    initialFormValue: FormGroup;
     themeDialogVisibility = false;
+    formUpdated = false;
 
     currentTheme: DotTheme;
 
     saveAsTemplate: boolean;
-    leaving = false;
     showTemplateLayoutSelectionDialog = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -180,6 +185,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     private setFormValue(layout: DotLayout): void {
+        this.formUpdated = true;
         this.form.setValue({
             title: this.title,
             themeId: this.theme,
@@ -208,15 +214,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 width: this.layout.width
             })
         });
-        this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(2000)).subscribe(() => {
-            if(!_.isEqual(this.form.value, this.initialFormValue)){
-                this.onSave();
-            }
-            this.cd.detectChanges();
-        });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            const isEqual = _.isEqual(this.form.value, this.initialFormValue);
-            this.dotEditLayoutService.changeDesactivateState(isEqual);
+            if(!this.formUpdated) {
+                this.updateTemplate.emit(this.form.value);
+            }
+            this.formUpdated = false;
+            this.dotEditLayoutService.changeDesactivateState(!this.didTemplateChanged);
         });
         this.updateModel();
     }
@@ -232,8 +235,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 },
                 (error) => this.errorHandler(error)
             );
-        this.initialFormValue = _.cloneDeep(this.form.value);
-        this.dotEditLayoutService.changeDesactivateState(true);
     }
 
     private createSidebarForm(): DotLayoutSideBar {
@@ -269,9 +270,8 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
 
     private saveChangesBeforeLeave(): void {
         this.dotEditLayoutService.closeEditLayout$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
-            if (res && !this.leaving) {
+            if (res) {
                 this.onSave();
-                this.leaving = true;
             }
         });
     }
