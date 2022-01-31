@@ -17,6 +17,8 @@ import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
+import { DotFormatDateService } from '@dotcms/app/api/services/dot-format-date-service';
+import { DotcmsConfigService } from '@dotcms/dotcms-js';
 
 const DotContentCompareEventMOCK = {
     inode: '1',
@@ -99,8 +101,9 @@ describe('DotContentCompareComponent', () => {
         hostComponent = hostFixture.componentInstance;
         hostComponent.data = DotContentCompareEventMOCK;
         hostFixture.detectChanges();
-        contentCompareTableComponent = de.query(By.css('dot-content-compare-table'))
-            .componentInstance;
+        contentCompareTableComponent = de.query(
+            By.css('dot-content-compare-table')
+        ).componentInstance;
     });
 
     it('should pass data correctly', () => {
@@ -115,9 +118,9 @@ describe('DotContentCompareComponent', () => {
     });
 
     it('should update compare content', () => {
-        contentCompareTableComponent.changeVersion.emit(('value' as unknown) as DotCMSContentlet);
+        contentCompareTableComponent.changeVersion.emit('value' as unknown as DotCMSContentlet);
         expect(dotContentCompareStore.updateCompare).toHaveBeenCalledOnceWith(
-            ('value' as unknown) as DotCMSContentlet
+            'value' as unknown as DotCMSContentlet
         );
     });
 
