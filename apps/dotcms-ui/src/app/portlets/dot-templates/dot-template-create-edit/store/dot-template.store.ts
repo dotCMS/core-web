@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ComponentStore } from '@ngrx/component-store';
 import { Observable, zip, of } from 'rxjs';
-import { pluck, switchMap, take, tap, catchError, filter, debounceTime, map } from 'rxjs/operators';
+import { pluck, switchMap, take, tap, catchError, debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 import { DotTemplatesService } from '@services/dot-templates/dot-templates.service';
@@ -153,9 +153,6 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     readonly saveTemplateDebounce = this.effect((origin$: Observable<DotTemplateItem>) => {
         return origin$.pipe(
             debounceTime(10000),
-            switchMap((template: DotTemplateItem) => {
-                return this.didTemplateChangedBeforeSave(template);
-            }),
             switchMap((template: DotTemplateItem) => {
                 this.dotGlobalMessageService.loading(
                     this.dotMessageService.get('dot.common.message.saving')
@@ -316,36 +313,30 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     }
 
     /**
+     *
      * When we save the properties, we do not want to save the body/layout.
      * Therefore, we keep the same body/layout of the working template
+     *
+     * @private
+     * @param {DotTemplateItem} currentTemplate
+     * @param {DotTemplateItem} template
+     * @return {*}  {DotTemplateItem}
+     * @memberof DotTemplateStore
      */
     private updateDraftTemplateProperties(
-        currentTemplate: DotTemplateItem,
+        workingTemplate: DotTemplateItem,
         template: DotTemplateItem
     ): DotTemplateItem {
-        let result: DotTemplateItem;
-
         if (template.type === 'design') {
-            result = {
+            return {
                 ...template,
-                layout: (currentTemplate as DotTemplateItemDesign).layout
+                layout: (workingTemplate as DotTemplateItemDesign).layout
             };
-        } else {
-            result = {
-                ...template,
-                body: (currentTemplate as DotTemplateItemadvanced).body
-            };
-        }
-
-        return result;
-    }
-
-    private didTemplateChangedBeforeSave(template: DotTemplateItem): Observable<DotTemplateItem> {
-        return this.didTemplateChanged$.pipe(
-            take(1),
-            filter((res) => res),
-            map(() => template)
-        );
+        } 
+        return {
+            ...template,
+            body: (workingTemplate as DotTemplateItemadvanced).body
+        };
     }
 
     private persistTemplate(template: DotTemplateItem): Observable<DotTemplate> {

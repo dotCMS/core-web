@@ -19,7 +19,7 @@ import * as _ from 'lodash';
 
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
-import { tap, take, takeUntil, debounceTime } from 'rxjs/operators';
+import { tap, take, takeUntil } from 'rxjs/operators';
 
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -106,6 +106,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         }
         if( changes.layout && !changes.layout.firstChange ) {
             this.setFormValue(changes.layout.currentValue);
+        }
+        if( changes.didTemplateChanged ) {
+            this.dotEditLayoutService.changeDesactivateState(!changes.didTemplateChanged.currentValue);
         }
     }
 
@@ -221,6 +224,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            console.log('Save', !this.didTemplateChanged);
             this.saveDraft.emit(this.form.value);
             this.dotEditLayoutService.changeDesactivateState(!this.didTemplateChanged);
         });
@@ -228,7 +232,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     private updateModel(): void {
-        console.log('HEY', this.theme);
         this.dotThemesService
             .get(this.theme)
             .pipe(take(1))

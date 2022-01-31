@@ -21,7 +21,7 @@ import { Site, SiteService } from '@dotcms/dotcms-js';
 })
 export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     vm$ = this.store.vm$;
-    didTemplateChanged = false;
+    didTemplateChanged$ = this.store.didTemplateChanged$
 
     form: FormGroup;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -48,9 +48,9 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 this.createTemplate();
             }
         });
-        this.store.didTemplateChanged$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(( didTemplateChanged ) => this.didTemplateChanged = didTemplateChanged);
+        // this.store.didTemplateChanged$
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe(( didTemplateChanged ) => this.didTemplateChanged = didTemplateChanged);
         this.setSwitchSiteListener();
     }
 
