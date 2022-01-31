@@ -72,7 +72,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     save: EventEmitter<Event> = new EventEmitter();
 
     @Output()
-    updateTemplate: EventEmitter<Event> = new EventEmitter();
+    saveDraft: EventEmitter<Event> = new EventEmitter();
 
     form: FormGroup;
     themeDialogVisibility = false;
@@ -101,9 +101,13 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes.layout.firstChange) {
+        if ((changes.theme && !changes.theme.firstChange)) {
+            this.form.get('themeId').setValue(this.theme);
+        }
+        if( changes.layout && !changes.layout.firstChange ) {
             this.setFormValue(changes.layout.currentValue);
         }
+        this.updateModel();
     }
 
     ngOnDestroy(): void {
@@ -185,7 +189,11 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     private setFormValue(layout: DotLayout): void {
-        this.formUpdated = true;
+        const currentLayout = this.form.get('layout').value;
+        if(_.isEqual(currentLayout, layout)) {
+            return;
+        }
+
         this.form.setValue({
             title: this.title,
             themeId: this.theme,
@@ -215,10 +223,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            if(!this.formUpdated) {
-                this.updateTemplate.emit(this.form.value);
-            }
-            this.formUpdated = false;
+            this.saveDraft.emit(this.form.value);
             this.dotEditLayoutService.changeDesactivateState(!this.didTemplateChanged);
         });
         this.updateModel();

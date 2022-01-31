@@ -82,7 +82,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
      *
      * @memberof DotTemplateCreateEditComponent
      */
-    updateTemplate({ layout, body, themeId }: DotTemplate): void {
+     saveDraft({ layout, body, themeId }: DotTemplate): void {
         let value = {
             ...this.form.value,
             body
