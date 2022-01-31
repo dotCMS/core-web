@@ -76,7 +76,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
 
     form: FormGroup;
     themeDialogVisibility = false;
-    formUpdated = false;
 
     currentTheme: DotTheme;
 
@@ -103,11 +102,11 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     ngOnChanges(changes: SimpleChanges): void {
         if ((changes.theme && !changes.theme.firstChange)) {
             this.form.get('themeId').setValue(this.theme);
+            this.updateModel();
         }
         if( changes.layout && !changes.layout.firstChange ) {
             this.setFormValue(changes.layout.currentValue);
         }
-        this.updateModel();
     }
 
     ngOnDestroy(): void {
@@ -206,7 +205,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 width: layout.width
             }
         });
-        this.updateModel();
     }
 
     private initForm(): void {
@@ -230,6 +228,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     private updateModel(): void {
+        console.log('HEY', this.theme);
         this.dotThemesService
             .get(this.theme)
             .pipe(take(1))
