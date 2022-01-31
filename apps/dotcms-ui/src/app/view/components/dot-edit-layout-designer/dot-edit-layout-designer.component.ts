@@ -224,7 +224,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            console.log('Save', !this.didTemplateChanged);
             this.saveDraft.emit(this.form.value);
             this.dotEditLayoutService.changeDesactivateState(!this.didTemplateChanged);
         });
