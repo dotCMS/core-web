@@ -1,4 +1,4 @@
-import { take, map, pluck } from 'rxjs/operators';
+import { take, pluck } from 'rxjs/operators';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -64,9 +64,9 @@ export class DotESContentService {
         this._extraParams.delete(name);
     }
 
-    private getESQuery(params: {
+    private getESQuery(params: { [key: string]: string | number }): {
         [key: string]: string | number;
-    }): { [key: string]: string | number } {
+    } {
         const query = {
             query: JSON.stringify(params).replace(/"|{|}|,/g, ' '),
             sort: `${this._sortField || ''} ${this._sortOrder || ''}`,

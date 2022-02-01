@@ -8,14 +8,11 @@ import {
     OnDestroy
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
 
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { DotEvent } from '@shared/models/dot-event/dot-event';
-import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 

@@ -13,7 +13,6 @@ import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.m
 describe('DotMessageService', () => {
     let dotMessageService: DotMessageService;
     let coreWebService: CoreWebService;
-    let dotFormatDateService: DotFormatDateService;
     let dotLocalstorageService: DotLocalstorageService;
     const MESSAGES_LOCALSTORAGE_KEY = 'dotMessagesKeys';
     let injector: TestBed;
@@ -36,22 +35,6 @@ describe('DotMessageService', () => {
         'relativetime.yy': 'n'
     };
 
-    const relativeDateMessages = {
-        future: 'a',
-        past: 'b',
-        s: 'c',
-        m: 'd',
-        mm: 'e',
-        h: 'f',
-        hh: 'g',
-        d: 'h',
-        dd: 'i',
-        M: 'j',
-        MM: 'k',
-        y: 'l',
-        yy: 'n'
-    };
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
@@ -65,7 +48,6 @@ describe('DotMessageService', () => {
         injector = getTestBed();
         dotMessageService = injector.get(DotMessageService);
         coreWebService = injector.get(CoreWebService);
-        dotFormatDateService = injector.get(DotFormatDateService);
         dotLocalstorageService = injector.get(DotLocalstorageService);
 
         spyOn<any>(coreWebService, 'requestView').and.returnValue(
@@ -140,5 +122,4 @@ describe('DotMessageService', () => {
             expect(label).toEqual('Accept data');
         });
     });
-
 });

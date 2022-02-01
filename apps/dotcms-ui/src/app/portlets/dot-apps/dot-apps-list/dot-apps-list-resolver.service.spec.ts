@@ -9,7 +9,9 @@ import { DotAppsService } from '@services/dot-apps/dot-apps.service';
 import { appsResponse, AppsServicesMock } from './dot-apps-list.component.spec';
 
 class DotLicenseServicesMock {
-    canAccessEnterprisePortlet(_url: string) {}
+    canAccessEnterprisePortlet(_url: string) {
+        of(true);
+    }
 }
 
 const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>(

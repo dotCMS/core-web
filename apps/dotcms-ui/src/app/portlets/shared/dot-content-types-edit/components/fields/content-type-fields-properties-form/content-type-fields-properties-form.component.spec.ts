@@ -40,8 +40,6 @@ class DotHostTesterComponent {
     mockDFormFieldData: DotCMSContentTypeField = {
         ...dotcmsContentTypeFieldBasicMock
     };
-
-    constructor() {}
 }
 
 @Directive({

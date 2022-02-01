@@ -40,8 +40,6 @@ import { mockSites } from '@tests/site-service.mock';
 })
 export class DotApiLinkMockComponent {
     @Input() href;
-
-    constructor() {}
 }
 
 @Component({
@@ -53,8 +51,6 @@ export class DotTemplateBuilderMockComponent {
     @Output() save = new EventEmitter();
     @Output() cancel = new EventEmitter();
     @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
-
-    constructor() {}
 }
 
 @Component({
@@ -63,8 +59,6 @@ export class DotTemplateBuilderMockComponent {
 })
 export class DotPortletBaseMockComponent {
     @Input() boxed;
-
-    constructor() {}
 }
 
 @Component({
@@ -74,8 +68,6 @@ export class DotPortletBaseMockComponent {
 })
 export class DotPortletToolbarMockComponent {
     @Input() title;
-
-    constructor() {}
 }
 
 const messageServiceMock = new MockDotMessageService({
@@ -208,7 +200,9 @@ describe('DotTemplateCreateEditComponent', () => {
                         paginationPerPage: '',
                         totalRecords: mockDotThemes.length,
 
-                        setExtraParams() {},
+                        setExtraParams() {
+                            //
+                        },
                         getWithOffset() {
                             return of([...mockDotThemes]);
                         }

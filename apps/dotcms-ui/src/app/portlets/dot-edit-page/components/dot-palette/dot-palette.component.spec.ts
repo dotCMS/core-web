@@ -3,7 +3,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotPaletteComponent } from './dot-palette.component';
-import { Component, DebugElement, EventEmitter, Injectable, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { dotcmsContentTypeBasicMock } from '@dotcms/app/test/dot-content-types.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -18,7 +18,9 @@ export class DotPaletteContentTypeMockComponent {
     @Input() items: any[];
     @Output() selected = new EventEmitter<any>();
 
-    focusInputFilter() {}
+    focusInputFilter() {
+        //
+    }
 }
 
 @Component({
@@ -30,8 +32,9 @@ export class DotPaletteContentletsMockComponent {
     @Input() languageId: string;
     @Output() back = new EventEmitter<any>();
 
-
-    focusInputFilter() {}
+    focusInputFilter() {
+        //
+    }
 }
 
 const itemMock = {
@@ -51,7 +54,6 @@ const itemMock = {
 describe('DotPaletteComponent', () => {
     let comp: DotPaletteComponent;
     let fixture: ComponentFixture<DotPaletteComponent>;
-    let de: DebugElement;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -65,7 +67,6 @@ describe('DotPaletteComponent', () => {
         });
 
         fixture = TestBed.createComponent(DotPaletteComponent);
-        de = fixture.debugElement;
         comp = fixture.componentInstance;
     });
 

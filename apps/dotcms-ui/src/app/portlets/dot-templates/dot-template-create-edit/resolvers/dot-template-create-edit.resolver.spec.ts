@@ -46,7 +46,9 @@ describe('DotTemplateDesignerService', () => {
                                 }
                             })
                         ),
-                        getFiltered: () => {}
+                        getFiltered: () => {
+                            //
+                        }
                     }
                 }
             ]

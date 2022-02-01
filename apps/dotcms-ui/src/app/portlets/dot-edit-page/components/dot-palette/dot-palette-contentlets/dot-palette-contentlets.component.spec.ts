@@ -86,7 +86,9 @@ class MockPaginatorService {
     sortOrder: string;
     totalRecords = 40;
 
-    setExtraParams(): void {}
+    setExtraParams(): void {
+        //
+    }
 
     public getWithOffset(): Observable<any[]> {
         return null;

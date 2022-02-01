@@ -3,8 +3,6 @@ import { fromEvent, of, Observable, Subject, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { Injectable, ElementRef, NgZone } from '@angular/core';
 
-import * as _ from 'lodash';
-
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
@@ -102,7 +100,7 @@ export class DotEditContentHtmlService {
 
     /**
      * Set the current page
-     * 
+     *
      * @param DotPage page
      */
     setCurrentPage(page: DotPage) {
@@ -203,14 +201,12 @@ export class DotEditContentHtmlService {
                     uuid: containerEl.dataset.dotUuid
                 };
 
-                
                 this.dotContainerContentletService
                     .getContentletToContainer(container, contentlet, this.currentPage)
                     .pipe(take(1))
                     .subscribe((contentletHtml: string) => {
-                        const contentletEl: HTMLElement = this.generateNewContentlet(
-                            contentletHtml
-                        );
+                        const contentletEl: HTMLElement =
+                            this.generateNewContentlet(contentletHtml);
                         containerEl.replaceChild(contentletEl, currentContentlet);
                     });
             });
@@ -477,9 +473,8 @@ export class DotEditContentHtmlService {
         if (editModeNodes.length) {
             const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
             const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(TINYMCE);
-            const tinyMceInitScript: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
-                INLINE_TINYMCE_SCRIPTS
-            );
+            const tinyMceInitScript: HTMLScriptElement =
+                this.dotDOMHtmlUtilService.createInlineScriptElement(INLINE_TINYMCE_SCRIPTS);
 
             this.dotLicenseService
                 .isEnterprise()
@@ -580,6 +575,7 @@ export class DotEditContentHtmlService {
         dotEditContentletEl.setAttribute('data-dot-object', 'contentlet');
 
         for (const attr in dotPageContent) {
+            // eslint-disable-next-line no-prototype-builtins
             if (dotPageContent.hasOwnProperty(attr)) {
                 dotEditContentletEl.setAttribute(`data-dot-${attr}`, dotPageContent[attr]);
             }
@@ -694,10 +690,7 @@ export class DotEditContentHtmlService {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
             },
             'handle-http-error': (err: HttpErrorResponse) => {
-                this.dotHttpErrorManagerService
-                    .handle(err)
-                    .pipe(take(1))
-                    .subscribe(() => {});
+                this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe();
             }
         };
 
@@ -787,7 +780,11 @@ export class DotEditContentHtmlService {
         };
 
         this.dotContainerContentletService
-            .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet, this.currentPage)
+            .getContentletToContainer(
+                relocateInfo.container,
+                relocateInfo.contentlet,
+                this.currentPage
+            )
             .subscribe((contentletHtml: string) => {
                 const newContentletEl: HTMLElement = this.generateNewContentlet(contentletHtml);
                 container.replaceChild(newContentletEl, contenletEl);

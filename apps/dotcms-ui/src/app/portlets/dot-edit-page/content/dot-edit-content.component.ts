@@ -334,7 +334,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     data: { url },
                     events: {
                         load: (event) => {
-                            event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
+                            event.target.contentWindow.ngEditContentletEvents =
+                                this.dotEditContentHtmlService.contentletEvents$;
                         }
                     }
                 });
@@ -359,7 +360,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 },
                 events: {
                     load: (event) => {
-                        event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
+                        event.target.contentWindow.ngEditContentletEvents =
+                            this.dotEditContentHtmlService.contentletEvents$;
                     }
                 }
             });
@@ -373,13 +375,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             },
             events: {
                 load: (event) => {
-                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
+                    event.target.contentWindow.ngEditContentletEvents =
+                        this.dotEditContentHtmlService.contentletEvents$;
                 }
             }
         });
     }
 
-    private iframeActionsHandler(event: any): Function {
+    private iframeActionsHandler(event: any): () => void {
         const eventsHandlerMap = {
             edit: this.editContentlet.bind(this),
             code: this.editContentlet.bind(this),

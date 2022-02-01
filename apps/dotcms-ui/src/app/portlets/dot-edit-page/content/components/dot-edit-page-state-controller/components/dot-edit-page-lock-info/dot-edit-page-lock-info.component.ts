@@ -20,8 +20,6 @@ export class DotEditPageLockInfoComponent {
 
     private _state: DotPageRenderState;
 
-    constructor() {}
-
     @Input()
     set pageState(value: DotPageRenderState) {
         this._state = value;

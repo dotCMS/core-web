@@ -41,12 +41,18 @@ export class DotFormDialogMockComponent {
     ]
 })
 export class DotTemplateThumbnailFieldMockComponent implements ControlValueAccessor {
-    propagateChange = (_: any) => {};
+    propagateChange = (_: any) => {
+        //
+    };
     registerOnChange(fn: any): void {
         this.propagateChange = fn;
     }
-    registerOnTouched(): void {}
-    writeValue(): void {}
+    registerOnTouched(): void {
+        //
+    }
+    writeValue(): void {
+        // no-op
+    }
 }
 
 @Component({
@@ -61,12 +67,18 @@ export class DotTemplateThumbnailFieldMockComponent implements ControlValueAcces
     ]
 })
 export class DotThemeSelectorDropdownMockComponent implements ControlValueAccessor {
-    propagateChange = (_: any) => {};
+    propagateChange = (_: any) => {
+        //
+    };
     registerOnChange(fn: any): void {
         this.propagateChange = fn;
     }
-    registerOnTouched(): void {}
-    writeValue(): void {}
+    registerOnTouched(): void {
+        //
+    }
+    writeValue(): void {
+        //
+    }
 }
 
 const messageServiceMock = new MockDotMessageService({
