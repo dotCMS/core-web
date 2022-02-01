@@ -16,8 +16,6 @@ export class DotRelationshipTreeComponent implements OnInit {
     child: string;
     parent: string;
 
-    constructor() {}
-
     ngOnInit(): void {
         this.setInitialValues();
     }
