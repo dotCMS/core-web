@@ -233,7 +233,7 @@ describe('DotPaletteContentletsComponent', () => {
     });
 
     it('should paginate products data via DotESContent', async () => {
-        let productsArray = [];
+        const productsArray = [];
         for (let index = 0; index < 20; index++) {
             productsArray.push(productData);
         }
@@ -274,7 +274,7 @@ describe('DotPaletteContentletsComponent', () => {
     });
 
     it('should paginate forms data via PaginatorService', async () => {
-        let formsArray = [];
+        const formsArray = [];
         for (let index = 0; index < 20; index++) {
             formsArray.push(formData);
         }

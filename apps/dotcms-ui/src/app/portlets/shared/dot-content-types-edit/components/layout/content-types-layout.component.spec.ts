@@ -147,7 +147,7 @@ describe('ContentTypesLayoutComponent', () => {
     });
 
     it('should not have a Permissions tab', () => {
-        let pTabPanel = de.query(By.css('.content-type__permissions'));
+        const pTabPanel = de.query(By.css('.content-type__permissions'));
         expect(pTabPanel).toBeFalsy();
     });
 

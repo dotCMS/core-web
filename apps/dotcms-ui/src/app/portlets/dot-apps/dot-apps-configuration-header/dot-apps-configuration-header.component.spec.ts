@@ -96,7 +96,7 @@ describe('DotAppsConfigurationHeaderComponent', () => {
         const description = component.app.description
             .replace(/\n/gi, '')
             .replace(/\r/gi, '')
-            .replace(/   /gi, '');
+            .replace(/ {3}/gi, '');
         expect(
             de.query(By.css('.dot-apps-configuration__description')).nativeElement.outerText
         ).toBe(description);

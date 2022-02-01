@@ -105,7 +105,7 @@ export class DotESContentService {
     }
 
     private getObjectFromMap(map: Map<string, string>): { [key: string]: string | number } {
-        let result = Array.from(map).reduce(
+        const result = Array.from(map).reduce(
             (obj, [key, value]) => Object.assign(obj, { [key]: value }),
             {}
         );

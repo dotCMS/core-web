@@ -10,7 +10,7 @@ export class DotApiLinkComponent {
 
     constructor() {}
 
-    @Input('href')
+    @Input()
     set href(value: string) {
         this.link = this.getFixedLink(value);
     }

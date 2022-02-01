@@ -528,7 +528,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         blackList: string[] = [],
         pageState: DotPageRenderState
     ): DotCMSContentType[] {
-        let allowedContent = new Set();
+        const allowedContent = new Set();
         Object.values(pageState.containers).forEach((container) => {
             Object.values(container.containerStructures).forEach(
                 (containerStructure: DotContainerStructure) => {
