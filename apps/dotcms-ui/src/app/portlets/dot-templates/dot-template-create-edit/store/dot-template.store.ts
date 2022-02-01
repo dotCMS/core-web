@@ -46,7 +46,7 @@ export type DotTemplateItem = DotTemplateItemDesign | DotTemplateItemadvanced;
 
 export interface DotTemplateState {
     original: DotTemplateItem;
-    working?: DotTemplateItem;
+    working: DotTemplateItem;
     apiLink: string;
 }
 
@@ -128,11 +128,12 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
 
     readonly updateProperties = this.updater<DotTemplateItem>(
         (state: DotTemplateState, template: DotTemplateItem) => {
-            const working = this.updateDraftTemplateProperties(state.working, template);
+            const working = this.updateTemplateProperties(state.working, template);
+            const original = this.updateTemplateProperties(state.original, template);
             return {
                 ...state,
                 working: working,
-                original: template
+                original: original
             };
         }
     );
@@ -323,19 +324,19 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
      * @return {*}  {DotTemplateItem}
      * @memberof DotTemplateStore
      */
-    private updateDraftTemplateProperties(
-        workingTemplate: DotTemplateItem,
-        template: DotTemplateItem
+    private updateTemplateProperties(
+        templateState: DotTemplateItem,
+        newPropertiesTemplate: DotTemplateItem
     ): DotTemplateItem {
-        if (template.type === 'design') {
+        if (newPropertiesTemplate.type === 'design') {
             return {
-                ...template,
-                layout: (workingTemplate as DotTemplateItemDesign).layout
+                ...newPropertiesTemplate,
+                layout: (templateState as DotTemplateItemDesign).layout
             };
         } 
         return {
-            ...template,
-            body: (workingTemplate as DotTemplateItemadvanced).body
+            ...newPropertiesTemplate,
+            body: (templateState as DotTemplateItemadvanced).body
         };
     }
 
