@@ -25,7 +25,10 @@
         {
             "files": ["*.ts", "*.tsx"],
             "extends": ["plugin:@nrwl/nx/typescript"],
-            "rules": {}
+            "excludedFiles": ["*.spec.ts", "*.stories.ts"],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": ["error"]
+            }
         },
         {
             "files": ["*.js", "*.jsx"],
