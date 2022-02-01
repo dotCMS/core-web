@@ -48,9 +48,6 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 this.createTemplate();
             }
         });
-        // this.store.didTemplateChanged$
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe(( didTemplateChanged ) => this.didTemplateChanged = didTemplateChanged);
         this.setSwitchSiteListener();
     }
 
@@ -87,7 +84,6 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             ...this.form.value,
             body
         };
-
         if (layout) {
             value = {
                 ...this.form.value,

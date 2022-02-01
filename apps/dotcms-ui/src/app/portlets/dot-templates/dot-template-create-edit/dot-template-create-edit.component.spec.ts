@@ -31,6 +31,7 @@ import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { mockSites } from '@tests/site-service.mock';
+import { DotTemplateItem } from './store/dot-template.store';
 
 @Component({
     selector: 'dot-api-link',
@@ -48,6 +49,7 @@ export class DotApiLinkMockComponent {
 })
 export class DotTemplateBuilderMockComponent {
     @Input() item;
+    @Input() didTemplateChanged;
     @Output() save = new EventEmitter();
     @Output() cancel = new EventEmitter();
     @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
@@ -252,15 +254,14 @@ describe('DotTemplateCreateEditComponent', () => {
     describe('Create', () => {
         describe('Design', () => {
             beforeEach(() => {
-                const storeMock = jasmine.createSpyObj(
-                    'DotTemplateStore',
-                    ['createTemplate', 'goToTemplateList'],
-                    {
-                        vm$: of({
-                            original: EMPTY_TEMPLATE_DESIGN
-                        })
-                    }
-                );
+                const storeMock = {
+                    createTemplate: jasmine.createSpy(),
+                    goToTemplateList: jasmine.createSpy(),
+                    vm$: of({
+                        working: EMPTY_TEMPLATE_DESIGN,
+                        original: EMPTY_TEMPLATE_DESIGN
+                    })
+                };
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -351,15 +352,14 @@ describe('DotTemplateCreateEditComponent', () => {
 
         describe('Advanced', () => {
             beforeEach(() => {
-                const storeMock = jasmine.createSpyObj(
-                    'DotTemplateStore',
-                    ['createTemplate', 'goToTemplateList'],
-                    {
-                        vm$: of({
-                            original: EMPTY_TEMPLATE_ADVANCED
-                        })
-                    }
-                );
+                const storeMock = {
+                    createTemplate: jasmine.createSpy(),
+                    goToTemplateList: jasmine.createSpy(),
+                    vm$: of({
+                        working: EMPTY_TEMPLATE_ADVANCED,
+                        original: EMPTY_TEMPLATE_ADVANCED
+                    })
+                };
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -424,20 +424,23 @@ describe('DotTemplateCreateEditComponent', () => {
     describe('Edit', () => {
         describe('Design', () => {
             beforeEach(() => {
-                const storeMock = jasmine.createSpyObj(
-                    'DotTemplateStore',
-                    ['saveTemplate', 'goToTemplateList', 'goToEditTemplate'],
-                    {
-                        vm$: of({
-                            original: {
-                                ...EMPTY_TEMPLATE_DESIGN,
-                                identifier: '123',
-                                title: 'Some template'
-                            },
-                            apiLink: '/api/link'
-                        })
-                    }
-                );
+                const template: DotTemplateItem = {
+                    ...EMPTY_TEMPLATE_DESIGN,
+                    identifier: '123',
+                    title: 'Some template'
+                }
+                const storeMock = {
+                    saveTemplate: jasmine.createSpy(),
+                    updateDraftTemplate: jasmine.createSpy(),
+                    saveTemplateDebounce: jasmine.createSpy(),
+                    goToTemplateList: jasmine.createSpy(),
+                    goToEditTemplate: jasmine.createSpy(),
+                    vm$: of({
+                        working: template,
+                        original: template,
+                        apiLink: '/api/link'
+                    })
+                }
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -504,6 +507,45 @@ describe('DotTemplateCreateEditComponent', () => {
                     });
                 });
 
+                it('should save draft and call saveTemplateDebounce', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('saveDraft', {
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        themeId: '123'
+                    });
+
+                    const template = {
+                        title: 'Some template',
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        identifier: '123',
+                        friendlyName: '',
+                        theme: '123',
+                        image: ''
+                    }
+
+                    expect(store.saveTemplateDebounce).toHaveBeenCalledWith(template);
+                    expect(store.updateDraftTemplate).toHaveBeenCalledWith(template);
+                });
+
+
                 it('should cancel', () => {
                     const builder = de.query(By.css('dot-template-builder'));
                     builder.triggerEventHandler('cancel', {});
@@ -569,20 +611,21 @@ describe('DotTemplateCreateEditComponent', () => {
 
         describe('Advanced', () => {
             beforeEach(() => {
-                const storeMock = jasmine.createSpyObj(
-                    'DotTemplateStore',
-                    ['saveTemplate', 'goToTemplateList'],
-                    {
-                        vm$: of({
-                            original: {
-                                ...EMPTY_TEMPLATE_ADVANCED,
-                                identifier: '123',
-                                title: 'Some template'
-                            },
-                            apiLink: '/api/link'
-                        })
-                    }
-                );
+                const template: DotTemplateItem = {
+                    ...EMPTY_TEMPLATE_ADVANCED,
+                    identifier: '123',
+                    title: 'Some template'
+                }
+                const storeMock = {
+                    saveTemplate: jasmine.createSpy(),
+                    updateDraftTemplate: jasmine.createSpy(),
+                    goToTemplateList: jasmine.createSpy(),
+                    vm$: of({
+                        working: template,
+                        original: template,
+                        apiLink: '/api/link'
+                    })
+                }
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -610,6 +653,21 @@ describe('DotTemplateCreateEditComponent', () => {
                         image: ''
                     });
                 });
+
+                it('should save draft', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('saveDraft', {
+                        body: `<h1>##Container and stuff</h1>`
+                    });
+
+                    expect(store.updateDraftTemplate).toHaveBeenCalledWith({
+                        title: 'Some template',
+                        body: '<h1>##Container and stuff</h1>',
+                        identifier: '123',
+                        friendlyName: '',
+                        image: ''
+                    });
+                });
             });
         });
     });
@@ -618,13 +676,11 @@ describe('DotTemplateCreateEditComponent', () => {
         const subject = new BehaviorSubject<any>(null);
 
         beforeEach(() => {
-            const storeMock = jasmine.createSpyObj(
-                'DotTemplateStore',
-                ['createTemplate', 'goToTemplateList'],
-                {
-                    vm$: subject
-                }
-            );
+            const storeMock = {
+                createTemplate: jasmine.createSpy(),
+                goToTemplateList: jasmine.createSpy(),
+                vm$: subject
+            };
 
             TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
             fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -635,6 +691,7 @@ describe('DotTemplateCreateEditComponent', () => {
             spyOn(dialogService, 'open').and.callThrough();
 
             subject.next({
+                working: EMPTY_TEMPLATE_ADVANCED,
                 original: EMPTY_TEMPLATE_ADVANCED
             });
 
@@ -660,14 +717,17 @@ describe('DotTemplateCreateEditComponent', () => {
                 image: ''
             });
 
+            const nextTemplate = {
+                friendlyName: 'Not batman',
+                identifier: '123',
+                title: 'Hello World',
+                body: '<h1>I am Batman</h1>',
+                image: ''
+            };
+
             subject.next({
-                original: {
-                    friendlyName: 'Not batman',
-                    identifier: '123',
-                    title: 'Hello World',
-                    body: '<h1>I am Batman</h1>',
-                    image: ''
-                }
+                working: nextTemplate,
+                original: nextTemplate 
             });
 
             fixture.detectChanges();
