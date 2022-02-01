@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DotPersonaSelectorComponent } from './dot-persona-selector.component';
 import { DebugElement, Component, Input } from '@angular/core';

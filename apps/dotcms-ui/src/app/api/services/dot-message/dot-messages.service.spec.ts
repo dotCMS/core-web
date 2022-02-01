@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { of } from 'rxjs';

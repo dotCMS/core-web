@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DotAutocompleteTagsComponent } from './dot-autocomplete-tags.component';
 import { DebugElement } from '@angular/core';

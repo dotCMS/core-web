@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { of, Observable } from 'rxjs';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';

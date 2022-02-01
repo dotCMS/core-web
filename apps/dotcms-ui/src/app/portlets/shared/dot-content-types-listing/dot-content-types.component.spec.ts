@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

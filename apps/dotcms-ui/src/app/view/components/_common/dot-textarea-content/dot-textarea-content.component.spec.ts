@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { By } from '@angular/platform-browser';
 import { Component, DebugElement, forwardRef, Input } from '@angular/core';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,7 +11,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { EditorComponent } from 'ngx-monaco-editor';
 
 function cleanOptionText(option) {
-    return option.replace(/\r?\n|\r/g, '');
+    return option.replace(/?
+|/g, '');
 }
 
 @Component({
@@ -145,20 +148,30 @@ describe('DotTextareaContentComponent', () => {
 
     it('should add new line character', () => {
         component.propagateChange = (propagateChangeValue) => {
-            expect('aaaa\r\nbbbbb\r\nccccc').toEqual(propagateChangeValue);
+            expect('aaaa
+bbbbb
+ccccc').toEqual(propagateChangeValue);
         };
 
-        const value = 'aaaa\nbbbbb\nccccc';
+        const value = 'aaaa
+bbbbb
+ccccc';
         component.onModelChange(value);
 
         expect(component.value).toEqual(value);
     });
 
-    it('should not repeat \r characters', () => {
-        const value = 'aaaa\r\nbbbbb\r\nccccc\nddddd';
+    it('should not repeat  characters', () => {
+        const value = 'aaaa
+bbbbb
+ccccc
+ddddd';
 
         component.propagateChange = (propagateChangeValue) => {
-            expect('aaaa\r\nbbbbb\r\nccccc\r\nddddd').toEqual(propagateChangeValue);
+            expect('aaaa
+bbbbb
+ccccc
+ddddd').toEqual(propagateChangeValue);
         };
 
         component.onModelChange(value);

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Injectable } from '@angular/core';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';

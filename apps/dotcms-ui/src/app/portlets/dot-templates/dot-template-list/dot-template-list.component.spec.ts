@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DotTemplateListComponent } from './dot-template-list.component';
 import { of, Subject } from 'rxjs';
