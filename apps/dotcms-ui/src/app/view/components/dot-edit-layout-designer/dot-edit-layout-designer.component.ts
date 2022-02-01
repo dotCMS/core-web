@@ -68,6 +68,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     @Output()
     save: EventEmitter<Event> = new EventEmitter();
 
+    @Output()
+    saveAndPublish: EventEmitter<Event> = new EventEmitter();
+
     form: FormGroup;
     initialFormValue: FormGroup;
     themeDialogVisibility = false;
@@ -75,8 +78,10 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     currentTheme: DotTheme;
 
     saveAsTemplate: boolean;
+    disablePublish = true;
     leaving = false;
     showTemplateLayoutSelectionDialog = false;
+    skipSave = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -122,6 +127,17 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
      */
     onSave(): void {
         this.save.emit(this.form.value);
+    }
+
+    /**
+     * Emit publish event
+     *
+     * @memberof DotEditLayoutDesignerComponent
+     */
+
+    onSaveAndPublish(): void {
+        this.skipSave = true;
+        this.saveAndPublish.emit(this.form.value);
     }
 
     /**
@@ -205,12 +221,14 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(10000)).subscribe(() => {
-            if(!_.isEqual(this.form.value, this.initialFormValue)){
+            if (!_.isEqual(this.form.value, this.initialFormValue) && !this.skipSave) {
                 this.onSave();
             }
+            this.skipSave = false;
             this.cd.detectChanges();
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.disablePublish = false;
             const isEqual = _.isEqual(this.form.value, this.initialFormValue);
             this.dotEditLayoutService.changeDesactivateState(isEqual);
         });
@@ -264,11 +282,13 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     private saveChangesBeforeLeave(): void {
-        this.dotEditLayoutService.closeEditLayout$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
-            if (res && !this.leaving) {
-                this.onSave();
-                this.leaving = true;
-            }
-        });
+        this.dotEditLayoutService.closeEditLayout$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res && !this.leaving) {
+                    this.onSave();
+                    this.leaving = true;
+                }
+            });
     }
 }

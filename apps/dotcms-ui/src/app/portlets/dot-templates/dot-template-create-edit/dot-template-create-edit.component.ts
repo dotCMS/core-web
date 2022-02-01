@@ -13,6 +13,7 @@ import { DotTemplateItem, DotTemplateState, DotTemplateStore } from './store/dot
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DynamicDialogRef } from 'primeng/dynamicdialog/dynamicdialog-ref';
 import { Site, SiteService } from '@dotcms/dotcms-js';
+import { template } from '@babel/core';
 
 @Component({
     selector: 'dot-template-create-edit',
@@ -76,26 +77,28 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Save template to store
+     * Save and publish template to store
      *
+     * @param DotTemplate template
      * @memberof DotTemplateCreateEditComponent
      */
-    saveTemplate({ layout, body, themeId }: DotTemplate): void {
-        let value = {
+    saveAndPublishTemplate(template: DotTemplate): void {
+        this.store.saveAndPublishTemplate({
             ...this.form.value,
-            body
-        };
+            ...this.formatTemplateItem(template)
+        });
+    }
 
-        if (layout) {
-            value = {
-                ...this.form.value,
-                layout,
-                theme: themeId
-            };
-        }
+    /**
+     * Save template to store
+     *
+     * @param DotTemplate template
+     * @memberof DotTemplateCreateEditComponent
+     */
+    saveTemplate(template: DotTemplate): void {
         this.store.saveTemplate({
             ...this.form.value,
-            ...value
+            ...this.formatTemplateItem(template)
         });
     }
 
@@ -204,5 +207,22 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.store.goToTemplateList();
             });
+    }
+
+    private formatTemplateItem({ layout, body, themeId }: DotTemplate): DotTemplateItem {
+        let value = {
+            ...this.form.value,
+            body
+        };
+
+        if (layout) {
+            value = {
+                ...this.form.value,
+                layout,
+                theme: themeId
+            };
+        }
+
+        return value;
     }
 }

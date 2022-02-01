@@ -82,6 +82,19 @@ export class DotTemplatesService {
     }
 
     /**
+     * Updates and Publish a template
+     * @returns Observable<DotTemplate>
+     * @memberof DotTemplatesService
+     */
+    updateAndPublish(values: DotTemplate): Observable<DotTemplate> {
+        return this.request<DotTemplate>({
+            method: 'PUT',
+            url: `${TEMPLATE_API_URL}_savepublish`,
+            body: values
+        });
+    }
+
+    /**
      * Delete a template
      * @param {string[]} identifiers
      * @returns Observable<DotActionBulkResult>

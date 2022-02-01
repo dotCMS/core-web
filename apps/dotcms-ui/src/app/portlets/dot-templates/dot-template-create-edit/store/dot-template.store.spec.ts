@@ -18,7 +18,9 @@ import { mockResponseView } from '@dotcms/app/test/response-view.mock';
 
 const messageServiceMock = new MockDotMessageService({
     'dot.common.message.saved': 'saved',
-    'dot.common.message.saving': 'saving'
+    'dot.common.message.saving': 'saving',
+    publishing: 'publishing',
+    'message.template.published': 'published'
 });
 
 function getTemplate({ identifier, name, body }) {
@@ -88,6 +90,15 @@ const BASIC_PROVIDERS = [
                     getTemplate({
                         identifier: '222-3000-333---30303-394',
                         name: 'Updated template',
+                        body: '<h4>Hi you</h1>'
+                    })
+                )
+            ),
+            updateAndPublish: jasmine.createSpy().and.returnValue(
+                of(
+                    getTemplate({
+                        identifier: '222-3000-333---30303-394',
+                        name: 'Update and published template',
                         body: '<h4>Hi you</h1>'
                     })
                 )
@@ -347,7 +358,16 @@ describe('DotTemplateStore', () => {
         });
 
         describe('effects', () => {
-            it('should update template and update the state', () => {
+            it('should update template and update the state', (done) => {
+                dotTemplatesService.update = jasmine.createSpy().and.returnValue(
+                    of(
+                        getTemplate({
+                            identifier: '222-3000-333---30303-394',
+                            name: 'Updated template',
+                            body: '<h4>Hi you</h1>'
+                        })
+                    )
+                );
                 service.saveTemplate({
                     body: 'string',
                     friendlyName: 'string',
@@ -390,12 +410,69 @@ describe('DotTemplateStore', () => {
                         },
                         apiLink: '/api/v1/templates/2d87af36-a935-4689-b427-dea75e9d84cf/working'
                     });
+                    done();
+                });
+            });
+
+            it('should update and publish template and update the state', (done) => {
+                dotTemplatesService.updateAndPublish = jasmine.createSpy().and.returnValue(
+                    of(
+                        getTemplate({
+                            identifier: '222-3000-333---30303-394',
+                            name: 'Update and published template',
+                            body: '<h4>Hi you</h1>'
+                        })
+                    )
+                );
+                service.saveAndPublishTemplate({
+                    body: 'string',
+                    friendlyName: 'string',
+                    identifier: 'string',
+                    title: 'string'
+                });
+
+                expect<any>(dotTemplatesService.updateAndPublish).toHaveBeenCalledWith({
+                    body: 'string',
+                    friendlyName: 'string',
+                    identifier: 'string',
+                    title: 'string'
+                });
+
+                expect(dotGlobalMessageService.loading).toHaveBeenCalledWith('publishing');
+                expect(dotGlobalMessageService.success).toHaveBeenCalledWith('published');
+                expect(dotRouterService.goToEditTemplate).toHaveBeenCalledWith(
+                    '222-3000-333---30303-394'
+                );
+
+                service.state$.subscribe((res) => {
+                    expect(res).toEqual({
+                        working: {
+                            type: 'advanced',
+                            identifier: '222-3000-333---30303-394',
+                            title: 'Update and published template',
+                            friendlyName: '',
+                            drawed: false,
+                            body: '<h4>Hi you</h1>',
+                            image: ''
+                        },
+                        original: {
+                            type: 'advanced',
+                            identifier: '222-3000-333---30303-394',
+                            title: 'Update and published template',
+                            friendlyName: '',
+                            drawed: false,
+                            body: '<h4>Hi you</h1>',
+                            image: ''
+                        },
+                        apiLink: '/api/v1/templates/2d87af36-a935-4689-b427-dea75e9d84cf/working'
+                    });
+                    done();
                 });
             });
 
             it('should handler error on update template', (done) => {
-                const error = throwError(new HttpErrorResponse(mockResponseView(400)))
-                spyOn<any>(service, 'persistTemplate').and.returnValue(error);
+                const error = throwError(new HttpErrorResponse(mockResponseView(400)));
+                dotTemplatesService.update = jasmine.createSpy().and.returnValue(error);
                 service.saveTemplate({
                     body: 'string',
                     friendlyName: 'string',
@@ -403,13 +480,34 @@ describe('DotTemplateStore', () => {
                     title: 'string'
                 });
                 expect(dotGlobalMessageService.error).toHaveBeenCalledWith('Unknown Error');
-                expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
+                expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(
+                    new HttpErrorResponse(mockResponseView(400))
+                );
                 dotEditLayoutService.canBeDesactivated$.subscribe((resp) => {
                     expect(resp).toBeTruthy();
                     done();
                 });
             });
-            
+
+            it('should handler error on update And Publish template', (done) => {
+                const error = throwError(new HttpErrorResponse(mockResponseView(400)));
+                dotTemplatesService.updateAndPublish = jasmine.createSpy().and.returnValue(error);
+                service.saveAndPublishTemplate({
+                    body: 'string',
+                    friendlyName: 'string',
+                    identifier: 'string',
+                    title: 'string'
+                });
+                expect(dotGlobalMessageService.error).toHaveBeenCalledWith('Unknown Error');
+                expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(
+                    new HttpErrorResponse(mockResponseView(400))
+                );
+                dotEditLayoutService.canBeDesactivated$.subscribe((resp) => {
+                    expect(resp).toBeTruthy();
+                    done();
+                });
+            });
+
             it('should update template and update the state when updates props', () => {
                 service.saveProperties({
                     body: 'string',

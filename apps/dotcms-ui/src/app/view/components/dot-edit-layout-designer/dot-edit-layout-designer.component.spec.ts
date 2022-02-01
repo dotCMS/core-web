@@ -161,6 +161,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         beforeEach(() => {
             component.layout = mockDotLayout();
             component.theme = '123';
+            component.disablePublish = false;
             fixture.detectChanges();
         });
         // these need to be fixed when this is fixed correctly https://github.com/dotCMS/core/issues/18830
@@ -176,6 +177,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(dotSecondaryToolbar).not.toBeNull();
             expect(dotEditPageInfo).not.toBeNull();
             expect(dotLayoutActions).not.toBeNull();
+            expect(component.skipSave).toBe(false);
         });
         // these need to be fixed when this is fixed correctly https://github.com/dotCMS/core/issues/18830
         it('should show dot-edit-page-info', () => {
@@ -193,11 +195,29 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(templateNameInput).toBe(null);
         });
 
+        it('should enable publish button when editing the form.', () => {
+            component.form.get('title').setValue('Hello');
+            fixture.detectChanges();
+            expect(component.disablePublish).toBe(false);
+        });
+
         it('should not show checkbox to save as template', () => {
             const checkboxSave: DebugElement = fixture.debugElement.query(
                 By.css('.dot-edit-layout__toolbar-save-template')
             );
             expect(checkboxSave).toBe(null);
+        });
+
+        it('should emit pushAndPublish event when button clicked', () => {
+            spyOn(component.saveAndPublish, 'emit').and.callThrough();
+            fixture.detectChanges();
+            const publishButton = fixture.debugElement.query(
+                By.css('[data-testId="publishBtn"]')
+            ).nativeElement;
+            publishButton.click();
+            fixture.detectChanges();
+            expect(component.skipSave).toBe(true);
+            expect(component.saveAndPublish.emit).toHaveBeenCalledWith(component.form.value);
         });
 
         it('should save changes when closeEditLayout is true', () => {
@@ -207,12 +227,13 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(component.save.emit).toHaveBeenCalledTimes(1);
         });
 
-        it('should save changes when editing the form.', fakeAsync( () => {
+        it('should save changes when editing the form.', fakeAsync(() => {
             spyOn(component.save, 'emit');
             component.form.get('title').setValue('Hello');
             tick(10500);
             fixture.detectChanges();
             expect(component.save.emit).toHaveBeenCalledTimes(1);
+            expect(component.skipSave).toBe(false);
         }));
 
         it('should show dot-layout-properties and bind attr correctly', () => {
@@ -220,7 +241,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             const layoutProperties: DebugElement = fixture.debugElement.query(
                 By.css('dot-layout-properties')
             );
-            
+
             expect(layoutProperties).toBeTruthy();
             expect(layoutProperties.componentInstance.group).toEqual(component.form.get('layout'));
         });
@@ -283,8 +304,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 By.css('.dot-edit-layout__toolbar-action-themes')
             ).nativeElement;
             themeButton.click();
-            themeSelector = fixture.debugElement.query(By.css('dot-theme-selector'))
-                .componentInstance;
+            themeSelector = fixture.debugElement.query(
+                By.css('dot-theme-selector')
+            ).componentInstance;
             const themeSelectorBtn = fixture.debugElement.query(
                 By.css('.dot-edit-layout__toolbar-action-themes')
             ).nativeElement;
@@ -310,8 +332,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 By.css('.dot-edit-layout__toolbar-action-themes')
             ).nativeElement;
             themeButton.click();
-            themeSelector = fixture.debugElement.query(By.css('dot-theme-selector'))
-                .componentInstance;
+            themeSelector = fixture.debugElement.query(
+                By.css('dot-theme-selector')
+            ).componentInstance;
             const mockTheme = _.cloneDeep(mockDotThemes[0]);
             themeSelector.selected.emit(mockTheme);
             expect(component.changeThemeHandler).toHaveBeenCalledWith(mockTheme);

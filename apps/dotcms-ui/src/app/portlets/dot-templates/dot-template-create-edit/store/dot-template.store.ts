@@ -113,26 +113,44 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         }
     );
 
-    readonly saveTemplate = this.effect((origin$: Observable<DotTemplateItem>) => {
+    readonly saveAndPublishTemplate = this.effect((origin$: Observable<DotTemplateItem>) => {
+        return origin$.pipe(
+            switchMap((template: DotTemplateItem) => {
+                this.dotGlobalMessageService.loading(this.dotMessageService.get('publishing'));
 
+                return this.dotTemplateService.updateAndPublish(this.cleanTemplateItem(template));
+            }),
+            tap((template: DotTemplate) => {
+                this.dotGlobalMessageService.success(
+                    this.dotMessageService.get('message.template.published')
+                );
+
+                this.updateTemplateState(template);
+            }),
+            catchError((err: HttpErrorResponse) => {
+                this.dotGlobalMessageService.error(err.statusText);
+                this.dotHttpErrorManagerService.handle(err).subscribe(() => {
+                    this.dotEditLayoutService.changeDesactivateState(true);
+                });
+                return of(null);
+            })
+        );
+    });
+
+    readonly saveTemplate = this.effect((origin$: Observable<DotTemplateItem>) => {
         return origin$.pipe(
             switchMap((template: DotTemplateItem) => {
                 this.dotGlobalMessageService.loading(
                     this.dotMessageService.get('dot.common.message.saving')
                 );
-              return this.persistTemplate(template)
+
+                return this.dotTemplateService.update(this.cleanTemplateItem(template));
             }),
             tap((template: DotTemplate) => {
-                if (template.drawed) {
-                    this.templateContainersCacheService.set(template.containers);
-                }
-                this.updateTemplate(this.getTemplateItem(template));
                 this.dotGlobalMessageService.success(
                     this.dotMessageService.get('dot.common.message.saved')
                 );
-                if (this.activatedRoute?.snapshot?.params['inode']) {
-                    this.dotRouterService.goToEditTemplate(template.identifier);
-                }
+                this.updateTemplateState(template);
             }),
             catchError((err: HttpErrorResponse) => {
                 this.dotGlobalMessageService.error(err.statusText);
@@ -146,7 +164,9 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
 
     readonly saveProperties = this.effect((origin$: Observable<DotTemplateItem>) => {
         return origin$.pipe(
-            switchMap((template: DotTemplateItem) => this.persistTemplate(template)),
+            switchMap((template: DotTemplateItem) =>
+                this.dotTemplateService.update(this.cleanTemplateItem(template))
+            ),
             tap((template: DotTemplate) => {
                 this.updateTemplate(this.getTemplateItem(template));
             })
@@ -271,11 +291,37 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         return result;
     }
 
-    private persistTemplate(template: DotTemplateItem): Observable<DotTemplate> {
+    private cleanTemplateItem(template: DotTemplateItem): DotTemplate {
         delete template.type;
         if (template.type === 'design') {
             delete template.containers;
         }
-        return this.dotTemplateService.update(template as DotTemplate);
+        return template as DotTemplate;
     }
+
+    private updateTemplateState(template: DotTemplate): void {
+        if (template.drawed) {
+            this.templateContainersCacheService.set(template.containers);
+        }
+        this.updateTemplate(this.getTemplateItem(template));
+        if (this.activatedRoute?.snapshot?.params['inode']) {
+            this.dotRouterService.goToEditTemplate(template.identifier);
+        }
+    }
+
+    // private persistTemplate(template: DotTemplateItem): Observable<DotTemplate> {
+    //     delete template.type;
+    //     if (template.type === 'design') {
+    //         delete template.containers;
+    //     }
+    //     return this.dotTemplateService.update(template as DotTemplate);
+    // }
+
+    // private updateAndPublishTemplate(template: DotTemplateItem): Observable<DotTemplate> {
+    //     delete template.type;
+    //     if (template.type === 'design') {
+    //         delete template.containers;
+    //     }
+    //     return this.dotTemplateService.updateAndPublish(template as DotTemplate);
+    // }
 }

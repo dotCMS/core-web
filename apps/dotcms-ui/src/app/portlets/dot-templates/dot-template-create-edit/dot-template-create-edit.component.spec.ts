@@ -426,7 +426,12 @@ describe('DotTemplateCreateEditComponent', () => {
             beforeEach(() => {
                 const storeMock = jasmine.createSpyObj(
                     'DotTemplateStore',
-                    ['saveTemplate', 'goToTemplateList', 'goToEditTemplate'],
+                    [
+                        'saveTemplate',
+                        'saveAndPublishTemplate',
+                        'goToTemplateList',
+                        'goToEditTemplate'
+                    ],
                     {
                         vm$: of({
                             original: {
@@ -486,6 +491,41 @@ describe('DotTemplateCreateEditComponent', () => {
                     });
 
                     expect(store.saveTemplate).toHaveBeenCalledWith({
+                        title: 'Some template',
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        identifier: '123',
+                        friendlyName: '',
+                        theme: '123',
+                        image: ''
+                    });
+                });
+
+                it('should save', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('saveAndPublish', {
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        themeId: '123'
+                    });
+
+                    expect(store.saveAndPublishTemplate).toHaveBeenCalledWith({
                         title: 'Some template',
                         layout: {
                             title: '',

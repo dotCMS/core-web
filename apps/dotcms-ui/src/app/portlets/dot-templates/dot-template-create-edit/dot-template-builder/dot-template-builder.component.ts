@@ -17,6 +17,7 @@ import { IframeComponent } from '@components/_common/iframe/iframe-component';
 })
 export class DotTemplateBuilderComponent implements OnInit, OnChanges {
     @Input() item: DotTemplateItem;
+    @Output() saveAndPublish = new EventEmitter<DotTemplateItem>();
     @Output() save = new EventEmitter<DotTemplateItem>();
     @Output() cancel = new EventEmitter();
     @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();

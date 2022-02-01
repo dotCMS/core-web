@@ -18,6 +18,16 @@
         <div class="main-toolbar-right">
             <dot-global-message></dot-global-message>
             <button
+                *ngIf="!apiLink"
+                pButton
+                class="p-button-secondary"
+                data-testid="publishBtn"
+                [disabled]="disablePublish"
+                type="button"
+                [label]="'Publish' | dm"
+                (click)="onSaveAndPublish()"
+            ></button>
+            <button
                 *ngIf="!currentTheme; else noPermission"
                 [pTooltip]="'org.dotcms.frontend.content.submission.not.proper.permissions' | dm"
                 tooltipPosition="left"

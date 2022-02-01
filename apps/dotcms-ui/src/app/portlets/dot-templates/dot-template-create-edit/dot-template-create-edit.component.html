@@ -15,6 +15,7 @@
         </dot-portlet-toolbar>
         <dot-template-builder
             [item]="vm.original"
+            (saveAndPublish)="saveAndPublishTemplate($event)"
             (save)="saveTemplate($event)"
             (cancel)="cancelTemplate()"
             (custom)="onCustomEvent($event)"

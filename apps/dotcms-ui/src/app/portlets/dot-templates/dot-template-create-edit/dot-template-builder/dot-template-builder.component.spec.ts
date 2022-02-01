@@ -37,6 +37,8 @@ class DotEditLayoutDesignerMockComponent {
     @Output() cancel: EventEmitter<MouseEvent> = new EventEmitter();
 
     @Output() save: EventEmitter<Event> = new EventEmitter();
+
+    @Output() saveAndPublish: EventEmitter<Event> = new EventEmitter();
 }
 
 @Component({
@@ -162,12 +164,17 @@ describe('DotTemplateBuilderComponent', () => {
             expect(advanced).toBeNull();
         });
 
-        it('should emit events from dot-edit-layout-designer', () => {
+        it('should emit save event from dot-edit-layout-designer', () => {
             const builder = de.query(By.css('dot-edit-layout-designer'));
-
             builder.triggerEventHandler('save', EMPTY_TEMPLATE_DESIGN);
-
             expect(component.save.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
+        });
+
+        it('should emit save and publish event from dot-edit-layout-designer', () => {
+            spyOn(component.saveAndPublish, 'emit');
+            const builder = de.query(By.css('dot-edit-layout-designer'));
+            builder.triggerEventHandler('saveAndPublish', EMPTY_TEMPLATE_DESIGN);
+            expect(component.saveAndPublish.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
         });
     });
 

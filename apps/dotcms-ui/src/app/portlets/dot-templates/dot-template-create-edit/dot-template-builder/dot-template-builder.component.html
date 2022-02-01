@@ -13,6 +13,7 @@
             <dot-edit-layout-designer
                 [theme]="item.theme"
                 [layout]="item.layout"
+                (saveAndPublish)="saveAndPublish.emit($event)"
                 (save)="save.emit($event)"
             ></dot-edit-layout-designer>
         </ng-template>
