@@ -470,7 +470,7 @@ describe('DotTemplateStore', () => {
                 });
             });
 
-            it('should update template and update the state after 10 secounds', fakeAsync(() => {
+            it('should update template and update the state after 10 seconds', fakeAsync(() => {
                 service.saveTemplateDebounce({
                     body: 'string',
                     friendlyName: 'string',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { pluck, map } from 'rxjs/operators';
+import { pluck, map, debounceTime } from 'rxjs/operators';
 
 import { CoreWebService } from '@dotcms/dotcms-js';
 

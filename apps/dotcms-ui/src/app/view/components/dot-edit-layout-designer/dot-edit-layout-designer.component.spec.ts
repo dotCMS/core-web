@@ -84,7 +84,7 @@ let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotThemesService: DotThemesService;
 let dotEditLayoutService: DotEditLayoutService;
 
-fdescribe('DotEditLayoutDesignerComponent', () => {
+describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -205,7 +205,7 @@ fdescribe('DotEditLayoutDesignerComponent', () => {
             expect(component.save.emit).toHaveBeenCalledTimes(1);
         });
 
-        fit('should save changes when editing the form.', () => {
+        it('should save changes when editing the form.', () => {
             spyOn(component.saveDraft, 'emit');
             component.form.get('title').setValue('Hello');
             fixture.detectChanges();

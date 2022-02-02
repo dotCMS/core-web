@@ -204,11 +204,12 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 body: this.cleanUpBody(layout.body),
                 header: layout.header,
                 footer: layout.footer,
-                sidebar: layout.sidebar,
+                sidebar: this.createSidebarForm(layout),
                 title: layout.title,
                 width: layout.width
             }
-        });
+        }, { emitEvent:false } );
+        this.updateModel();
     }
 
     private initForm(): void {
@@ -219,7 +220,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 body: this.cleanUpBody(this.layout.body),
                 header: this.layout.header,
                 footer: this.layout.footer,
-                sidebar: this.createSidebarForm(),
+                sidebar: this.createSidebarForm(this.layout),
                 title: this.layout.title,
                 width: this.layout.width
             })
@@ -244,14 +245,14 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 },
                 (error) => this.errorHandler(error)
             );
-        this.initialFormValue = _.cloneDeep(this.form.value);
+            this.initialFormValue = _.cloneDeep(this.form.value);
     }
 
-    private createSidebarForm(): DotLayoutSideBar {
+    private createSidebarForm(layout: DotLayout): DotLayoutSideBar {
         return {
-            location: this.getSidebarLocation(this.layout),
-            containers: this.getSidebarContainers(this.layout),
-            width: this.getSidebarWidth(this.layout)
+            location: this.getSidebarLocation(layout),
+            containers: this.getSidebarContainers(layout),
+            width: this.getSidebarWidth(layout)
         };
     }
 
