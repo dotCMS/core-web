@@ -2,7 +2,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DotPaletteComponent } from './dot-palette.component';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Injectable, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { dotcmsContentTypeBasicMock } from '@dotcms/app/test/dot-content-types.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -40,7 +40,7 @@ export class DotPaletteContentletsMockComponent {
     @Output() paginate = new EventEmitter<any>();
 
     focusInputFilter() {
-      //
+        //
     }
 }
 
