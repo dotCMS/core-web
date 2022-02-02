@@ -72,8 +72,8 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
                 })
             )
             .subscribe(
-                (updatedPage: DotPageRender) => this.onSaveTemplate(updatedPage),
-                (err: ResponseView) => this.onErrorSavingTemplate(err),
+                (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
+                (err: ResponseView) => this.handleErrorSaveTemplate(err),
                 // On Complete
                 () => (this.didTemplateChanged = false)
             );
@@ -108,14 +108,13 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
             this.dotMessageService.get('dot.common.message.saving')
         );
 
-        
         this.dotPageLayoutService
             // To save a layout and no a template the title should be null
             .save(this.pageState.page.identifier, { ...value, title: null })
             .pipe(take(1))
             .subscribe(
-                (updatedPage: DotPageRender) => this.onSaveTemplate(updatedPage),
-                (err: ResponseView) => this.onErrorSavingTemplate(err),
+                (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
+                (err: ResponseView) => this.handleErrorSaveTemplate(err),
                 () => (this.didTemplateChanged = false)
             );
     }
@@ -131,7 +130,13 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
         this.updateTemplate.next(value);
     }
 
-    onSaveTemplate(updatedPage: DotPageRender) {
+    /**
+     *
+     * Handle Success on Save template
+     * @param {DotPageRender} updatedPage
+     * @memberof DotEditLayoutComponent
+     */
+    private handleSuccessSaveTemplate(updatedPage: DotPageRender) {
         const mappedContainers = this.getRemappedContainers(updatedPage.containers);
         this.templateContainersCacheService.set(mappedContainers);
 
@@ -141,7 +146,13 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
         this.pageState = updatedPage;
     }
 
-    onErrorSavingTemplate(err: ResponseView) {
+    /**
+     *
+     * Handle Error on Save template
+     * @param {ResponseView} err
+     * @memberof DotEditLayoutComponent
+     */
+    private handleErrorSaveTemplate(err: ResponseView) {
         this.dotGlobalMessageService.error(err.response.statusText);
         this.dotHttpErrorManagerService
             .handle(new HttpErrorResponse(err.response))
