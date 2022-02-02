@@ -21,7 +21,7 @@ import { Site, SiteService } from '@dotcms/dotcms-js';
 })
 export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     vm$ = this.store.vm$;
-    didTemplateChanged$ = this.store.didTemplateChanged$
+    didTemplateChanged$ = this.store.didTemplateChanged$;
 
     form: FormGroup;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -79,11 +79,12 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
      *
      * @memberof DotTemplateCreateEditComponent
      */
-     updateTemplate({ layout, body, themeId }: DotTemplate): void {
+    updateWorkingTemplate({ layout, body, themeId }: DotTemplate): void {
         let value = {
             ...this.form.value,
             body
         };
+
         if (layout) {
             value = {
                 ...this.form.value,
@@ -97,7 +98,6 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         this.store.updateWorkingTemplate(value);
     }
 
-        
     /**
      * Save template to store
      *

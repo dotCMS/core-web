@@ -84,6 +84,10 @@ const messageServiceMock = new MockDotMessageService({
     'templates.edit': 'Edit'
 });
 
+interface templateStoreValueType {
+    [key: string]: jasmine.Spy;
+}
+
 async function makeFormValid(fixture) {
     // can't use debugElement because the dialogs opens outside the component
     const title: HTMLInputElement = document.querySelector(
@@ -117,6 +121,7 @@ describe('DotTemplateCreateEditComponent', () => {
     let component: DotTemplateCreateEditComponent;
     let dialogService: DialogService;
     let store: DotTemplateStore;
+    let templateStoreValue: templateStoreValueType;
     const switchSiteSubject = new Subject();
 
     beforeEach(async () => {
@@ -241,11 +246,19 @@ describe('DotTemplateCreateEditComponent', () => {
                 }
             ]
         });
+
+        templateStoreValue = {
+            createTemplate: jasmine.createSpy(),
+            goToEditTemplate: jasmine.createSpy(),
+            goToTemplateList: jasmine.createSpy(),
+            saveTemplate: jasmine.createSpy(),
+            saveTemplateDebounce: jasmine.createSpy(),
+            updateWorkingTemplate: jasmine.createSpy()
+        };
     });
 
     afterEach(() => {
         const dialog = document.querySelector('p-dynamicdialog');
-
         if (dialog) {
             dialog.remove();
         }
@@ -255,13 +268,14 @@ describe('DotTemplateCreateEditComponent', () => {
         describe('Design', () => {
             beforeEach(() => {
                 const storeMock = {
-                    createTemplate: jasmine.createSpy(),
-                    goToTemplateList: jasmine.createSpy(),
+                    ...templateStoreValue,
                     vm$: of({
                         working: EMPTY_TEMPLATE_DESIGN,
                         original: EMPTY_TEMPLATE_DESIGN
                     })
                 };
+
+                // TestBed.
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -353,8 +367,7 @@ describe('DotTemplateCreateEditComponent', () => {
         describe('Advanced', () => {
             beforeEach(() => {
                 const storeMock = {
-                    createTemplate: jasmine.createSpy(),
-                    goToTemplateList: jasmine.createSpy(),
+                    ...templateStoreValue,
                     vm$: of({
                         working: EMPTY_TEMPLATE_ADVANCED,
                         original: EMPTY_TEMPLATE_ADVANCED
@@ -428,19 +441,15 @@ describe('DotTemplateCreateEditComponent', () => {
                     ...EMPTY_TEMPLATE_DESIGN,
                     identifier: '123',
                     title: 'Some template'
-                }
+                };
                 const storeMock = {
-                    saveTemplate: jasmine.createSpy(),
-                    updateWorkingTemplate: jasmine.createSpy(),
-                    saveTemplateDebounce: jasmine.createSpy(),
-                    goToTemplateList: jasmine.createSpy(),
-                    goToEditTemplate: jasmine.createSpy(),
+                    ...templateStoreValue,
                     vm$: of({
                         working: template,
                         original: template,
                         apiLink: '/api/link'
                     })
-                }
+                };
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -539,12 +548,11 @@ describe('DotTemplateCreateEditComponent', () => {
                         friendlyName: '',
                         theme: '123',
                         image: ''
-                    }
+                    };
 
                     expect(store.saveTemplateDebounce).toHaveBeenCalledWith(template);
                     expect(store.updateWorkingTemplate).toHaveBeenCalledWith(template);
                 });
-
 
                 it('should cancel', () => {
                     const builder = de.query(By.css('dot-template-builder'));
@@ -615,17 +623,15 @@ describe('DotTemplateCreateEditComponent', () => {
                     ...EMPTY_TEMPLATE_ADVANCED,
                     identifier: '123',
                     title: 'Some template'
-                }
+                };
                 const storeMock = {
-                    saveTemplate: jasmine.createSpy(),
-                    updateWorkingTemplate: jasmine.createSpy(),
-                    goToTemplateList: jasmine.createSpy(),
+                    ...templateStoreValue,
                     vm$: of({
                         working: template,
                         original: template,
                         apiLink: '/api/link'
                     })
-                }
+                };
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -677,8 +683,7 @@ describe('DotTemplateCreateEditComponent', () => {
 
         beforeEach(() => {
             const storeMock = {
-                createTemplate: jasmine.createSpy(),
-                goToTemplateList: jasmine.createSpy(),
+                ...templateStoreValue,
                 vm$: subject
             };
 
@@ -727,7 +732,7 @@ describe('DotTemplateCreateEditComponent', () => {
 
             subject.next({
                 working: nextTemplate,
-                original: nextTemplate 
+                original: nextTemplate
             });
 
             fixture.detectChanges();
