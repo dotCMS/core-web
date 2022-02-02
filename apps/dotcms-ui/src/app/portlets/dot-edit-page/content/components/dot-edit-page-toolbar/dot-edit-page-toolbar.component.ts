@@ -8,11 +8,8 @@ import {
     OnDestroy
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models';
-import { DotMessageDisplayService } from '@components/dot-message-display/services';
-import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
@@ -36,11 +33,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges, OnDestroy
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
-    constructor(
-        private dotLicenseService: DotLicenseService,
-        private dotEventsService: DotEventsService,
-        private dotMessageDisplayService: DotMessageDisplayService
-    ) {}
+    constructor(private dotLicenseService: DotLicenseService) {}
 
     ngOnInit() {
         this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();

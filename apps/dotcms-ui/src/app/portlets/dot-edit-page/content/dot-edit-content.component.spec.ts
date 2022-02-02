@@ -5,7 +5,14 @@ import { of as observableOf, of, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, tick, fakeAsync, TestBed, flush } from '@angular/core/testing';
+import {
+    ComponentFixture,
+    tick,
+    fakeAsync,
+    TestBed,
+    discardPeriodicTasks,
+    flush
+} from '@angular/core/testing';
 import {
     Component,
     DebugElement,
@@ -89,6 +96,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DotGenerateSecurePasswordService } from '@services/dot-generate-secure-password/dot-generate-secure-password.service';
 import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
 import { PageModelChangeEventType } from './services/dot-edit-content-html/models';
+import { DotESContentService } from '@dotcms/app/api/services/dot-es-content/dot-es-content.service';
 
 const responseData: DotCMSContentType[] = [
     {
@@ -175,6 +183,15 @@ export class MockDotFormSelectorComponent {
     @Output() shutdown = new EventEmitter<any>();
 }
 
+@Component({
+    selector: 'dot-palette',
+    template: ''
+})
+export class MockDotPaletteComponent {
+    @Input() languageId = '1';
+    @Input() items: any[];
+}
+
 @Injectable()
 class MockDotContentTypeService {
     getContentTypes = jasmine
@@ -237,6 +254,7 @@ describe('DotEditContentComponent', () => {
                 MockDotWhatsChangedComponent,
                 MockDotFormSelectorComponent,
                 MockDotIconComponent,
+                MockDotPaletteComponent,
                 HostTestComponent,
                 MockGlobalMessageComponent
             ],
@@ -252,7 +270,6 @@ describe('DotEditContentComponent', () => {
                 DotEditPageWorkflowsActionsModule,
                 DotOverlayMaskModule,
                 DotWizardModule,
-                DotPaletteModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
@@ -275,6 +292,7 @@ describe('DotEditContentComponent', () => {
                 DotGenerateSecurePasswordService,
                 DotCustomEventHandlerService,
                 DotPropertiesService,
+                DotESContentService,
                 { provide: DotContentTypeService, useClass: MockDotContentTypeService },
                 {
                     provide: LoginService,
@@ -1205,6 +1223,38 @@ describe('DotEditContentComponent', () => {
                         expect(
                             dotEditContentHtmlService.setContainterToAppendContentlet
                         ).toHaveBeenCalledWith(container);
+                    });
+
+                    it('should display Form Selector when handle add content event of form Type', () => {
+
+                        spyOn( dotEditContentHtmlService, 'setContainterToAppendContentlet' ).and.callFake(() => {});
+                        spyOn( dotEditContentHtmlService, 'removeContentletPlaceholder' ).and.callFake(() => {});
+                        spyOn( component, 'addFormContentType' ).and.callThrough();
+
+                        fixture.detectChanges();
+
+                        const data = {
+                            container: {
+                                dotIdentifier: 'identifier',
+                                dotUuid: 'uuid'
+                            },
+                            contentType: { variable: 'forms' }
+                        };
+
+                        dotEditContentHtmlService.iframeActions$.next({
+                            name: 'add-content',
+                            data: data
+                        });
+
+                        const container: DotPageContainer = {
+                            identifier: data.container.dotIdentifier,
+                            uuid: data.container.dotUuid
+                        };
+
+                        expect( dotEditContentHtmlService.setContainterToAppendContentlet ).toHaveBeenCalledWith(container);
+                        expect( dotEditContentHtmlService.removeContentletPlaceholder ).toHaveBeenCalled();
+                        expect( component.addFormContentType ).toHaveBeenCalled();
+                        expect( component.editForm ).toBeTruthy();
                     });
 
                     it('should handle remove event', (done) => {

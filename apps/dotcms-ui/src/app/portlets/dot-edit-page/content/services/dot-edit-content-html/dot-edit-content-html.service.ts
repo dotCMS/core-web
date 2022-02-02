@@ -620,6 +620,9 @@ export class DotEditContentHtmlService {
                         // on success
                         content.element.classList.remove('inline-editing--saving');
                         delete this.inlineCurrentContent[content.element.id];
+                        this.dotGlobalMessageService.success(
+                            this.dotMessageService.get('dot.common.message.saved')
+                        );
                     },
                     (e: HttpErrorResponse) => {
                         // on error

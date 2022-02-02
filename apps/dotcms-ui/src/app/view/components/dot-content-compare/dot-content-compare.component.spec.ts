@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
     DotContentCompareComponent,
     DotContentCompareEvent
@@ -18,12 +18,9 @@ import { By } from '@angular/platform-browser';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { ConfirmationService } from 'primeng/api';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { MockDotRouterService } from '@tests/dot-router-service.mock';
-import { DotVersionableService } from '@services/dot-verionable/dot-versionable.service';
-import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
+import { DotFormatDateService } from '@dotcms/app/api/services/dot-format-date-service';
 import { DotcmsConfigService } from '@dotcms/dotcms-js';
-import { DotFormatDateService } from '@services/dot-format-date-service';
 
 const DotContentCompareEventMOCK = {
     inode: '1',
@@ -57,7 +54,7 @@ describe('DotContentCompareComponent', () => {
     let contentCompareTableComponent: DotContentCompareTableComponent;
     let dotAlertConfirmService: DotAlertConfirmService;
     let confirmationService: ConfirmationService;
-    let dotRouterService: DotRouterService;
+    let dotIframeService: DotIframeService;
 
     const messageServiceMock = new MockDotMessageService({
         Confirm: 'Confirm',
@@ -71,25 +68,12 @@ describe('DotContentCompareComponent', () => {
             imports: [DotContentCompareModule],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: DotRouterService, useClass: MockDotRouterService },
                 DotAlertConfirmService,
                 ConfirmationService,
                 {
-                    provide: DotVersionableService,
+                    provide: DotIframeService,
                     useValue: {
-                        bringBack: jasmine.createSpy().and.returnValue(of({ inode: '123' }))
-                    }
-                },
-                {
-                    provide: DotHttpErrorManagerService,
-                    useValue: {
-                        handle: jasmine.createSpy().and.returnValue(
-                            of({
-                                status: {
-                                    toString: () => ''
-                                }
-                            })
-                        )
+                        run: jasmine.createSpy()
                     }
                 },
                 DotFormatDateService,
@@ -114,13 +98,14 @@ describe('DotContentCompareComponent', () => {
         dotContentCompareStore = TestBed.inject(DotContentCompareStore);
         dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
         confirmationService = TestBed.inject(ConfirmationService);
-        dotRouterService = TestBed.inject(DotRouterService);
+        dotIframeService = TestBed.inject(DotIframeService);
 
         hostComponent = hostFixture.componentInstance;
         hostComponent.data = DotContentCompareEventMOCK;
         hostFixture.detectChanges();
-        contentCompareTableComponent = de.query(By.css('dot-content-compare-table'))
-            .componentInstance;
+        contentCompareTableComponent = de.query(
+            By.css('dot-content-compare-table')
+        ).componentInstance;
     });
 
     it('should pass data correctly', () => {
@@ -135,9 +120,9 @@ describe('DotContentCompareComponent', () => {
     });
 
     it('should update compare content', () => {
-        contentCompareTableComponent.changeVersion.emit(('value' as unknown) as DotCMSContentlet);
+        contentCompareTableComponent.changeVersion.emit('value' as unknown as DotCMSContentlet);
         expect(dotContentCompareStore.updateCompare).toHaveBeenCalledOnceWith(
-            ('value' as unknown) as DotCMSContentlet
+            'value' as unknown as DotCMSContentlet
         );
     });
 
@@ -157,7 +142,10 @@ describe('DotContentCompareComponent', () => {
                 'Are you sure you would like to replace your working version with this contentlet version?'
         });
 
-        expect(dotRouterService.goToURL).toHaveBeenCalledOnceWith('/c/content/123');
+        expect(dotIframeService.run).toHaveBeenCalledOnceWith({
+            name: 'getVersionBack',
+            args: ['123']
+        });
         expect(hostComponent.close.emit).toHaveBeenCalledOnceWith(true);
     });
 });
