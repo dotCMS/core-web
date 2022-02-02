@@ -483,7 +483,7 @@ describe('DotTemplateListComponent', () => {
 
             describe('template as a file ', () => {
                 it('should go to site Broser when selected', () => {
-                    spyOn(dotSiteBrowserService, 'setSelectedFolder').and.returnValue(of({}));
+                    spyOn(dotSiteBrowserService, 'setSelectedFolder').and.returnValue(of(null));
                     const rows: DebugElement[] = fixture.debugElement.queryAll(
                         By.css('.p-selectable-row')
                     );

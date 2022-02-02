@@ -382,7 +382,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         });
     }
 
-    private iframeActionsHandler(event: any): () => void {
+    private iframeActionsHandler(event: any): (contentlet: Record<string, unknown>) => void {
         const eventsHandlerMap = {
             edit: this.editContentlet.bind(this),
             code: this.editContentlet.bind(this),
