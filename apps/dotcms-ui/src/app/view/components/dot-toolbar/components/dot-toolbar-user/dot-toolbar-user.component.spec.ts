@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IframeOverlayService } from '../../../_common/iframe/service/iframe-overlay.service';
 import { DotDropdownComponent } from '../../../_common/dot-dropdown-component/dot-dropdown.component';
