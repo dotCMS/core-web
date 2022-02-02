@@ -40,7 +40,7 @@ class DotEditLayoutDesignerMockComponent {
 
     @Output() save: EventEmitter<Event> = new EventEmitter();
 
-    @Output() saveDraft: EventEmitter<Event> = new EventEmitter();
+    @Output() updateTemplate: EventEmitter<Event> = new EventEmitter();
 }
 
 @Component({
@@ -58,7 +58,7 @@ class DotTemplateAdvancedMockComponent {
 
     @Output() save: EventEmitter<Event> = new EventEmitter();
 
-    @Output() saveDraft: EventEmitter<Event> = new EventEmitter();
+    @Output() updateTemplate: EventEmitter<Event> = new EventEmitter();
 }
 
 @Component({
@@ -139,7 +139,7 @@ describe('DotTemplateBuilderComponent', () => {
         de = fixture.debugElement;
         component = fixture.componentInstance;
         spyOn(component.save, 'emit');
-        spyOn(component.saveDraft, 'emit');
+        spyOn(component.updateTemplate, 'emit');
         spyOn(component.cancel, 'emit');
     });
 
@@ -183,10 +183,10 @@ describe('DotTemplateBuilderComponent', () => {
             const builder = de.query(By.css('dot-edit-layout-designer'));
 
             builder.triggerEventHandler('save', EMPTY_TEMPLATE_DESIGN);
-            builder.triggerEventHandler('saveDraft', EMPTY_TEMPLATE_DESIGN);
+            builder.triggerEventHandler('updateTemplate', EMPTY_TEMPLATE_DESIGN);
 
             expect(component.save.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
-            expect(component.saveDraft.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
+            expect(component.updateTemplate.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
         });
     });
 
@@ -218,11 +218,11 @@ describe('DotTemplateBuilderComponent', () => {
             const builder = de.query(By.css('dot-template-advanced'));
 
             builder.triggerEventHandler('save', EMPTY_TEMPLATE_ADVANCED);
-            builder.triggerEventHandler('saveDraft', EMPTY_TEMPLATE_ADVANCED);
+            builder.triggerEventHandler('updateTemplate', EMPTY_TEMPLATE_ADVANCED);
             builder.triggerEventHandler('cancel', {});
 
             expect(component.save.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_ADVANCED);
-            expect(component.saveDraft.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_ADVANCED);
+            expect(component.updateTemplate.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_ADVANCED);
             expect(component.cancel.emit).toHaveBeenCalledTimes(1);
         });
     });

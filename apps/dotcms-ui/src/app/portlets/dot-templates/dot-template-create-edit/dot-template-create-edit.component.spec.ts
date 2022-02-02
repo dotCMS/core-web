@@ -431,7 +431,7 @@ describe('DotTemplateCreateEditComponent', () => {
                 }
                 const storeMock = {
                     saveTemplate: jasmine.createSpy(),
-                    updateDraftTemplate: jasmine.createSpy(),
+                    updateWorkingTemplate: jasmine.createSpy(),
                     saveTemplateDebounce: jasmine.createSpy(),
                     goToTemplateList: jasmine.createSpy(),
                     goToEditTemplate: jasmine.createSpy(),
@@ -509,7 +509,7 @@ describe('DotTemplateCreateEditComponent', () => {
 
                 it('should save draft and call saveTemplateDebounce', () => {
                     const builder = de.query(By.css('dot-template-builder'));
-                    builder.triggerEventHandler('saveDraft', {
+                    builder.triggerEventHandler('updateTemplate', {
                         layout: {
                             title: '',
                             width: '',
@@ -542,7 +542,7 @@ describe('DotTemplateCreateEditComponent', () => {
                     }
 
                     expect(store.saveTemplateDebounce).toHaveBeenCalledWith(template);
-                    expect(store.updateDraftTemplate).toHaveBeenCalledWith(template);
+                    expect(store.updateWorkingTemplate).toHaveBeenCalledWith(template);
                 });
 
 
@@ -618,7 +618,7 @@ describe('DotTemplateCreateEditComponent', () => {
                 }
                 const storeMock = {
                     saveTemplate: jasmine.createSpy(),
-                    updateDraftTemplate: jasmine.createSpy(),
+                    updateWorkingTemplate: jasmine.createSpy(),
                     goToTemplateList: jasmine.createSpy(),
                     vm$: of({
                         working: template,
@@ -656,11 +656,11 @@ describe('DotTemplateCreateEditComponent', () => {
 
                 it('should save draft', () => {
                     const builder = de.query(By.css('dot-template-builder'));
-                    builder.triggerEventHandler('saveDraft', {
+                    builder.triggerEventHandler('updateTemplate', {
                         body: `<h1>##Container and stuff</h1>`
                     });
 
-                    expect(store.updateDraftTemplate).toHaveBeenCalledWith({
+                    expect(store.updateWorkingTemplate).toHaveBeenCalledWith({
                         title: 'Some template',
                         body: '<h1>##Container and stuff</h1>',
                         identifier: '123',

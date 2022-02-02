@@ -15,7 +15,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
     styleUrls: ['./dot-template-advanced.scss']
 })
 export class DotTemplateAdvancedComponent implements OnInit, OnDestroy, OnChanges {
-    @Output() saveDraft = new EventEmitter<DotTemplateItem>();
+    @Output() updateTemplate = new EventEmitter<DotTemplateItem>();
     @Output() save = new EventEmitter<DotTemplateItem>();
     @Output() cancel = new EventEmitter();
 
@@ -38,7 +38,7 @@ export class DotTemplateAdvancedComponent implements OnInit, OnDestroy, OnChange
 
         this.form
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe(() => this.saveDraft.emit(this.form.value));
+            .subscribe(() => this.updateTemplate.emit(this.form.value));
 
         this.actions = this.getActions(!this.didTemplateChanged);
     }

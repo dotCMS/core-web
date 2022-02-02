@@ -18,7 +18,7 @@
         <dot-template-builder
             [didTemplateChanged]="didTemplateChanged.value"
             [item]="vm.working"
-            (saveDraft)="saveDraft($event)"
+            (updateTemplate)="updateTemplate($event)"
             (save)="saveTemplate($event)"
             (cancel)="cancelTemplate()"
             (custom)="onCustomEvent($event)"

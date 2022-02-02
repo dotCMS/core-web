@@ -104,7 +104,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         }
     }));
 
-    readonly updateDraftTemplate = this.updater<DotTemplateItem>(
+    readonly updateWorkingTemplate = this.updater<DotTemplateItem>(
         (state: DotTemplateState, template: DotTemplateItem) => {
             return {
                 ...state,

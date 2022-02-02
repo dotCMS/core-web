@@ -188,7 +188,7 @@ describe('DotEditLayoutComponent', () => {
             const res: DotPageRender = new DotPageRender(mockDotRenderedPage());
             spyOn(dotPageLayoutService, 'save').and.returnValue(of(res));
 
-            layoutDesignerDe.triggerEventHandler('saveDraft', fakeLayout);
+            layoutDesignerDe.triggerEventHandler('updateTemplate', fakeLayout);
 
             tick(10000);
             expect(dotGlobalMessageService.loading).toHaveBeenCalledWith('Saving');

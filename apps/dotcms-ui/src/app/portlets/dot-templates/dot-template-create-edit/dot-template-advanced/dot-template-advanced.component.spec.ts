@@ -170,11 +170,11 @@ describe('DotTemplateAdvancedComponent', () => {
 
     describe('events', () => {
 
-        it('should emit saveDraft event when the form changes', () => {
-            const saveDraft = spyOn(component.saveDraft, 'emit');
+        it('should emit updateTemplate event when the form changes', () => {
+            const updateTemplate = spyOn(component.updateTemplate, 'emit');
             component.form.get('body').setValue('<body></body>');
 
-            expect<any>(saveDraft).toHaveBeenCalledWith({ body: '<body></body>' });
+            expect<any>(updateTemplate).toHaveBeenCalledWith({ body: '<body></body>' });
         });
 
         it('should have form and fields', () => {

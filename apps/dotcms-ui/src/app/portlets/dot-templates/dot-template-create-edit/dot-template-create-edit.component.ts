@@ -79,7 +79,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
      *
      * @memberof DotTemplateCreateEditComponent
      */
-     saveDraft({ layout, body, themeId }: DotTemplate): void {
+     updateTemplate({ layout, body, themeId }: DotTemplate): void {
         let value = {
             ...this.form.value,
             body
@@ -90,9 +90,11 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 layout,
                 theme: themeId
             };
+
+            // Design templates need to be save 10 seconds after the last change.
             this.store.saveTemplateDebounce(value);
         }
-        this.store.updateDraftTemplate(value);
+        this.store.updateWorkingTemplate(value);
     }
 
         

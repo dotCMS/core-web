@@ -329,7 +329,7 @@ describe('DotTemplateStore', () => {
             });
 
             it('should update only the wokring template', () => {
-                service.updateDraftTemplate({
+                service.updateWorkingTemplate({
                     identifier: '23423-234as-sd-w3sd-sd-srzcxsd',
                     title: 'New advaced',
                     friendlyName: '',

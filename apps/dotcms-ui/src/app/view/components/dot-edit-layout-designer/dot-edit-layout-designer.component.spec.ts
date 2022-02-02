@@ -206,10 +206,10 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         it('should save changes when editing the form.', () => {
-            spyOn(component.saveDraft, 'emit');
+            spyOn(component.updateTemplate, 'emit');
             component.form.get('title').setValue('Hello');
             fixture.detectChanges();
-            expect(component.saveDraft.emit).toHaveBeenCalledTimes(1);
+            expect(component.updateTemplate.emit).toHaveBeenCalledTimes(1);
         });
 
         it('should show dot-layout-properties and bind attr correctly', () => {

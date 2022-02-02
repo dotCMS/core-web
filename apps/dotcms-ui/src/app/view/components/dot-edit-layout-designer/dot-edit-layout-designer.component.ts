@@ -72,7 +72,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     save: EventEmitter<Event> = new EventEmitter();
 
     @Output()
-    saveDraft: EventEmitter<Event> = new EventEmitter();
+    updateTemplate: EventEmitter<Event> = new EventEmitter();
 
     form: FormGroup;
     initialFormValue: FormGroup;
@@ -222,7 +222,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             if(!_.isEqual(this.form.value, this.initialFormValue)) {
-                this.saveDraft.emit(this.form.value);
+                this.updateTemplate.emit(this.form.value);
             }
             this.dotEditLayoutService.changeDesactivateState(!this.didTemplateChanged);
         });

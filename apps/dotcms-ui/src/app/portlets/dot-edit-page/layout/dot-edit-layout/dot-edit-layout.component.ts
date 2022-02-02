@@ -1,4 +1,4 @@
-import { pluck, filter, take, debounceTime, tap, catchError, switchMap, takeUntil } from 'rxjs/operators';
+import { pluck, filter, take, debounceTime, switchMap, takeUntil } from 'rxjs/operators';
 import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotPageRenderState } from '../../shared/models/dot-rendered-page-state.model';
