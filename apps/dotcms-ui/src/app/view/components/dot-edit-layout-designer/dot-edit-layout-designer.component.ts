@@ -192,11 +192,6 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     private setFormValue(layout: DotLayout): void {
-        const currentLayout = this.form.get('layout').value;
-        if(_.isEqual(currentLayout, layout)) {
-            return;
-        }
-
         this.form.setValue({
             title: this.title,
             themeId: this.theme,
