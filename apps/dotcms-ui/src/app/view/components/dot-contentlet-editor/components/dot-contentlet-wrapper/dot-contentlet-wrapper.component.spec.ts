@@ -253,7 +253,9 @@ describe('DotContentletWrapperComponent', () => {
                     });
 
                     dotIframeDialog.triggerEventHandler('beforeClose', {
-                        close: () => {}
+                        close: () => {
+                            //
+                        }
                     });
 
                     expect<any>(dotAlertConfirmService.confirm).toHaveBeenCalledWith({

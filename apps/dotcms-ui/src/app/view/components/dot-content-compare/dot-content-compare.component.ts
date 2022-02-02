@@ -69,7 +69,9 @@ export class DotContentCompareComponent {
                         this.close.emit(true);
                     });
             },
-            reject: () => {},
+            reject: () => {
+                //
+            },
             header: this.dotMessageService.get('Confirm'),
             message: this.dotMessageService.get('folder.replace.contentlet.working.version')
         });

@@ -213,11 +213,14 @@ describe('SearchableDropdownComponent', () => {
     });
 
     it('should display Action button', () => {
-        hostComp.action = () => {};
+        hostComp.action = () => {
+            //
+        };
 
         hostFixture.detectChanges();
-        const actionBtn = de.query(By.css('.searchable-dropdown__search-action dot-icon-button'))
-            .componentInstance;
+        const actionBtn = de.query(
+            By.css('.searchable-dropdown__search-action dot-icon-button')
+        ).componentInstance;
         expect(actionBtn.icon).toBe('add');
     });
 

@@ -112,8 +112,9 @@ xdescribe('DotKeyValueTableRowComponent', () => {
 
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
         hostComponent = hostComponentfixture.componentInstance;
-        comp = hostComponentfixture.debugElement.query(By.css('dot-key-value-table-row'))
-            .componentInstance;
+        comp = hostComponentfixture.debugElement.query(
+            By.css('dot-key-value-table-row')
+        ).componentInstance;
         de = hostComponentfixture.debugElement.query(By.css('dot-key-value-table-row'));
 
         hostComponent.variableIndex = 0;
@@ -142,7 +143,9 @@ xdescribe('DotKeyValueTableRowComponent', () => {
                 By.css('.dot-key-value-table-row__variables-actions dot-icon-button')
             )[1];
             button.triggerEventHandler('click', {
-                stopPropagation: () => {}
+                stopPropagation: () => {
+                    //
+                }
             });
             hostComponentfixture.detectChanges();
             expect(comp.valueCell.nativeElement.click).toHaveBeenCalled();
@@ -199,7 +202,11 @@ xdescribe('DotKeyValueTableRowComponent', () => {
             hostComponentfixture.detectChanges();
             de.query(
                 By.css('.dot-key-value-table-row__variables-actions-edit-cancel')
-            ).triggerEventHandler('click', { stopPropagation: () => {} });
+            ).triggerEventHandler('click', {
+                stopPropagation: () => {
+                    //
+                }
+            });
             expect(comp.cancel.emit).toHaveBeenCalledWith(comp.variableIndex);
             expect(comp.showEditMenu).toBe(false);
         });

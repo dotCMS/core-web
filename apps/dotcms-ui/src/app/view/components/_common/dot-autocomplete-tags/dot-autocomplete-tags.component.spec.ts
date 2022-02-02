@@ -109,7 +109,9 @@ describe('DotAutocompleteTagsComponent', () => {
                 const backspaceEvent = { key: 'Backspace' };
                 const qEvent = { key: 'q', currentTarget: { value: 'qEvent' } };
 
-                beforeEach(() => {});
+                beforeEach(() => {
+                    //
+                });
 
                 it('should show the helper when input has value', () => {
                     autoComplete.onKeyup({ ...qEvent });

@@ -154,7 +154,9 @@ describe('DotToolbarUserComponent', () => {
 
         const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
         logoutAsLink.triggerEventHandler('click', {
-            preventDefault: () => {}
+            preventDefault: () => {
+                //
+            }
         });
 
         await fixture.whenStable();
@@ -165,18 +167,20 @@ describe('DotToolbarUserComponent', () => {
 
     it('should hide login as link', () => {
         comp.auth = mockAuth;
-        spyOn(loginService, 'getCurrentUser').and.returnValue(of({
-            email: 'admin@dotcms.com',
-            givenName: 'Admin',
-            loginAs: false,
-            roleId: 'e7d4e34e-5127-45fc-8123-d48b62d510e3',
-            surname: 'User',
-            userId: 'dotcms.org.1'
-        }));
+        spyOn(loginService, 'getCurrentUser').and.returnValue(
+            of({
+                email: 'admin@dotcms.com',
+                givenName: 'Admin',
+                loginAs: false,
+                roleId: 'e7d4e34e-5127-45fc-8123-d48b62d510e3',
+                surname: 'User',
+                userId: 'dotcms.org.1'
+            })
+        );
 
         fixture.detectChanges();
 
         const loginAsLink = de.query(By.css('[data-testId="login-as"]'));
         expect(loginAsLink).toBe(null);
-    })
+    });
 });

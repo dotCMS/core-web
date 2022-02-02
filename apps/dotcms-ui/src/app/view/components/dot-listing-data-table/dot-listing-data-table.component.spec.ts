@@ -164,7 +164,9 @@ describe('DotListingDataTableComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             }
         ];
@@ -344,7 +346,9 @@ describe('DotListingDataTableComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             }
         ];
@@ -363,7 +367,9 @@ describe('DotListingDataTableComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             }
         ];

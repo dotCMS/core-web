@@ -151,7 +151,9 @@ describe('SiteSelectorComponent', () => {
         expect(comp.handleSitesRefresh).toHaveBeenCalledTimes(1);
     });
 
-    describe('Pagination', () => {});
+    describe('Pagination', () => {
+        //
+    });
 
     it('should change page', () => {
         const filter = 'filter';

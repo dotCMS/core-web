@@ -255,7 +255,9 @@ describe('DotIframeDialogComponent', () => {
 
         it('should emit beforeClose when a observer is set', () => {
             dialogComponent.beforeClose.emit({
-                close: () => {}
+                close: () => {
+                    //
+                }
             });
             expect(component.beforeClose.emit).toHaveBeenCalledTimes(1);
         });
@@ -265,7 +267,9 @@ describe('DotIframeDialogComponent', () => {
             hostFixture.detectChanges();
 
             dialogComponent.beforeClose.emit({
-                close: () => {}
+                close: () => {
+                    //
+                }
             });
             expect(component.beforeClose.emit).not.toHaveBeenCalled();
         });

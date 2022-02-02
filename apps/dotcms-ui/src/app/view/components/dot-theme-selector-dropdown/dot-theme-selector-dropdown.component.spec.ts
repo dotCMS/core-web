@@ -36,10 +36,12 @@ const messageServiceMock = new MockDotMessageService({
 class MockDotSiteSelectorComponent {
     @Input() system;
     searchableDropdown = {
-        handleClick: () => {}
+        handleClick: () => {
+            //
+        }
     };
 
-    updateCurrentSite  = jasmine.createSpy('updateCurrentSite');
+    updateCurrentSite = jasmine.createSpy('updateCurrentSite');
 }
 
 @Component({
@@ -209,7 +211,6 @@ describe('DotThemeSelectorDropdownComponent', () => {
                 fixture.detectChanges();
                 expect(instance.rows).toBe(5);
             });
-
         });
 
         describe('events', () => {
