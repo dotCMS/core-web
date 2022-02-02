@@ -19,7 +19,7 @@ import * as _ from 'lodash';
 
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
-import { tap, take, takeUntil } from 'rxjs/operators';
+import { tap, take, takeUntil, debounceTime } from 'rxjs/operators';
 
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -195,6 +195,10 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     }
 
     private setFormValue(layout: DotLayout): void {
+        const currentLayout = this.form.get('layout').value;
+        if (_.isEqual(currentLayout, layout)) {
+            return;
+        }
         this.form.setValue(
             {
                 title: this.title,

@@ -91,11 +91,9 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
                 layout,
                 theme: themeId
             };
-
-            // Design templates need to be save 10 seconds after the last change.
-            this.store.saveTemplateDebounce(value);
         }
-        this.store.updateWorkingTemplate(value);
+
+        this.store.saveWorkingTemplate(value);
     }
 
     /**
@@ -161,6 +159,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     private getForm(template: DotTemplateItem): FormGroup {
         if (template.type === 'design') {
             return this.fb.group({
+                type: template.type,
                 title: [template.title, Validators.required],
                 layout: this.fb.group(template.layout),
                 identifier: template.identifier,
@@ -171,6 +170,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         }
 
         return this.fb.group({
+            type: template.type,
             title: [template.title, Validators.required],
             body: template.body,
             identifier: template.identifier,
@@ -182,6 +182,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     private getFormValue(template: DotTemplateItem): { [key: string]: any } {
         if (template.type === 'design') {
             return {
+                type: template.type,
                 title: template.title,
                 layout: template.layout,
                 identifier: template.identifier,
@@ -192,6 +193,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         }
 
         return {
+            type: template.type,
             title: template.title,
             body: template.body,
             identifier: template.identifier,

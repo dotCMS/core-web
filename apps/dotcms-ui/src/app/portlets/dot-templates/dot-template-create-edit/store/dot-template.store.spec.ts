@@ -121,7 +121,7 @@ const BASIC_PROVIDERS = [
     }
 ];
 
-describe('DotTemplateStore', () => {
+fdescribe('DotTemplateStore', () => {
     let service: DotTemplateStore;
     let dotTemplateContainersCacheService: DotTemplateContainersCacheService;
     let dotRouterService: DotRouterService;
@@ -184,7 +184,7 @@ describe('DotTemplateStore', () => {
                 original: template,
                 working: template,
                 apiLink: ''
-            }
+            };
 
             service.vm$.subscribe((res) => {
                 expect(res).toEqual(state);
@@ -383,7 +383,7 @@ describe('DotTemplateStore', () => {
                     drawed: false,
                     image: 'image',
                     body: ''
-                }
+                };
 
                 service.state$.subscribe((res) => {
                     expect(res).toEqual({
@@ -393,7 +393,7 @@ describe('DotTemplateStore', () => {
                     });
                 });
             });
-            
+
             it('should update the body', () => {
                 service.updateBody('<h3>Hola Mundo</h3>');
 
@@ -518,8 +518,47 @@ describe('DotTemplateStore', () => {
                 });
             }));
 
+            it('should call updateWorkingTemplate and call saveTemplateDebounce when is a design template', () => {
+                spyOn(service, 'updateWorkingTemplate');
+                spyOn(service, 'saveTemplateDebounce');
+                service.saveWorkingTemplate({
+                    type: 'design',
+                    layout: {
+                        header: true,
+                        footer: true,
+                        body: { rows: [] },
+                        sidebar: null,
+                        title: '',
+                        width: null
+                    },
+                    theme: '123',
+                    friendlyName: 'string',
+                    identifier: 'string',
+                    title: 'string'
+                });
+
+                expect(service.updateWorkingTemplate).toHaveBeenCalled();
+                expect(service.saveTemplateDebounce).toHaveBeenCalled();
+            });
+            it('should call updateWorkingTemplate and not call saveTemplateDebounce when is a advanced template', () => {
+                spyOn(service, 'updateWorkingTemplate');
+                spyOn(service, 'saveTemplateDebounce');
+                service.saveWorkingTemplate({
+                    type: 'advanced',
+                    body: '',
+                    friendlyName: 'string',
+                    identifier: 'string',
+                    title: 'string'
+                });
+
+                // tick(10000);
+
+                expect(service.updateWorkingTemplate).toHaveBeenCalled();
+                expect(service.saveTemplateDebounce).not.toHaveBeenCalled();
+            });
+
             it('should handler error on update template', (done) => {
-                const error = throwError(new HttpErrorResponse(mockResponseView(400)))
+                const error = throwError(new HttpErrorResponse(mockResponseView(400)));
                 spyOn<any>(service, 'persistTemplate').and.returnValue(error);
                 service.saveTemplate({
                     body: 'string',
@@ -534,7 +573,7 @@ describe('DotTemplateStore', () => {
                     done();
                 });
             });
-            
+
             it('should not update template body when updates props', () => {
                 service.saveProperties({
                     body: 'string',

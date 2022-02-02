@@ -165,6 +165,18 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         );
     });
 
+    readonly saveWorkingTemplate = this.effect((working$: Observable<DotTemplateItem>) => {
+        return working$.pipe(
+            tap((template: DotTemplateItem) => {
+                if (template.type === 'design') {
+                    // Design templates need to be save 10 seconds after the last change.
+                    this.saveTemplateDebounce(template);
+                }
+                this.updateWorkingTemplate(template);
+            })
+        );
+    });
+
     readonly saveProperties = this.effect((origin$: Observable<DotTemplateItem>) => {
         return origin$.pipe(
             switchMap((template: DotTemplateItem) => this.persistTemplate(template)),
@@ -333,7 +345,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 ...newPropertiesTemplate,
                 layout: (templateState as DotTemplateItemDesign).layout
             };
-        } 
+        }
         return {
             ...newPropertiesTemplate,
             body: (templateState as DotTemplateItemadvanced).body
