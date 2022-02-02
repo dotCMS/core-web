@@ -75,6 +75,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     saveDraft: EventEmitter<Event> = new EventEmitter();
 
     form: FormGroup;
+    initialFormValue: FormGroup;
     themeDialogVisibility = false;
 
     currentTheme: DotTheme;
@@ -224,7 +225,9 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.saveDraft.emit(this.form.value);
+            if(!_.isEqual(this.form.value, this.initialFormValue)) {
+                this.saveDraft.emit(this.form.value);
+            }
             this.dotEditLayoutService.changeDesactivateState(!this.didTemplateChanged);
         });
         this.updateModel();
@@ -241,6 +244,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
                 },
                 (error) => this.errorHandler(error)
             );
+        this.initialFormValue = _.cloneDeep(this.form.value);
     }
 
     private createSidebarForm(): DotLayoutSideBar {

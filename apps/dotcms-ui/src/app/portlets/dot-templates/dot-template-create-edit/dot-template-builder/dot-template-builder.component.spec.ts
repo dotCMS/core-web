@@ -103,7 +103,7 @@ class DotTestHostComponent {
     item: DotTemplateItem;
 }
 
-fdescribe('DotTemplateBuilderComponent', () => {
+describe('DotTemplateBuilderComponent', () => {
     let component: DotTemplateBuilderComponent;
     let fixture: ComponentFixture<DotTemplateBuilderComponent>;
     let de: DebugElement;

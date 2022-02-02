@@ -75,7 +75,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Save changes on working template to store
+     * Update Working Tempalte
      *
      * @memberof DotTemplateCreateEditComponent
      */
