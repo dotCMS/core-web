@@ -191,7 +191,7 @@ const mockRenderedPageState = new DotPageRenderState(
     new DotPageRender(mockDotRenderedPage())
 );
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -394,11 +394,9 @@ fdescribe('DotEditContentComponent', () => {
                     });
                     fixture.detectChanges();
 
-                    expect<any>(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
-                        baseType: 'string',
-                        clazz: 'string'
-                    });
-
+                    expect<any>(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith(
+                        '123'
+                    );
                     expect(dotEditPageService.save).toHaveBeenCalledWith('123', [
                         { identifier: '123', uuid: 'uui-1' }
                     ]);
@@ -1366,14 +1364,12 @@ fdescribe('DotEditContentComponent', () => {
             it('should save form', () => {
                 dotFormSelector.triggerEventHandler('select', {
                     baseType: 'string',
-                    clazz: 'string'
+                    clazz: 'string',
+                    id: '123'
                 });
                 fixture.detectChanges();
 
-                expect<any>(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith({
-                    baseType: 'string',
-                    clazz: 'string'
-                });
+                expect<any>(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith('123');
 
                 expect<any>(dotEditPageService.save).toHaveBeenCalledWith('123', [
                     { identifier: '123', uuid: 'uui-1', personaTag: 'SuperPersona' }
