@@ -191,7 +191,7 @@ describe('DotTemplateAdvancedComponent', () => {
             spyOn(Date, 'now').and.returnValue(1111111);
             const container = de.query(By.css('dot-container-selector'));
 
-            container.triggerEventHandler('change', {
+            container.triggerEventHandler('swap', {
                 identifier: '123',
                 parentPermissionable: { hostname: 'demo.com' }
             });
