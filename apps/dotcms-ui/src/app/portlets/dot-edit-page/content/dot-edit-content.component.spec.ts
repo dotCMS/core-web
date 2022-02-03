@@ -400,7 +400,7 @@ describe('DotEditContentComponent', () => {
 
             describe('events', () => {
                 it('select > should add form', () => {
-                    dotFormSelector.triggerEventHandler('select', {
+                    dotFormSelector.triggerEventHandler('pick', {
                         baseType: 'string',
                         clazz: 'string'
                     });
@@ -422,7 +422,7 @@ describe('DotEditContentComponent', () => {
 
                 it('close > should close form', () => {
                     component.editForm = true;
-                    dotFormSelector.triggerEventHandler('close', {});
+                    dotFormSelector.triggerEventHandler('shutdown', {});
                     expect(component.editForm).toBe(false);
                 });
             });
@@ -1226,10 +1226,15 @@ describe('DotEditContentComponent', () => {
                     });
 
                     it('should display Form Selector when handle add content event of form Type', () => {
-
-                        spyOn( dotEditContentHtmlService, 'setContainterToAppendContentlet' ).and.callFake(() => {});
-                        spyOn( dotEditContentHtmlService, 'removeContentletPlaceholder' ).and.callFake(() => {});
-                        spyOn( component, 'addFormContentType' ).and.callThrough();
+                        spyOn(
+                            dotEditContentHtmlService,
+                            'setContainterToAppendContentlet'
+                        ).and.callFake(() => {});
+                        spyOn(
+                            dotEditContentHtmlService,
+                            'removeContentletPlaceholder'
+                        ).and.callFake(() => {});
+                        spyOn(component, 'addFormContentType').and.callThrough();
 
                         fixture.detectChanges();
 
@@ -1251,10 +1256,14 @@ describe('DotEditContentComponent', () => {
                             uuid: data.container.dotUuid
                         };
 
-                        expect( dotEditContentHtmlService.setContainterToAppendContentlet ).toHaveBeenCalledWith(container);
-                        expect( dotEditContentHtmlService.removeContentletPlaceholder ).toHaveBeenCalled();
-                        expect( component.addFormContentType ).toHaveBeenCalled();
-                        expect( component.editForm ).toBeTruthy();
+                        expect(
+                            dotEditContentHtmlService.setContainterToAppendContentlet
+                        ).toHaveBeenCalledWith(container);
+                        expect(
+                            dotEditContentHtmlService.removeContentletPlaceholder
+                        ).toHaveBeenCalled();
+                        expect(component.addFormContentType).toHaveBeenCalled();
+                        expect(component.editForm).toBeTruthy();
                     });
 
                     it('should handle remove event', (done) => {
@@ -1385,7 +1394,7 @@ describe('DotEditContentComponent', () => {
             });
 
             it('should save form', () => {
-                dotFormSelector.triggerEventHandler('select', {
+                dotFormSelector.triggerEventHandler('pick', {
                     baseType: 'string',
                     clazz: 'string'
                 });
