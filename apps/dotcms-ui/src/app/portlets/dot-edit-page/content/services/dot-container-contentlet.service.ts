@@ -42,11 +42,12 @@ export class DotContainerContentletService {
      */
     getFormToContainer(
         container: DotPageContainer,
-        form: DotCMSContentType
+        formId: string
     ): Observable<{ render: string; content: any }> {
+        debugger;
         return this.coreWebService
             .requestView({
-                url: `v1/containers/form/${form.id}?containerId=${container.identifier}`
+                url: `v1/containers/form/${formId}?containerId=${container.identifier}`
             })
             .pipe(pluck('entity'));
     }

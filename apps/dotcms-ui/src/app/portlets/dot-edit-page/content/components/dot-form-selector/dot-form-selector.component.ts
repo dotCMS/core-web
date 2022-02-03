@@ -67,6 +67,7 @@ export class DotFormSelectorComponent implements OnInit, OnChanges {
             .getWithOffset(event.first)
             .pipe(take(1))
             .subscribe((items: DotCMSContentType[]) => {
+                console.log(items);
                 this.items = items;
             });
     }

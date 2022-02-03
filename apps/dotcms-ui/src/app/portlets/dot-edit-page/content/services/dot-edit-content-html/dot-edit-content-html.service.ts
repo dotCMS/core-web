@@ -229,6 +229,16 @@ export class DotEditContentHtmlService {
         }
     }
 
+    private findPlaceHolderOnDrop(doc: Document): void {
+        const container: HTMLElement = doc
+            .querySelector(CONTENTLET_PLACEHOLDER_SELECTOR)
+            .closest('[data-dot-object="container"]');
+        this.setContainterToAppendContentlet({
+            identifier: container.dataset['dotIdentifier'],
+            uuid: container.dataset['dotUuid']
+        });
+    }
+
     /**
      * Render a contentlet in the DOM after add it
      *
@@ -237,17 +247,11 @@ export class DotEditContentHtmlService {
      * @memberof DotEditContentHtmlService
      */
     renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): void {
+        console.log('contentlet: ', contentlet);
         const doc = this.getEditPageDocument();
         if (isDroppedAsset) {
-            const container: HTMLElement = doc
-                .querySelector(CONTENTLET_PLACEHOLDER_SELECTOR)
-                .closest('[data-dot-object="container"]');
-            this.setContainterToAppendContentlet({
-                identifier: container.dataset['dotIdentifier'],
-                uuid: container.dataset['dotUuid']
-            });
+            this.findPlaceHolderOnDrop(doc);
         }
-
         const containerEl: HTMLElement = doc.querySelector(
             `[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
         );
@@ -261,38 +265,62 @@ export class DotEditContentHtmlService {
                 contentletPlaceholder = this.getContentletPlaceholder();
                 containerEl.appendChild(contentletPlaceholder);
             }
+            console.log(contentlet.identifier);
 
-            this.dotContainerContentletService
-                .getContentletToContainer(this.currentContainer, contentlet, this.currentPage)
-                .pipe(take(1))
-                .subscribe((contentletHtml: string) => {
-                    const contentletEl: HTMLElement = this.generateNewContentlet(contentletHtml);
-                    containerEl.replaceChild(contentletEl, contentletPlaceholder);
-                    // Update the model with the recently added contentlet
-                    this.pageModel$.next({
-                        model: this.getContentModel(),
-                        type: PageModelChangeEventType.ADD_CONTENT
-                    });
-                    this.currentAction = DotContentletAction.EDIT;
-                    this.updateContainerToolbar(containerEl.dataset.dotIdentifier);
+            if (contentlet.baseType === 'FORM') {
+                debugger;
+                this.dotContainerContentletService
+                    .getFormToContainer(this.currentContainer, contentlet.identifier)
+                    .pipe(take(1))
+                    .subscribe(({ content }: { [key: string]: any }) => {
+                        debugger;
+                        const { identifier, inode } = content;
 
-                    if (contentletEl.dataset['dotBasetype'] === 'FORM') {
+                        containerEl.replaceChild(
+                            this.renderFormContentlet(identifier, inode),
+                            contentletPlaceholder
+                        );
+                        this.pageModel$.next({
+                            model: this.getContentModel(),
+                            type: PageModelChangeEventType.ADD_CONTENT
+                        });
                         this.iframeActions$.next({
                             name: 'save'
                         });
-                    }
-                });
+                    });
+            } else {
+                this.dotContainerContentletService
+                    .getContentletToContainer(this.currentContainer, contentlet, this.currentPage)
+                    .pipe(take(1))
+                    .subscribe((contentletHtml: string) => {
+                        const contentletEl: HTMLElement = this.generateNewContentlet(
+                            contentletHtml
+                        );
+                        containerEl.replaceChild(contentletEl, contentletPlaceholder);
+                        // Update the model with the recently added contentlet
+                        this.pageModel$.next({
+                            model: this.getContentModel(),
+                            type: PageModelChangeEventType.ADD_CONTENT
+                        });
+                        this.currentAction = DotContentletAction.EDIT;
+                        this.updateContainerToolbar(containerEl.dataset.dotIdentifier);
+                    });
+            }
         }
     }
 
     /**
      * Render a form in the DOM after add it
      *
-     * @param ContentType form
+     * @param ContentType formId
+     * @param booblean isDroppedAsset
      * @memberof DotEditContentHtmlService
      */
-    renderAddedForm(form: DotCMSContentType): Observable<DotPageContainer[]> {
+    renderAddedForm(formId: string, isDroppedAsset = false): Observable<DotPageContainer[]> {
         const doc = this.getEditPageDocument();
+        if (isDroppedAsset) {
+            this.findPlaceHolderOnDrop(doc);
+        }
         const containerEl: HTMLElement = doc.querySelector(
             [
                 '[data-dot-object="container"]',
@@ -301,18 +329,20 @@ export class DotEditContentHtmlService {
             ].join('')
         );
 
-        if (this.isFormExistInContainer(form, containerEl)) {
+        if (this.isFormExistInContainer(formId, containerEl)) {
             this.showContentAlreadyAddedError();
             return of(null);
         } else {
-            const contentletPlaceholder = this.getContentletPlaceholder();
-            containerEl.appendChild(contentletPlaceholder);
+            let contentletPlaceholder = doc.querySelector(CONTENTLET_PLACEHOLDER_SELECTOR);
+            if (!contentletPlaceholder) {
+                contentletPlaceholder = this.getContentletPlaceholder();
+                containerEl.appendChild(contentletPlaceholder);
+            }
             return this.dotContainerContentletService
-                .getFormToContainer(this.currentContainer, form)
+                .getFormToContainer(this.currentContainer, formId)
                 .pipe(
                     map(({ content }: { [key: string]: any }) => {
                         const { identifier, inode } = content;
-
                         containerEl.replaceChild(
                             this.renderFormContentlet(identifier, inode),
                             contentletPlaceholder
@@ -452,14 +482,14 @@ export class DotEditContentHtmlService {
         );
     }
 
-    private isFormExistInContainer(form: DotCMSContentType, containerEL: HTMLElement): boolean {
+    private isFormExistInContainer(formId: string, containerEL: HTMLElement): boolean {
         const contentsSelector = `[data-dot-object="contentlet"]`;
         const currentContentlets: HTMLElement[] = <HTMLElement[]>(
             Array.from(containerEL.querySelectorAll(contentsSelector).values())
         );
 
         return currentContentlets.some(
-            (contentElement) => contentElement.dataset.dotContentTypeId === form.id
+            (contentElement) => contentElement.dataset.dotContentTypeId === formId
         );
     }
 
@@ -694,6 +724,22 @@ export class DotEditContentHtmlService {
             },
             'add-contentlet': (dotAssetData: DotAssetPayload) => {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
+            },
+            'add-form': (formId: string) => {
+                debugger;
+                this.renderAddedForm(formId, true)
+                    .pipe(take(1))
+                    .subscribe((model: DotPageContainer[]) => {
+                        if (model) {
+                            this.pageModel$.next({
+                                model: model,
+                                type: PageModelChangeEventType.ADD_CONTENT
+                            });
+                            this.iframeActions$.next({
+                                name: 'save'
+                            });
+                        }
+                    });
             },
             'handle-http-error': (err: HttpErrorResponse) => {
                 this.dotHttpErrorManagerService
