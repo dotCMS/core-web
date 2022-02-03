@@ -246,16 +246,16 @@ describe('DotTemplatePropsComponent', () => {
     describe('dot-form-dialog', () => {
         it('should handle button disabled attr on form change', () => {
             const dialog = de.query(By.css('[data-testId="dialogForm"]'));
-            expect(dialog.attributes['ng-reflect-save-button-disabled']).toBe('true');
+            expect(dialog.componentInstance.saveButtonDisabled).toBe(true);
 
             component.form.get('title').setValue('Hello World');
             component.form.get('theme').setValue('123');
             fixture.detectChanges();
-            expect(dialog.attributes['ng-reflect-save-button-disabled']).toBe('false');
+            expect(dialog.componentInstance.saveButtonDisabled).toBe(false);
 
             component.form.get('title').setValue(''); // back to original value
             fixture.detectChanges();
-            expect(dialog.attributes['ng-reflect-save-button-disabled']).toBe('true');
+            expect(dialog.componentInstance.saveButtonDisabled).toBe(true);
         });
 
         it('should call save from config', () => {
