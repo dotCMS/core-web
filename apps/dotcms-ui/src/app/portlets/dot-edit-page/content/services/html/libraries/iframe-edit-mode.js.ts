@@ -445,26 +445,7 @@ function initDragAndDrop () {
             } else { // Adding specific Content Type / Contentlet
                 if (draggedContent.contentType) { // Contentlet
                     if (draggedContent.contentType === 'FORM') {
-                        console.log('ADDING FORM', draggedContent);
                         sendCreateFormEvent(draggedContent.id)
-                        // sendCreateContentletEvent({
-                        //             baseType: 'FORM',
-                        //             identifier: draggedContent.id,
-                        //             inode: null
-                        //         });
-                        // const requestForm = async () => {
-                        //     const url = '/api/v1/containers/form/' + draggedContent.id + '?containerId=' + container.dataset['dotIdentifier'];
-                        //     try {
-                        //         const response = await fetch(url);
-                        //         const json = await response.json();
-                        //         debugger;
-                        //
-                        //     } catch(e) {
-                        //         handleHttpErrors(e);
-                        //     }
-                        // }
-                        // requestForm();
-
                     } else {
                         sendCreateContentletEvent(draggedContent);
                     }

@@ -247,7 +247,6 @@ export class DotEditContentHtmlService {
      * @memberof DotEditContentHtmlService
      */
     renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): void {
-        console.log('contentlet: ', contentlet);
         const doc = this.getEditPageDocument();
         if (isDroppedAsset) {
             this.findPlaceHolderOnDrop(doc);
@@ -265,47 +264,21 @@ export class DotEditContentHtmlService {
                 contentletPlaceholder = this.getContentletPlaceholder();
                 containerEl.appendChild(contentletPlaceholder);
             }
-            console.log(contentlet.identifier);
 
-            if (contentlet.baseType === 'FORM') {
-                debugger;
-                this.dotContainerContentletService
-                    .getFormToContainer(this.currentContainer, contentlet.identifier)
-                    .pipe(take(1))
-                    .subscribe(({ content }: { [key: string]: any }) => {
-                        debugger;
-                        const { identifier, inode } = content;
-
-                        containerEl.replaceChild(
-                            this.renderFormContentlet(identifier, inode),
-                            contentletPlaceholder
-                        );
-                        this.pageModel$.next({
-                            model: this.getContentModel(),
-                            type: PageModelChangeEventType.ADD_CONTENT
-                        });
-                        this.iframeActions$.next({
-                            name: 'save'
-                        });
+            this.dotContainerContentletService
+                .getContentletToContainer(this.currentContainer, contentlet, this.currentPage)
+                .pipe(take(1))
+                .subscribe((contentletHtml: string) => {
+                    const contentletEl: HTMLElement = this.generateNewContentlet(contentletHtml);
+                    containerEl.replaceChild(contentletEl, contentletPlaceholder);
+                    // Update the model with the recently added contentlet
+                    this.pageModel$.next({
+                        model: this.getContentModel(),
+                        type: PageModelChangeEventType.ADD_CONTENT
                     });
-            } else {
-                this.dotContainerContentletService
-                    .getContentletToContainer(this.currentContainer, contentlet, this.currentPage)
-                    .pipe(take(1))
-                    .subscribe((contentletHtml: string) => {
-                        const contentletEl: HTMLElement = this.generateNewContentlet(
-                            contentletHtml
-                        );
-                        containerEl.replaceChild(contentletEl, contentletPlaceholder);
-                        // Update the model with the recently added contentlet
-                        this.pageModel$.next({
-                            model: this.getContentModel(),
-                            type: PageModelChangeEventType.ADD_CONTENT
-                        });
-                        this.currentAction = DotContentletAction.EDIT;
-                        this.updateContainerToolbar(containerEl.dataset.dotIdentifier);
-                    });
-            }
+                    this.currentAction = DotContentletAction.EDIT;
+                    this.updateContainerToolbar(containerEl.dataset.dotIdentifier);
+                });
         }
     }
 
@@ -726,7 +699,6 @@ export class DotEditContentHtmlService {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
             },
             'add-form': (formId: string) => {
-                debugger;
                 this.renderAddedForm(formId, true)
                     .pipe(take(1))
                     .subscribe((model: DotPageContainer[]) => {

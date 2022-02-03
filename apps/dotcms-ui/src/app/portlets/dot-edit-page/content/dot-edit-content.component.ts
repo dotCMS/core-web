@@ -209,7 +209,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .renderAddedForm(item.id)
             .subscribe((model: DotPageContainer[]) => {
                 if (model) {
-                    debugger;
                     this.saveToPage(model)
                         .pipe(take(1))
                         .subscribe(() => {
@@ -417,7 +416,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         fromEvent(window.document, 'ng-event')
             .pipe(pluck('detail'), takeUntil(this.destroy$))
             .subscribe((customEvent: any) => {
-                debugger;
                 if (this.customEventsHandler[customEvent.name]) {
                     this.customEventsHandler[customEvent.name](customEvent.data);
                 }

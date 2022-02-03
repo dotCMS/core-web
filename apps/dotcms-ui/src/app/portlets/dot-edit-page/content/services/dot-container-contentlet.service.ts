@@ -44,7 +44,6 @@ export class DotContainerContentletService {
         container: DotPageContainer,
         formId: string
     ): Observable<{ render: string; content: any }> {
-        debugger;
         return this.coreWebService
             .requestView({
                 url: `v1/containers/form/${formId}?containerId=${container.identifier}`
