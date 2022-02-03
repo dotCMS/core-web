@@ -285,7 +285,7 @@ export class DotEditContentHtmlService {
     /**
      * Render a form in the DOM after add it
      *
-     * @param ContentType formId
+     * @param string formId
      * @param booblean isDroppedAsset
      * @memberof DotEditContentHtmlService
      */
@@ -304,6 +304,7 @@ export class DotEditContentHtmlService {
 
         if (this.isFormExistInContainer(formId, containerEl)) {
             this.showContentAlreadyAddedError();
+            this.removeContentletPlaceholder();
             return of(null);
         } else {
             let contentletPlaceholder = doc.querySelector(CONTENTLET_PLACEHOLDER_SELECTOR);
