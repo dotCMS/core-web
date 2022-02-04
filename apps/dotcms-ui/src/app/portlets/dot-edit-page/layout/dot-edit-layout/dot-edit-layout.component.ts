@@ -97,17 +97,29 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
     }
 
     /**
-     *  The reason why we are using a Subject [updateTemplate] here is
-     *  because we can not just simply add a debounceTime to the HTTP Request
-     *  we need to reset the time everytime the observable is called.
+     *  Handle next template value;
      *
-     *  More Information Here:
-     *          - https://stackoverflow.com/questions/35991867/angular-2-using-observable-debounce-with-http-get
-     *          - https://blog.bitsrc.io/3-ways-to-debounce-http-requests-in-angular-c407eb165ada
-     *
+     * @param {DotLayout} value
      * @memberof DotEditLayoutComponent
      */
-    saveTemplateDebounce() {
+    nextUpdateTemplate(value: DotLayout) {
+        this.canRouteBeDesativated(false);
+        this.updateTemplate.next(value);
+    }
+
+    /**
+     * Save template changes after 10 seconds
+     *
+     * @private
+     * @memberof DotEditLayoutComponent
+     */
+    private saveTemplateDebounce() {
+        // The reason why we are using a Subject [updateTemplate] here is
+        // because we can not just simply add a debounceTime to the HTTP Request
+        // we need to reset the time everytime the observable is called.
+        // More Information Here:
+        // - https://stackoverflow.com/questions/35991867/angular-2-using-observable-debounce-with-http-get
+        // - https://blog.bitsrc.io/3-ways-to-debounce-http-requests-in-angular-c407eb165ada
         this.updateTemplate
             .pipe(
                 takeUntil(this.destroy$),
@@ -129,17 +141,6 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
                 // On Complete
                 () => this.canRouteBeDesativated(true)
             );
-    }
-
-    /**
-     *  Handle next template value;
-     *
-     * @param {DotLayout} value
-     * @memberof DotEditLayoutComponent
-     */
-    nextUpdateTemplate(value: DotLayout) {
-        this.canRouteBeDesativated(false);
-        this.updateTemplate.next(value);
     }
 
     /**
