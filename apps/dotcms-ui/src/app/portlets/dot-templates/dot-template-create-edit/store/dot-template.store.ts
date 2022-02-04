@@ -231,6 +231,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                     : this.getDefaultTemplate(isAdvanced);
 
                 if (template.type === 'design') {
+                    this.canRouteBeDesativated();
                     this.templateContainersCacheService.set(template.containers);
                 }
 
@@ -323,6 +324,18 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         }
 
         return result;
+    }
+
+    /**
+     * Let the user leave the route only when changes have been saved on design template.
+     *
+     * @private
+     * @memberof DotTemplateStore
+     */
+    private canRouteBeDesativated(): void {
+        this.didTemplateChanged$.subscribe((didTemplateChanged: boolean) =>
+            this.dotEditLayoutService.changeDesactivateState(!didTemplateChanged)
+        );
     }
 
     /**

@@ -14,7 +14,6 @@
         </ng-container>
         <ng-template #elseBlock>
             <dot-edit-layout-designer
-                [didTemplateChanged]="didTemplateChanged"
                 [theme]="item.theme"
                 [layout]="item.layout"
                 (updateTemplate)="updateTemplate.emit($event)"

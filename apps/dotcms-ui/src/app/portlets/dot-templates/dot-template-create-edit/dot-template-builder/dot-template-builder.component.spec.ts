@@ -34,8 +34,6 @@ class DotEditLayoutDesignerMockComponent {
 
     @Input() layout;
 
-    @Input() didTemplateChanged: boolean;
-
     @Output() cancel: EventEmitter<MouseEvent> = new EventEmitter();
 
     @Output() save: EventEmitter<Event> = new EventEmitter();
@@ -147,9 +145,8 @@ describe('DotTemplateBuilderComponent', () => {
         beforeEach(() => {
             component.item = {
                 ...EMPTY_TEMPLATE_DESIGN,
-                theme: '123',
+                theme: '123'
             };
-            component.didTemplateChanged = false;
             fixture.detectChanges();
         });
 
@@ -171,7 +168,6 @@ describe('DotTemplateBuilderComponent', () => {
                 title: '',
                 width: null
             });
-            expect(builder.didTemplateChanged).toBe(false);
         });
 
         it('should not show <dot-template-advanced>', () => {
@@ -194,7 +190,7 @@ describe('DotTemplateBuilderComponent', () => {
         beforeEach(() => {
             component.item = EMPTY_TEMPLATE_ADVANCED;
             component.didTemplateChanged = false;
-           
+
             fixture.detectChanges();
         });
 

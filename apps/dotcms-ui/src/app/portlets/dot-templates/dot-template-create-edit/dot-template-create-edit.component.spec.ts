@@ -84,7 +84,7 @@ const messageServiceMock = new MockDotMessageService({
     'templates.edit': 'Edit'
 });
 
-interface templateStoreValueType {
+interface TemplateStoreValueType {
     [key: string]: jasmine.Spy;
 }
 
@@ -121,7 +121,7 @@ describe('DotTemplateCreateEditComponent', () => {
     let component: DotTemplateCreateEditComponent;
     let dialogService: DialogService;
     let store: DotTemplateStore;
-    let templateStoreValue: templateStoreValueType;
+    let templateStoreValue: TemplateStoreValueType;
     const switchSiteSubject = new Subject();
 
     beforeEach(async () => {

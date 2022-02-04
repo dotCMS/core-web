@@ -55,29 +55,7 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
                 this.templateContainersCacheService.set(mappedContainers);
             });
 
-        this.updateTemplate
-            .pipe(
-                takeUntil(this.destroy$),
-                debounceTime(10000),
-                filter(() => this.didTemplateChanged),
-                switchMap((layout: DotLayout) => {
-                    this.dotGlobalMessageService.loading(
-                        this.dotMessageService.get('dot.common.message.saving')
-                    );
-
-                    return this.dotPageLayoutService.save(this.pageState.page.identifier, {
-                        ...layout,
-                        title: null
-                    });
-                })
-            )
-            .subscribe(
-                (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
-                (err: ResponseView) => this.handleErrorSaveTemplate(err),
-                // On Complete
-                () => (this.didTemplateChanged = false)
-            );
-
+        this.saveTemplateDebounce();
         this.apiLink = `api/v1/page/render${this.pageState.page.pageURI}?language_id=${this.pageState.page.languageId}`;
     }
 
@@ -115,7 +93,43 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
             .subscribe(
                 (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
                 (err: ResponseView) => this.handleErrorSaveTemplate(err),
-                () => (this.didTemplateChanged = false)
+                () => this.canRouteBeDesativated(true)
+            );
+    }
+
+    /**
+     *  The reason why we are using a Subject [updateTemplate] here is
+     *  because we can not just simply add a debounceTime to the HTTP Request
+     *  we need to reset the time everytime the observable is called.
+     *
+     *  More Information Here:
+     *          - https://stackoverflow.com/questions/35991867/angular-2-using-observable-debounce-with-http-get
+     *          - https://blog.bitsrc.io/3-ways-to-debounce-http-requests-in-angular-c407eb165ada
+     *
+     * @memberof DotEditLayoutComponent
+     */
+    saveTemplateDebounce() {
+        this.updateTemplate
+            .pipe(
+                takeUntil(this.destroy$),
+                debounceTime(10000),
+                filter(() => this.didTemplateChanged),
+                switchMap((layout: DotLayout) => {
+                    this.dotGlobalMessageService.loading(
+                        this.dotMessageService.get('dot.common.message.saving')
+                    );
+
+                    return this.dotPageLayoutService.save(this.pageState.page.identifier, {
+                        ...layout,
+                        title: null
+                    });
+                })
+            )
+            .subscribe(
+                (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
+                (err: ResponseView) => this.handleErrorSaveTemplate(err),
+                // On Complete
+                () => this.canRouteBeDesativated(true)
             );
     }
 
@@ -126,7 +140,7 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
      * @memberof DotEditLayoutComponent
      */
     nextUpdateTemplate(value: DotLayout) {
-        this.didTemplateChanged = true;
+        this.canRouteBeDesativated(false);
         this.updateTemplate.next(value);
     }
 
@@ -154,11 +168,18 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
      */
     private handleErrorSaveTemplate(err: ResponseView) {
         this.dotGlobalMessageService.error(err.response.statusText);
-        this.dotHttpErrorManagerService
-            .handle(new HttpErrorResponse(err.response))
-            .subscribe(() => {
-                this.dotEditLayoutService.changeDesactivateState(true);
-            });
+        this.dotHttpErrorManagerService.handle(new HttpErrorResponse(err.response)).subscribe();
+    }
+
+    /**
+     * Let the user leave the route only when changes have been saved.
+     *
+     * @private
+     * @param {boolean} value
+     * @memberof DotEditLayoutComponent
+     */
+    private canRouteBeDesativated(value: boolean): void {
+        this.dotEditLayoutService.changeDesactivateState(value);
     }
 
     private getRemappedContainers(containers: {
