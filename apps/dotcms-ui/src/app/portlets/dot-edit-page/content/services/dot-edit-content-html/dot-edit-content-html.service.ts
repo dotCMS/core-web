@@ -229,16 +229,6 @@ export class DotEditContentHtmlService {
         }
     }
 
-    private findPlaceHolderOnDrop(doc: Document): void {
-        const container: HTMLElement = doc
-            .querySelector(CONTENTLET_PLACEHOLDER_SELECTOR)
-            .closest('[data-dot-object="container"]');
-        this.setContainterToAppendContentlet({
-            identifier: container.dataset['dotIdentifier'],
-            uuid: container.dataset['dotUuid']
-        });
-    }
-
     /**
      * Render a contentlet in the DOM after add it
      *
@@ -249,7 +239,7 @@ export class DotEditContentHtmlService {
     renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): void {
         const doc = this.getEditPageDocument();
         if (isDroppedAsset) {
-            this.findPlaceHolderOnDrop(doc);
+            this.findPlaceHolderOnDropAndSetContainer(doc);
         }
         const containerEl: HTMLElement = doc.querySelector(
             `[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
@@ -292,7 +282,7 @@ export class DotEditContentHtmlService {
     renderAddedForm(formId: string, isDroppedAsset = false): Observable<DotPageContainer[]> {
         const doc = this.getEditPageDocument();
         if (isDroppedAsset) {
-            this.findPlaceHolderOnDrop(doc);
+            this.findPlaceHolderOnDropAndSetContainer(doc);
         }
         const containerEl: HTMLElement = doc.querySelector(
             [
@@ -308,10 +298,12 @@ export class DotEditContentHtmlService {
             return of(null);
         } else {
             let contentletPlaceholder = doc.querySelector(CONTENTLET_PLACEHOLDER_SELECTOR);
+
             if (!contentletPlaceholder) {
                 contentletPlaceholder = this.getContentletPlaceholder();
                 containerEl.appendChild(contentletPlaceholder);
             }
+
             return this.dotContainerContentletService
                 .getFormToContainer(this.currentContainer, formId)
                 .pipe(
@@ -346,6 +338,16 @@ export class DotEditContentHtmlService {
      */
     getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
+    }
+
+    private findPlaceHolderOnDropAndSetContainer(doc: Document): void {
+        const container: HTMLElement = doc
+            .querySelector(CONTENTLET_PLACEHOLDER_SELECTOR)
+            .closest('[data-dot-object="container"]');
+        this.setContainterToAppendContentlet({
+            identifier: container.dataset['dotIdentifier'],
+            uuid: container.dataset['dotUuid']
+        });
     }
 
     private updateContainerToolbar(dotIdentifier: string) {

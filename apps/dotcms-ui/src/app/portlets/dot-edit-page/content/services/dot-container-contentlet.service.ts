@@ -36,7 +36,7 @@ export class DotContainerContentletService {
      * Get the HTML of a form inside a container
      *
      * @param DotPageContainer container
-     * @param ContentType form
+     * @param string formId
      * @returns Observable<string>
      * @memberof DotContainerContentletService
      */
