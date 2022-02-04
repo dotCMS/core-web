@@ -236,10 +236,10 @@ export class DotEditContentHtmlService {
      * @param boolean isDroppedAsset
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): void {
+    renderAddedContentlet(contentlet: DotPageContent, isDroppedContentlet = false): void {
         const doc = this.getEditPageDocument();
-        if (isDroppedAsset) {
-            this.findPlaceHolderOnDropAndSetContainer(doc);
+        if (isDroppedContentlet) {
+            this.setCurrentContainerOnContentDrop(doc);
         }
         const containerEl: HTMLElement = doc.querySelector(
             `[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
@@ -279,10 +279,10 @@ export class DotEditContentHtmlService {
      * @param booblean isDroppedAsset
      * @memberof DotEditContentHtmlService
      */
-    renderAddedForm(formId: string, isDroppedAsset = false): Observable<DotPageContainer[]> {
+    renderAddedForm(formId: string, isDroppedForm = false): Observable<DotPageContainer[]> {
         const doc = this.getEditPageDocument();
-        if (isDroppedAsset) {
-            this.findPlaceHolderOnDropAndSetContainer(doc);
+        if (isDroppedForm) {
+            this.setCurrentContainerOnContentDrop(doc);
         }
         const containerEl: HTMLElement = doc.querySelector(
             [
@@ -340,7 +340,7 @@ export class DotEditContentHtmlService {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
     }
 
-    private findPlaceHolderOnDropAndSetContainer(doc: Document): void {
+    private setCurrentContainerOnContentDrop(doc: Document): void {
         const container: HTMLElement = doc
             .querySelector(CONTENTLET_PLACEHOLDER_SELECTOR)
             .closest('[data-dot-object="container"]');
