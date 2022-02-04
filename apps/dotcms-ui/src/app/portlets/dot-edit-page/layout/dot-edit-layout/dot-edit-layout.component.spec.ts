@@ -28,9 +28,6 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 })
 export class DotEditLayoutDesignerComponentMock {
     @Input()
-    didTemplateChanged: boolean;
-
-    @Input()
     layout: DotLayout;
 
     @Input()

@@ -25,7 +25,6 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
     pageState: DotPageRender | DotPageRenderState;
     apiLink: string;
 
-    didTemplateChanged = false;
     updateTemplate = new Subject<DotLayout>();
     destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -113,7 +112,6 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
             .pipe(
                 takeUntil(this.destroy$),
                 debounceTime(10000),
-                filter(() => this.didTemplateChanged),
                 switchMap((layout: DotLayout) => {
                     this.dotGlobalMessageService.loading(
                         this.dotMessageService.get('dot.common.message.saving')
