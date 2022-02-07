@@ -1,4 +1,4 @@
-import { pluck, mergeMap, map } from 'rxjs/operators';
+import { pluck, mergeMap } from 'rxjs/operators';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -23,11 +23,11 @@ export class AddToBundleService {
 
     /**
      * Get bundle items
-     * @returns Observable<any[]>
+     * @return {*}  {Observable<DotBundle[]>}
      * @memberof AddToBundleService
      */
-    getBundles(): Observable<any[]> {
-        return <any>this.currentUser.getCurrentUser().pipe(
+    getBundles(): Observable<DotBundle[]> {
+        return this.currentUser.getCurrentUser().pipe(
             mergeMap((user: DotCurrentUser) => {
                 return this.coreWebService
                     .requestView({
@@ -35,7 +35,7 @@ export class AddToBundleService {
                     })
                     .pipe(pluck('bodyJsonObject', 'items'));
             })
-        );
+        ) as Observable<DotBundle[]>;
     }
 
     /**
@@ -50,7 +50,7 @@ export class AddToBundleService {
         bundleData: DotBundle
     ): Observable<DotAjaxActionResponseView> {
         return this.coreWebService
-            .request({
+            .requestView({
                 body: `assetIdentifier=${assetIdentifier}&bundleName=${bundleData.name}&bundleSelect=${bundleData.id}`,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -58,6 +58,6 @@ export class AddToBundleService {
                 method: 'POST',
                 url: this.addToBundleUrl
             })
-            .pipe(map((res: any) => <DotAjaxActionResponseView>res));
+            .pipe(pluck('bodyJsonObject'));
     }
 }

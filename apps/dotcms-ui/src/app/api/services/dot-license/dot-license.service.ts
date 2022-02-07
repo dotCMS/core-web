@@ -9,6 +9,13 @@ export interface DotUnlicensedPortletData {
     url: string;
 }
 
+interface License {
+    displayServerId: string;
+    isCommunity: false;
+    level: number;
+    levelName: string;
+}
+
 const enterprisePorlets: DotUnlicensedPortletData[] = [
     {
         icon: 'tune',
@@ -107,7 +114,7 @@ export class DotLicenseService {
         return !!urlMatch.length;
     }
 
-    private getLicense(): Observable<any> {
+    private getLicense(): Observable<License> {
         return this.coreWebService
             .requestView({
                 url: this.licenseURL

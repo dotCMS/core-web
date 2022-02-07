@@ -20,7 +20,7 @@ export class DotCrudService {
      * @returns Observable<any>
      * @memberof CrudService
      */
-    public postData(baseUrl: string, data: any): Observable<any> {
+    public postData(baseUrl: string, data: unknown): Observable<unknown> {
         return this.coreWebService
             .requestView({
                 body: data,
@@ -38,7 +38,7 @@ export class DotCrudService {
      * @returns Observable<any>
      * @memberof CrudService
      */
-    public putData(baseUrl: string, data: any): Observable<any> {
+    public putData(baseUrl: string, data: unknown): Observable<unknown> {
         return this.coreWebService
             .requestView({
                 body: data,
@@ -57,7 +57,7 @@ export class DotCrudService {
      * @returns {Observable<any>}
      * @memberof DotCrudService
      */
-    getDataById(baseUrl: string, id: string, pick = 'entity'): Observable<any> {
+    getDataById(baseUrl: string, id: string, pick = 'entity'): Observable<unknown> {
         return this.coreWebService
             .requestView({
                 url: `${baseUrl}/id/${id}`
@@ -73,7 +73,7 @@ export class DotCrudService {
      * @returns Observable<any>
      * @memberof CrudService
      */
-    delete(baseUrl: string, id: string): Observable<any> {
+    delete(baseUrl: string, id: string): Observable<unknown> {
         return this.coreWebService
             .requestView({
                 method: 'DELETE',

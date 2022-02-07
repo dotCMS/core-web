@@ -113,7 +113,7 @@ export class I18nService {
                 url: this._baseUrl + '/' + url
             })
             .pipe(
-                map((res) => {
+                map((res: HttpResponse<any>) => {
                     return res;
                 })
             );

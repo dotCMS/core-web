@@ -28,7 +28,7 @@ export class DotCurrentUserService {
             .request({
                 url: this.currentUsersUrl
             })
-            .pipe(map((res: any) => <DotCurrentUser>res));
+            .pipe(map((res: DotCurrentUser) => res));
     }
 
     /**
