@@ -161,7 +161,7 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
             // More Information: https://stackoverflow.com/questions/17745478/filter-an-observable-using-values-from-another-observable
             withLatestFrom(this.didTemplateChanged$),
             filter(([, didTemplateChanged]: [DotTemplateItem, boolean]) => didTemplateChanged),
-            map(([DotTemplateItem]: [DotTemplateItem, boolean]) => DotTemplateItem),
+            map(([template]: [DotTemplateItem, boolean]) => template),
             switchMap((template: DotTemplateItem) => {
                 this.dotGlobalMessageService.loading(
                     this.dotMessageService.get('dot.common.message.saving')
