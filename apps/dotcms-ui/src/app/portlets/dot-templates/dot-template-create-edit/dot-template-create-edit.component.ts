@@ -38,7 +38,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original, working }: DotTemplateState) => {
             const template = original.type === 'design' ? working : original;
             if (this.form) {
-                const value = this.getFormValue(template, working);
+                const value = this.getFormValue(template);
 
                 this.form.setValue(value);
             } else {
@@ -185,15 +185,15 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getFormValue(template: DotTemplateItem, working: DotTemplateItem): { [key: string]: any } {
+    private getFormValue(template: DotTemplateItem): { [key: string]: any } {
         if (template.type === 'design') {
             return {
                 type: template.type,
                 title: template.title,
-                layout: working.layout || template.layout,
+                layout: template.layout,
                 identifier: template.identifier,
                 friendlyName: template.friendlyName,
-                theme: working.theme ||template.theme,
+                theme: template.theme,
                 image: template.image
             };
         }
