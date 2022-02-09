@@ -2,9 +2,16 @@ import { Injectable } from '@angular/core';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Observable } from 'rxjs';
 
+interface NotificationServiceUrls {
+    dismissNotificationsUrl: string;
+    getLastNotificationsUrl: string;
+    getNotificationsUrl: string;
+    markAsReadNotificationsUrl: string;
+}
+
 @Injectable()
 export class NotificationsService {
-    private urls: any;
+    private urls: NotificationServiceUrls;
 
     constructor(private coreWebService: CoreWebService) {
         this.urls = {

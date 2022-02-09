@@ -8,7 +8,7 @@ import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-b
 
 interface DotActionRequestOptions {
     contentType?: string;
-    data: { [key: string]: any };
+    data: { [key: string]: unknown };
     action: ActionToFire;
 }
 
@@ -28,7 +28,7 @@ export class DotWorkflowActionsFireService {
      * @param {string} inode
      * @param {string} actionId
      * @param {{ [key: string]: string }} data
-     * @returns Observable<any> // contentlet
+     * @returns Observable<DotCMSContentlet> // contentlet
      * @memberof DotWorkflowActionsFireService
      */
     fireTo(
@@ -49,7 +49,7 @@ export class DotWorkflowActionsFireService {
      * Fire a workflow action over a contentlet
      *
      * @param {DotActionBulkRequestOptions} data
-     * @returns Observable<any> // contentlet
+     * @returns Observable<DotActionBulkResult> // contentlet
      * @memberof DotWorkflowActionsFireService
      */
     bulkFire(data: DotActionBulkRequestOptions): Observable<DotActionBulkResult> {
@@ -71,7 +71,7 @@ export class DotWorkflowActionsFireService {
      *
      * @memberof DotWorkflowActionsFireService
      */
-    newContentlet<T>(contentType: string, data: { [key: string]: any }): Observable<T> {
+    newContentlet<T>(contentType: string, data: { [key: string]: unknown}): Observable<T> {
         return this.request<T>({ contentType, data, action: ActionToFire.NEW });
     }
 
@@ -80,11 +80,11 @@ export class DotWorkflowActionsFireService {
      *
      * @template T
      * @param {string} contentType
-     * @param {{ [key: string]: any }} data
+     * @param {{ [key: string]: unknown}} data
      * @returns {Observable<T>}
      * @memberof DotWorkflowActionsFireService
      */
-    publishContentlet<T>(contentType: string, data: { [key: string]: any }): Observable<T> {
+    publishContentlet<T>(contentType: string, data: { [key: string]: unknown}): Observable<T> {
         return this.request<T>({
             contentType,
             data,
@@ -96,11 +96,11 @@ export class DotWorkflowActionsFireService {
      *
      * @template T
      * @param {string} contentType
-     * @param {{ [key: string]: any }} data
+     * @param {{ [key: string]: unknown}} data
      * @return {*}  {Observable<T>}
      * @memberof DotWorkflowActionsFireService
      */
-    saveContentlet<T>(data: { [key: string]: any }): Observable<T> {
+    saveContentlet<T>(data: { [key: string]: unknown}): Observable<T> {
         return this.request<T>({
             data,
             action: ActionToFire.EDIT
@@ -112,13 +112,13 @@ export class DotWorkflowActionsFireService {
      *
      * @template T
      * @param {string} contentType
-     * @param {{ [key: string]: any }} data
+     * @param {{ [key: string]: unknown}} data
      * @returns {Observable<T>}
      * @memberof DotWorkflowActionsFireService
      */
     publishContentletAndWaitForIndex<T>(
         contentType: string,
-        data: { [key: string]: any }
+        data: { [key: string]: unknown}
     ): Observable<T> {
         return this.publishContentlet(contentType, {
             ...data,
