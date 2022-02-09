@@ -4,12 +4,17 @@ import { CoreWebService } from '@dotcms/dotcms-js';
 import { DotLocalstorageService } from '@services/dot-localstorage/dot-localstorage.service';
 import { formatMessage } from '@shared/dot-utils';
 
+export interface DotMessageServiceParams {
+    buildDate?: string;
+    language?: string;
+}
 @Injectable({
     providedIn: 'root'
 })
 export class DotMessageService {
     private messageMap: { [key: string]: string } = {};
     private MESSAGES_LOCALSTORAGE_KEY = 'dotMessagesKeys';
+    private BUILDATE_LOCALSTORAGE_KEY = 'buildDate';
 
     constructor(
         private coreWebService: CoreWebService,
@@ -20,18 +25,30 @@ export class DotMessageService {
      * Get all messages keys form endpoint if they are not set in the localStorage.
      * If a language is passed replace what is in localStorage
      *
-     * @param string language
+     * @param DotMessageServiceParams [language]
      * @memberof DotMessageService
      */
-    init(force: boolean, language?: string): void {
-        if (force) {
-            this.getAll(language);
+    init(params?: DotMessageServiceParams): void {
+        if (
+            params &&
+            (this.dotLocalstorageService.getItem(this.BUILDATE_LOCALSTORAGE_KEY) !==
+                params?.buildDate ||
+                params.language)
+        ) {
+            this.getAll(params.language);
+
+            if (params.buildDate) {
+                this.dotLocalstorageService.setItem(
+                    this.BUILDATE_LOCALSTORAGE_KEY,
+                    params.buildDate
+                );
+            }
         } else {
             const keys: { [key: string]: string } = this.dotLocalstorageService.getItem(
                 this.MESSAGES_LOCALSTORAGE_KEY
             );
             if (!keys) {
-                this.getAll(language);
+                this.getAll(params?.language);
             } else {
                 this.messageMap = keys;
             }
