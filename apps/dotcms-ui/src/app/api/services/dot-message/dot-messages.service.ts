@@ -23,9 +23,10 @@ export class DotMessageService {
 
     /**
      * Get all messages keys form endpoint if they are not set in the localStorage.
-     * If a language is passed replace what is in localStorage
+     * If a language is passed or if buildDate is different than what is local then
+     * key messages in localStorage are replaced
      *
-     * @param DotMessageServiceParams [language]
+     * @param DotMessageServiceParams [params]
      * @memberof DotMessageService
      */
     init(params?: DotMessageServiceParams): void {
