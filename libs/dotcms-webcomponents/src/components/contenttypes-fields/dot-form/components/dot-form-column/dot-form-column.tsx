@@ -16,6 +16,7 @@ export class DotFormColumnComponent {
     fieldsToShow: string;
 
     render() {
+        // avoid error when column value is null.
         return this.column
             ? this.column.fields.map((field: DotCMSContentTypeField) => this.getField(field))
             : null;

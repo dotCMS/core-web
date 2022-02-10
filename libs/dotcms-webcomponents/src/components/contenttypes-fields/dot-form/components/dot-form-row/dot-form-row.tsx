@@ -15,6 +15,7 @@ export class DotFormRowComponent {
     fieldsToShow: string;
 
     render() {
+        // avoid error when row value is null.
         return this.row
             ? this.row.columns.map((fieldColumn: DotCMSContentTypeLayoutColumn) => {
                   return (

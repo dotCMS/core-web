@@ -13,8 +13,13 @@ export class DotFormRowComponent {
     @Prop({ reflect: true }) fieldsToShow: string;
 
     render() {
-        return this.row.columns.map((fieldColumn: DotCMSContentTypeLayoutColumn) => {
-            return <dot-form-column column={fieldColumn} fields-to-show={this.fieldsToShow} />;
-        });
+        // avoid error when row value is null.
+        return this.row
+            ? this.row.columns.map((fieldColumn: DotCMSContentTypeLayoutColumn) => {
+                  return (
+                      <dot-form-column column={fieldColumn} fields-to-show={this.fieldsToShow} />
+                  );
+              })
+            : null;
     }
 }
