@@ -15,7 +15,8 @@ export class DotFormRowComponent {
     fieldsToShow: string;
 
     render() {
-        // avoid error when row value is null.
+        // When the user start dragging a form in the edit page the value of layout of the
+        // <dot-form> element turns empty and eventually the row prop in this component
         return this.row
             ? this.row.columns.map((fieldColumn: DotCMSContentTypeLayoutColumn) => {
                   return (
