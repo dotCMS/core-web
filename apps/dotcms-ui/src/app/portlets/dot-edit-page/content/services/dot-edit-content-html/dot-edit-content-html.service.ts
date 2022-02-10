@@ -31,6 +31,7 @@ import { INLINE_TINYMCE_SCRIPTS } from '@dotcms/app/portlets/dot-edit-page/conte
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotPage } from '@dotcms/app/shared/models/dot-page/dot-page.model';
+import { DotCMSContentType } from '@dotcms/dotcms-models';
 
 export enum DotContentletAction {
     EDIT,
