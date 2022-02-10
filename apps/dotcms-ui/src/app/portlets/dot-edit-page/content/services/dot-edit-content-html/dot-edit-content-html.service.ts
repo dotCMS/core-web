@@ -16,7 +16,6 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { getEditPageCss } from '../html/libraries/iframe-edit-mode.css';
 import { MODEL_VAR_NAME } from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/iframe-edit-mode.js';
-import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {
     DotAssetPayload,
@@ -42,6 +41,13 @@ export enum DotContentletAction {
 
 export const CONTENTLET_PLACEHOLDER_SELECTOR = '#contentletPlaceholder';
 
+export type DotEditAction = {
+    name: string;
+    container?: Record<string, unknown>;
+    dataset?: Record<string, unknown>;
+    data?: any
+}
+
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<
@@ -54,7 +60,7 @@ export class DotEditContentHtmlService {
     currentContainer: DotPageContainer;
     currentContentlet: DotPageContent;
     iframe: ElementRef;
-    iframeActions$: Subject<any> = new Subject();
+    iframeActions$: Subject<DotEditAction> = new Subject();
     pageModel$: Subject<PageModelChangeEvent> = new Subject();
     mutationConfig = { attributes: false, childList: true, characterData: false };
     datasetMissing: string[];
@@ -184,9 +190,9 @@ export class DotEditContentHtmlService {
      */
     renderEditedContentlet(contentlet: DotPageContent): void {
         if (this.remoteRendered || !contentlet) {
-            this.iframeActions$.next({
+            this.callAction({
                 name: 'save'
-            });
+            })
         } else {
             const doc = this.getEditPageDocument();
             const currentContentlets: HTMLElement[] = Array.from(
@@ -338,6 +344,10 @@ export class DotEditContentHtmlService {
      */
     getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
+    }
+
+    callAction(action: DotEditAction): void {
+        this.iframeActions$.next(action)
     }
 
     private setCurrentContainerOnContentDrop(doc: Document): void {
@@ -561,7 +571,7 @@ export class DotEditContentHtmlService {
         this.updateContentletInode = this.shouldUpdateContentletInode(target);
 
         const container = <HTMLElement>target.closest('[data-dot-object="container"]');
-        this.iframeActions$.next({
+        this.callAction({
             name: type,
             dataset: target.dataset,
             container: container ? container.dataset : null
@@ -676,9 +686,9 @@ export class DotEditContentHtmlService {
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {
                 this.renderAddedContentlet(contentlet);
-                this.iframeActions$.next({
+                this.callAction({
                     name: 'select'
-                });
+                })
             },
             // When a user drag and drop a contentlet in the iframe
             relocate: (relocateInfo: DotRelocatePayload) => {
@@ -693,10 +703,10 @@ export class DotEditContentHtmlService {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
             },
             'add-content': (data: any) => {
-                this.iframeActions$.next({
+                this.callAction({
                     name: 'add-content',
                     data: data
-                });
+                })
             },
             'add-contentlet': (dotAssetData: DotAssetPayload) => {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
@@ -710,9 +720,9 @@ export class DotEditContentHtmlService {
                                 model: model,
                                 type: PageModelChangeEventType.ADD_CONTENT
                             });
-                            this.iframeActions$.next({
+                            this.callAction({
                                 name: 'save'
-                            });
+                            })
                         }
                     });
             },
