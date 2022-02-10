@@ -14,7 +14,6 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { getEditPageCss } from '../html/libraries/iframe-edit-mode.css';
 import { MODEL_VAR_NAME } from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/iframe-edit-mode.js';
-import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {
     DotAssetPayload,
@@ -40,6 +39,13 @@ export enum DotContentletAction {
 
 export const CONTENTLET_PLACEHOLDER_SELECTOR = '#contentletPlaceholder';
 
+export type DotEditAction = {
+    name: string;
+    container?: Record<string, unknown>;
+    dataset?: Record<string, unknown>;
+    data?: any;
+};
+
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<
@@ -52,7 +58,7 @@ export class DotEditContentHtmlService {
     currentContainer: DotPageContainer;
     currentContentlet: DotPageContent;
     iframe: ElementRef;
-    iframeActions$: Subject<any> = new Subject();
+    iframeActions$: Subject<DotEditAction> = new Subject();
     pageModel$: Subject<PageModelChangeEvent> = new Subject();
     mutationConfig = { attributes: false, childList: true, characterData: false };
     datasetMissing: string[];
@@ -182,7 +188,7 @@ export class DotEditContentHtmlService {
      */
     renderEditedContentlet(contentlet: DotPageContent): void {
         if (this.remoteRendered || !contentlet) {
-            this.iframeActions$.next({
+            this.callAction({
                 name: 'save'
             });
         } else {
@@ -205,8 +211,9 @@ export class DotEditContentHtmlService {
                     .getContentletToContainer(container, contentlet, this.currentPage)
                     .pipe(take(1))
                     .subscribe((contentletHtml: string) => {
-                        const contentletEl: HTMLElement =
-                            this.generateNewContentlet(contentletHtml);
+                        const contentletEl: HTMLElement = this.generateNewContentlet(
+                            contentletHtml
+                        );
                         containerEl.replaceChild(contentletEl, currentContentlet);
                     });
             });
@@ -341,6 +348,10 @@ export class DotEditContentHtmlService {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
     }
 
+    callAction(action: DotEditAction): void {
+        this.iframeActions$.next(action);
+    }
+
     private updateContainerToolbar(dotIdentifier: string) {
         const doc = this.getEditPageDocument();
         const target = <HTMLElement>(
@@ -473,8 +484,9 @@ export class DotEditContentHtmlService {
         if (editModeNodes.length) {
             const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
             const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(TINYMCE);
-            const tinyMceInitScript: HTMLScriptElement =
-                this.dotDOMHtmlUtilService.createInlineScriptElement(INLINE_TINYMCE_SCRIPTS);
+            const tinyMceInitScript: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
+                INLINE_TINYMCE_SCRIPTS
+            );
 
             this.dotLicenseService
                 .isEnterprise()
@@ -551,7 +563,7 @@ export class DotEditContentHtmlService {
         this.updateContentletInode = this.shouldUpdateContentletInode(target);
 
         const container = <HTMLElement>target.closest('[data-dot-object="container"]');
-        this.iframeActions$.next({
+        this.callAction({
             name: type,
             dataset: target.dataset,
             container: container ? container.dataset : null
@@ -667,7 +679,7 @@ export class DotEditContentHtmlService {
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {
                 this.renderAddedContentlet(contentlet);
-                this.iframeActions$.next({
+                this.callAction({
                     name: 'select'
                 });
             },
@@ -684,7 +696,7 @@ export class DotEditContentHtmlService {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
             },
             'add-content': (data: any) => {
-                this.iframeActions$.next({
+                this.callAction({
                     name: 'add-content',
                     data: data
                 });

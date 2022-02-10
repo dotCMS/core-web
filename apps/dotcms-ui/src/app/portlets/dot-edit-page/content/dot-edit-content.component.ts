@@ -9,7 +9,7 @@ import { SiteService } from '@dotcms/dotcms-js';
 import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
 
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
+import { DotEditAction, DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
 import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
@@ -137,6 +137,12 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 'cancel-save-menu-order': () => {
                     this.reorderMenuUrl = '';
                     this.reload(null);
+                },
+                'edit-contentlet': (data: DotEditAction) => {
+                    this.dotEditContentHtmlService.callAction({
+                        name: 'edit',
+                        ...data
+                    })
                 }
             };
         }
@@ -467,6 +473,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotEditContentHtmlService.iframeActions$
             .pipe(takeUntil(this.destroy$))
             .subscribe((contentletEvent: any) => {
+                console.log(JSON.stringify(contentletEvent, null, 4));
                 this.ngZone.run(() => {
                     this.iframeActionsHandler(contentletEvent.name)(contentletEvent);
                 });
