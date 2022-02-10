@@ -15,8 +15,12 @@ export class DotFormRowComponent {
     fieldsToShow: string;
 
     render() {
-        return this.row.columns.map((fieldColumn: DotCMSContentTypeLayoutColumn) => {
-            return <dot-form-column column={fieldColumn} fields-to-show={this.fieldsToShow} />;
-        });
+        return this.row
+            ? this.row.columns.map((fieldColumn: DotCMSContentTypeLayoutColumn) => {
+                  return (
+                      <dot-form-column column={fieldColumn} fields-to-show={this.fieldsToShow} />
+                  );
+              })
+            : null;
     }
 }

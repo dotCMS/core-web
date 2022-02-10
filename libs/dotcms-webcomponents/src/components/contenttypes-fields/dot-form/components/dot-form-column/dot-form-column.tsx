@@ -16,7 +16,9 @@ export class DotFormColumnComponent {
     fieldsToShow: string;
 
     render() {
-        return this.column.fields.map((field: DotCMSContentTypeField) => this.getField(field));
+        return this.column
+            ? this.column.fields.map((field: DotCMSContentTypeField) => this.getField(field))
+            : null;
     }
 
     private getField(field: DotCMSContentTypeField): JSX.Element {
