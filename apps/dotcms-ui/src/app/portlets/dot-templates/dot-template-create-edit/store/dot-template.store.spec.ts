@@ -20,7 +20,9 @@ import { mockResponseView } from '@dotcms/app/test/response-view.mock';
 
 const messageServiceMock = new MockDotMessageService({
     'dot.common.message.saved': 'saved',
-    'dot.common.message.saving': 'saving'
+    'dot.common.message.saving': 'saving',
+    publishing: 'publishing',
+    'message.template.published': 'published'
 });
 
 function getTemplate({ identifier, name, body }) {
@@ -93,6 +95,15 @@ const BASIC_PROVIDERS = [
                         body: '<h4>Hi you</h1>'
                     })
                 )
+            ),
+            saveAndPublish: jasmine.createSpy().and.returnValue(
+                of(
+                    getTemplate({
+                        identifier: '222-3000-333---30303-394',
+                        name: 'Saved and published template',
+                        body: '<h4>Hi you</h1>'
+                    })
+                )
             )
         }
     },
@@ -160,6 +171,17 @@ describe('DotTemplateStore', () => {
             dotTemplatesService = TestBed.inject(DotTemplatesService);
             dotHttpErrorManagerService = TestBed.inject(DotHttpErrorManagerService);
             dotEditLayoutService = TestBed.inject(DotEditLayoutService);
+            service.skipSave = false;
+
+            dotTemplatesService.update = jasmine.createSpy().and.returnValue(
+                of(
+                    getTemplate({
+                        identifier: '222-3000-333---30303-394',
+                        name: 'Updated template',
+                        body: '<h4>Hi you</h1>'
+                    })
+                )
+            );
         });
 
         it('should have basic state', (done) => {
@@ -253,6 +275,16 @@ describe('DotTemplateStore', () => {
             dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
             dotHttpErrorManagerService = TestBed.inject(DotHttpErrorManagerService);
             dotEditLayoutService = TestBed.inject(DotEditLayoutService);
+
+            dotTemplatesService.update = jasmine.createSpy().and.returnValue(
+                of(
+                    getTemplate({
+                        identifier: '222-3000-333---30303-394',
+                        name: 'Updated template',
+                        body: '<h4>Hi you</h1>'
+                    })
+                )
+            );
         });
 
         it('should have basic state', (done) => {
@@ -472,15 +504,13 @@ describe('DotTemplateStore', () => {
                 });
             });
 
-            it('should update template and update the state after 10 seconds', fakeAsync(() => {
-                service.saveTemplateDebounce({
+            it('should update template and update the state', () => {
+                service.saveTemplate({
                     body: 'string',
                     friendlyName: 'string',
                     identifier: 'string',
                     title: 'string'
                 });
-
-                tick(10000);
 
                 expect<any>(dotTemplatesService.update).toHaveBeenCalledWith({
                     body: 'string',
@@ -518,11 +548,57 @@ describe('DotTemplateStore', () => {
                         apiLink: '/api/v1/templates/2d87af36-a935-4689-b427-dea75e9d84cf/working'
                     });
                 });
-            }));
+            });
 
-            it('should call updateWorkingTemplate and call saveTemplateDebounce when is a design template', () => {
+            it('should save and publish template and update the state', () => {
+                service.saveAndPublishTemplate({
+                    body: 'string',
+                    friendlyName: 'string',
+                    identifier: 'string',
+                    title: 'string'
+                });
+
+                expect<any>(dotTemplatesService.saveAndPublish).toHaveBeenCalledWith({
+                    body: 'string',
+                    friendlyName: 'string',
+                    identifier: 'string',
+                    title: 'string'
+                });
+
+                expect(dotGlobalMessageService.loading).toHaveBeenCalledWith('publishing');
+                expect(dotGlobalMessageService.success).toHaveBeenCalledWith('published');
+                expect(dotRouterService.goToEditTemplate).toHaveBeenCalledWith(
+                    '222-3000-333---30303-394'
+                );
+
+                service.state$.subscribe((res) => {
+                    expect(res).toEqual({
+                        working: {
+                            type: 'advanced',
+                            identifier: '222-3000-333---30303-394',
+                            title: 'Saved and published template',
+                            friendlyName: '',
+                            drawed: false,
+                            body: '<h4>Hi you</h1>',
+                            image: ''
+                        },
+                        original: {
+                            type: 'advanced',
+                            identifier: '222-3000-333---30303-394',
+                            title: 'Saved and published template',
+                            friendlyName: '',
+                            drawed: false,
+                            body: '<h4>Hi you</h1>',
+                            image: ''
+                        },
+                        apiLink: '/api/v1/templates/2d87af36-a935-4689-b427-dea75e9d84cf/working'
+                    });
+                });
+            });
+
+            it('should call updateWorkingTemplate and call saveTemplate after 10 seconds when is a design template', fakeAsync(() => {
                 spyOn(service, 'updateWorkingTemplate');
-                spyOn(service, 'saveTemplateDebounce');
+                spyOn(service, 'saveTemplate');
                 service.saveWorkingTemplate({
                     type: 'design',
                     layout: {
@@ -538,30 +614,15 @@ describe('DotTemplateStore', () => {
                     identifier: 'string',
                     title: 'string'
                 });
+                tick(10000);
 
                 expect(service.updateWorkingTemplate).toHaveBeenCalled();
-                expect(service.saveTemplateDebounce).toHaveBeenCalled();
-            });
-            it('should call updateWorkingTemplate and not call saveTemplateDebounce when is a advanced template', () => {
-                spyOn(service, 'updateWorkingTemplate');
-                spyOn(service, 'saveTemplateDebounce');
-                service.saveWorkingTemplate({
-                    type: 'advanced',
-                    body: '',
-                    friendlyName: 'string',
-                    identifier: 'string',
-                    title: 'string'
-                });
-
-                // tick(10000);
-
-                expect(service.updateWorkingTemplate).toHaveBeenCalled();
-                expect(service.saveTemplateDebounce).not.toHaveBeenCalled();
-            });
+                expect(service.saveTemplate).toHaveBeenCalled();
+            }));
 
             it('should handler error on update template', (done) => {
                 const error = throwError(new HttpErrorResponse(mockResponseView(400)));
-                spyOn<any>(service, 'persistTemplate').and.returnValue(error);
+                dotTemplatesService.update = jasmine.createSpy().and.returnValue(error);
                 service.saveTemplate({
                     body: 'string',
                     friendlyName: 'string',
@@ -575,6 +636,22 @@ describe('DotTemplateStore', () => {
                     done();
                 });
             });
+
+            it('should call updateWorkingTemplate and not call saveTemplate after 10 seconds when is a advanced template', fakeAsync(() => {
+                spyOn(service, 'updateWorkingTemplate');
+                spyOn(service, 'saveTemplate');
+                service.saveWorkingTemplate({
+                    type: 'advanced',
+                    body: '',
+                    friendlyName: 'string',
+                    identifier: 'string',
+                    title: 'string'
+                });
+                tick(10000);
+
+                expect(service.updateWorkingTemplate).toHaveBeenCalled();
+                expect(service.saveTemplate).not.toHaveBeenCalled();
+            }));
 
             it('should not update template body when updates props', () => {
                 service.saveProperties({

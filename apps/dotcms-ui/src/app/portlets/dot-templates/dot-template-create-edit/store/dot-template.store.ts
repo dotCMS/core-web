@@ -84,6 +84,8 @@ export const EMPTY_TEMPLATE_ADVANCED: DotTemplateItemadvanced = {
 
 @Injectable()
 export class DotTemplateStore extends ComponentStore<DotTemplateState> {
+    skipSave: boolean;
+
     readonly vm$ = this.select(({ working, original, apiLink }: DotTemplateState) => {
         return {
             working,
@@ -126,6 +128,31 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         }
     );
 
+    readonly saveAndPublishTemplate = this.effect((origin$: Observable<DotTemplateItem>) => {
+        return origin$.pipe(
+            switchMap((template: DotTemplateItem) => {
+                this.dotGlobalMessageService.loading(this.dotMessageService.get('publishing'));
+
+                return this.dotTemplateService.saveAndPublish(this.cleanTemplateItem(template));
+            }),
+            tap((template: DotTemplate) => {
+                this.dotGlobalMessageService.success(
+                    this.dotMessageService.get('message.template.published')
+                );
+                this.skipSave = true;
+
+                this.updateTemplateState(template);
+            }),
+            catchError((err: HttpErrorResponse) => {
+                this.dotGlobalMessageService.error(err.statusText);
+                this.dotHttpErrorManagerService.handle(err).subscribe(() => {
+                    this.dotEditLayoutService.changeDesactivateState(true);
+                });
+                return of(null);
+            })
+        );
+    });
+
     readonly updateProperties = this.updater<DotTemplateItem>(
         (state: DotTemplateState, template: DotTemplateItem) => {
             const working = this.updateTemplateProperties(state.working, template);
@@ -144,23 +171,14 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
                 this.dotGlobalMessageService.loading(
                     this.dotMessageService.get('dot.common.message.saving')
                 );
-                return this.persistTemplate(template);
+                return this.dotTemplateService.update(this.cleanTemplateItem(template));
             }),
-            tap((template: DotTemplate) => this.onSaveTemplate(template)),
-            catchError((err: HttpErrorResponse) => this.onSaveTemplateError(err))
-        );
-    });
-
-    readonly saveTemplateDebounce = this.effect((origin$: Observable<DotTemplateItem>) => {
-        return origin$.pipe(
-            debounceTime(10000),
-            switchMap((template: DotTemplateItem) => {
-                this.dotGlobalMessageService.loading(
-                    this.dotMessageService.get('dot.common.message.saving')
+            tap((template: DotTemplate) => {
+                this.dotGlobalMessageService.success(
+                    this.dotMessageService.get('dot.common.message.saved')
                 );
-                return this.persistTemplate(template);
+                this.updateTemplateState(template);
             }),
-            tap((template: DotTemplate) => this.onSaveTemplate(template)),
             catchError((err: HttpErrorResponse) => this.onSaveTemplateError(err))
         );
     });
@@ -168,18 +186,24 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     readonly saveWorkingTemplate = this.effect((working$: Observable<DotTemplateItem>) => {
         return working$.pipe(
             tap((template: DotTemplateItem) => {
-                if (template.type === 'design') {
-                    // Design templates need to be save 10 seconds after the last change.
-                    this.saveTemplateDebounce(template);
-                }
                 this.updateWorkingTemplate(template);
+                this.skipSave = false;
+            }),
+            debounceTime(10000),
+            tap((template: DotTemplateItem) => {
+                if (template.type === 'design' && !this.skipSave) {
+                    // Design templates need to be save 10 seconds after the last change.
+                    this.saveTemplate(template);
+                }
             })
         );
     });
 
     readonly saveProperties = this.effect((origin$: Observable<DotTemplateItem>) => {
         return origin$.pipe(
-            switchMap((template: DotTemplateItem) => this.persistTemplate(template)),
+            switchMap((template: DotTemplateItem) =>
+                this.dotTemplateService.update(this.cleanTemplateItem(template))
+            ),
             tap((template: DotTemplate) => {
                 this.updateProperties(this.getTemplateItem(template));
             })
@@ -260,19 +284,6 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
     goToEditTemplate = (id, inode) => {
         this.dotRouterService.goToEditTemplate(id, inode);
     };
-
-    private onSaveTemplate(template: DotTemplate) {
-        if (template.drawed) {
-            this.templateContainersCacheService.set(template.containers);
-        }
-        this.updateTemplate(this.getTemplateItem(template));
-        this.dotGlobalMessageService.success(
-            this.dotMessageService.get('dot.common.message.saved')
-        );
-        if (this.activatedRoute?.snapshot?.params['inode']) {
-            this.dotRouterService.goToEditTemplate(template.identifier);
-        }
-    }
 
     private onSaveTemplateError(err: HttpErrorResponse) {
         this.dotGlobalMessageService.error(err.statusText);
@@ -365,11 +376,21 @@ export class DotTemplateStore extends ComponentStore<DotTemplateState> {
         };
     }
 
-    private persistTemplate(template: DotTemplateItem): Observable<DotTemplate> {
+    private cleanTemplateItem(template: DotTemplateItem): DotTemplate {
         delete template.type;
         if (template.type === 'design') {
             delete template.containers;
         }
-        return this.dotTemplateService.update(template as DotTemplate);
+        return template as DotTemplate;
+    }
+
+    private updateTemplateState(template: DotTemplate): void {
+        if (template.drawed) {
+            this.templateContainersCacheService.set(template.containers);
+        }
+        this.updateTemplate(this.getTemplateItem(template));
+        if (this.activatedRoute?.snapshot?.params['inode']) {
+            this.dotRouterService.goToEditTemplate(template.identifier);
+        }
     }
 }
