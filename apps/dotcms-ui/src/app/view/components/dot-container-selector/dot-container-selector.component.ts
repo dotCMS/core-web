@@ -58,7 +58,7 @@ export class DotContainerSelectorComponent implements OnInit {
      * @param any event
      * @memberof DotContainerSelectorComponent
      */
-    handlePageChange(event: any): void {
+    handlePageChange(event: { filter: string; first: number }): void {
         this.getContainersList(event.filter, event.first);
     }
 
@@ -70,7 +70,7 @@ export class DotContainerSelectorComponent implements OnInit {
         );
     }
 
-    private setIdentifierReference(items: DotContainer[]): any {
+    private setIdentifierReference(items: DotContainer[]): DotContainer[] {
         return items.map((dotContainer) => {
             dotContainer.identifier =
                 this.templateContainersCacheService.getContainerReference(dotContainer);

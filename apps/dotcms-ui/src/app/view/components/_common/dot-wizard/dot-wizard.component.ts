@@ -111,8 +111,10 @@ export class DotWizardComponent implements OnInit, OnDestroy {
     private loadComponents(): void {
         this.componentsHost = this.formHosts.toArray();
         this.stepsValidation = [];
-        this.data.steps.forEach((step: DotWizardStep<any>, index: number) => {
-            const comp = this.componentFactoryResolver.resolveComponentFactory(step.component);
+        this.data.steps.forEach(<T>(step: DotWizardStep<T>, index: number) => {
+            const comp = this.componentFactoryResolver.resolveComponentFactory(
+                <never>step.component
+            );
             const viewContainerRef = this.componentsHost[index].viewContainerRef;
             viewContainerRef.clear();
             const componentRef: ComponentRef<any> = viewContainerRef.createComponent(comp);
@@ -196,11 +198,12 @@ export class DotWizardComponent implements OnInit, OnDestroy {
         let count = 0;
         // need to wait dynamic component to load the form.
         const interval = setInterval(() => {
-            const form: HTMLFormElement = this.componentsHost[
-                this.currentStep
-            ].viewContainerRef.element.nativeElement.parentNode.children[0].getElementsByTagName(
-                'form'
-            )[0];
+            const form: HTMLFormElement =
+                this.componentsHost[
+                    this.currentStep
+                ].viewContainerRef.element.nativeElement.parentNode.children[0].getElementsByTagName(
+                    'form'
+                )[0];
             if (form || count === 10) {
                 clearInterval(interval);
                 (form.elements[0] as HTMLElement).focus();

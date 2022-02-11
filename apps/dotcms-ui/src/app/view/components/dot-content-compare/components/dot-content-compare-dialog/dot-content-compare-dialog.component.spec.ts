@@ -20,7 +20,7 @@ import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component'
 })
 class TestDotContentCompareComponent {
     @Input() data: any;
-    @Output() close = new EventEmitter<boolean>();
+    @Output() shutdown = new EventEmitter<boolean>();
 }
 
 describe('DotContentCompareDialogComponent', () => {
@@ -76,7 +76,7 @@ describe('DotContentCompareDialogComponent', () => {
             By.css('dot-content-compare')
         ).componentInstance;
         component.show = true;
-        contentCompare.close.emit(true);
+        contentCompare.shutdown.emit(true);
 
         expect(component.show).toEqual(false);
     });

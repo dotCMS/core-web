@@ -86,7 +86,7 @@ describe('DotAddContentletComponent', () => {
         component = de.componentInstance;
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
 
-        spyOn(component.close, 'emit');
+        spyOn(component.shutdown, 'emit');
         spyOn(component.custom, 'emit');
 
         fixture.detectChanges();
@@ -102,7 +102,7 @@ describe('DotAddContentletComponent', () => {
 
         it('should emit close', () => {
             dotAddContentletWrapper.triggerEventHandler('close', {});
-            expect(component.close.emit).toHaveBeenCalledTimes(1);
+            expect(component.shutdown.emit).toHaveBeenCalledTimes(1);
         });
 
         it('should emit custom', () => {

@@ -79,6 +79,50 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         return { ...state, showDiff };
     });
 
+    //Effects
+    readonly loadData = this.effect((data$: Observable<DotContentCompareEvent>) => {
+        return data$.pipe(
+            map((data) => {
+                this.dotContentletService
+                    .getContentletVersions(data.identifier, data.language)
+                    .pipe(
+                        take(1),
+                        switchMap((contents: DotCMSContentlet[]) => {
+                            return this.dotContentTypeService
+                                .getContentType(contents[0].contentType)
+                                .pipe(
+                                    take(1),
+                                    map((contentType: DotCMSContentType) => {
+                                        return { contentType, contents };
+                                    })
+                                );
+                        })
+                    )
+                    .subscribe(
+                        (value: {
+                            contentType: DotCMSContentType;
+                            contents: DotCMSContentlet[];
+                        }) => {
+                            const fields = this.filterFields(value.contentType);
+                            const formattedContents = this.formatSpecificTypesFields(
+                                value.contents,
+                                fields
+                            );
+                            this.updateData({
+                                working: this.getWorkingVersion(formattedContents),
+                                compare: this.getContentByInode(data.inode, formattedContents),
+                                versions: formattedContents.filter(
+                                    (content) => content.working === false
+                                ),
+                                fields: fields
+                            });
+                            this.updateShowDiff(true);
+                        }
+                    );
+            })
+        );
+    });
+
     private filterFields(contentType: DotCMSContentType): DotCMSContentTypeField[] {
         return contentType.fields.filter((field) => FieldWhiteList[field.fieldType] != undefined);
     }
@@ -146,48 +190,4 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
 
         return contents;
     }
-
-    //Effects
-    readonly loadData = this.effect((data$: Observable<DotContentCompareEvent>) => {
-        return data$.pipe(
-            map((data) => {
-                this.dotContentletService
-                    .getContentletVersions(data.identifier, data.language)
-                    .pipe(
-                        take(1),
-                        switchMap((contents: DotCMSContentlet[]) => {
-                            return this.dotContentTypeService
-                                .getContentType(contents[0].contentType)
-                                .pipe(
-                                    take(1),
-                                    map((contentType: DotCMSContentType) => {
-                                        return { contentType, contents };
-                                    })
-                                );
-                        })
-                    )
-                    .subscribe(
-                        (value: {
-                            contentType: DotCMSContentType;
-                            contents: DotCMSContentlet[];
-                        }) => {
-                            const fields = this.filterFields(value.contentType);
-                            const formattedContents = this.formatSpecificTypesFields(
-                                value.contents,
-                                fields
-                            );
-                            this.updateData({
-                                working: this.getWorkingVersion(formattedContents),
-                                compare: this.getContentByInode(data.inode, formattedContents),
-                                versions: formattedContents.filter(
-                                    (content) => content.working === false
-                                ),
-                                fields: fields
-                            });
-                            this.updateShowDiff(true);
-                        }
-                    );
-            })
-        );
-    });
 }

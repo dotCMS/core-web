@@ -18,9 +18,10 @@ enum DotActionInputs {
     styleUrls: ['./dot-comment-and-assign-form.component.scss']
 })
 export class DotCommentAndAssignFormComponent
-    implements OnInit, DotFormModel<{ [key: string]: any }, { [key: string]: string }> {
+    implements OnInit, DotFormModel<{ [key: string]: unknown }, { [key: string]: string }>
+{
     form: FormGroup;
-    @Input() data: { [key: string]: any };
+    @Input() data: { [key: string]: string | boolean };
     @Output() value = new EventEmitter<{ [key: string]: string }>();
     @Output() valid = new EventEmitter<boolean>();
     dotRoles: SelectItem[];
@@ -33,7 +34,7 @@ export class DotCommentAndAssignFormComponent
         if (this.data) {
             if (this.data[DotActionInputs.ASSIGNABLE]) {
                 this.dotRolesService
-                    .get(this.data.roleId, this.data.roleHierarchy)
+                    .get(this.data.roleId as string, this.data.roleHierarchy as boolean)
                     .pipe(take(1))
                     .subscribe((items: DotRole[]) => {
                         this.dotRoles = items.map((role) => {

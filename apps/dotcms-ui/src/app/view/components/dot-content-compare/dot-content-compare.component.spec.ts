@@ -39,11 +39,11 @@ const storeMock = jasmine.createSpyObj(
 @Component({
     selector: 'dot-test-host-component',
     template:
-        '<dot-content-compare [data]="data"  (close)="close.emit(true)" ></dot-content-compare>'
+        '<dot-content-compare [data]="data"  (close)="shutdown.emit(true)" ></dot-content-compare>'
 })
 class TestHostComponent {
     @Input() data: DotContentCompareEvent;
-    @Output() close = new EventEmitter<boolean>();
+    @Output() shutdown = new EventEmitter<boolean>();
 }
 
 describe('DotContentCompareComponent', () => {
@@ -53,7 +53,6 @@ describe('DotContentCompareComponent', () => {
     let dotContentCompareStore: DotContentCompareStore;
     let contentCompareTableComponent: DotContentCompareTableComponent;
     let dotAlertConfirmService: DotAlertConfirmService;
-    let confirmationService: ConfirmationService;
     let dotIframeService: DotIframeService;
 
     const messageServiceMock = new MockDotMessageService({
@@ -97,9 +96,7 @@ describe('DotContentCompareComponent', () => {
 
         dotContentCompareStore = TestBed.inject(DotContentCompareStore);
         dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
-        confirmationService = TestBed.inject(ConfirmationService);
         dotIframeService = TestBed.inject(DotIframeService);
-
         hostComponent = hostFixture.componentInstance;
         hostComponent.data = DotContentCompareEventMOCK;
         hostFixture.detectChanges();
@@ -130,7 +127,7 @@ describe('DotContentCompareComponent', () => {
         spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
-        spyOn(hostComponent.close, 'emit');
+        spyOn(hostComponent.shutdown, 'emit');
 
         contentCompareTableComponent.bringBack.emit('123');
 
@@ -146,6 +143,6 @@ describe('DotContentCompareComponent', () => {
             name: 'getVersionBack',
             args: ['123']
         });
-        expect(hostComponent.close.emit).toHaveBeenCalledOnceWith(true);
+        expect(hostComponent.shutdown.emit).toHaveBeenCalledOnceWith(true);
     });
 });

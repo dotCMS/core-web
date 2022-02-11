@@ -19,10 +19,10 @@ import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/
     styleUrls: ['./dot-create-contentlet.component.scss']
 })
 export class DotCreateContentletComponent implements OnInit {
-    @Output() close: EventEmitter<any> = new EventEmitter();
+    @Output() shutdown: EventEmitter<unknown> = new EventEmitter();
     url$: Observable<string>;
     @Output()
-    custom: EventEmitter<any> = new EventEmitter();
+    custom: EventEmitter<unknown> = new EventEmitter();
 
     constructor(
         private dotRouterService: DotRouterService,
@@ -52,7 +52,7 @@ export class DotCreateContentletComponent implements OnInit {
             this.dotRouterService.goToContent();
         }
         this.dotIframeService.reloadData(this.dotRouterService.currentPortlet.id);
-        this.close.emit(event);
+        this.shutdown.emit(event);
     }
 
     /**

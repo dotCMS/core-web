@@ -7,8 +7,8 @@ import { mergeMap, map, filter, catchError, pluck, take } from 'rxjs/operators';
 import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
 
 interface DotAddEditEvents {
-    load?: ($event: any) => void;
-    keyDown?: ($event: any) => void;
+    load?: ($event: unknown) => void;
+    keyDown?: ($event: unknown) => void;
 }
 
 export interface DotEditorAction {
@@ -28,11 +28,13 @@ export interface DotEditorAction {
 @Injectable()
 export class DotContentletEditorService {
     close$: Subject<boolean> = new Subject<boolean>();
-    draggedContentType$: Subject<DotCMSContentType | DotCMSContentlet> = new Subject<DotCMSContentType | DotCMSContentlet>();
+    draggedContentType$: Subject<DotCMSContentType | DotCMSContentlet> = new Subject<
+        DotCMSContentType | DotCMSContentlet
+    >();
 
     private data: Subject<DotEditorAction> = new Subject();
     private _header: Subject<string> = new Subject();
-    private _load: ($event: any) => void;
+    private _load: ($event: unknown) => void;
     private _keyDown: ($event: KeyboardEvent) => void;
 
     constructor(
@@ -65,11 +67,11 @@ export class DotContentletEditorService {
         return this._header;
     }
 
-    get loadHandler(): ($event: any) => void {
+    get loadHandler(): ($event: unknown) => void {
         return this._load;
     }
 
-    get keyDownHandler(): ($event: any) => void {
+    get keyDownHandler(): ($event: unknown) => void {
         return this._keyDown;
     }
 
@@ -133,7 +135,7 @@ export class DotContentletEditorService {
      * @param * $event
      * @memberof DotContentletEditorService
      */
-    load($event: any): void {
+    load($event: unknown): void {
         if (this._load) {
             this._load($event);
         }
