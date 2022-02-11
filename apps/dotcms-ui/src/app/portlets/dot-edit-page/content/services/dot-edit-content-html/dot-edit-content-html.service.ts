@@ -32,6 +32,7 @@ import { INLINE_TINYMCE_SCRIPTS } from '@dotcms/app/portlets/dot-edit-page/conte
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotPage } from '@dotcms/app/shared/models/dot-page/dot-page.model';
+import { DotAddContentletPayload } from './models/dot-contentlets-events.model';
 
 export enum DotContentletAction {
     EDIT,
@@ -307,7 +308,7 @@ export class DotEditContentHtmlService {
             return this.dotContainerContentletService
                 .getFormToContainer(this.currentContainer, form)
                 .pipe(
-                    map(({ content }: { [key: string]: any }) => {
+                    map(({ content }: { content: { [key: string]: string } }) => {
                         const { identifier, inode } = content;
 
                         containerEl.replaceChild(
@@ -683,7 +684,7 @@ export class DotEditContentHtmlService {
             'add-uploaded-dotAsset': (dotAssetData: DotAssetPayload) => {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
             },
-            'add-content': (data: any) => {
+            'add-content': (data: DotAddContentletPayload) => {
                 this.iframeActions$.next({
                     name: 'add-content',
                     data: data

@@ -52,7 +52,7 @@ export class DotDialogComponent implements OnChanges {
 
     @Input() bindEvents = true;
 
-    @Output() hide: EventEmitter<any> = new EventEmitter();
+    @Output() hide: EventEmitter<void> = new EventEmitter();
 
     @Output()
     beforeClose: EventEmitter<{

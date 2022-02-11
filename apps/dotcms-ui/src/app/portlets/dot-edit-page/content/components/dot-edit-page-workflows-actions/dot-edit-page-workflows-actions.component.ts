@@ -32,7 +32,7 @@ import { DotPage } from '@models/dot-page/dot-page.model';
 export class DotEditPageWorkflowsActionsComponent implements OnChanges {
     @Input() page: DotPage;
 
-    @Output() fired: EventEmitter<any> = new EventEmitter();
+    @Output() fired: EventEmitter<DotCMSContentlet> = new EventEmitter();
 
     actionsAvailable: boolean;
     actions: Observable<MenuItem[]>;
@@ -103,7 +103,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                 )
             )
             .pipe(take(1))
-            .subscribe((data: { [key: string]: any }) => {
+            .subscribe((data: { [key: string]: string }) => {
                 this.fireWorkflowAction(
                     workflow,
                     this.dotWorkflowEventHandlerService.processWorkflowPayload(
@@ -116,7 +116,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
 
     private fireWorkflowAction(
         workflow: DotCMSWorkflowAction,
-        data?: { [key: string]: any }
+        data?: { [key: string]: string }
     ): void {
         const currentMenuActions = this.actions;
         this.dotWorkflowActionsFireService

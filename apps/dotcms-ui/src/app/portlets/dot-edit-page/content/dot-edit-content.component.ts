@@ -39,6 +39,7 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { DotContentletEventAddContentlet } from './services/dot-edit-content-html/models/dot-contentlets-events.model';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -330,7 +331,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return null;
     }
 
-    private addContentType($event: any): void {
+    private addContentType($event: DotContentletEventAddContentlet): void {
         const container: DotPageContainer = {
             identifier: $event.data.container.dotIdentifier,
             uuid: $event.data.container.dotUuid
@@ -346,7 +347,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                         data: { url },
                         events: {
                             load: (event) => {
-                                event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
+                                event.target.contentWindow.ngEditContentletEvents =
+                                    this.dotEditContentHtmlService.contentletEvents$;
                             }
                         }
                     });
