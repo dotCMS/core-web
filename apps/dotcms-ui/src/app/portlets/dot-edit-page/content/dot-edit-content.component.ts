@@ -39,7 +39,8 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotPropertiesService } from '@services/dot-properties/dot-properties.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-import { DotContentletEventAddContentlet } from './services/dot-edit-content-html/models/dot-contentlets-events.model';
+import { DotContentletEvent } from './services/dot-edit-content-html/models/dot-contentlets-events.model';
+import { DotContentletEventAddContentType } from './services/dot-edit-content-html/models/dot-contentlets-events.model';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -331,7 +332,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return null;
     }
 
-    private addContentType($event: DotContentletEventAddContentlet): void {
+    private addContentType($event: DotContentletEventAddContentType): void {
         const container: DotPageContainer = {
             identifier: $event.data.container.dotIdentifier,
             uuid: $event.data.container.dotUuid
@@ -358,7 +359,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         }
     }
 
-    private searchContentlet($event: any): void {
+    private searchContentlet($event: DotContentletEvent): void {
         const container: DotPageContainer = {
             identifier: $event.dataset.dotIdentifier,
             uuid: $event.dataset.dotUuid
@@ -384,7 +385,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         }
     }
 
-    private editContentlet($event: any): void {
+    private editContentlet($event: DotContentletEvent): void {
         this.dotContentletEditorService.edit({
             data: {
                 inode: $event.dataset.dotInode
@@ -398,7 +399,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         });
     }
 
-    private iframeActionsHandler(event: any): (contentlet: Record<string, unknown>) => void {
+    private iframeActionsHandler(event: string): (contentlet: DotContentletEvent) => void {
         const eventsHandlerMap = {
             edit: this.editContentlet.bind(this),
             code: this.editContentlet.bind(this),
@@ -419,14 +420,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private subscribeIframeCustomEvents(): void {
         fromEvent(window.document, 'ng-event')
             .pipe(pluck('detail'), takeUntil(this.destroy$))
-            .subscribe((customEvent: any) => {
+            .subscribe((customEvent: { name: string; [key: string]: unknown }) => {
                 if (this.customEventsHandler[customEvent.name]) {
                     this.customEventsHandler[customEvent.name](customEvent.data);
                 }
             });
     }
 
-    private removeContentlet($event: any): void {
+    private removeContentlet($event: DotContentletEvent): void {
         this.dotDialogService.confirm({
             accept: () => {
                 const pageContainer: DotPageContainer = {
@@ -468,7 +469,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private subscribeIframeActions(): void {
         this.dotEditContentHtmlService.iframeActions$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((contentletEvent: any) => {
+            .subscribe((contentletEvent: DotContentletEvent) => {
                 this.ngZone.run(() => {
                     this.iframeActionsHandler(contentletEvent.name)(contentletEvent);
                 });
@@ -536,8 +537,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotContentletEditorService.draggedContentType$
             .pipe(takeUntil(this.destroy$))
             .subscribe((contentType: DotCMSContentType | DotCMSContentlet) => {
-                const iframeWindow: any = (this.iframe.nativeElement as HTMLIFrameElement)
-                    .contentWindow;
+                const iframeWindow: Window & {
+                    draggedContent?: DotCMSContentType | DotCMSContentlet;
+                } = (this.iframe.nativeElement as HTMLIFrameElement).contentWindow;
                 iframeWindow.draggedContent = contentType;
             });
     }

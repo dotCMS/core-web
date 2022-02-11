@@ -131,9 +131,9 @@ describe('DotFormSelectorComponent', () => {
 
                 it('should emit close', () => {
                     const dialog: DebugElement = de.query(By.css('dot-dialog'));
-                    dialog.triggerEventHandler('hide', {});
+                    dialog.triggerEventHandler('hide', true);
 
-                    expect(component.shutdown.emit).toHaveBeenCalledWith({});
+                    expect(component.shutdown.emit).toHaveBeenCalledWith(true);
                 });
 
                 xit('trigger event when click select button', async () => {

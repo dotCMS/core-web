@@ -2,16 +2,20 @@ import { DotPageContent } from '@portlets/dot-edit-page/shared/models/dot-page-c
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 
-export interface DotContentletEvent<T> {
+export interface DotContentletEvent<T = unknown> {
     name: string;
     data?: T;
+    container?: DOMStringMap;
+    dataset?: DOMStringMap;
+    target?: unknown;
 }
 
 export type DotContentletEventDragAndDropDotAsset = DotContentletEvent<DotAssetPayload>;
-export type DotContentletEventAddContentlet = DotContentletEvent<DotAddContentletPayload>;
+export type DotContentletEventAddContentType = DotContentletEvent<DotAddContentTypePayload>;
 export type DotContentletEventRelocate = DotContentletEvent<DotRelocatePayload>;
 export type DotContentletEventSelect = DotContentletEvent<DotPageContent>;
 export type DotContentletEventSave = DotContentletEvent<DotPageContent>;
+export type DotContentletEventContent = DotContentletEvent<DotContentletPayload>;
 
 export interface DotAssetPayload {
     contentlet: DotPageContent;
@@ -48,7 +52,21 @@ export interface DotContentletContainer {
     dotCanAdd: string;
 }
 
-export interface DotAddContentletPayload {
-    container: DotContentletContainer;
+export interface DotContentletDataset {
+    dotObject: string;
+    dotAction?: string;
+    dotAdd?: string;
+    dotIdentifier: string;
+    dotUuid?: string;
+    dotInode?: string;
+}
+
+export interface DotAddContentTypePayload {
+    container: DotContentletContainer | null;
     contentType: DotCMSContentType;
+}
+
+export interface DotContentletPayload {
+    container: DotContentletContainer;
+    dataset: DotContentletDataset;
 }

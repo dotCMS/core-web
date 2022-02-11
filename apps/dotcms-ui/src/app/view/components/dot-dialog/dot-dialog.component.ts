@@ -52,7 +52,7 @@ export class DotDialogComponent implements OnChanges {
 
     @Input() bindEvents = true;
 
-    @Output() hide: EventEmitter<void> = new EventEmitter();
+    @Output() hide: EventEmitter<boolean> = new EventEmitter();
 
     @Output()
     beforeClose: EventEmitter<{
@@ -162,7 +162,7 @@ export class DotDialogComponent implements OnChanges {
 
     private handleClose(): void {
         this.visibleChange.emit(false);
-        this.hide.emit();
+        this.hide.emit(true);
         this.unBindEvents();
     }
 
