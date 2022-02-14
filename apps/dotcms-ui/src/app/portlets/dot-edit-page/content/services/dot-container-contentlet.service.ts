@@ -43,7 +43,7 @@ export class DotContainerContentletService {
     getFormToContainer(
         container: DotPageContainer,
         form: DotCMSContentType
-    ): Observable<{ render: string; content: any }> {
+    ): Observable<{ render: string; content: { [key: string]: string } }> {
         return this.coreWebService
             .requestView({
                 url: `v1/containers/form/${form.id}?containerId=${container.identifier}`
