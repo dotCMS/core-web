@@ -3,7 +3,6 @@ import {
     ViewContainerRef,
     Input,
     ComponentFactoryResolver,
-    ComponentRef,
     SimpleChanges,
     OnChanges
 } from '@angular/core';

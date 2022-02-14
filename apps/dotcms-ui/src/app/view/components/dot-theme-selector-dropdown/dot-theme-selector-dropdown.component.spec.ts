@@ -221,7 +221,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
                 spyOn(searchable.componentInstance, 'toggleOverlayPanel');
                 const value = mockDotThemes[0];
 
-                searchable.triggerEventHandler('change', { ...value });
+                searchable.triggerEventHandler('switch', { ...value });
                 expect(component.value).toEqual(value);
                 expect(component.propagateChange).toHaveBeenCalledWith(value.identifier);
                 expect(searchable.componentInstance.toggleOverlayPanel).toHaveBeenCalledTimes(1);

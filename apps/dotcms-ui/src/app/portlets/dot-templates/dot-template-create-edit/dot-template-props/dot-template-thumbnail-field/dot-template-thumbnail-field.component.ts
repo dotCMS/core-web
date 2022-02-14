@@ -102,7 +102,7 @@ export class DotTemplateThumbnailFieldComponent implements ControlValueAccessor 
         }
     }
 
-    propagateChange = (_: any) => {
+    propagateChange = (_: unknown) => {
         // do nothing
     };
 

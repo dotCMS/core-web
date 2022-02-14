@@ -1,7 +1,7 @@
 <dot-searchable-dropdown
     *ngIf="moreThanOneSite || asField; else hostName"
     #searchableDropdown
-    (change)="siteChange($event)"
+    (switch)="siteChange($event)"
     (filterChange)="handleFilterChange($event)"
     (hide)="hide.emit()"
     (pageChange)="handlePageChange($event)"

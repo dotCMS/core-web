@@ -117,7 +117,7 @@ describe('DotPersonaSelectorComponent', () => {
 
     it('should emit the selected persona', () => {
         spyOn(component.selected, 'emit');
-        dropdown.triggerEventHandler('change', defaultPersona);
+        dropdown.triggerEventHandler('switch', defaultPersona);
         expect(component.selected.emit).toHaveBeenCalledWith(defaultPersona);
     });
 

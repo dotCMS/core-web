@@ -105,7 +105,7 @@ export class SearchableDropdownComponent
     externalFilterTemplate: TemplateRef<any>;
 
     @Output()
-    change: EventEmitter<any> = new EventEmitter();
+    switch: EventEmitter<any> = new EventEmitter();
 
     @Output()
     filterChange: EventEmitter<string> = new EventEmitter();
@@ -308,7 +308,7 @@ export class SearchableDropdownComponent
         if (this.value !== item || this.multiple) {
             this.setValue(item);
             this.propagateChange(this.getValueToPropagate());
-            this.change.emit(Object.assign({}, this.value));
+            this.switch.emit(Object.assign({}, this.value));
         }
 
         this.toggleOverlayPanel();

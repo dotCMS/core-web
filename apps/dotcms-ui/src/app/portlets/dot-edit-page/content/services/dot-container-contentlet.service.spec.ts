@@ -87,11 +87,7 @@ describe('DotContainerContentletService', () => {
             id: formId
         };
 
-<<<<<<< HEAD
-        dotContainerContentletService.getFormToContainer(pageContainer, form).subscribe();
-=======
         dotContainerContentletService.getFormToContainer(pageContainer, form.id).subscribe();
->>>>>>> master
         httpMock.expectOne(`v1/containers/form/2?containerId=1`);
     });
 

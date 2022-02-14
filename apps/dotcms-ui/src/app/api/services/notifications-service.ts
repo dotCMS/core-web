@@ -3,7 +3,7 @@ import { CoreWebService } from '@dotcms/dotcms-js';
 import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 import { DotCMSResponse } from '@dotcms/dotcms-js';
-import { DotNotificactionResponse } from '@models/notifications';
+import { DotNotificationResponse } from '@models/notifications';
 
 interface NotificationServiceUrls {
     dismissNotificationsUrl: string;
@@ -25,7 +25,7 @@ export class NotificationsService {
         };
     }
 
-    getLastNotifications(): Observable<DotCMSResponse<DotNotificactionResponse>> {
+    getLastNotifications(): Observable<DotCMSResponse<DotNotificationResponse>> {
         return this.coreWebService
             .requestView({
                 url: this.urls.getLastNotificationsUrl
@@ -33,7 +33,7 @@ export class NotificationsService {
             .pipe(pluck('bodyJsonObject'));
     }
 
-    getAllNotifications(): Observable<DotCMSResponse<DotNotificactionResponse>> {
+    getAllNotifications(): Observable<DotCMSResponse<DotNotificationResponse>> {
         return this.coreWebService
             .requestView({
                 url: this.urls.getNotificationsUrl
@@ -43,7 +43,7 @@ export class NotificationsService {
 
     dismissNotifications(
         items: Record<string, unknown>
-    ): Observable<DotCMSResponse<DotNotificactionResponse>> {
+    ): Observable<DotCMSResponse<DotNotificationResponse>> {
         return this.coreWebService
             .requestView({
                 body: items,
@@ -53,7 +53,7 @@ export class NotificationsService {
             .pipe(pluck('bodyJsonObject'));
     }
 
-    markAllAsRead(): Observable<DotCMSResponse<DotNotificactionResponse>> {
+    markAllAsRead(): Observable<DotCMSResponse<DotNotificationResponse>> {
         return this.coreWebService
             .request({
                 method: 'PUT',

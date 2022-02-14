@@ -238,7 +238,7 @@ describe('SiteSelectorComponent', () => {
         );
         let result: any;
         comp.change.subscribe((res) => (result = res));
-        searchableDropdownComponent.triggerEventHandler('change', { fake: 'site' });
+        searchableDropdownComponent.triggerEventHandler('switch', { fake: 'site' });
 
         expect(result).toEqual({ fake: 'site' });
     });
