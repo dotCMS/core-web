@@ -83,6 +83,7 @@ export class DotTemplatesService {
 
     /**
      * Save and Publish a template
+     * @param {DotTemplate} values
      * @returns Observable<DotTemplate>
      * @memberof DotTemplatesService
      */
