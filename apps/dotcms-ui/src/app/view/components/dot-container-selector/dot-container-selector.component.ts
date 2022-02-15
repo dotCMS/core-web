@@ -7,6 +7,7 @@ import { DotContainerColumnBox } from '@models/dot-edit-layout-designer';
 import { DotContainer } from '@models/container/dot-container.model';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { PaginationEvent } from '@components/_common/searchable-dropdown/component';
 
 @Component({
     providers: [PaginatorService],
@@ -55,10 +56,10 @@ export class DotContainerSelectorComponent implements OnInit {
 
     /**
      * Call when the current page changed
-     * @param any event
+     * @param PaginationEvent event
      * @memberof DotContainerSelectorComponent
      */
-    handlePageChange(event: { filter: string; first: number }): void {
+    handlePageChange(event: PaginationEvent): void {
         this.getContainersList(event.filter, event.first);
     }
 

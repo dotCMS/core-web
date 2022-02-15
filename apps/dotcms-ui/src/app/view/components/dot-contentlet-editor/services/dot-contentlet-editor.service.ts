@@ -71,7 +71,7 @@ export class DotContentletEditorService {
         return this._load;
     }
 
-    get keyDownHandler(): ($event: unknown) => void {
+    get keyDownHandler(): ($event: KeyboardEvent) => void {
         return this._keyDown;
     }
 
