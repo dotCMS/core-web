@@ -1,4 +1,4 @@
-export interface ContentletLockResponse {
+export interface DotContentletLockResponse {
     id: string;
     inode: string;
     message: string;

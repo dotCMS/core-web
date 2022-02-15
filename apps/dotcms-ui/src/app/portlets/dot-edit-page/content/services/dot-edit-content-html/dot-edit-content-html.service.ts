@@ -14,7 +14,6 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { getEditPageCss } from '../html/libraries/iframe-edit-mode.css';
 import { MODEL_VAR_NAME } from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/iframe-edit-mode.js';
-import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {
     DotAssetPayload,
@@ -53,7 +52,9 @@ export class DotEditContentHtmlService {
     currentContainer: DotPageContainer;
     currentContentlet: DotPageContent;
     iframe: ElementRef;
-    iframeActions$: Subject<DotContentletEvent> = new Subject();
+    iframeActions$: Subject<
+        DotContentletEvent<Record<string, unknown> | DotAddContentTypePayload>
+    > = new Subject();
     pageModel$: Subject<PageModelChangeEvent> = new Subject();
     mutationConfig = { attributes: false, childList: true, characterData: false };
     datasetMissing: string[];

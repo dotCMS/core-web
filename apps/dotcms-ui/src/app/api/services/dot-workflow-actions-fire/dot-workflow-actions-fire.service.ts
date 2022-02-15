@@ -8,7 +8,7 @@ import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-b
 
 interface DotActionRequestOptions {
     contentType?: string;
-    data: { [key: string]: unknown };
+    data: { [key: string]: string };
     action: ActionToFire;
 }
 
@@ -66,12 +66,12 @@ export class DotWorkflowActionsFireService {
      * Fire a "NEW" action over the content type received with the specified data
      *
      * @param {contentType} string
-     * @param {[key: string]: any} data
+     * @param {[key: string]: string} data
      * @returns Observable<T>
      *
      * @memberof DotWorkflowActionsFireService
      */
-    newContentlet<T>(contentType: string, data: { [key: string]: unknown}): Observable<T> {
+    newContentlet<T>(contentType: string, data: { [key: string]: string }): Observable<T> {
         return this.request<T>({ contentType, data, action: ActionToFire.NEW });
     }
 
@@ -80,11 +80,11 @@ export class DotWorkflowActionsFireService {
      *
      * @template T
      * @param {string} contentType
-     * @param {{ [key: string]: unknown}} data
+     * @param {{ [key: string]: string}} data
      * @returns {Observable<T>}
      * @memberof DotWorkflowActionsFireService
      */
-    publishContentlet<T>(contentType: string, data: { [key: string]: unknown}): Observable<T> {
+    publishContentlet<T>(contentType: string, data: { [key: string]: string }): Observable<T> {
         return this.request<T>({
             contentType,
             data,
@@ -100,7 +100,7 @@ export class DotWorkflowActionsFireService {
      * @return {*}  {Observable<T>}
      * @memberof DotWorkflowActionsFireService
      */
-    saveContentlet<T>(data: { [key: string]: unknown}): Observable<T> {
+    saveContentlet<T>(data: { [key: string]: string }): Observable<T> {
         return this.request<T>({
             data,
             action: ActionToFire.EDIT
@@ -118,7 +118,7 @@ export class DotWorkflowActionsFireService {
      */
     publishContentletAndWaitForIndex<T>(
         contentType: string,
-        data: { [key: string]: unknown}
+        data: { [key: string]: string }
     ): Observable<T> {
         return this.publishContentlet(contentType, {
             ...data,

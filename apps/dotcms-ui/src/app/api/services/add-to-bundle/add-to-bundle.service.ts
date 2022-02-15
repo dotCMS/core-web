@@ -1,4 +1,4 @@
-import { pluck, mergeMap } from 'rxjs/operators';
+import { pluck, mergeMap, map } from 'rxjs/operators';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -50,7 +50,7 @@ export class AddToBundleService {
         bundleData: DotBundle
     ): Observable<DotAjaxActionResponseView> {
         return this.coreWebService
-            .requestView({
+            .request({
                 body: `assetIdentifier=${assetIdentifier}&bundleName=${bundleData.name}&bundleSelect=${bundleData.id}`,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -58,6 +58,6 @@ export class AddToBundleService {
                 method: 'POST',
                 url: this.addToBundleUrl
             })
-            .pipe(pluck('bodyJsonObject'));
+            .pipe(map((res: DotAjaxActionResponseView) => res));
     }
 }

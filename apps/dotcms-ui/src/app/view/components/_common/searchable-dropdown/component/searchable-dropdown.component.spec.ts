@@ -75,7 +75,7 @@ class HostTestComponent {
     disabled: boolean;
 }
 
-fdescribe('SearchableDropdownComponent', () => {
+describe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let hostFixture: ComponentFixture<HostTestComponent>;

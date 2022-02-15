@@ -5,7 +5,7 @@ import { pluck } from 'rxjs/operators';
 import { DotCMSResponse } from '@dotcms/dotcms-js';
 import { DotNotificationResponse } from '@models/notifications';
 
-interface NotificationServiceUrls {
+interface DotNotificationServiceUrls {
     dismissNotificationsUrl: string;
     getLastNotificationsUrl: string;
     getNotificationsUrl: string;
@@ -14,7 +14,7 @@ interface NotificationServiceUrls {
 
 @Injectable()
 export class NotificationsService {
-    private urls: NotificationServiceUrls;
+    private urls: DotNotificationServiceUrls;
 
     constructor(private coreWebService: CoreWebService) {
         this.urls = {

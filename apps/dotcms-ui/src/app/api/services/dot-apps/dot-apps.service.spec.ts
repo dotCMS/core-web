@@ -238,7 +238,7 @@ describe('DotAppsService', () => {
     });
 
     it('should throw error on Save a specific app and handle it', () => {
-        const params = {
+        const params: DotAppsSaveData = {
             name: { hidden: false, value: 'test' }
         };
         const error404 = mockResponseView(400);

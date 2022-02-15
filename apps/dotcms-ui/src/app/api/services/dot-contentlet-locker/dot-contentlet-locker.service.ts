@@ -2,7 +2,7 @@ import { pluck } from 'rxjs/operators';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ContentletLockResponse } from '@models/contentlet/contentlet-locker.model';
+import { DotContentletLockResponse } from '@models/contentlet/contentlet-locker.model';
 
 @Injectable()
 export class DotContentletLockerService {
@@ -15,7 +15,7 @@ export class DotContentletLockerService {
      * @returns Observable<any>
      * @memberof PageViewService
      */
-    lock(inode: string): Observable<ContentletLockResponse> {
+    lock(inode: string): Observable<DotContentletLockResponse> {
         return this.coreWebService
             .requestView({
                 method: 'PUT',
@@ -31,7 +31,7 @@ export class DotContentletLockerService {
      * @returns Observable<any>
      * @memberof PageViewService
      */
-    unlock(inode: string): Observable<ContentletLockResponse> {
+    unlock(inode: string): Observable<DotContentletLockResponse> {
         return this.coreWebService
             .requestView({
                 method: 'PUT',

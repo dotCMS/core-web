@@ -20,7 +20,7 @@ export class DotCrudService {
      * @returns Observable<any>
      * @memberof CrudService
      */
-    public postData(baseUrl: string, data: unknown): Observable<unknown> {
+    public postData<T>(baseUrl: string, data: T): Observable<unknown> {
         return this.coreWebService
             .requestView({
                 body: data,

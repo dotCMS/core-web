@@ -2,7 +2,7 @@ import { DotPageContent } from '@portlets/dot-edit-page/shared/models/dot-page-c
 import { DotPageContainer } from '@models/dot-page-container/dot-page-container.model';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 
-export interface DotContentletEvent<T = unknown> {
+export interface DotContentletEvent<T = Record<string, unknown>> {
     name: string;
     data?: T;
     container?: DOMStringMap;
