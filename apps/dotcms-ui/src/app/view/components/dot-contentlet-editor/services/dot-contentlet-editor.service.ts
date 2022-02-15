@@ -1,14 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { Subject, Observable, of } from 'rxjs';
 import { mergeMap, map, filter, catchError, pluck, take } from 'rxjs/operators';
 import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
 
 interface DotAddEditEvents {
-    load?: ($event: unknown) => void;
-    keyDown?: ($event: unknown) => void;
+    load?: ($event: Type<unknown>) => void;
+    keyDown?: ($event: KeyboardEvent) => void;
 }
 
 export interface DotEditorAction {
