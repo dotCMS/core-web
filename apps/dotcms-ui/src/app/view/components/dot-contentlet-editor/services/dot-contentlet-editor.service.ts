@@ -7,7 +7,7 @@ import { mergeMap, map, filter, catchError, pluck, take } from 'rxjs/operators';
 import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
 
 interface DotAddEditEvents {
-    load?: ($event: Type<unknown>) => void;
+    load?: ($event: Event) => void;
     keyDown?: ($event: KeyboardEvent) => void;
 }
 
