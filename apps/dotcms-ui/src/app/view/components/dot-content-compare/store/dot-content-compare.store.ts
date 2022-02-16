@@ -135,11 +135,14 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
         return contents.find((content) => content.working === true);
     }
 
-    private getFieldFormattedValue(value: any, fieldType: string): string {
+    private getFieldFormattedValue(
+        value: string | { [key: string]: string } | [],
+        fieldType: string
+    ): string {
         if (value) {
             switch (fieldType) {
                 case FieldWhiteList.Category: {
-                    return value
+                    return (value as [])
                         .map((obj) => {
                             return Object.values(obj)[0];
                         })
@@ -161,7 +164,7 @@ export class DotContentCompareStore extends ComponentStore<DotContentCompareStat
                 }
             }
         }
-        return value;
+        return value as string;
     }
 
     private formatSpecificTypesFields(

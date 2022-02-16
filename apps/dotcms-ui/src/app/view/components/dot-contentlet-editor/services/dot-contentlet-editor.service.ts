@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { Injectable, Type } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject, Observable, of } from 'rxjs';
 import { mergeMap, map, filter, catchError, pluck, take } from 'rxjs/operators';
 import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
