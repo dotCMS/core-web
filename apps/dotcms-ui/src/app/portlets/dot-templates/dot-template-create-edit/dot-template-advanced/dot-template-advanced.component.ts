@@ -1,4 +1,13 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, Input, SimpleChanges, OnChanges } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    OnDestroy,
+    OnInit,
+    Output,
+    Input,
+    SimpleChanges,
+    OnChanges
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Subject } from 'rxjs';
@@ -28,23 +37,20 @@ export class DotTemplateAdvancedComponent implements OnInit, OnDestroy, OnChange
     actions: DotPortletToolbarActions;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
-    constructor(
-        private fb: FormBuilder,
-        private dotMessageService: DotMessageService
-    ) {}
+    constructor(private fb: FormBuilder, private dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
         this.form = this.fb.group({ body: this.body });
 
-        this.form
-            .valueChanges.pipe(takeUntil(this.destroy$))
+        this.form.valueChanges
+            .pipe(takeUntil(this.destroy$))
             .subscribe(() => this.updateTemplate.emit(this.form.value));
 
         this.actions = this.getActions(!this.didTemplateChanged);
     }
 
-    ngOnChanges(changes: SimpleChanges){
-        if( changes.didTemplateChanged ) {
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.didTemplateChanged) {
             this.actions = this.getActions(!changes.didTemplateChanged.currentValue);
         }
     }
