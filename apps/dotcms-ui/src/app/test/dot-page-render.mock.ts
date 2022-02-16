@@ -1,5 +1,5 @@
 import { DotPage } from '@shared/models/dot-page/dot-page.model';
-import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
+import { DotPageRenderParameters } from '@models/dot-page/dot-rendered-page.model';
 import { mockDotLanguage } from './dot-language.mock';
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
@@ -131,7 +131,7 @@ export const mockDotTemplateLayout: DotTemplate = {
     title: 'anonymous_layout_1511798005268'
 };
 
-export const mockDotRenderedPage = (): DotPageRender.Parameters => {
+export const mockDotRenderedPage = (): DotPageRenderParameters => {
     return {
         containers: mockDotContainers(),
         layout: mockDotLayout(),

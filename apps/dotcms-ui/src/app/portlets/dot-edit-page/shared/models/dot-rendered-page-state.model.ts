@@ -5,7 +5,7 @@ import { DotContainer, DotContainerStructure } from '@shared/models/container/do
 import { DotLayout, DotTemplate } from '@shared/models/dot-edit-layout-designer';
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
 import { DotPage } from '@models/dot-page/dot-page.model';
-import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
+import { DotPageRender, DotPageRenderParameters } from '@models/dot-page/dot-rendered-page.model';
 
 interface DotPageState {
     locked?: boolean;
@@ -16,7 +16,7 @@ interface DotPageState {
 export class DotPageRenderState extends DotPageRender {
     private _state: DotPageState;
 
-    constructor(private _user: User, private dotRenderedPage: DotPageRender.Parameters) {
+    constructor(private _user: User, private dotRenderedPage: DotPageRenderParameters) {
         super(dotRenderedPage);
         const locked = !!dotRenderedPage.page.lockedBy;
         const lockedByAnotherUser = locked ? dotRenderedPage.page.lockedBy !== _user.userId : false;
