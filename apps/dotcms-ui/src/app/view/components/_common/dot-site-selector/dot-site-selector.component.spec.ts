@@ -226,7 +226,7 @@ describe('SiteSelectorComponent', () => {
         expect(paginatorService.filter).toEqual('*');
     });
 
-    it('should emit change event', () => {
+    it('should emit switch event', () => {
         paginatorService.filter = 'filter';
         paginatorService.totalRecords = 2;
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(sites));
@@ -237,7 +237,7 @@ describe('SiteSelectorComponent', () => {
         );
         let result: any;
         comp.switch.subscribe((res) => (result = res));
-        searchableDropdownComponent.triggerEventHandler('change', { fake: 'site' });
+        searchableDropdownComponent.triggerEventHandler('switch', { fake: 'site' });
 
         expect(result).toEqual({ fake: 'site' });
     });

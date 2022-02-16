@@ -101,7 +101,7 @@ describe('DotAddContentletComponent', () => {
         });
 
         it('should emit close', () => {
-            dotAddContentletWrapper.triggerEventHandler('close', {});
+            dotAddContentletWrapper.triggerEventHandler('shutdown', {});
             expect(component.shutdown.emit).toHaveBeenCalledTimes(1);
         });
 

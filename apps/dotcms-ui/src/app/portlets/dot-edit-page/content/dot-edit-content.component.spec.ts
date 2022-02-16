@@ -526,7 +526,7 @@ describe('DotEditContentComponent', () => {
 
             it('should remove Contentlet Placeholder on close', () => {
                 spyOn(dotEditContentHtmlService, 'removeContentletPlaceholder');
-                dotCreateContentlet.triggerEventHandler('close', {});
+                dotCreateContentlet.triggerEventHandler('shutdown', {});
 
                 expect(dotEditContentHtmlService.removeContentletPlaceholder).toHaveBeenCalledTimes(
                     1
