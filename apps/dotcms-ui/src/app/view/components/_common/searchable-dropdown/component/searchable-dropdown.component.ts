@@ -46,7 +46,7 @@ export class SearchableDropdownComponent
     implements ControlValueAccessor, OnChanges, AfterContentInit, AfterViewInit
 {
     @Input()
-    data: unknown[];
+    data: Record<string, unknown>[];
 
     @Input() action: (action: unknown) => void;
 

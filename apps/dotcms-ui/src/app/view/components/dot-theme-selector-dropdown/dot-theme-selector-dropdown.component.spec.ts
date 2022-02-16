@@ -179,7 +179,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
 
         describe('html', () => {
             it('should set themes if theme selector is open', fakeAsync(() => {
-                component.searchableDropdown.show.emit();
+                component.searchableDropdown.display.emit();
                 tick();
                 expect(component.totalRecords).toEqual(3);
                 expect(component.themes).toEqual(mockDotThemes);

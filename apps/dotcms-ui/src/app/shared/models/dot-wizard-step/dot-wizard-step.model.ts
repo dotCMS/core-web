@@ -1,4 +1,4 @@
 export interface DotWizardStep<T> {
     component: T;
-    data: { [key: string]: string };
+    data: Record<string, unknown>;
 }
