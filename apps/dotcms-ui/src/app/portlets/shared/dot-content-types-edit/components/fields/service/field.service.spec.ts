@@ -33,7 +33,7 @@ describe('FieldService', () => {
             entity: [mockFieldType]
         };
 
-        fieldService.loadFieldTypes().subscribe((res: any) => {
+        fieldService.loadFieldTypes().subscribe((res: unknown) => {
             expect(res).toEqual(mockResponse);
         });
 
@@ -61,7 +61,7 @@ describe('FieldService', () => {
             ];
 
             const contentTypeId = '1';
-            fieldService.saveFields(contentTypeId, mockData).subscribe((res: any) => {
+            fieldService.saveFields(contentTypeId, mockData).subscribe((res: unknown) => {
                 expect(res).toEqual(mockData);
             });
 
@@ -86,7 +86,7 @@ describe('FieldService', () => {
             ];
 
             const contentTypeId = '1';
-            fieldService.deleteFields(contentTypeId, mockData).subscribe((res: any) => {
+            fieldService.deleteFields(contentTypeId, mockData).subscribe((res: unknown) => {
                 expect(res).toEqual({ deletedIds: ['1', '2'], fields: mockData });
             });
 
@@ -106,7 +106,7 @@ describe('FieldService', () => {
             };
 
             const contentTypeId = '2';
-            fieldService.updateField(contentTypeId, field).subscribe((res: any) => {
+            fieldService.updateField(contentTypeId, field).subscribe((res: unknown) => {
                 expect(res[0]).toEqual({
                     ...dotcmsContentTypeFieldBasicMock,
                     name: 'test field',
