@@ -9,3 +9,4 @@ export * from './lib/dot-asset-create-options.model';
 export * from './lib/dot-http-error-response.model';
 export * from './lib/dot-http-request-options.model';
 export * from './lib/dot-license.model';
+export * from './lib/dot-dynamic-field-component.model';

@@ -196,11 +196,12 @@ export class DotWizardComponent implements OnInit, OnDestroy {
         let count = 0;
         // need to wait dynamic component to load the form.
         const interval = setInterval(() => {
-            const form: HTMLFormElement = this.componentsHost[
-                this.currentStep
-            ].viewContainerRef.element.nativeElement.parentNode.children[0].getElementsByTagName(
-                'form'
-            )[0];
+            const form: HTMLFormElement =
+                this.componentsHost[
+                    this.currentStep
+                ].viewContainerRef.element.nativeElement.parentNode.children[0].getElementsByTagName(
+                    'form'
+                )[0];
             if (form || count === 10) {
                 clearInterval(interval);
                 (form.elements[0] as HTMLElement).focus();
