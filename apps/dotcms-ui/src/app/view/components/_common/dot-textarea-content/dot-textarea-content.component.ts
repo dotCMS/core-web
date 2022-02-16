@@ -56,12 +56,13 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
 
     @HostBinding('style')
     get myStyle(): SafeStyle {
-        return this.sanitizer.bypassSecurityTrustStyle(this.styles.toString());
+        // @ts-ignore
+        return this.sanitizer.bypassSecurityTrustStyle(this.styles);
     }
 
     selectOptions: SelectItem[] = [];
     selected: string;
-    styles: { [key: string]: string };
+    styles: Record<string, unknown>;
     editorOptions = {
         theme: 'vs-light',
         minimap: {

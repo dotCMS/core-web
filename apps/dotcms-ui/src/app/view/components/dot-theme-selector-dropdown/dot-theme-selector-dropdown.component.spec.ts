@@ -246,7 +246,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
 
             it('should update themes, totalRecords and call setExtraParams when site selector change', fakeAsync(() => {
                 const siteSelector = de.query(By.css('[data-testId="siteSelector"]'));
-                siteSelector.triggerEventHandler('change', {
+                siteSelector.triggerEventHandler('switch', {
                     identifier: '123'
                 });
                 tick();

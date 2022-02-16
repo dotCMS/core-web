@@ -39,7 +39,7 @@ const storeMock = jasmine.createSpyObj(
 @Component({
     selector: 'dot-test-host-component',
     template:
-        '<dot-content-compare [data]="data"  (close)="shutdown.emit(true)" ></dot-content-compare>'
+        '<dot-content-compare [data]="data"  (shutdown)="shutdown.emit(true)" ></dot-content-compare>'
 })
 class TestHostComponent {
     @Input() data: DotContentCompareEvent;
@@ -100,8 +100,9 @@ describe('DotContentCompareComponent', () => {
         hostComponent = hostFixture.componentInstance;
         hostComponent.data = DotContentCompareEventMOCK;
         hostFixture.detectChanges();
-        contentCompareTableComponent = de.query(By.css('dot-content-compare-table'))
-            .componentInstance;
+        contentCompareTableComponent = de.query(
+            By.css('dot-content-compare-table')
+        ).componentInstance;
     });
 
     it('should pass data correctly', () => {
@@ -116,13 +117,13 @@ describe('DotContentCompareComponent', () => {
     });
 
     it('should update compare content', () => {
-        contentCompareTableComponent.changeVersion.emit(('value' as unknown) as DotCMSContentlet);
+        contentCompareTableComponent.changeVersion.emit('value' as unknown as DotCMSContentlet);
         expect(dotContentCompareStore.updateCompare).toHaveBeenCalledOnceWith(
-            ('value' as unknown) as DotCMSContentlet
+            'value' as unknown as DotCMSContentlet
         );
     });
 
-    it('should bring back version after confirm and emit close', () => {
+    it('should bring back version after confirm and emit shutdown', () => {
         spyOn(dotAlertConfirmService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });

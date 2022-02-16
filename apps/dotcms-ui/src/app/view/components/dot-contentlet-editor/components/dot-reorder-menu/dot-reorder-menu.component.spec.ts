@@ -11,7 +11,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('DotReorderMenuComponent', () => {
+fdescribe('DotReorderMenuComponent', () => {
     let component: DotReorderMenuComponent;
     let de: DebugElement;
     let fixture: ComponentFixture<DotReorderMenuComponent>;
@@ -57,7 +57,7 @@ describe('DotReorderMenuComponent', () => {
             spyOn(component.shutdown, 'emit');
             fixture.detectChanges();
             const dotIframeDialogElement = de.query(By.css('dot-iframe-dialog')).componentInstance;
-            dotIframeDialogElement.shutdown.emit();
+            dotIframeDialogElement.close.emit();
             expect(component.shutdown.emit).toHaveBeenCalledTimes(1);
         });
     });

@@ -44,10 +44,10 @@ export class DotCreateContentletComponent implements OnInit {
 
     /**
      * Handle close event
-     * @param {Event} event
+     * @param {unknown} event
      * @memberof DotCreateContentletComponent
      */
-    onClose(event: Event): void {
+    onClose(event: unknown): void {
         if (this.dotRouterService.currentSavedURL.includes('/c/content/new/')) {
             this.dotRouterService.goToContent();
         }
@@ -57,10 +57,10 @@ export class DotCreateContentletComponent implements OnInit {
 
     /**
      * Handle custom event
-     * @param {Event} event
+     * @param {unknown} event
      * @memberof DotCreateContentletComponent
      */
-    onCustom(event: Event): void {
+    onCustom(event: unknown): void {
         this.custom.emit(event);
     }
 }
