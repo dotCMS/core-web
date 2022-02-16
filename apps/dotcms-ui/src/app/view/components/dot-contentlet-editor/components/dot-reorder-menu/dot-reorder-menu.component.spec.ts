@@ -11,7 +11,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 
-fdescribe('DotReorderMenuComponent', () => {
+describe('DotReorderMenuComponent', () => {
     let component: DotReorderMenuComponent;
     let de: DebugElement;
     let fixture: ComponentFixture<DotReorderMenuComponent>;
