@@ -22,6 +22,10 @@ import { DotEditContentTypeCacheService } from './components/fields/content-type
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
+interface DotFormValueContentType extends Omit<DotCMSContentType, 'workflows'> {
+    workflow?: string[];
+}
+
 /**
  * Portlet component for edit content types
  *
@@ -287,12 +291,15 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     private createContentType(value: DotCMSContentType): void {
-        const createdContentType = this.cleanUpFormValue({
+        const createdContentType: DotFormValueContentType = this.cleanUpFormValue({
             ...value
         });
 
         this.crudService
-            .postData('v1/contenttype', createdContentType)
+            .postData<DotCMSContentType[], DotFormValueContentType>(
+                'v1/contenttype',
+                createdContentType
+            )
             .pipe(
                 mergeMap((contentTypes: DotCMSContentType[]) => contentTypes),
                 take(1)
@@ -324,7 +331,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
         });
 
         this.crudService
-            .putData(`v1/contenttype/id/${this.data.id}`, updatedContentType)
+            .putData<DotCMSContentType>(`v1/contenttype/id/${this.data.id}`, updatedContentType)
             .pipe(take(1))
             .subscribe(
                 (contentType: DotCMSContentType) => {
@@ -338,7 +345,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     // The Content Types endpoint returns workflows (plural) but receive workflow (singular)
-    private cleanUpFormValue(value: DotCMSContentType): { [key: string]: any } {
+    private cleanUpFormValue(value: DotCMSContentType): DotFormValueContentType {
         if (value.workflows) {
             value['workflow'] = this.getWorkflowsIds(value.workflows);
             delete value.workflows;

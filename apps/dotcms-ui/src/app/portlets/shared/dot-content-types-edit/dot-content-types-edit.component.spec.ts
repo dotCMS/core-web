@@ -555,9 +555,8 @@ describe('DotContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotCMSContentTypeField[] = newFieldsAdded.concat(
-                currentFieldsInServer
-            );
+            const fieldsReturnByServer: DotCMSContentTypeField[] =
+                newFieldsAdded.concat(currentFieldsInServer);
             const fieldService = fixture.debugElement.injector.get(FieldService);
             spyOn<any>(fieldService, 'saveFields').and.returnValue(of(fieldsReturnByServer));
 
@@ -586,9 +585,8 @@ describe('DotContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotCMSContentTypeField[] = newFieldsAdded.concat(
-                currentFieldsInServer
-            );
+            const fieldsReturnByServer: DotCMSContentTypeField[] =
+                newFieldsAdded.concat(currentFieldsInServer);
             const fieldService = fixture.debugElement.injector.get(FieldService);
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
@@ -616,9 +614,8 @@ describe('DotContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotCMSContentTypeLayoutRow[] = _.cloneDeep(
-                currentLayoutInServer
-            );
+            const fieldsReturnByServer: DotCMSContentTypeLayoutRow[] =
+                _.cloneDeep(currentLayoutInServer);
             newFieldsAdded.concat(fieldsReturnByServer[0].columns[0].fields);
             fieldsReturnByServer[0].columns[0].fields = newFieldsAdded;
 
