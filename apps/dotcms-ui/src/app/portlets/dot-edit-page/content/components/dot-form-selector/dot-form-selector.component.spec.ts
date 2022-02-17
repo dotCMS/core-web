@@ -1,4 +1,4 @@
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DebugElement, Component } from '@angular/core';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -30,6 +30,10 @@ const mockContentType: DotCMSContentType = {
 })
 class TestHostComponent {
     show = false;
+}
+
+function getWithOffsetMock<T>(): Observable<T> {
+    return observableOf([mockContentType]).pipe(delay(10)) as Observable<T>;
 }
 
 const messageServiceMock = new MockDotMessageService({
@@ -81,9 +85,7 @@ describe('DotFormSelectorComponent', () => {
 
     describe('show dialog', () => {
         beforeEach(() => {
-            spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-                return observableOf([mockContentType]).pipe(delay(10));
-            });
+            spyOn(paginatorService, 'getWithOffset').and.callFake(getWithOffsetMock);
 
             fixture.componentInstance.show = true;
             fixture.detectChanges();
