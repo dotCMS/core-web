@@ -2,7 +2,7 @@ import { DotPage } from '@shared/models/dot-page/dot-page.model';
 import { DotPageRenderParameters } from '@models/dot-page/dot-rendered-page.model';
 import { mockDotLanguage } from './dot-language.mock';
 import { DotPageMode } from '@models/dot-page/dot-page-mode.enum';
-import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
+import { CONTAINER_SOURCE, DotPageContainer } from '@models/container/dot-container.model';
 import { dotcmsContentTypeBasicMock } from './dot-content-types.mock';
 import { DotLayout, DotTemplate } from '@models/dot-edit-layout-designer';
 
@@ -64,7 +64,7 @@ export const mockDotLayout = (): DotLayout => {
     };
 };
 
-export const mockDotContainers = (): any => {
+export const mockDotContainers = (): DotPageContainer => {
     return {
         '/default/': {
             container: processedContainers[0].container,
