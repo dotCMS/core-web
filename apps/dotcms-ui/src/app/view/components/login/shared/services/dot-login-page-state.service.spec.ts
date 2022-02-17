@@ -20,9 +20,7 @@ describe('DotLoginPageStateServiceService', () => {
 
         dotloginPageStateService = testbed.get(DotLoginPageStateService);
         loginService = testbed.get(LoginService);
-        spyOn(loginService, 'getLoginFormInfo').and.returnValue(
-            of({ bodyJsonObject: mockLoginFormResponse })
-        );
+        spyOn(loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
     });
 
     it('should set new value to dotLoginInformation$ and call service correctly', () => {

@@ -13,8 +13,7 @@ export const mockUser = () => {
     };
 };
 
-export const mockLoginFormResponse = {
-    errors: [],
+export const mockLoginFormResponse: DotLoginInformation = {
     entity: {
         serverId: '860173b0',
         levelName: 'COMMUNITY EDITION',
@@ -38,7 +37,6 @@ export const mockLoginFormResponse = {
         currentLanguage: { language: 'en', country: 'US', displayName: 'English (United States)' },
         companyEmail: '@dotcms.com'
     },
-    messages: [],
     i18nMessagesMap: {
         cancel: 'Cancel',
         'sign-in': 'Sign In',
@@ -62,8 +60,7 @@ export const mockLoginFormResponse = {
         Logout: 'Logout',
         'message.successfully.logout': 'You are logout successfully, click the button to login',
         'reset-password-confirmation-do-not-match': 'password do not match'
-    },
-    permissions: []
+    }
 };
 
 const mockUserWithRedirect: User = {
