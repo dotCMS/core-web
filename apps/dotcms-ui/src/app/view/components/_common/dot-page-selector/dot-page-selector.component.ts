@@ -155,7 +155,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     /**
      * Set the function to be called when the control receives a change event.
      *
-     * @param * fn
+     * @param {(params) => void} fn
      * @memberof DotPageSelectorComponent
      */
     registerOnChange(fn: (params) => void): void {

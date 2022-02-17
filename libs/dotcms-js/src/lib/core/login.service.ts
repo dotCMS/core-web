@@ -100,7 +100,7 @@ export class LoginService {
      * Load _auth information.
      * @returns Observable<any>
      */
-    public loadAuth(): Observable<Auth> {
+    loadAuth(): Observable<Auth> {
         return this.coreWebService
             .requestView({
                 url: this.urls.getAuth
@@ -118,11 +118,13 @@ export class LoginService {
 
     /**
      * Change password
-     * @param password
-     * @param token
-     * @returns Observable<any>
+     *
+     * @param {string} password
+     * @param {string} token
+     * @return {*}  {Observable<string>}
+     * @memberof LoginService
      */
-    public changePassword(password: string, token: string): Observable<string> {
+    changePassword(password: string, token: string): Observable<string> {
         const body = JSON.stringify({ password: password, token: token });
 
         return this.coreWebService
@@ -136,14 +138,13 @@ export class LoginService {
 
     /**
      * Get the server information to configure the login component
-     * @param language language and country to get the internationalized messages
-     * @param i18nKeys array of message key to internationalize
-     * @returns Observable<any> Observable with an array of internationalized messages and server configuration info
+     *
+     * @param {string} language
+     * @param {Array<string>} i18nKeys
+     * @return {*}  {Observable<DotLoginInformation>}
+     * @memberof LoginService
      */
-    public getLoginFormInfo(
-        language: string,
-        i18nKeys: Array<string>
-    ): Observable<DotLoginInformation> {
+    getLoginFormInfo(language: string, i18nKeys: Array<string>): Observable<DotLoginInformation> {
         this.setLanguage(language);
 
         return this.coreWebService
@@ -157,12 +158,12 @@ export class LoginService {
 
     /**
      * Do the login as request and return an Observable.
-     * @param user user to loginas
-     * @param password loginin user's password
-     * @returns Observable<R>
+     *
+     * @param {{ user: User; password: string }} userData
+     * @return {*}  {Observable<boolean>}
+     * @memberof LoginService
      */
-    // TODO: password in the url is a no-no, fix asap. Sanchez and Jose have an idea.
-    public loginAs(userData: { user: User; password: string }): Observable<boolean> {
+    loginAs(userData: { user: User; password: string }): Observable<boolean> {
         return this.coreWebService
             .requestView<{ loginAs: boolean }>({
                 body: {
@@ -191,13 +192,18 @@ export class LoginService {
 
     /**
      * Executes the call to the login rest api
-     * @param login User email or user id
-     * @param password User password
-     * @param rememberMe boolean indicating if the _auth want to use or not the remenber me option
-     * @param language string with the language and country code, ex: en_US
-     * @returns an array with the user if the user logged in successfully or the error message
+     *
+     * @param {DotLoginParams} {
+     *         login,
+     *         password,
+     *         rememberMe,
+     *         language,
+     *         backEndLogin
+     *     }
+     * @return {*}  {Observable<User>}
+     * @memberof LoginService
      */
-    public loginUser({
+    loginUser({
         login,
         password,
         rememberMe,
@@ -240,9 +246,11 @@ export class LoginService {
 
     /**
      * Logout "login as" user
-     * @returns Observable<R>
+     *
+     * @return {*}  {Observable<boolean>}
+     * @memberof LoginService
      */
-    public logoutAs(): Observable<boolean> {
+    logoutAs(): Observable<boolean> {
         return this.coreWebService
             .requestView<{ logoutAs: boolean }>({
                 method: 'PUT',
@@ -262,11 +270,12 @@ export class LoginService {
 
     /**
      * Executes the call to the recover passwrod rest api
-     * @param email User email address
-     * @returns an array with message indicating if the recover password was successfull
-     * or if there is an error
+     *
+     * @param {string} login
+     * @return {*}  {Observable<string>}
+     * @memberof LoginService
      */
-    public recoverPassword(login: string): Observable<string> {
+    recoverPassword(login: string): Observable<string> {
         return this.coreWebService
             .requestView<string>({
                 body: { userId: login },
@@ -278,9 +287,11 @@ export class LoginService {
 
     /**
      * Subscribe to ser change and call received function on change.
-     * @param func function will call when user change
+     *
+     * @param {(params?: unknown) => void} func
+     * @memberof LoginService
      */
-    public watchUser(func: (params?: unknown) => void): void {
+    watchUser(func: (params?: unknown) => void): void {
         if (this.auth) {
             func(this.auth);
         }
@@ -294,9 +305,11 @@ export class LoginService {
 
     /**
      * Set logged_auth and update auth Observable
-     * @param _auth
+     *
+     * @param {Auth} auth
+     * @memberof LoginService
      */
-    public setAuth(auth: Auth): void {
+    setAuth(auth: Auth): void {
         this._auth = auth;
         this._auth$.next(auth);
 
@@ -308,10 +321,6 @@ export class LoginService {
         }
     }
 
-    /**
-     * update the language and country variables from the string
-     * @param language string containing the language and country
-     */
     private setLanguage(language: string): void {
         if (language !== undefined && language !== '') {
             const languageDesc = language.split('_');
@@ -323,10 +332,6 @@ export class LoginService {
         }
     }
 
-    /**
-     * Call the logout rest api
-     * @returns Observable<any>
-     */
     private logOutUser(): void {
         window.location.href = `${LOGOUT_URL}?r=${new Date().getTime()}`;
     }

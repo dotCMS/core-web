@@ -56,7 +56,8 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
 
     /**
      * Set the function to be called when the control receives a change event.
-     * @param * fn
+     *
+     * @param {() => void} fn
      * @memberof PushPublishEnvSelectorComponent
      */
     registerOnChange(fn: () => void): void {
