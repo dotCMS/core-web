@@ -8,6 +8,8 @@ import { HttpCode } from './util/http-code';
 import { pluck, tap, map } from 'rxjs/operators';
 import { DotcmsEventsService } from './dotcms-events.service';
 import { HttpResponse } from '@angular/common/http';
+import { ResponseView } from './util/response-view';
+import { DotLoginInformation } from '@dotcms/dotcms-models';
 
 export interface DotLoginParams {
     login: string;
@@ -31,7 +33,7 @@ export class LoginService {
     private _loginAsUsersList$: Subject<User[]>;
     private country = '';
     private lang = '';
-    private urls: any;
+    private urls: Record<string, string>;
 
     constructor(
         private coreWebService: CoreWebService,
@@ -65,7 +67,9 @@ export class LoginService {
             .request<CurrentUser>({
                 url: this.urls.current
             })
-            .pipe(map((res: HttpResponse<CurrentUser>) => res)) as unknown as Observable<CurrentUser>
+            .pipe(
+                map((res: HttpResponse<CurrentUser>) => res)
+            ) as unknown as Observable<CurrentUser>;
     }
 
     get loginAsUsersList$(): Observable<User[]> {
@@ -118,14 +122,16 @@ export class LoginService {
      * @param token
      * @returns Observable<any>
      */
-    public changePassword(password: string, token: string): Observable<any> {
+    public changePassword(password: string, token: string): Observable<string> {
         const body = JSON.stringify({ password: password, token: token });
 
-        return this.coreWebService.requestView({
-            body: body,
-            method: 'POST',
-            url: this.urls.changePassword
-        });
+        return this.coreWebService
+            .requestView({
+                body: body,
+                method: 'POST',
+                url: this.urls.changePassword
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -134,14 +140,19 @@ export class LoginService {
      * @param i18nKeys array of message key to internationalize
      * @returns Observable<any> Observable with an array of internationalized messages and server configuration info
      */
-    public getLoginFormInfo(language: string, i18nKeys: Array<string>): Observable<any> {
+    public getLoginFormInfo(
+        language: string,
+        i18nKeys: Array<string>
+    ): Observable<DotLoginInformation> {
         this.setLanguage(language);
 
-        return this.coreWebService.requestView({
-            body: { messagesKey: i18nKeys, language: this.lang, country: this.country },
-            method: 'POST',
-            url: this.urls.serverInfo
-        });
+        return this.coreWebService
+            .requestView<DotLoginInformation>({
+                body: { messagesKey: i18nKeys, language: this.lang, country: this.country },
+                method: 'POST',
+                url: this.urls.serverInfo
+            })
+            .pipe(pluck('bodyJsonObject'));
     }
 
     /**
@@ -151,9 +162,9 @@ export class LoginService {
      * @returns Observable<R>
      */
     // TODO: password in the url is a no-no, fix asap. Sanchez and Jose have an idea.
-    public loginAs(userData: { user: User; password: string }): Observable<any> {
+    public loginAs(userData: { user: User; password: string }): Observable<boolean> {
         return this.coreWebService
-            .requestView({
+            .requestView<{ loginAs: boolean }>({
                 body: {
                     password: userData.password,
                     userId: userData.user.userId
@@ -196,7 +207,7 @@ export class LoginService {
         this.setLanguage(language);
 
         return this.coreWebService
-            .requestView({
+            .requestView<User>({
                 body: {
                     userId: login,
                     password: password,
@@ -231,9 +242,9 @@ export class LoginService {
      * Logout "login as" user
      * @returns Observable<R>
      */
-    public logoutAs(): Observable<any> {
+    public logoutAs(): Observable<boolean> {
         return this.coreWebService
-            .requestView({
+            .requestView<{ logoutAs: boolean }>({
                 method: 'PUT',
                 url: `${this.urls.logoutAs}`
             })
@@ -244,7 +255,7 @@ export class LoginService {
                         user: this._auth.user,
                         isLoginAs: true
                     });
-                    return res;
+                    return res.entity.logoutAs;
                 })
             );
     }
@@ -255,19 +266,21 @@ export class LoginService {
      * @returns an array with message indicating if the recover password was successfull
      * or if there is an error
      */
-    public recoverPassword(login: string): Observable<any> {
-        return this.coreWebService.requestView({
-            body: { userId: login },
-            method: 'POST',
-            url: this.urls.recoverPassword
-        });
+    public recoverPassword(login: string): Observable<string> {
+        return this.coreWebService
+            .requestView<string>({
+                body: { userId: login },
+                method: 'POST',
+                url: this.urls.recoverPassword
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
      * Subscribe to ser change and call received function on change.
      * @param func function will call when user change
      */
-    public watchUser(func: Function): void {
+    public watchUser(func: (params?: unknown) => void): void {
         if (this.auth) {
             func(this.auth);
         }
@@ -322,7 +335,7 @@ export class LoginService {
 export interface CurrentUser {
     email: string;
     givenName: string;
-    loginAs: boolean
+    loginAs: boolean;
     roleId: string;
     surname: string;
     userId: string;
@@ -357,6 +370,7 @@ export interface User {
     type?: string;
     userId: string;
     password?: string;
+    editModeUrl?: string;
 }
 
 export interface Auth {
