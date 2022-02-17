@@ -18,6 +18,17 @@ import { DotTemplateItem } from '../store/dot-template.store';
 import { DotPortletToolbarActions } from '@models/dot-portlet-toolbar.model/dot-portlet-toolbar-actions.model';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 
+interface operation {
+    range: number;
+    text: string;
+    forceMoveMarkers: boolean;
+}
+
+interface MonacoEditor {
+    getSelection: () => number;
+    executeEdits: (action: string, data: operation[]) => void;
+}
+
 @Component({
     selector: 'dot-template-advanced',
     templateUrl: './dot-template-advanced.component.html',
@@ -32,7 +43,7 @@ export class DotTemplateAdvancedComponent implements OnInit, OnDestroy, OnChange
     @Input() didTemplateChanged: boolean;
 
     // `any` because the type of the editor in the ngx-monaco-editor package is not typed
-    editor: any;
+    editor: MonacoEditor;
     form: FormGroup;
     actions: DotPortletToolbarActions;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -66,7 +77,7 @@ export class DotTemplateAdvancedComponent implements OnInit, OnDestroy, OnChange
      * @param {*} editor
      * @memberof DotTemplateComponent
      */
-    initEditor(editor: any): void {
+    initEditor(editor: MonacoEditor): void {
         this.editor = editor;
     }
 
