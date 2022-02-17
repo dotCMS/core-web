@@ -31,10 +31,10 @@ export class DotWorkflowActionsFireService {
      * @returns Observable<DotCMSContentlet> // contentlet
      * @memberof DotWorkflowActionsFireService
      */
-    fireTo(
+    fireTo<T = { [key: string]: string }>(
         inode: string,
         actionId: string,
-        data?: { [key: string]: string }
+        data?: T
     ): Observable<DotCMSContentlet> {
         return this.coreWebService
             .requestView({
