@@ -66,7 +66,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
         private dotMessageService: DotMessageService
     ) {}
 
-    propagateChange = (_: () => void) => {
+    propagateChange = (_: unknown) => {
         /* */
     };
 
@@ -158,7 +158,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      * @param * fn
      * @memberof DotPageSelectorComponent
      */
-    registerOnChange(fn: () => void): void {
+    registerOnChange(fn: (params) => void): void {
         this.propagateChange = fn;
     }
 
