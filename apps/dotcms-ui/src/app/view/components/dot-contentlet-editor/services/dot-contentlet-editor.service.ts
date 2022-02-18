@@ -132,7 +132,7 @@ export class DotContentletEditorService {
     /**
      * Call load handler
      *
-     * @param * $event
+     * @param unknown $event
      * @memberof DotContentletEditorService
      */
     load($event: unknown): void {

@@ -13,13 +13,14 @@ import { COMPARE_CUSTOM_EVENT } from '@services/dot-custom-event-handler/dot-cus
 import { By } from '@angular/platform-browser';
 import cleanUpDialog from '@tests/clean-up-dialog';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
+import { DotContentCompareEvent } from '@components/dot-content-compare/dot-content-compare.component';
 
 @Component({
     selector: 'dot-content-compare',
     template: ''
 })
 class TestDotContentCompareComponent {
-    @Input() data: any;
+    @Input() data: DotContentCompareEvent;
     @Output() shutdown = new EventEmitter<boolean>();
 }
 
@@ -30,7 +31,7 @@ describe('DotContentCompareDialogComponent', () => {
     const messageServiceMock = new MockDotMessageService({
         compare: 'Compare'
     });
-    const data = 'data';
+    const data = 'data' as unknown as DotContentCompareEvent;
 
     beforeEach(() => {
         TestBed.configureTestingModule({

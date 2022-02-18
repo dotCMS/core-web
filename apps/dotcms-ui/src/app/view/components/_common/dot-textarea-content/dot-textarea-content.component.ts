@@ -119,7 +119,7 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
     /**
      * Initializes the Monaco Editor
      *
-     * @param {*} editor
+     * @param {unknown} editor
      * @memberof DotTextareaContentComponent
      */
     onInit(editor: unknown): void {
