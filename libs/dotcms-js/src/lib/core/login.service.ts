@@ -97,8 +97,10 @@ export class LoginService {
     }
 
     /**
-     * Load _auth information.
-     * @returns Observable<any>
+     * Return the login status
+     *
+     * @return {*}  {Observable<Auth>}
+     * @memberof LoginService
      */
     loadAuth(): Observable<Auth> {
         return this.coreWebService

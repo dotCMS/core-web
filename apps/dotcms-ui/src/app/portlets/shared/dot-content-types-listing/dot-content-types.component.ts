@@ -99,7 +99,7 @@ export class DotContentTypesPortletComponent implements OnInit {
     /**
      * Handler to edit a content type
      *
-     * @param {Record<string, unknown>} item
+     * @param {DotCMSContentType} item
      * @memberof DotContentTypesPortletComponent
      */
     editContentType(item: DotCMSContentType): void {

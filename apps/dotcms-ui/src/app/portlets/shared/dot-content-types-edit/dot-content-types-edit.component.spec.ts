@@ -77,8 +77,7 @@ class TestContentTypeLayoutComponent {
 class TestContentTypesFormComponent {
     @Input() data: DotCMSContentType;
     @Input() layout: DotCMSContentTypeField[];
-    // tslint:disable-next-line:no-output-on-prefix
-    @Output() send: EventEmitter<any> = new EventEmitter();
+    @Output() send: EventEmitter<DotCMSContentType> = new EventEmitter();
 
     resetForm = jasmine.createSpy('resetForm');
 
