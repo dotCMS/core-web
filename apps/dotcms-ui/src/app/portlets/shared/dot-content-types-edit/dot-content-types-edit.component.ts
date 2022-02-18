@@ -22,10 +22,6 @@ import { DotEditContentTypeCacheService } from './components/fields/content-type
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
-interface DotFormValueContentType extends Omit<DotCMSContentType, 'workflows'> {
-    workflow?: string[];
-}
-
 /**
  * Portlet component for edit content types
  *
@@ -291,15 +287,12 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     private createContentType(value: DotCMSContentType): void {
-        const createdContentType: DotFormValueContentType = this.cleanUpFormValue({
+        const createdContentType: DotCMSContentType = this.cleanUpFormValue({
             ...value
         });
 
         this.crudService
-            .postData<DotCMSContentType[], DotFormValueContentType>(
-                'v1/contenttype',
-                createdContentType
-            )
+            .postData<DotCMSContentType[], DotCMSContentType>('v1/contenttype', createdContentType)
             .pipe(
                 mergeMap((contentTypes: DotCMSContentType[]) => contentTypes),
                 take(1)
@@ -345,7 +338,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     // The Content Types endpoint returns workflows (plural) but receive workflow (singular)
-    private cleanUpFormValue(value: DotCMSContentType): DotFormValueContentType {
+    private cleanUpFormValue(value: DotCMSContentType): DotCMSContentType {
         if (value.workflows) {
             value['workflow'] = this.getWorkflowsIds(value.workflows);
             delete value.workflows;

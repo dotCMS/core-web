@@ -185,7 +185,7 @@ export class PaginatorService {
 
     /**
      * Request the last page
-     * @returns Observable<any[]>
+     * @returns Observable<T>
      * @memberof PaginatorService
      */
     public getLastPage<T>(): Observable<T> {
@@ -194,7 +194,7 @@ export class PaginatorService {
 
     /**
      * Request the first page
-     * @returns Observable<any[]>
+     * @returns Observable<T>
      * @memberof PaginatorService
      */
     public getFirstPage<T>(): Observable<T> {
@@ -204,7 +204,7 @@ export class PaginatorService {
     /**
      * request the  pageParam page
      * @param number [pageParam=1] Page to request
-     * @returns Observable<any[]>
+     * @returns Observable<T>
      * @memberof PaginatorServic
      */
     public getPage<T>(pageParam = 1): Observable<T> {
@@ -216,7 +216,7 @@ export class PaginatorService {
 
     /**
      * Request the current page
-     * @returns Observable<any[]>
+     * @returns Observable<T>
      * @memberof PaginatorService
      */
     public getCurrentPage<T>(): Observable<T> {
@@ -225,16 +225,16 @@ export class PaginatorService {
 
     /**
      * Request the next page
-     * @returns Observable<any[]>
+     * @returns Observable<T>
      * @memberof PaginatorService
      */
-    public getNextPage(): Observable<any[]> {
+    public getNextPage<T>(): Observable<T> {
         return this.get(this.links.next);
     }
 
     /**
      * Request the previous page
-     * @returns Observable<any[]>
+     * @returns Observable<T>
      * @memberof PaginatorService
      */
     public getPrevPage<T>(): Observable<T> {
@@ -244,7 +244,7 @@ export class PaginatorService {
     /**
      * Use the offset to request a page.
      * @param number offset Offset to be request
-     * @returns Observable<any[]>
+     * @returns Observable<T>
      * @memberof PaginatorService
      */
     public getWithOffset<T>(offset: number): Observable<T> {

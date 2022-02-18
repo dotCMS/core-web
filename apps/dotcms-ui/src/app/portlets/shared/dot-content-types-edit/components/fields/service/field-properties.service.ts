@@ -34,7 +34,7 @@ export class FieldPropertyService {
     /**
      * Return the component linked whit propertyName
      * @param string propertyName
-     * @returns Type<any>
+     * @returns Type<DotDynamicFieldComponent>
      * @memberof FieldPropertyService
      */
     getComponent(propertyName: string): Type<DotDynamicFieldComponent> {

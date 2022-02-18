@@ -5,7 +5,7 @@ import { DotWizardInput } from '@models/dot-wizard-input/dot-wizard-input.model'
 @Injectable()
 export class DotWizardService {
     private input: Subject<DotWizardInput> = new Subject<DotWizardInput>();
-    private output: Subject<unknown> = new Subject<{ [key: string]: string }>();
+    private output: Subject<Record<string, unknown>> = new Subject<{ [key: string]: string }>();
 
     get showDialog$(): Observable<DotWizardInput> {
         return this.input.asObservable();

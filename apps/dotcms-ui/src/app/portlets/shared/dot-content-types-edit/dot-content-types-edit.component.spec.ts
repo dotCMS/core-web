@@ -312,8 +312,10 @@ describe('DotContentTypesEditComponent', () => {
                     ...mockContentType
                 };
 
-                (replacedWorkflowsPropContentType['workflow'] = mockContentType.workflows),
-                    delete replacedWorkflowsPropContentType.workflows;
+                replacedWorkflowsPropContentType['workflow'] = mockContentType.workflows.map(
+                    (workflow) => workflow.id
+                );
+                delete replacedWorkflowsPropContentType.workflows;
 
                 expect(crudService.postData).toHaveBeenCalledWith(
                     'v1/contenttype',
@@ -772,8 +774,10 @@ describe('DotContentTypesEditComponent', () => {
                     ...fakeContentType
                 };
 
-                (replacedWorkflowsPropContentType['workflow'] = fakeContentType.workflows),
-                    delete replacedWorkflowsPropContentType.workflows;
+                replacedWorkflowsPropContentType['workflow'] = fakeContentType.workflows.map(
+                    (workflow) => workflow.id
+                );
+                delete replacedWorkflowsPropContentType.workflows;
 
                 expect(crudService.putData).toHaveBeenCalledWith(
                     'v1/contenttype/id/1234567890',

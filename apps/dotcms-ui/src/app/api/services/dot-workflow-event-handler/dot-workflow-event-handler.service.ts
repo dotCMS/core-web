@@ -152,8 +152,7 @@ export class DotWorkflowEventHandlerService {
         data: DotWorkflowPayload,
         inputs: DotCMSWorkflowInput[]
     ): DotProcessedWorkflowPayload {
-        // contentlet: {} -> needed for indexPolicy=WAIT_FOR
-        const processedData = { ...data, contentlet: {} };
+        const processedData = { ...data };
         if (this.containsPushPublish(inputs)) {
             processedData['whereToSend'] = data.environment.join();
             processedData['iWantTo'] = data.pushActionSelected;
@@ -176,7 +175,8 @@ export class DotWorkflowEventHandlerService {
             delete processedData.environment;
             delete processedData.pushActionSelected;
         }
-        return processedData;
+        processedData['contentlet'] = {}; // needed for indexPolicy=WAIT_FOR
+        return processedData as DotProcessedWorkflowPayload;
     }
 
     private mergeCommentAndAssign(workflow: DotCMSWorkflowAction): DotCMSWorkflowInput[] {

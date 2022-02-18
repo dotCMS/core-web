@@ -33,7 +33,6 @@ describe('FieldService', () => {
         const mockResponse = [mockFieldType];
 
         fieldService.loadFieldTypes().subscribe((res: FieldType[]) => {
-            console.log('RESPONSE-DATA', res);
             expect(res).toEqual(mockResponse);
         });
 
