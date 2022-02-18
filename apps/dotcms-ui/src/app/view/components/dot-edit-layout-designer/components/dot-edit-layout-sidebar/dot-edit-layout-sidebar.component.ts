@@ -60,7 +60,7 @@ export class DotEditLayoutSidebarComponent implements ControlValueAccessor {
     /**
      * Set the function to be called when the control receives a change event.
      *
-     * @param * fn
+     * @param ()=>{} fn
      * @memberof DotEditLayoutSidebarComponent
      */
     registerOnChange(
