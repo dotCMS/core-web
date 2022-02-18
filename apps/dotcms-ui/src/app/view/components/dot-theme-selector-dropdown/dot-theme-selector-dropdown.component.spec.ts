@@ -179,7 +179,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
 
         describe('html', () => {
             it('should set themes if theme selector is open', fakeAsync(() => {
-                component.searchableDropdown.show.emit();
+                component.searchableDropdown.display.emit();
                 tick();
                 expect(component.totalRecords).toEqual(3);
                 expect(component.themes).toEqual(mockDotThemes);
@@ -246,7 +246,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
 
             it('should update themes, totalRecords and call setExtraParams when site selector change', fakeAsync(() => {
                 const siteSelector = de.query(By.css('[data-testId="siteSelector"]'));
-                siteSelector.triggerEventHandler('change', {
+                siteSelector.triggerEventHandler('switch', {
                     identifier: '123'
                 });
                 tick();

@@ -5,9 +5,6 @@ import { DotCMSContentType } from '@dotcms/dotcms-models';
 export interface DotContentletEvent<T = Record<string, unknown>> {
     name: string;
     data?: T;
-    container?: DOMStringMap;
-    dataset?: DOMStringMap;
-    target?: unknown;
 }
 
 export type DotContentletEventDragAndDropDotAsset = DotContentletEvent<DotAssetPayload>;

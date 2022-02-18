@@ -242,7 +242,7 @@ describe('DotPersonaSelectorComponent', () => {
 
         it('should call show event on show persona list', () => {
             spyOn(iframeOverlayService, 'show');
-            dropdown.triggerEventHandler('show', {});
+            dropdown.triggerEventHandler('display', {});
 
             expect(iframeOverlayService.show).toHaveBeenCalled();
         });

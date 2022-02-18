@@ -32,6 +32,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotPage } from '@dotcms/app/shared/models/dot-page/dot-page.model';
 import { DotAddContentTypePayload } from './models/dot-contentlets-events.model';
+import { DotIframeEditEvent } from '@dotcms/dotcms-models';
 
 export enum DotContentletAction {
     EDIT,
@@ -53,7 +54,7 @@ export class DotEditContentHtmlService {
     currentContentlet: DotPageContent;
     iframe: ElementRef;
     iframeActions$: Subject<
-        DotContentletEvent<Record<string, unknown> | DotAddContentTypePayload>
+        DotIframeEditEvent<Record<string, unknown> | DotAddContentTypePayload>
     > = new Subject();
     pageModel$: Subject<PageModelChangeEvent> = new Subject();
     mutationConfig = { attributes: false, childList: true, characterData: false };
