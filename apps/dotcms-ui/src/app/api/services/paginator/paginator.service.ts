@@ -51,9 +51,7 @@ export class PaginatorService {
     private _sortOrder: OrderDirection;
     private _extraParams: Map<string, string> = new Map();
 
-    constructor(private coreWebService: CoreWebService) {
-        console.log('Inited');
-    }
+    constructor(private coreWebService: CoreWebService) {}
 
     get url(): string {
         return this._url;
