@@ -36,9 +36,11 @@ jobs:
             - name: Running Lint in dotcms-ui
               id: lint_step
               run: |
-                  if ! (npm run nx lint -- dotcms-ui) then
+                  if ! (results=npm run nx lint -- dotcms-ui) then
                     echo "::set-output name=status::failure";
                     echo "::set-output name=color::#ff2400";
+                    echo "::set-output name=message::$results";
+                    echo $results;
                     exit 1;
                   fi
             - name: Slack Notification
