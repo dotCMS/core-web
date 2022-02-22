@@ -53,6 +53,7 @@ jobs:
                   SLACK_MESSAGE: Lint faliled
                   SLACK_FOOTER: ${{ env.PULL_REQUEST_URL }}
     build:
+        needs: lint
         if: github.event.pull_request.draft == false
         runs-on: ubuntu-latest
         steps:
