@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run nx affected:lint -- dotcms-ui
+npm run nx lint -- dotcms-ui
