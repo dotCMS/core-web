@@ -42,7 +42,7 @@
         "dep-graph": "nx dep-graph",
         "help": "nx help",
         "pretty-quick": "pretty-quick",
-        "prepare": "husky install"
+        "prepare": "node ./prepare.js"
     },
     "private": false,
     "dependencies": {
