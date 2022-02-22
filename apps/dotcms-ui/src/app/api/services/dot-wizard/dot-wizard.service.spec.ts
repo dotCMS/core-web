@@ -5,7 +5,7 @@ import { DotWizardService } from './dot-wizard.service';
 import { DotWizardStep } from '@models/dot-wizard-step/dot-wizard-step.model';
 import { DotWizardInput } from '@models/dot-wizard-input/dot-wizard-input.model';
 
-fdescribe('DotWizardService', () => {
+describe('DotWizardService', () => {
     let service: DotWizardService;
     const mockOutput = { id: '11', name: 'DotCMS' };
     const mockWizardSteps: DotWizardStep<any>[] = [{ component: 'test', data: { id: '12' } }];

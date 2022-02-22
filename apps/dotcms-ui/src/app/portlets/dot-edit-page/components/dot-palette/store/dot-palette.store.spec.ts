@@ -40,7 +40,7 @@ class MockESPaginatorService {
     }
 }
 
-fdescribe('DotPaletteStore', () => {
+describe('DotPaletteStore', () => {
     let dotPaletteStore: DotPaletteStore;
     let paginatorService: PaginatorService;
     let dotESContentService: DotESContentService;
@@ -123,9 +123,11 @@ fdescribe('DotPaletteStore', () => {
 
     it('should load Product contentlets to store', (done) => {
         spyOn(dotESContentService, 'get').and.returnValue(
-            <any>of({
+            of({
                 contentTook: 0,
-                jsonObjectView: { contentlets: [contentletProductDataMock] },
+                jsonObjectView: {
+                    contentlets: [contentletProductDataMock] as unknown as DotCMSContentlet[]
+                },
                 queryTook: 1,
                 resultsSize: 20
             })
@@ -152,9 +154,11 @@ fdescribe('DotPaletteStore', () => {
 
     it('should set filter value in store', (done) => {
         spyOn(dotESContentService, 'get').and.returnValue(
-            <any>of({
+            of({
                 contentTook: 0,
-                jsonObjectView: { contentlets: [contentletProductDataMock] },
+                jsonObjectView: {
+                    contentlets: [contentletProductDataMock] as unknown as DotCMSContentlet[]
+                },
                 queryTook: 1,
                 resultsSize: 20
             })
