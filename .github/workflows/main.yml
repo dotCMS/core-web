@@ -32,10 +32,10 @@ jobs:
               uses: actions/setup-node@v2-beta
               with:
                   node-version: '16.13.2'
-            - name: Running Lint in dotcms-ui
-              run: npm run nx lint -- dotcms-ui
             - name: Installing dependencies
               run: npm install
+            - name: Running Lint in dotcms-ui
+              run: npm run nx lint -- dotcms-ui
             - name: Building for production
               run: npm run nx build dotcms-ui -- --with-deps --prod
             - name: Running tests
