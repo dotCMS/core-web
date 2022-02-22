@@ -35,7 +35,12 @@ jobs:
             - name: Installing dependencies
               run: npm install
             - name: Running Lint in dotcms-ui
-              run: npm run nx lint -- dotcms-ui
+              run: |
+                  if ! (npm run nx lint -- dotcms-ui) then
+                    echo "::set-output name=status::failure";
+                    echo "::set-output name=color::#ff2400";
+                    exit 1;
+                  fi
             - name: Building for production
               run: npm run nx build dotcms-ui -- --with-deps --prod
             - name: Running tests
