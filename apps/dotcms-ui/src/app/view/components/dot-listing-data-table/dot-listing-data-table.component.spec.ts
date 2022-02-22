@@ -89,7 +89,7 @@ class TestHostComponent {
     }
 }
 
-describe('DotListingDataTableComponent', () => {
+fdescribe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
     let hostFixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
