@@ -34,7 +34,7 @@ jobs:
             - name: Installing dependencies
               run: npm install
             - name: Running Lint in dotcms-ui
-              if: lint_step
+              id: lint_step
               run: |
                   if ! (npm run nx lint -- dotcms-ui) then
                     echo "::set-output name=status::failure";
