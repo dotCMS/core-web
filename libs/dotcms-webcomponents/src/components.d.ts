@@ -628,6 +628,7 @@ export namespace Components {
           * Value of the field
          */
         "value": string;
+        "whiteList": string;
     }
     interface DotLabel {
         /**
@@ -1965,6 +1966,7 @@ declare namespace LocalJSX {
           * Value of the field
          */
         "value"?: string;
+        "whiteList"?: string;
     }
     interface DotLabel {
         /**
@@ -2392,6 +2394,10 @@ declare namespace LocalJSX {
           * Emit the index of the item deleted from the list
          */
         "onDelete"?: (event: CustomEvent<number>) => void;
+        /**
+          * Emit the notification of list reordered
+         */
+        "onReorder"?: (event: CustomEvent<any>) => void;
     }
     interface IntrinsicElements {
         "dot-asset-drop-zone": DotAssetDropZone;

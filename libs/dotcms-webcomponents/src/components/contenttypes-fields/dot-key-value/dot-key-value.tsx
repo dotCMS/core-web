@@ -121,6 +121,11 @@ export class DotKeyValueComponent {
     })
     listDeleteLabel: string;
 
+    @Prop({
+        reflect: true
+    })
+    whiteList: string;
+
     @State()
     status: DotFieldStatus;
     @State()
@@ -159,6 +164,33 @@ export class DotKeyValueComponent {
         this.emitChanges();
     }
 
+    @Listen('reorder')
+    reorderItemsHandler(event: CustomEvent) {
+        event.stopImmediatePropagation();
+
+        // Hack to clean the items in DOM without showing "No values" label
+        this.items = [{ key: ' ', value: '' }];
+
+        const keys = document.querySelectorAll('.key-value-table-wc__key');
+        const values = document.querySelectorAll('.key-value-table-wc__value');
+        let keyValueRawData = '';
+
+        for (let i = 0, total = keys.length; i < total; i++) {
+            keyValueRawData += `${keys[i].innerHTML}|${values[i].innerHTML},`;
+        }
+
+        // Timeout to let the DOM get cleaned and then repopulate with list of keyValues
+        setTimeout(() => {
+            this.items = [
+                ...getDotOptionsFromFieldValue(
+                    keyValueRawData.substring(0, keyValueRawData.length - 1)
+                ).map(mapToKeyValue)
+            ];
+            this.refreshStatus();
+            this.emitChanges();
+        }, 100);
+    }
+
     @Listen('add')
     addItemHandler({ detail }: CustomEvent<DotKeyValueField>): void {
         this.items = [...this.items, detail];
@@ -167,6 +199,7 @@ export class DotKeyValueComponent {
     }
 
     componentWillLoad(): void {
+        console.log('***whitelist', this.whiteList);
         this.validateProps();
         this.setOriginalStatus();
         this.emitStatusChange();

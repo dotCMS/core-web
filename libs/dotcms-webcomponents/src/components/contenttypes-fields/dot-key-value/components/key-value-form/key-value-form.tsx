@@ -60,37 +60,52 @@ export class DotKeyValueComponent {
         const buttonDisabled = this.isButtonDisabled();
         return (
             <form onSubmit={this.addKey.bind(this)}>
-                <label>
-                    {this.keyLabel}
-                    <input
-                        disabled={this.disabled}
-                        name="key"
-                        onBlur={(e: FocusEvent) => this.lostFocus.emit(e)}
-                        onInput={(event: Event) => this.setValue(event)}
-                        placeholder={this.keyPlaceholder}
-                        type="text"
-                        value={this.inputs.key}
-                    />
-                </label>
-                <label>
-                    {this.valueLabel}
-                    <input
-                        disabled={this.disabled}
-                        name="value"
-                        onBlur={(e: FocusEvent) => this.lostFocus.emit(e)}
-                        onInput={(event: Event) => this.setValue(event)}
-                        placeholder={this.valuePlaceholder}
-                        type="text"
-                        value={this.inputs.value}
-                    />
-                </label>
-                <button
-                    class="key-value-form__save__button"
-                    type="submit"
-                    disabled={buttonDisabled}
-                >
-                    {this.addButtonLabel}
-                </button>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="key-value-table-form__key">
+                                <label>{this.keyLabel}</label>
+                            </td>
+                            <td class="key-value-table-form__value">
+                                <label>{this.valueLabel}</label>
+                            </td>
+                            <td class="key-value-table-form__action"></td>
+                        </tr>
+                        <tr>
+                            <td class="key-value-table-form__key">
+                                <input
+                                    disabled={this.disabled}
+                                    name="key"
+                                    onBlur={(e: FocusEvent) => this.lostFocus.emit(e)}
+                                    onInput={(event: Event) => this.setValue(event)}
+                                    placeholder={this.keyPlaceholder}
+                                    type="text"
+                                    value={this.inputs.key}
+                                />
+                            </td>
+                            <td class="key-value-table-form__value">
+                                <input
+                                    disabled={this.disabled}
+                                    name="value"
+                                    onBlur={(e: FocusEvent) => this.lostFocus.emit(e)}
+                                    onInput={(event: Event) => this.setValue(event)}
+                                    placeholder={this.valuePlaceholder}
+                                    type="text"
+                                    value={this.inputs.value}
+                                />
+                            </td>
+                            <td class="key-value-table-form__action">
+                                <button
+                                    class="key-value-form__save__button"
+                                    type="submit"
+                                    disabled={buttonDisabled}
+                                >
+                                    {this.addButtonLabel}
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </form>
         );
     }

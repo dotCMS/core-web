@@ -22,6 +22,7 @@
 | `required`             | `required`               | (optional) Determine if it is mandatory                                          | `boolean` | `false`                    |
 | `requiredMessage`      | `required-message`       | (optional) Text that will be shown when required is set and condition is not met | `string`  | `'This field is required'` |
 | `value`                | `value`                  | Value of the field                                                               | `string`  | `''`                       |
+| `whiteList`            | `white-list`             |                                                                                  | `string`  | `undefined`                |
 
 
 ## Events
