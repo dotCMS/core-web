@@ -36,11 +36,9 @@ jobs:
             - name: Running Lint in dotcms-ui
               id: lint_step
               run: |
-                  if ! (results=$(npm run nx lint -- dotcms-ui)) then
+                  if ! (npm run nx lint -- dotcms-ui) then
                     echo "::set-output name=status::failure";
                     echo "::set-output name=color::#ff2400";
-                    echo "::set-output name=message::$results";
-                    echo $results;
                     exit 1;
                   fi
             - name: Slack Notification
@@ -52,7 +50,7 @@ jobs:
                   SLACK_ICON: https://user-images.githubusercontent.com/751424/155223164-b5f1bd4b-4b99-4f1d-8ae6-bfa47b1b2f54.png
                   SLACK_COLOR: ${{ steps.lint_step.outputs.color }}
                   SLACK_TITLE: 'Lint: (FAILED)'
-                  SLACK_MESSAGE: ${{ steps.lint_step.outputs.message }}
+                  SLACK_MESSAGE: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
                   SLACK_FOOTER: ${{ env.PULL_REQUEST_URL }}
     build:
         needs: lint
