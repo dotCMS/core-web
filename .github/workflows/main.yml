@@ -58,8 +58,10 @@ jobs:
         if: github.event.pull_request.draft == false
         runs-on: ubuntu-latest
         steps:
-            - name: Installing dependencies
-              run: npm install
+            - name: Configuring Node.js
+              uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '16.13.2'
             - name: Building for production
               run: npm run nx build dotcms-ui -- --with-deps --prod
             - name: Running tests
