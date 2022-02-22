@@ -32,6 +32,10 @@ jobs:
               uses: actions/setup-node@v2-beta
               with:
                   node-version: '16.13.2'
+            - name: Disabling Husky
+              run: npm ci --omit=dev --ignore-scripts
+            - name: Running Lint in dotcms-ui
+              run: npm run nx lint -- dotcms-ui
             - name: Installing dependencies
               run: npm install
             - name: Building for production
