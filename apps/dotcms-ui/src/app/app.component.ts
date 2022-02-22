@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
                     colors,
                     navBar
                 }: {
-                    buildDate: string;
+                    buildDate: any;
                     colors: DotUiColors;
                     navBar: string;
                 }) => {
