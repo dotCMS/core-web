@@ -39,6 +39,7 @@ jobs:
                   if ! (npm run nx lint -- dotcms-ui) then
                     echo "::set-output name=status::failure";
                     echo "::set-output name=color::#ff2400";
+                    echo "::set-output name=message::$(logResults)";
                     exit 1;
                   fi
             - name: Slack Notification
@@ -47,10 +48,10 @@ jobs:
               env:
                   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
                   SLACK_USERNAME: core-web
-                  SLACK_ICON: https://avatars.slack-edge.com/2020-09-21/1362682893351_5b474f175640cf5f5912_72.png
+                  SLACK_ICON: https://user-images.githubusercontent.com/751424/155223164-b5f1bd4b-4b99-4f1d-8ae6-bfa47b1b2f54.png
                   SLACK_COLOR: ${{ steps.lint_step.outputs.color }}
-                  SLACK_TITLE: 'Report: (FAILED)'
-                  SLACK_MESSAGE: Lint faliled
+                  SLACK_TITLE: 'Lint: (FAILED)'
+                  SLACK_MESSAGE: ${{ steps.lint_step.outputs.message }}
                   SLACK_FOOTER: ${{ env.PULL_REQUEST_URL }}
     build:
         needs: lint
