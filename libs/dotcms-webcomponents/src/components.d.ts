@@ -625,10 +625,21 @@ export namespace Components {
          */
         "reset": () => Promise<void>;
         /**
+          * (optional) Allows unique keys only
+         */
+        "uniqueKeys": boolean;
+        /**
           * Value of the field
          */
         "value": string;
+        /**
+          * (optional) The string containing the value to be parsed for whitelist key/value
+         */
         "whiteList": string;
+        /**
+          * (optional) The string to use in the empty option of whitelist dropdown key/value item
+         */
+        "whiteListEmptyOptionLabel": string;
     }
     interface DotLabel {
         /**
@@ -1026,6 +1037,10 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * (optional) Label for the empty option in white-list select
+         */
+        "emptyDropdownOptionLabel": string;
+        /**
           * (optional) The string to use in the key input label
          */
         "keyLabel": string;
@@ -1041,6 +1056,10 @@ export namespace Components {
           * (optional) Placeholder for the value input text
          */
         "valuePlaceholder": string;
+        /**
+          * (optional) The string to use for white-list key/values
+         */
+        "whiteList": string;
     }
     interface KeyValueTable {
         /**
@@ -1963,10 +1982,21 @@ declare namespace LocalJSX {
          */
         "requiredMessage"?: string;
         /**
+          * (optional) Allows unique keys only
+         */
+        "uniqueKeys"?: boolean;
+        /**
           * Value of the field
          */
         "value"?: string;
+        /**
+          * (optional) The string containing the value to be parsed for whitelist key/value
+         */
         "whiteList"?: string;
+        /**
+          * (optional) The string to use in the empty option of whitelist dropdown key/value item
+         */
+        "whiteListEmptyOptionLabel"?: string;
     }
     interface DotLabel {
         /**
@@ -2349,6 +2379,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * (optional) Label for the empty option in white-list select
+         */
+        "emptyDropdownOptionLabel"?: string;
+        /**
           * (optional) The string to use in the key input label
          */
         "keyLabel"?: string;
@@ -2372,6 +2406,10 @@ declare namespace LocalJSX {
           * (optional) Placeholder for the value input text
          */
         "valuePlaceholder"?: string;
+        /**
+          * (optional) The string to use for white-list key/values
+         */
+        "whiteList"?: string;
     }
     interface KeyValueTable {
         /**

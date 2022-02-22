@@ -85,6 +85,12 @@ export class DotKeyValueComponent {
     })
     disabled = false;
 
+    /** (optional) Allows unique keys only */
+    @Prop({
+        reflect: true
+    })
+    uniqueKeys = false;
+
     /** (optional) Placeholder for the key input text in the key-value-form */
     @Prop({
         reflect: true
@@ -121,6 +127,13 @@ export class DotKeyValueComponent {
     })
     listDeleteLabel: string;
 
+    /** (optional) The string to use in the empty option of whitelist dropdown key/value item */
+    @Prop({
+        reflect: true
+    })
+    whiteListEmptyOptionLabel: string;
+
+    /** (optional) The string containing the value to be parsed for whitelist key/value */
     @Prop({
         reflect: true
     })
@@ -193,13 +206,16 @@ export class DotKeyValueComponent {
 
     @Listen('add')
     addItemHandler({ detail }: CustomEvent<DotKeyValueField>): void {
-        this.items = [...this.items, detail];
-        this.refreshStatus();
-        this.emitChanges();
+        const itemExists = this.items.some((item: DotKeyValueField) => item.key === detail.key);
+
+        if ((this.uniqueKeys && !itemExists) || !this.uniqueKeys) {
+            this.items = [...this.items, detail];
+            this.refreshStatus();
+            this.emitChanges();
+        }
     }
 
     componentWillLoad(): void {
-        console.log('***whitelist', this.whiteList);
         this.validateProps();
         this.setOriginalStatus();
         this.emitStatusChange();
@@ -221,10 +237,12 @@ export class DotKeyValueComponent {
                         onLostFocus={this.blurHandler.bind(this)}
                         add-button-label={this.formAddButtonLabel}
                         disabled={this.isDisabled()}
+                        empty-dropdown-option-label={this.whiteListEmptyOptionLabel}
                         key-label={this.formKeyLabel}
                         key-placeholder={this.formKeyPlaceholder}
                         value-label={this.formValueLabel}
                         value-placeholder={this.formValuePlaceholder}
+                        white-list={this.whiteList}
                     />
                     <key-value-table
                         onClick={(e: MouseEvent) => {
