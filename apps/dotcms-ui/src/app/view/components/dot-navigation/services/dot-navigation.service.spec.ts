@@ -48,7 +48,9 @@ class RouterMock {
         this._events.next(new NavigationEnd(0, url || '/url/789', url || '/url/789'));
     }
 
-    navigateByUrl() {}
+    navigateByUrl() {
+        /* */
+    }
 }
 class DotMenuServiceMock {
     loadMenu(): Observable<DotMenu[]> {
@@ -146,7 +148,7 @@ const baseMockAuth: Auth = {
     user: basemockUser
 };
 
-describe('DotNavigationService', () => {
+fdescribe('DotNavigationService', () => {
     let service: DotNavigationService;
     let dotRouterService: DotRouterService;
     let dotcmsEventsService: DotcmsEventsService;
