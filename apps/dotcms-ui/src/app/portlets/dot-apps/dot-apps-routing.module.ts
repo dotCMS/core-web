@@ -11,6 +11,7 @@ const routes: Routes = [
     {
         component: DotAppsConfigurationDetailComponent,
         path: ':appKey/create/:id',
+        data: { title: 'Create App - DotCMS' },
         resolve: {
             data: DotAppsConfigurationDetailResolver
         }
