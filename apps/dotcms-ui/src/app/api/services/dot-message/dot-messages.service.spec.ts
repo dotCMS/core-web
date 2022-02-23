@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { of } from 'rxjs';
@@ -11,7 +13,6 @@ import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.m
 describe('DotMessageService', () => {
     let dotMessageService: DotMessageService;
     let coreWebService: CoreWebService;
-    let dotFormatDateService: DotFormatDateService;
     let dotLocalstorageService: DotLocalstorageService;
     const MESSAGES_LOCALSTORAGE_KEY = 'dotMessagesKeys';
     let injector: TestBed;
@@ -34,22 +35,6 @@ describe('DotMessageService', () => {
         'relativetime.yy': 'n'
     };
 
-    const relativeDateMessages = {
-        future: 'a',
-        past: 'b',
-        s: 'c',
-        m: 'd',
-        mm: 'e',
-        h: 'f',
-        hh: 'g',
-        d: 'h',
-        dd: 'i',
-        M: 'j',
-        MM: 'k',
-        y: 'l',
-        yy: 'n'
-    };
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
@@ -63,7 +48,6 @@ describe('DotMessageService', () => {
         injector = getTestBed();
         dotMessageService = injector.get(DotMessageService);
         coreWebService = injector.get(CoreWebService);
-        dotFormatDateService = injector.get(DotFormatDateService);
         dotLocalstorageService = injector.get(DotLocalstorageService);
 
         spyOn<any>(coreWebService, 'requestView').and.returnValue(
@@ -76,9 +60,8 @@ describe('DotMessageService', () => {
     describe('init', () => {
         it('should call languages endpoint with default language and set them in local storage', () => {
             spyOn(dotLocalstorageService, 'setItem');
-            spyOn(dotLocalstorageService, 'getItem');
-            dotMessageService.init(true);
-            expect(dotLocalstorageService.getItem).not.toHaveBeenCalled();
+            spyOn(dotLocalstorageService, 'getItem').and.returnValue(null);
+            dotMessageService.init();
             expect(coreWebService.requestView).toHaveBeenCalledWith({
                 url: '/api/v2/languages/default/keys'
             });
@@ -88,10 +71,10 @@ describe('DotMessageService', () => {
             );
         });
 
-        it('should try to laod mesasges otherwise get the default one and set them in local storage', () => {
+        it('should try to load messages otherwise get the default one and set them in local storage', () => {
             spyOn(dotLocalstorageService, 'setItem');
             spyOn(dotLocalstorageService, 'getItem');
-            dotMessageService.init(false);
+            dotMessageService.init();
             expect(dotLocalstorageService.getItem).toHaveBeenCalledWith('dotMessagesKeys');
             expect(coreWebService.requestView).toHaveBeenCalledWith({
                 url: '/api/v2/languages/default/keys'
@@ -103,7 +86,7 @@ describe('DotMessageService', () => {
         });
 
         it('should call languages endpoint with passed language', () => {
-            dotMessageService.init(true, 'en_US');
+            dotMessageService.init({ language: 'en_US' });
             expect(coreWebService.requestView).toHaveBeenCalledWith({
                 url: '/api/v2/languages/en_US/keys'
             });
@@ -112,7 +95,7 @@ describe('DotMessageService', () => {
         it('should read messages from local storage', () => {
             spyOn(dotLocalstorageService, 'getItem').and.callThrough();
             dotLocalstorageService.setItem(MESSAGES_LOCALSTORAGE_KEY, messages);
-            dotMessageService.init(false);
+            dotMessageService.init();
             expect(dotLocalstorageService.getItem).toHaveBeenCalledWith('dotMessagesKeys');
             expect(coreWebService.requestView).not.toHaveBeenCalled();
         });
@@ -120,7 +103,7 @@ describe('DotMessageService', () => {
 
     describe('get', () => {
         beforeEach(() => {
-            dotMessageService.init(true);
+            dotMessageService.init();
         });
 
         it('should return message', () => {
@@ -138,5 +121,4 @@ describe('DotMessageService', () => {
             expect(label).toEqual('Accept data');
         });
     });
-
 });

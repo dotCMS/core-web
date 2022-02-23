@@ -32,20 +32,18 @@ export class DotIframeDialogComponent implements OnChanges, OnInit {
     }> = new EventEmitter();
 
     @Output()
-    close: EventEmitter<any> = new EventEmitter();
+    shutdown: EventEmitter<void> = new EventEmitter();
 
     @Output()
-    custom: EventEmitter<CustomEvent> = new EventEmitter();
+    custom: EventEmitter<CustomEvent<Record<string, unknown>>> = new EventEmitter();
 
     @Output()
-    load: EventEmitter<any> = new EventEmitter();
+    charge: EventEmitter<unknown> = new EventEmitter();
 
     @Output()
-    keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
+    keyWasDown: EventEmitter<KeyboardEvent> = new EventEmitter();
 
     show: boolean;
-
-    constructor() {}
 
     ngOnInit() {
         if (this.beforeClose.observers.length) {
@@ -74,7 +72,7 @@ export class DotIframeDialogComponent implements OnChanges, OnInit {
      * @memberof DotIframeDialogComponent
      */
     onKeyDown($event: KeyboardEvent): void {
-        this.keydown.emit($event);
+        this.keyWasDown.emit($event);
 
         if ($event.key === 'Escape') {
             this.dotDialog.close();
@@ -87,9 +85,9 @@ export class DotIframeDialogComponent implements OnChanges, OnInit {
      * @param * $event
      * @memberof DotIframeDialogComponent
      */
-    onLoad($event: any): void {
+    onLoad($event: { target:  HTMLIFrameElement }): void {
         $event.target.contentWindow.focus();
-        this.load.emit($event);
+        this.charge.emit($event);
     }
 
     /**
@@ -101,6 +99,6 @@ export class DotIframeDialogComponent implements OnChanges, OnInit {
         this.url = null;
         this.show = false;
         this.header = '';
-        this.close.emit();
+        this.shutdown.emit();
     }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Injectable } from '@angular/core';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -35,7 +37,6 @@ import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fi
 import { mockResponseView } from '@dotcms/app/test/response-view.mock';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotPage } from '@dotcms/app/shared/models/dot-page/dot-page.model';
 
 @Injectable()
 class MockDotLicenseService {
@@ -163,7 +164,8 @@ xdescribe('DotEditContentHtmlService', () => {
         'editpage.content.container.menu.content': 'Content',
         'editpage.content.container.menu.widget': 'Widget',
         'editpage.content.container.menu.form': 'Form',
-        'editpage.inline.error': 'An error ocurred'
+        'editpage.inline.error': 'An error ocurred',
+        'dot.common.message.saved': 'All changes Saved'
     });
 
     let service: DotEditContentHtmlService;
@@ -391,16 +393,24 @@ xdescribe('DotEditContentHtmlService', () => {
         service.initEditMode(pageState, {
             nativeElement: {
                 ...fakeIframeEl,
-                addEventListener: () => {},
+                addEventListener: () => {
+                    //
+                },
                 contentDocument: {
                     createElement: () => {
                         const el = document.createElement('div');
                         el.innerHTML = '<h1>new container</h1>';
                         return el;
                     },
-                    open: () => {},
-                    close: () => {},
-                    write: () => {},
+                    open: () => {
+                        //
+                    },
+                    close: () => {
+                        //
+                    },
+                    write: () => {
+                        //
+                    },
                     querySelector: () => {
                         return {
                             tagName: 'DIV',
@@ -963,6 +973,7 @@ xdescribe('DotEditContentHtmlService', () => {
 
         it('should call saveContentlet and save the content', () => {
             spyOn(dotWorkflowActionsFireService, 'saveContentlet').and.returnValue(of({}));
+            spyOn(dotGlobalMessageService, 'success');
             const fakeElem: HTMLElement = fakeDocument.querySelector(
                 '[data-test-id="inline-edit-element-title"]'
             );
@@ -987,6 +998,8 @@ xdescribe('DotEditContentHtmlService', () => {
                 title: '<div>hello</div>',
                 inode: '999'
             });
+
+            expect(dotGlobalMessageService.success).toHaveBeenCalledOnceWith('All changes Saved');
         });
 
         it('should not call saveContentlet if isNotDirty is true', () => {
@@ -1218,7 +1231,7 @@ xdescribe('DotEditContentHtmlService', () => {
                 })
             );
 
-            service.renderAddedForm({ ...form, id: '4' }).subscribe((model) => {
+            service.renderAddedForm('4').subscribe((model) => {
                 expect(model).toEqual(
                     [
                         {
@@ -1261,7 +1274,7 @@ xdescribe('DotEditContentHtmlService', () => {
                 })
             );
 
-            service.renderAddedForm(form).subscribe((model) => {
+            service.renderAddedForm(form.id).subscribe((model) => {
                 expect(model).toBeNull();
             });
 

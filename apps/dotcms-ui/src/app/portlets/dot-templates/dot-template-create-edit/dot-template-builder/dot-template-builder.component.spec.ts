@@ -37,6 +37,10 @@ class DotEditLayoutDesignerMockComponent {
     @Output() cancel: EventEmitter<MouseEvent> = new EventEmitter();
 
     @Output() save: EventEmitter<Event> = new EventEmitter();
+
+    @Output() updateTemplate: EventEmitter<Event> = new EventEmitter();
+
+    @Output() saveAndPublish: EventEmitter<Event> = new EventEmitter();
 }
 
 @Component({
@@ -45,6 +49,16 @@ class DotEditLayoutDesignerMockComponent {
 })
 class DotTemplateAdvancedMockComponent {
     @Input() url;
+
+    @Input() body;
+
+    @Input() didTemplateChanged: boolean;
+
+    @Output() cancel: EventEmitter<MouseEvent> = new EventEmitter();
+
+    @Output() save: EventEmitter<Event> = new EventEmitter();
+
+    @Output() updateTemplate: EventEmitter<Event> = new EventEmitter();
 }
 
 @Component({
@@ -58,12 +72,14 @@ export class IframeMockComponent {
 }
 
 @Component({
+    // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'p-tabView',
     template: '<ng-content></ng-content>'
 })
 export class TabViewMockComponent {}
 
 @Component({
+    // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'p-tabPanel',
     template:
         '<ng-content></ng-content><ng-container *ngTemplateOutlet="contentTemplate"></ng-container>'
@@ -125,6 +141,7 @@ describe('DotTemplateBuilderComponent', () => {
         de = fixture.debugElement;
         component = fixture.componentInstance;
         spyOn(component.save, 'emit');
+        spyOn(component.updateTemplate, 'emit');
         spyOn(component.cancel, 'emit');
     });
 
@@ -162,24 +179,41 @@ describe('DotTemplateBuilderComponent', () => {
             expect(advanced).toBeNull();
         });
 
-        it('should emit events from dot-edit-layout-designer', () => {
+        it('should emit save events from dot-edit-layout-designer', () => {
             const builder = de.query(By.css('dot-edit-layout-designer'));
 
             builder.triggerEventHandler('save', EMPTY_TEMPLATE_DESIGN);
+            builder.triggerEventHandler('updateTemplate', EMPTY_TEMPLATE_DESIGN);
 
             expect(component.save.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
+            expect(component.updateTemplate.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
+        });
+
+        it('should emit save and publish event from dot-edit-layout-designer', () => {
+            spyOn(component.saveAndPublish, 'emit');
+            const builder = de.query(By.css('dot-edit-layout-designer'));
+            builder.triggerEventHandler('saveAndPublish', EMPTY_TEMPLATE_DESIGN);
+            expect(component.saveAndPublish.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
         });
     });
 
     describe('advanced', () => {
         beforeEach(() => {
             component.item = EMPTY_TEMPLATE_ADVANCED;
+            component.didTemplateChanged = false;
+
             fixture.detectChanges();
         });
 
         it('should have tab title "Design"', () => {
             const panel = de.query(By.css('[data-testId="builder"]'));
             expect(panel.componentInstance.header).toBe('Code');
+        });
+
+        it('should show dot-template-advanced and pass attr', () => {
+            const builder = de.query(By.css('dot-template-advanced')).componentInstance;
+            expect(builder.body).toBe('');
+            expect(builder.didTemplateChanged).toBe(false);
         });
 
         it('should not show <dot-edit-layout-designer>', () => {
@@ -191,9 +225,11 @@ describe('DotTemplateBuilderComponent', () => {
             const builder = de.query(By.css('dot-template-advanced'));
 
             builder.triggerEventHandler('save', EMPTY_TEMPLATE_ADVANCED);
+            builder.triggerEventHandler('updateTemplate', EMPTY_TEMPLATE_ADVANCED);
             builder.triggerEventHandler('cancel', {});
 
             expect(component.save.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_ADVANCED);
+            expect(component.updateTemplate.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_ADVANCED);
             expect(component.cancel.emit).toHaveBeenCalledTimes(1);
         });
     });

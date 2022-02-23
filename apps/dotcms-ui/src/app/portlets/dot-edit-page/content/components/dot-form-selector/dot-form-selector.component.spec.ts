@@ -1,4 +1,4 @@
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DebugElement, Component } from '@angular/core';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -30,6 +30,10 @@ const mockContentType: DotCMSContentType = {
 })
 class TestHostComponent {
     show = false;
+}
+
+function getWithOffsetMock<T>(): Observable<T> {
+    return observableOf([mockContentType]).pipe(delay(10)) as Observable<T>;
 }
 
 const messageServiceMock = new MockDotMessageService({
@@ -81,9 +85,7 @@ describe('DotFormSelectorComponent', () => {
 
     describe('show dialog', () => {
         beforeEach(() => {
-            spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
-                return observableOf([mockContentType]).pipe(delay(10));
-            });
+            spyOn(paginatorService, 'getWithOffset').and.callFake(getWithOffsetMock);
 
             fixture.componentInstance.show = true;
             fixture.detectChanges();
@@ -122,8 +124,8 @@ describe('DotFormSelectorComponent', () => {
 
             describe('events', () => {
                 beforeEach(() => {
-                    spyOn(component.select, 'emit');
-                    spyOn(component.close, 'emit');
+                    spyOn(component.pick, 'emit');
+                    spyOn(component.shutdown, 'emit');
 
                     fixture.componentInstance.show = true;
                     fixture.detectChanges();
@@ -131,9 +133,9 @@ describe('DotFormSelectorComponent', () => {
 
                 it('should emit close', () => {
                     const dialog: DebugElement = de.query(By.css('dot-dialog'));
-                    dialog.triggerEventHandler('hide', {});
+                    dialog.triggerEventHandler('hide', true);
 
-                    expect(component.close.emit).toHaveBeenCalledWith({});
+                    expect(component.shutdown.emit).toHaveBeenCalledWith(true);
                 });
 
                 xit('trigger event when click select button', async () => {
@@ -143,7 +145,7 @@ describe('DotFormSelectorComponent', () => {
                     const button = de.query(By.css('.form-selector__button'));
                     button.triggerEventHandler('click', null);
 
-                    expect(component.select.emit).toHaveBeenCalledWith(mockContentType);
+                    expect(component.pick.emit).toHaveBeenCalledWith(mockContentType);
                 });
             });
         });

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-
 import { DialogService } from 'primeng/dynamicdialog';
 
 import { DotTemplate } from '@shared/models/dot-edit-layout-designer/dot-template.model';
@@ -13,6 +12,7 @@ import { DotTemplateItem, DotTemplateState, DotTemplateStore } from './store/dot
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DynamicDialogRef } from 'primeng/dynamicdialog/dynamicdialog-ref';
 import { Site, SiteService } from '@dotcms/dotcms-js';
+import { DotLayout } from '@models/dot-edit-layout-designer/dot-layout.model';
 
 @Component({
     selector: 'dot-template-create-edit',
@@ -22,9 +22,9 @@ import { Site, SiteService } from '@dotcms/dotcms-js';
 })
 export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     vm$ = this.store.vm$;
+    didTemplateChanged$ = this.store.didTemplateChanged$;
 
     form: FormGroup;
-
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
@@ -36,16 +36,17 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original }: DotTemplateState) => {
+        this.vm$.pipe(takeUntil(this.destroy$)).subscribe(({ original, working }: DotTemplateState) => {
+            const template = original.type === 'design' ? working : original;
             if (this.form) {
-                const value = this.getFormValue(original);
+                const value = this.getFormValue(template);
 
                 this.form.setValue(value);
             } else {
-                this.form = this.getForm(original);
+                this.form = this.getForm(template);
             }
 
-            if (!original.identifier) {
+            if (!template.identifier) {
                 this.createTemplate();
             }
         });
@@ -69,33 +70,53 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             data: {
                 template: this.form.value,
                 onSave: (value: DotTemplateItem) => {
-                    this.store.saveProperties(value);
+                    // If it is a template Desing, save entire template
+                    if( value.type === 'design' ) {
+                        this.store.saveTemplate(value);
+                    } else {
+                        this.store.saveProperties(value);
+                    }
                 }
             }
         });
     }
 
     /**
-     * Save template to store
+     * Save and publish template to store
      *
+     * @param DotTemplate template
      * @memberof DotTemplateCreateEditComponent
      */
-    saveTemplate({ layout, body, themeId }: DotTemplate): void {
-        let value = {
+    saveAndPublishTemplate(template: DotTemplate): void {
+        this.store.saveAndPublishTemplate({
             ...this.form.value,
-            body
-        };
+            ...this.formatTemplateItem(template)
+        });
+    }
 
-        if (layout) {
-            value = {
-                ...this.form.value,
-                layout,
-                theme: themeId
-            };
-        }
+    /**
+     * Update Working Template
+     *
+     * @param DotTemplate template
+     * @memberof DotTemplateCreateEditComponent
+     */
+    updateWorkingTemplate(template: DotTemplate): void {
+        this.store.saveWorkingTemplate({
+            ...this.form.value,
+            ...this.formatTemplateItem(template)
+        });
+    }
+
+    /**
+     * Save template to store
+     *
+     * @param DotTemplate template
+     * @memberof DotTemplateCreateEditComponent
+     */
+    saveTemplate(template: DotTemplate): void {
         this.store.saveTemplate({
             ...this.form.value,
-            ...value
+            ...this.formatTemplateItem(template)
         });
     }
 
@@ -141,6 +162,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
     private getForm(template: DotTemplateItem): FormGroup {
         if (template.type === 'design') {
             return this.fb.group({
+                type: template.type,
                 title: [template.title, Validators.required],
                 layout: this.fb.group(template.layout),
                 identifier: template.identifier,
@@ -151,6 +173,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         }
 
         return this.fb.group({
+            type: template.type,
             title: [template.title, Validators.required],
             body: template.body,
             identifier: template.identifier,
@@ -159,9 +182,10 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getFormValue(template: DotTemplateItem): { [key: string]: any } {
+    private getFormValue(template: DotTemplateItem): { [key: string]: string | DotLayout } {
         if (template.type === 'design') {
             return {
+                type: template.type,
                 title: template.title,
                 layout: template.layout,
                 identifier: template.identifier,
@@ -172,6 +196,7 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
         }
 
         return {
+            type: template.type,
             title: template.title,
             body: template.body,
             identifier: template.identifier,
@@ -204,5 +229,22 @@ export class DotTemplateCreateEditComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.store.goToTemplateList();
             });
+    }
+
+    private formatTemplateItem({ layout, body, themeId }: DotTemplate): DotTemplateItem {
+        let value = {
+            ...this.form.value,
+            body
+        };
+
+        if (layout) {
+            value = {
+                ...this.form.value,
+                layout,
+                theme: themeId
+            };
+        }
+
+        return value;
     }
 }

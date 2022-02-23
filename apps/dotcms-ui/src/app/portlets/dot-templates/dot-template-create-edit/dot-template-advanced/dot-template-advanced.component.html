@@ -1,10 +1,10 @@
 <dot-portlet-base>
-    <dot-portlet-toolbar [actions]="actions$ | async">
+    <dot-portlet-toolbar *ngIf="actions" [actions]="actions">
         <dot-global-message right></dot-global-message>
     </dot-portlet-toolbar>
 
     <form [formGroup]="form">
-        <dot-container-selector (change)="containerChange($event)"> </dot-container-selector>
+        <dot-container-selector (swap)="containerChange($event)"> </dot-container-selector>
         <dot-textarea-content
             formControlName="body"
             #value

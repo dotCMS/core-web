@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DOTTestBed } from '@dotcms/app/test/dot-test-bed';
 import { DotEditRelationshipsComponent } from './dot-edit-relationships.component';
 import { Component, Input, Output, EventEmitter, Injectable, DebugElement } from '@angular/core';
@@ -57,7 +60,7 @@ class MockSearchableDropdownComponent {
     placeholder = '';
 
     @Output()
-    change: EventEmitter<any> = new EventEmitter();
+    switch: EventEmitter<any> = new EventEmitter();
     @Output()
     filterChange: EventEmitter<string> = new EventEmitter();
     @Output()
@@ -230,7 +233,7 @@ describe('DotEditRelationshipsComponent', () => {
     it('should tigger change event', (done) => {
         fixture.detectChanges();
 
-        comp.change.subscribe((relationshipSelect: any) => {
+        comp.switch.subscribe((relationshipSelect: any) => {
             expect(relationshipSelect).toEqual({
                 cardinality: 1,
                 velocityVar: 'a'
@@ -239,7 +242,7 @@ describe('DotEditRelationshipsComponent', () => {
         });
 
         const dotSearchableDropdown = de.query(By.css('dot-searchable-dropdown'));
-        dotSearchableDropdown.triggerEventHandler('change', {
+        dotSearchableDropdown.triggerEventHandler('switch', {
             relationship: mockRelationships[0]
         });
     });

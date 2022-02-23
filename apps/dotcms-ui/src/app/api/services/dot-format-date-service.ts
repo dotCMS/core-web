@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { isValid, format, formatDistanceToNowStrict, parse } from 'date-fns';
+import { differenceInCalendarDays, isValid, format, formatDistanceStrict, parse } from 'date-fns';
+import { utcToZonedTime, format as formatTZ } from 'date-fns-tz';
+import { DotcmsConfigService, DotTimeZone } from '@dotcms/dotcms-js';
 
-interface DotLocaleOptions {
+export interface DotLocaleOptions {
     locale: Locale;
 }
 
@@ -15,8 +17,13 @@ export function _isValid(date: string, formatPattern: string) {
 })
 export class DotFormatDateService {
     private _localeOptions: DotLocaleOptions;
+    private _systemTimeZone: DotTimeZone;
 
-    constructor() {}
+    constructor(dotcmsConfigService: DotcmsConfigService) {
+        dotcmsConfigService
+            .getSystemTimeZone()
+            .subscribe((timezone) => (this._systemTimeZone = timezone));
+    }
 
     get localeOptions(): DotLocaleOptions {
         return this._localeOptions;
@@ -30,7 +37,7 @@ export class DotFormatDateService {
         let [langCode, countryCode] = languageId.replace('_', '-').split('-');
         let localeLang;
 
-        langCode = langCode?.toLowerCase() || 'en'
+        langCode = langCode?.toLowerCase() || 'en';
         countryCode = countryCode?.toLocaleUpperCase() || 'US';
 
         try {
@@ -42,8 +49,21 @@ export class DotFormatDateService {
                 localeLang = await import(`date-fns/locale/en-US`);
             }
         }
-        
+
         this.localeOptions = { locale: localeLang.default };
+    }
+
+    /**
+     * Get the number of calendar days between the given dates. This means that the
+     * times are removed from the dates and then the difference in days is calculated.
+     *
+     * @param {Date} startDate
+     * @param {Date} endDate
+     * @returns {number}
+     * @memberof DotFormatDateService
+     */
+    differenceInCalendarDays(startDate: Date, endDate: Date): number {
+        return differenceInCalendarDays(startDate, endDate);
     }
 
     /**
@@ -67,18 +87,32 @@ export class DotFormatDateService {
      * @memberof DotFormatDateService
      */
     format(date: Date, formatPattern: string): string {
-        return format(date, formatPattern, this.localeOptions);
+        return format(date, formatPattern, { ...this.localeOptions });
+    }
+
+    /**
+     * Format a date based on a pattern and in the serverTime
+     *
+     * @param {Date} date
+     * @param {string} formatPattern
+     * @returns {string}
+     * @memberof DotFormatDateService
+     */
+    formatTZ(date: Date, formatPattern: string): string {
+        const zonedDate = utcToZonedTime(date, this._systemTimeZone.id);
+        return formatTZ(zonedDate, formatPattern, { timeZone: this._systemTimeZone.id });
     }
 
     /**
      * Gets relative strict time from on a specific date passed
      *
      * @param {string} time
+     * @param {Date} baseDate
      * @returns {string}
      * @memberof DotFormatDateService
      */
-    getRelative(time: string): string {
-        return formatDistanceToNowStrict(new Date(parseInt(time, 10)), {
+    getRelative(time: string, baseDate = new Date()): string {
+        return formatDistanceStrict(new Date(parseInt(time, 10)), baseDate, {
             ...this.localeOptions,
             addSuffix: true
         });

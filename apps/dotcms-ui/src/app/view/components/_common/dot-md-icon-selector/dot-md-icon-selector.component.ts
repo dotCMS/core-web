@@ -16,20 +16,22 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class DotMdIconSelectorComponent implements ControlValueAccessor {
     value = '';
 
-    constructor() {}
-
-    onTouched = () => {};
-    onChange = (_) => {};
+    onTouched = () => {
+        //
+    };
+    onChange = (_) => {
+        /* */
+    };
 
     onBlur() {
         this.onTouched();
     }
 
-    registerOnTouched(fn: any) {
+    registerOnTouched(fn: () => void) {
         this.onTouched = fn;
     }
 
-    registerOnChange(fn: any) {
+    registerOnChange(fn: () => void) {
         this.onChange = fn;
     }
 

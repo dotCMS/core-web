@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component } from '@angular/core';
@@ -156,7 +159,7 @@ describe('DotIframeDialogComponent', () => {
 
                 it('should focus in the iframe window on dot-iframe load', () => {
                     const mockEvent = fakeEvent();
-                    dotIframe.triggerEventHandler('load', { ...mockEvent });
+                    dotIframe.triggerEventHandler('charge', { ...mockEvent });
                     expect(mockEvent.target.contentWindow.focus).toHaveBeenCalledTimes(1);
                 });
             });
@@ -164,19 +167,19 @@ describe('DotIframeDialogComponent', () => {
             describe('events', () => {
                 beforeEach(() => {
                     spyOn(component.beforeClose, 'emit');
-                    spyOn(component.close, 'emit');
+                    spyOn(component.shutdown, 'emit');
                     spyOn(component.custom, 'emit');
-                    spyOn(component.keydown, 'emit');
-                    spyOn(component.load, 'emit');
+                    spyOn(component.keyWasDown, 'emit');
+                    spyOn(component.charge, 'emit');
                     spyOn(dialog.componentInstance, 'close');
                 });
 
                 describe('dot-iframe', () => {
                     it('should emit events from dot-iframe', () => {
                         const mockEvent = fakeEvent();
-                        dotIframe.triggerEventHandler('load', mockEvent);
+                        dotIframe.triggerEventHandler('charge', mockEvent);
 
-                        dotIframe.triggerEventHandler('keydown', { hello: 'world' });
+                        dotIframe.triggerEventHandler('keyWasDown', { hello: 'world' });
 
                         dotIframe.triggerEventHandler('custom', {
                             detail: {
@@ -184,8 +187,8 @@ describe('DotIframeDialogComponent', () => {
                             }
                         });
 
-                        expect(component.load.emit).toHaveBeenCalledWith(mockEvent);
-                        expect<any>(component.keydown.emit).toHaveBeenCalledWith({
+                        expect(component.charge.emit).toHaveBeenCalledWith(mockEvent);
+                        expect<any>(component.keyWasDown.emit).toHaveBeenCalledWith({
                             hello: 'world'
                         });
                         expect<any>(component.custom.emit).toHaveBeenCalledWith({
@@ -196,11 +199,11 @@ describe('DotIframeDialogComponent', () => {
                     });
 
                     it('should call close method on dot-dialog on dot-iframe escape key', () => {
-                        dotIframe.triggerEventHandler('keydown', {
+                        dotIframe.triggerEventHandler('keyWasDown', {
                             key: 'Escape'
                         });
 
-                        expect(component.keydown.emit).toHaveBeenCalledTimes(1);
+                        expect(component.keyWasDown.emit).toHaveBeenCalledTimes(1);
                     });
                 });
 
@@ -215,7 +218,7 @@ describe('DotIframeDialogComponent', () => {
                         expect(component.url).toBe(null);
                         expect(component.show).toBe(false);
                         expect(component.header).toBe('');
-                        expect(component.close.emit).toHaveBeenCalledTimes(1);
+                        expect(component.shutdown.emit).toHaveBeenCalledTimes(1);
                         expect(component.beforeClose.emit).not.toHaveBeenCalled();
                     });
 
@@ -253,7 +256,9 @@ describe('DotIframeDialogComponent', () => {
 
         it('should emit beforeClose when a observer is set', () => {
             dialogComponent.beforeClose.emit({
-                close: () => {}
+                close: () => {
+                    //
+                }
             });
             expect(component.beforeClose.emit).toHaveBeenCalledTimes(1);
         });
@@ -263,7 +268,9 @@ describe('DotIframeDialogComponent', () => {
             hostFixture.detectChanges();
 
             dialogComponent.beforeClose.emit({
-                close: () => {}
+                close: () => {
+                    //
+                }
             });
             expect(component.beforeClose.emit).not.toHaveBeenCalled();
         });

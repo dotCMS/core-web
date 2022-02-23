@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DotWorkflowActionsFireService } from './dot-workflow-actions-fire.service';
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
@@ -21,7 +23,8 @@ const mockBulkOptions: DotActionBulkRequestOptions = {
             expireTime: 'e',
             publishDate: 'p',
             publishTime: 'pp',
-            filterKey: 'f'
+            filterKey: 'f',
+            timezoneId: 'America/Costa_Rica'
         },
         additionalParamsMap: { _path_to_move: '' }
     }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
@@ -11,7 +13,6 @@ import {
     mockFieldVariables
 } from '@tests/field-variable-service.mock';
 import { of } from 'rxjs';
-import * as _ from 'lodash';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotCMSContentTypeField } from '@dotcms/dotcms-models';

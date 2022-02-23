@@ -6,7 +6,7 @@ import { DebugElement, Component, Injectable } from '@angular/core';
 import { DotPageSelectorComponent } from './dot-page-selector.component';
 import { DotPageAsset, DotPageSelectorService } from './service/dot-page-selector.service';
 import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import {
     DotFolder,
@@ -120,7 +120,6 @@ let hostDe: DebugElement;
 let component: DotPageSelectorComponent;
 let de: DebugElement;
 let autocomplete: DebugElement;
-let autocompleteComp: AutoComplete;
 let dotPageSelectorService: DotPageSelectorService;
 
 describe('DotPageSelectorComponent', () => {
@@ -181,7 +180,6 @@ describe('DotPageSelectorComponent', () => {
         hostFixture.detectChanges();
         await hostFixture.whenStable();
         autocomplete = de.query(By.css('[data-testId="p-autoComplete"]'));
-        autocompleteComp = autocomplete.componentInstance;
     });
 
     describe('AutoComplete properties', () => {

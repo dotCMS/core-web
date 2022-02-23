@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { throwError, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
@@ -74,8 +77,7 @@ class TestContentTypeLayoutComponent {
 class TestContentTypesFormComponent {
     @Input() data: DotCMSContentType;
     @Input() layout: DotCMSContentTypeField[];
-    // tslint:disable-next-line:no-output-on-prefix
-    @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+    @Output() send: EventEmitter<DotCMSContentType> = new EventEmitter();
 
     resetForm = jasmine.createSpy('resetForm');
 
@@ -303,14 +305,16 @@ describe('DotContentTypesEditComponent', () => {
                 spyOn(crudService, 'postData').and.returnValue(of([responseContentType]));
                 spyOn<any>(location, 'replaceState').and.returnValue(of([responseContentType]));
 
-                contentTypeForm.triggerEventHandler('onSubmit', mockContentType);
+                contentTypeForm.triggerEventHandler('send', mockContentType);
 
                 const replacedWorkflowsPropContentType = {
                     ...mockContentType
                 };
 
-                (replacedWorkflowsPropContentType['workflow'] = mockContentType.workflows),
-                    delete replacedWorkflowsPropContentType.workflows;
+                replacedWorkflowsPropContentType['workflow'] = mockContentType.workflows.map(
+                    (workflow) => workflow.id
+                );
+                delete replacedWorkflowsPropContentType.workflows;
 
                 expect(crudService.postData).toHaveBeenCalledWith(
                     'v1/contenttype',
@@ -328,14 +332,14 @@ describe('DotContentTypesEditComponent', () => {
                 spyOn(crudService, 'postData').and.returnValue(throwError(mockResponseView(403)));
                 spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
 
-                contentTypeForm.triggerEventHandler('onSubmit', mockContentType);
+                contentTypeForm.triggerEventHandler('send', mockContentType);
                 expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
             });
 
             it('should update workflows value', () => {
                 spyOn(crudService, 'postData').and.returnValue(of([]));
 
-                contentTypeForm.triggerEventHandler('onSubmit', {
+                contentTypeForm.triggerEventHandler('send', {
                     workflows: [
                         {
                             id: '123',
@@ -552,9 +556,8 @@ describe('DotContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotCMSContentTypeField[] = newFieldsAdded.concat(
-                currentFieldsInServer
-            );
+            const fieldsReturnByServer: DotCMSContentTypeField[] =
+                newFieldsAdded.concat(currentFieldsInServer);
             const fieldService = fixture.debugElement.injector.get(FieldService);
             spyOn<any>(fieldService, 'saveFields').and.returnValue(of(fieldsReturnByServer));
 
@@ -583,9 +586,8 @@ describe('DotContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotCMSContentTypeField[] = newFieldsAdded.concat(
-                currentFieldsInServer
-            );
+            const fieldsReturnByServer: DotCMSContentTypeField[] =
+                newFieldsAdded.concat(currentFieldsInServer);
             const fieldService = fixture.debugElement.injector.get(FieldService);
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
@@ -613,9 +615,8 @@ describe('DotContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotCMSContentTypeLayoutRow[] = _.cloneDeep(
-                currentLayoutInServer
-            );
+            const fieldsReturnByServer: DotCMSContentTypeLayoutRow[] =
+                _.cloneDeep(currentLayoutInServer);
             newFieldsAdded.concat(fieldsReturnByServer[0].columns[0].fields);
             fieldsReturnByServer[0].columns[0].fields = newFieldsAdded;
 
@@ -766,14 +767,16 @@ describe('DotContentTypesEditComponent', () => {
 
                 spyOn(crudService, 'putData').and.returnValue(of(responseContentType));
 
-                contentTypeForm.triggerEventHandler('onSubmit', fakeContentType);
+                contentTypeForm.triggerEventHandler('send', fakeContentType);
 
                 const replacedWorkflowsPropContentType = {
                     ...fakeContentType
                 };
 
-                (replacedWorkflowsPropContentType['workflow'] = fakeContentType.workflows),
-                    delete replacedWorkflowsPropContentType.workflows;
+                replacedWorkflowsPropContentType['workflow'] = fakeContentType.workflows.map(
+                    (workflow) => workflow.id
+                );
+                delete replacedWorkflowsPropContentType.workflows;
 
                 expect(crudService.putData).toHaveBeenCalledWith(
                     'v1/contenttype/id/1234567890',
@@ -786,7 +789,7 @@ describe('DotContentTypesEditComponent', () => {
                 spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
                 spyOn(crudService, 'putData').and.returnValue(throwError(mockResponseView(403)));
 
-                contentTypeForm.triggerEventHandler('onSubmit', fakeContentType);
+                contentTypeForm.triggerEventHandler('send', fakeContentType);
 
                 expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
             });

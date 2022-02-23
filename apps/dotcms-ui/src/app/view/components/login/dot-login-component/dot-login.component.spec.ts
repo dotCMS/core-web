@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DotLoginComponent } from '@components/login/dot-login-component/dot-login.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, Injectable } from '@angular/core';
@@ -21,8 +23,8 @@ import { DotFormatDateService } from '@services/dot-format-date-service';
 import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DotLoginInformation } from '@models/dot-login';
 import { ActivatedRoute, Params } from '@angular/router';
+import { DotLoginInformation } from '@dotcms/dotcms-models';
 
 const mockLoginInfo = {
     ...mockLoginFormResponse,
@@ -139,15 +141,11 @@ describe('DotLoginComponent', () => {
             );
         });
 
-        it('should init messages on page load with default language', () => {
-            expect(dotMessageService.init).toHaveBeenCalledWith(true);
-        });
-
         it('should call services on language change', () => {
             const pDropDown: DebugElement = de.query(By.css('[data-testId="language"]'));
             pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
-            expect(dotMessageService.init).toHaveBeenCalledWith(true, 'es_ES');
+            expect(dotMessageService.init).toHaveBeenCalledWith({ language: 'es_ES' });
             expect(loginPageStateService.update).toHaveBeenCalledWith('es_ES');
         });
 
@@ -198,12 +196,14 @@ describe('DotLoginComponent', () => {
             );
             signInButton.triggerEventHandler('click', {});
 
-            const languageDropdown: Dropdown = de.query(By.css('[data-testId="language"]'))
-                .componentInstance;
+            const languageDropdown: Dropdown = de.query(
+                By.css('[data-testId="language"]')
+            ).componentInstance;
             const emailInput = de.query(By.css('[data-testId="userNameInput"]'));
             const passwordInput = de.query(By.css('[data-testId="password"]'));
-            const rememberCheckBox: Checkbox = de.query(By.css('[data-testId="rememberMe"]'))
-                .componentInstance;
+            const rememberCheckBox: Checkbox = de.query(
+                By.css('[data-testId="rememberMe"]')
+            ).componentInstance;
 
             fixture.detectChanges();
 
@@ -223,7 +223,7 @@ describe('DotLoginComponent', () => {
 
             fixture.detectChanges();
 
-            const errorsMessages = de.queryAll(By.css('.p-field .p-invalid'));
+            const errorsMessages = de.queryAll(By.css('.p-invalid'));
             expect(errorsMessages.length).toBe(2);
         });
 
@@ -234,8 +234,9 @@ describe('DotLoginComponent', () => {
             );
             signInButton.triggerEventHandler('click', {});
             fixture.detectChanges();
-            const message: HTMLParagraphElement = de.query(By.css('[data-testId="message"]'))
-                .nativeElement;
+            const message: HTMLParagraphElement = de.query(
+                By.css('[data-testId="message"]')
+            ).nativeElement;
             expect(message).toHaveClass('p-invalid');
             expect(message.innerText).toEqual('error message');
         });
@@ -245,8 +246,9 @@ describe('DotLoginComponent', () => {
         it('should show password changed', () => {
             queryParams.next({ changedPassword: 'test' });
             fixture.detectChanges();
-            const message: HTMLParagraphElement = de.query(By.css('[data-testId="message"]'))
-                .nativeElement;
+            const message: HTMLParagraphElement = de.query(
+                By.css('[data-testId="message"]')
+            ).nativeElement;
             expect(message).toHaveClass('success');
             expect(message.innerText).toEqual('Your password has been successfully changed');
         });
@@ -254,8 +256,9 @@ describe('DotLoginComponent', () => {
         it('should show email reset notification', () => {
             queryParams.next({ resetEmailSent: 'true', resetEmail: 'test@email.com' });
             fixture.detectChanges();
-            const message: HTMLParagraphElement = de.query(By.css('[data-testId="message"]'))
-                .nativeElement;
+            const message: HTMLParagraphElement = de.query(
+                By.css('[data-testId="message"]')
+            ).nativeElement;
             expect(message).toHaveClass('success');
             expect(message.innerText).toEqual(
                 'An Email with instructions has been sent to test@email.com.'

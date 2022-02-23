@@ -66,7 +66,7 @@ export class PushPublishService {
         this._lastEnvironmentPushed = pushPublishData.environment;
 
         return this.coreWebService
-            .request({
+            .request<DotAjaxActionResponseView>({
                 body: this.getPublishEnvironmentData(assetIdentifier, pushPublishData),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -74,7 +74,7 @@ export class PushPublishService {
                 method: 'POST',
                 url: isBundle ? this.publishBundleURL : this.publishUrl
             })
-            .pipe(map((res: any) => <DotAjaxActionResponseView>res));
+            .pipe(map((res: DotAjaxActionResponseView) => res));
     }
 
     private getPublishEnvironmentData(
@@ -84,8 +84,8 @@ export class PushPublishService {
 
         let result = '';
         result += `assetIdentifier=${encodeURIComponent(assetIdentifier)}`;
-        result += `&remotePublishDate=${this.dotFormatDateService.format(new Date(publishDate), 'yyyy-MM-dd')}`;
-        result += `&remotePublishTime=${this.dotFormatDateService.format(new Date(publishDate), 'HH-mm')}`;
+        result += `&remotePublishDate=${this.dotFormatDateService.format(publishDate ? new Date(publishDate) : new Date(), 'yyyy-MM-dd')}`;
+        result += `&remotePublishTime=${this.dotFormatDateService.format(publishDate ? new Date(publishDate) : new Date(), 'HH-mm')}`;
         result += `&remotePublishExpireDate=${this.dotFormatDateService.format(expireDate ? new Date(expireDate) : new Date(), 'yyyy-MM-dd')}`;
         result += `&remotePublishExpireTime=${this.dotFormatDateService.format(expireDate ? new Date(expireDate) : new Date(), 'HH-mm')}`;
         result += `&timezoneId=${timezoneId}`;

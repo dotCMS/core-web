@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { Component, Input, EventEmitter, Output, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormGroup, ReactiveFormsModule, ControlContainer } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, of } from 'rxjs';
@@ -37,7 +37,7 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
     selector: 'dot-template-addtional-actions-menu',
     template: ''
 })
-class AdditionalOptionsComponentMock {
+class AdditionalOptionsMockComponent {
     @Input() inode: '';
 }
 
@@ -45,7 +45,7 @@ class AdditionalOptionsComponentMock {
     selector: 'dot-layout-properties',
     template: ''
 })
-class DotLayoutPropertiesComponentMock {
+class DotLayoutPropertiesMockComponent {
     @Input() group: FormGroup;
 }
 
@@ -53,7 +53,7 @@ class DotLayoutPropertiesComponentMock {
     selector: 'dot-layout-designer',
     template: ''
 })
-class DotLayoutDesignerComponentMock {
+class DotLayoutDesignerMockComponent {
     constructor(public group: ControlContainer) {}
 }
 
@@ -61,7 +61,7 @@ class DotLayoutDesignerComponentMock {
     selector: 'dot-theme-selector',
     template: ''
 })
-class DotThemeSelectorComponentMock {
+class DotThemeSelectorMockComponent {
     @Input() value: DotTheme;
     @Output() selected = new EventEmitter<DotTheme>();
 }
@@ -82,7 +82,6 @@ const messageServiceMock = new MockDotMessageService({
 let component: DotEditLayoutDesignerComponent;
 let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
 let dotThemesService: DotThemesService;
-let dotGlobalMessageService: DotGlobalMessageService;
 let dotEditLayoutService: DotEditLayoutService;
 
 describe('DotEditLayoutDesignerComponent', () => {
@@ -91,10 +90,10 @@ describe('DotEditLayoutDesignerComponent', () => {
             declarations: [
                 DotMessagePipe,
                 DotEditLayoutDesignerComponent,
-                AdditionalOptionsComponentMock,
-                DotLayoutPropertiesComponentMock,
-                DotThemeSelectorComponentMock,
-                DotLayoutDesignerComponentMock
+                AdditionalOptionsMockComponent,
+                DotLayoutPropertiesMockComponent,
+                DotThemeSelectorMockComponent,
+                DotLayoutDesignerMockComponent
             ],
             imports: [
                 DotActionButtonModule,
@@ -152,7 +151,6 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         fixture = TestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
-        dotGlobalMessageService = TestBed.inject(DotGlobalMessageService);
         dotThemesService = TestBed.inject(DotThemesService);
         dotEditLayoutService = TestBed.inject(DotEditLayoutService);
     });
@@ -161,6 +159,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         beforeEach(() => {
             component.layout = mockDotLayout();
             component.theme = '123';
+            component.disablePublish = false;
             fixture.detectChanges();
         });
         // these need to be fixed when this is fixed correctly https://github.com/dotCMS/core/issues/18830
@@ -186,6 +185,12 @@ describe('DotEditLayoutDesignerComponent', () => {
             // TODO: NEED EXTRA EXPECTS
         });
 
+        it('should enable publish button when editing the form.', () => {
+            component.form.get('title').setValue('Hello');
+            fixture.detectChanges();
+            expect(component.disablePublish).toBe(false);
+        });
+
         it('should not show template name input', () => {
             const templateNameInput: DebugElement = fixture.debugElement.query(
                 By.css('.dot-edit-layout__toolbar-template-name')
@@ -200,33 +205,35 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
-        it('should display unsaved changes message when editing the form.', () => {
-            component.form.get('title').setValue('Hello');
+        it('should emit pushAndPublish event when button clicked', () => {
+            spyOn(component.saveAndPublish, 'emit').and.callThrough();
             fixture.detectChanges();
-            expect(dotGlobalMessageService.customDisplay).toHaveBeenCalled();
+            const publishButton = fixture.debugElement.query(By.css('[data-testId="publishBtn"]'));
+            publishButton.triggerEventHandler('click', null);
+            fixture.detectChanges();
+            expect(component.saveAndPublish.emit).toHaveBeenCalledWith(component.form.value);
         });
 
-        it('should save changes when showMessage is true', () => {
+        it('should save changes when closeEditLayout is true', () => {
             spyOn(component.save, 'emit');
-            dotEditLayoutService.changeMessageState(true);
+            dotEditLayoutService.changeCloseEditLayoutState(true);
             fixture.detectChanges();
             expect(component.save.emit).toHaveBeenCalledTimes(1);
         });
 
-        it('should save changes when editing the form.', fakeAsync( () => {
-            spyOn(component.save, 'emit');
+        it('should save changes when editing the form.', () => {
+            spyOn(component.updateTemplate, 'emit');
             component.form.get('title').setValue('Hello');
-            tick(10500);
             fixture.detectChanges();
-            expect(component.save.emit).toHaveBeenCalledTimes(1);
-        }));
+            expect(component.updateTemplate.emit).toHaveBeenCalledTimes(1);
+        });
 
         it('should show dot-layout-properties and bind attr correctly', () => {
             fixture.detectChanges();
             const layoutProperties: DebugElement = fixture.debugElement.query(
                 By.css('dot-layout-properties')
             );
-            
+
             expect(layoutProperties).toBeTruthy();
             expect(layoutProperties.componentInstance.group).toEqual(component.form.get('layout'));
         });
@@ -268,14 +275,16 @@ describe('DotEditLayoutDesignerComponent', () => {
                         location: mockDotRenderedPage().layout.sidebar.location,
                         containers: mockDotRenderedPage().layout.sidebar.containers,
                         width: mockDotRenderedPage().layout.sidebar.width
-                    }
+                    },
+                    title: mockDotRenderedPage().layout.title,
+                    width: mockDotRenderedPage().layout.width
                 }
             });
         });
     });
 
     describe('themes', () => {
-        let themeSelector: DotThemeSelectorComponentMock;
+        let themeSelector: DotThemeSelectorMockComponent;
         let themeButton;
 
         beforeEach(() => {
@@ -289,8 +298,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 By.css('.dot-edit-layout__toolbar-action-themes')
             ).nativeElement;
             themeButton.click();
-            themeSelector = fixture.debugElement.query(By.css('dot-theme-selector'))
-                .componentInstance;
+            themeSelector = fixture.debugElement.query(
+                By.css('dot-theme-selector')
+            ).componentInstance;
             const themeSelectorBtn = fixture.debugElement.query(
                 By.css('.dot-edit-layout__toolbar-action-themes')
             ).nativeElement;
@@ -316,8 +326,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                 By.css('.dot-edit-layout__toolbar-action-themes')
             ).nativeElement;
             themeButton.click();
-            themeSelector = fixture.debugElement.query(By.css('dot-theme-selector'))
-                .componentInstance;
+            themeSelector = fixture.debugElement.query(
+                By.css('dot-theme-selector')
+            ).componentInstance;
             const mockTheme = _.cloneDeep(mockDotThemes[0]);
             themeSelector.selected.emit(mockTheme);
             expect(component.changeThemeHandler).toHaveBeenCalledWith(mockTheme);
@@ -378,7 +389,9 @@ describe('DotEditLayoutDesignerComponent', () => {
                         location: '',
                         containers: [],
                         width: 'small'
-                    }
+                    },
+                    title: '',
+                    width: ''
                 }
             });
         });

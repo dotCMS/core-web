@@ -13,15 +13,13 @@ export class DotPersonaSelectorOptionComponent {
 
     @Input() selected: boolean;
 
-    @Output() change = new EventEmitter<DotPersona>();
+    @Output() switch = new EventEmitter<DotPersona>();
 
     @Output() delete = new EventEmitter<DotPersona>();
 
-    constructor() {}
-
     @HostListener('click', ['$event'])
     onClick(_$event: MouseEvent) {
-        this.change.emit(this.persona);
+        this.switch.emit(this.persona);
     }
 
     /**

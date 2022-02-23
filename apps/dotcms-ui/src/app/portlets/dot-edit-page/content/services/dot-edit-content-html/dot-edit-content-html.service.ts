@@ -3,8 +3,6 @@ import { fromEvent, of, Observable, Subject, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { Injectable, ElementRef, NgZone } from '@angular/core';
 
-import * as _ from 'lodash';
-
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
@@ -16,7 +14,6 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 import { getEditPageCss } from '../html/libraries/iframe-edit-mode.css';
 import { MODEL_VAR_NAME } from '@dotcms/app/portlets/dot-edit-page/content/services/html/libraries/iframe-edit-mode.js';
-import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {
     DotAssetPayload,
@@ -34,6 +31,8 @@ import { INLINE_TINYMCE_SCRIPTS } from '@dotcms/app/portlets/dot-edit-page/conte
 import { HttpErrorResponse } from '@angular/common/http';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotPage } from '@dotcms/app/shared/models/dot-page/dot-page.model';
+import { DotAddContentTypePayload } from './models/dot-contentlets-events.model';
+import { DotIframeEditEvent } from '@dotcms/dotcms-models';
 
 export enum DotContentletAction {
     EDIT,
@@ -54,7 +53,9 @@ export class DotEditContentHtmlService {
     currentContainer: DotPageContainer;
     currentContentlet: DotPageContent;
     iframe: ElementRef;
-    iframeActions$: Subject<any> = new Subject();
+    iframeActions$: Subject<
+        DotIframeEditEvent<Record<string, unknown> | DotAddContentTypePayload>
+    > = new Subject();
     pageModel$: Subject<PageModelChangeEvent> = new Subject();
     mutationConfig = { attributes: false, childList: true, characterData: false };
     datasetMissing: string[];
@@ -102,7 +103,7 @@ export class DotEditContentHtmlService {
 
     /**
      * Set the current page
-     * 
+     *
      * @param DotPage page
      */
     setCurrentPage(page: DotPage) {
@@ -203,14 +204,12 @@ export class DotEditContentHtmlService {
                     uuid: containerEl.dataset.dotUuid
                 };
 
-                
                 this.dotContainerContentletService
                     .getContentletToContainer(container, contentlet, this.currentPage)
                     .pipe(take(1))
                     .subscribe((contentletHtml: string) => {
-                        const contentletEl: HTMLElement = this.generateNewContentlet(
-                            contentletHtml
-                        );
+                        const contentletEl: HTMLElement =
+                            this.generateNewContentlet(contentletHtml);
                         containerEl.replaceChild(contentletEl, currentContentlet);
                     });
             });
@@ -237,18 +236,11 @@ export class DotEditContentHtmlService {
      * @param boolean isDroppedAsset
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(contentlet: DotPageContent, isDroppedAsset = false): void {
+    renderAddedContentlet(contentlet: DotPageContent, isDroppedContentlet = false): void {
         const doc = this.getEditPageDocument();
-        if (isDroppedAsset) {
-            const container: HTMLElement = doc
-                .querySelector(CONTENTLET_PLACEHOLDER_SELECTOR)
-                .closest('[data-dot-object="container"]');
-            this.setContainterToAppendContentlet({
-                identifier: container.dataset['dotIdentifier'],
-                uuid: container.dataset['dotUuid']
-            });
+        if (isDroppedContentlet) {
+            this.setCurrentContainerOnContentDrop(doc);
         }
-
         const containerEl: HTMLElement = doc.querySelector(
             `[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
         );
@@ -276,12 +268,6 @@ export class DotEditContentHtmlService {
                     });
                     this.currentAction = DotContentletAction.EDIT;
                     this.updateContainerToolbar(containerEl.dataset.dotIdentifier);
-
-                    if (contentletEl.dataset['dotBasetype'] === 'FORM') {
-                        this.iframeActions$.next({
-                            name: 'save'
-                        });
-                    }
                 });
         }
     }
@@ -289,11 +275,15 @@ export class DotEditContentHtmlService {
     /**
      * Render a form in the DOM after add it
      *
-     * @param ContentType form
+     * @param string formId
+     * @param booblean isDroppedAsset
      * @memberof DotEditContentHtmlService
      */
-    renderAddedForm(form: DotCMSContentType): Observable<DotPageContainer[]> {
+    renderAddedForm(formId: string, isDroppedForm = false): Observable<DotPageContainer[]> {
         const doc = this.getEditPageDocument();
+        if (isDroppedForm) {
+            this.setCurrentContainerOnContentDrop(doc);
+        }
         const containerEl: HTMLElement = doc.querySelector(
             [
                 '[data-dot-object="container"]',
@@ -302,18 +292,23 @@ export class DotEditContentHtmlService {
             ].join('')
         );
 
-        if (this.isFormExistInContainer(form, containerEl)) {
+        if (this.isFormExistInContainer(formId, containerEl)) {
             this.showContentAlreadyAddedError();
+            this.removeContentletPlaceholder();
             return of(null);
         } else {
-            const contentletPlaceholder = this.getContentletPlaceholder();
-            containerEl.appendChild(contentletPlaceholder);
-            return this.dotContainerContentletService
-                .getFormToContainer(this.currentContainer, form)
-                .pipe(
-                    map(({ content }: { [key: string]: any }) => {
-                        const { identifier, inode } = content;
+            let contentletPlaceholder = doc.querySelector(CONTENTLET_PLACEHOLDER_SELECTOR);
 
+            if (!contentletPlaceholder) {
+                contentletPlaceholder = this.getContentletPlaceholder();
+                containerEl.appendChild(contentletPlaceholder);
+            }
+
+            return this.dotContainerContentletService
+                .getFormToContainer(this.currentContainer, formId)
+                .pipe(
+                    map(({ content }: { content: { [key: string]: string } }) => {
+                        const { identifier, inode } = content;
                         containerEl.replaceChild(
                             this.renderFormContentlet(identifier, inode),
                             contentletPlaceholder
@@ -343,6 +338,16 @@ export class DotEditContentHtmlService {
      */
     getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
+    }
+
+    private setCurrentContainerOnContentDrop(doc: Document): void {
+        const container: HTMLElement = doc
+            .querySelector(CONTENTLET_PLACEHOLDER_SELECTOR)
+            .closest('[data-dot-object="container"]');
+        this.setContainterToAppendContentlet({
+            identifier: container.dataset['dotIdentifier'],
+            uuid: container.dataset['dotUuid']
+        });
     }
 
     private updateContainerToolbar(dotIdentifier: string) {
@@ -453,14 +458,14 @@ export class DotEditContentHtmlService {
         );
     }
 
-    private isFormExistInContainer(form: DotCMSContentType, containerEL: HTMLElement): boolean {
+    private isFormExistInContainer(formId: string, containerEL: HTMLElement): boolean {
         const contentsSelector = `[data-dot-object="contentlet"]`;
         const currentContentlets: HTMLElement[] = <HTMLElement[]>(
             Array.from(containerEL.querySelectorAll(contentsSelector).values())
         );
 
         return currentContentlets.some(
-            (contentElement) => contentElement.dataset.dotContentTypeId === form.id
+            (contentElement) => contentElement.dataset.dotContentTypeId === formId
         );
     }
 
@@ -477,9 +482,8 @@ export class DotEditContentHtmlService {
         if (editModeNodes.length) {
             const TINYMCE = `/html/js/tinymce/js/tinymce/tinymce.min.js`;
             const tinyMceScript = this.dotDOMHtmlUtilService.creatExternalScriptElement(TINYMCE);
-            const tinyMceInitScript: HTMLScriptElement = this.dotDOMHtmlUtilService.createInlineScriptElement(
-                INLINE_TINYMCE_SCRIPTS
-            );
+            const tinyMceInitScript: HTMLScriptElement =
+                this.dotDOMHtmlUtilService.createInlineScriptElement(INLINE_TINYMCE_SCRIPTS);
 
             this.dotLicenseService
                 .isEnterprise()
@@ -580,6 +584,7 @@ export class DotEditContentHtmlService {
         dotEditContentletEl.setAttribute('data-dot-object', 'contentlet');
 
         for (const attr in dotPageContent) {
+            // eslint-disable-next-line no-prototype-builtins
             if (dotPageContent.hasOwnProperty(attr)) {
                 dotEditContentletEl.setAttribute(`data-dot-${attr}`, dotPageContent[attr]);
             }
@@ -624,6 +629,9 @@ export class DotEditContentHtmlService {
                         // on success
                         content.element.classList.remove('inline-editing--saving');
                         delete this.inlineCurrentContent[content.element.id];
+                        this.dotGlobalMessageService.success(
+                            this.dotMessageService.get('dot.common.message.saved')
+                        );
                     },
                     (e: HttpErrorResponse) => {
                         // on error
@@ -684,7 +692,7 @@ export class DotEditContentHtmlService {
             'add-uploaded-dotAsset': (dotAssetData: DotAssetPayload) => {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
             },
-            'add-content': (data: any) => {
+            'add-content': (data: DotAddContentTypePayload) => {
                 this.iframeActions$.next({
                     name: 'add-content',
                     data: data
@@ -693,11 +701,23 @@ export class DotEditContentHtmlService {
             'add-contentlet': (dotAssetData: DotAssetPayload) => {
                 this.renderAddedContentlet(dotAssetData.contentlet, true);
             },
-            'handle-http-error': (err: HttpErrorResponse) => {
-                this.dotHttpErrorManagerService
-                    .handle(err)
+            'add-form': (formId: string) => {
+                this.renderAddedForm(formId, true)
                     .pipe(take(1))
-                    .subscribe(() => {});
+                    .subscribe((model: DotPageContainer[]) => {
+                        if (model) {
+                            this.pageModel$.next({
+                                model: model,
+                                type: PageModelChangeEventType.ADD_CONTENT
+                            });
+                            this.iframeActions$.next({
+                                name: 'save'
+                            });
+                        }
+                    });
+            },
+            'handle-http-error': (err: HttpErrorResponse) => {
+                this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe();
             }
         };
 
@@ -787,7 +807,11 @@ export class DotEditContentHtmlService {
         };
 
         this.dotContainerContentletService
-            .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet, this.currentPage)
+            .getContentletToContainer(
+                relocateInfo.container,
+                relocateInfo.contentlet,
+                this.currentPage
+            )
             .subscribe((contentletHtml: string) => {
                 const newContentletEl: HTMLElement = this.generateNewContentlet(contentletHtml);
                 container.replaceChild(newContentletEl, contenletEl);

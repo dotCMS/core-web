@@ -76,7 +76,7 @@ const appData = {
     configurationsCount: 1,
     key: 'google-calendar',
     name: 'Google Calendar',
-    description: `It is a tool to keep track of your life\'s events`,
+    description: `It is a tool to keep track of your life's events`,
     iconUrl: '/dA/d948d85c-3bc8-4d85-b0aa-0e989b9ae235/photo/surfer-profile.jpg',
     sites
 };
@@ -175,7 +175,9 @@ describe('DotAppsConfigurationDetailComponent', () => {
                                 return text;
                             },
 
-                            highlight() {}
+                            highlight() {
+                                //
+                            }
                         }
                     },
                     DotAppsConfigurationDetailResolver
@@ -264,7 +266,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
         });
 
         it('should save configuration when Save button clicked', async () => {
-            const transformedData = {
+            const transformedData: DotAppsSaveData = {
                 name: {
                     hidden: false,
                     value: 'John'
@@ -293,11 +295,9 @@ describe('DotAppsConfigurationDetailComponent', () => {
             const saveBtn = fixture.debugElement.query(By.css('[data-testid="saveBtn"]'));
             saveBtn.triggerEventHandler('click', {});
 
-            expect<any>(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
-                component.apps.key,
-                component.apps.sites[0].id,
-                transformedData
-            );
+            expect<(appKey: string, id: string, params: DotAppsSaveData) => Observable<string>>(
+                appsServices.saveSiteConfiguration
+            ).toHaveBeenCalledWith(component.apps.key, component.apps.sites[0].id, transformedData);
         });
     });
 
@@ -354,7 +354,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
         });
 
         it('should save configuration when Save button clicked', () => {
-            const transformedData = {
+            const transformedData: DotAppsSaveData = {
                 name: {
                     hidden: false,
                     value: 'John'
@@ -385,7 +385,7 @@ describe('DotAppsConfigurationDetailComponent', () => {
             const saveBtn = fixture.debugElement.query(By.css('[data-testid="saveBtn"]'));
 
             saveBtn.triggerEventHandler('click', {});
-            expect<any>(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
+            expect(appsServices.saveSiteConfiguration).toHaveBeenCalledWith(
                 component.apps.key,
                 component.apps.sites[0].id,
                 transformedData

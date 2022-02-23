@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
@@ -8,6 +10,7 @@ import { DotTemplatesService, TEMPLATE_API_URL } from './dot-templates.service';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { DotTemplate } from '@models/dot-edit-layout-designer';
 import { DotActionBulkResult } from '@models/dot-action-bulk-result/dot-action-bulk-result.model';
+import { of } from 'rxjs';
 
 const mockBulkResponseSuccess: DotActionBulkResult = {
     skippedCount: 0,
@@ -44,7 +47,9 @@ describe('DotTemplatesService', () => {
                 {
                     provide: DotHttpErrorManagerService,
                     useValue: {
-                        handle() {}
+                        handle() {
+                            return of({});
+                        }
                     }
                 },
                 {
@@ -169,6 +174,32 @@ describe('DotTemplatesService', () => {
             });
 
         const req = httpMock.expectOne(TEMPLATE_API_URL);
+
+        expect(req.request.method).toBe('PUT');
+        expect(req.request.body).toEqual({ name: '', anonymous: true, friendlyName: '' });
+
+        req.flush({
+            entity: {
+                identifier: '1234',
+                name: 'Theme name'
+            }
+        });
+    });
+    it('should put to save and publish a template', () => {
+        service
+            .saveAndPublish({
+                name: '',
+                anonymous: true,
+                friendlyName: ''
+            } as DotTemplate)
+            .subscribe((template) => {
+                expect(template as any).toEqual({
+                    identifier: '1234',
+                    name: 'Theme name'
+                });
+            });
+
+        const req = httpMock.expectOne(`${TEMPLATE_API_URL}_savepublish`);
 
         expect(req.request.method).toBe('PUT');
         expect(req.request.body).toEqual({ name: '', anonymous: true, friendlyName: '' });

@@ -1,6 +1,5 @@
 import {
     Component,
-    OnInit,
     Input,
     ViewChild,
     OnChanges,
@@ -33,7 +32,7 @@ enum DotConfirmationType {
     templateUrl: './dot-edit-page-state-controller.component.html',
     styleUrls: ['./dot-edit-page-state-controller.component.scss']
 })
-export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
+export class DotEditPageStateControllerComponent implements OnChanges {
     @ViewChild('pageLockInfo', { static: true }) pageLockInfo: DotEditPageLockInfoComponent;
 
     @Input() pageState: DotPageRenderState;
@@ -49,8 +48,6 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         private dotPageStateService: DotPageStateService,
         private dotPersonalizeService: DotPersonalizeService
     ) {}
-
-    ngOnInit() {}
 
     ngOnChanges(changes: SimpleChanges) {
         const pageState = changes.pageState.currentValue;
@@ -226,7 +223,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         );
     }
 
-    private showLockConfirmDialog(): Promise<any> {
+    private showLockConfirmDialog(): Promise<string> {
         return new Promise((resolve, reject) => {
             this.dotAlertConfirmService.confirm({
                 accept: resolve,
@@ -241,7 +238,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         });
     }
 
-    private showPersonalizationConfirmDialog(): Promise<any> {
+    private showPersonalizationConfirmDialog(): Promise<string> {
         return new Promise((resolve, reject) => {
             this.dotAlertConfirmService.confirm({
                 accept: resolve,

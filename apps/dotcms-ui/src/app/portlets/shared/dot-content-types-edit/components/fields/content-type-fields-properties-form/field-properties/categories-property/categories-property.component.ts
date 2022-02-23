@@ -32,7 +32,7 @@ export class CategoriesPropertyComponent implements OnInit {
     ngOnInit(): void {
         this.placeholder = !this.property.value
             ? this.dotMessageService.get('contenttypes.field.properties.category.label')
-            : this.property.value;
+            : (this.property.value as string);
         this.paginationService.url = 'v1/categories';
     }
 
@@ -56,9 +56,11 @@ export class CategoriesPropertyComponent implements OnInit {
 
     private getCategoriesList(filter = '', offset = 0): void {
         this.paginationService.filter = filter;
-        this.paginationService.getWithOffset(offset).subscribe((items) => {
-            // items.splice(0) is used to return a new object and trigger the change detection in angular
-            this.categoriesCurrentPage = items.splice(0);
-        });
+        this.paginationService
+            .getWithOffset<DotCMSContentTypeFieldCategories[]>(offset)
+            .subscribe((items: DotCMSContentTypeFieldCategories[]) => {
+                // items.splice(0) is used to return a new object and trigger the change detection in angular
+                this.categoriesCurrentPage = items.splice(0);
+            });
     }
 }

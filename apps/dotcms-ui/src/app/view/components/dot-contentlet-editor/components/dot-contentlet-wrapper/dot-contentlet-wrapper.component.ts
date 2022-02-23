@@ -14,6 +14,15 @@ export interface DotCMSEditPageEvent {
     };
 }
 
+interface DotCSMSavePageEvent {
+    detail: {
+        payload: {
+            contentletInode: string;
+            isMoveAction: boolean;
+        };
+    };
+}
+
 @Component({
     selector: 'dot-contentlet-wrapper',
     templateUrl: './dot-contentlet-wrapper.component.html',
@@ -27,10 +36,10 @@ export class DotContentletWrapperComponent {
     url: string;
 
     @Output()
-    close: EventEmitter<any> = new EventEmitter();
+    shutdown: EventEmitter<unknown> = new EventEmitter();
 
     @Output()
-    custom: EventEmitter<any> = new EventEmitter();
+    custom: EventEmitter<unknown> = new EventEmitter();
 
     private isContentletModified = false;
     private readonly customEventsHandler;
@@ -66,7 +75,7 @@ export class DotContentletWrapperComponent {
                 'edit-contentlet-data-updated': (e: CustomEvent) => {
                     this.isContentletModified = e.detail.payload;
                 },
-                'save-page': (data: any) => {
+                'save-page': (data: DotCSMSavePageEvent) => {
                     if (this.shouldRefresh(data)) {
                         this.dotIframeService.reload();
                     }
@@ -91,7 +100,9 @@ export class DotContentletWrapperComponent {
                 accept: () => {
                     $event.close();
                 },
-                reject: () => {},
+                reject: () => {
+                    //
+                },
                 header: this.dotMessageService.get('editcontentlet.lose.dialog.header'),
                 message: this.dotMessageService.get('editcontentlet.lose.dialog.message'),
                 footerLabel: {
@@ -112,7 +123,7 @@ export class DotContentletWrapperComponent {
         this.dotContentletEditorService.clear();
         this.isContentletModified = false;
         this.header = '';
-        this.close.emit();
+        this.shutdown.emit();
     }
 
     /**
@@ -153,10 +164,12 @@ export class DotContentletWrapperComponent {
         }
     }
 
-    private shouldRefresh(data: any): boolean {
+    private shouldRefresh(data: DotCSMSavePageEvent): boolean {
         // is not new content
-        return this.dotRouterService.currentPortlet.url.includes(
-            data?.detail?.payload?.contentletInode
+        return (
+            this.dotRouterService.currentPortlet.url.includes(
+                data?.detail?.payload?.contentletInode
+            ) && data?.detail?.payload?.isMoveAction
         );
     }
 }

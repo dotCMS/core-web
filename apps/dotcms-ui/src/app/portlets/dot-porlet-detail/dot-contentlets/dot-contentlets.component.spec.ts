@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { dotEventSocketURLFactory, MockDotUiColorsService } from '../../../test/dot-test-bed';
 import { Injectable, DebugElement } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -138,7 +140,7 @@ describe('DotContentletsComponent', () => {
 
     it('should go current portlet and reload data when modal closed', () => {
         const edit = de.query(By.css('dot-edit-contentlet'));
-        edit.triggerEventHandler('close', {});
+        edit.triggerEventHandler('shutdown', {});
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/123-567');
         expect(dotIframeService.reloadData).toHaveBeenCalledWith('123-567');
     });

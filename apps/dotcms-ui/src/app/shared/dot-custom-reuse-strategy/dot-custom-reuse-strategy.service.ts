@@ -1,8 +1,6 @@
 import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
 
 export class DotCustomReuseStrategyService implements RouteReuseStrategy {
-    constructor() {}
-
     retrieve(_route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
         return null;
     }
@@ -23,5 +21,7 @@ export class DotCustomReuseStrategyService implements RouteReuseStrategy {
             : false;
     }
 
-    store(_route: ActivatedRouteSnapshot, _handle: DetachedRouteHandle | null): void {}
+    store(_route: ActivatedRouteSnapshot, _handle: DetachedRouteHandle | null): void {
+        /* */
+    }
 }

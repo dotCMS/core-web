@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, NavigationEnd } from '@angular/router';
@@ -46,7 +48,9 @@ class RouterMock {
         this._events.next(new NavigationEnd(0, url || '/url/789', url || '/url/789'));
     }
 
-    navigateByUrl() {}
+    navigateByUrl() {
+        /* */
+    }
 }
 class DotMenuServiceMock {
     loadMenu(): Observable<DotMenu[]> {

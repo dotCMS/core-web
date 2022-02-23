@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Component, Input, Output, EventEmitter, DebugElement, forwardRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
@@ -39,12 +41,18 @@ export class DotFormDialogMockComponent {
     ]
 })
 export class DotTemplateThumbnailFieldMockComponent implements ControlValueAccessor {
-    propagateChange = (_: any) => {};
+    propagateChange = (_: any) => {
+        //
+    };
     registerOnChange(fn: any): void {
         this.propagateChange = fn;
     }
-    registerOnTouched(): void {}
-    writeValue(): void {}
+    registerOnTouched(): void {
+        //
+    }
+    writeValue(): void {
+        // no-op
+    }
 }
 
 @Component({
@@ -59,12 +67,18 @@ export class DotTemplateThumbnailFieldMockComponent implements ControlValueAcces
     ]
 })
 export class DotThemeSelectorDropdownMockComponent implements ControlValueAccessor {
-    propagateChange = (_: any) => {};
+    propagateChange = (_: any) => {
+        //
+    };
     registerOnChange(fn: any): void {
         this.propagateChange = fn;
     }
-    registerOnTouched(): void {}
-    writeValue(): void {}
+    registerOnTouched(): void {
+        //
+    }
+    writeValue(): void {
+        //
+    }
 }
 
 const messageServiceMock = new MockDotMessageService({
@@ -144,7 +158,7 @@ describe('DotTemplatePropsComponent', () => {
                 const input = field.query(By.css('input'));
                 const message = field.query(By.css('dot-field-validation-message'));
 
-                expect(field.classes['p-field']).toBe(true);
+                expect(field.classes['field']).toBe(true);
 
                 expect(label.classes['p-label-input-required']).toBe(true);
                 expect(label.attributes.for).toBe('title');
@@ -163,7 +177,7 @@ describe('DotTemplatePropsComponent', () => {
                 const label = field.query(By.css('label'));
                 const selector = field.query(By.css('dot-theme-selector-dropdown'));
 
-                expect(field.classes['p-field']).toBe(true);
+                expect(field.classes['field']).toBe(true);
 
                 expect(label.attributes.for).toBe('theme');
                 expect(label.nativeElement.textContent).toBe('Theme');
@@ -177,7 +191,7 @@ describe('DotTemplatePropsComponent', () => {
                 const label = field.query(By.css('label'));
                 const textarea = field.query(By.css('textarea'));
 
-                expect(field.classes['p-field']).toBe(true);
+                expect(field.classes['field']).toBe(true);
 
                 expect(label.attributes.for).toBe('description');
                 expect(label.nativeElement.textContent).toBe('Description');
@@ -191,7 +205,7 @@ describe('DotTemplatePropsComponent', () => {
                 const field = de.query(By.css('[data-testId="thumbnailField"]'));
                 const label = field.query(By.css('label'));
 
-                expect(field.classes['p-field']).toBe(true);
+                expect(field.classes['field']).toBe(true);
 
                 expect(label.attributes.for).toBe('thumbnail');
                 expect(label.nativeElement.textContent).toBe('Thumbnail');
@@ -232,16 +246,16 @@ describe('DotTemplatePropsComponent', () => {
     describe('dot-form-dialog', () => {
         it('should handle button disabled attr on form change', () => {
             const dialog = de.query(By.css('[data-testId="dialogForm"]'));
-            expect(dialog.attributes['ng-reflect-save-button-disabled']).toBe('true');
+            expect(dialog.componentInstance.saveButtonDisabled).toBe(true);
 
             component.form.get('title').setValue('Hello World');
             component.form.get('theme').setValue('123');
             fixture.detectChanges();
-            expect(dialog.attributes['ng-reflect-save-button-disabled']).toBe('false');
+            expect(dialog.componentInstance.saveButtonDisabled).toBe(false);
 
             component.form.get('title').setValue(''); // back to original value
             fixture.detectChanges();
-            expect(dialog.attributes['ng-reflect-save-button-disabled']).toBe('true');
+            expect(dialog.componentInstance.saveButtonDisabled).toBe(true);
         });
 
         it('should call save from config', () => {

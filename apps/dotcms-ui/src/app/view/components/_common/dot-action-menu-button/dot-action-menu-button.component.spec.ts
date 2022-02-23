@@ -1,4 +1,3 @@
-import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { UiDotIconButtonTooltipModule } from '../dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 import { DotActionMenuButtonComponent } from './dot-action-menu-button.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -28,7 +27,9 @@ describe('ActionMenuButtonComponent', () => {
         const fakeActions: DotActionMenuItem[] = [
             {
                 menuItem: {
-                    command: () => {},
+                    command: () => {
+                        //
+                    },
                     icon: 'fa fa-trash',
                     label: 'Remove'
                 },
@@ -36,7 +37,9 @@ describe('ActionMenuButtonComponent', () => {
             },
             {
                 menuItem: {
-                    command: () => {},
+                    command: () => {
+                        //
+                    },
                     icon: 'fa fa-pencil',
                     label: 'Edit'
                 }
@@ -59,7 +62,9 @@ describe('ActionMenuButtonComponent', () => {
         const fakeActions: DotActionMenuItem[] = [
             {
                 menuItem: {
-                    command: () => {},
+                    command: () => {
+                        //
+                    },
                     icon: 'fa fa-trash',
                     label: 'Remove'
                 }
@@ -82,11 +87,13 @@ describe('ActionMenuButtonComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             }
         ];
-        const mockContentType: DotCMSContentType = {
+        const mockContentType = {
             ...dotcmsContentTypeBasicMock,
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
             id: '1234567890',
@@ -119,13 +126,17 @@ describe('ActionMenuButtonComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 },
                 shouldShow: () => false
             },
             {
                 menuItem: {
-                    command: () => {},
+                    command: () => {
+                        //
+                    },
                     icon: 'fa fa-pencil',
                     label: 'Edit'
                 },
@@ -133,7 +144,9 @@ describe('ActionMenuButtonComponent', () => {
             },
             {
                 menuItem: {
-                    command: () => {},
+                    command: () => {
+                        //
+                    },
                     icon: 'fa fa-plus',
                     label: 'Add'
                 },
@@ -153,18 +166,22 @@ describe('ActionMenuButtonComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             },
             {
                 menuItem: {
                     icon: 'fa fa-check',
                     label: 'Test',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             }
         ];
-        const mockContentType: DotCMSContentType = {
+        const mockContentType = {
             ...dotcmsContentTypeBasicMock,
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
             id: '1234567890',
@@ -198,7 +215,9 @@ describe('ActionMenuButtonComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             },
             {
@@ -211,7 +230,7 @@ describe('ActionMenuButtonComponent', () => {
                 }
             }
         ];
-        const mockContentType: DotCMSContentType = {
+        const mockContentType = {
             ...dotcmsContentTypeBasicMock,
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
             id: '1234567890',
@@ -229,7 +248,9 @@ describe('ActionMenuButtonComponent', () => {
         fixture.detectChanges();
         const actionButtonMenu = de.query(By.css('.dot-menu__button'));
         actionButtonMenu.triggerEventHandler('click', {
-            stopPropagation: () => {}
+            stopPropagation: () => {
+                //
+            }
         });
         fixture.detectChanges();
 

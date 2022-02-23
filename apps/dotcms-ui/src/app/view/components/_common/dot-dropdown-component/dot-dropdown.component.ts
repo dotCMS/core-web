@@ -3,7 +3,6 @@ import {
     EventEmitter,
     Input,
     Output,
-    ViewEncapsulation,
     ElementRef,
     HostListener,
     OnChanges,
@@ -24,7 +23,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
             ])
         ])
     ],
-    encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-dropdown-component',
     styleUrls: ['./dot-dropdown.component.scss'],
     templateUrl: 'dot-dropdown.component.html'
@@ -32,22 +30,31 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class DotDropdownComponent implements OnChanges {
     @Input()
     disabled = false;
+
     @Input()
     icon = null;
+
     @Input()
     gravatar = null;
+
     @Input()
     title = null;
+
     @Input()
     position: string;
+
     @Input()
     inverted = false;
+
     @Output()
-    open = new EventEmitter<any>();
+    wasOpen = new EventEmitter<never>();
+
     @Output()
     toggle = new EventEmitter<boolean>();
+
     @Output()
-    close = new EventEmitter<any>();
+    shutdown = new EventEmitter<never>();
+
     show = false;
 
     constructor(private elementRef: ElementRef) {}
@@ -82,9 +89,9 @@ export class DotDropdownComponent implements OnChanges {
         this.show = !this.show;
 
         if (this.show) {
-            this.open.emit(null);
+            this.wasOpen.emit();
         } else {
-            this.close.emit(null);
+            this.shutdown.emit();
         }
 
         this.toggle.emit(this.show);

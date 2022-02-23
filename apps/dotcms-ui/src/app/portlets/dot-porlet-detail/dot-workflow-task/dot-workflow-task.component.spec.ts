@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Injectable, DebugElement } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotWorkflowTaskComponent } from './dot-workflow-task.component';
@@ -150,7 +152,7 @@ describe('DotWorkflowTaskComponent', () => {
     }));
 
     it('should redirect to /workflow and refresh data when modal closed', () => {
-        taskDetail.triggerEventHandler('close', {});
+        taskDetail.triggerEventHandler('shutdown', {});
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/workflow');
         expect(dotIframeService.reloadData).toHaveBeenCalledWith('workflow');
     });

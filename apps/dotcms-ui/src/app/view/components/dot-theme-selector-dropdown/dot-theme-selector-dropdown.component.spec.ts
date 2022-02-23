@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+
 import { DebugElement, Input } from '@angular/core';
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -36,10 +38,12 @@ const messageServiceMock = new MockDotMessageService({
 class MockDotSiteSelectorComponent {
     @Input() system;
     searchableDropdown = {
-        handleClick: () => {}
+        handleClick: () => {
+            //
+        }
     };
 
-    updateCurrentSite  = jasmine.createSpy('updateCurrentSite');
+    updateCurrentSite = jasmine.createSpy('updateCurrentSite');
 }
 
 @Component({
@@ -175,7 +179,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
 
         describe('html', () => {
             it('should set themes if theme selector is open', fakeAsync(() => {
-                component.searchableDropdown.show.emit();
+                component.searchableDropdown.display.emit();
                 tick();
                 expect(component.totalRecords).toEqual(3);
                 expect(component.themes).toEqual(mockDotThemes);
@@ -209,7 +213,6 @@ describe('DotThemeSelectorDropdownComponent', () => {
                 fixture.detectChanges();
                 expect(instance.rows).toBe(5);
             });
-
         });
 
         describe('events', () => {
@@ -218,7 +221,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
                 spyOn(searchable.componentInstance, 'toggleOverlayPanel');
                 const value = mockDotThemes[0];
 
-                searchable.triggerEventHandler('change', { ...value });
+                searchable.triggerEventHandler('switch', { ...value });
                 expect(component.value).toEqual(value);
                 expect(component.propagateChange).toHaveBeenCalledWith(value.identifier);
                 expect(searchable.componentInstance.toggleOverlayPanel).toHaveBeenCalledTimes(1);
@@ -243,7 +246,7 @@ describe('DotThemeSelectorDropdownComponent', () => {
 
             it('should update themes, totalRecords and call setExtraParams when site selector change', fakeAsync(() => {
                 const siteSelector = de.query(By.css('[data-testId="siteSelector"]'));
-                siteSelector.triggerEventHandler('change', {
+                siteSelector.triggerEventHandler('switch', {
                     identifier: '123'
                 });
                 tick();
