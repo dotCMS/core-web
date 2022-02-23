@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { of as observableOf, Subject } from 'rxjs';
 import { mockUser } from './../../../../test/login-service.mock';
 import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
-import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotEditPageMainComponent } from './dot-edit-page-main.component';
@@ -12,7 +13,6 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditPageNavComponent } from '../dot-edit-page-nav/dot-edit-page-nav.component';
-import { PageViewServiceMock } from '../../../../test/page-view.mock';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { Injectable, Component, Output, EventEmitter } from '@angular/core';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
@@ -64,7 +64,9 @@ class MockDotContentletEditorService {
 class MockDotPageStateService {
     reload$ = new Subject();
     state$ = new Subject();
-    get(): void {}
+    get(): void {
+        //
+    }
     reload(): void {
         this.reload$.next(
             new DotPageRenderState(mockUser(), new DotPageRender(mockDotRenderedPage()))
@@ -127,7 +129,6 @@ describe('DotEditPageMainComponent', () => {
                             }
                         }
                     },
-                    { provide: DotPageLayoutService, useClass: PageViewServiceMock },
                     {
                         provide: DotContentletEditorService,
                         useClass: MockDotContentletEditorService
@@ -184,8 +185,9 @@ describe('DotEditPageMainComponent', () => {
         dotCustomEventHandlerService = fixture.debugElement.injector.get(
             DotCustomEventHandlerService
         );
-        editContentlet = fixture.debugElement.query(By.css('dot-edit-contentlet'))
-            .componentInstance;
+        editContentlet = fixture.debugElement.query(
+            By.css('dot-edit-contentlet')
+        ).componentInstance;
         fixture.detectChanges();
     });
 
@@ -198,8 +200,9 @@ describe('DotEditPageMainComponent', () => {
     });
 
     it('should bind correctly pageState param', () => {
-        const nav: DotEditPageNavComponent = fixture.debugElement.query(By.css('dot-edit-page-nav'))
-            .componentInstance;
+        const nav: DotEditPageNavComponent = fixture.debugElement.query(
+            By.css('dot-edit-page-nav')
+        ).componentInstance;
         expect(nav.pageState).toEqual(mockDotRenderedPageState);
     });
 

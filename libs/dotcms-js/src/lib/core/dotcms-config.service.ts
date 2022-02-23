@@ -1,7 +1,7 @@
 import { CoreWebService } from './core-web.service';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { pluck, filter, map } from 'rxjs/operators';
+import { pluck, filter, map, take } from 'rxjs/operators';
 import { LoggerService } from './logger.service';
 import { Menu } from './routing.service';
 
@@ -40,6 +40,10 @@ export interface ConfigParams {
     menu: Menu[];
     paginatorLinks: number;
     paginatorRows: number;
+    releaseInfo: {
+        buildDate: string;
+        version: string;
+    };
     websocket: WebSocketConfigParams;
 }
 
@@ -94,6 +98,10 @@ export class DotcmsConfigService {
                     menu: res.menu,
                     paginatorLinks: res.config[DOTCMS_PAGINATOR_LINKS],
                     paginatorRows: res.config[DOTCMS_PAGINATOR_ROWS],
+                    releaseInfo: {
+                        buildDate: res.config.releaseInfo?.buildDate,
+                        version: res.config.releaseInfo?.version
+                    },
                     websocket: {
                         websocketReconnectTime:
                             res.config.websocket[DOTCMS_WEBSOCKET_RECONNECT_TIME],
@@ -114,7 +122,7 @@ export class DotcmsConfigService {
      * @returns Observable<DotTimeZone[]>
      * @memberof DotcmsConfigService
      */
-    getTimeZone(): Observable<DotTimeZone[]> {
+    getTimeZones(): Observable<DotTimeZone[]> {
         return this.coreWebService
             .requestView({
                 url: this.configUrl
@@ -134,5 +142,18 @@ export class DotcmsConfigService {
                     });
                 })
             );
+    }
+
+    /**
+     * Return the system Timezone.
+     * @returns Observable<DotTimeZone[]>
+     * @memberof DotcmsConfigService
+     */
+    getSystemTimeZone(): Observable<DotTimeZone> {
+        return this.coreWebService
+            .requestView({
+                url: this.configUrl
+            })
+            .pipe(pluck('entity', 'config', 'systemTimezone'), take(1));
     }
 }

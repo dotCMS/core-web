@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { Component, DebugElement, Input } from '@angular/core';
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { of, throwError } from 'rxjs';
 import { HttpCode, ResponseView } from '@dotcms/dotcms-js';
@@ -15,7 +15,6 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotTemplateContainersCacheService } from '@services/dot-template-containers-cache/dot-template-containers-cache.service';
 import { DotLayout } from '@models/dot-edit-layout-designer';
-import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
 import { DotPageRender } from '@models/dot-page/dot-rendered-page.model';
 import { HttpResponse } from '@angular/common/http';
 import { mockResponseView } from '@tests/response-view.mock';
@@ -26,7 +25,7 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
     selector: 'dot-edit-layout-designer',
     template: ''
 })
-export class DotEditLayoutDesignerComponentMock {
+export class MockDotEditLayoutDesignerComponent {
     @Input()
     layout: DotLayout;
 
@@ -53,7 +52,7 @@ const messageServiceMock = new MockDotMessageService({
 describe('DotEditLayoutComponent', () => {
     let component: DotEditLayoutComponent;
     let layoutDesignerDe: DebugElement;
-    let layoutDesigner: DotEditLayoutDesignerComponentMock;
+    let layoutDesigner: MockDotEditLayoutDesignerComponent;
     let dotPageLayoutService: DotPageLayoutService;
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotTemplateContainersCacheService: DotTemplateContainersCacheService;
@@ -64,7 +63,7 @@ describe('DotEditLayoutComponent', () => {
     beforeEach(
         waitForAsync(() => {
             TestBed.configureTestingModule({
-                declarations: [DotEditLayoutDesignerComponentMock, DotEditLayoutComponent],
+                declarations: [MockDotEditLayoutDesignerComponent, DotEditLayoutComponent],
                 providers: [
                     DotEditLayoutService,
                     {
@@ -88,7 +87,9 @@ describe('DotEditLayoutComponent', () => {
                     {
                         provide: DotPageLayoutService,
                         useValue: {
-                            save() {}
+                            save() {
+                                //
+                            }
                         }
                     },
                     {
@@ -180,6 +181,28 @@ describe('DotEditLayoutComponent', () => {
             });
             expect(component.pageState).toEqual(new DotPageRender(mockDotRenderedPage()));
         });
+
+        it('should save the layout after 10000', fakeAsync(() => {
+            const res: DotPageRender = new DotPageRender(mockDotRenderedPage());
+            spyOn(dotPageLayoutService, 'save').and.returnValue(of(res));
+
+            layoutDesignerDe.triggerEventHandler('updateTemplate', fakeLayout);
+
+            tick(10000);
+            expect(dotGlobalMessageService.loading).toHaveBeenCalledWith('Saving');
+            expect(dotGlobalMessageService.success).toHaveBeenCalledWith('Saved');
+            expect(dotGlobalMessageService.error).not.toHaveBeenCalled();
+
+            expect(dotPageLayoutService.save).toHaveBeenCalledWith('123', {
+                ...fakeLayout,
+                title: null
+            });
+            expect(dotTemplateContainersCacheService.set).toHaveBeenCalledWith({
+                '/default/': processedContainers[0].container,
+                '/banner/': processedContainers[1].container
+            });
+            expect(component.pageState).toEqual(new DotPageRender(mockDotRenderedPage()));
+        }));
 
         it('should handle error when save fail', (done) => {
             spyOn(dotPageLayoutService, 'save').and.returnValue(

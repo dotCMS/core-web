@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement, Injectable, Component, Input } from '@angular/core';
@@ -141,7 +143,7 @@ describe('DotToolbarComponent', () => {
         spyOn(dotRouterService, 'isEditPage').and.returnValue(false);
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         fixture.detectChanges();
-        siteSelector.triggerEventHandler('change', { value: siteMock });
+        siteSelector.triggerEventHandler('switch', { value: siteMock });
         expect(dotRouterService.goToSiteBrowser).not.toHaveBeenCalled();
         expect<any>(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
@@ -153,7 +155,7 @@ describe('DotToolbarComponent', () => {
             url: ''
         });
         spyOn(dotRouterService, 'isEditPage').and.returnValue(true);
-        siteSelector.triggerEventHandler('change', { value: siteMock });
+        siteSelector.triggerEventHandler('switch', { value: siteMock });
 
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
         expect<any>(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });

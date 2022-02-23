@@ -111,22 +111,26 @@ describe('DotPersonaSelectorOptionComponent', () => {
 
     describe('events', () => {
         beforeEach(() => {
-            spyOn(component.change, 'emit');
+            spyOn(component.switch, 'emit');
             spyOn(component.delete, 'emit');
             fixture.detectChanges();
         });
 
         it('should emit persona when field clicked', () => {
             de.triggerEventHandler('click', {
-                stopPropagation: () => {}
+                stopPropagation: () => {
+                    //
+                }
             });
-            expect(component.change.emit).toHaveBeenCalledWith(mockDotPersona);
+            expect(component.switch.emit).toHaveBeenCalledWith(mockDotPersona);
         });
 
         it('should emit persona when delete clicked', () => {
             const btnElement: DebugElement = de.query(By.css('button'));
             btnElement.triggerEventHandler('click', {
-                stopPropagation: () => {}
+                stopPropagation: () => {
+                    //
+                }
             });
             expect(component.delete.emit).toHaveBeenCalledWith(mockDotPersona);
         });

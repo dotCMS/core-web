@@ -2,6 +2,7 @@ import { pluck, map, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { DotLicense } from '@dotcms/dotcms-models';
 
 export interface DotUnlicensedPortletData {
     icon: string;
@@ -101,13 +102,13 @@ export class DotLicenseService {
         const urlMatch = enterprisePorlets.filter((item) => {
             return url.indexOf(item.url) === 0;
         });
-        if (!!urlMatch.length) {
+        if (urlMatch.length) {
             this.unlicenseData.next(...urlMatch);
         }
         return !!urlMatch.length;
     }
 
-    private getLicense(): Observable<any> {
+    private getLicense(): Observable<DotLicense> {
         return this.coreWebService
             .requestView({
                 url: this.licenseURL

@@ -474,7 +474,9 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
                         this.notifyResult(response, 'message.template.full_delete');
                     });
             },
-            reject: () => {},
+            reject: () => {
+                //
+            },
             header: this.dotMessageService.get('Delete-Template'),
             message: this.dotMessageService.get('message.template.confirm.delete.template')
         });
@@ -556,7 +558,7 @@ export class DotTemplateListComponent implements OnInit, OnDestroy {
     }
 
     private getTemplateName(identifier: string): string {
-        return this.listing.items.find((template: DotTemplate) => {
+        return (this.listing.items as DotTemplate[]).find((template: DotTemplate) => {
             return template.identifier === identifier;
         }).name;
     }

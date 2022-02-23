@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, waitForAsync, TestBed } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable } from '@angular/core';
@@ -55,7 +58,7 @@ class MockDotcmsEventsService {
 
 @Injectable()
 class MockLoginService {
-    public watchUser(_func: Function): void {}
+    public watchUser(_func: (params?: unknown) => void): void {}
 }
 
 @Injectable()

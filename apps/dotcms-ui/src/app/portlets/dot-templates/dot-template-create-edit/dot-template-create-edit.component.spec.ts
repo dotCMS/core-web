@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,6 +33,7 @@ import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { mockSites } from '@tests/site-service.mock';
+import { DotTemplateItem } from './store/dot-template.store';
 
 @Component({
     selector: 'dot-api-link',
@@ -38,8 +41,6 @@ import { mockSites } from '@tests/site-service.mock';
 })
 export class DotApiLinkMockComponent {
     @Input() href;
-
-    constructor() {}
 }
 
 @Component({
@@ -48,11 +49,10 @@ export class DotApiLinkMockComponent {
 })
 export class DotTemplateBuilderMockComponent {
     @Input() item;
+    @Input() didTemplateChanged;
     @Output() save = new EventEmitter();
     @Output() cancel = new EventEmitter();
     @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
-
-    constructor() {}
 }
 
 @Component({
@@ -61,8 +61,6 @@ export class DotTemplateBuilderMockComponent {
 })
 export class DotPortletBaseMockComponent {
     @Input() boxed;
-
-    constructor() {}
 }
 
 @Component({
@@ -72,8 +70,6 @@ export class DotPortletBaseMockComponent {
 })
 export class DotPortletToolbarMockComponent {
     @Input() title;
-
-    constructor() {}
 }
 
 const messageServiceMock = new MockDotMessageService({
@@ -81,6 +77,10 @@ const messageServiceMock = new MockDotMessageService({
     'templates.properties.title': 'Template Properties',
     'templates.edit': 'Edit'
 });
+
+interface TemplateStoreValueType {
+    [key: string]: jasmine.Spy;
+}
 
 async function makeFormValid(fixture) {
     // can't use debugElement because the dialogs opens outside the component
@@ -115,6 +115,7 @@ describe('DotTemplateCreateEditComponent', () => {
     let component: DotTemplateCreateEditComponent;
     let dialogService: DialogService;
     let store: DotTemplateStore;
+    let templateStoreValue: TemplateStoreValueType;
     const switchSiteSubject = new Subject();
 
     beforeEach(async () => {
@@ -206,7 +207,9 @@ describe('DotTemplateCreateEditComponent', () => {
                         paginationPerPage: '',
                         totalRecords: mockDotThemes.length,
 
-                        setExtraParams() {},
+                        setExtraParams() {
+                            //
+                        },
                         getWithOffset() {
                             return of([...mockDotThemes]);
                         }
@@ -239,11 +242,18 @@ describe('DotTemplateCreateEditComponent', () => {
                 }
             ]
         });
+
+        templateStoreValue = {
+            createTemplate: jasmine.createSpy(),
+            goToEditTemplate: jasmine.createSpy(),
+            goToTemplateList: jasmine.createSpy(),
+            saveTemplate: jasmine.createSpy(),
+            saveWorkingTemplate: jasmine.createSpy()
+        };
     });
 
     afterEach(() => {
         const dialog = document.querySelector('p-dynamicdialog');
-
         if (dialog) {
             dialog.remove();
         }
@@ -252,15 +262,15 @@ describe('DotTemplateCreateEditComponent', () => {
     describe('Create', () => {
         describe('Design', () => {
             beforeEach(() => {
-                const storeMock = jasmine.createSpyObj(
-                    'DotTemplateStore',
-                    ['createTemplate', 'goToTemplateList'],
-                    {
-                        vm$: of({
-                            original: EMPTY_TEMPLATE_DESIGN
-                        })
-                    }
-                );
+                const storeMock = {
+                    ...templateStoreValue,
+                    vm$: of({
+                        working: EMPTY_TEMPLATE_DESIGN,
+                        original: EMPTY_TEMPLATE_DESIGN
+                    })
+                };
+
+                // TestBed.
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -293,6 +303,7 @@ describe('DotTemplateCreateEditComponent', () => {
                     closeOnEscape: false,
                     data: {
                         template: {
+                            type: 'design',
                             title: '',
                             layout: {
                                 header: true,
@@ -332,6 +343,7 @@ describe('DotTemplateCreateEditComponent', () => {
                 button.click();
 
                 expect(store.createTemplate).toHaveBeenCalledWith({
+                    type: 'design',
                     title: 'Hello World',
                     layout: {
                         header: true,
@@ -351,15 +363,13 @@ describe('DotTemplateCreateEditComponent', () => {
 
         describe('Advanced', () => {
             beforeEach(() => {
-                const storeMock = jasmine.createSpyObj(
-                    'DotTemplateStore',
-                    ['createTemplate', 'goToTemplateList'],
-                    {
-                        vm$: of({
-                            original: EMPTY_TEMPLATE_ADVANCED
-                        })
-                    }
-                );
+                const storeMock = {
+                    ...templateStoreValue,
+                    vm$: of({
+                        working: EMPTY_TEMPLATE_ADVANCED,
+                        original: EMPTY_TEMPLATE_ADVANCED
+                    })
+                };
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -379,6 +389,7 @@ describe('DotTemplateCreateEditComponent', () => {
                     closeOnEscape: false,
                     data: {
                         template: {
+                            type: 'advanced',
                             title: '',
                             body: '',
                             identifier: '',
@@ -411,6 +422,7 @@ describe('DotTemplateCreateEditComponent', () => {
                 button.click();
 
                 expect(store.createTemplate).toHaveBeenCalledWith({
+                    type: 'advanced',
                     title: 'Hello World',
                     body: '',
                     identifier: '',
@@ -424,20 +436,23 @@ describe('DotTemplateCreateEditComponent', () => {
     describe('Edit', () => {
         describe('Design', () => {
             beforeEach(() => {
-                const storeMock = jasmine.createSpyObj(
-                    'DotTemplateStore',
-                    ['saveTemplate', 'goToTemplateList', 'goToEditTemplate'],
-                    {
-                        vm$: of({
-                            original: {
-                                ...EMPTY_TEMPLATE_DESIGN,
-                                identifier: '123',
-                                title: 'Some template'
-                            },
-                            apiLink: '/api/link'
-                        })
-                    }
-                );
+                const template: DotTemplateItem = {
+                    ...EMPTY_TEMPLATE_DESIGN,
+                    identifier: '123',
+                    title: 'Some template'
+                };
+                const storeMock = {
+                    ...templateStoreValue,
+                    saveTemplate: jasmine.createSpy(),
+                    saveAndPublishTemplate: jasmine.createSpy(),
+                    goToTemplateList: jasmine.createSpy(),
+                    goToEditTemplate: jasmine.createSpy(),
+                    vm$: of({
+                        working: template,
+                        original: template,
+                        apiLink: '/api/link'
+                    })
+                };
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -486,7 +501,82 @@ describe('DotTemplateCreateEditComponent', () => {
                     });
 
                     expect(store.saveTemplate).toHaveBeenCalledWith({
+                        type: 'design',
                         title: 'Some template',
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        identifier: '123',
+                        friendlyName: '',
+                        theme: '123',
+                        image: ''
+                    });
+                });
+
+                it('should call saveWorkingTemplate when updateTemplate', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('updateTemplate', {
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        themeId: '123'
+                    });
+
+                    const template: DotTemplateItem = {
+                        type: 'design',
+                        title: 'Some template',
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        identifier: '123',
+                        friendlyName: '',
+                        theme: '123',
+                        image: ''
+                    };
+
+                    expect(store.saveWorkingTemplate).toHaveBeenCalledWith(template);
+                });
+
+                it('should saveAndPublishTemplate', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('saveAndPublish', {
+                        layout: {
+                            title: '',
+                            width: '',
+                            footer: true,
+                            header: false,
+                            sidebar: {},
+                            body: {
+                                rows: []
+                            }
+                        },
+                        themeId: '123'
+                    });
+
+                    expect(store.saveAndPublishTemplate).toHaveBeenCalledWith({
+                        title: 'Some template',
+                        type: 'design',
                         layout: {
                             title: '',
                             width: '',
@@ -546,6 +636,7 @@ describe('DotTemplateCreateEditComponent', () => {
 
                         data: {
                             template: {
+                                type: 'design',
                                 title: 'Some template',
                                 layout: {
                                     header: true,
@@ -569,20 +660,19 @@ describe('DotTemplateCreateEditComponent', () => {
 
         describe('Advanced', () => {
             beforeEach(() => {
-                const storeMock = jasmine.createSpyObj(
-                    'DotTemplateStore',
-                    ['saveTemplate', 'goToTemplateList'],
-                    {
-                        vm$: of({
-                            original: {
-                                ...EMPTY_TEMPLATE_ADVANCED,
-                                identifier: '123',
-                                title: 'Some template'
-                            },
-                            apiLink: '/api/link'
-                        })
-                    }
-                );
+                const template: DotTemplateItem = {
+                    ...EMPTY_TEMPLATE_ADVANCED,
+                    identifier: '123',
+                    title: 'Some template'
+                };
+                const storeMock = {
+                    ...templateStoreValue,
+                    vm$: of({
+                        working: template,
+                        original: template,
+                        apiLink: '/api/link'
+                    })
+                };
 
                 TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
                 fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -603,6 +693,23 @@ describe('DotTemplateCreateEditComponent', () => {
                     });
 
                     expect(store.saveTemplate).toHaveBeenCalledWith({
+                        type: 'advanced',
+                        title: 'Some template',
+                        body: '<h1>##Container and stuff</h1>',
+                        identifier: '123',
+                        friendlyName: '',
+                        image: ''
+                    });
+                });
+
+                it('should call saveWorkingTemplate when updateTemplate', () => {
+                    const builder = de.query(By.css('dot-template-builder'));
+                    builder.triggerEventHandler('updateTemplate', {
+                        body: `<h1>##Container and stuff</h1>`
+                    });
+
+                    expect(store.saveWorkingTemplate).toHaveBeenCalledWith({
+                        type: 'advanced',
                         title: 'Some template',
                         body: '<h1>##Container and stuff</h1>',
                         identifier: '123',
@@ -618,13 +725,10 @@ describe('DotTemplateCreateEditComponent', () => {
         const subject = new BehaviorSubject<any>(null);
 
         beforeEach(() => {
-            const storeMock = jasmine.createSpyObj(
-                'DotTemplateStore',
-                ['createTemplate', 'goToTemplateList'],
-                {
-                    vm$: subject
-                }
-            );
+            const storeMock = {
+                ...templateStoreValue,
+                vm$: subject
+            };
 
             TestBed.overrideProvider(DotTemplateStore, { useValue: storeMock });
             fixture = TestBed.createComponent(DotTemplateCreateEditComponent);
@@ -635,6 +739,7 @@ describe('DotTemplateCreateEditComponent', () => {
             spyOn(dialogService, 'open').and.callThrough();
 
             subject.next({
+                working: EMPTY_TEMPLATE_ADVANCED,
                 original: EMPTY_TEMPLATE_ADVANCED
             });
 
@@ -643,6 +748,7 @@ describe('DotTemplateCreateEditComponent', () => {
 
         it('should have basic value', () => {
             expect(component.form.value).toEqual({
+                type: 'advanced',
                 title: '',
                 body: '',
                 identifier: '',
@@ -653,6 +759,7 @@ describe('DotTemplateCreateEditComponent', () => {
 
         it('should update the form when state updates', () => {
             expect(component.form.value).toEqual({
+                type: 'advanced',
                 title: '',
                 body: '',
                 identifier: '',
@@ -660,19 +767,24 @@ describe('DotTemplateCreateEditComponent', () => {
                 image: ''
             });
 
+            const nextTemplate = {
+                type: 'advanced',
+                friendlyName: 'Not batman',
+                identifier: '123',
+                title: 'Hello World',
+                body: '<h1>I am Batman</h1>',
+                image: ''
+            };
+
             subject.next({
-                original: {
-                    friendlyName: 'Not batman',
-                    identifier: '123',
-                    title: 'Hello World',
-                    body: '<h1>I am Batman</h1>',
-                    image: ''
-                }
+                working: nextTemplate,
+                original: nextTemplate
             });
 
             fixture.detectChanges();
 
             expect(component.form.value).toEqual({
+                type: 'advanced',
                 title: 'Hello World',
                 body: '<h1>I am Batman</h1>',
                 identifier: '123',

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { TestBed } from '@angular/core/testing';
 
 import { PushPublishService } from '@services/push-publish/push-publish.service';
@@ -42,6 +44,7 @@ import { DotActionBulkRequestOptions } from '@models/dot-action-bulk-request-opt
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotFormatDateService } from '@services/dot-format-date-service';
 import { DotFormatDateServiceMock } from '@dotcms/app/test/format-date-service.mock';
+import { DotWorkflowPayload, DotProcessedWorkflowPayload } from '@dotcms/dotcms-models';
 
 const mockWAEvent: DotCMSWorkflowActionEvent = {
     workflow: mockWorkflowsActions[0],
@@ -72,7 +75,7 @@ const mockWizardInput: DotWizardInput = {
     steps: mockWizardSteps
 };
 
-const mockWizardOutputData = {
+const mockWizardOutputData: DotWorkflowPayload = {
     assign: '654b0931-1027-41f7-ad4d-173115ed8ec1',
     comments: 'ds',
     pathToMove: '/test/',
@@ -80,10 +83,11 @@ const mockWizardOutputData = {
     expireDate: '2020-08-11 19:59',
     filterKey: 'Intelligent.yml',
     publishDate: '2020-08-05 17:59',
-    pushActionSelected: 'publishexpire'
+    pushActionSelected: 'publishexpire',
+    timezoneId: 'America/Costa_Rica'
 };
 
-const mockWizardOutputTransformedData: { [key: string]: any } = {
+const mockWizardOutputTransformedData: DotProcessedWorkflowPayload = {
     assign: '654b0931-1027-41f7-ad4d-173115ed8ec1',
     comments: 'ds',
     expireDate: '2020-08-11',
@@ -93,6 +97,7 @@ const mockWizardOutputTransformedData: { [key: string]: any } = {
     publishDate: '2020-08-05',
     publishTime: '17-59',
     whereToSend: '37fe23d5-588d-4c61-a9ea-70d01e913344',
+    timezoneId: 'America/Costa_Rica',
     pathToMove: '/test/',
     contentlet: {}
 };
@@ -221,7 +226,8 @@ describe('DotWorkflowEventHandlerService', () => {
                         expireTime: '19-59',
                         publishDate: '2020-08-05',
                         publishTime: '17-59',
-                        filterKey: 'Intelligent.yml'
+                        filterKey: 'Intelligent.yml',
+                        timezoneId: 'America/Costa_Rica'
                     },
                     additionalParamsMap: { _path_to_move: mockWizardOutputData.pathToMove }
                 },

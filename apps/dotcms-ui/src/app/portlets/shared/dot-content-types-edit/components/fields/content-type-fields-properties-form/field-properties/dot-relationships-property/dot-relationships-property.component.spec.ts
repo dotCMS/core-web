@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DotRelationshipsPropertyComponent } from './dot-relationships-property.component';
 import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
@@ -34,7 +36,7 @@ class TestNewRelationshipsComponent {
     editing: boolean;
 
     @Output()
-    change: EventEmitter<any> = new EventEmitter();
+    switch: EventEmitter<any> = new EventEmitter();
 }
 
 @Component({
@@ -43,7 +45,7 @@ class TestNewRelationshipsComponent {
 })
 class TestEditRelationshipsComponent {
     @Output()
-    change: EventEmitter<any> = new EventEmitter();
+    switch: EventEmitter<any> = new EventEmitter();
 }
 
 describe('DotRelationshipsPropertyComponent', () => {

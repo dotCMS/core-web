@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { DotLayoutPropertiesItemComponent } from './dot-layout-properties-item.component';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -50,10 +52,10 @@ describe('DotLayoutPropertiesItemComponent', () => {
         expect(comp.propagateChange).toHaveBeenCalled();
     });
 
-    it('should emit change value on host click', () => {
+    it('should emit switch value on host click', () => {
         let res: boolean;
 
-        comp.change.subscribe((value) => (res = value));
+        comp.switch.subscribe((value) => (res = value));
         de.nativeElement.click();
 
         expect(res).toEqual(true);

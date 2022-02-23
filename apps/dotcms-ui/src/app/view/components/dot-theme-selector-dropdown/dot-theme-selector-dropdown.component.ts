@@ -31,10 +31,11 @@ import { debounceTime, filter, take, takeUntil } from 'rxjs/operators';
     ]
 })
 export class DotThemeSelectorDropdownComponent
-    implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit {
+    implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit
+{
     themes: DotTheme[] = [];
     value: DotTheme = null;
-    totalRecords: number = 0;
+    totalRecords = 0;
     currentOffset: number;
     currentSiteIdentifier: string;
 
@@ -61,7 +62,9 @@ export class DotThemeSelectorDropdownComponent
             try {
                 this.currentSiteIdentifier = this.siteService.currentSite.identifier;
                 clearInterval(interval);
-            } catch (e) {}
+            } catch (e) {
+                /* */
+            }
         }, 0);
     }
 
@@ -91,8 +94,12 @@ export class DotThemeSelectorDropdownComponent
         }
     }
 
-    propagateChange = (_: any) => {};
-    registerOnTouched(): void {}
+    propagateChange = (_: unknown) => {
+        /* */
+    };
+    registerOnTouched(): void {
+        /* */
+    }
 
     /**
      * Set the function to be called when the control receives a change event.
@@ -116,9 +123,12 @@ export class DotThemeSelectorDropdownComponent
                 .pipe(take(1))
                 .subscribe((theme: DotTheme) => {
                     this.value = theme;
-                    this.siteService.getSiteById(this.value.hostId).pipe(take(1)).subscribe((site) => {
-                        this.siteSelector?.updateCurrentSite(site);
-                    });
+                    this.siteService
+                        .getSiteById(this.value.hostId)
+                        .pipe(take(1))
+                        .subscribe((site) => {
+                            this.siteSelector?.updateCurrentSite(site);
+                        });
                 });
         }
     }
@@ -171,7 +181,7 @@ export class DotThemeSelectorDropdownComponent
         this.currentOffset = event.first;
         if (this.currentSiteIdentifier && this.paginatorService.url) {
             this.paginatorService
-                .getWithOffset(event.first)
+                .getWithOffset<DotTheme[]>(event.first)
                 /*
                 We load the first page of themes (onShow) so we dont want to load them when the
                 first paginate event from the dataview inside <dot-searchable-dropdown> triggers
@@ -180,7 +190,7 @@ export class DotThemeSelectorDropdownComponent
                     take(1),
                     filter(() => !!(this.currentSiteIdentifier && this.themes.length))
                 )
-                .subscribe((themes) => {
+                .subscribe((themes: DotTheme[]) => {
                     this.themes = themes;
                 });
         }
@@ -191,9 +201,12 @@ export class DotThemeSelectorDropdownComponent
     }
 
     private setHostThemes(hostId: string, offset: number = 0) {
-        this.siteService.getSiteById(hostId).pipe(take(1)).subscribe((site: Site) => {
-            this.siteSelector.updateCurrentSite(site);
-        });
+        this.siteService
+            .getSiteById(hostId)
+            .pipe(take(1))
+            .subscribe((site: Site) => {
+                this.siteSelector.updateCurrentSite(site);
+            });
 
         this.paginatorService.setExtraParams('hostId', hostId);
         this.paginatorService.searchParam = this.searchInput.nativeElement.value;

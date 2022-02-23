@@ -5,7 +5,7 @@ import { DotWizardInput } from '@models/dot-wizard-input/dot-wizard-input.model'
 @Injectable()
 export class DotWizardService {
     private input: Subject<DotWizardInput> = new Subject<DotWizardInput>();
-    private output: Subject<{ [key: string]: string }> = new Subject<{ [key: string]: string }>();
+    private output: Subject<Record<string, unknown>> = new Subject<{ [key: string]: string }>();
 
     get showDialog$(): Observable<DotWizardInput> {
         return this.input.asObservable();
@@ -13,10 +13,10 @@ export class DotWizardService {
 
     /**
      * Notify the data collected in wizard.
-     * @param {{ [key: string]: string }} form
+     * @param {{ [key: string]: string | string[] }} form
      * @memberof DotWizardService
      */
-    output$(form: { [key: string]: any }): void {
+    output$(form: { [key: string]: string | string[] }): void {
         this.output.next(form);
     }
 
@@ -26,8 +26,8 @@ export class DotWizardService {
      * @returns Observable<{ [key: string]: string }>
      * @memberof DotWizardService
      */
-    open(data: DotWizardInput): Observable<{ [key: string]: string }> {
+    open<T = { [key: string]: string }>(data: DotWizardInput): Observable<T> {
         this.input.next(data);
-        return this.output.asObservable();
+        return this.output.asObservable() as Observable<T>;
     }
 }

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
     throwError as observableThrowError,
     of as observableOf,
@@ -68,7 +71,7 @@ class DotSearchableDropdownMockComponent {
     multiple: boolean;
 
     @Output()
-    change: EventEmitter<any> = new EventEmitter();
+    switch: EventEmitter<any> = new EventEmitter();
 
     @Output()
     filterChange: EventEmitter<string> = new EventEmitter();
@@ -80,7 +83,7 @@ class DotSearchableDropdownMockComponent {
     pageChange: EventEmitter<any> = new EventEmitter();
 
     @Output()
-    show: EventEmitter<any> = new EventEmitter();
+    display: EventEmitter<any> = new EventEmitter();
 
     writeValue() {}
 
@@ -277,7 +280,7 @@ describe('DotLoginAsComponent', () => {
         fixture.detectChanges();
 
         const searchableDropdown = de.query(By.css('dot-searchable-dropdown'));
-        searchableDropdown.triggerEventHandler('change', {
+        searchableDropdown.triggerEventHandler('switch', {
             requestPassword: false
         });
 

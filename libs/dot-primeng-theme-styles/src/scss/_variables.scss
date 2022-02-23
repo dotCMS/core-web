@@ -1,3 +1,5 @@
+@use "sass:math";
+
 /*
 * Variable names convention:
 * element-property-state
@@ -15,6 +17,8 @@ $gray-light: #b3b1b8;
 $gray-lighter: #e2e2e2;
 $gray-bg: #f1f3f4;
 $gray-hover: #eee;
+$deleted-content-color: #fdb8c0;
+$new-content-color: #ddffdd;
 
 $white_rgb: var(--color-white_rgb);
 $brand-primary: var(--color-main);
@@ -113,7 +117,7 @@ $dot-secondary-toolbar-main-height: 70px;
 
 // GRIDS
 $gutter-width: $spacing-9;
-$gutter-border: $gutter-width / 2;
+$gutter-border: math.div($gutter-width, 2);
 
 $screen-sm: 40em; // 640px
 $screen-md: 40.063em; // 641px;

@@ -31,9 +31,18 @@ export default {
     }
 } as Meta;
 
+type City = {
+    label: string;
+    value: {
+        id: number;
+        name: string;
+        code: string;
+    };
+};
+
 const ListBoxTemplate = `<p-listbox [options]="cities" [(ngModel)]="selectedCity"></p-listbox>`;
 
-const Template: Story<any> = (props: any) => {
+const Template: Story<City[]> = (props: City[]) => {
     const template = ListBoxTemplate;
     return {
         props,

@@ -1,9 +1,9 @@
-<div class="p-field">
+<div class="field">
     <label for="" class="form__label"
         >{{ 'contenttypes.field.properties.relationships.contentType.label' | dm }}*</label
     >
     <dot-searchable-dropdown
-        (change)="triggerChanged()"
+        (switch)="triggerChanged()"
         (filterChange)="getContentTypeList($event)"
         (pageChange)="getContentTypeList($event.filter, $event.first)"
         [(ngModel)]="contentType"
@@ -20,14 +20,14 @@
     >
     </dot-searchable-dropdown>
 </div>
-<div class="p-field">
+<div class="field">
     <label for="" class="form__label">{{
         'contenttypes.field.properties.relationships.label' | dm
     }}</label>
     <dot-cardinality-selector
         [value]="cardinality"
         [disabled]="editing"
-        (change)="cardinalityChanged($event)"
+        (switch)="cardinalityChanged($event)"
     >
     </dot-cardinality-selector>
 </div>

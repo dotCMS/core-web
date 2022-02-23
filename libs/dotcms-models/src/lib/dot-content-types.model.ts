@@ -5,6 +5,7 @@ export interface DotCMSContentType {
     icon?: string;
     clazz: string;
     defaultType: boolean;
+    contentType?: string;
     description?: string;
     detailPage?: string;
     expireDateVar?: string;
@@ -26,6 +27,7 @@ export interface DotCMSContentType {
     variable: string;
     versionable: boolean;
     workflows: DotCMSWorkflow[];
+    workflow?: string[];
     systemActionMappings?: DotCMSSystemActionMappings;
 }
 

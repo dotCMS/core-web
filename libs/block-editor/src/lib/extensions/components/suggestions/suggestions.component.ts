@@ -1,11 +1,4 @@
-import {
-    ChangeDetectorRef,
-    Component,
-    Input,
-    OnInit,
-    ViewChild,
-    HostListener
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
@@ -14,15 +7,7 @@ import { SuggestionsService } from '../../services/suggestions/suggestions.servi
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import {
-    headerIcons,
-    pIcon,
-    ulIcon,
-    olIcon,
-    quoteIcon,
-    codeIcon,
-    lineIcon
-} from './suggestion-icons';
+import { headerIcons, pIcon, ulIcon, olIcon, quoteIcon, codeIcon, lineIcon } from './suggestion-icons';
 
 export interface SuggestionsCommandProps {
     payload?: DotCMSContentlet;
@@ -31,7 +16,6 @@ export interface SuggestionsCommandProps {
 
 export interface DotMenuItem extends Omit<MenuItem, 'icon'> {
     icon: string | SafeUrl;
-    isActive?: () => boolean;
 }
 
 @Component({
@@ -39,8 +23,8 @@ export interface DotMenuItem extends Omit<MenuItem, 'icon'> {
     templateUrl: './suggestions.component.html',
     styleUrls: ['./suggestions.component.scss']
 })
-export class SuggestionsComponent implements OnInit {
-    @ViewChild('list', { static: true }) list: SuggestionListComponent;
+export class SuggestionsComponent implements OnInit, AfterViewInit {
+    @ViewChild('list', { static: false }) list: SuggestionListComponent;
 
     @Input() onSelection: (props: SuggestionsCommandProps) => void;
     items: DotMenuItem[] = [];
@@ -164,6 +148,12 @@ export class SuggestionsComponent implements OnInit {
             ...list,
             ...block
         ];
+
+    }
+
+    ngAfterViewInit() {
+        this.setFirstItemActive();
+
     }
 
     /**
@@ -204,6 +194,7 @@ export class SuggestionsComponent implements OnInit {
         this.list.resetKeyManager();
     }
 
+
     /**
      * Avoid closing the suggestions on manual scroll
      *
@@ -242,6 +233,18 @@ export class SuggestionsComponent implements OnInit {
         item.command();
     }
 
+    /**
+     * Go back to contentlet selection
+     *
+     * @param {MouseEvent} event
+     * @memberof SuggestionsComponent
+     */
+    handleBackButton(event: MouseEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.initContentletSelection();
+    }
+
     private initContentletSelection() {
         this.suggestionsService
             .getContentTypes()
@@ -271,9 +274,14 @@ export class SuggestionsComponent implements OnInit {
                                             };
                                         });
 
-                                        this.title = 'Select a contentlet';
-                                        this.cd.detectChanges();
-                                        this.resetKeyManager();
+                                        if (this.items.length) {
+                                            this.title = 'Select a contentlet';
+                                            this.cd.detectChanges();
+                                            this.resetKeyManager();
+                                        } else {
+                                            this.title = `No results for <b>${item.name}</b>`;
+                                            this.cd.detectChanges();
+                                        }
                                     });
                             }
                         };

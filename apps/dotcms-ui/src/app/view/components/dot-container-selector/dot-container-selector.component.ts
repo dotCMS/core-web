@@ -7,14 +7,16 @@ import { DotContainerColumnBox } from '@models/dot-edit-layout-designer';
 import { DotContainer } from '@models/container/dot-container.model';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { PaginationEvent } from '@components/_common/searchable-dropdown/component';
 
 @Component({
+    providers: [PaginatorService],
     selector: 'dot-container-selector',
     templateUrl: './dot-container-selector.component.html',
     styleUrls: ['./dot-container-selector.component.scss']
 })
 export class DotContainerSelectorComponent implements OnInit {
-    @Output() change: EventEmitter<DotContainer> = new EventEmitter();
+    @Output() swap: EventEmitter<DotContainer> = new EventEmitter();
 
     @Input() data: DotContainerColumnBox[] = [];
     @Input() innerClass = '';
@@ -39,7 +41,7 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     containerChange(container: DotContainer): void {
-        this.change.emit(container);
+        this.swap.emit(container);
     }
 
     /**
@@ -54,10 +56,10 @@ export class DotContainerSelectorComponent implements OnInit {
 
     /**
      * Call when the current page changed
-     * @param any event
+     * @param PaginationEvent event
      * @memberof DotContainerSelectorComponent
      */
-    handlePageChange(event: any): void {
+    handlePageChange(event: PaginationEvent): void {
         this.getContainersList(event.filter, event.first);
     }
 
@@ -69,11 +71,10 @@ export class DotContainerSelectorComponent implements OnInit {
         );
     }
 
-    private setIdentifierReference(items: DotContainer[]): any {
+    private setIdentifierReference(items: DotContainer[]): DotContainer[] {
         return items.map((dotContainer) => {
-            dotContainer.identifier = this.templateContainersCacheService.getContainerReference(
-                dotContainer
-            );
+            dotContainer.identifier =
+                this.templateContainersCacheService.getContainerReference(dotContainer);
             return dotContainer;
         });
     }

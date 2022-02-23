@@ -69,7 +69,9 @@ describe('ActionButtonComponent', () => {
     it('should have p-menu and pass the model to it', () => {
         const model = [
             {
-                command: () => {},
+                command: () => {
+                    //
+                },
                 icon: 'whatever',
                 label: 'Whatever'
             }
@@ -89,7 +91,7 @@ describe('ActionButtonComponent', () => {
     it('should emit event on button click', () => {
         let res;
 
-        comp.click.subscribe((event) => {
+        comp.press.subscribe((event) => {
             res = event;
         });
 
@@ -101,7 +103,9 @@ describe('ActionButtonComponent', () => {
     it('should toggle the menu on button click', () => {
         const model = [
             {
-                command: () => {},
+                command: () => {
+                    //
+                },
                 icon: 'whatever',
                 label: 'Whatever'
             }

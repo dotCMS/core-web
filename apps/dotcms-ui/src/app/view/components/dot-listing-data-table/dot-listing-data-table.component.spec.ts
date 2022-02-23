@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { of } from 'rxjs';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { UiDotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
@@ -20,7 +22,7 @@ import { UiDotIconButtonModule } from '../_common/dot-icon-button/dot-icon-butto
 import { DotStringFormatPipe } from '@pipes/dot-string-format/dot-string-format.pipe';
 import { ConfirmationService, SharedModule } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
-import { CoreWebService, LoggerService, StringUtils } from '@dotcms/dotcms-js';
+import { CoreWebService, DotcmsConfigService, LoggerService, StringUtils } from '@dotcms/dotcms-js';
 import { DataTableColumn } from '@models/data-table';
 import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
@@ -28,7 +30,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { FormsModule } from '@angular/forms';
 import { ContextMenuModule } from 'primeng/contextmenu';
-import { doc } from 'prettier';
 
 @Component({
     selector: 'dot-empty-state',
@@ -135,7 +136,18 @@ describe('DotListingDataTableComponent', () => {
                 DotFormatDateService,
                 DotAlertConfirmService,
                 ConfirmationService,
-                StringUtils
+                StringUtils,
+                {
+                    provide: DotcmsConfigService,
+                    useValue: {
+                        getSystemTimeZone: () =>
+                            of({
+                                id: 'America/Costa_Rica',
+                                label: 'Central Standard Time (America/Costa_Rica)',
+                                offset: -21600000
+                            })
+                    }
+                }
             ]
         });
 
@@ -152,7 +164,9 @@ describe('DotListingDataTableComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             }
         ];
@@ -332,7 +346,9 @@ describe('DotListingDataTableComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             }
         ];
@@ -351,7 +367,9 @@ describe('DotListingDataTableComponent', () => {
                 menuItem: {
                     icon: 'fa fa-trash',
                     label: 'Remove',
-                    command: () => {}
+                    command: () => {
+                        //
+                    }
                 }
             }
         ];

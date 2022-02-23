@@ -1,4 +1,6 @@
-import { Observable, of as observableOf, of } from 'rxjs';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { Observable, of as observableOf } from 'rxjs';
 import { ComponentFixture, waitForAsync, fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { Component, DebugElement, Input } from '@angular/core';
 import { DotSiteSelectorComponent } from './dot-site-selector.component';
@@ -52,7 +54,6 @@ describe('SiteSelectorComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     let componentHost: TestHostComponent;
     let comp: DotSiteSelectorComponent;
-    let fixture: ComponentFixture<DotSiteSelectorComponent>;
     let deHost: DebugElement;
     let de: DebugElement;
     let paginatorService: PaginatorService;
@@ -149,7 +150,9 @@ describe('SiteSelectorComponent', () => {
         expect(comp.handleSitesRefresh).toHaveBeenCalledTimes(1);
     });
 
-    describe('Pagination', () => {});
+    describe('Pagination', () => {
+        //
+    });
 
     it('should change page', () => {
         const filter = 'filter';
@@ -223,7 +226,7 @@ describe('SiteSelectorComponent', () => {
         expect(paginatorService.filter).toEqual('*');
     });
 
-    it('should emit change event', () => {
+    it('should emit switch event', () => {
         paginatorService.filter = 'filter';
         paginatorService.totalRecords = 2;
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(sites));
@@ -233,8 +236,8 @@ describe('SiteSelectorComponent', () => {
             By.css('dot-searchable-dropdown')
         );
         let result: any;
-        comp.change.subscribe((res) => (result = res));
-        searchableDropdownComponent.triggerEventHandler('change', { fake: 'site' });
+        comp.switch.subscribe((res) => (result = res));
+        searchableDropdownComponent.triggerEventHandler('switch', { fake: 'site' });
 
         expect(result).toEqual({ fake: 'site' });
     });

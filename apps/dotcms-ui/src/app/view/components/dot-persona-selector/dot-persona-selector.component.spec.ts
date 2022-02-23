@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { DotPersonaSelectorComponent } from './dot-persona-selector.component';
 import { DebugElement, Component, Input } from '@angular/core';
@@ -114,7 +117,7 @@ describe('DotPersonaSelectorComponent', () => {
 
     it('should emit the selected persona', () => {
         spyOn(component.selected, 'emit');
-        dropdown.triggerEventHandler('change', defaultPersona);
+        dropdown.triggerEventHandler('switch', defaultPersona);
         expect(component.selected.emit).toHaveBeenCalledWith(defaultPersona);
     });
 
@@ -169,7 +172,7 @@ describe('DotPersonaSelectorComponent', () => {
         spyOn(component.selected, 'emit');
         openOverlay();
         const personaOption = hostFixture.debugElement.query(By.css('dot-persona-selector-option'));
-        personaOption.triggerEventHandler('change', defaultPersona);
+        personaOption.triggerEventHandler('switch', defaultPersona);
         expect(component.selected.emit).toHaveBeenCalledWith(defaultPersona);
     });
 
@@ -239,7 +242,7 @@ describe('DotPersonaSelectorComponent', () => {
 
         it('should call show event on show persona list', () => {
             spyOn(iframeOverlayService, 'show');
-            dropdown.triggerEventHandler('show', {});
+            dropdown.triggerEventHandler('display', {});
 
             expect(iframeOverlayService.show).toHaveBeenCalled();
         });
