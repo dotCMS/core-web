@@ -155,7 +155,9 @@ export class KeyValueTableComponent {
 
         try {
             this.removeElementById('dotKeyValuePlaceholder');
-        } catch (e) {}
+        } catch (e) {
+            /**/
+        }
 
         this.reorder.emit();
     }

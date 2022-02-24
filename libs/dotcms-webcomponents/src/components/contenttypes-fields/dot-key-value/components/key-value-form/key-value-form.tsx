@@ -72,7 +72,9 @@ export class DotKeyValueComponent {
     selectedWhiteListKey = '';
 
     @Watch('selectedWhiteListKey')
-    selectedWhiteListKeyWatch(): void {}
+    selectedWhiteListKeyWatch(): void {
+        /* */
+    }
 
     private whiteListArray = {};
 
