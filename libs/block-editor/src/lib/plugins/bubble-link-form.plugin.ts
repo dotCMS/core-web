@@ -80,7 +80,7 @@ export class BubbleLinkFormView {
         }
 
         this.createTooltip();
-        
+
         this.tippy?.state.isVisible ? this.hide() : this.show();
         this.detectLinkFormChanges();
     }
@@ -92,11 +92,11 @@ export class BubbleLinkFormView {
     };
 
     createTooltip() {
-        const { element: editorElement } = this.editor.options
-        const editorIsAttached = !!editorElement.parentElement
+        const { element: editorElement } = this.editor.options;
+        const editorIsAttached = !!editorElement.parentElement;
 
         if (this.tippy || !editorIsAttached) {
-            return
+            return;
         }
 
         this.tippy = tippy(editorElement, {
@@ -147,8 +147,9 @@ export class BubbleLinkFormView {
     }
 
     addLink(link: string) {
+        console.log('What is love? Bebe I got u');
         if (link) {
-            if(this.isDotImageNode) {
+            if (this.isDotImageNode()) {
                 this.editor.commands.setImageLink({ href: link });
             } else {
                 this.editor.commands.setLink({ href: link });
@@ -158,7 +159,7 @@ export class BubbleLinkFormView {
     }
 
     removeLink() {
-        if(this.isDotImageNode) {
+        if (this.isDotImageNode()) {
             this.editor.commands.unsetImageLink();
         } else {
             this.editor.commands.unsetLink();
