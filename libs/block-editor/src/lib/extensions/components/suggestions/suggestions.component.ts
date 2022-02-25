@@ -62,7 +62,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-        if (this.items === null) {
+        if (this.items.length === 0) {
             const headings = [...Array(3).keys()].map((level) => {
                 const size = level + 1;
                 return {

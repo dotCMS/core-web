@@ -11,6 +11,7 @@ import {
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Editor } from '@tiptap/core';
 import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
+import { Level } from '@tiptap/extension-heading/src/heading';
 
 @Component({
     selector: 'dotcms-bubble-change-dropdown',
@@ -20,28 +21,24 @@ import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
 export class BubbleChangeDropdownComponent implements OnInit {
     @Input() editor: Editor;
 
-    @ViewChild('suggestions', { static: false }) suggestions: SuggestionsComponent;
+    @ViewChild('suggestions') suggestions: SuggestionsComponent;
 
-    options: DotMenuItem[];
-    showList = false;
+    menuItems: DotMenuItem[];
+    showSuggestions = false;
     selectedOption: DotMenuItem;
 
     constructor(private domSanitizer: DomSanitizer) {}
 
     ngOnInit(): void {
-        const headings = [...Array(3).keys()].map((level) => {
-            const size = level + 1;
+        const headings = [...Array(3).keys()].map((level: Level) => {
+            const size: Level = (level + 1) as Level;
             return {
                 label: `Heading ${size}`,
                 icon: this.sanitizeUrl(headerIcons[level]),
-                isActive: () => this.editor.isActive('heading', { level: size as number }),
+                isActive: () => this.editor.isActive('heading', { level: size }),
                 command: () => {
-                    this.editor
-                        .chain()
-                        .focus()
-                        .setHeading({ level: size as number })
-                        .run();
-                    this.showList = false;
+                    this.editor.chain().focus().clearNodes().setHeading({ level: size }).run();
+                    this.showSuggestions = false;
                 }
             };
         });
@@ -54,7 +51,7 @@ export class BubbleChangeDropdownComponent implements OnInit {
                 command: () => {
                     console.log('setParagraph');
                     this.editor.chain().focus().clearNodes().setParagraph().run();
-                    this.showList = false;
+                    this.showSuggestions = false;
                 }
             }
         ];
@@ -66,7 +63,7 @@ export class BubbleChangeDropdownComponent implements OnInit {
                 isActive: () => this.editor.isActive('orderedList'),
                 command: () => {
                     this.editor.chain().focus().clearNodes().toggleOrderedList().run();
-                    this.showList = false;
+                    this.showSuggestions = false;
                 }
             },
             {
@@ -75,7 +72,7 @@ export class BubbleChangeDropdownComponent implements OnInit {
                 isActive: () => this.editor.isActive('bulletList'),
                 command: () => {
                     this.editor.chain().focus().clearNodes().toggleBulletList().run();
-                    this.showList = false;
+                    this.showSuggestions = false;
                 }
             }
         ];
@@ -87,7 +84,7 @@ export class BubbleChangeDropdownComponent implements OnInit {
                 isActive: () => this.editor.isActive('blockquote'),
                 command: () => {
                     this.editor.chain().focus().clearNodes().toggleBlockquote().run();
-                    this.showList = false;
+                    this.showSuggestions = false;
                 }
             },
             {
@@ -96,36 +93,38 @@ export class BubbleChangeDropdownComponent implements OnInit {
                 isActive: () => this.editor.isActive('codeBlock'),
                 command: () => {
                     this.editor.chain().focus().clearNodes().toggleCodeBlock().run();
-                    this.showList = false;
+                    this.showSuggestions = false;
                 }
             }
         ];
 
-        this.options = [...headings, ...paragraph, ...list, ...block];
+        this.menuItems = [...headings, ...paragraph, ...list, ...block];
         this.editor.on('transaction', () => {
             this.setSelectedItem();
         });
     }
 
-    onShowList() {
-        this.showList = !this.showList;
-        if (this.showList) {
+    /**
+     * Toggle the visibility of the Suggestions.
+     *
+     * @memberof BubbleChangeDropdownComponent
+     */
+    toggleSuggestions() {
+        this.showSuggestions = !this.showSuggestions;
+        if (this.showSuggestions) {
             setTimeout(() => {
                 this.suggestions.updateActiveItem(
-                    this.options.findIndex((item) => item === this.selectedOption)
+                    this.menuItems.findIndex((item) => item === this.selectedOption)
                 );
             }, 0);
         }
     }
 
     private setSelectedItem(): void {
-        const activeMarks = this.options.filter((option) => option.isActive());
+        const activeMarks = this.menuItems.filter((option) => option.isActive());
         // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
         // can be active at the same time.
         this.selectedOption = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
-
-        console.log('active marks', activeMarks[0]);
-        console.log('this.selectedOption: ', this.selectedOption);
     }
 
     private sanitizeUrl(url: string): SafeUrl {

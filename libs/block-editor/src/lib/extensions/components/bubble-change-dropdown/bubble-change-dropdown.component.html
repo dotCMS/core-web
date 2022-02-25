@@ -1,5 +1,5 @@
-<button (click)='onShowList()'>{{selectedOption?.label}}</button>
-<dotcms-suggestions [items]="options" title="Change to" #suggestions *ngIf='showList'></dotcms-suggestions>
+<button (click)='toggleSuggestions()'>{{selectedOption?.label}}</button>
+<dotcms-suggestions [items]="menuItems" title="Change to" #suggestions *ngIf='showSuggestions'></dotcms-suggestions>
 
 
 
