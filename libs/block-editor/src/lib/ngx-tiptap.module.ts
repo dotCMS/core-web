@@ -25,9 +25,11 @@ import { DotImageService } from './extensions/services/dot-image/dot-image.servi
 import { BubbleMenuComponent } from './extensions/components/bubble-menu/bubble-menu.component';
 import { BubbleMenuButtonComponent } from './extensions/components/bubble-menu-button/bubble-menu-button.component';
 import { BubbleMenuLinkFormComponent } from './extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
+import { BubbleChangeDropdownComponent } from './extensions/components/bubble-change-dropdown/bubble-change-dropdown.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, CardModule, MenuModule],
+    imports: [CommonModule, FormsModule, CardModule, MenuModule, DropdownModule],
     declarations: [
         EditorDirective,
         BubbleMenuDirective,
@@ -43,7 +45,8 @@ import { BubbleMenuLinkFormComponent } from './extensions/components/bubble-menu
         LoaderComponent,
         BubbleMenuComponent,
         BubbleMenuButtonComponent,
-        BubbleMenuLinkFormComponent
+        BubbleMenuLinkFormComponent,
+        BubbleChangeDropdownComponent
     ],
     providers: [SuggestionsService, DotImageService, LoggerService, StringUtils],
     exports: [
