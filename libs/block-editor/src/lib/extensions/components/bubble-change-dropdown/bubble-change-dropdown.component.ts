@@ -102,6 +102,33 @@ export class BubbleChangeDropdownComponent implements OnInit {
         this.editor.on('transaction', () => {
             this.setSelectedItem();
         });
+
+        this.editor.on('create', (editor: any) => {
+            console.log('create: ', editor);
+            this.editor.options.element.addEventListener('keydown', (event: KeyboardEvent) => {
+                const { key } = event;
+                if (this.showSuggestions) {
+                    if (key === 'Escape') {
+                        this.showSuggestions = false;
+                        return true;
+                    }
+
+                    if (key === 'Enter') {
+                        this.suggestions.execCommand();
+                        event.preventDefault();
+                        event.stopPropagation();
+                        return false;
+                    }
+
+                    if (key === 'ArrowDown' || key === 'ArrowUp') {
+                        this.suggestions.updateSelection(event);
+                        return true;
+                    }
+
+                    return false;
+                }
+            });
+        });
     }
 
     /**
