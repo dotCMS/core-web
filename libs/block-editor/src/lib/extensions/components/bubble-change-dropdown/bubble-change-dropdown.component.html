@@ -1,25 +1,7 @@
-<!--<select (change)="onChange($event.target.value)" >-->
-<!--    <option *ngFor="let option of options" [value]="option.label" [selected]="option.isActive()"> {{option.label}}</option>-->
-<!--</select>-->
 <button (click)='onShowList()'>{{selectedOption?.label}}</button>
-
 <dotcms-suggestions [items]="options" title="Change to" #suggestions *ngIf='showList'></dotcms-suggestions>
 
 
 
-
-
-<!--    <dotcms-suggestion-list class="suggestion-list-container"   (keydown)="onKeyDown($event)">-->
-<!--        <dotcms-suggestions-list-item-->
-<!--            *ngFor="let item of options; let i = index"-->
-<!--            (mousedown)="onMouseDown($event, item)"-->
-<!--            (mouseenter)="onMouseEnter($event)"-->
-<!--            [command]="item.command"-->
-<!--            [index]="i"-->
-<!--            [label]="item.label"-->
-<!--            [url]="item.icon"-->
-<!--        >-->
-<!--        </dotcms-suggestions-list-item>-->
-<!--    </dotcms-suggestion-list>-->
 
 

@@ -19,11 +19,10 @@ import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
 })
 export class BubbleChangeDropdownComponent implements OnInit {
     @Input() editor: Editor;
-    options: DotMenuItem[];
-    activeMarks: DotMenuItem[] = [];
 
     @ViewChild('suggestions', { static: false }) suggestions: SuggestionsComponent;
 
+    options: DotMenuItem[];
     showList = false;
     selectedOption: DotMenuItem;
 
@@ -67,7 +66,6 @@ export class BubbleChangeDropdownComponent implements OnInit {
                 isActive: () => this.editor.isActive('orderedList'),
                 command: () => {
                     this.editor.chain().focus().clearNodes().toggleOrderedList().run();
-
                     this.showList = false;
                 }
             },
@@ -105,23 +103,9 @@ export class BubbleChangeDropdownComponent implements OnInit {
 
         this.options = [...headings, ...paragraph, ...list, ...block];
         this.editor.on('transaction', () => {
-            // this.selectedOption = this.selectedOption = this.options.find((item) =>
-            //     item.isActive()
-            // );
-            // const isSelected = (item) => item.isActive();
-            // //  this.selectedIndex = ;
-            // console.log(data);
-            // this.selectedIndex = this.options.findIndex(isSelected);
-            // console.log('this.selectedIndex: ', this.selectedIndex);
-            // this.activeMarks = this.options.filter((option) => option.isActive());
             this.setSelectedItem();
         });
     }
-
-    // ngAfterViewInit() {
-    //     //  this.setFirstItemActive();
-    //     console.log('aa');
-    // }
 
     onShowList() {
         this.showList = !this.showList;
@@ -134,83 +118,12 @@ export class BubbleChangeDropdownComponent implements OnInit {
         }
     }
 
-    // /**
-    //  * execute command of the selected value.
-    //  *
-    //  * @param {string} label
-    //  * @memberof BubbleChangeDropdownComponent
-    //  */
-    // onChange(label: string) {
-    //     this.options.find((item) => item.label === label).command();
-    // }
-    //
-    // onMouseDown(e, item) {
-    //     console.log('------onMouseDown-------');
-    //     //const value = this.options.find((item) => item.label === e.target.value);
-    //     //console.log('onMouseDown', e);
-    //     e.preventDefault();
-    //
-    //     //value.command();
-    //     item.command();
-    //     this.showList = false;
-    //     this.selectedOption = item;
-    //     this.setSelectedItem(item);
-    // }
-    //
-    // onMouseEnter(e) {
-    //     console.log('onMouseDown', e);
-    //     //const value = this.options.find((item) => item.label === e.target.value);
-    //     e.preventDefault();
-    //     const index = Number((e.target as HTMLElement).dataset.index);
-    //     this.list.updateActiveItem(index);
-    // }
-    //
-    // /**
-    //  * Set the active item
-    //  *
-    //  * @memberof BubbleChangeDropdownComponent
-    //  */
-    // setActiveItem() {
-    //     if (this.showList) {
-    //         this.list.updateActiveItem(this.selectedIndex);
-    //     }
-    // }
-    //
-    // /**
-    //  * Handle the keyboard events when the suggestion are opened
-    //  *
-    //  * @param {FloatingActionsKeydownProps} { event }
-    //  * @return {*}  {boolean}
-    //  */
-    // onKeyDown({ event }: FloatingActionsKeydownProps): boolean {
-    //     debugger;
-    //     const { key } = event;
-    //
-    //     if (key === 'Escape') {
-    //         // myTippy.hide();
-    //         // return true;
-    //     }
-    //
-    //     if (key === 'Enter') {
-    //         this.list.execCommand();
-    //         return true;
-    //     }
-    //
-    //     if (key === 'ArrowDown' || key === 'ArrowUp') {
-    //         this.list.updateSelection(event);
-    //         return true;
-    //     }
-    //
-    //     return false;
-    // }
-    //
     private setSelectedItem(): void {
         const activeMarks = this.options.filter((option) => option.isActive());
-        if (activeMarks.length > 1) {
-            this.selectedOption = activeMarks[1];
-        } else {
-            this.selectedOption = activeMarks[0];
-        }
+        // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
+        // can be active at the same time.
+        this.selectedOption = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
+
         console.log('active marks', activeMarks[0]);
         console.log('this.selectedOption: ', this.selectedOption);
     }
