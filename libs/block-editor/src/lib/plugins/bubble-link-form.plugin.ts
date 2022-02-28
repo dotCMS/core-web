@@ -8,6 +8,7 @@ import { BubbleMenuLinkFormComponent } from '../extensions/components/bubble-men
 
 // Interface
 import { PluginStorage } from '../extensions/bubble-link-form.extension';
+import { getNodeBoundingClientRect } from '@dotcms/block-editor';
 
 interface PluginState {
     toggle: boolean;
@@ -137,8 +138,10 @@ export class BubbleLinkFormView {
             getReferenceClientRect: () => {
                 if (isNodeSelection(state.selection)) {
                     const node = view.nodeDOM(from) as HTMLElement;
+                    const type = state.doc.nodeAt(from).type.name;
+
                     if (node) {
-                        return node.getBoundingClientRect();
+                        return getNodeBoundingClientRect(node, type);
                     }
                 }
                 return posToDOMRect(view, from, to);
@@ -147,7 +150,6 @@ export class BubbleLinkFormView {
     }
 
     addLink(link: string) {
-        console.log('What is love? Bebe I got u');
         if (link) {
             if (this.isDotImageNode()) {
                 this.editor.commands.setImageLink({ href: link });

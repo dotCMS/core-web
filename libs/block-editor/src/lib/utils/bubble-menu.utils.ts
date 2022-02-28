@@ -4,17 +4,16 @@ import { EditorState } from 'prosemirror-state';
 
 interface ShouldShowProps {
     editor: Editor;
-    view: EditorView<any>;
-    state: EditorState<any>;
-    oldState?: EditorState<any>;
+    view: EditorView;
+    state: EditorState;
+    oldState?: EditorState;
     from: number;
     to: number;
 }
 
 export const shouldShowBubbleMenu = ({ editor, state, from, to }: ShouldShowProps) => {
-
-    const { doc, selection } = state
-    const { empty } = selection
+    const { doc, selection } = state;
+    const { empty } = selection;
 
     // Current selected node
     const node = editor.state.doc.nodeAt(editor.state.selection.from);
@@ -22,17 +21,22 @@ export const shouldShowBubbleMenu = ({ editor, state, from, to }: ShouldShowProp
     // Sometime check for `empty` is not enough.
     // Doubleclick an empty paragraph returns a node size of 2.
     // So we check also for an empty text size.
-    const isEmptyTextBlock = !doc.textBetween(from, to).length
-    && isTextSelection(state.selection)
-
+    const isEmptyTextBlock = !doc.textBetween(from, to).length && isTextSelection(state.selection);
 
     // If it's empty or the current node is type dotContent, it will not open.
     if (empty || isEmptyTextBlock || node.type.name == 'dotContent') {
-        return false
+        return false;
     }
 
     return true;
+};
 
+export const getNodeBoundingClientRect = (node: HTMLElement, type: string): DOMRect => {
+    const img = node.getElementsByTagName('img')[0];
+    if (type === 'dotImage' && img) {
+        return img.getBoundingClientRect();
+    }
+    return node.getBoundingClientRect();
 };
 
 export const bubbleMenuItems = [
@@ -127,6 +131,6 @@ export const bubbleMenuImageItems = [
     {
         icon: 'link',
         markAction: 'link',
-        active: false,
-    },
+        active: false
+    }
 ];

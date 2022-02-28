@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Editor } from '@tiptap/core';
-import { bubbleMenuItems, bubbleMenuImageItems } from '../../../utils/bubble-menu.utils';
+import { bubbleMenuItems, bubbleMenuImageItems } from '@dotcms/block-editor';
 
 export interface BubbleMenuItem {
     icon: string;
@@ -34,17 +34,16 @@ export class BubbleMenuComponent implements OnInit {
             this.updateActiveItems();
         });
 
-
         this.editor.on('selectionUpdate', () => {
-            const { doc, selection } = this.editor.state
-            const { empty } = selection
+            const { doc, selection } = this.editor.state;
+            const { empty } = selection;
 
-            if ( empty ) {
+            if (empty) {
                 return;
             }
 
             const node = doc.nodeAt(selection.from);
-            this.items =  node.type.name == 'dotImage' ? bubbleMenuImageItems : bubbleMenuItems;
+            this.items = node.type.name == 'dotImage' ? bubbleMenuImageItems : bubbleMenuItems;
         });
     }
 
@@ -132,7 +131,10 @@ export class BubbleMenuComponent implements OnInit {
     }
 
     private setEnabledMarks(): void {
-        this.enabledMarks = [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
+        this.enabledMarks = [
+            ...Object.keys(this.editor.schema.marks),
+            ...Object.keys(this.editor.schema.nodes)
+        ];
     }
 
     private setActiveMarks(): void {
