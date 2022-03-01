@@ -15,15 +15,6 @@ export interface DotCMSEditPageEvent {
     };
 }
 
-interface DotCSMSavePageEvent {
-    detail: {
-        payload: {
-            contentletInode: string;
-            isMoveAction: boolean;
-        };
-    };
-}
-
 @Component({
     selector: 'dot-contentlet-wrapper',
     templateUrl: './dot-contentlet-wrapper.component.html',
@@ -37,10 +28,10 @@ export class DotContentletWrapperComponent {
     url: string;
 
     @Output()
-    shutdown: EventEmitter<unknown> = new EventEmitter();
+    close: EventEmitter<any> = new EventEmitter();
 
     @Output()
-    custom: EventEmitter<unknown> = new EventEmitter();
+    custom: EventEmitter<any> = new EventEmitter();
 
     private isContentletModified = false;
     private readonly customEventsHandler;
@@ -77,7 +68,7 @@ export class DotContentletWrapperComponent {
                 'edit-contentlet-data-updated': (e: CustomEvent) => {
                     this.isContentletModified = e.detail.payload;
                 },
-                'save-page': (data: DotCSMSavePageEvent) => {
+                'save-page': (data: any) => {
                     if (this.shouldRefresh(data)) {
                         this.dotIframeService.reload();
                     }
@@ -132,7 +123,7 @@ export class DotContentletWrapperComponent {
         this.dotContentletEditorService.clear();
         this.isContentletModified = false;
         this.header = '';
-        this.shutdown.emit();
+        this.close.emit();
     }
 
     /**
@@ -173,7 +164,7 @@ export class DotContentletWrapperComponent {
         }
     }
 
-    private shouldRefresh(data: DotCSMSavePageEvent): boolean {
+    private shouldRefresh(data: any): boolean {
         // is not new content
         return (
             this.dotRouterService.currentPortlet.url.includes(

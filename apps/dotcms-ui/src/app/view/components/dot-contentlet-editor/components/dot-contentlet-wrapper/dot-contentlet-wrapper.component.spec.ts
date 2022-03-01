@@ -123,7 +123,7 @@ describe('DotContentletWrapperComponent', () => {
         spyOn(dotAddContentletService, 'clear');
         spyOn(dotAddContentletService, 'load');
         spyOn(dotAddContentletService, 'keyDown');
-        spyOn(component.shutdown, 'emit');
+        spyOn(component.close, 'emit');
         spyOn(component.custom, 'emit');
     });
 
@@ -152,7 +152,7 @@ describe('DotContentletWrapperComponent', () => {
 
         describe('events', () => {
             it('should call load', () => {
-                dotIframeDialog.triggerEventHandler('charge', { hello: 'world' });
+                dotIframeDialog.triggerEventHandler('load', { hello: 'world' });
                 expect(dotAddContentletService.load).toHaveBeenCalledWith({ hello: 'world' });
             });
 
@@ -171,7 +171,7 @@ describe('DotContentletWrapperComponent', () => {
                 expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
                 expect(component.header).toBe('');
                 expect(component.custom.emit).toHaveBeenCalledTimes(1);
-                expect(component.shutdown.emit).toHaveBeenCalledTimes(1);
+                expect(component.close.emit).toHaveBeenCalledTimes(1);
                 expect(dotRouterService.goToEditPage).toHaveBeenCalledWith({
                     url: 'testUrl',
                     language_id: '1'
@@ -210,11 +210,11 @@ describe('DotContentletWrapperComponent', () => {
                 it('should close without confirmation dialog', () => {
                     dotIframeDialog.triggerEventHandler('beforeClose', {
                         close: () => {
-                            dotIframeDialog.triggerEventHandler('shutdown', {});
+                            dotIframeDialog.triggerEventHandler('close', {});
                         }
                     });
                     expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
-                    expect(component.shutdown.emit).toHaveBeenCalledTimes(1);
+                    expect(component.close.emit).toHaveBeenCalledTimes(1);
                 });
 
                 it('should show confirmation dialog and handle accept', () => {
@@ -231,7 +231,7 @@ describe('DotContentletWrapperComponent', () => {
 
                     dotIframeDialog.triggerEventHandler('beforeClose', {
                         close: () => {
-                            dotIframeDialog.triggerEventHandler('shutdown', {});
+                            dotIframeDialog.triggerEventHandler('close', {});
                         }
                     });
 
@@ -244,7 +244,7 @@ describe('DotContentletWrapperComponent', () => {
                             accept: 'Accept'
                         }
                     });
-                    expect(component.shutdown.emit).toHaveBeenCalledTimes(1);
+                    expect(component.close.emit).toHaveBeenCalledTimes(1);
                     expect(component.custom.emit).toHaveBeenCalledTimes(1);
                     expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
                 });
@@ -276,7 +276,7 @@ describe('DotContentletWrapperComponent', () => {
                             accept: 'Accept'
                         }
                     });
-                    expect(component.shutdown.emit).not.toHaveBeenCalled();
+                    expect(component.close.emit).not.toHaveBeenCalled();
                     expect(dotAddContentletService.clear).not.toHaveBeenCalled();
                 });
 
