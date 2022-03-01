@@ -4,6 +4,7 @@ import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotIframeService } from '@components/_common/iframe/service/dot-iframe/dot-iframe.service';
+import { Title } from '@angular/platform-browser';
 
 export interface DotCMSEditPageEvent {
     name: string;
@@ -11,6 +12,15 @@ export interface DotCMSEditPageEvent {
         url: string;
         languageId: string;
         hostId: string;
+    };
+}
+
+interface DotCSMSavePageEvent {
+    detail: {
+        payload: {
+            contentletInode: string;
+            isMoveAction: boolean;
+        };
     };
 }
 
@@ -27,10 +37,10 @@ export class DotContentletWrapperComponent {
     url: string;
 
     @Output()
-    close: EventEmitter<any> = new EventEmitter();
+    shutdown: EventEmitter<unknown> = new EventEmitter();
 
     @Output()
-    custom: EventEmitter<any> = new EventEmitter();
+    custom: EventEmitter<unknown> = new EventEmitter();
 
     private isContentletModified = false;
     private readonly customEventsHandler;
@@ -40,7 +50,8 @@ export class DotContentletWrapperComponent {
         private dotAlertConfirmService: DotAlertConfirmService,
         private dotMessageService: DotMessageService,
         private dotRouterService: DotRouterService,
-        private dotIframeService: DotIframeService
+        private dotIframeService: DotIframeService,
+        private titleService: Title
     ) {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
@@ -66,7 +77,7 @@ export class DotContentletWrapperComponent {
                 'edit-contentlet-data-updated': (e: CustomEvent) => {
                     this.isContentletModified = e.detail.payload;
                 },
-                'save-page': (data: any) => {
+                'save-page': (data: DotCSMSavePageEvent) => {
                     if (this.shouldRefresh(data)) {
                         this.dotIframeService.reload();
                     }
@@ -74,6 +85,13 @@ export class DotContentletWrapperComponent {
                 },
                 'edit-contentlet-loaded': (e: CustomEvent) => {
                     this.header = e.detail.data.contentType;
+                    this.titleService.setTitle(
+                        `${
+                            e.detail.data.pageTitle
+                                ? e.detail.data.pageTitle + ' - '
+                                : this.titleService.getTitle()
+                        } ${this.titleService.getTitle().split(' - ')[1]}`
+                    );
                 }
             };
         }
@@ -114,7 +132,7 @@ export class DotContentletWrapperComponent {
         this.dotContentletEditorService.clear();
         this.isContentletModified = false;
         this.header = '';
-        this.close.emit();
+        this.shutdown.emit();
     }
 
     /**
@@ -155,7 +173,7 @@ export class DotContentletWrapperComponent {
         }
     }
 
-    private shouldRefresh(data: any): boolean {
+    private shouldRefresh(data: DotCSMSavePageEvent): boolean {
         // is not new content
         return (
             this.dotRouterService.currentPortlet.url.includes(
