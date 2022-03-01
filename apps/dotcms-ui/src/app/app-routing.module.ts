@@ -28,8 +28,7 @@ const PORTLETS_ANGULAR = [
         canActivateChild: [MenuGuardService],
         path: 'content-types-angular',
         data: {
-            reuseRoute: false,
-            title: 'Content Types - DotCMS'
+            reuseRoute: false
         },
         loadChildren: () =>
             import('@portlets/dot-content-types/dot-content-types.module').then(
