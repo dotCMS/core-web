@@ -162,19 +162,19 @@ const InputTemplate = (input) => {
     <div class="p-field">
         <label>Checkbox</label>
 
-        <div class="p-field-checkbox">
+        <div class="field-checkbox">
             <p-checkbox name="group1" value="New York" inputId="ny"></p-checkbox>
             <label for="ny">New York</label>
         </div>
-        <div class="p-field-checkbox">
+        <div class="field-checkbox">
             <p-checkbox name="group1" value="San Francisco" inputId="sf"></p-checkbox>
             <label for="sf">San Francisco</label>
         </div>
-        <div class="p-field-checkbox">
+        <div class="field-checkbox">
             <p-checkbox name="group1" value="Los Angeles" inputId="la"></p-checkbox>
             <label for="la">Los Angeles</label>
         </div>
-        <div class="p-field-checkbox">
+        <div class="field-checkbox">
             <p-checkbox name="group1" value="Chicago" inputId="ch"></p-checkbox>
             <label for="ch">Chicago</label>
         </div>
@@ -182,7 +182,7 @@ const InputTemplate = (input) => {
 
     <div class="p-field">
         <label>Radio</label>
-        <div class="p-field-radiobutton">
+        <div class="field-checkbox">
             <p-radioButton
                 name="size"
                 [(ngModel)]="city"
@@ -191,7 +191,7 @@ const InputTemplate = (input) => {
             ></p-radioButton>
             <label for="size1">Small</label>
         </div>
-        <div class="p-field-radiobutton">
+        <div class="field-checkbox">
             <p-radioButton
                 name="size"
                 [(ngModel)]="city"
@@ -200,7 +200,7 @@ const InputTemplate = (input) => {
             ></p-radioButton>
             <label for="size2">Medium</label>
         </div>
-        <div class="p-field-radiobutton">
+        <div class="field-checkbox">
             <p-radioButton
                 name="size"
                 [(ngModel)]="city"

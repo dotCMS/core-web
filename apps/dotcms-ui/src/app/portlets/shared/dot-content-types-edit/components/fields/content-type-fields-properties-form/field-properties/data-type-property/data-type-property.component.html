@@ -2,7 +2,7 @@
     <label class="form__label">{{ 'contenttypes.field.properties.data_type.label' | dm }}</label>
 
     <div class="p-formgroup-inline">
-        <div *ngFor="let radio of radioInputs" class="p-field-radiobutton">
+        <div *ngFor="let radio of radioInputs" class="field-checkbox">
             <p-radioButton
                 [label]="radio.text | dm"
                 [name]="property.name"
