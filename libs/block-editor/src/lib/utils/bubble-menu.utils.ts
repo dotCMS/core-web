@@ -11,6 +11,12 @@ interface ShouldShowProps {
     to: number;
 }
 
+/**
+ * Determine when the bubble menu can or cannot be displayed.
+ *
+ * @param {ShouldShowProps} { editor, state, from, to }
+ * @return {*}
+ */
 export const shouldShowBubbleMenu = ({ editor, state, from, to }: ShouldShowProps) => {
     const { doc, selection } = state;
     const { empty } = selection;
@@ -31,8 +37,9 @@ export const shouldShowBubbleMenu = ({ editor, state, from, to }: ShouldShowProp
     return true;
 };
 
-export const getNodeBoundingClientRect = (node: HTMLElement, type: string): DOMRect => {
+export const getNodePosition = (node: HTMLElement, type: string): DOMRect => {
     const img = node.getElementsByTagName('img')[0];
+    // If is a dotImage Node, get the image position
     if (type === 'dotImage' && img) {
         return img.getBoundingClientRect();
     }

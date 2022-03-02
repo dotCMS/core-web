@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { AngularNodeViewComponent } from '../../../NodeViewRenderer';
 
-interface imageData { 
+interface imageData {
     asset: string;
     name: string;
 }
@@ -12,11 +12,10 @@ interface imageData {
     styleUrls: ['./image-block.component.scss']
 })
 export class ImageBlockComponent extends AngularNodeViewComponent implements OnInit {
-    
     public data: imageData;
     public href = '';
 
-    constructor( private _elementRef : ElementRef ) {
+    constructor(private _elementRef: ElementRef) {
         super();
     }
 
@@ -28,5 +27,4 @@ export class ImageBlockComponent extends AngularNodeViewComponent implements OnI
             this.href = this.node.attrs.href;
         });
     }
-
 }

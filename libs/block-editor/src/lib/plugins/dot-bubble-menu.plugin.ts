@@ -3,7 +3,9 @@ import { EditorView } from 'prosemirror-view';
 import { isNodeSelection, posToDOMRect } from '@tiptap/core';
 import { PluginKey, Plugin, EditorState } from 'prosemirror-state';
 import { BubbleMenuView } from '@tiptap/extension-bubble-menu';
-import { getNodeBoundingClientRect } from '@dotcms/block-editor';
+
+// Utils
+import { getNodePosition } from '@dotcms/block-editor';
 
 export const DotBubbleMenuPlugin = (options: BubbleMenuPluginProps) => {
     return new Plugin({
@@ -50,12 +52,12 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
         this.tippy?.setProps({
             getReferenceClientRect: () => {
-                if (isNodeSelection(state.selection)) {
+                if (isNodeSelection(selection)) {
                     const node = view.nodeDOM(from) as HTMLElement;
 
                     if (node) {
-                        const type = state.doc.nodeAt(from).type.name;
-                        return getNodeBoundingClientRect(node, type);
+                        const type = doc.nodeAt(from).type.name;
+                        return getNodePosition(node, type);
                     }
                 }
 

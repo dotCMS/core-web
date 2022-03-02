@@ -8,7 +8,9 @@ import { BubbleMenuLinkFormComponent } from '../extensions/components/bubble-men
 
 // Interface
 import { PluginStorage } from '../extensions/bubble-link-form.extension';
-import { getNodeBoundingClientRect } from '@dotcms/block-editor';
+
+// Utils
+import { getNodePosition } from '@dotcms/block-editor';
 
 interface PluginState {
     toggle: boolean;
@@ -130,18 +132,18 @@ export class BubbleLinkFormView {
     setTippyPosition() {
         const { view } = this.editor;
         const { state } = view;
-        const { selection } = state;
+        const { doc, selection } = state;
         const { ranges } = selection;
         const from = Math.min(...ranges.map((range) => range.$from.pos));
         const to = Math.max(...ranges.map((range) => range.$to.pos));
         this.tippy.setProps({
             getReferenceClientRect: () => {
-                if (isNodeSelection(state.selection)) {
+                if (isNodeSelection(selection)) {
                     const node = view.nodeDOM(from) as HTMLElement;
-                    const type = state.doc.nodeAt(from).type.name;
+                    const type = doc.nodeAt(from).type.name;
 
                     if (node) {
-                        return getNodeBoundingClientRect(node, type);
+                        return getNodePosition(node, type);
                     }
                 }
                 return posToDOMRect(view, from, to);
