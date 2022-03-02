@@ -241,7 +241,7 @@ Vertical.parameters = {
 
 const HorizontalTemplate = `
 <h3>Inline</h3>
-<div class="p-formgroup-inline">
+<div class="formgroup-inline">
     <div class="p-field">
         <label for="firstname" class="p-sr-only">Firstname</label>
         <input id="firstname" type="text" pInputText placeholder="Firstname" />
@@ -292,7 +292,7 @@ const HorizontalTemplate = `
 </div>
 
 <h3>Small</h3>
-<div class="p-formgroup-inline">
+<div class="formgroup-inline">
     <div class="p-field">
         <label for="firstname" class="p-sr-only">Firstname</label>
         <input id="firstname" type="text" pInputText placeholder="Firstname" class="p-inputtext-sm" />
