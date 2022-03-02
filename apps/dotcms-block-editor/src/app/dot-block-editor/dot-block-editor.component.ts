@@ -12,7 +12,7 @@ import {
     ActionsMenu,
     BubbleLinkFormExtension,
     ContentletBlock,
-    CustomBubbleMenu,
+    DotBubbleMenuExtension,
     DragHandler,
     ImageBlock,
     ImageUpload,
@@ -48,7 +48,7 @@ export class DotBlockEditorComponent implements OnInit {
                 DragHandler(this.injector, this.resolver),
                 ImageUpload(this.injector, this.resolver),
                 BubbleLinkFormExtension(this.injector, this.resolver),
-                CustomBubbleMenu.configure({
+                DotBubbleMenuExtension.configure({
                     element: document.querySelector('#bubbleMenu'),
                     shouldShow: shouldShowBubbleMenu,
                     tippyOptions: {

@@ -1,4 +1,4 @@
-import { Node, NodeViewRenderer } from '@tiptap/core';
+import { Node, mergeAttributes, NodeViewRenderer } from '@tiptap/core';
 import { Injector } from '@angular/core';
 import { DOMOutputSpec, ParseRule } from 'prosemirror-model';
 import { ImageBlockComponent } from './image-block.component';
@@ -10,12 +10,12 @@ declare module '@tiptap/core' {
             /**
              * Set Image Link mark
              */
-            setImageLink: (attributes: { href: string, target?: string }) => ReturnType,
+            setImageLink: (attributes: { href: string; target?: string }) => ReturnType;
             /**
              * Unset Image Link mark
              */
-            unsetImageLink: () => ReturnType,
-        }
+            unsetImageLink: () => ReturnType;
+        };
     }
 }
 
@@ -30,30 +30,34 @@ export const ImageBlock = (injector: Injector): Node => {
             return {
                 data: {
                     default: null,
-                    parseHTML: (element) =>  element.getAttribute('data'),
+                    parseHTML: (element) => element.getAttribute('data'),
                     renderHTML: (attributes) => {
                         return { data: attributes.data };
                     }
                 },
                 href: {
                     default: null,
-                    parseHTML: (element) =>  element.getAttribute('href'),
+                    parseHTML: (element) => element.getAttribute('href'),
                     renderHTML: (attributes) => {
                         return { href: attributes.href };
                     }
-                },
+                }
             };
         },
 
         addCommands() {
             return {
-                setImageLink: (attributes) => ({ commands }) => {
-                    return commands.updateAttributes('dotImage', attributes);
-                },
-                unsetImageLink: () => ({ commands }) => {
-                    return commands.updateAttributes('dotImage', { href: '' });
-                }
-            }
+                setImageLink:
+                    (attributes) =>
+                    ({ commands }) => {
+                        return commands.updateAttributes('dotImage', attributes);
+                    },
+                unsetImageLink:
+                    () =>
+                    ({ commands }) => {
+                        return commands.updateAttributes('dotImage', { href: '' });
+                    }
+            };
         },
 
         parseHTML(): ParseRule[] {
@@ -61,7 +65,7 @@ export const ImageBlock = (injector: Injector): Node => {
         },
 
         renderHTML({ HTMLAttributes }): DOMOutputSpec {
-            return [ 'dotcms-image-block', HTMLAttributes ];
+            return ['dotcms-image-block', mergeAttributes(HTMLAttributes)];
         },
 
         addNodeView(): NodeViewRenderer {

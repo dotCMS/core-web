@@ -27,15 +27,18 @@ export class BubbleMenuComponent implements OnInit {
         this.setEnabledMarks();
 
         /**
-         * Every time the selection is updated, the active state of the buttons must be updated.
+         * Every time the editor is updated, the active state of the buttons must be updated.
          */
         this.editor.on('transaction', () => {
             this.setActiveMarks();
             this.updateActiveItems();
         });
 
-        this.editor.on('selectionUpdate', () => {
-            const { doc, selection } = this.editor.state;
+        /**
+         * Every time the selection is updated, check if it's a dotImage
+         */
+        this.editor.on('selectionUpdate', ({ editor: { state } }) => {
+            const { doc, selection } = state;
             const { empty } = selection;
 
             if (empty) {
@@ -43,7 +46,9 @@ export class BubbleMenuComponent implements OnInit {
             }
 
             const node = doc.nodeAt(selection.from);
-            this.items = node.type.name == 'dotImage' ? bubbleMenuImageItems : bubbleMenuItems;
+            const isDotImage = node.type.name == 'dotImage';
+
+            this.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
         });
     }
 

@@ -2,38 +2,20 @@ import { BubbleMenuPluginProps } from '@tiptap/extension-bubble-menu';
 import { EditorView } from 'prosemirror-view';
 import { isNodeSelection, posToDOMRect } from '@tiptap/core';
 import { PluginKey, Plugin, EditorState } from 'prosemirror-state';
-import BubbleMenu, { BubbleMenuOptions, BubbleMenuView } from '@tiptap/extension-bubble-menu';
+import { BubbleMenuView } from '@tiptap/extension-bubble-menu';
 import { getNodeBoundingClientRect } from '@dotcms/block-editor';
 
-export const CustomBubbleMenu = BubbleMenu.extend<BubbleMenuOptions>({
-    addProseMirrorPlugins() {
-        if (!this.options.element) {
-            return [];
-        }
-
-        return [
-            BubbleMenuPlugin({
-                pluginKey: this.options.pluginKey,
-                editor: this.editor,
-                element: this.options.element,
-                tippyOptions: this.options.tippyOptions,
-                shouldShow: this.options.shouldShow
-            })
-        ];
-    }
-});
-
-const BubbleMenuPlugin = (options: BubbleMenuPluginProps) => {
+export const DotBubbleMenuPlugin = (options: BubbleMenuPluginProps) => {
     return new Plugin({
         key:
             typeof options.pluginKey === 'string'
                 ? new PluginKey(options.pluginKey)
                 : options.pluginKey,
-        view: (view) => new BubbleMenuViewCustom({ view, ...options })
+        view: (view) => new DotBubbleMenuPluginView({ view, ...options })
     });
 };
 
-class BubbleMenuViewCustom extends BubbleMenuView {
+export class DotBubbleMenuPluginView extends BubbleMenuView {
     /* @Overrrider */
     update(view: EditorView, oldState?: EditorState) {
         const { state, composing } = view;
@@ -84,5 +66,3 @@ class BubbleMenuViewCustom extends BubbleMenuView {
         this.show();
     }
 }
-
-//const img = node.getElementsByTagName('img')[0];

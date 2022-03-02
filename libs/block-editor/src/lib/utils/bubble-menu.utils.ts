@@ -39,6 +39,7 @@ export const getNodeBoundingClientRect = (node: HTMLElement, type: string): DOMR
     return node.getBoundingClientRect();
 };
 
+/* Bubble Menu Items*/
 export const bubbleMenuItems = [
     {
         icon: 'format_bold',

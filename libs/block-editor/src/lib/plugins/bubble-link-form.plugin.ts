@@ -150,12 +150,10 @@ export class BubbleLinkFormView {
     }
 
     addLink(link: string) {
-        if (link) {
-            if (this.isDotImageNode()) {
-                this.editor.commands.setImageLink({ href: link });
-            } else {
-                this.editor.commands.setLink({ href: link });
-            }
+        if (this.isDotImageNode()) {
+            this.editor.commands.setImageLink({ href: link });
+        } else {
+            this.editor.commands.setLink({ href: link });
         }
         this.hide();
     }
@@ -191,9 +189,7 @@ export class BubbleLinkFormView {
     getNodeLink(): string {
         return this.editor.isActive('link')
             ? this.editor.getAttributes('link').href
-            : this.editor.getAttributes('dotImage').href
-            ? this.editor.getAttributes('dotImage').href
-            : '';
+            : this.editor.getAttributes('dotImage').href || '';
     }
 
     getLinkSelect() {
