@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import { bubbleMenuItems, bubbleMenuImageItems } from '@dotcms/block-editor';
 
@@ -14,7 +14,7 @@ export interface BubbleMenuItem {
     templateUrl: './bubble-menu.component.html',
     styleUrls: ['./bubble-menu.component.scss']
 })
-export class BubbleMenuComponent implements OnInit {
+export class BubbleMenuComponent implements OnInit, OnDestroy {
     @Input() editor: Editor;
 
     public enabledMarks: string[] = [];
@@ -29,27 +29,17 @@ export class BubbleMenuComponent implements OnInit {
         /**
          * Every time the editor is updated, the active state of the buttons must be updated.
          */
-        this.editor.on('transaction', () => {
-            this.setActiveMarks();
-            this.updateActiveItems();
-        });
+        this.editor.on('transaction', this.onUpdate.bind(this));
 
         /**
          * Every time the selection is updated, check if it's a dotImage
          */
-        this.editor.on('selectionUpdate', ({ editor: { state } }) => {
-            const { doc, selection } = state;
-            const { empty } = selection;
+        this.editor.on('selectionUpdate', this.setMenuItems.bind(this));
+    }
 
-            if (empty) {
-                return;
-            }
-
-            const node = doc.nodeAt(selection.from);
-            const isDotImage = node.type.name == 'dotImage';
-
-            this.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
-        });
+    ngOnDestroy(): void {
+        this.editor.off('transaction', this.onUpdate.bind(this));
+        this.editor.off('selectionUpdate', this.setMenuItems.bind(this));
     }
 
     command(item: BubbleMenuItem): void {
@@ -111,6 +101,25 @@ export class BubbleMenuComponent implements OnInit {
         };
 
         markActions[item.markAction] ? markActions[item.markAction]() : null;
+    }
+
+    private onUpdate(): void {
+        this.setActiveMarks();
+        this.updateActiveItems();
+    }
+
+    private setMenuItems({ editor: { state } }: { editor: Editor }): void {
+        const { doc, selection } = state;
+        const { empty } = selection;
+
+        if (empty) {
+            return;
+        }
+
+        const node = doc.nodeAt(selection.from);
+        const isDotImage = node.type.name == 'dotImage';
+
+        this.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
     }
 
     private updateActiveItems(): void {
