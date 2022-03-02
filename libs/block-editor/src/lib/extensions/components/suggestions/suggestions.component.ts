@@ -62,7 +62,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-        if (this.items.length === 0) {
+        if (this.items?.length === 0) {
             const headings = [...Array(3).keys()].map((level) => {
                 const size = level + 1;
                 return {
@@ -238,6 +238,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     onMouseEnter(e: MouseEvent) {
+        console.log('mouse enter');
         // If mouse does not move then leave the function.
         if (!this.mouseMove) {
             return;
@@ -255,6 +256,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     onMouseDown(e: MouseEvent, item: MenuItem) {
+        console.log('onMouseDown');
         e.preventDefault();
         item.command();
     }

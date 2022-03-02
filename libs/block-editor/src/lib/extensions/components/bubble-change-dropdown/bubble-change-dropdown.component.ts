@@ -1,17 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import {
-    codeIcon,
-    headerIcons,
-    olIcon,
-    pIcon,
-    quoteIcon,
-    ulIcon
-} from '../suggestions/suggestion-icons';
-
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Editor } from '@tiptap/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
-import { Level } from '@tiptap/extension-heading/src/heading';
 
 @Component({
     selector: 'dotcms-bubble-change-dropdown',
@@ -19,116 +8,128 @@ import { Level } from '@tiptap/extension-heading/src/heading';
     styleUrls: ['./bubble-change-dropdown.component.scss']
 })
 export class BubbleChangeDropdownComponent implements OnInit {
-    @Input() editor: Editor;
+    @Input() options: DotMenuItem[];
+    @Input() selectedOption: DotMenuItem;
+    @Output() selected: EventEmitter<DotMenuItem> = new EventEmitter(false);
 
     @ViewChild('suggestions') suggestions: SuggestionsComponent;
 
-    menuItems: DotMenuItem[];
     showSuggestions = false;
-    selectedOption: DotMenuItem;
 
-    constructor(private domSanitizer: DomSanitizer) {}
+    constructor() {}
 
     ngOnInit(): void {
-        const headings = [...Array(3).keys()].map((level: Level) => {
-            const size: Level = (level + 1) as Level;
-            return {
-                label: `Heading ${size}`,
-                icon: this.sanitizeUrl(headerIcons[level]),
-                isActive: () => this.editor.isActive('heading', { level: size }),
-                command: () => {
-                    this.editor.chain().focus().clearNodes().setHeading({ level: size }).run();
-                    this.showSuggestions = false;
-                }
-            };
-        });
+        // const headings = [...Array(3).keys()].map((level: Level) => {
+        //     const size: Level = (level + 1) as Level;
+        //     return {
+        //         label: `Heading ${size}`,
+        //         icon: this.sanitizeUrl(headerIcons[level]),
+        //         isActive: () => this.editor.isActive('heading', { level: size }),
+        //         command: () => {
+        //             this.editor.chain().focus().clearNodes().setHeading({ level: size }).run();
+        //             this.showSuggestions = false;
+        //         }
+        //     };
+        // });
+        //
+        // const paragraph = [
+        //     {
+        //         label: 'Paragraph',
+        //         icon: this.sanitizeUrl(pIcon),
+        //         isActive: () => this.editor.isActive('paragraph', {}),
+        //         command: () => {
+        //             console.log('setParagraph');
+        //             this.editor.chain().focus().clearNodes().setParagraph().run();
+        //             this.showSuggestions = false;
+        //         }
+        //     }
+        // ];
+        //
+        // const list = [
+        //     {
+        //         label: 'List Ordered',
+        //         icon: this.sanitizeUrl(olIcon),
+        //         isActive: () => this.editor.isActive('orderedList'),
+        //         command: () => {
+        //             this.editor.chain().focus().clearNodes().toggleOrderedList().run();
+        //             this.showSuggestions = false;
+        //         }
+        //     },
+        //     {
+        //         label: 'List Unordered',
+        //         icon: this.sanitizeUrl(ulIcon),
+        //         isActive: () => this.editor.isActive('bulletList'),
+        //         command: () => {
+        //             this.editor.chain().focus().clearNodes().toggleBulletList().run();
+        //             this.showSuggestions = false;
+        //         }
+        //     }
+        // ];
+        //
+        // const block = [
+        //     {
+        //         label: 'Blockquote',
+        //         icon: this.sanitizeUrl(quoteIcon),
+        //         isActive: () => this.editor.isActive('blockquote'),
+        //         command: () => {
+        //             this.editor.chain().focus().clearNodes().toggleBlockquote().run();
+        //             this.showSuggestions = false;
+        //         }
+        //     },
+        //     {
+        //         label: 'Code Block',
+        //         icon: this.sanitizeUrl(codeIcon),
+        //         isActive: () => this.editor.isActive('codeBlock'),
+        //         command: () => {
+        //             this.editor.chain().focus().clearNodes().toggleCodeBlock().run();
+        //             this.showSuggestions = false;
+        //         }
+        //     }
+        // ];
+        //
+        // this.menuItems = [...headings, ...paragraph, ...list, ...block];
+        // this.editor.on('transaction', () => {
+        //     this.setSelectedItem();
+        // });
 
-        const paragraph = [
-            {
-                label: 'Paragraph',
-                icon: this.sanitizeUrl(pIcon),
-                isActive: () => this.editor.isActive('paragraph', {}),
-                command: () => {
-                    console.log('setParagraph');
-                    this.editor.chain().focus().clearNodes().setParagraph().run();
-                    this.showSuggestions = false;
-                }
-            }
-        ];
+        // this.editor.on('create', (editor: any) => {
+        //     console.log('create: ', editor);
+        //     this.editor.options.element.addEventListener('keydown', (event: KeyboardEvent) => {
+        //         const { key } = event;
+        //         if (this.showSuggestions) {
+        //             if (key === 'Escape') {
+        //                 this.showSuggestions = false;
+        //                 return true;
+        //             }
+        //
+        //             if (key === 'Enter') {
+        //                 this.suggestions.execCommand();
+        //                 event.preventDefault();
+        //                 event.stopPropagation();
+        //                 return false;
+        //             }
+        //
+        //             if (key === 'ArrowDown' || key === 'ArrowUp') {
+        //                 this.suggestions.updateSelection(event);
+        //                 return true;
+        //             }
+        //
+        //             return false;
+        //         }
+        //     });
+        // });
 
-        const list = [
-            {
-                label: 'List Ordered',
-                icon: this.sanitizeUrl(olIcon),
-                isActive: () => this.editor.isActive('orderedList'),
-                command: () => {
-                    this.editor.chain().focus().clearNodes().toggleOrderedList().run();
-                    this.showSuggestions = false;
-                }
-            },
-            {
-                label: 'List Unordered',
-                icon: this.sanitizeUrl(ulIcon),
-                isActive: () => this.editor.isActive('bulletList'),
-                command: () => {
-                    this.editor.chain().focus().clearNodes().toggleBulletList().run();
-                    this.showSuggestions = false;
-                }
-            }
-        ];
+        console.log('test');
+    }
 
-        const block = [
-            {
-                label: 'Blockquote',
-                icon: this.sanitizeUrl(quoteIcon),
-                isActive: () => this.editor.isActive('blockquote'),
-                command: () => {
-                    this.editor.chain().focus().clearNodes().toggleBlockquote().run();
-                    this.showSuggestions = false;
-                }
-            },
-            {
-                label: 'Code Block',
-                icon: this.sanitizeUrl(codeIcon),
-                isActive: () => this.editor.isActive('codeBlock'),
-                command: () => {
-                    this.editor.chain().focus().clearNodes().toggleCodeBlock().run();
-                    this.showSuggestions = false;
-                }
-            }
-        ];
-
-        this.menuItems = [...headings, ...paragraph, ...list, ...block];
-        this.editor.on('transaction', () => {
-            this.setSelectedItem();
-        });
-
-        this.editor.on('create', (editor: any) => {
-            console.log('create: ', editor);
-            this.editor.options.element.addEventListener('keydown', (event: KeyboardEvent) => {
-                const { key } = event;
-                if (this.showSuggestions) {
-                    if (key === 'Escape') {
-                        this.showSuggestions = false;
-                        return true;
-                    }
-
-                    if (key === 'Enter') {
-                        this.suggestions.execCommand();
-                        event.preventDefault();
-                        event.stopPropagation();
-                        return false;
-                    }
-
-                    if (key === 'ArrowDown' || key === 'ArrowUp') {
-                        this.suggestions.updateSelection(event);
-                        return true;
-                    }
-
-                    return false;
-                }
-            });
-        });
+    /**
+     * Update the current item selected
+     *
+     * @param {KeyboardEvent} event
+     * @memberof BubbleChangeDropdownComponent
+     */
+    updateSelection(event: KeyboardEvent) {
+        this.suggestions.updateSelection(event);
     }
 
     /**
@@ -141,20 +142,9 @@ export class BubbleChangeDropdownComponent implements OnInit {
         if (this.showSuggestions) {
             setTimeout(() => {
                 this.suggestions.updateActiveItem(
-                    this.menuItems.findIndex((item) => item === this.selectedOption)
+                    this.options.findIndex((item) => item === this.selectedOption)
                 );
             }, 0);
         }
-    }
-
-    private setSelectedItem(): void {
-        const activeMarks = this.menuItems.filter((option) => option.isActive());
-        // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
-        // can be active at the same time.
-        this.selectedOption = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
-    }
-
-    private sanitizeUrl(url: string): SafeUrl {
-        return this.domSanitizer.bypassSecurityTrustUrl(url);
     }
 }

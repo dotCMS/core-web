@@ -44,10 +44,6 @@ export class DotBlockEditorComponent implements OnInit {
                 StarterKit,
                 ContentletBlock(this.injector),
                 ImageBlock(this.injector),
-                ActionsMenu(this.injector, this.resolver),
-                DragHandler(this.injector, this.resolver),
-                ImageUpload(this.injector, this.resolver),
-                BubbleLinkFormExtension(this.injector, this.resolver),
                 BubbleMenu.configure({
                     element: document.querySelector('#bubbleMenu'),
                     shouldShow: shouldShowBubbleMenu,
@@ -58,10 +54,15 @@ export class DotBlockEditorComponent implements OnInit {
                         trigger: 'manual'
                     }
                 }),
+                ActionsMenu(this.injector, this.resolver),
+                DragHandler(this.injector, this.resolver),
+                ImageUpload(this.injector, this.resolver),
+                BubbleLinkFormExtension(this.injector, this.resolver),
+
                 // Marks Extensions
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph', 'listItem'] }),
-                Highlight.configure({ HTMLAttributes: { class: 'highlighted '} }),
+                Highlight.configure({ HTMLAttributes: { class: 'highlighted ' } }),
                 Link.configure({ openOnClick: true })
             ]
         });

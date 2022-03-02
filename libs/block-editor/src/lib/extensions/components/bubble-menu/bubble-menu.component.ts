@@ -1,5 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Editor } from '@tiptap/core';
+import { Level } from '@tiptap/extension-heading/src/heading';
+import {
+    codeIcon,
+    headerIcons,
+    olIcon,
+    pIcon,
+    quoteIcon,
+    ulIcon
+} from '../suggestions/suggestion-icons';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DotMenuItem } from '@dotcms/block-editor';
 
 export interface BubbleMenuItem {
     icon: string;
@@ -19,6 +30,8 @@ export class BubbleMenuComponent implements OnInit {
     public enabledMarks: string[] = [];
     public textAlings: string[] = ['left', 'center', 'right'];
     public activeMarks: string[] = [];
+    dropdownOptions: DotMenuItem[];
+    selectedOption: DotMenuItem;
 
     public items: BubbleMenuItem[] = [
         {
@@ -92,16 +105,94 @@ export class BubbleMenuComponent implements OnInit {
         }
     ];
 
+    constructor(private domSanitizer: DomSanitizer) {}
+
     ngOnInit() {
+        console.log('ngon');
         this.setEnabledMarks();
+
+        const headings = [...Array(3).keys()].map((level: Level) => {
+            const size: Level = (level + 1) as Level;
+            return {
+                label: `Heading ${size}`,
+                icon: this.sanitizeUrl(headerIcons[level]),
+                isActive: () => this.editor.isActive('heading', { level: size }),
+                command: () => {
+                    this.editor.chain().focus().clearNodes().setHeading({ level: size }).run();
+                    //  this.showSuggestions = false;
+                }
+            };
+        });
+
+        const list = [
+            {
+                label: 'Paragraph',
+                icon: this.sanitizeUrl(pIcon),
+                isActive: () => this.editor.isActive('paragraph', {}),
+                command: () => {
+                    console.log('setParagraph');
+                    this.editor.chain().focus().clearNodes().setParagraph().run();
+                    //   this.showSuggestions = false;
+                }
+            },
+            {
+                label: 'List Ordered',
+                icon: this.sanitizeUrl(olIcon),
+                isActive: () => this.editor.isActive('orderedList'),
+                command: () => {
+                    this.editor.chain().focus().clearNodes().toggleOrderedList().run();
+                    //  this.showSuggestions = false;
+                }
+            },
+            {
+                label: 'List Unordered',
+                icon: this.sanitizeUrl(ulIcon),
+                isActive: () => this.editor.isActive('bulletList'),
+                command: () => {
+                    this.editor.chain().focus().clearNodes().toggleBulletList().run();
+                    //    this.showSuggestions = false;
+                }
+            },
+            {
+                label: 'Blockquote',
+                icon: this.sanitizeUrl(quoteIcon),
+                isActive: () => this.editor.isActive('blockquote'),
+                command: () => {
+                    this.editor.chain().focus().clearNodes().toggleBlockquote().run();
+                    //   this.showSuggestions = false;
+                }
+            },
+            {
+                label: 'Code Block',
+                icon: this.sanitizeUrl(codeIcon),
+                isActive: () => this.editor.isActive('codeBlock'),
+                command: () => {
+                    this.editor.chain().focus().clearNodes().toggleCodeBlock().run();
+                    //   this.showSuggestions = false;
+                }
+            }
+        ];
+
+        this.dropdownOptions = [...headings, ...list];
+
+
+        const a<T> = {
+            name: 'test',
+            command: <T>
+        }
 
         /**
          * Every time the selection is updated, the active state of the buttons must be updated.
          */
-        this.editor.on('transaction', () => {
+        this.editor.on('transaction', (data) => {
+            console.log('data', data);
             this.setActiveMarks();
             this.updateActiveItems();
+            this.setSelectedItem();
         });
+        // this.editor.on('selectionUpdate', (data) => {
+        //     console.log('data', data);
+        // });
     }
 
     command(item: BubbleMenuItem): void {
@@ -159,7 +250,8 @@ export class BubbleMenuComponent implements OnInit {
             clearAll: () => {
                 this.editor.commands.unsetAllMarks();
                 this.editor.commands.clearNodes();
-            }
+            },
+            dropdownOptions: () => {}
         };
 
         markActions[item.markAction] ? markActions[item.markAction]() : null;
@@ -192,7 +284,6 @@ export class BubbleMenuComponent implements OnInit {
             ...Object.keys(this.editor.schema.marks),
             ...Object.keys(this.editor.schema.nodes)
         ];
-        console.log('enabledMarks: ', this.enabledMarks);
     }
 
     private setActiveMarks(): void {
@@ -200,5 +291,16 @@ export class BubbleMenuComponent implements OnInit {
             ...this.enabledMarks.filter((mark) => this.editor.isActive(mark)),
             ...this.textAlings.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
         ];
+    }
+
+    private sanitizeUrl(url: string): SafeUrl {
+        return this.domSanitizer.bypassSecurityTrustUrl(url);
+    }
+
+    private setSelectedItem(): void {
+        const activeMarks = this.dropdownOptions.filter((option) => option.isActive());
+        // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
+        // can be active at the same time.
+        this.selectedOption = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
     }
 }
