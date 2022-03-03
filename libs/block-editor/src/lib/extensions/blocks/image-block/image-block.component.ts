@@ -1,7 +1,7 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { AngularNodeViewComponent } from '../../../NodeViewRenderer';
 
-interface imageData {
+interface ImageData {
     asset: string;
     name: string;
 }
@@ -11,9 +11,9 @@ interface imageData {
     templateUrl: './image-block.component.html',
     styleUrls: ['./image-block.component.scss']
 })
-export class ImageBlockComponent extends AngularNodeViewComponent implements OnInit {
-    public data: imageData;
-    public href = '';
+export class ImageBlockComponent extends AngularNodeViewComponent implements OnInit, OnDestroy {
+    public data: ImageData;
+    public href: string;
 
     constructor(private _elementRef: ElementRef) {
         super();
@@ -21,10 +21,15 @@ export class ImageBlockComponent extends AngularNodeViewComponent implements OnI
 
     ngOnInit(): void {
         this.data = this.node.attrs.data;
+        this.editor.on('update', this.updateImageAttributes.bind(this));
+    }
 
-        this.editor.on('update', () => {
-            this._elementRef.nativeElement.style.textAlign = this.node.attrs.textAlign;
-            this.href = this.node.attrs.href;
-        });
+    ngOnDestroy(): void {
+        this.editor.off('update', this.updateImageAttributes.bind(this));
+    }
+
+    private updateImageAttributes(): void {
+        this._elementRef.nativeElement.style.textAlign = this.node.attrs.textAlign;
+        this.href = this.node.attrs.href;
     }
 }

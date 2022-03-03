@@ -3,8 +3,7 @@ import {
     OnInit,
     ComponentFactoryResolver,
     Injector,
-    ViewEncapsulation,
-    ViewContainerRef
+    ViewEncapsulation
 } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
@@ -25,7 +24,6 @@ import { Highlight } from '@tiptap/extension-highlight';
 import { Link } from '@tiptap/extension-link';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Underline } from '@tiptap/extension-underline';
-import { BubbleMenuComponent } from '../../../../../libs/block-editor/src/lib/extensions/components/bubble-menu/bubble-menu.component';
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -38,11 +36,7 @@ export class DotBlockEditorComponent implements OnInit {
 
     value = ''; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
-    constructor(
-        private viewContainerRef: ViewContainerRef,
-        private injector: Injector,
-        private resolver: ComponentFactoryResolver
-    ) {}
+    constructor(private injector: Injector, private resolver: ComponentFactoryResolver) {}
 
     ngOnInit() {
         this.editor = new Editor({
@@ -54,9 +48,8 @@ export class DotBlockEditorComponent implements OnInit {
                 DragHandler(this.injector, this.resolver),
                 ImageUpload(this.injector, this.resolver),
                 BubbleLinkFormExtension(this.injector, this.resolver),
-                DotBubbleMenuExtension(this.viewContainerRef),
                 DotBubbleMenuExtension.configure({
-                    element: BubbleMenuComponent,
+                    element: document.querySelector('#bubbleMenu'),
                     shouldShow: shouldShowBubbleMenu,
                     tippyOptions: {
                         duration: 500,
