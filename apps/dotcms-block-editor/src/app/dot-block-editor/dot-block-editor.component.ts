@@ -24,7 +24,10 @@ import { Highlight } from '@tiptap/extension-highlight';
 import { Link } from '@tiptap/extension-link';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Underline } from '@tiptap/extension-underline';
+<<<<<<< HEAD
 import { ViewContainerRef } from '@angular/core';
+=======
+>>>>>>> master
 
 @Component({
     selector: 'dotcms-block-editor',
@@ -53,7 +56,20 @@ export class DotBlockEditorComponent implements OnInit {
                 DragHandler(this.injector, this.resolver),
                 ImageUpload(this.injector, this.resolver),
                 BubbleLinkFormExtension(this.injector, this.resolver),
+<<<<<<< HEAD
                 DotBubbleMenuExtension(BubbleMenuComponent, this.viewContainerRef),
+=======
+                DotBubbleMenuExtension.configure({
+                    element: document.querySelector('#bubbleMenu'),
+                    shouldShow: shouldShowBubbleMenu,
+                    tippyOptions: {
+                        duration: 500,
+                        maxWidth: 'none',
+                        placement: 'top-start',
+                        trigger: 'manual'
+                    }
+                }),
+>>>>>>> master
                 // Marks Extensions
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph', 'listItem', 'dotImage'] }),
