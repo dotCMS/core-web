@@ -386,14 +386,14 @@ export class DotNavigationService {
 
     private getPageCurrentTitle(url: string, menu: DotMenu[]): string {
         let title = '';
-        for (let i = 0; i < menu.length; i++) {
-            for (let j = 0; j < menu[i].menuItems.length; j++) {
-                title =
-                    url.indexOf(menu[i].menuItems[j].menuLink) >= 0
-                        ? menu[i].menuItems[j].label
-                        : title;
-            }
-        }
+        const flattedMenu = menu
+            .reduce((a, { menuItems }) => [...a, ...menuItems], [])
+            .reduce((a, { label, menuLink }) => ({ ...a, [menuLink]: label }), {});
+
+        Object.entries(flattedMenu).forEach(([menuLink, label]: [string, string]) => {
+            title = url.indexOf(menuLink) >= 0 ? label : title;
+        });
+
         return title;
     }
 }
