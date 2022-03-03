@@ -38,7 +38,7 @@ export class BubbleMenuComponent implements OnInit {
     ngOnInit() {
         this.setEnabledMarks();
 
-        const optionsCommands = {
+        const dropDownOptionsCommand = {
             heading1: () => {
                 this.editor.chain().focus().clearNodes().setHeading({ level: 1 }).run();
             },
@@ -73,29 +73,56 @@ export class BubbleMenuComponent implements OnInit {
                         name: 'heading',
                         level: parseInt(option.id.slice(-1))
                     });
-                    console.log(a);
+                    //  console.log(a);
                     return a;
                 }
                 return false;
                 // return this.editor.isActive(option.id);
             };
             option.command = () => {
-                optionsCommands[option.id]();
+                dropDownOptionsCommand[option.id]();
                 this.dropdown.toggleSuggestions();
                 this.setSelectedItem();
             };
         });
 
+        this.editor.view.setProps({
+            handleKeyDown: (view, event) => {
+                const { key } = event;
+                console.log('-----Bubble-----');
+                if (this.dropdown?.showSuggestions) {
+                    if (key === 'Enter') {
+                        this.dropdown.suggestions.execCommand();
+                        return true;
+                    }
+
+                    if (key === 'ArrowDown' || key === 'ArrowUp') {
+                        this.dropdown.updateSelection(event);
+                        return true;
+                    }
+
+                    if (key === 'Escape') {
+                        this.dropdown.toggleSuggestions();
+                        return true;
+                    }
+                }
+
+                if (this.dropdown?.showSuggestions && (key === 'ArrowDown' || key === 'ArrowUp')) {
+                    console.log('handleKeyDown', event);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
         /**
          * Every time the editor is updated, the active state of the buttons must be updated.
          */
-
-        this.editor.on('transaction', (data) => {
+        this.editor.on('transaction', () => {
             this.setActiveMarks();
             this.updateActiveItems();
             this.setSelectedItem();
-            data.editor.state.tr.setMeta('beto', { data: 'hi' });
-            console.log('data AAA', data.editor.state.tr.getMeta('beto'));
         });
 
         /**
@@ -177,6 +204,8 @@ export class BubbleMenuComponent implements OnInit {
         markActions[item.markAction] ? markActions[item.markAction]() : null;
     }
 
+    private setDropDown() {}
+
     private updateActiveItems(): void {
         this.items.forEach((item) => {
             if (this.activeMarks.includes(item.markAction)) {
@@ -218,6 +247,6 @@ export class BubbleMenuComponent implements OnInit {
         // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
         // can be active at the same time.
         this.selectedOption = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
-        console.log(this.selectedOption);
+        //  console.log(this.selectedOption);
     }
 }
