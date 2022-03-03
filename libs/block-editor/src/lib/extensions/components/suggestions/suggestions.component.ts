@@ -56,13 +56,11 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             this.items = suggestionOptions;
             this.items.forEach((item) => {
                 item.command = () => {
-                    if (item.id.includes('heading')) {
-                        this.onSelection({
-                            type: { name: 'heading', level: parseInt(item.id.slice(-1)) }
-                        });
-                    } else {
-                        this.onSelection({ type: { name: item.id } });
-                    }
+                    item.id.includes('heading')
+                        ? this.onSelection({
+                              type: { name: 'heading', ...item.attributes }
+                          })
+                        : this.onSelection({ type: { name: item.id } });
                 };
             });
 
