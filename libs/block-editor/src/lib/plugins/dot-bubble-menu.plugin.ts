@@ -1,4 +1,3 @@
-import { BubbleMenuPluginProps, BubbleMenuViewProps } from '@tiptap/extension-bubble-menu';
 import { EditorView } from 'prosemirror-view';
 import { isNodeSelection, posToDOMRect } from '@tiptap/core';
 import { PluginKey, Plugin, EditorState } from 'prosemirror-state';
@@ -7,16 +6,15 @@ import { BubbleMenuView } from '@tiptap/extension-bubble-menu';
 // Utils
 import { getNodePosition } from '@dotcms/block-editor';
 import { ComponentRef } from '@angular/core';
-import { BubbleMenuItem } from '../extensions/components/bubble-menu/bubble-menu.component';
-import { bubbleMenuImageItems, bubbleMenuItems } from '../utils/bubble-menu.utils';
+import { bubbleMenuItems, bubbleMenuImageItems, isListNode } from '../utils/bubble-menu.utils';
 
-export declare type DotBubbleMenuPluginProps<T = any> = BubbleMenuPluginProps & {
-    component: ComponentRef<T>;
-};
-
-export declare type DotBubbleMenuViewProps<T = any> = BubbleMenuViewProps & {
-    component: ComponentRef<T>;
-};
+// Model
+import {
+    BubbleMenuItem,
+    BubbleMenuComponentProps,
+    DotBubbleMenuPluginProps,
+    DotBubbleMenuViewProps
+} from '@dotcms/block-editor';
 
 export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
     return new Plugin({
@@ -29,7 +27,7 @@ export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
 };
 
 export class DotBubbleMenuPluginView extends BubbleMenuView {
-    public component: ComponentRef<any>;
+    public component: ComponentRef<BubbleMenuComponentProps>;
 
     /* @Overrrider */
     constructor(props: DotBubbleMenuViewProps) {
@@ -44,7 +42,6 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
     /* @Overrrider */
     update(view: EditorView, oldState?: EditorState) {
-        this.updateComponent();
         const { state, composing } = view;
         const { doc, selection } = state;
         const isSame = oldState && oldState.doc.eq(doc) && oldState.selection.eq(selection);
@@ -89,92 +86,113 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 return posToDOMRect(view, from, to);
             }
         });
-
+        this.setMenuItems(doc, from);
+        this.updateComponent();
         this.show();
     }
 
+    setMenuItems(doc, from) {
+        const node = doc.nodeAt(from);
+        const isDotImage = node.type.name == 'dotImage';
+
+        this.component.instance.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
+    }
+
+    /* Update Component */
     updateComponent() {
         const { items } = this.component.instance;
-        const activeMarks = setActiveMarks(this.editor);
-        this.component.instance.items = updateActiveItems(items, activeMarks);
+        const aligment: string[] = ['left', 'center', 'right'];
+        const activeMarks = this.setActiveMarks(aligment);
+        this.component.instance.items = this.updateActiveItems(items, activeMarks);
         this.component.changeDetectorRef.detectChanges();
     }
 
+    updateActiveItems = (items: BubbleMenuItem[] = [], activeMarks: string[]): BubbleMenuItem[] => {
+        return items.map((item) => {
+            item.active = activeMarks.includes(item.markAction);
+            return item;
+        });
+    };
+
+    enabledMarks = (): string[] => {
+        return [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
+    };
+
+    setActiveMarks = (aligment = []): string[] => {
+        return [
+            ...this.enabledMarks().filter((mark) => this.editor.isActive(mark)),
+            ...aligment.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
+        ];
+    };
+
     /* Custom Functions */
     subscribeComponentEvents() {
-        this.component.instance.editorCommand.subscribe((event: BubbleMenuItem) => {
-            bubbleMenuAction(this.editor, event.markAction);
+        this.component.instance.command.subscribe((item: BubbleMenuItem) => {
+            this.bubbleMenuAction(item);
         });
     }
-}
 
-// Temporal
-const bubbleMenuAction = (editor, action) => {
-    switch (action) {
-        case 'bold':
-            editor.commands.toggleBold();
-            break;
-        case 'italic':
-            editor.commands.toggleItalic();
-            break;
-        case 'strike':
-            editor.commands.toggleStrike();
-            break;
-        case 'underline':
-            editor.commands.toggleUnderline();
-            break;
-        // case 'left':
-        //     this.toggleTextAlign('left', item.active);
-        // break;
-        // case 'center':
-        //     this.toggleTextAlign('center', item.active);
-        // break;
-        // case 'right':
-        //     this.toggleTextAlign('right', item.active);
-        // break;
-        case 'bulletList':
-            editor.commands.toggleBulletList();
-            break;
-        case 'orderedList':
-            editor.commands.toggleOrderedList();
-            break;
-        // case 'indent':
-        //     if (this.isListNode()) {
-        //         this.editor.commands.sinkListItem('listItem');
-        //     }
-        // break;
-        // case 'outdent':
-        //     if (this.isListNode()) {
-        //         this.editor.commands.liftListItem('listItem');
-        //     }
-        // break;
-        case 'link':
-            editor.commands.toogleLinkForm();
-            break;
-        case 'clearAll':
-            editor.commands.unsetAllMarks();
-            editor.commands.clearNodes();
-            break;
+    /* Actions */
+    bubbleMenuAction(item: BubbleMenuItem) {
+        const { markAction: action, active } = item;
+        switch (action) {
+            case 'bold':
+                this.editor.commands.toggleBold();
+                break;
+            case 'italic':
+                this.editor.commands.toggleItalic();
+                break;
+            case 'strike':
+                this.editor.commands.toggleStrike();
+                break;
+            case 'underline':
+                this.editor.commands.toggleUnderline();
+                break;
+            case 'left':
+                if (active) {
+                    this.editor.commands.unsetTextAlign();
+                } else {
+                    this.editor.commands.setTextAlign(action);
+                }
+                // toggleTextAlign('left', active);
+                break;
+            case 'center':
+                if (active) {
+                    this.editor.commands.unsetTextAlign();
+                } else {
+                    this.editor.commands.setTextAlign(action);
+                }
+                break;
+            case 'right':
+                if (active) {
+                    this.editor.commands.unsetTextAlign();
+                } else {
+                    this.editor.commands.setTextAlign(action);
+                }
+                break;
+            case 'bulletList':
+                this.editor.commands.toggleBulletList();
+                break;
+            case 'orderedList':
+                this.editor.commands.toggleOrderedList();
+                break;
+            case 'indent':
+                if (isListNode(this.editor)) {
+                    this.editor.commands.sinkListItem('listItem');
+                }
+                break;
+            case 'outdent':
+                if (isListNode(this.editor)) {
+                    this.editor.commands.liftListItem('listItem');
+                }
+                break;
+            case 'link':
+                this.editor.commands.toogleLinkForm();
+                break;
+            case 'clearAll':
+                this.editor.commands.unsetAllMarks();
+                this.editor.commands.clearNodes();
+                break;
+        }
     }
-};
-
-const enabledMarks = (editor): string[] => {
-    return [...Object.keys(editor.schema.marks), ...Object.keys(editor.schema.nodes)];
-};
-
-const setActiveMarks = (editor): string[] => {
-    return [
-        ...enabledMarks(editor).filter((mark) => editor.isActive(mark))
-        // ...this.textAlings.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
-    ];
-};
-
-const updateActiveItems = (
-    items: BubbleMenuItem[] = [],
-    activeMarks: string[]
-): BubbleMenuItem[] => {
-    return items.map((item) => {
-        item.active = activeMarks.includes(item.markAction);
-        return item;
-    });
-};
+}
