@@ -1,6 +1,12 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Editor } from '@tiptap/core';
-import { bubbleMenuItems, bubbleMenuImageItems } from '@dotcms/block-editor';
+import {
+    bubbleMenuItems,
+    bubbleMenuImageItems,
+    DotMenuItem,
+    suggestionOptions
+} from '@dotcms/block-editor';
+import { BubbleChangeDropdownComponent } from '../bubble-change-dropdown/bubble-change-dropdown.component';
 
 export interface BubbleMenuItem {
     icon: string;
@@ -16,14 +22,18 @@ export interface BubbleMenuItem {
 })
 export class BubbleMenuComponent implements OnInit, OnDestroy {
     @Input() editor: Editor;
+    @ViewChild('dropdown') dropdown: BubbleChangeDropdownComponent;
 
     public enabledMarks: string[] = [];
     public textAlings: string[] = ['left', 'center', 'right'];
     public activeMarks: string[] = [];
+    public dropdownOptions: DotMenuItem[];
+    public selectedOption: DotMenuItem;
 
     public items: BubbleMenuItem[] = [];
 
     ngOnInit() {
+        this.setDropdownOptions();
         this.setEnabledMarks();
 
         /**
@@ -106,6 +116,7 @@ export class BubbleMenuComponent implements OnInit, OnDestroy {
     private onUpdate(): void {
         this.setActiveMarks();
         this.updateActiveItems();
+        this.setSelectedItem();
     }
 
     private setMenuItems({ editor: { state } }: { editor: Editor }): void {
@@ -156,5 +167,55 @@ export class BubbleMenuComponent implements OnInit, OnDestroy {
             ...this.enabledMarks.filter((mark) => this.editor.isActive(mark)),
             ...this.textAlings.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
         ];
+    }
+
+    private setDropdownOptions(): void {
+        const dropDownOptionsCommand = {
+            heading1: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 1 }).run();
+            },
+            heading2: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 2 }).run();
+            },
+            heading3: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 3 }).run();
+            },
+            paragraph: () => {
+                this.editor.chain().focus().clearNodes().setParagraph().run();
+            },
+            orderedList: () => {
+                this.editor.chain().focus().clearNodes().toggleOrderedList().run();
+            },
+            bulletList: () => {
+                this.editor.chain().focus().clearNodes().toggleBulletList().run();
+            },
+            blockquote: () => {
+                this.editor.chain().focus().clearNodes().toggleBlockquote().run();
+            },
+            codeBlock: () => {
+                this.editor.chain().focus().clearNodes().toggleCodeBlock().run();
+            }
+        };
+
+        this.dropdownOptions = suggestionOptions.filter((item) => item.id != 'horizontalLine');
+        this.dropdownOptions.forEach((option) => {
+            option.isActive = () => {
+                return option.id.includes('heading')
+                    ? this.editor.isActive('heading', option.attributes)
+                    : this.editor.isActive(option.id);
+            };
+            option.command = () => {
+                dropDownOptionsCommand[option.id]();
+                this.dropdown.toggleSuggestions();
+                this.setSelectedItem();
+            };
+        });
+    }
+
+    private setSelectedItem(): void {
+        const activeMarks = this.dropdownOptions.filter((option) => option.isActive());
+        // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
+        // can be active at the same time.
+        this.selectedOption = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
     }
 }

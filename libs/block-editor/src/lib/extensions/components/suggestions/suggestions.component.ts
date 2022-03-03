@@ -25,6 +25,7 @@ export interface SuggestionsCommandProps {
 export interface DotMenuItem extends Omit<MenuItem, 'icon'> {
     icon: string | SafeUrl;
     isActive?: () => boolean;
+    attributes?: Record<string, unknown>;
 }
 
 @Component({
@@ -54,8 +55,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             // assign the default suggestions options.
             this.items = suggestionOptions;
             this.items.forEach((item) => {
-                item.command = (data) => {
-                    console.log(data);
+                item.command = () => {
                     if (item.id.includes('heading')) {
                         this.onSelection({
                             type: { name: 'heading', level: parseInt(item.id.slice(-1)) }
@@ -147,7 +147,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     onMouseEnter(e: MouseEvent) {
-        console.log('mouse enter');
         // If mouse does not move then leave the function.
         if (!this.mouseMove) {
             return;
@@ -165,7 +164,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     onMouseDown(e: MouseEvent, item: MenuItem) {
-        console.log('onMouseDown');
         e.preventDefault();
         item.command();
     }

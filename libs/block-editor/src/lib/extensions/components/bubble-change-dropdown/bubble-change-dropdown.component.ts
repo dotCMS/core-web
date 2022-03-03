@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
 
 @Component({
@@ -6,7 +6,7 @@ import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
     templateUrl: './bubble-change-dropdown.component.html',
     styleUrls: ['./bubble-change-dropdown.component.scss']
 })
-export class BubbleChangeDropdownComponent implements OnInit {
+export class BubbleChangeDropdownComponent {
     @Input() options: DotMenuItem[];
     @Input() selectedOption: DotMenuItem;
     @Output() selected: EventEmitter<DotMenuItem> = new EventEmitter(false);
@@ -14,12 +14,6 @@ export class BubbleChangeDropdownComponent implements OnInit {
     @ViewChild('suggestions') suggestions: SuggestionsComponent;
 
     showSuggestions = false;
-
-    constructor() {}
-
-    ngOnInit(): void {
-        console.log('test');
-    }
 
     /**
      * Update the current item selected

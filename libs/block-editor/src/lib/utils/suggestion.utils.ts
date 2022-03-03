@@ -17,7 +17,8 @@ const headings = [...Array(3).keys()].map((level) => {
     return {
         label: `Heading ${size}`,
         icon: sanitizeUrl(headerIcons[level]),
-        id: `heading${size}`
+        id: `heading${size}`,
+        attributes: { level: size }
     };
 });
 
@@ -33,12 +34,12 @@ const list = [
     {
         label: 'List Ordered',
         icon: sanitizeUrl(olIcon),
-        id: 'listOrdered'
+        id: 'orderedList'
     },
     {
         label: 'List Unordered',
         icon: sanitizeUrl(ulIcon),
-        id: 'listUnordered'
+        id: 'bulletList'
     }
 ];
 
@@ -46,7 +47,7 @@ const block = [
     {
         label: 'Blockquote',
         icon: sanitizeUrl(quoteIcon),
-        id: 'blockQuote'
+        id: 'blockquote'
     },
     {
         label: 'Code Block',
