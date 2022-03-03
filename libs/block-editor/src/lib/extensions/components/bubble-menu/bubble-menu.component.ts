@@ -1,6 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Attribute, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Editor } from '@tiptap/core';
-import { bubbleMenuItems, bubbleMenuImageItems } from '@dotcms/block-editor';
+import {
+    bubbleMenuItems,
+    bubbleMenuImageItems,
+    DotMenuItem,
+    suggestionOptions,
+    SuggestionsComponent
+} from '@dotcms/block-editor';
+import { BubbleChangeDropdownComponent } from '../bubble-change-dropdown/bubble-change-dropdown.component';
 
 export interface BubbleMenuItem {
     icon: string;
@@ -16,22 +23,79 @@ export interface BubbleMenuItem {
 })
 export class BubbleMenuComponent implements OnInit {
     @Input() editor: Editor;
+    @ViewChild('dropdown') dropdown: BubbleChangeDropdownComponent;
+
+    @Attribute('isDropDownOpen') isDropDownOpen = true;
 
     public enabledMarks: string[] = [];
     public textAlings: string[] = ['left', 'center', 'right'];
     public activeMarks: string[] = [];
+    public dropdownOptions: DotMenuItem[];
+    public selectedOption: DotMenuItem;
 
     public items: BubbleMenuItem[] = [];
 
     ngOnInit() {
         this.setEnabledMarks();
 
+        const optionsCommands = {
+            heading1: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 1 }).run();
+            },
+            heading2: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 2 }).run();
+            },
+            heading3: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 3 }).run();
+            },
+            paragraph: () => {
+                this.editor.chain().focus().clearNodes().setParagraph().run();
+            },
+            listOrdered: () => {
+                this.editor.chain().focus().clearNodes().toggleOrderedList().run();
+            },
+            listUnordered: () => {
+                this.editor.chain().focus().clearNodes().toggleBulletList().run();
+            },
+            blockQuote: () => {
+                this.editor.chain().focus().clearNodes().toggleBlockquote().run();
+            },
+            codeBlock: () => {
+                this.editor.chain().focus().clearNodes().toggleCodeBlock().run();
+            }
+        };
+        this.dropdownOptions = suggestionOptions;
+        this.dropdownOptions.forEach((option) => {
+            option.isActive = () => {
+                //TODO: find active
+                if (option.id.includes('heading')) {
+                    const a = this.editor.isActive({
+                        name: 'heading',
+                        level: parseInt(option.id.slice(-1))
+                    });
+                    console.log(a);
+                    return a;
+                }
+                return false;
+                // return this.editor.isActive(option.id);
+            };
+            option.command = () => {
+                optionsCommands[option.id]();
+                this.dropdown.toggleSuggestions();
+                this.setSelectedItem();
+            };
+        });
+
         /**
          * Every time the editor is updated, the active state of the buttons must be updated.
          */
-        this.editor.on('transaction', () => {
+
+        this.editor.on('transaction', (data) => {
             this.setActiveMarks();
             this.updateActiveItems();
+            this.setSelectedItem();
+            data.editor.state.tr.setMeta('beto', { data: 'hi' });
+            console.log('data AAA', data.editor.state.tr.getMeta('beto'));
         });
 
         /**
@@ -147,5 +211,13 @@ export class BubbleMenuComponent implements OnInit {
             ...this.enabledMarks.filter((mark) => this.editor.isActive(mark)),
             ...this.textAlings.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
         ];
+    }
+
+    private setSelectedItem(): void {
+        const activeMarks = this.dropdownOptions.filter((option) => option.isActive());
+        // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
+        // can be active at the same time.
+        this.selectedOption = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
+        console.log(this.selectedOption);
     }
 }

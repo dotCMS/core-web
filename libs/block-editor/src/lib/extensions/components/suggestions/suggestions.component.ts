@@ -14,16 +14,8 @@ import { MenuItem } from 'primeng/api';
 import { SuggestionsService } from '../../services/suggestions/suggestions.service';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import {
-    headerIcons,
-    pIcon,
-    ulIcon,
-    olIcon,
-    quoteIcon,
-    codeIcon,
-    lineIcon
-} from './suggestion-icons';
+import { SafeUrl } from '@angular/platform-browser';
+import { suggestionOptions } from '@dotcms/block-editor';
 
 export interface SuggestionsCommandProps {
     payload?: DotCMSContentlet;
@@ -55,104 +47,24 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
         this.mouseMove = true;
     }
 
-    constructor(
-        private suggestionsService: SuggestionsService,
-        private cd: ChangeDetectorRef,
-        private domSanitizer: DomSanitizer
-    ) {}
+    constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         if (this.items?.length === 0) {
-            const headings = [...Array(3).keys()].map((level) => {
-                const size = level + 1;
-                return {
-                    label: `Heading ${size}`,
-                    icon: this.sanitizeUrl(headerIcons[level]),
-                    command: () => {
+            // assign the default suggestions options.
+            this.items = suggestionOptions;
+            this.items.forEach((item) => {
+                item.command = (data) => {
+                    console.log(data);
+                    if (item.id.includes('heading')) {
                         this.onSelection({
-                            type: {
-                                name: 'heading',
-                                level: level + 1
-                            }
+                            type: { name: 'heading', level: parseInt(item.id.slice(-1)) }
                         });
+                    } else {
+                        this.onSelection({ type: { name: item.id } });
                     }
                 };
             });
-
-            const paragraph = [
-                {
-                    label: 'Paragraph',
-                    icon: this.sanitizeUrl(pIcon),
-                    command: () => {
-                        this.onSelection({
-                            type: {
-                                name: 'paragraph'
-                            }
-                        });
-                    }
-                }
-            ];
-
-            const list = [
-                {
-                    label: 'List Ordered',
-                    icon: this.sanitizeUrl(olIcon),
-                    command: () => {
-                        this.onSelection({
-                            type: {
-                                name: 'listOrdered'
-                            }
-                        });
-                    }
-                },
-                {
-                    label: 'List Unordered',
-                    icon: this.sanitizeUrl(ulIcon),
-                    command: () => {
-                        this.onSelection({
-                            type: {
-                                name: 'listUnordered'
-                            }
-                        });
-                    }
-                }
-            ];
-
-            const block = [
-                {
-                    label: 'Blockquote',
-                    icon: this.sanitizeUrl(quoteIcon),
-                    command: () => {
-                        this.onSelection({
-                            type: {
-                                name: 'blockQuote'
-                            }
-                        });
-                    }
-                },
-                {
-                    label: 'Code Block',
-                    icon: this.sanitizeUrl(codeIcon),
-                    command: () => {
-                        this.onSelection({
-                            type: {
-                                name: 'codeBlock'
-                            }
-                        });
-                    }
-                },
-                {
-                    label: 'Horizontal Line',
-                    icon: this.sanitizeUrl(lineIcon),
-                    command: () => {
-                        this.onSelection({
-                            type: {
-                                name: 'horizontalLine'
-                            }
-                        });
-                    }
-                }
-            ];
 
             this.items = [
                 {
@@ -162,10 +74,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                         this.initContentletSelection();
                     }
                 },
-                ...headings,
-                ...paragraph,
-                ...list,
-                ...block
+                ...this.items
             ];
         }
     }
@@ -323,9 +232,5 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                 this.cd.detectChanges();
                 this.resetKeyManager();
             });
-    }
-
-    private sanitizeUrl(url: string): SafeUrl {
-        return this.domSanitizer.bypassSecurityTrustUrl(url);
     }
 }

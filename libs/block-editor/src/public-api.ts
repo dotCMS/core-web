@@ -35,6 +35,7 @@ export * from './lib/extensions/blocks/contentlet-block/contentlet-block.extensi
 
 // Editor utils
 export * from './lib/utils/bubble-menu.utils';
+export * from './lib/utils/suggestion.utils';
 
 // Services
 export * from './lib/extensions/services/suggestions/suggestions.service';

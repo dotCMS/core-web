@@ -1,5 +1,6 @@
 <div class="bubble-menu" (mousedown)="preventDeSelection($event)">
     <dotcms-bubble-change-dropdown
+        #dropdown
         [options]="dropdownOptions"
         [selectedOption]="selectedOption">
     </dotcms-bubble-change-dropdown>

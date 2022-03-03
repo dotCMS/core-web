@@ -6,6 +6,7 @@ import { BubbleMenuView } from '@tiptap/extension-bubble-menu';
 
 // Utils
 import { getNodePosition } from '@dotcms/block-editor';
+import { BubbleMenuComponent } from '../extensions/components/bubble-menu/bubble-menu.component';
 
 export const DotBubbleMenuPlugin = (options: BubbleMenuPluginProps) => {
     return new Plugin({
@@ -13,7 +14,43 @@ export const DotBubbleMenuPlugin = (options: BubbleMenuPluginProps) => {
             typeof options.pluginKey === 'string'
                 ? new PluginKey(options.pluginKey)
                 : options.pluginKey,
-        view: (view) => new DotBubbleMenuPluginView({ view, ...options })
+        view: (view) => new DotBubbleMenuPluginView({ view, ...options }),
+        props: {
+            /**
+             * Catch and handle the keydown in the plugin
+             *
+             * @param {EditorView} view
+             * @param {KeyboardEvent} event
+             * @return {*}
+             */
+            handleKeyDown(view: EditorView, event: KeyboardEvent) {
+                //const { open, range } = this.getState(view.state);
+                const bubbleMenuComponent: BubbleMenuComponent =
+                    options.element as unknown as BubbleMenuComponent;
+                // console.log('event view', view);
+                // console.log('event', event);
+                // console.log('showSuggestions', bubbleMenuComponent);
+                // setTimeout(() => {
+                //     console.log('showSuggestions 2: ', bubbleMenuComponent.dropdown);
+                // }, 10);
+                console.log('options.pluginKe', options.pluginKey);
+                console.log('options.tippyOptions', options.tippyOptions);
+
+                if (bubbleMenuComponent.dropdown?.showSuggestions) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    console.log('handle key down', view);
+                    console.log('handle key down', event);
+                }
+
+                return false;
+
+                // if (!open) {
+                //     return false;
+                // }
+                // return options.render().onKeyDown({ event, range, view });
+            }
+        }
     });
 };
 
