@@ -4,7 +4,7 @@ import { PluginKey, Plugin, EditorState } from 'prosemirror-state';
 import { BubbleMenuView } from '@tiptap/extension-bubble-menu';
 
 // Utils
-import { getNodePosition } from '@dotcms/block-editor';
+import { getNodePosition, suggestionOptions } from '@dotcms/block-editor';
 import { ComponentRef } from '@angular/core';
 import { bubbleMenuItems, bubbleMenuImageItems, isListNode } from '../utils/bubble-menu.utils';
 
@@ -17,12 +17,43 @@ import {
 } from '@dotcms/block-editor';
 
 export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
+    const component = options.component.instance;
+
     return new Plugin({
         key:
             typeof options.pluginKey === 'string'
                 ? new PluginKey(options.pluginKey)
                 : options.pluginKey,
-        view: (view) => new DotBubbleMenuPluginView({ view, ...options })
+        view: (view) => new DotBubbleMenuPluginView({ view, ...options }),
+        props: {
+            /**
+             * Catch and handle the keydown in the plugin
+             *
+             * @param {EditorView} view
+             * @param {KeyboardEvent} event
+             * @return {*}
+             */
+            handleKeyDown(view: EditorView, event: KeyboardEvent) {
+                const { key } = event;
+                if (component.dropdown.showSuggestions) {
+                    if (key === 'Escape') {
+                        component.dropdown.toggleSuggestions();
+                        return true;
+                    }
+
+                    if (key === 'Enter') {
+                        component.dropdown.execCommand();
+                        return true;
+                    }
+
+                    if (key === 'ArrowDown' || key === 'ArrowUp') {
+                        component.dropdown.updateSelection(event);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
     });
 };
 
@@ -37,6 +68,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         // New Properties
         this.component = props.component;
         this.component.instance.command.subscribe(this.exeCommand.bind(this));
+        this.setDropdownOptions();
     }
 
     /* @Overrrider */
@@ -88,6 +120,11 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         this.setMenuItems(doc, from);
         this.updateComponent();
         this.show();
+    }
+
+    show() {
+        this.component.instance.dropdown.showSuggestions = false;
+        this.tippy?.show();
     }
 
     /* @Overrrider */
@@ -191,5 +228,60 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         } else {
             this.editor.commands.setTextAlign(alignment);
         }
+    }
+
+    setDropdownOptions() {
+        const dropdownOptions = suggestionOptions.filter((item) => item.id != 'horizontalLine');
+        const dropDownOptionsCommand = {
+            heading1: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 1 }).run();
+            },
+            heading2: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 2 }).run();
+            },
+            heading3: () => {
+                this.editor.chain().focus().clearNodes().setHeading({ level: 3 }).run();
+            },
+            paragraph: () => {
+                this.editor.chain().focus().clearNodes().setParagraph().run();
+            },
+            orderedList: () => {
+                this.editor.chain().focus().clearNodes().toggleOrderedList().run();
+            },
+            bulletList: () => {
+                this.editor.chain().focus().clearNodes().toggleBulletList().run();
+            },
+            blockquote: () => {
+                this.editor.chain().focus().clearNodes().toggleBlockquote().run();
+            },
+            codeBlock: () => {
+                this.editor.chain().focus().clearNodes().toggleCodeBlock().run();
+            }
+        };
+
+        dropdownOptions.forEach((option) => {
+            option.isActive = () => {
+                return option.id.includes('heading')
+                    ? this.editor.isActive('heading', option.attributes)
+                    : this.editor.isActive(option.id);
+            };
+            option.command = () => {
+                dropDownOptionsCommand[option.id]();
+                this.component.instance.dropdown.showSuggestions = false;
+                this.setSelectedDropDownItem();
+            };
+        });
+        this.component.instance.dropdown.options = dropdownOptions;
+        this.setSelectedDropDownItem();
+    }
+
+    setSelectedDropDownItem() {
+        const activeMarks = this.component.instance.dropdown.options.filter((option) =>
+            option.isActive()
+        );
+        // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
+        // can be active at the same time.
+        this.component.instance.dropdown.selected =
+            activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
     }
 }

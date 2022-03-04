@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
 
 @Component({
@@ -8,12 +8,10 @@ import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
 })
 export class BubbleChangeDropdownComponent {
     @Input() options: DotMenuItem[];
-    @Input() selectedOption: DotMenuItem;
-    @Output() selected: EventEmitter<DotMenuItem> = new EventEmitter(false);
+    @Input() selected: DotMenuItem;
+    @Input() showSuggestions = false;
 
     @ViewChild('suggestions') suggestions: SuggestionsComponent;
-
-    showSuggestions = false;
 
     /**
      * Update the current item selected
@@ -26,6 +24,15 @@ export class BubbleChangeDropdownComponent {
     }
 
     /**
+     * Execute the item command
+     *
+     * @memberof BubbleChangeDropdownComponent
+     */
+    execCommand() {
+        this.suggestions.execCommand();
+    }
+
+    /**
      * Toggle the visibility of the Suggestions.
      *
      * @memberof BubbleChangeDropdownComponent
@@ -35,7 +42,7 @@ export class BubbleChangeDropdownComponent {
         if (this.showSuggestions) {
             setTimeout(() => {
                 this.suggestions.updateActiveItem(
-                    this.options.findIndex((item) => item === this.selectedOption)
+                    this.options.findIndex((item) => item === this.selected)
                 );
             }, 0);
         }
