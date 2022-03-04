@@ -12,7 +12,6 @@ const defaultTippyOptions: Partial<Props> = {
     trigger: 'manual'
 };
 
-// TODO: Create a Type for this Generic Component
 export function DotBubbleMenuExtension(
     type: Type<BubbleMenuComponentProps>,
     viewContainerRef: ViewContainerRef
