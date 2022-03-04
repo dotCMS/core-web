@@ -36,8 +36,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
         // New Properties
         this.component = props.component;
-        this.component.instance.items = bubbleMenuItems;
-        this.subscribeComponentEvents();
+        this.component.instance.command.subscribe(this.exeCommand.bind(this));
     }
 
     /* @Overrrider */
@@ -91,11 +90,14 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         this.show();
     }
 
-    setMenuItems(doc, from) {
-        const node = doc.nodeAt(from);
-        const isDotImage = node.type.name == 'dotImage';
-
-        this.component.instance.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
+    /* @Overrrider */
+    destroy() {
+        this.tippy?.destroy();
+        this.element.removeEventListener('mousedown', this.mousedownHandler, { capture: true });
+        this.view.dom.removeEventListener('dragstart', this.dragstartHandler);
+        this.editor.off('focus', this.focusHandler);
+        this.editor.off('blur', this.blurHandler);
+        this.component.instance.command.unsubscribe();
     }
 
     /* Update Component */
@@ -125,15 +127,15 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         ];
     };
 
-    /* Custom Functions */
-    subscribeComponentEvents() {
-        this.component.instance.command.subscribe((item: BubbleMenuItem) => {
-            this.bubbleMenuAction(item);
-        });
+    setMenuItems(doc, from) {
+        const node = doc.nodeAt(from);
+        const isDotImage = node.type.name == 'dotImage';
+
+        this.component.instance.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
     }
 
-    /* Actions */
-    bubbleMenuAction(item: BubbleMenuItem) {
+    /* Run commands */
+    exeCommand(item: BubbleMenuItem) {
         const { markAction: action, active } = item;
         switch (action) {
             case 'bold':
@@ -149,26 +151,13 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 this.editor.commands.toggleUnderline();
                 break;
             case 'left':
-                if (active) {
-                    this.editor.commands.unsetTextAlign();
-                } else {
-                    this.editor.commands.setTextAlign(action);
-                }
-                // toggleTextAlign('left', active);
+                this.toggleTextAlign(action, active);
                 break;
             case 'center':
-                if (active) {
-                    this.editor.commands.unsetTextAlign();
-                } else {
-                    this.editor.commands.setTextAlign(action);
-                }
+                this.toggleTextAlign(action, active);
                 break;
             case 'right':
-                if (active) {
-                    this.editor.commands.unsetTextAlign();
-                } else {
-                    this.editor.commands.setTextAlign(action);
-                }
+                this.toggleTextAlign(action, active);
                 break;
             case 'bulletList':
                 this.editor.commands.toggleBulletList();
@@ -193,6 +182,14 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 this.editor.commands.unsetAllMarks();
                 this.editor.commands.clearNodes();
                 break;
+        }
+    }
+
+    toggleTextAlign(aligent, active) {
+        if (active) {
+            this.editor.commands.unsetTextAlign();
+        } else {
+            this.editor.commands.setTextAlign(action);
         }
     }
 }
