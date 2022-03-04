@@ -4,6 +4,7 @@ on:
         branches:
             - release-*
             - master
+            - fix-build-1
 jobs:
     changes:
         runs-on: ubuntu-latest
