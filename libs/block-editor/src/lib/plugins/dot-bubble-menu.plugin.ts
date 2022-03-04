@@ -123,6 +123,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     }
 
     show() {
+        this.setSelectedDropDownItem();
         this.component.instance.dropdown.showSuggestions = false;
         this.tippy?.show();
     }

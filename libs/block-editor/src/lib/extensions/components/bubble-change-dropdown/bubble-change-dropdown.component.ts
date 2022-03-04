@@ -40,6 +40,7 @@ export class BubbleChangeDropdownComponent {
     toggleSuggestions() {
         this.showSuggestions = !this.showSuggestions;
         if (this.showSuggestions) {
+            //wait render of suggestion component.
             setTimeout(() => {
                 this.suggestions.updateActiveItem(
                     this.options.findIndex((item) => item === this.selected)

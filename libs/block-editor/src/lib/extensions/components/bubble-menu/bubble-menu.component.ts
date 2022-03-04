@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { BubbleMenuItem, DotMenuItem, BubbleChangeDropdownComponent } from '@dotcms/block-editor';
+import { BubbleMenuItem, BubbleChangeDropdownComponent } from '@dotcms/block-editor';
 
 @Component({
     selector: 'dotcms-bubble-menu',
