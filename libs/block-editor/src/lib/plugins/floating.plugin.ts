@@ -231,7 +231,6 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
              * @return {*}
              */
             handleKeyDown(view: EditorView, event: KeyboardEvent) {
-                console.log('-----floating---');
                 const { open, range } = this.getState(view.state);
                 if (!open) {
                     return false;

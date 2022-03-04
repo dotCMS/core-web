@@ -51,6 +51,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
 
     ngOnInit(): void {
+        console.log('----ask if there are options');
         if (this.items?.length === 0) {
             // assign the default suggestions options.
             this.items = suggestionOptions;
