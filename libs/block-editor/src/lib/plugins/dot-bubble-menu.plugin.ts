@@ -185,11 +185,11 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         }
     }
 
-    toggleTextAlign(aligent, active) {
+    toggleTextAlign(alignment, active) {
         if (active) {
             this.editor.commands.unsetTextAlign();
         } else {
-            this.editor.commands.setTextAlign(action);
+            this.editor.commands.setTextAlign(alignment);
         }
     }
 }
