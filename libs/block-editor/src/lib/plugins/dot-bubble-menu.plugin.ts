@@ -1,22 +1,20 @@
-import { BubbleMenuPluginProps, BubbleMenuViewProps } from '@tiptap/extension-bubble-menu';
 import { EditorView } from 'prosemirror-view';
 import { isNodeSelection, posToDOMRect } from '@tiptap/core';
 import { PluginKey, Plugin, EditorState } from 'prosemirror-state';
 import { BubbleMenuView } from '@tiptap/extension-bubble-menu';
 
 // Utils
-import { DotMenuItem, getNodePosition, suggestionOptions } from '@dotcms/block-editor';
+import { getNodePosition } from '@dotcms/block-editor';
 import { ComponentRef } from '@angular/core';
-import { BubbleMenuItem } from '../extensions/components/bubble-menu/bubble-menu.component';
-import { bubbleMenuImageItems, bubbleMenuItems } from '../utils/bubble-menu.utils';
+import { bubbleMenuItems, bubbleMenuImageItems, isListNode } from '../utils/bubble-menu.utils';
 
-export declare type DotBubbleMenuPluginProps<T = any> = BubbleMenuPluginProps & {
-    component: ComponentRef<T>;
-};
-
-export declare type DotBubbleMenuViewProps<T = any> = BubbleMenuViewProps & {
-    component: ComponentRef<T>;
-};
+// Model
+import {
+    BubbleMenuItem,
+    BubbleMenuComponentProps,
+    DotBubbleMenuPluginProps,
+    DotBubbleMenuViewProps
+} from '@dotcms/block-editor';
 
 export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
     return new Plugin({
@@ -29,7 +27,7 @@ export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
 };
 
 export class DotBubbleMenuPluginView extends BubbleMenuView {
-    public component: ComponentRef<any>;
+    public component: ComponentRef<BubbleMenuComponentProps>;
 
     /* @Overrrider */
     constructor(props: DotBubbleMenuViewProps) {
@@ -38,19 +36,11 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
         // New Properties
         this.component = props.component;
-        this.component.instance.items = bubbleMenuItems;
-        console.log('-----set dropdown options ---');
-        this.component.instance.dropdownOptions = setDropdownOptions(props.editor);
-        console.log(
-            'this.component.instance.dropdownOptions',
-            this.component.instance.dropdownOptions
-        );
-        this.subscribeComponentEvents();
+        this.component.instance.command.subscribe(this.exeCommand.bind(this));
     }
 
     /* @Overrrider */
     update(view: EditorView, oldState?: EditorState) {
-        this.updateComponent();
         const { state, composing } = view;
         const { doc, selection } = state;
         const isSame = oldState && oldState.doc.eq(doc) && oldState.selection.eq(selection);
@@ -95,145 +85,111 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 return posToDOMRect(view, from, to);
             }
         });
-
+        this.setMenuItems(doc, from);
+        this.updateComponent();
         this.show();
     }
 
+    /* @Overrrider */
+    destroy() {
+        this.tippy?.destroy();
+        this.element.removeEventListener('mousedown', this.mousedownHandler, { capture: true });
+        this.view.dom.removeEventListener('dragstart', this.dragstartHandler);
+        this.editor.off('focus', this.focusHandler);
+        this.editor.off('blur', this.blurHandler);
+        this.component.instance.command.unsubscribe();
+    }
+
+    /* Update Component */
     updateComponent() {
         const { items } = this.component.instance;
-        const activeMarks = setActiveMarks(this.editor);
-        this.component.instance.items = updateActiveItems(items, activeMarks);
+        const aligment: string[] = ['left', 'center', 'right'];
+        const activeMarks = this.setActiveMarks(aligment);
+        this.component.instance.items = this.updateActiveItems(items, activeMarks);
         this.component.changeDetectorRef.detectChanges();
     }
 
-    /* Custom Functions */
-    subscribeComponentEvents() {
-        this.component.instance.editorCommand.subscribe((event: BubbleMenuItem) => {
-            bubbleMenuAction(this.editor, event.markAction);
+    updateActiveItems = (items: BubbleMenuItem[] = [], activeMarks: string[]): BubbleMenuItem[] => {
+        return items.map((item) => {
+            item.active = activeMarks.includes(item.markAction);
+            return item;
         });
-    }
-}
-
-// Temporal
-const bubbleMenuAction = (editor, action) => {
-    switch (action) {
-        case 'bold':
-            editor.commands.toggleBold();
-            break;
-        case 'italic':
-            editor.commands.toggleItalic();
-            break;
-        case 'strike':
-            editor.commands.toggleStrike();
-            break;
-        case 'underline':
-            editor.commands.toggleUnderline();
-            break;
-        // case 'left':
-        //     this.toggleTextAlign('left', item.active);
-        // break;
-        // case 'center':
-        //     this.toggleTextAlign('center', item.active);
-        // break;
-        // case 'right':
-        //     this.toggleTextAlign('right', item.active);
-        // break;
-        case 'bulletList':
-            editor.commands.toggleBulletList();
-            break;
-        case 'orderedList':
-            editor.commands.toggleOrderedList();
-            break;
-        // case 'indent':
-        //     if (this.isListNode()) {
-        //         this.editor.commands.sinkListItem('listItem');
-        //     }
-        // break;
-        // case 'outdent':
-        //     if (this.isListNode()) {
-        //         this.editor.commands.liftListItem('listItem');
-        //     }
-        // break;
-        case 'link':
-            editor.commands.toogleLinkForm();
-            break;
-        case 'clearAll':
-            editor.commands.unsetAllMarks();
-            editor.commands.clearNodes();
-            break;
-    }
-};
-
-const enabledMarks = (editor): string[] => {
-    return [...Object.keys(editor.schema.marks), ...Object.keys(editor.schema.nodes)];
-};
-
-const setActiveMarks = (editor): string[] => {
-    return [
-        ...enabledMarks(editor).filter((mark) => editor.isActive(mark))
-        // ...this.textAlings.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
-    ];
-};
-
-const updateActiveItems = (
-    items: BubbleMenuItem[] = [],
-    activeMarks: string[]
-): BubbleMenuItem[] => {
-    return items.map((item) => {
-        item.active = activeMarks.includes(item.markAction);
-        return item;
-    });
-};
-
-const setDropdownOptions = (editor): DotMenuItem[] => {
-    const dropdownOptions = suggestionOptions.filter((item) => item.id != 'horizontalLine');
-    const dropDownOptionsCommand = {
-        heading1: () => {
-            editor.chain().focus().clearNodes().setHeading({ level: 1 }).run();
-        },
-        heading2: () => {
-            editor.chain().focus().clearNodes().setHeading({ level: 2 }).run();
-        },
-        heading3: () => {
-            editor.chain().focus().clearNodes().setHeading({ level: 3 }).run();
-        },
-        paragraph: () => {
-            editor.chain().focus().clearNodes().setParagraph().run();
-        },
-        orderedList: () => {
-            editor.chain().focus().clearNodes().toggleOrderedList().run();
-        },
-        bulletList: () => {
-            editor.chain().focus().clearNodes().toggleBulletList().run();
-        },
-        blockquote: () => {
-            editor.chain().focus().clearNodes().toggleBlockquote().run();
-        },
-        codeBlock: () => {
-            editor.chain().focus().clearNodes().toggleCodeBlock().run();
-        }
     };
 
-    dropdownOptions.forEach((option) => {
-        option.isActive = () => {
-            return option.id.includes('heading')
-                ? editor.isActive('heading', option.attributes)
-                : editor.isActive(option.id);
-        };
-        option.command = () => {
-            dropDownOptionsCommand[option.id]();
-            // this.dropdown.toggleSuggestions();
-            // this.setSelectedItem();
-        };
-    });
+    enabledMarks = (): string[] => {
+        return [...Object.keys(this.editor.schema.marks), ...Object.keys(this.editor.schema.nodes)];
+    };
 
-    return dropdownOptions;
-    // this.setSelectedItem();
-};
+    setActiveMarks = (aligment = []): string[] => {
+        return [
+            ...this.enabledMarks().filter((mark) => this.editor.isActive(mark)),
+            ...aligment.filter((alignment) => this.editor.isActive({ textAlign: alignment }))
+        ];
+    };
 
-// const setSelectedItem = () => {
-//     const activeMarks = this.dropdownOptions.filter((option) => option.isActive());
-//     // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
-//     // can be active at the same time.
-//     this.selectedOption = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
-// };
+    setMenuItems(doc, from) {
+        const node = doc.nodeAt(from);
+        const isDotImage = node.type.name == 'dotImage';
+
+        this.component.instance.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
+    }
+
+    /* Run commands */
+    exeCommand(item: BubbleMenuItem) {
+        const { markAction: action, active } = item;
+        switch (action) {
+            case 'bold':
+                this.editor.commands.toggleBold();
+                break;
+            case 'italic':
+                this.editor.commands.toggleItalic();
+                break;
+            case 'strike':
+                this.editor.commands.toggleStrike();
+                break;
+            case 'underline':
+                this.editor.commands.toggleUnderline();
+                break;
+            case 'left':
+                this.toggleTextAlign(action, active);
+                break;
+            case 'center':
+                this.toggleTextAlign(action, active);
+                break;
+            case 'right':
+                this.toggleTextAlign(action, active);
+                break;
+            case 'bulletList':
+                this.editor.commands.toggleBulletList();
+                break;
+            case 'orderedList':
+                this.editor.commands.toggleOrderedList();
+                break;
+            case 'indent':
+                if (isListNode(this.editor)) {
+                    this.editor.commands.sinkListItem('listItem');
+                }
+                break;
+            case 'outdent':
+                if (isListNode(this.editor)) {
+                    this.editor.commands.liftListItem('listItem');
+                }
+                break;
+            case 'link':
+                this.editor.commands.toogleLinkForm();
+                break;
+            case 'clearAll':
+                this.editor.commands.unsetAllMarks();
+                this.editor.commands.clearNodes();
+                break;
+        }
+    }
+
+    toggleTextAlign(alignment, active) {
+        if (active) {
+            this.editor.commands.unsetTextAlign();
+        } else {
+            this.editor.commands.setTextAlign(alignment);
+        }
+    }
+}
