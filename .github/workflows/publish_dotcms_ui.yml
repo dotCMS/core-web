@@ -11,10 +11,7 @@ jobs:
             dotcms-ui: ${{ steps.filter.outputs.dotcms-ui }}
         steps:
             - name: Checkout core-web
-              uses: actions/checkout@v2
-              with:
-                  fetch-depth: 1
-                  path: 'core-web'
+              uses: actions/checkout@v3
 
             - name: Get specific changed files
               uses: dorny/paths-filter@v2
