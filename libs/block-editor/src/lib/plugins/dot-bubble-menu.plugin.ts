@@ -68,7 +68,6 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         // New Properties
         this.component = props.component;
         this.component.instance.command.subscribe(this.exeCommand.bind(this));
-        this.setDropdownOptions();
     }
 
     /* @Overrrider */
@@ -136,6 +135,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         this.editor.off('focus', this.focusHandler);
         this.editor.off('blur', this.blurHandler);
         this.component.instance.command.unsubscribe();
+        this.component.destroy();
     }
 
     /* Update Component */
@@ -143,6 +143,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         const { items } = this.component.instance;
         const aligment: string[] = ['left', 'center', 'right'];
         const activeMarks = this.setActiveMarks(aligment);
+        this.setDropdownOptions();
         this.component.instance.items = this.updateActiveItems(items, activeMarks);
         this.component.changeDetectorRef.detectChanges();
     }
