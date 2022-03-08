@@ -111,8 +111,8 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     }
 
     /**
-     * Update the selected Index
-     *
+     * Update the active Index
+     * @param {number} index
      * @memberof SuggestionsComponent
      */
     updateActiveItem(index: number): void {
