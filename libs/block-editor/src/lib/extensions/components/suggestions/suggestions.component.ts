@@ -56,7 +56,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             this.items = suggestionOptions;
             this.items.forEach((item) => {
                 item.command = () => {
-                    console.log('suggestions', { type: { name: item.id } });
                     item.id.includes('heading')
                         ? this.onSelection({
                               type: { name: 'heading', ...item.attributes }
