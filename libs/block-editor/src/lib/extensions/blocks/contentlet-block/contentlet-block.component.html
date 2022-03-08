@@ -1,9 +1,15 @@
 <!-- <img src="https://demo.dotcms.com/dA/${data.identifier}/100wh" /> -->
 <p-card>
     <ng-template pTemplate="header">
-        Title: {{ data.title }}
+        <img [src]="data.image" />
     </ng-template>
-    <p>I am a angular component that uses primeng</p>
+
+    <ng-template pTemplate="title">Title: {{data.title}}</ng-template>
+
+    <ng-template pTemplate="subtitle">
+        Content Type
+    </ng-template>
+
     <ng-template pTemplate="footer">
         Inode: {{ data.inode }}
     </ng-template>
