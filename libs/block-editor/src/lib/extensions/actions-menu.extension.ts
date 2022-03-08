@@ -24,8 +24,8 @@ declare module '@tiptap/core' {
             /**
              * Add Heading
              */
-            addHeading: (attr: Record<string, string>) => ReturnType;
-            addContentletBlock: (attr: Record<string, string>) => ReturnType;
+            addHeading: (attr: any) => ReturnType;
+            addContentletBlock: (attr: any) => ReturnType;
         };
     }
 }
