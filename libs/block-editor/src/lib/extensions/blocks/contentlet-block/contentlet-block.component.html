@@ -1,19 +1,26 @@
 <!-- <img src="https://demo.dotcms.com/dA/${data.identifier}/100wh" /> -->
 <p-card>
     <ng-template pTemplate="header">
-        <img [src]="data.image" />
+        <dot-contentlet-thumbnail [width]="94" [height]="94" [iconSize]="'64px'" [contentlet]="data">
+        </dot-contentlet-thumbnail>
     </ng-template>
 
     <ng-template pTemplate="title">Title: {{data.title}}</ng-template>
-
-    <ng-template pTemplate="subtitle">
-        Content Type
-    </ng-template>
+    <ng-template pTemplate="subtitle">Content Type</ng-template>
 
     <ng-template pTemplate="footer">
 
-        <dot-state-icon [state]="{live: true, working: true, hasLiveVersion: true, deleted: false}" size="14px">
-        </dot-state-icon>
-        <!-- Inode: {{ data.inode }} -->
+        <div class="state">
+            <dot-state-icon [state]="getContentState(data)" size="16px">
+            </dot-state-icon>
+            <dot-badge [bordered]="true">{{ data.title }}</dot-badge>
+            <!-- <div class="state">
+                {contentlet.locked === 'true' ? (
+                    <dot-contentlet-lock-icon locked={JSON.parse(contentlet.locked)} />
+                ) : null}
+
+            </div> -->
+        </div>
+
     </ng-template>
 </p-card>

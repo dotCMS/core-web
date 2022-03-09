@@ -58,4 +58,16 @@
     .p-card .p-card-footer {
         padding: 1rem 0 0 0;
     }
+
+    .state {
+        display: flex;
+        align-items: center;
+        & > * {
+            margin-right: 8px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
 }

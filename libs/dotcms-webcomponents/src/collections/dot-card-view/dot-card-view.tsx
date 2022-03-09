@@ -157,5 +157,3 @@ export class DotCardView {
         return this.el.shadowRoot.querySelectorAll('dot-card-contentlet');
     }
 }
-
-

@@ -47,7 +47,11 @@ export class DotContentletThumbnail {
                     </div>
                 ) : (
                     <dot-contentlet-icon
-                        icon={this.contentlet?.baseType !== 'FILEASSET' ? this.contentlet?.contentTypeIcon : this.contentlet?.__icon__}
+                        icon={
+                            this.contentlet?.baseType !== 'FILEASSET'
+                                ? this.contentlet?.contentTypeIcon
+                                : this.contentlet?.__icon__
+                        }
                         size={this.iconSize}
                         aria-label={this.alt}
                     />
