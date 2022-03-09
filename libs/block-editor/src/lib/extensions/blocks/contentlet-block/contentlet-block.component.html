@@ -11,6 +11,9 @@
     </ng-template>
 
     <ng-template pTemplate="footer">
-        Inode: {{ data.inode }}
+
+        <dot-state-icon [state]="{live: true, working: true, hasLiveVersion: true, deleted: false}" size="14px">
+        </dot-state-icon>
+        <!-- Inode: {{ data.inode }} -->
     </ng-template>
 </p-card>
