@@ -8,6 +8,7 @@ import { DotListingDataTableModule } from '@components/dot-listing-data-table';
 import { DotBaseTypeSelectorModule } from '@components/dot-base-type-selector';
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
+import { DotAddToMenuModule } from '@components/_common/dot-add-to-menu';
 
 @NgModule({
     imports: [
@@ -15,6 +16,7 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
         DotListingDataTableModule,
         DotBaseTypeSelectorModule,
         DotAddToBundleModule,
+        DotAddToMenuModule,
         DotPipesModule
     ],
     declarations: [DotContentTypesPortletComponent],

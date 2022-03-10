@@ -26,6 +26,7 @@ import { DotCMSContentType } from '@dotcms/dotcms-models';
 type DotRowActions = {
     pushPublish: boolean;
     addToBundle: boolean;
+    addToMenu: boolean;
 };
 
 /**
@@ -50,6 +51,7 @@ export class DotContentTypesPortletComponent implements OnInit {
     actionHeaderOptions: ActionHeaderOptions;
     rowActions: DotActionMenuItem[];
     addToBundleIdentifier: string;
+    addToMenuContentType: DotCMSContentType;
 
     constructor(
         private contentTypesInfoService: DotContentTypesInfoService,
@@ -78,7 +80,8 @@ export class DotContentTypesPortletComponent implements OnInit {
             const baseTypes: StructureTypeView[] = contentTypes;
             const rowActionsMap: DotRowActions = {
                 pushPublish: isEnterprise && environments,
-                addToBundle: isEnterprise
+                addToBundle: isEnterprise,
+                addToMenu: isEnterprise
             };
 
             this.actionHeaderOptions = {
@@ -130,7 +133,11 @@ export class DotContentTypesPortletComponent implements OnInit {
         this.actionHeaderOptions.primary.model = null;
     }
 
-    private getPublishActions(pushPublish: boolean, addToBundle: boolean): DotActionMenuItem[] {
+    private getPublishActions(
+        pushPublish: boolean,
+        addToBundle: boolean,
+        addToMenu: boolean
+    ): DotActionMenuItem[] {
         const actions: DotActionMenuItem[] = [];
         /*
             Only show Push Publish action if DotCMS instance have the appropriate license and there are
@@ -154,12 +161,25 @@ export class DotContentTypesPortletComponent implements OnInit {
             });
         }
 
+        if (addToMenu) {
+            actions.push({
+                menuItem: {
+                    label: this.dotMessageService.get('contenttypes.content.add_to_menu'),
+                    command: (item: DotCMSContentType) => this.addToBundleMenu(item)
+                }
+            });
+        }
+
         return actions;
     }
 
     private createRowActions(rowActionsMap: DotRowActions): DotActionMenuItem[] {
         const listingActions: DotActionMenuItem[] = [
-            ...this.getPublishActions(rowActionsMap.pushPublish, rowActionsMap.addToBundle)
+            ...this.getPublishActions(
+                rowActionsMap.pushPublish,
+                rowActionsMap.addToBundle,
+                rowActionsMap.addToMenu
+            )
         ];
 
         listingActions.push({
@@ -283,5 +303,9 @@ export class DotContentTypesPortletComponent implements OnInit {
 
     private addToBundleContentType(item: DotCMSContentType) {
         this.addToBundleIdentifier = item.id;
+    }
+
+    private addToBundleMenu(item: DotCMSContentType) {
+        this.addToMenuContentType = item;
     }
 }
