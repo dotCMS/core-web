@@ -338,7 +338,7 @@ export class DotBinaryFileComponent {
     }
 
     private isValid(): boolean {
-        return !(this.required && !this.file);
+        return !(this.required && !this.file) && !this.errorType;
     }
 
     private setErrorMessageMap(): void {
