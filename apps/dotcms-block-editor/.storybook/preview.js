@@ -1,3 +1,3 @@
-import { defineCustomElements } from '../../../dist/libs/dotcms-webcomponents/loader';
+import { defineCustomElements } from '@dotcms/dotcms-webcomponents/loader';
 
 defineCustomElements();

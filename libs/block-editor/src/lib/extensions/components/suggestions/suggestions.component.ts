@@ -15,6 +15,7 @@ import { SuggestionsService } from '../../services/suggestions/suggestions.servi
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DotLanguage, DotLanguageService } from '../../services/dot-language/dot-language.service';
 import {
     headerIcons,
     pIcon,
@@ -48,6 +49,8 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     title = 'Select a block';
     mouseMove = true;
 
+    private dotLang: DotLanguage;
+
     @HostListener('mousemove', ['$event'])
     onMousemove() {
         this.mouseMove = true;
@@ -55,6 +58,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
 
     constructor(
         private suggestionsService: SuggestionsService,
+        private dotLanguageService: DotLanguageService,
         private cd: ChangeDetectorRef,
         private domSanitizer: DomSanitizer
     ) {}
@@ -164,6 +168,8 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             ...list,
             ...block
         ];
+
+        this.dotLanguageService.getLanguages().subscribe((dotLang) => (this.dotLang = dotLang));
     }
 
     ngAfterViewInit() {
@@ -273,6 +279,9 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                                     .pipe(take(1))
                                     .subscribe((contentlets) => {
                                         this.items = contentlets.map((contentlet) => {
+                                            const { languageId } = contentlet;
+                                            contentlet.language =
+                                                this.getContentletLanguage(languageId);
                                             return {
                                                 label: contentlet.title,
                                                 icon: 'image',
@@ -312,5 +321,15 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
 
     private sanitizeUrl(url: string): SafeUrl {
         return this.domSanitizer.bypassSecurityTrustUrl(url);
+    }
+
+    private getContentletLanguage(languageId: number): string {
+        const { languageCode, countryCode } = this.dotLang[languageId];
+
+        if (!languageCode || !countryCode) {
+            return '';
+        }
+
+        return `${languageCode}-${countryCode}`;
     }
 }

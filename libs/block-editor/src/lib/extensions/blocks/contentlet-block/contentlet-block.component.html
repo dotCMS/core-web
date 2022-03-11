@@ -13,13 +13,7 @@
         <div class="state">
             <dot-state-icon [state]="getContentState(data)" size="16px">
             </dot-state-icon>
-            <dot-badge [bordered]="true">{{ data.title }}</dot-badge>
-            <!-- <div class="state">
-                {contentlet.locked === 'true' ? (
-                    <dot-contentlet-lock-icon locked={JSON.parse(contentlet.locked)} />
-                ) : null}
-
-            </div> -->
+            <dot-badge [bordered]="true">{{ data.language | lowercase}}</dot-badge>
         </div>
 
     </ng-template>
