@@ -8,14 +8,15 @@ import {
     AfterViewInit
 } from '@angular/core';
 
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
+
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
-import { SuggestionsService } from '../../services/suggestions/suggestions.service';
-import { DotCMSContentlet } from '@dotcms/dotcms-models';
-import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Languages, DotLanguageService } from '../../services/dot-language/dot-language.service';
+import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
+import { SuggestionsService } from '../../services/suggestions/suggestions.service';
 import { suggestionOptions } from '@dotcms/block-editor';
 
 export interface SuggestionsCommandProps {
@@ -244,10 +245,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                 this.cd.detectChanges();
                 this.resetKeyManager();
             });
-    }
-
-    private sanitizeUrl(url: string): SafeUrl {
-        return this.domSanitizer.bypassSecurityTrustUrl(url);
     }
 
     private getContentletLanguage(languageId: number): string {
