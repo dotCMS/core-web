@@ -11,7 +11,7 @@
     <ng-template pTemplate="footer">
 
         <div class="state">
-            <dot-state-icon [state]="getContentState(data)" size="16px">
+            <dot-state-icon [state]="data | contentletState" size="16px">
             </dot-state-icon>
             <dot-badge [bordered]="true">{{ data.language | lowercase}}</dot-badge>
         </div>

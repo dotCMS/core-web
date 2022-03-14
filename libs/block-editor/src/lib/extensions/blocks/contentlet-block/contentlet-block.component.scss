@@ -57,6 +57,14 @@
         margin-bottom: $spacing-3;
     }
 
+    dot-contentlet-thumbnail {
+        align-items: center;
+        display: block;
+        position: relative;
+        width: 94px;
+        height: 94px;
+    }
+
     .state {
         align-items: center;
         display: flex;
