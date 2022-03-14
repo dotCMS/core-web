@@ -30,4 +30,7 @@ export interface DotCMSContentlet {
     text?: string;
     url: string;
     working: boolean;
+    hasLiveVersion?: boolean;
+    deleted?: boolean;
+    language?: string;
 }

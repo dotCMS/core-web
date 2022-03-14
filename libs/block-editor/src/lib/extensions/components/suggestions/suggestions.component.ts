@@ -8,9 +8,14 @@ import {
     AfterViewInit
 } from '@angular/core';
 
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
+
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
+import { Languages, DotLanguageService } from '../../services/dot-language/dot-language.service';
+import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import { SuggestionsService } from '../../services/suggestions/suggestions.service';
 import { DotCMSContentlet, DotContentState } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
@@ -50,7 +55,12 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
         this.mouseMove = true;
     }
 
-    constructor(private suggestionsService: SuggestionsService, private cd: ChangeDetectorRef) {}
+    constructor(
+        private suggestionsService: SuggestionsService,
+        private dotLanguageService: DotLanguageService,
+        private cd: ChangeDetectorRef,
+        private domSanitizer: DomSanitizer
+    ) {}
 
     ngOnInit(): void {
         if (this.items?.length === 0) {
@@ -77,6 +87,11 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                 ...this.items
             ];
         }
+
+        this.dotLanguageService
+            .getLanguages()
+            .pipe(take(1))
+            .subscribe((dotLang) => (this.dotLang = dotLang));
     }
 
     ngAfterViewInit() {
@@ -195,6 +210,9 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                                     .pipe(take(1))
                                     .subscribe((contentlets) => {
                                         this.items = contentlets.map((contentlet) => {
+                                            const { languageId } = contentlet;
+                                            contentlet.language =
+                                                this.getContentletLanguage(languageId);
                                             return {
                                                 label: contentlet.title,
                                                 icon: '',
@@ -234,5 +252,15 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                 this.cd.detectChanges();
                 this.resetKeyManager();
             });
+    }
+
+    private getContentletLanguage(languageId: number): string {
+        const { languageCode, countryCode } = this.dotLang[languageId];
+
+        if (!languageCode || !countryCode) {
+            return '';
+        }
+
+        return `${languageCode}-${countryCode}`;
     }
 }
