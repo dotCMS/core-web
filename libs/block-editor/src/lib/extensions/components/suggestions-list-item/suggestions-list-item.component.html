@@ -2,7 +2,11 @@
     <i class="material-icons" *ngIf="icon; else thumbnail">{{ url }}</i>
 
     <ng-template #thumbnail>
-        <dot-contentlet-thumbnail *ngIf="contentState else image " [contentlet]="data.contentlet"
+        <dot-contentlet-thumbnail *ngIf="contentState else image "
+                                  [contentlet]="data.contentlet"
+                                  [width]="42"
+                                  [height]="42"
+                                  [iconSize]="'42px'"
         ></dot-contentlet-thumbnail>
     </ng-template>
 </div>

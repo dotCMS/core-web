@@ -82,7 +82,7 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
     }
 
     private setContentletData() {
-        if (this.data.contentlet) {
+        if (this.data?.contentlet) {
             this.contentState = this.getContentState(this.data.contentlet);
         }
     }
