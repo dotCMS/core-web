@@ -16,15 +16,7 @@ import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Languages, DotLanguageService } from '../../services/dot-language/dot-language.service';
-import {
-    headerIcons,
-    pIcon,
-    ulIcon,
-    olIcon,
-    quoteIcon,
-    codeIcon,
-    lineIcon
-} from './suggestion-icons';
+import { suggestionOptions } from '@dotcms/block-editor';
 
 export interface SuggestionsCommandProps {
     payload?: DotCMSContentlet;
@@ -33,6 +25,8 @@ export interface SuggestionsCommandProps {
 
 export interface DotMenuItem extends Omit<MenuItem, 'icon'> {
     icon: string | SafeUrl;
+    isActive?: () => boolean;
+    attributes?: Record<string, unknown>;
 }
 
 @Component({
@@ -44,9 +38,10 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @ViewChild('list', { static: false }) list: SuggestionListComponent;
 
     @Input() onSelection: (props: SuggestionsCommandProps) => void;
-    items: DotMenuItem[] = [];
 
-    title = 'Select a block';
+    @Input() items: DotMenuItem[] = [];
+    @Input() title = 'Select a block';
+
     mouseMove = true;
 
     private dotLang: Languages;
@@ -64,110 +59,30 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-        const headings = [...Array(3).keys()].map((level) => {
-            const size = level + 1;
-            return {
-                label: `Heading ${size}`,
-                icon: this.sanitizeUrl(headerIcons[level]),
-                command: () => {
-                    this.onSelection({
-                        type: {
-                            name: 'heading',
-                            level: level + 1
-                        }
-                    });
-                }
-            };
-        });
+        if (this.items?.length === 0) {
+            // assign the default suggestions options.
+            this.items = suggestionOptions;
+            this.items.forEach((item) => {
+                item.command = () => {
+                    item.id.includes('heading')
+                        ? this.onSelection({
+                              type: { name: 'heading', ...item.attributes }
+                          })
+                        : this.onSelection({ type: { name: item.id } });
+                };
+            });
 
-        const paragraph = [
-            {
-                label: 'Paragraph',
-                icon: this.sanitizeUrl(pIcon),
-                command: () => {
-                    this.onSelection({
-                        type: {
-                            name: 'paragraph'
-                        }
-                    });
-                }
-            }
-        ];
-
-        const list = [
-            {
-                label: 'List Ordered',
-                icon: this.sanitizeUrl(olIcon),
-                command: () => {
-                    this.onSelection({
-                        type: {
-                            name: 'listOrdered'
-                        }
-                    });
-                }
-            },
-            {
-                label: 'List Unordered',
-                icon: this.sanitizeUrl(ulIcon),
-                command: () => {
-                    this.onSelection({
-                        type: {
-                            name: 'listUnordered'
-                        }
-                    });
-                }
-            }
-        ];
-
-        const block = [
-            {
-                label: 'Blockquote',
-                icon: this.sanitizeUrl(quoteIcon),
-                command: () => {
-                    this.onSelection({
-                        type: {
-                            name: 'blockQuote'
-                        }
-                    });
-                }
-            },
-            {
-                label: 'Code Block',
-                icon: this.sanitizeUrl(codeIcon),
-                command: () => {
-                    this.onSelection({
-                        type: {
-                            name: 'codeBlock'
-                        }
-                    });
-                }
-            },
-            {
-                label: 'Horizontal Line',
-                icon: this.sanitizeUrl(lineIcon),
-                command: () => {
-                    this.onSelection({
-                        type: {
-                            name: 'horizontalLine'
-                        }
-                    });
-                }
-            }
-        ];
-
-        this.items = [
-            {
-                label: 'Contentlets',
-                icon: 'receipt',
-                command: () => {
-                    this.initContentletSelection();
-                }
-            },
-            ...headings,
-            ...paragraph,
-            ...list,
-            ...block
-        ];
+            this.items = [
+                {
+                    label: 'Contentlets',
+                    icon: 'receipt',
+                    command: () => {
+                        this.initContentletSelection();
+                    }
+                },
+                ...this.items
+            ];
+        }
 
         this.dotLanguageService
             .getLanguages()
@@ -209,6 +124,15 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     }
 
     /**
+     * Update the active Index
+     * @param {number} index
+     * @memberof SuggestionsComponent
+     */
+    updateActiveItem(index: number): void {
+        this.list.updateActiveItem(index);
+    }
+
+    /**
      * Reset the key manager after we add new elements to the list
      *
      * @memberof SuggestionsComponent
@@ -240,7 +164,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
         }
         e.preventDefault();
         const index = Number((e.target as HTMLElement).dataset.index);
-        this.list.updateActiveItem(index);
+        this.updateActiveItem(index);
     }
 
     /**
