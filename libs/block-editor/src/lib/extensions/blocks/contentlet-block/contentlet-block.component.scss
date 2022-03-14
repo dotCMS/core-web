@@ -1,6 +1,4 @@
-* {
-    box-sizing: border-box;
-}
+@use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
 
 :host {
     box-sizing: border-box;
@@ -9,24 +7,24 @@
 }
 
 .p-card {
-    background: #ffffff;
-    color: #000000;
-    border: 1px solid #c2c1c8;
+    background: $white;
+    border: 1px solid $input-border-color;
+    color: $black;
     display: flex;
-    width: 100%;
 
     .p-card-header {
-        padding: 8px;
+        box-sizing: border-box;
+        min-width: 110px;
+        padding: $spacing-1;
         width: 110px;
-    }
-    .p-card-header img {
-        width: 100%;
     }
 
     .p-card-body {
-        padding: 16px;
-        padding-right: 24px;
-        width: calc(100% - 110px);
+        box-sizing: border-box;
+        min-width: 100px;
+        padding: $spacing-3;
+        padding-right: $spacing-4;
+        flex: 1;
     }
 
     .p-card-body .p-card-content {
@@ -34,34 +32,37 @@
     }
 
     .p-card-content {
-        padding: 1rem 0;
+        padding: $spacing-3 0;
     }
 
     .p-card-title {
-        white-space: nowrap;
-        width: 100%;
         overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 1.5rem;
+        width: 100%;
+    }
+
+    .p-card-title h3 {
+        font-size: $font-size-x-large;
+        overflow: hidden;
         font-weight: 700;
-        margin-bottom: 0.35rem;
+        margin: 0;
+        margin-bottom: $spacing-1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .p-card-subtitle {
-        font-weight: 400;
-        margin-bottom: 0.85rem;
-        color: #6c757d;
-    }
-
-    .p-card .p-card-footer {
-        padding: 1rem 0 0 0;
+        color: $gray;
+        font-size: $font-size-small;
+        font-weight: regular;
+        margin-bottom: $spacing-3;
     }
 
     .state {
-        display: flex;
         align-items: center;
+        display: flex;
+
         & > * {
-            margin-right: 8px;
+            margin-right: $spacing-1;
 
             &:last-child {
                 margin-right: 0;

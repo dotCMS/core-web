@@ -1,12 +1,12 @@
 <!-- <img src="https://demo.dotcms.com/dA/${data.identifier}/100wh" /> -->
 <p-card>
     <ng-template pTemplate="header">
-        <dot-contentlet-thumbnail [width]="94" [height]="94" [iconSize]="'64px'" [contentlet]="data">
+        <dot-contentlet-thumbnail [width]="94" [height]="94" [iconSize]="'72px'" [contentlet]="data">
         </dot-contentlet-thumbnail>
     </ng-template>
 
-    <ng-template pTemplate="title">Title: {{data.title}}</ng-template>
-    <ng-template pTemplate="subtitle">Content Type</ng-template>
+    <h3 *pTemplate="'title'">Title: {{data.title}}</h3>
+    <span *pTemplate="'subtitle'">Content Type</span>
 
     <ng-template pTemplate="footer">
 

@@ -169,7 +169,10 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             ...block
         ];
 
-        this.dotLanguageService.getLanguages().subscribe((dotLang) => (this.dotLang = dotLang));
+        this.dotLanguageService
+            .getLanguages()
+            .pipe(take(1))
+            .subscribe((dotLang) => (this.dotLang = dotLang));
     }
 
     ngAfterViewInit() {
