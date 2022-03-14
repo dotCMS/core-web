@@ -1,9 +1,19 @@
-<div class="icon-wrapper">
+<div class="icon-wrapper" [class.dot-contentlet]="data">
     <i class="material-icons" *ngIf="icon; else thumbnail">{{ url }}</i>
 
     <ng-template #thumbnail>
-        <img [src]="url" alt="" />
+        <dot-contentlet-thumbnail *ngIf="contentState else image " [contentlet]="data.contentlet"
+        ></dot-contentlet-thumbnail>
     </ng-template>
 </div>
+<div class='data-wrapper'>
+    <span>{{ label }}</span>
+    <div *ngIf="contentState" class="state">
+        <dot-state-icon [state]="contentState" size="16px"></dot-state-icon>
+        <dot-badge bordered="true">{{language}}</dot-badge>
+    </div>
+</div>
 
-<span>{{ label }}</span>
+<ng-template #image>
+    <img [src]="url" alt="" />
+</ng-template>

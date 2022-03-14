@@ -1,12 +1,14 @@
 export interface DotCMSContentlet {
     archived: boolean;
     baseType: string;
+    deleted?: boolean;
     binary?: string;
     binaryContentAsset?: string;
     binaryVersion?: string;
     contentType: string;
     file?: string;
     folder: string;
+    hasLiveVersion?: boolean;
     hasTitleImage: boolean;
     host: string;
     hostName: string;
@@ -16,6 +18,7 @@ export interface DotCMSContentlet {
     languageId: number;
     live: boolean;
     locked: boolean;
+    mimeType?: string;
     modDate: string;
     modUser: string;
     modUserName: string;

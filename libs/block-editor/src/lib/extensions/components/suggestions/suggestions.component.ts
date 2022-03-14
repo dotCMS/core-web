@@ -12,10 +12,11 @@ import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
 import { SuggestionsService } from '../../services/suggestions/suggestions.service';
-import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { DotCMSContentlet, DotContentState } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import { SafeUrl } from '@angular/platform-browser';
 import { suggestionOptions } from '@dotcms/block-editor';
+import { DotContentletItem } from '../../../../../../dotcms-webcomponents/src/models/dot-contentlet-item.model';
 
 export interface SuggestionsCommandProps {
     payload?: DotCMSContentlet;
@@ -26,6 +27,7 @@ export interface DotMenuItem extends Omit<MenuItem, 'icon'> {
     icon: string | SafeUrl;
     isActive?: () => boolean;
     attributes?: Record<string, unknown>;
+    data?: Record<string, unknown>;
 }
 
 @Component({
@@ -195,8 +197,12 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                                         this.items = contentlets.map((contentlet) => {
                                             return {
                                                 label: contentlet.title,
-                                                icon: 'image',
+                                                icon: '',
+                                                data: {
+                                                    contentlet: contentlet
+                                                },
                                                 command: () => {
+                                                    debugger;
                                                     this.onSelection({
                                                         payload: contentlet,
                                                         type: {

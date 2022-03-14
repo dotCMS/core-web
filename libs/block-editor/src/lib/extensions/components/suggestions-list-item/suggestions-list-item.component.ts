@@ -1,29 +1,35 @@
 import { Component, ElementRef, HostBinding, Input, OnInit } from '@angular/core';
 
 import { FocusableOption } from '@angular/cdk/a11y';
+import { DotCMSContentlet, DotContentState } from '@dotcms/dotcms-models';
 
 @Component({
     selector: 'dotcms-suggestions-list-item',
     templateUrl: './suggestions-list-item.component.html',
-    styleUrls: ['./suggestions-list-item.component.scss'],
+    styleUrls: ['./suggestions-list-item.component.scss']
 })
 export class SuggestionsListItemComponent implements FocusableOption, OnInit {
-    @HostBinding('attr.role') role = 'list-item'
-    @HostBinding('attr.tabindex') tabindex = '-1'
+    @HostBinding('attr.role') role = 'list-item';
+    @HostBinding('attr.tabindex') tabindex = '-1';
 
     @HostBinding('attr.data-index')
-    @Input() index: number;
+    @Input()
+    index: number;
 
     @Input() command: () => void;
     @Input() label = '';
     @Input() url = '';
+    @Input() data = null;
 
     icon = false;
+    contentState: DotContentState;
+    language = 'en-us';
 
-    constructor(private element: ElementRef) { }
+    constructor(private element: ElementRef) {}
 
     ngOnInit() {
-        this.icon = this.icon = typeof( this.url ) === 'string' && !(this.url.split('/').length > 1);
+        this.icon = this.icon = typeof this.url === 'string' && !(this.url.split('/').length > 1);
+        this.setContentletData();
     }
 
     getLabel(): string {
@@ -46,8 +52,8 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
 
     /**
      *
-     * Check if the element is a visible area 
-     * 
+     * Check if the element is a visible area
+     *
      * @private
      * @return {*}  {boolean}
      * @memberof SuggestionsListItemComponent
@@ -61,7 +67,7 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
     /**
      *
      * If true, the top of the element will be aligned to the top of the visible area
-     * of the scrollable ancestorIf true, the top of the element will be aligned to 
+     * of the scrollable ancestorIf true, the top of the element will be aligned to
      * the top of the visible area of the scrollable ancestor.
      *
      * @private
@@ -70,8 +76,23 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
      */
     private alignToTop(): boolean {
         const { top } = this.element.nativeElement.getBoundingClientRect();
-        const { top: containerTop} = this.element.nativeElement.parentElement.getBoundingClientRect();
+        const { top: containerTop } =
+            this.element.nativeElement.parentElement.getBoundingClientRect();
         return top < containerTop;
     }
 
+    private setContentletData() {
+        if (this.data.contentlet) {
+            this.contentState = this.getContentState(this.data.contentlet);
+        }
+    }
+
+    private getContentState({
+        live,
+        working,
+        deleted,
+        hasLiveVersion
+    }: DotCMSContentlet): DotContentState {
+        return { live, working, deleted, hasLiveVersion };
+    }
 }

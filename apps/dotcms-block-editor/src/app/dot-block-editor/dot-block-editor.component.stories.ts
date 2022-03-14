@@ -45,8 +45,7 @@ export const primary = () => ({
                         return of([
                             {
                                 cd769844de530f7b5d3434b1b5cfdd62: {
-                                    asset:
-                                        'https://media.istockphoto.com/vectors/costa-rica-vector-id652225694?s=170667a',
+                                    asset: 'https://media.istockphoto.com/vectors/costa-rica-vector-id652225694?s=170667a',
                                     mimeType: 'image/png',
                                     name: 'costarica.png'
                                 }
@@ -105,99 +104,211 @@ export const primary = () => ({
                         return of([
                             {
                                 title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-                                inode: '123'
+                                inode: '123',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Aliquam tincidunt mauris eu risus.',
-                                inode: '456'
+                                inode: '456',
+                                languageId: 1,
+                                live: false,
+                                working: true,
+                                deleted: false,
+                                hasLiveVersion: false
                             },
                             {
                                 title: 'Vestibulum auctor dapibus neque.',
-                                inode: '789'
+                                inode: '789',
+                                languageId: 1,
+                                live: false,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Nunc dignissim risus id metus.',
-                                inode: '1011'
+                                inode: '1011',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Cras ornare tristique elit.',
-                                inode: '1213'
+                                inode: '1213',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Vivamus vestibulum ntulla nec ante.',
-                                inode: '1415'
+                                inode: '1415',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-                                inode: '123'
+                                inode: '123',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Aliquam tincidunt mauris eu risus.',
-                                inode: '456'
+                                inode: '456',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Vestibulum auctor dapibus neque.',
-                                inode: '789'
+                                inode: '789',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Nunc dignissim risus id metus.',
-                                inode: '1011'
+                                inode: '1011',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Cras ornare tristique elit.',
-                                inode: '1213'
+                                inode: '1213',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Vivamus vestibulum ntulla nec ante.',
-                                inode: '1415'
+                                inode: '1415',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-                                inode: '123'
+                                inode: '123',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Aliquam tincidunt mauris eu risus.',
-                                inode: '456'
+                                inode: '456',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Vestibulum auctor dapibus neque.',
-                                inode: '789'
+                                inode: '789',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Nunc dignissim risus id metus.',
-                                inode: '1011'
+                                inode: '1011',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Cras ornare tristique elit.',
-                                inode: '1213'
+                                inode: '1213',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Vivamus vestibulum ntulla nec ante.',
-                                inode: '1415'
+                                inode: '1415',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-                                inode: '123'
+                                inode: '123',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                deleted: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Aliquam tincidunt mauris eu risus.',
-                                inode: '456'
+                                inode: '456',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Vestibulum auctor dapibus neque.',
-                                inode: '789'
+                                inode: '789',
+                                languageId: 1,
+                                live: true,
+                                working: false,
+                                hasLiveVersion: true
                             },
                             {
                                 title: 'Nunc dignissim risus id metus.',
-                                inode: '1011'
+                                inode: '1011',
+                                languageId: 1,
+                                live: true,
+                                working: false
                             },
                             {
                                 title: 'Cras ornare tristique elit.',
-                                inode: '1213'
+                                inode: '1213',
+                                languageId: 1,
+                                live: true,
+                                working: false
                             },
                             {
                                 title: 'Vivamus vestibulum ntulla nec ante.',
-                                inode: '1415'
+                                inode: '1415',
+                                languageId: 1,
+                                live: true,
+                                working: false
                             }
                         ]).pipe(delay(800));
                     }
