@@ -15,7 +15,7 @@ import { SuggestionsService } from '../../services/suggestions/suggestions.servi
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { DotLanguage, DotLanguageService } from '../../services/dot-language/dot-language.service';
+import { Languages, DotLanguageService } from '../../services/dot-language/dot-language.service';
 import {
     headerIcons,
     pIcon,
@@ -49,7 +49,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     title = 'Select a block';
     mouseMove = true;
 
-    private dotLang: DotLanguage;
+    private dotLang: Languages;
 
     @HostListener('mousemove', ['$event'])
     onMousemove() {

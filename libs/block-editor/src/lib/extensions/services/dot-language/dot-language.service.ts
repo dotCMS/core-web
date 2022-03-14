@@ -6,7 +6,7 @@ import { map, pluck } from 'rxjs/operators';
 // eslint-disable-next-line max-len
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-interface Language {
+interface DotLanguage {
     country: string;
     countryCode: string;
     defaultLanguage: boolean;
@@ -15,15 +15,15 @@ interface Language {
     languageCode: string;
 }
 
-export interface DotLanguage {
-    [key: string]: Language;
+export interface Languages {
+    [key: string]: DotLanguage;
 }
 
 @Injectable({
     providedIn: 'root'
 })
 export class DotLanguageService {
-    public language: DotLanguage;
+    public language: Languages;
 
     constructor(private http: HttpClient) {}
 
@@ -33,7 +33,7 @@ export class DotLanguageService {
         return headers;
     }
 
-    getLanguages(): Observable<DotLanguage> {
+    getLanguages(): Observable<Languages> {
         if (this.language) {
             return of(this.language);
         }
@@ -44,16 +44,25 @@ export class DotLanguageService {
             })
             .pipe(
                 pluck('entity'),
-                map((lang: Language[]) => {
-                    const dotLang: DotLanguage = lang.reduce(
-                        (obj, lang) => Object.assign(obj, { [lang.id]: lang }),
-                        {}
-                    );
+                map((lang: DotLanguage[]) => {
+                    const dotLang: Languages = this.getDotLanguageObject(lang);
 
                     this.language = dotLang;
 
                     return dotLang;
                 })
             );
+    }
+
+    /**
+     * Transform an array of languages into a object
+     * using the language id as a object key.
+     * @private
+     * @param {DotLanguage[]} lang
+     * @return {*}  {Languages}
+     * @memberof DotLanguageService
+     */
+    private getDotLanguageObject(lang: DotLanguage[]): Languages {
+        return lang.reduce((obj, lang) => Object.assign(obj, { [lang.id]: lang }), {});
     }
 }
