@@ -20,8 +20,12 @@
     justify-content: center;
     width: 32px;
 
-    img {
-        width: 100%;
+    dot-contentlet-thumbnail {
+        align-items: center;
+        display: block;
+        position: relative;
+        width: 42px;
+        height: 42px;
     }
 
     &.dot-contentlet{

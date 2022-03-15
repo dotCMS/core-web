@@ -28,7 +28,7 @@ export class SuggestionsService {
     getContentlets(contentType = ''): Observable<DotCMSContentlet[]> {
         return this.http
             .post('/api/content/_search', {
-                query: `+contentType:${contentType}+languageId:1 +deleted:false +working:true`,
+                query: `+contentType:${contentType} +languageId:1 +deleted:false +working:true`,
                 sort: 'modDate desc',
                 offset: 0
             })

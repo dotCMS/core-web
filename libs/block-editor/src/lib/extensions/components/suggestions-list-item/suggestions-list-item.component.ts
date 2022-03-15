@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostBinding, Input, OnInit } from '@angular/core';
 
 import { FocusableOption } from '@angular/cdk/a11y';
-import { DotCMSContentlet, DotContentState } from '@dotcms/dotcms-models';
 
 @Component({
     selector: 'dotcms-suggestions-list-item',
@@ -22,14 +21,11 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
     @Input() data = null;
 
     icon = false;
-    contentState: DotContentState;
-    language = 'en-us';
 
     constructor(private element: ElementRef) {}
 
     ngOnInit() {
         this.icon = this.icon = typeof this.url === 'string' && !(this.url.split('/').length > 1);
-        this.setContentletData();
     }
 
     getLabel(): string {
@@ -79,20 +75,5 @@ export class SuggestionsListItemComponent implements FocusableOption, OnInit {
         const { top: containerTop } =
             this.element.nativeElement.parentElement.getBoundingClientRect();
         return top < containerTop;
-    }
-
-    private setContentletData() {
-        if (this.data?.contentlet) {
-            this.contentState = this.getContentState(this.data.contentlet);
-        }
-    }
-
-    private getContentState({
-        live,
-        working,
-        deleted,
-        hasLiveVersion
-    }: DotCMSContentlet): DotContentState {
-        return { live, working, deleted, hasLiveVersion };
     }
 }

@@ -9,19 +9,16 @@ import {
 } from '@angular/core';
 
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
-import { Languages, DotLanguageService } from '../../services/dot-language/dot-language.service';
-import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
+import { DotLanguageService, Languages } from '../../services/dot-language/dot-language.service';
+
 import { SuggestionsService } from '../../services/suggestions/suggestions.service';
-import { DotCMSContentlet, DotContentState } from '@dotcms/dotcms-models';
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
-import { SafeUrl } from '@angular/platform-browser';
 import { suggestionOptions } from '@dotcms/block-editor';
-import { DotContentletItem } from '../../../../../../dotcms-webcomponents/src/models/dot-contentlet-item.model';
 
 export interface SuggestionsCommandProps {
     payload?: DotCMSContentlet;
@@ -48,6 +45,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @Input() items: DotMenuItem[] = [];
     @Input() title = 'Select a block';
 
+    private dotLang: Languages;
     mouseMove = true;
 
     @HostListener('mousemove', ['$event'])
@@ -215,7 +213,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                                                 this.getContentletLanguage(languageId);
                                             return {
                                                 label: contentlet.title,
-                                                icon: '',
+                                                icon: 'contentlet/image',
                                                 data: {
                                                     contentlet: contentlet
                                                 },
