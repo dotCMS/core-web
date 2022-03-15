@@ -33,7 +33,7 @@ export class DotBinaryUploadButtonComponent {
     disabled = false;
 
     /** (optional) Set the max file size limit  */
-    @Prop({ reflect: true, mutable: true })
+    @Prop({ reflect: true })
     maxFileLength = '';
 
     /** (optional) Text that be shown in the browse file button */
