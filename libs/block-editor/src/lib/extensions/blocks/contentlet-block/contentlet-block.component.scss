@@ -1,9 +1,10 @@
 @use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
 
-:host {
-    box-sizing: border-box;
+dotcms-contentlet-block {
     display: block;
+    height: 100%;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .p-card {

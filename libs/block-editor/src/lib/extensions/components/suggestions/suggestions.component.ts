@@ -8,7 +8,7 @@ import {
     AfterViewInit
 } from '@angular/core';
 
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { SafeUrl } from '@angular/platform-browser';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
 import { map, take } from 'rxjs/operators';
@@ -55,8 +55,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     constructor(
         private suggestionsService: SuggestionsService,
         private dotLanguageService: DotLanguageService,
-        private cd: ChangeDetectorRef,
-        private domSanitizer: DomSanitizer
+        private cd: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {

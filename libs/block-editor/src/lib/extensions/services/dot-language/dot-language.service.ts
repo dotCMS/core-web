@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
-// eslint-disable-next-line max-len
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface DotLanguage {
@@ -23,7 +22,7 @@ export interface Languages {
     providedIn: 'root'
 })
 export class DotLanguageService {
-    public language: Languages;
+    private languages: Languages;
 
     constructor(private http: HttpClient) {}
 
@@ -33,9 +32,15 @@ export class DotLanguageService {
         return headers;
     }
 
+    /**
+     * Get an object of DotLanguage whose keys are the languageId.
+     *
+     * @return {*}  {Observable<Languages>}
+     * @memberof DotLanguageService
+     */
     getLanguages(): Observable<Languages> {
-        if (this.language) {
-            return of(this.language);
+        if (this.languages) {
+            return of(this.languages);
         }
 
         return this.http
@@ -47,7 +52,7 @@ export class DotLanguageService {
                 map((lang: DotLanguage[]) => {
                     const dotLang: Languages = this.getDotLanguageObject(lang);
 
-                    this.language = dotLang;
+                    this.languages = dotLang;
 
                     return dotLang;
                 })
