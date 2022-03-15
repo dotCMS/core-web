@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class SuggestionsService {
+
     constructor(private http: HttpClient) {}
 
     get defaultHeaders() {

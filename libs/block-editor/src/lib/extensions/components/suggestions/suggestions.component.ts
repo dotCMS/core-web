@@ -8,16 +8,15 @@ import {
     AfterViewInit
 } from '@angular/core';
 
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { SafeUrl } from '@angular/platform-browser';
+import { DotCMSContentlet } from '@dotcms/dotcms-models';
 
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
-import { DotLanguageService, Languages } from '../../services/dot-language/dot-language.service';
-
-import { SuggestionsService } from '../../services/suggestions/suggestions.service';
-import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { Languages, DotLanguageService } from '../../services/dot-language/dot-language.service';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
+import { SuggestionsService } from '../../services/suggestions/suggestions.service';
 import { suggestionOptions } from '@dotcms/block-editor';
 
 export interface SuggestionsCommandProps {
@@ -45,8 +44,9 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @Input() items: DotMenuItem[] = [];
     @Input() title = 'Select a block';
 
-    private dotLang: Languages;
     mouseMove = true;
+
+    private dotLang: Languages;
 
     @HostListener('mousemove', ['$event'])
     onMousemove() {
@@ -56,8 +56,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     constructor(
         private suggestionsService: SuggestionsService,
         private dotLanguageService: DotLanguageService,
-        private cd: ChangeDetectorRef,
-        private domSanitizer: DomSanitizer
+        private cd: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -218,7 +217,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                                                     contentlet: contentlet
                                                 },
                                                 command: () => {
-                                                    debugger;
                                                     this.onSelection({
                                                         payload: contentlet,
                                                         type: {

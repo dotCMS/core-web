@@ -16,6 +16,7 @@ export interface DotCMSContentlet {
     inode: string;
     image?: string;
     languageId: number;
+    language?: string;
     live: boolean;
     locked: boolean;
     mimeType?: string;
@@ -30,5 +31,4 @@ export interface DotCMSContentlet {
     text?: string;
     url: string;
     working: boolean;
-    language?: string;
 }

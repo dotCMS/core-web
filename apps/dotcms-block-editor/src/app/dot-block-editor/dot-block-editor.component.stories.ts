@@ -119,7 +119,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Aliquam tincidunt mauris eu risus.',
@@ -138,7 +139,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Vestibulum auctor dapibus neque.',
@@ -157,7 +159,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Nunc dignissim risus id metus.',
@@ -176,7 +179,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Cras ornare tristique elit.',
@@ -195,7 +199,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Vivamus vestibulum ntulla nec ante.',
@@ -214,7 +219,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
@@ -233,7 +239,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Aliquam tincidunt mauris eu risus.',
@@ -252,7 +259,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Vestibulum auctor dapibus neque.',
@@ -271,7 +279,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Nunc dignissim risus id metus.',
@@ -290,7 +299,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Cras ornare tristique elit.',
@@ -309,7 +319,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Vivamus vestibulum ntulla nec ante.',
@@ -328,7 +339,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
@@ -347,7 +359,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Aliquam tincidunt mauris eu risus.',
@@ -366,7 +379,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Vestibulum auctor dapibus neque.',
@@ -385,7 +399,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Nunc dignissim risus id metus.',
@@ -404,7 +419,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Cras ornare tristique elit.',
@@ -423,7 +439,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Vivamus vestibulum ntulla nec ante.',
@@ -442,7 +459,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
@@ -461,7 +479,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Aliquam tincidunt mauris eu risus.',
@@ -480,7 +499,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Vestibulum auctor dapibus neque.',
@@ -499,7 +519,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Nunc dignissim risus id metus.',
@@ -518,7 +539,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Cras ornare tristique elit.',
@@ -537,7 +559,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             },
                             {
                                 title: 'Vivamus vestibulum ntulla nec ante.',
@@ -556,7 +579,8 @@ export const primary = () => ({
                                 folder: 'SYSTEM_FOLDER',
                                 hasTitleImage: true,
                                 __icon__: 'contentIcon',
-                                contentTypeIcon: 'file_copy'
+                                contentTypeIcon: 'file_copy',
+                                contentType: 'Blog'
                             }
                         ]).pipe(delay(800));
                     }
