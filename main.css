@@ -176,8 +176,8 @@ h5 {
 .p-field > label {
   font-size: 0.85rem;
 }
-.p-formgroup-inline .p-field-radiobutton,
-.p-formgroup-inline .p-field-checkbox {
+.formgroup-inline .field-checkbox,
+.formgroup-inline .field-checkbox {
   margin-bottom: 0;
 }
 .p-label-input-required::after {
