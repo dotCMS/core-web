@@ -15,14 +15,18 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMenuService } from '@dotcms/app/api/services/dot-menu.service';
-import { take, takeUntil, tap } from 'rxjs/operators';
+import { pluck, take, takeUntil, tap } from 'rxjs/operators';
 import { DotMenu } from '@dotcms/app/shared/models/navigation';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
+import {
+    DotAddToMenuService,
+    DotCreateCustomTool
+} from '@dotcms/app/api/services/add-to-menu/add-to-menu.service';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 
 @Component({
     selector: 'dot-add-to-menu',
-    templateUrl: 'dot-add-to-menu.component.html',
-    styleUrls: ['dot-add-to-menu.component.scss']
+    templateUrl: 'dot-add-to-menu.component.html'
 })
 export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
     form: FormGroup;
@@ -32,7 +36,6 @@ export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
     dialogActions: DotDialogActions;
 
     @Input() contentType: DotCMSContentType;
-
     @Output() cancel = new EventEmitter<boolean>();
 
     @ViewChild('formEl', { static: true }) formEl: HTMLFormElement;
@@ -43,7 +46,9 @@ export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         public fb: FormBuilder,
         private dotMessageService: DotMessageService,
-        private dotMenuService: DotMenuService
+        private dotMenuService: DotMenuService,
+        private dotAddToMenuService: DotAddToMenuService,
+        private dotNavigationService: DotNavigationService
     ) {}
 
     ngOnInit() {
@@ -82,27 +87,35 @@ export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
 
     /**
      * Add to bundle if form is valid
-     * @param {any} $event
      * @memberof DotAddToBundleComponent
      */
-    submit(_event): void {
-        // if (this.form.valid) {
-        //     this.addToBundleService
-        //         .addToBundle(this.assetIdentifier, this.setBundleData())
-        //         .pipe(takeUntil(this.destroy$))
-        //         .subscribe((result: DotAjaxActionResponseView) => {
-        //             if (!result.errors) {
-        //                 sessionStorage.setItem(
-        //                     LAST_BUNDLE_USED,
-        //                     JSON.stringify(this.setBundleData())
-        //                 );
-        //                 this.form.reset();
-        //                 this.close();
-        //             } else {
-        //                 this.loggerService.debug(result.errorMessages);
-        //             }
-        //         });
-        // }
+    submit(): void {
+        if (this.form.valid) {
+            const cleanPorletId = this.dotAddToMenuService.cleanUpPorletId(
+                this.form.get('title').value
+            );
+            const params: DotCreateCustomTool = {
+                portletId: cleanPorletId,
+                portletName: this.form.get('title').value,
+                contentTypes: this.contentType.variable,
+                dataViewMode: this.form.get('defaultView').value
+            };
+
+            this.dotAddToMenuService
+                .createCustomTool(params)
+                .pipe(take(1), pluck('portlet'))
+                .subscribe(() => {
+                    this.dotAddToMenuService
+                        .addToLayout(`c_${cleanPorletId}`, this.form.get('menuOption').value)
+                        .pipe(take(1), pluck('portlet'))
+                        .subscribe((portletName: string) => {
+                            if (portletName) {
+                                this.dotNavigationService.goTo(`/c/${portletName}`);
+                                this.close();
+                            }
+                        });
+                });
+        }
     }
 
     /**
@@ -138,8 +151,7 @@ export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
             }
         };
 
-        form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((data) => {
-            console.log('*** form', data);
+        form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.dialogActions = {
                 ...this.dialogActions,
                 accept: {

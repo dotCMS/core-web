@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
+import { DotAddToMenuService } from '@dotcms/app/api/services/add-to-menu/add-to-menu.service';
 import { DotMenuService } from '@dotcms/app/api/services/dot-menu.service';
 import { DotPipesModule } from '@pipes/dot-pipes.module';
 import { DropdownModule } from 'primeng/dropdown';
@@ -25,6 +27,6 @@ import { DotAddToMenuComponent } from './dot-add-to-menu.component';
         DotPipesModule,
         DotFieldValidationMessageModule
     ],
-    providers: [DotMenuService]
+    providers: [DotMenuService, DotAddToMenuService, DotNavigationService]
 })
 export class DotAddToMenuModule {}

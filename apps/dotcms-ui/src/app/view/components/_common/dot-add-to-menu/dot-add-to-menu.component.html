@@ -7,8 +7,8 @@
 >
     <form
         [formGroup]="form"
-        (ngSubmit)="submit($event)"
-        (keyup.enter)="submit($event)"
+        (ngSubmit)="submit()"
+        (keyup.enter)="submit()"
         novalidate
         #formEl="ngForm"
         class="p-fluid"
