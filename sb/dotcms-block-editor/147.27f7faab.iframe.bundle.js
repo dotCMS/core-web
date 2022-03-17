@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdotcms_ui=self.webpackChunkdotcms_ui||[]).push([[147],{"./package.json":module=>{module.exports=JSON.parse('{"i8":"22.4.0-next.6"}')}}]);
