@@ -14,6 +14,7 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
 
         addProseMirrorPlugins() {
             const dotImageService = injector.get(DotImageService);
+
             function areImageFiles(event: ClipboardEvent | DragEvent): boolean {
                 let files: FileList;
                 if (event.type === 'drop') {
