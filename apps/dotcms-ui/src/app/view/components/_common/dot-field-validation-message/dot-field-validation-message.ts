@@ -4,7 +4,7 @@
 */
 
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 
 @Component({
     selector: 'dot-field-validation-message',
@@ -13,7 +13,7 @@ import { FormControl } from '@angular/forms';
 })
 export class DotFieldValidationMessageComponent {
     @Input()
-    field: FormControl;
+    field: FormControl | AbstractControl;
 
     @Input()
     message: string;

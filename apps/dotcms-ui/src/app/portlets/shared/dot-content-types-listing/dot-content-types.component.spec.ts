@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { Observable, of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotListingDataTableModule } from '@components/dot-listing-data-table/dot-listing-data-table.module';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
-import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Injectable, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
@@ -16,23 +16,42 @@ import { DotFormatDateService } from '@services/dot-format-date-service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Injectable } from '@angular/core';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { SelectItem } from 'primeng/api';
-import { ResponseView, HttpCode, DotPushPublishDialogService } from '@dotcms/dotcms-js';
+import { DotPushPublishDialogService, HttpCode, ResponseView } from '@dotcms/dotcms-js';
 import {
     DotHttpErrorHandled,
     DotHttpErrorManagerService
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotCMSContentType } from '@dotcms/dotcms-models';
+import { DotCloneContentTypeDialogFormFields, DotCMSContentType } from '@dotcms/dotcms-models';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 import { ActivatedRoute } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DotContentTypeStore } from '@portlets/shared/dot-content-types-listing/dot-content-type.store';
+
+const DELETE_MENU_ITEM_INDEX = 3;
+const ADD_TO_BUNDLE_MENU_ITEM_INDEX = 1;
 
 @Injectable()
 class MockDotContentTypeService {
     getAllContentTypes() {}
+}
+
+@Component({
+    selector: 'dot-dot-content-type-clone-dialog',
+    template: ''
+})
+class MockDotContentTypeCloneDialogComponent {
+    @Input()
+    isVisibleDialog = false;
+    @Input()
+    isSaving = false;
+    @Output() cancelBtn = new EventEmitter<boolean>();
+
+    @Output()
+    validFormFields = new EventEmitter<DotCloneContentTypeDialogFormFields>();
 }
 
 @Component({
@@ -77,6 +96,9 @@ class MockDotHttpErrorManagerService {
     }
 }
 
+@Injectable()
+class MockDotContentTypeStore {}
+
 @Component({
     selector: 'dot-add-to-bundle ',
     template: ``
@@ -98,6 +120,7 @@ describe('DotContentTypesPortletComponent', () => {
     let baseTypesSelector: MockDotBaseTypeSelectorComponent;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
     let dotPushPublishDialogService: DotPushPublishDialogService;
+    //let dotContentTypeStore: DotContentTypeStore;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -110,6 +133,7 @@ describe('DotContentTypesPortletComponent', () => {
             'contenttypes.action.delete': 'Delete',
             'contenttypes.content.push_publish': 'Push Publish',
             'contenttypes.content.add_to_bundle': 'Add to bundle',
+            'contenttypes.content.copy': 'Copy',
             'contenttypes.content.form': 'Form',
             'contenttypes.content.widget': 'Widget',
             'contenttypes.content.content': 'Content'
@@ -119,14 +143,17 @@ describe('DotContentTypesPortletComponent', () => {
             declarations: [
                 DotContentTypesPortletComponent,
                 MockDotBaseTypeSelectorComponent,
-                MockDotAddToBundleComponent
+                MockDotAddToBundleComponent,
+                MockDotContentTypeCloneDialogComponent
             ],
             imports: [
                 RouterTestingModule.withRoutes([
                     { path: 'test', component: DotContentTypesPortletComponent }
                 ]),
                 BrowserAnimationsModule,
-                DotListingDataTableModule
+                DotListingDataTableModule,
+
+                ReactiveFormsModule
             ],
             providers: [
                 DotContentTypesInfoService,
@@ -138,7 +165,8 @@ describe('DotContentTypesPortletComponent', () => {
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: PushPublishService, useClass: MockPushPublishService },
                 { provide: DotLicenseService, useClass: MockDotLicenseService },
-                { provide: DotHttpErrorManagerService, useClass: MockDotHttpErrorManagerService }
+                { provide: DotHttpErrorManagerService, useClass: MockDotHttpErrorManagerService },
+                { provide: DotContentTypeStore, useClass: MockDotContentTypeStore }
             ]
         });
 
@@ -151,6 +179,7 @@ describe('DotContentTypesPortletComponent', () => {
         pushPublishService = fixture.debugElement.injector.get(PushPublishService);
         dotLicenseService = fixture.debugElement.injector.get(DotLicenseService);
         dotHttpErrorManagerService = fixture.debugElement.injector.get(DotHttpErrorManagerService);
+        //dotContentTypeStore = fixture.debugElement.injector.get(DotContentTypeStore);
         dotPushPublishDialogService = fixture.debugElement.injector.get(
             DotPushPublishDialogService
         );
@@ -218,18 +247,20 @@ describe('DotContentTypesPortletComponent', () => {
         });
 
         spyOn(crudService, 'delete').and.returnValue(observableOf(mockContentType));
-        comp.rowActions[2].menuItem.command(mockContentType);
+        comp.rowActions[DELETE_MENU_ITEM_INDEX].menuItem.command(mockContentType);
 
         fixture.detectChanges();
 
         expect(crudService.delete).toHaveBeenCalledWith('v1/contenttype/id', mockContentType.id);
     });
 
-    it('should have remove, push publish and Add to bundle actions to the list item', () => {
+    it('should have remove, push publish, Copy and Add to bundle actions to the list item', () => {
         fixture.detectChanges();
+
         expect(comp.rowActions.map((action) => action.menuItem.label)).toEqual([
             'Push Publish',
             'Add to bundle',
+            'Copy',
             'Delete'
         ]);
     });
@@ -259,6 +290,7 @@ describe('DotContentTypesPortletComponent', () => {
 
         expect(comp.rowActions.map((action) => action.menuItem.label)).toEqual([
             'Add to bundle',
+            'Copy',
             'Delete'
         ]);
     });
@@ -309,7 +341,7 @@ describe('DotContentTypesPortletComponent', () => {
         expect(comp.addToBundleIdentifier).not.toBeDefined();
         expect(de.query(By.css('p-dialog'))).toBeNull();
 
-        comp.rowActions[1].menuItem.command(mockContentType);
+        comp.rowActions[ADD_TO_BUNDLE_MENU_ITEM_INDEX].menuItem.command(mockContentType);
         fixture.detectChanges();
 
         expect(de.query(By.css('p-dialog'))).toBeDefined();
@@ -370,7 +402,7 @@ describe('DotContentTypesPortletComponent', () => {
         spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
         spyOn(crudService, 'delete').and.returnValue(observableThrowError(forbiddenError));
 
-        comp.rowActions[2].menuItem.command(mockContentType);
+        comp.rowActions[DELETE_MENU_ITEM_INDEX].menuItem.command(mockContentType);
 
         fixture.detectChanges();
 
@@ -379,17 +411,19 @@ describe('DotContentTypesPortletComponent', () => {
 
     it('should show remove option', () => {
         fixture.detectChanges();
-        const shouldShow = comp.rowActions[2].shouldShow({
+
+        const shouldShow = comp.rowActions[DELETE_MENU_ITEM_INDEX].shouldShow({
             fixed: false,
             defaultType: false
         });
 
+        //expect(shouldShow).toBeTruthy();
         expect(shouldShow).toBeTruthy();
     });
 
     it('should not show remove option if content type is defaultType', () => {
         fixture.detectChanges();
-        const shouldShow = comp.rowActions[2].shouldShow({
+        const shouldShow = comp.rowActions[DELETE_MENU_ITEM_INDEX].shouldShow({
             fixed: false,
             defaultType: true
         });

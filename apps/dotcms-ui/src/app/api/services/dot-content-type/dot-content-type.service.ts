@@ -1,9 +1,9 @@
-import { toArray, defaultIfEmpty, map, pluck, flatMap, filter, take } from 'rxjs/operators';
+import { defaultIfEmpty, filter, flatMap, map, pluck, take, toArray } from 'rxjs/operators';
 import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { StructureTypeView, ContentTypeView } from '@models/contentlet';
-import { DotCMSContentType } from '@dotcms/dotcms-models';
+import { ContentTypeView, StructureTypeView } from '@models/contentlet';
+import { DotCloneContentTypeDialogFormFields, DotCMSContentType } from '@dotcms/dotcms-models';
 
 @Injectable()
 export class DotContentTypeService {
@@ -82,6 +82,30 @@ export class DotContentTypeService {
             map((url: string) => !!url),
             defaultIfEmpty(false)
         );
+    }
+
+    /**
+     * Save cloned content types
+     *
+     * @param string variable
+     * @param DotCloneContentTypeDialogFormFields clonedFormFields
+     * @returns Observable<boolean>
+     * @memberof ContentletService
+     */
+
+    saveCloneContentType(
+        variable: string,
+        clonedFormFields: DotCloneContentTypeDialogFormFields
+    ): Observable<DotCMSContentType> {
+        return this.coreWebService
+            .requestView({
+                body: {
+                    ...clonedFormFields
+                },
+                method: 'POST',
+                url: `/api/v1/contenttype/${variable}/_copy`
+            })
+            .pipe(pluck('entity'));
     }
 
     private isRecentContentType(type: StructureTypeView): boolean {
