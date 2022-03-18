@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { DotCMSBaseTypesContentTypes } from '@dotcms/dotcms-models';
 import {
-    DotCMSAssetDialogCloneFields,
+    DotCMSAssetDialogCopyFields,
     DotContentTypeStore
 } from '@portlets/shared/dot-content-types-listing/dot-content-type.store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 @Injectable()
 class MockDotContentTypeService {}
 
-const assetSelectedMock: DotCMSAssetDialogCloneFields = {
+const assetSelectedMock: DotCMSAssetDialogCopyFields = {
     title: 'title of the dialog',
     assetIdentifier: '123456',
     baseType: DotCMSBaseTypesContentTypes.FORM,
@@ -27,7 +27,6 @@ const assetSelectedMock: DotCMSAssetDialogCloneFields = {
 
 describe('DotContentTypeComponentStore', () => {
     let store: DotContentTypeStore;
-    //let dotContentTypeService: DotContentTypeService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({

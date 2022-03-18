@@ -23,11 +23,4 @@
 ></dot-add-to-bundle>
 
 
-<dot-content-type-clone-dialog
-    (cancelBtn)="hideCloneContentTypeDialog()"
-    (validFormFields)="saveCloneContentTypeDialog($event)"
-    *ngIf="isVisibleCloneDialog$ | async"
-    [assetSelected]="assetSelected$ | async"
-    [isSaving]="isSaving$ | async"
-    [isVisibleDialog]="isVisibleCloneDialog$ | async">
-</dot-content-type-clone-dialog>
+<ng-template #dotDynamicDialog></ng-template>

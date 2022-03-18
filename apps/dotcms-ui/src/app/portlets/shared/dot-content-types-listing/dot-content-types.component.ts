@@ -1,11 +1,11 @@
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import * as _ from 'lodash';
 
-import { map, pluck, take } from 'rxjs/operators';
+import { map, pluck, take, takeUntil } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotCrudService } from '@services/dot-crud';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
 import { ActionHeaderOptions } from '@models/action-header';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
@@ -21,9 +21,9 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
 import { DotPushPublishDialogService } from '@dotcms/dotcms-js';
 import {
-    DotCloneContentTypeDialogFormFields,
     DotCMSBaseTypesContentTypes,
-    DotCMSContentType
+    DotCMSContentType,
+    DotCopyContentTypeDialogFormFields
 } from '@dotcms/dotcms-models';
 import { DotContentTypeStore } from './dot-content-type.store';
 import { DotListingDataTableComponent } from '@components/dot-listing-data-table/dot-listing-data-table.component';
@@ -47,9 +47,8 @@ type DotRowActions = {
     templateUrl: 'dot-content-types.component.html',
     providers: [DotContentTypeStore]
 })
-export class DotContentTypesPortletComponent implements OnInit {
+export class DotContentTypesPortletComponent implements OnInit, OnDestroy {
     @ViewChild('listing', { static: false }) listing: DotListingDataTableComponent;
-
     filterBy: string;
     showTable = false;
     paginatorExtraParams: { [key: string]: string };
@@ -57,9 +56,10 @@ export class DotContentTypesPortletComponent implements OnInit {
     actionHeaderOptions: ActionHeaderOptions;
     rowActions: DotActionMenuItem[];
     addToBundleIdentifier: string;
-    isVisibleCloneDialog$ = this.dotContentTypeStore.isVisibleCloneDialog$;
-    assetSelected$ = this.dotContentTypeStore.assetSelected$;
-    isSaving$ = this.dotContentTypeStore.isSaving$;
+
+    @ViewChild('dotDynamicDialog', { read: ViewContainerRef, static: true })
+    public dotDynamicDialog: ViewContainerRef;
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private contentTypesInfoService: DotContentTypesInfoService,
@@ -108,6 +108,11 @@ export class DotContentTypesPortletComponent implements OnInit {
         });
     }
 
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
+    }
+
     /**
      * Handler to edit a content type
      *
@@ -133,11 +138,13 @@ export class DotContentTypesPortletComponent implements OnInit {
         this.listing.loadFirstPage();
     }
 
-    public hideCloneContentTypeDialog() {
-        this.dotContentTypeStore.hideCloneDialog();
-    }
-
-    public saveCloneContentTypeDialog(form: DotCloneContentTypeDialogFormFields) {
+    /**
+     * Save the form values of Copy Dialog
+     *
+     * @param {DotCopyContentTypeDialogFormFields} form
+     * @memberof DotContentTypesPortletComponent
+     */
+    saveCloneContentTypeDialog(form: DotCopyContentTypeDialogFormFields) {
         this.dotContentTypeStore.saveCloneDialog(form);
     }
 
@@ -312,8 +319,17 @@ export class DotContentTypesPortletComponent implements OnInit {
         });
     }
 
-    private showCloneContentTypeDialog(item: DotCMSContentType) {
-        this.dotContentTypeStore.showCloneDialog({
+    private async showCloneContentTypeDialog(item: DotCMSContentType) {
+        const { DotContentTypeCopyDialogComponent } = await import(
+            './components/dot-content-type-copy-dialog/dot-content-type-copy-dialog.component'
+        );
+        const componentRef = this.dotDynamicDialog.createComponent(
+            DotContentTypeCopyDialogComponent
+        );
+
+        this.dotContentTypeStore.setAssetSelected(item.id);
+
+        componentRef.instance.openDialog({
             assetIdentifier: item.id,
             title: `${this.dotMessageService.get('contenttypes.content.copy')} ${item.name}`,
             baseType: item.baseType as DotCMSBaseTypesContentTypes,
@@ -322,6 +338,16 @@ export class DotContentTypesPortletComponent implements OnInit {
                 host: item.host
             }
         });
+
+        componentRef.instance.isSaving$ = this.dotContentTypeStore.isSaving$;
+        componentRef.instance.cancelBtn.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.dotDynamicDialog.clear();
+        });
+        componentRef.instance.validFormFields
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((formValues) => {
+                this.saveCloneContentTypeDialog(formValues);
+            });
     }
 
     private addToBundleContentType(item: DotCMSContentType) {

@@ -1,16 +1,13 @@
 import { ComponentStore } from '@ngrx/component-store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-    DotCloneContentTypeDialogFormFields,
-    DotCMSAssetDialogFields
-} from '@dotcms/dotcms-models';
+import { DotCMSAssetDialogFields, DotCopyContentTypeDialogFormFields } from '@dotcms/dotcms-models';
 import { DotContentTypeService } from '@services/dot-content-type';
 import { catchError, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { Router } from '@angular/router';
 
-export type DotCMSAssetDialogCloneFields = DotCMSAssetDialogFields & {
+export type DotCMSAssetDialogCopyFields = DotCMSAssetDialogFields & {
     data: {
         icon: string;
         host: string;
@@ -19,7 +16,7 @@ export type DotCMSAssetDialogCloneFields = DotCMSAssetDialogFields & {
 
 export interface ContentTypeState {
     isVisibleCloneDialog: boolean;
-    assetSelected: DotCMSAssetDialogCloneFields | null;
+    assetSelected: string | null;
     isSaving: boolean;
 }
 
@@ -31,27 +28,14 @@ const initialState: ContentTypeState = {
 
 @Injectable()
 export class DotContentTypeStore extends ComponentStore<ContentTypeState> {
-    readonly assetSelected$: Observable<DotCMSAssetDialogCloneFields> = this.select(
-        ({ assetSelected }) => assetSelected
-    );
-    readonly isVisibleCloneDialog$: Observable<boolean> = this.select(
-        ({ isVisibleCloneDialog }) => isVisibleCloneDialog
-    );
+    readonly assetSelected$ = this.select(({ assetSelected }) => assetSelected);
     readonly isSaving$: Observable<boolean> = this.select(({ isSaving }) => isSaving);
 
     // UPDATERS
-    readonly showCloneDialog = this.updater(
-        (state, assetSelected: DotCMSAssetDialogCloneFields) => ({
-            ...state,
-            assetSelected,
-            isVisibleCloneDialog: true,
-            isSaving: false
-        })
-    );
-    readonly hideCloneDialog = this.updater((state) => ({
+    readonly setAssetSelected = this.updater((state, assetSelected: string) => ({
         ...state,
-        assetSelected: null,
-        isVisibleCloneDialog: false
+        assetSelected,
+        isSaving: false
     }));
 
     readonly isSaving = this.updater((state, isSaving: boolean) => ({
@@ -61,13 +45,13 @@ export class DotContentTypeStore extends ComponentStore<ContentTypeState> {
 
     // EFFECTS
     readonly saveCloneDialog = this.effect(
-        (cloneDialogFormFields$: Observable<DotCloneContentTypeDialogFormFields>) => {
+        (cloneDialogFormFields$: Observable<DotCopyContentTypeDialogFormFields>) => {
             return cloneDialogFormFields$.pipe(
-                withLatestFrom(this.assetSelected$),
                 tap(() => this.isSaving(true)),
-                switchMap(([formFields, asset]) =>
+                withLatestFrom(this.assetSelected$),
+                switchMap(([formFields, assetIdentifier]) =>
                     this.dotContentTypeService
-                        .saveCloneContentType(asset.assetIdentifier, formFields)
+                        .saveCopyContentType(assetIdentifier, formFields)
                         .pipe(
                             tap({
                                 next: (clonedAsset) => {

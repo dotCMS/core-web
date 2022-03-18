@@ -1,5 +1,4 @@
 import {
-    AfterViewChecked,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
@@ -10,33 +9,32 @@ import {
     Output
 } from '@angular/core';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
-import { DotCloneContentTypeDialogFormFields } from '@dotcms/dotcms-models';
+import { DotCopyContentTypeDialogFormFields } from '@dotcms/dotcms-models';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { DotCMSAssetDialogCloneFields } from '@portlets/shared/dot-content-types-listing/dot-content-type.store';
+import { Observable, Subject } from 'rxjs';
+import { DotCMSAssetDialogCopyFields } from '@portlets/shared/dot-content-types-listing/dot-content-type.store';
 
 @Component({
-    selector: 'dot-content-type-clone-dialog',
-    templateUrl: './dot-content-type-clone-dialog.component.html',
-    styleUrls: ['./dot-content-type-clone-dialog.component.css'],
+    selector: 'dot-content-type-copy-dialog',
+    templateUrl: './dot-content-type-copy-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DotContentTypeCloneDialogComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class DotContentTypeCopyDialogComponent implements OnInit, OnDestroy {
     dialogActions: DotDialogActions;
     inputNameWithType = '';
+    dialogTitle = '';
+
     @Input()
     isVisibleDialog = false;
     @Input()
-    isSaving = false;
+    isSaving$ = new Observable<boolean>();
     @Output() cancelBtn = new EventEmitter<boolean>();
 
     @Output()
-    validFormFields = new EventEmitter<DotCloneContentTypeDialogFormFields>();
+    validFormFields = new EventEmitter<DotCopyContentTypeDialogFormFields>();
     form!: FormGroup;
-
-    asset: DotCMSAssetDialogCloneFields;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -48,12 +46,20 @@ export class DotContentTypeCloneDialogComponent implements OnInit, OnDestroy, Af
         this.initForm();
     }
 
-    @Input()
-    set assetSelected(assetSelected: DotCMSAssetDialogCloneFields | null) {
-        if (assetSelected) {
-            this.asset = assetSelected;
-            this.inputNameWithType = this.getNameFieldLabel(assetSelected.baseType);
-            this.patchForm(assetSelected.data);
+    get variableControl() {
+        return this.form.get('variable') as FormControl;
+    }
+
+    get nameControl() {
+        return this.form.get('name') as FormControl;
+    }
+
+    openDialog(config: DotCMSAssetDialogCopyFields) {
+        this.inputNameWithType = this.getNameFieldLabel(config.baseType);
+        this.dialogTitle = config.title;
+        this.isVisibleDialog = true;
+        if (config.data) {
+            this.patchForm(config.data);
         }
     }
 
@@ -61,24 +67,31 @@ export class DotContentTypeCloneDialogComponent implements OnInit, OnDestroy, Af
         this.setDialogConfig();
     }
 
+    /**
+     * Emit all the values of the form only if all valid
+     *
+     * @memberof DotContentTypeCopyDialogComponent
+     */
     submitForm() {
         if (this.form.valid) {
             this.validFormFields.emit(this.form.value);
         }
     }
 
+    /**
+     * Emit the action of close dialog
+     *
+     * @memberof DotContentTypeCopyDialogComponent
+     */
     closeDialog(): void {
         this.cancelBtn.emit(true);
         this.initForm();
+        this.isVisibleDialog = false;
     }
 
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
-    }
-
-    ngAfterViewChecked() {
-        this.cd.markForCheck();
     }
 
     private setDialogConfig(): void {

@@ -11,7 +11,7 @@ import { DotBaseTypeSelectorModule } from '@components/dot-base-type-selector';
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
 
 import { DotPipesModule } from '@pipes/dot-pipes.module';
-import { DotContentTypeCloneDialogComponent } from './components/dot-content-type-clone-dialog/dot-content-type-clone-dialog.component';
+import { DotContentTypeCopyDialogComponent } from './components/dot-content-type-copy-dialog/dot-content-type-copy-dialog.component';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotMdIconSelectorModule } from '@components/_common/dot-md-icon-selector/dot-md-icon-selector.module';
 import { SiteSelectorFieldModule } from '@components/_common/dot-site-selector-field/dot-site-selector-field.module';
@@ -34,7 +34,7 @@ import { InputTextModule } from 'primeng/inputtext';
         DotMdIconSelectorModule,
         SiteSelectorFieldModule
     ],
-    declarations: [DotContentTypesPortletComponent, DotContentTypeCloneDialogComponent],
+    declarations: [DotContentTypesPortletComponent, DotContentTypeCopyDialogComponent],
     exports: [DotContentTypesPortletComponent],
     providers: [DotContentTypesInfoService, DotCrudService, DotContentTypeService]
 })

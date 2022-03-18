@@ -104,7 +104,7 @@ export const enum DotCMSBaseTypesContentTypes {
     KEY_VALUE = 'KEY_VALUE'
 }
 
-export type DotCloneContentTypeDialogFormFields = {
+export type DotCopyContentTypeDialogFormFields = {
     name: string;
     variable: string;
     folder: string;

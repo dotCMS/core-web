@@ -3,7 +3,7 @@ import { CoreWebService } from '@dotcms/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ContentTypeView, StructureTypeView } from '@models/contentlet';
-import { DotCloneContentTypeDialogFormFields, DotCMSContentType } from '@dotcms/dotcms-models';
+import { DotCMSContentType, DotCopyContentTypeDialogFormFields } from '@dotcms/dotcms-models';
 
 @Injectable()
 export class DotContentTypeService {
@@ -85,17 +85,17 @@ export class DotContentTypeService {
     }
 
     /**
-     * Save cloned content types
+     * Save copy content types
      *
      * @param string variable
      * @param DotCloneContentTypeDialogFormFields clonedFormFields
      * @returns Observable<boolean>
-     * @memberof ContentletService
+     * @memberof DotContentTypeService
      */
 
-    saveCloneContentType(
+    saveCopyContentType(
         variable: string,
-        clonedFormFields: DotCloneContentTypeDialogFormFields
+        clonedFormFields: DotCopyContentTypeDialogFormFields
     ): Observable<DotCMSContentType> {
         return this.coreWebService
             .requestView({

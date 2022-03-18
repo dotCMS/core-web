@@ -1,12 +1,13 @@
 <dot-dialog
     (hide)="closeDialog()"
     [actions]="dialogActions"
-    [header]="asset?.title"
-    [isSaving]="isSaving"
+    [header]="dialogTitle"
+    [isSaving]="isSaving$ | async"
     [visible]="isVisibleDialog"
     class="no-overflow"
     width="600px"
 >
+
     <form
         #formEl="ngForm"
         (keyup.enter)="submitForm()"
@@ -15,7 +16,6 @@
         class="p-fluid"
         novalidate
     >
-    
 
         <div class="field form__group--validation">
             <label for="content-type-form-name">{{ inputNameWithType }} *</label>
@@ -29,7 +29,7 @@
                 type="text"
             />
             <dot-field-validation-message
-                [field]="form.get('name')"
+                [field]="nameControl"
                 [message]="'dot.common.message.field.required' | dm: [inputNameWithType]"
             ></dot-field-validation-message>
         </div>
@@ -46,7 +46,7 @@
                 type="text"
             />
             <dot-field-validation-message
-                [field]="form.get('variable')"
+                [field]="this.variableControl"
                 [message]="'dot.common.message.field.required' | dm"
             ></dot-field-validation-message>
         </div>

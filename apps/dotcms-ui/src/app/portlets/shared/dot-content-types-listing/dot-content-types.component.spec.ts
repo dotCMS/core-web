@@ -8,28 +8,36 @@ import { DotListingDataTableModule } from '@components/dot-listing-data-table/do
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { Component, DebugElement, EventEmitter, Injectable, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotContentTypesPortletComponent } from './dot-content-types.component';
-import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotFormatDateService } from '@services/dot-format-date-service';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-import { SelectItem } from 'primeng/api';
-import { DotPushPublishDialogService, HttpCode, ResponseView } from '@dotcms/dotcms-js';
+import { ConfirmationService, SelectItem } from 'primeng/api';
+import {
+    CoreWebService,
+    DotPushPublishDialogService,
+    HttpCode,
+    LoggerService,
+    ResponseView,
+    StringUtils
+} from '@dotcms/dotcms-js';
 import {
     DotHttpErrorHandled,
     DotHttpErrorManagerService
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotCloneContentTypeDialogFormFields, DotCMSContentType } from '@dotcms/dotcms-models';
+import { DotCMSContentType, DotCopyContentTypeDialogFormFields } from '@dotcms/dotcms-models';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 import { ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotContentTypeStore } from '@portlets/shared/dot-content-types-listing/dot-content-type.store';
+import { CoreWebServiceMock } from '@tests/core-web.service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const DELETE_MENU_ITEM_INDEX = 3;
 const ADD_TO_BUNDLE_MENU_ITEM_INDEX = 1;
@@ -40,7 +48,7 @@ class MockDotContentTypeService {
 }
 
 @Component({
-    selector: 'dot-dot-content-type-clone-dialog',
+    selector: 'dot-dot-content-type-copy-dialog',
     template: ''
 })
 class MockDotContentTypeCloneDialogComponent {
@@ -51,7 +59,7 @@ class MockDotContentTypeCloneDialogComponent {
     @Output() cancelBtn = new EventEmitter<boolean>();
 
     @Output()
-    validFormFields = new EventEmitter<DotCloneContentTypeDialogFormFields>();
+    validFormFields = new EventEmitter<DotCopyContentTypeDialogFormFields>();
 }
 
 @Component({
@@ -120,7 +128,6 @@ describe('DotContentTypesPortletComponent', () => {
     let baseTypesSelector: MockDotBaseTypeSelectorComponent;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
     let dotPushPublishDialogService: DotPushPublishDialogService;
-    //let dotContentTypeStore: DotContentTypeStore;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -139,7 +146,7 @@ describe('DotContentTypesPortletComponent', () => {
             'contenttypes.content.content': 'Content'
         });
 
-        DOTTestBed.configureTestingModule({
+        TestBed.configureTestingModule({
             declarations: [
                 DotContentTypesPortletComponent,
                 MockDotBaseTypeSelectorComponent,
@@ -152,8 +159,8 @@ describe('DotContentTypesPortletComponent', () => {
                 ]),
                 BrowserAnimationsModule,
                 DotListingDataTableModule,
-
-                ReactiveFormsModule
+                ReactiveFormsModule,
+                HttpClientTestingModule
             ],
             providers: [
                 DotContentTypesInfoService,
@@ -161,6 +168,11 @@ describe('DotContentTypesPortletComponent', () => {
                 DotAlertConfirmService,
                 DotFormatDateService,
                 DotPushPublishDialogService,
+                DotAlertConfirmService,
+                ConfirmationService,
+                LoggerService,
+                StringUtils,
+                { provide: CoreWebService, useClass: CoreWebServiceMock },
                 { provide: DotContentTypeService, useClass: MockDotContentTypeService },
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: PushPublishService, useClass: MockPushPublishService },
@@ -168,9 +180,9 @@ describe('DotContentTypesPortletComponent', () => {
                 { provide: DotHttpErrorManagerService, useClass: MockDotHttpErrorManagerService },
                 { provide: DotContentTypeStore, useClass: MockDotContentTypeStore }
             ]
-        });
+        }).compileComponents();
 
-        fixture = DOTTestBed.createComponent(DotContentTypesPortletComponent);
+        fixture = TestBed.createComponent(DotContentTypesPortletComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
         router = de.injector.get(ActivatedRoute);
@@ -179,7 +191,7 @@ describe('DotContentTypesPortletComponent', () => {
         pushPublishService = fixture.debugElement.injector.get(PushPublishService);
         dotLicenseService = fixture.debugElement.injector.get(DotLicenseService);
         dotHttpErrorManagerService = fixture.debugElement.injector.get(DotHttpErrorManagerService);
-        //dotContentTypeStore = fixture.debugElement.injector.get(DotContentTypeStore);
+
         dotPushPublishDialogService = fixture.debugElement.injector.get(
             DotPushPublishDialogService
         );
@@ -417,7 +429,6 @@ describe('DotContentTypesPortletComponent', () => {
             defaultType: false
         });
 
-        //expect(shouldShow).toBeTruthy();
         expect(shouldShow).toBeTruthy();
     });
 
