@@ -84,12 +84,18 @@ export class DotEditContentToolbarHtmlService {
      * @memberof DotEditContentToolbarHtmlService
      */
     addContentletMarkup(doc: Document): void {
+        let counter = 0
         const contentletQuery = `[data-dot-object="contentlet"][data-dot-has-page-lang-version="true"]`;
-        const contentlets: HTMLDivElement[] = Array.from(doc.querySelectorAll(contentletQuery));
-
-        contentlets.forEach((contentlet: HTMLDivElement) => {
-            this.addToolbarToContentlet(contentlet);
-        });
+        const intervalId = setInterval(() => {
+            const contentlets: HTMLDivElement[] = Array.from(doc.querySelectorAll(contentletQuery));
+                    if (contentlets.length || counter === 24) {
+                    contentlets.forEach((contentlet: HTMLDivElement) => {
+                        this.addToolbarToContentlet(contentlet);
+                    });
+                    clearInterval(intervalId);
+                }
+                counter++
+        }, 500);
     }
 
     addToolbarToContentlet(contentlet: HTMLElement) {
