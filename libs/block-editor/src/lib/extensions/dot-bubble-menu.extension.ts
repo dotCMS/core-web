@@ -37,15 +37,6 @@ export function DotBubbleMenuExtension(
                 return [];
             }
 
-            console.log('------DATA_______: ', {
-                component: angularComponent,
-                pluginKey: this.options.pluginKey,
-                editor: this.editor,
-                element: htmlElement,
-                tippyOptions: this.options.tippyOptions,
-                shouldShow: this.options.shouldShow
-            });
-
             return [
                 DotBubbleMenuPlugin({
                     component: angularComponent,
