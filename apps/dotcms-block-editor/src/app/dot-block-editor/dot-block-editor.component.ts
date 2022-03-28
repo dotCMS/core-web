@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Injector, ViewEncapsulation, Input } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -24,10 +24,10 @@ import { ViewContainerRef } from '@angular/core';
     selector: 'dotcms-block-editor',
     templateUrl: './dot-block-editor.component.html',
     styleUrls: ['./dot-block-editor.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.ShadowDom
 })
 export class DotBlockEditorComponent implements OnInit {
-    editor: Editor;
+    @Input() editor: Editor;
 
     value = ''; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 

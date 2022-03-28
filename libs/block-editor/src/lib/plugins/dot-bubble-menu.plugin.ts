@@ -79,6 +79,8 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         if (composing || isSame) {
             return;
         }
+        const { element: editorElement } = this.editor.options;
+        const editorIsAttached = !!editorElement.parentElement;
 
         this.createTooltip();
 
@@ -95,7 +97,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
             from,
             to
         });
-
+        console.log('create tooltip shouldShow', shouldShow);
         if (!shouldShow) {
             this.hide();
 
@@ -122,6 +124,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     }
 
     show() {
+        console.log('show', this.tippy);
         this.setSelectedDropDownItem();
         this.component.instance.dropdown.showSuggestions = false;
         this.tippy?.show();
