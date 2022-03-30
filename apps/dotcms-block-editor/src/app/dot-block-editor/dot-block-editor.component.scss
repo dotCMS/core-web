@@ -4,19 +4,6 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 :host {
-
-    p {
-        margin: 0 0 $spacing-1 0;
-        font-size: 14px;
-    }
-
-    ul ol {
-
-    }
-}
-
-
-:host {
     border-radius: 4px;
     display: block;
     height: 500px;
@@ -106,9 +93,6 @@
             }
         }
     }
-
-
-
 }
 
 .highlighted {
