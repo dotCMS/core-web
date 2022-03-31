@@ -10,7 +10,8 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
 
         addProseMirrorPlugins() {
             let nodeToBeDragged = null;
-            const WIDTH = 24;
+            const HANDLER_LEFT_OFFSET = 40;
+            const HANDLER_TOP_OFFSET = 16;
             const HANDLER_GAP = 50;
             const dragHandler =
                 viewContainerRef.createComponent(DragHandlerComponent).location.nativeElement;
@@ -95,14 +96,17 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
                 dragHandler.setAttribute('draggable', 'true');
                 dragHandler.addEventListener('dragstart', (e) => dragStart(e, editorView));
                 dragHandler.style.display = 'none';
-                document.body.appendChild(dragHandler);
+                editorView.dom.parentElement.appendChild(dragHandler);
             }
 
             return [
                 new Plugin({
                     key: new PluginKey('dragHandler'),
                     view: (editorView) => {
-                        bindEventsToDragHandler(editorView);
+                        setTimeout(() => {
+                            bindEventsToDragHandler(editorView);
+                        }, 0);
+
                         return {
                             destroy() {
                                 removeNode(dragHandler);
@@ -141,8 +145,10 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
                                         const win = nodeToBeDragged.ownerDocument.defaultView;
                                         rect.top += win.pageYOffset;
                                         rect.left += win.pageXOffset;
-                                        dragHandler.style.left = rect.left - WIDTH + 'px';
-                                        dragHandler.style.top = rect.top - 4 + 'px';
+                                        dragHandler.style.left =
+                                            rect.left - HANDLER_LEFT_OFFSET + 'px';
+                                        dragHandler.style.top =
+                                            rect.top - HANDLER_TOP_OFFSET + 'px';
                                         dragHandler.style.display = 'block';
                                     } else {
                                         dragHandler.style.display = 'none';
