@@ -11,29 +11,21 @@ import { CoreWebService } from '@dotcms/dotcms-js';
 import { CoreWebServiceMock } from '@tests/core-web.service.mock';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mockResponseView } from '@tests/response-view.mock';
+import { dotcmsContentTypeBasicMock } from '@dotcms/app/test/dot-content-types.mock';
 
 describe('DotContentTypeComponentStore', () => {
     let store: DotContentTypeStore;
     let dotContentTypeService: DotContentTypeService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
+    let router: Router;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
+            imports: [HttpClientTestingModule, RouterTestingModule],
             providers: [
                 DotContentTypeService,
                 DotContentTypeStore,
                 { provide: CoreWebService, useClass: CoreWebServiceMock },
-                {
-                    provide: DotContentTypeService,
-                    useValue: {
-                        saveCopyContentType: jasmine.createSpy().and.returnValue(of({}))
-                    }
-                },
-                {
-                    provide: Router,
-                    useValue: RouterTestingModule
-                },
                 {
                     provide: DotHttpErrorManagerService,
                     useValue: {
@@ -45,6 +37,7 @@ describe('DotContentTypeComponentStore', () => {
         store = TestBed.inject(DotContentTypeStore);
         dotContentTypeService = TestBed.inject(DotContentTypeService);
         dotHttpErrorManagerService = TestBed.inject(DotHttpErrorManagerService);
+        router = TestBed.inject(Router);
     });
 
     describe('updaters', () => {
@@ -65,9 +58,19 @@ describe('DotContentTypeComponentStore', () => {
 
     describe('effects', () => {
         it('should save Content Type Copy values', () => {
-            spyOn(store, 'goToEditContentType');
-            const setAssetSelectedMock = 'content-type-id';
-            store.setAssetSelected(setAssetSelectedMock);
+            spyOn(dotContentTypeService, 'saveCopyContentType').and.returnValue(
+                of({
+                    ...dotcmsContentTypeBasicMock,
+                    id: '1234567890',
+                    name: 'ContentTypeName',
+                    variable: 'helloVariable',
+                    baseType: 'testBaseType'
+                })
+            );
+
+            spyOn(router, 'navigate');
+
+            store.setAssetSelected('content-type-id');
 
             const formFields: DotCopyContentTypeDialogFormFields = {
                 name: 'new-name',
@@ -79,12 +82,27 @@ describe('DotContentTypeComponentStore', () => {
 
             store.saveCopyDialog(formFields);
 
-            expect(store.goToEditContentType).toHaveBeenCalled();
+            expect(dotContentTypeService.saveCopyContentType).toHaveBeenCalledWith(
+                'content-type-id',
+                {
+                    name: 'new-name',
+                    host: 'host',
+                    icon: 'icon',
+                    folder: 'folder',
+                    variable: 'validVariableName'
+                }
+            );
+
+            expect(router.navigate).toHaveBeenCalledWith([
+                '/content-types-angular/edit',
+                '1234567890'
+            ]);
         });
 
         it('should handler error on update template', (done) => {
-            const error = throwError(new HttpErrorResponse(mockResponseView(400)));
-            dotContentTypeService.saveCopyContentType = jasmine.createSpy().and.returnValue(error);
+            const error = new HttpErrorResponse(mockResponseView(400));
+            spyOn(dotContentTypeService, 'saveCopyContentType').and.returnValue(throwError(error));
+
             store.saveCopyDialog({
                 name: 'new-name',
                 host: 'host',
@@ -93,9 +111,10 @@ describe('DotContentTypeComponentStore', () => {
                 variable: 'validVariableName'
             });
 
-            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
+            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(error);
+
             store.isSaving$.subscribe((resp) => {
-                expect(resp).toBeFalsy();
+                expect(resp).toBe(false);
                 done();
             });
         });

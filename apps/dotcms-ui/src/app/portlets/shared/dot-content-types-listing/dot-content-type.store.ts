@@ -54,7 +54,9 @@ export class DotContentTypeStore extends ComponentStore<ContentTypeState> {
                         .saveCopyContentType(assetIdentifier, formFields)
                         .pipe(
                             tap({
-                                next: (clonedAsset) => this.goToEditContentType(clonedAsset.id)
+                                next: ({ id }) => {
+                                    this.router.navigate(['/content-types-angular/edit', id]);
+                                }
                             }),
                             catchError((error) => {
                                 this.isSaving(false);
@@ -72,9 +74,5 @@ export class DotContentTypeStore extends ComponentStore<ContentTypeState> {
         private readonly router: Router
     ) {
         super(initialState);
-    }
-
-    goToEditContentType(contentTypeId: string) {
-        this.router.navigate(['/content-types-angular/edit', contentTypeId]);
     }
 }
