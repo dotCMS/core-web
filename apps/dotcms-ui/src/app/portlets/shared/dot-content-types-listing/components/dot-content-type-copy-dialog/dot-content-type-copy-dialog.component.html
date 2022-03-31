@@ -1,6 +1,6 @@
 <dot-dialog
     (hide)="closeDialog()"
-    [actions]="dialogActions"
+    [actions]="dialogActions$ | async"
     [header]="dialogTitle"
     [isSaving]="isSaving$ | async"
     [visible]="isVisibleDialog"
@@ -42,12 +42,11 @@
                 id="content-type-form-variable-name"
                 name="variable"
                 pInputText
-                placeholder="Will be auto-generated if left empty"
+                placeholder="{{'contentType.form.variable.placeholder' | dm}}"
                 type="text"
             />
             <dot-field-validation-message
                 [field]="this.variableControl"
-                [message]="'dot.common.message.field.required' | dm"
             ></dot-field-validation-message>
         </div>
 
@@ -72,4 +71,6 @@
         </div>
 
     </form>
+
 </dot-dialog>
+

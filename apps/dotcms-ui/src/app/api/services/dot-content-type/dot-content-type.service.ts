@@ -85,22 +85,20 @@ export class DotContentTypeService {
     }
 
     /**
-     * Save copy content types
-     *
-     * @param string variable
-     * @param DotCloneContentTypeDialogFormFields clonedFormFields
-     * @returns Observable<boolean>
+     * Creates a copy of a content type
+     * @param variable
+     * @param copyFormFields
+     * @returns Observable<DotCMSContentType>
      * @memberof DotContentTypeService
      */
-
     saveCopyContentType(
         variable: string,
-        clonedFormFields: DotCopyContentTypeDialogFormFields
+        copyFormFields: DotCopyContentTypeDialogFormFields
     ): Observable<DotCMSContentType> {
         return this.coreWebService
             .requestView({
                 body: {
-                    ...clonedFormFields
+                    ...copyFormFields
                 },
                 method: 'POST',
                 url: `/api/v1/contenttype/${variable}/_copy`

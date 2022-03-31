@@ -33,6 +33,7 @@
             [label]="actions.cancel.label"
             [style.display]="hideButtons ? 'none' : 'block'"
             class="dialog__button-cancel p-button-secondary"
+            data-testId="dotDialogCancelAction"
             pButton
         ></button>
         <button
@@ -43,6 +44,7 @@
             [loading]="isSaving"
             [style.display]="hideButtons ? 'none' : 'block'"
             class="dialog__button-accept"
+            data-testId="dotDialogAcceptAction"
             pButton
         ></button>
     </footer>

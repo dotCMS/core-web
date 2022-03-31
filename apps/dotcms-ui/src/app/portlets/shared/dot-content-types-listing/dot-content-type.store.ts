@@ -44,9 +44,9 @@ export class DotContentTypeStore extends ComponentStore<ContentTypeState> {
     }));
 
     // EFFECTS
-    readonly saveCloneDialog = this.effect(
-        (cloneDialogFormFields$: Observable<DotCopyContentTypeDialogFormFields>) => {
-            return cloneDialogFormFields$.pipe(
+    readonly saveCopyDialog = this.effect(
+        (copyDialogFormFields$: Observable<DotCopyContentTypeDialogFormFields>) => {
+            return copyDialogFormFields$.pipe(
                 tap(() => this.isSaving(true)),
                 withLatestFrom(this.assetSelected$),
                 switchMap(([formFields, assetIdentifier]) =>
@@ -54,12 +54,7 @@ export class DotContentTypeStore extends ComponentStore<ContentTypeState> {
                         .saveCopyContentType(assetIdentifier, formFields)
                         .pipe(
                             tap({
-                                next: (clonedAsset) => {
-                                    this.router.navigate([
-                                        '/content-types-angular/edit',
-                                        clonedAsset.id
-                                    ]);
-                                }
+                                next: (clonedAsset) => this.goToEditContentType(clonedAsset.id)
                             }),
                             catchError((error) => {
                                 this.isSaving(false);
@@ -77,5 +72,9 @@ export class DotContentTypeStore extends ComponentStore<ContentTypeState> {
         private readonly router: Router
     ) {
         super(initialState);
+    }
+
+    goToEditContentType(contentTypeId: string) {
+        this.router.navigate(['/content-types-angular/edit', contentTypeId]);
     }
 }

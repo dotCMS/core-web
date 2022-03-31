@@ -4,7 +4,7 @@ import { DotContentTypeCopyDialogComponent } from './dot-content-type-copy-dialo
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { By } from '@angular/platform-browser';
-import { Component, DebugElement, Input } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { DotMdIconSelectorModule } from '@components/_common/dot-md-icon-selector/dot-md-icon-selector.module';
 import { SiteSelectorFieldModule } from '@components/_common/dot-site-selector-field/dot-site-selector-field.module';
 import { CoreWebService, SiteService } from '@dotcms/dotcms-js';
@@ -23,26 +23,22 @@ import { of } from 'rxjs';
 @Component({
     selector: 'dot-test-host-component',
     template: `
-        <dot-content-type-copy-dialog
-            [isVisibleDialog]="isVisibleDialog"
-            [isSaving]="isSaving"
-        ></dot-content-type-copy-dialog>
+        <dot-content-type-copy-dialog [isSaving$]="isSaving$"></dot-content-type-copy-dialog>
     `
 })
 class TestHostComponent {
-    @Input() isVisibleDialog: boolean;
-    @Input() isSaving: boolean;
+    isSaving$ = of(false);
 }
 
 const formValues = {
     name: 'Name of the copied content type',
-    variable: 'variable-name',
+    variable: 'variablename',
     folder: '',
     host: '',
     icon: ''
 };
 
-fdescribe('DotContentTypeCloneDialogComponent', () => {
+describe('DotContentTypeCloneDialogComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotContentTypeCopyDialogComponent;
     let fixture: ComponentFixture<TestHostComponent>;
@@ -83,65 +79,78 @@ fdescribe('DotContentTypeCloneDialogComponent', () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(TestHostComponent);
-        fixture.detectChanges();
         de = fixture.debugElement.query(By.css('dot-content-type-copy-dialog'));
 
         component = de.componentInstance;
-        fixture.detectChanges();
+
         dotdialog = de.query(By.css('dot-dialog'));
         component.isVisibleDialog = true;
+
         fixture.detectChanges();
     });
 
     it('should have a form', () => {
-        fixture.detectChanges();
         const form: DebugElement = de.query(By.css('form'));
         expect(form).not.toBeNull();
         expect(component.form).toEqual(form.componentInstance.form);
     });
+
     it('should be invalid if no name was added', () => {
-        fixture.detectChanges();
         expect(component.form.valid).toEqual(false);
     });
-    it('should be valid if bundle field is added', () => {
+
+    it('should be valid and emit form values', () => {
+        const acceptButton: DebugElement = dotdialog.query(
+            By.css('[data-testId="dotDialogAcceptAction"]')
+        );
+        expect(acceptButton).toBeDefined();
+        component.form.setValue(formValues);
         fixture.detectChanges();
 
-        component.form.setValue(formValues);
         expect(component.form.valid).toEqual(true);
+        spyOn(component.validFormFields, 'emit');
+
+        acceptButton.nativeElement.click();
+
+        expect(component.validFormFields.emit).toHaveBeenCalledWith(formValues);
     });
+
     it('should call cancelBtn() on cancel button click', () => {
-        const cancelButton: DebugElement = dotdialog.query(By.css('.dialog__button-cancel'));
+        const cancelButton: DebugElement = dotdialog.query(
+            By.css('[data-testId="dotDialogCancelAction"]')
+        );
+
         expect(cancelButton).toBeDefined();
-
         spyOn(component, 'closeDialog');
-
         cancelButton.nativeElement.click();
 
         expect(component.closeDialog).toHaveBeenCalledTimes(1);
-
         component.cancelBtn.subscribe((res) => {
             expect(res).toEqual(true);
         });
     });
 
-    it('should call submitForm() on Copy button click and form valid', () => {
-        const copyButton: DebugElement = dotdialog.query(By.css('.dialog__button-accept'));
-        expect(copyButton).toBeDefined();
+    it('should call submitForm() on Copy button click and form valid', async () => {
+        const acceptButton: DebugElement = dotdialog.query(
+            By.css('[data-testId="dotDialogAcceptAction"]')
+        );
+        expect(acceptButton).toBeDefined();
 
         component.form.setValue(formValues);
-        expect(component.form.valid).toEqual(true);
-
-        spyOn(component, 'submitForm');
-
         fixture.detectChanges();
 
-        copyButton.nativeElement.click();
+        expect(component.form.valid).toEqual(true);
+        spyOn(component, 'submitForm');
+
+        acceptButton.nativeElement.click();
 
         expect(component.submitForm).toHaveBeenCalledTimes(1);
     });
 
     it("shouldn't call submitForm() on Copy button click and form invalid", () => {
-        const copyButton: DebugElement = dotdialog.query(By.css('.dialog__button-accept'));
+        const copyButton: DebugElement = dotdialog.query(
+            By.css('[data-testId="dotDialogAcceptAction"]')
+        );
         expect(copyButton).toBeDefined();
 
         expect(component.form.valid).toEqual(false);

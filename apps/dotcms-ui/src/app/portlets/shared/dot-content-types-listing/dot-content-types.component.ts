@@ -145,7 +145,7 @@ export class DotContentTypesPortletComponent implements OnInit, OnDestroy {
      * @memberof DotContentTypesPortletComponent
      */
     saveCloneContentTypeDialog(form: DotCopyContentTypeDialogFormFields) {
-        this.dotContentTypeStore.saveCloneDialog(form);
+        this.dotContentTypeStore.saveCopyDialog(form);
     }
 
     private setFilterByContentType(contentType: string) {

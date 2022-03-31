@@ -1,33 +1,37 @@
 import {
+    AfterViewChecked,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
-    OnDestroy,
     OnInit,
-    Output
+    Output,
+    ViewChild
 } from '@angular/core';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotCopyContentTypeDialogFormFields } from '@dotcms/dotcms-models';
-import { takeUntil } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { DotCMSAssetDialogCopyFields } from '@portlets/shared/dot-content-types-listing/dot-content-type.store';
+import { DotValidators } from '@shared/validators/dotValidators';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-content-type-copy-dialog',
     templateUrl: './dot-content-type-copy-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DotContentTypeCopyDialogComponent implements OnInit, OnDestroy {
+export class DotContentTypeCopyDialogComponent implements OnInit, AfterViewChecked {
+    @ViewChild('dot-site-selector-field') siteSelector;
     dialogActions: DotDialogActions;
     inputNameWithType = '';
     dialogTitle = '';
-
-    @Input()
     isVisibleDialog = false;
+
+    dialogActions$: Observable<DotDialogActions>;
+
     @Input()
     isSaving$ = new Observable<boolean>();
     @Output() cancelBtn = new EventEmitter<boolean>();
@@ -35,8 +39,6 @@ export class DotContentTypeCopyDialogComponent implements OnInit, OnDestroy {
     @Output()
     validFormFields = new EventEmitter<DotCopyContentTypeDialogFormFields>();
     form!: FormGroup;
-
-    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private readonly fb: FormBuilder,
@@ -54,6 +56,12 @@ export class DotContentTypeCopyDialogComponent implements OnInit, OnDestroy {
         return this.form.get('name') as FormControl;
     }
 
+    /**
+     * Open the copy dialog
+     * @param DotCMSAssetDialogCopyFields config
+     * @returns void
+     * @memberof DotContentTypeCopyDialogComponent
+     */
     openDialog(config: DotCMSAssetDialogCopyFields) {
         this.inputNameWithType = this.getNameFieldLabel(config.baseType);
         this.dialogTitle = config.title;
@@ -89,19 +97,19 @@ export class DotContentTypeCopyDialogComponent implements OnInit, OnDestroy {
         this.isVisibleDialog = false;
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next(true);
-        this.destroy$.complete();
+    // Due site selector problems this make the site selector shows second time the dialogs opens
+    ngAfterViewChecked() {
+        this.cd.detectChanges();
     }
 
     private setDialogConfig(): void {
-        this.dialogActions = {
+        const dialogActions$: Observable<DotDialogActions> = of({
             accept: {
                 action: () => {
                     this.submitForm();
                 },
                 label: this.dotMessageService.get('contenttypes.content.copy'),
-                disabled: !this.form.valid
+                disabled: true
             },
             cancel: {
                 action: () => {
@@ -109,23 +117,20 @@ export class DotContentTypeCopyDialogComponent implements OnInit, OnDestroy {
                 },
                 label: this.dotMessageService.get('contenttypes.content.add_to_bundle.form.cancel')
             }
-        };
-
-        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dialogActions = {
-                ...this.dialogActions,
-                accept: {
-                    ...this.dialogActions.accept,
-                    disabled: !this.form.valid
-                }
-            };
         });
+
+        this.dialogActions$ = combineLatest([dialogActions$, this.form.valueChanges]).pipe(
+            map(([dialogActions]) => {
+                dialogActions.accept.disabled = !this.form.valid;
+                return dialogActions;
+            })
+        );
     }
 
     private initForm(): void {
         this.form = this.fb.group({
             name: ['', [Validators.required]],
-            variable: [''],
+            variable: ['', [DotValidators.alphaNumeric, Validators.maxLength(255)]],
             folder: [''],
             host: [''],
             icon: ['']
