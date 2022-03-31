@@ -65,6 +65,7 @@ describe('DotContentTypeComponentStore', () => {
 
     describe('effects', () => {
         it('should save Content Type Copy values', () => {
+            spyOn(store, 'goToEditContentType');
             const setAssetSelectedMock = 'content-type-id';
             store.setAssetSelected(setAssetSelectedMock);
 
@@ -76,15 +77,9 @@ describe('DotContentTypeComponentStore', () => {
                 variable: 'validVariableName'
             };
 
-            dotContentTypeService.saveCopyContentType = jasmine
-                .createSpy()
-                .and.returnValue(of('abc'));
-
             store.saveCopyDialog(formFields);
 
-            store.state$.subscribe(() => {
-                expect(store.goToEditContentType).toHaveBeenCalledWith('abc');
-            });
+            expect(store.goToEditContentType).toHaveBeenCalled();
         });
 
         it('should handler error on update template', (done) => {
