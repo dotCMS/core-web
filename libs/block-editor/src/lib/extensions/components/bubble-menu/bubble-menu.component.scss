@@ -15,6 +15,29 @@
     justify-content: center;
     padding: 0.4rem;
     height: 40px;
+
+    .btn-change-to {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 4px;
+        cursor: pointer;
+
+        &:hover {
+            background: $gray-bg;
+        }
+
+        &::after {
+            content: "";
+            border: solid black;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg);
+            margin-left: 10px;
+        }
+    }
+
     .divider {
         border-left: 1px solid $gray-bg;
         height: 100%;

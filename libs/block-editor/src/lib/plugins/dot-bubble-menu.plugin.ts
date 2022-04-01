@@ -2,11 +2,18 @@ import { EditorView } from 'prosemirror-view';
 import { isNodeSelection, posToDOMRect } from '@tiptap/core';
 import { PluginKey, Plugin, EditorState } from 'prosemirror-state';
 import { BubbleMenuView } from '@tiptap/extension-bubble-menu';
+import tippy, { Instance } from 'tippy.js';
+import { BubbleChangeDropdownComponent } from '../extensions/components/bubble-change-dropdown/bubble-change-dropdown.component';
 
 // Utils
 import { getNodePosition, suggestionOptions } from '@dotcms/block-editor';
 import { ComponentRef } from '@angular/core';
-import { bubbleMenuItems, bubbleMenuImageItems, isListNode } from '../utils/bubble-menu.utils';
+import {
+    bubbleMenuItems,
+    bubbleMenuImageItems,
+    isListNode,
+    popperModifiers
+} from '../utils/bubble-menu.utils';
 
 // Model
 import {
@@ -37,16 +44,20 @@ export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
                 const { key } = event;
                 if (component.dropdown.showSuggestions) {
                     if (key === 'Escape') {
-                        component.dropdown.toggleSuggestions();
+                        // options.changeTo.instance.toggleSuggestions();
+                        // component.dropdown.toggleSuggestions();
+                        console.log(view);
                         return true;
                     }
 
                     if (key === 'Enter') {
+                        // options.changeTo.instance.execCommand();
                         component.dropdown.execCommand();
                         return true;
                     }
 
                     if (key === 'ArrowDown' || key === 'ArrowUp') {
+                        // options.changeTo.instance.updateSelection(event);
                         component.dropdown.updateSelection(event);
                         return true;
                     }
@@ -59,6 +70,10 @@ export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
 
 export class DotBubbleMenuPluginView extends BubbleMenuView {
     public component: ComponentRef<BubbleMenuComponentProps>;
+    public componentChange: BubbleChangeDropdownComponent;
+    public chamgeHTMLElement: HTMLElement;
+
+    public tippyChangeTo: Instance | undefined;
 
     /* @Overrrider */
     constructor(props: DotBubbleMenuViewProps) {
@@ -67,7 +82,38 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
         // New Properties
         this.component = props.component;
+        this.componentChange = props.component.instance.dropdown;
+        this.chamgeHTMLElement = this.componentChange.elementRef.nativeElement;
+
+        // Subscriptions
         this.component.instance.command.subscribe(this.exeCommand.bind(this));
+        this.component.instance.toggleChangeTo.subscribe(this.toggleChangeTo.bind(this));
+        document.body.addEventListener('scroll', this.hanlderScroll.bind(this), true);
+    }
+
+    createChangeToTooltip() {
+        const { element: editorElement } = this.editor.options;
+
+        if (this.tippyChangeTo || !editorElement) {
+            return;
+        }
+
+        this.tippyChangeTo = tippy(editorElement, {
+            ...this.tippyOptions,
+            appendTo: document.body,
+            getReferenceClientRect: null,
+            content: this.chamgeHTMLElement,
+            placement: 'bottom-start',
+            duration: 0,
+            hideOnClick: false,
+            popperOptions: {
+                strategy: 'fixed',
+                modifiers: popperModifiers
+            },
+            onHide: () => {
+                this.componentChange.showSuggestions = false;
+            }
+        });
     }
 
     /* @Overrrider */
@@ -81,6 +127,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         }
 
         this.createTooltip();
+        this.createChangeToTooltip();
 
         // support for CellSelections
         const { ranges } = selection;
@@ -98,7 +145,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
         if (!shouldShow) {
             this.hide();
-
+            this.tippyChangeTo?.hide();
             return;
         }
 
@@ -116,14 +163,17 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 return posToDOMRect(view, from, to);
             }
         });
-        this.setMenuItems(doc, from);
+
+        this.tippyChangeTo?.setProps({
+            getReferenceClientRect: () => this.tippy?.popper.getBoundingClientRect()
+        });
+
         this.updateComponent();
+        this.setMenuItems(doc, from);
         this.show();
     }
 
     show() {
-        this.setSelectedDropDownItem();
-        this.component.instance.dropdown.showSuggestions = false;
         this.tippy?.show();
     }
 
@@ -136,6 +186,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         this.editor.off('blur', this.blurHandler);
         this.component.instance.command.unsubscribe();
         this.component.destroy();
+        document.body.removeEventListener('scroll', this.hanlderScroll.bind(this), true);
     }
 
     /* Update Component */
@@ -269,21 +320,40 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
             };
             option.command = () => {
                 dropDownOptionsCommand[option.id]();
-                this.component.instance.dropdown.showSuggestions = false;
+                this.tippyChangeTo.hide();
+                this.componentChange.showSuggestions = false;
                 this.setSelectedDropDownItem();
             };
         });
-        this.component.instance.dropdown.options = dropdownOptions;
+        this.componentChange.options = dropdownOptions;
+        this.component.changeDetectorRef.detectChanges();
         this.setSelectedDropDownItem();
     }
 
     setSelectedDropDownItem() {
-        const activeMarks = this.component.instance.dropdown.options.filter((option) =>
-            option.isActive()
-        );
+        const activeMarks = this.componentChange.options.filter((option) => option.isActive());
         // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
-        // can be active at the same time.
-        this.component.instance.dropdown.selected =
-            activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
+        // can be active at the same time
+        this.componentChange.selected = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
+        this.component.instance.selected = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
+    }
+
+    // Tippy Change To
+    toggleChangeTo() {
+        if (this.tippyChangeTo.state.isVisible) {
+            this.tippyChangeTo?.hide();
+        } else {
+            this.componentChange.showSuggestions = true;
+            this.setSelectedDropDownItem();
+            this.componentChange.updateActiveItem();
+            this.component.changeDetectorRef.detectChanges();
+            this.tippyChangeTo?.show();
+        }
+    }
+
+    hanlderScroll() {
+        if (this.tippyChangeTo?.state.isVisible) {
+            this.tippyChangeTo?.hide();
+        }
     }
 }

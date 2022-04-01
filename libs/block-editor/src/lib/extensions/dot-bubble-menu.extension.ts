@@ -6,11 +6,11 @@ import { shouldShowBubbleMenu } from '../utils/bubble-menu.utils';
 import { BubbleMenuComponentProps } from '@dotcms/block-editor';
 
 const defaultTippyOptions: Partial<Props> = {
-    appendTo: document.body,
     duration: 500,
     maxWidth: 'none',
     placement: 'top-start',
-    trigger: 'manual'
+    trigger: 'manual',
+    interactive: true
 };
 
 export function DotBubbleMenuExtension(

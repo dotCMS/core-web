@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { DotMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
 
 @Component({
@@ -12,6 +12,8 @@ export class BubbleChangeDropdownComponent {
     @Input() showSuggestions = false;
 
     @ViewChild('suggestions') suggestions: SuggestionsComponent;
+
+    constructor(public elementRef: ElementRef) {}
 
     /**
      * Update the current item selected
@@ -37,8 +39,7 @@ export class BubbleChangeDropdownComponent {
      *
      * @memberof BubbleChangeDropdownComponent
      */
-    toggleSuggestions() {
-        this.showSuggestions = !this.showSuggestions;
+    updateActiveItem() {
         if (this.showSuggestions) {
             //wait render of suggestion component.
             setTimeout(() => {

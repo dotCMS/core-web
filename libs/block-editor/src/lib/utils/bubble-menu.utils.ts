@@ -136,3 +136,26 @@ export const bubbleMenuImageItems = [
         active: false
     }
 ];
+
+// Tippy Modifiers
+export const popperModifiers = [
+    {
+        name: 'offset',
+        options: {
+            offset: [0, 5]
+        }
+    },
+    {
+        name: 'flip',
+        options: {
+            fallbackPlacements: ['bottom-start', 'top-start']
+        }
+    },
+    {
+        name: 'preventOverflow',
+        options: {
+            altAxis: true,
+            tether: true
+        }
+    }
+];
