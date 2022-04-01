@@ -147,6 +147,7 @@ export class BubbleLinkFormView {
                         return getNodePosition(node, type);
                     }
                 }
+                // return document.querySelector(".bubble-menu").getBoundingClientRect();
                 return posToDOMRect(view, from, to);
             }
         });

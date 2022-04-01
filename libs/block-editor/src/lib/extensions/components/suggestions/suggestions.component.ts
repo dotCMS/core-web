@@ -18,6 +18,7 @@ import { Languages, DotLanguageService } from '../../services/dot-language/dot-l
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import { SuggestionsService } from '../../services/suggestions/suggestions.service';
 import { suggestionOptions } from '@dotcms/block-editor';
+import { ElementRef } from '@angular/core';
 
 export interface SuggestionsCommandProps {
     payload?: DotCMSContentlet;
@@ -56,7 +57,8 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     constructor(
         private suggestionsService: SuggestionsService,
         private dotLanguageService: DotLanguageService,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        public elementRef: ElementRef
     ) {}
 
     ngOnInit(): void {

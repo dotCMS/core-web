@@ -3,8 +3,10 @@ import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
 import { BubbleMenuPluginProps, BubbleMenuViewProps } from '@tiptap/extension-bubble-menu';
 import { ComponentRef, EventEmitter } from '@angular/core';
-import { BubbleChangeDropdownComponent } from '../extensions/components/bubble-change-dropdown/bubble-change-dropdown.component';
-import { DotMenuItem } from '../extensions/components/suggestions/suggestions.component';
+import {
+    DotMenuItem,
+    SuggestionsComponent
+} from '../extensions/components/suggestions/suggestions.component';
 
 export interface ShouldShowProps {
     editor: Editor;
@@ -23,10 +25,12 @@ export interface BubbleMenuItem {
 }
 
 export interface BubbleMenuComponentProps {
-    items: BubbleMenuItem[];
+    changeTo: SuggestionsComponent;
+    changeToIsShown: boolean;
+    changeToItems: DotMenuItem[];
     command: EventEmitter<BubbleMenuItem>;
-    dropdown: BubbleChangeDropdownComponent;
-    selected: DotMenuItem;
+    items: BubbleMenuItem[];
+    selected: string;
     toggleChangeTo: EventEmitter<void>;
 }
 

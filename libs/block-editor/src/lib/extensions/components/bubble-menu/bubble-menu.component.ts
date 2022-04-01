@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { BubbleMenuItem, BubbleChangeDropdownComponent } from '@dotcms/block-editor';
+import { BubbleMenuItem, SuggestionsComponent } from '@dotcms/block-editor';
 import { DotMenuItem } from '../suggestions/suggestions.component';
 
 @Component({
@@ -9,10 +9,14 @@ import { DotMenuItem } from '../suggestions/suggestions.component';
 })
 export class BubbleMenuComponent {
     @Input() items: BubbleMenuItem[] = [];
-    @Input() selected: DotMenuItem;
+    @Input() selected: string;
     @Output() command: EventEmitter<BubbleMenuItem> = new EventEmitter();
+
+    // ChangeTo
+    @Input() changeToItems: DotMenuItem[] = [];
+    @Input() changeToIsShown: boolean;
     @Output() toggleChangeTo: EventEmitter<void> = new EventEmitter();
-    @ViewChild('dropdown', { static: true }) dropdown: BubbleChangeDropdownComponent;
+    @ViewChild('changeTo', { static: true }) changeTo: SuggestionsComponent;
 
     preventDeSelection(event: MouseEvent): void {
         event.preventDefault();
