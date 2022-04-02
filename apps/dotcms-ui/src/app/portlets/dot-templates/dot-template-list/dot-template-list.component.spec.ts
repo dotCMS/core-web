@@ -27,7 +27,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotListingDataTableModule } from '@components/dot-listing-data-table';
 import { CommonModule } from '@angular/common';
-import { CheckboxModule } from 'primeng/checkbox';
+import { Checkbox, CheckboxModule } from 'primeng/checkbox';
 import { Menu, MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
@@ -247,7 +247,7 @@ const mockMessageConfig = {
     type: DotMessageType.SIMPLE_MESSAGE
 };
 
-describe('DotTemplateListComponent', () => {
+fdescribe('DotTemplateListComponent', () => {
     let fixture: ComponentFixture<DotTemplateListComponent>;
     let dotListingDataTable: DotListingDataTableComponent;
     let dotTemplatesService: DotTemplatesService;
@@ -342,6 +342,16 @@ describe('DotTemplateListComponent', () => {
         dotAlertConfirmService = TestBed.inject(DotAlertConfirmService);
         coreWebService = TestBed.inject(CoreWebService);
         dotSiteBrowserService = TestBed.inject(DotSiteBrowserService);
+    });
+
+    fit('should reload portlet only when the site change', () => {
+        let checkbox: Checkbox = fixture.debugElement.query(
+            By.css('p-checkbox')
+        ).componentInstance;
+        
+        fixture.detectChanges();
+
+        expect(checkbox.binary).toBeTruthy();
     });
 
     describe('with data', () => {
