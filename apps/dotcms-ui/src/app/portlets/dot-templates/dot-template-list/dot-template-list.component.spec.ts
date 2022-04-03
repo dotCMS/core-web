@@ -27,7 +27,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotMessageDisplayService } from '@components/dot-message-display/services';
 import { DotListingDataTableModule } from '@components/dot-listing-data-table';
 import { CommonModule } from '@angular/common';
-import { Checkbox, CheckboxModule } from 'primeng/checkbox';
+import { CheckboxModule } from 'primeng/checkbox';
 import { Menu, MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
