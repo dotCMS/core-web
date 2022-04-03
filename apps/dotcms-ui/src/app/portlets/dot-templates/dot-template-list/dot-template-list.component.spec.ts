@@ -345,9 +345,7 @@ describe('DotTemplateListComponent', () => {
     });
 
     it('should reload portlet only when the site change', () => {
-        let checkbox: Checkbox = fixture.debugElement.query(
-            By.css('p-checkbox')
-        ).componentInstance;
+        const checkbox = fixture.debugElement.query(By.css('[data-testId="archiveCheckbox"]')).componentInstance;
 
         fixture.detectChanges();
 
