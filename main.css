@@ -1938,7 +1938,6 @@ p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
   border: 1px solid #b3b1b8;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   -webkit-appearance: none;
-     -moz-appearance: none;
           appearance: none;
   border-radius: 2px;
 }
