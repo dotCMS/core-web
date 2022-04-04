@@ -295,7 +295,6 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
             option.command = () => {
                 changeTopCommands[option.id]();
                 this.tippyChangeTo.hide();
-                // this.componentChange.showSuggestions = false;
                 this.setSelectedNodeItem();
             };
         });
@@ -339,6 +338,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
             },
             onShow: () => {
                 this.component.instance.changeToIsShown = true;
+                this.setSelectedNodeItem();
             }
         });
     }
@@ -347,7 +347,6 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         if (this.tippyChangeTo.state.isVisible) {
             this.tippyChangeTo?.hide();
         } else {
-            this.setSelectedNodeItem();
             this.tippyChangeTo?.show();
         }
         this.component.changeDetectorRef.detectChanges();

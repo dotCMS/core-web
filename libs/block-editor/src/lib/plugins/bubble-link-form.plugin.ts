@@ -143,7 +143,7 @@ export class BubbleLinkFormView {
         const to = Math.max(...ranges.map((range) => range.$to.pos));
         const nodeClientRect = posToDOMRect(view, from, to);
 
-        // Get Contaniner Position
+        // Get Editor Container Position
         const { element: editorElement } = this.editor.options;
         const editorClientRect = editorElement.parentElement.getBoundingClientRect();
         const bubbleMenuRect = document.querySelector('#bubble-menu').getBoundingClientRect();
