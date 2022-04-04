@@ -1,4 +1,4 @@
-<div class="bubble-menu" (mousedown)="preventDeSelection($event)">
+<div class="bubble-menu" id="bubble-menu" (mousedown)="preventDeSelection($event)">
     <ng-container *ngIf="selected">
         <button class="btn-dropdown" (click)='toggleChangeTo.emit()'>{{selected}}</button>
         <div *ngIf="selected" class="divider"></div>

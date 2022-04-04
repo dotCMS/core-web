@@ -3,7 +3,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-
 dotcms-block-editor {
     border-radius: 4px;
     display: block;
@@ -41,7 +40,8 @@ dotcms-block-editor {
             padding: 0.75rem 1rem;
 
             code {
-                font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+                    "Courier New", monospace;
                 background: none;
                 color: inherit;
                 font-size: 0.8rem;
@@ -54,10 +54,9 @@ dotcms-block-editor {
             padding-left: 1rem;
         }
     }
-
 }
 
 .highlighted {
-    background: #ACCEF7;
+    background: #accef7;
     border-radius: $border-radius;
 }

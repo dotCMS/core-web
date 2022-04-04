@@ -90,34 +90,6 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         document.body.addEventListener('scroll', this.hanlderScroll.bind(this), true);
     }
 
-    createChangeToTooltip() {
-        const { element: editorElement } = this.editor.options;
-
-        if (this.tippyChangeTo || !editorElement) {
-            return;
-        }
-
-        this.tippyChangeTo = tippy(editorElement, {
-            ...this.tippyOptions,
-            appendTo: document.body,
-            getReferenceClientRect: null,
-            content: this.chamgeHTMLElement,
-            placement: 'bottom-start',
-            duration: 0,
-            hideOnClick: false,
-            popperOptions: {
-                strategy: 'fixed',
-                modifiers: popperModifiers
-            },
-            onHide: () => {
-                this.component.instance.changeToIsShown = false;
-            },
-            onShow: () => {
-                this.component.instance.changeToIsShown = true;
-            }
-        });
-    }
-
     /* @Overrrider */
     update(view: EditorView, oldState?: EditorState) {
         const { state, composing } = view;
@@ -344,6 +316,33 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     }
 
     // Tippy Change To
+    createChangeToTooltip() {
+        const { element: editorElement } = this.editor.options;
+
+        if (this.tippyChangeTo || !editorElement) {
+            return;
+        }
+
+        this.tippyChangeTo = tippy(editorElement, {
+            ...this.tippyOptions,
+            appendTo: document.body,
+            getReferenceClientRect: null,
+            content: this.chamgeHTMLElement,
+            placement: 'bottom-start',
+            duration: 0,
+            hideOnClick: false,
+            popperOptions: {
+                modifiers: popperModifiers
+            },
+            onHide: () => {
+                this.component.instance.changeToIsShown = false;
+            },
+            onShow: () => {
+                this.component.instance.changeToIsShown = true;
+            }
+        });
+    }
+
     toggleChangeTo() {
         if (this.tippyChangeTo.state.isVisible) {
             this.tippyChangeTo?.hide();
