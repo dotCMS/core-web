@@ -9,8 +9,7 @@ import {
     DotBubbleMenuExtension,
     DragHandler,
     ImageBlock,
-    ImageUpload,
-    BubbleMenuComponent
+    ImageUpload
 } from '@dotcms/block-editor';
 
 // Marks Extensions
@@ -43,7 +42,7 @@ export class DotBlockEditorComponent implements OnInit {
                 DragHandler(this.viewContainerRef),
                 ImageUpload(this.injector, this.viewContainerRef),
                 BubbleLinkFormExtension(this.injector, this.viewContainerRef),
-                DotBubbleMenuExtension(BubbleMenuComponent, this.viewContainerRef),
+                DotBubbleMenuExtension(this.viewContainerRef),
                 // Marks Extensions
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph', 'listItem', 'dotImage'] }),

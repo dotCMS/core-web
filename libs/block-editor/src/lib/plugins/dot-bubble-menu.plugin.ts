@@ -25,6 +25,7 @@ import {
 
 export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
     const component = options.component.instance;
+    const changeTo = options.changeToComponent.instance;
 
     return new Plugin({
         key:
@@ -42,17 +43,17 @@ export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
              */
             handleKeyDown(view: EditorView, event: KeyboardEvent) {
                 const { key } = event;
-                if (component.changeToIsShown) {
+                if (changeTo.isOpen) {
                     if (key === 'Escape') {
                         component.toggleChangeTo.emit();
                         return true;
                     }
                     if (key === 'Enter') {
-                        component.changeTo.execCommand();
+                        changeTo.execCommand();
                         return true;
                     }
                     if (key === 'ArrowDown' || key === 'ArrowUp') {
-                        component.changeTo.updateSelection(event);
+                        changeTo.updateSelection(event);
                         return true;
                     }
                 }
@@ -64,8 +65,8 @@ export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
 
 export class DotBubbleMenuPluginView extends BubbleMenuView {
     public component: ComponentRef<BubbleMenuComponentProps>;
-    public componentChange: SuggestionsComponent;
-    public chamgeHTMLElement: HTMLElement;
+    public changeTo: ComponentRef<SuggestionsComponent>;
+    public changeToElement: HTMLElement;
 
     public tippyChangeTo: Instance | undefined;
 
@@ -74,19 +75,24 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         // Inherit the parent class
         super(props);
 
+        const { component, changeToComponent } = props;
+
         // New Properties
-        this.component = props.component;
-        this.componentChange = props.component.instance.changeTo;
-        this.chamgeHTMLElement = this.componentChange.elementRef.nativeElement;
+        this.component = component;
+        this.changeTo = changeToComponent;
+        this.changeToElement = this.changeTo.location.nativeElement;
 
         // Subscriptions
         this.component.instance.command.subscribe(this.exeCommand.bind(this));
         this.component.instance.toggleChangeTo.subscribe(this.toggleChangeTo.bind(this));
 
         // Load ChangeTo Options
-        this.setChangeToOptions();
+        this.changeTo.instance.items = this.setChangeToOptions();
+        this.changeTo.instance.title = 'Change To';
+        this.changeToElement.remove();
+        this.changeTo.changeDetectorRef.detectChanges();
 
-        // We do not need only listen editor scroll event but all scroll on the website.
+        // We need to also react to page scrolling.
         document.body.addEventListener('scroll', this.hanlderScroll.bind(this), true);
     }
 
@@ -147,19 +153,22 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         this.show();
     }
 
-    show() {
-        this.tippy?.show();
-    }
-
     /* @Overrrider */
     destroy() {
         this.tippy?.destroy();
+        this.tippyChangeTo?.destroy();
+
         this.element.removeEventListener('mousedown', this.mousedownHandler, { capture: true });
         this.view.dom.removeEventListener('dragstart', this.dragstartHandler);
+
         this.editor.off('focus', this.focusHandler);
         this.editor.off('blur', this.blurHandler);
+
         this.component.instance.command.unsubscribe();
+        this.component.instance.toggleChangeTo.unsubscribe();
         this.component.destroy();
+        this.changeTo.destroy();
+
         document.body.removeEventListener('scroll', this.hanlderScroll.bind(this), true);
     }
 
@@ -298,18 +307,17 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 this.setSelectedNodeItem();
             };
         });
-        this.component.instance.changeToItems = changeToOptions;
-        this.component.changeDetectorRef.detectChanges();
+        return changeToOptions;
     }
 
     setSelectedNodeItem() {
-        const items = this.componentChange.items;
+        const items = this.changeTo.instance.items;
         const activeMarks = items.filter((option) => option?.isActive());
         // Needed because in some scenarios, paragraph and other mark (ex: blockquote)
         // can be active at the same time
         const activeNode = activeMarks.length > 1 ? activeMarks[1] : activeMarks[0];
         // Set Active on Change To List
-        this.componentChange.updateActiveItem(items.findIndex((item) => item === activeNode));
+        this.changeTo.instance.updateActiveItem(items.findIndex((item) => item === activeNode));
         // Set button label on Bubble Menu
         this.component.instance.selected = activeNode?.label || '';
     }
@@ -326,7 +334,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
             ...this.tippyOptions,
             appendTo: document.body,
             getReferenceClientRect: null,
-            content: this.chamgeHTMLElement,
+            content: this.changeToElement,
             placement: 'bottom-start',
             duration: 0,
             hideOnClick: false,
@@ -334,10 +342,10 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 modifiers: popperModifiers
             },
             onHide: () => {
-                this.component.instance.changeToIsShown = false;
+                this.changeTo.instance.isOpen = false;
             },
             onShow: () => {
-                this.component.instance.changeToIsShown = true;
+                this.changeTo.instance.isOpen = true;
                 this.setSelectedNodeItem();
             }
         });
@@ -349,7 +357,6 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         } else {
             this.tippyChangeTo?.show();
         }
-        this.component.changeDetectorRef.detectChanges();
     }
 
     hanlderScroll() {

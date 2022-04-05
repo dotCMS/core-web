@@ -1,4 +1,4 @@
-import { Editor, posToDOMRect, isNodeSelection } from '@tiptap/core';
+import { Editor, posToDOMRect } from '@tiptap/core';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import tippy, { Instance, Props } from 'tippy.js';
@@ -8,9 +8,6 @@ import { BubbleMenuLinkFormComponent } from '../extensions/components/bubble-men
 
 // Interface
 import { PluginStorage } from '../extensions/bubble-link-form.extension';
-
-// Utils
-import { getNodePosition } from '@dotcms/block-editor';
 
 interface PluginState {
     toggle: boolean;
@@ -71,7 +68,7 @@ export class BubbleLinkFormView {
         this.editor.on('focus', this.focusHandler);
         this.setComponentEvents();
 
-        // We do not need only listen editor scroll event but all scroll on the website.
+        // We need to also react to page scrolling.
         document.body.addEventListener('scroll', this.hanlderScroll.bind(this), true);
     }
 
