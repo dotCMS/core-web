@@ -20,7 +20,7 @@
         background: none;
         border: none;
         outline: none;
-        padding: 4px;
+        padding: 0.3rem;
         cursor: pointer;
 
         &:hover {
@@ -29,12 +29,12 @@
 
         &::after {
             content: "";
-            border: solid black;
-            border-width: 0 2px 2px 0;
+            border: solid $black;
+            border-width: 0 0.15rem 0.15rem 0;
             display: inline-block;
-            padding: 3px;
+            padding: 0.25rem;
             transform: rotate(45deg);
-            margin-left: 10px;
+            margin-left: $spacing-2;
         }
     }
 

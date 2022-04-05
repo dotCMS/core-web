@@ -103,9 +103,8 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
                 new Plugin({
                     key: new PluginKey('dragHandler'),
                     view: (editorView) => {
-                        setTimeout(() => {
-                            bindEventsToDragHandler(editorView);
-                        }, 0);
+                        // Called before the browser performs the next repaint
+                        requestAnimationFrame(() => bindEventsToDragHandler(editorView));
 
                         return {
                             destroy() {
