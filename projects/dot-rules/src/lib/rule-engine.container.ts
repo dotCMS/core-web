@@ -495,7 +495,7 @@ export class RuleEngineContainer implements OnDestroy {
   ruleUpdating(rule, disable = true): void {
     if (disable && rule.enabled && rule.key) {
       this.loggerService.info('RuleEngineContainer', 'ruleUpdating', 'disabling rule due for edit.');
-      this.patchRule(rule, true);
+      this.patchRule(rule, disable);
     }
     rule._saved = false;
     rule._saving = true;
@@ -557,8 +557,9 @@ export class RuleEngineContainer implements OnDestroy {
   }
 
   patchAction(rule: RuleModel, ruleAction: ActionModel): void {
-    this.ruleUpdating(rule);
+    
     if (ruleAction.isValid()) {
+      this.ruleUpdating(rule,false);
       if (!ruleAction.isPersisted()) {
         this._ruleActionService.createRuleAction(rule.key, ruleAction).subscribe(
           result => {
@@ -581,6 +582,7 @@ export class RuleEngineContainer implements OnDestroy {
         );
       }
     } else {
+      this.ruleUpdating(rule);
       this.ruleUpdated(rule, {
         invalid: 'Cannot save, action is not valid.'
       });
@@ -588,9 +590,10 @@ export class RuleEngineContainer implements OnDestroy {
   }
 
   patchCondition(rule: RuleModel, group: ConditionGroupModel, condition: ConditionModel): void {
-    this.ruleUpdating(rule);
+    
     try {
       if (condition.isValid()) {
+        this.ruleUpdating(rule,false);
         if (condition.isPersisted()) {
           this._conditionService.save(group.key, condition).subscribe(
             result => {
@@ -629,6 +632,7 @@ export class RuleEngineContainer implements OnDestroy {
           }
         }
       } else {
+        this.ruleUpdating(rule);
         this.loggerService.info('RuleEngineContainer', 'patchCondition', 'Not valid');
         rule._saving = false;
         rule._errors = { invalid: 'Condition not valid.' };
