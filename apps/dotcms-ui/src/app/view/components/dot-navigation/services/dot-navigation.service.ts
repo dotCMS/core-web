@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
 
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest, Subject, merge } from 'rxjs';
 import { filter, switchMap, map, tap, take } from 'rxjs/operators';
 
 import { Auth } from '@dotcms/dotcms-js';
@@ -71,9 +71,11 @@ function isEditPageFromSiteBrowser(menuId: string, previousUrl: string): boolean
 const setActiveItems =
     ({ url, collapsed, menuId, previousUrl }: DotActiveItemsProps) =>
     (source: Observable<DotMenu[]>) => {
+        console.log('======== setactive', url, collapsed, menuId, previousUrl);
         let urlId = getTheUrlId(url);
         return source.pipe(
             map((m: DotMenu[]) => {
+                console.log('======== menu', m, url, menuId);
                 const menus: DotMenu[] = [...m];
                 let isActive = false;
 
@@ -135,6 +137,8 @@ export class DotNavigationService {
     private _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
     private _appMainTitle: string;
 
+    setActiveMenu$: Subject<unknown> = new Subject();
+
     constructor(
         private dotEventsService: DotEventsService,
         private dotIframeService: DotIframeService,
@@ -154,32 +158,139 @@ export class DotNavigationService {
             this.setMenu(menus);
         });
 
-        this.onNavigationEnd()
-            .pipe(
-                switchMap((event: NavigationEnd) => {
-                    return this.dotMenuService.loadMenu().pipe(
+        merge(this.onNavigationEnd(), this.setActiveMenu$.asObservable()).subscribe((data) => {
+            console.log('==== map', data);
+            // debugger;
+            if (data['url']) {
+                this.dotMenuService
+                    .loadMenu()
+                    .pipe(
                         tap((menu: DotMenu[]) => {
-                            const pageTitle = this.getPageCurrentTitle(event.url, menu);
+                            const pageTitle = this.getPageCurrentTitle(data['url'], menu);
                             this.titleService.setTitle(
                                 `${pageTitle ? pageTitle + ' - ' : ''} ${this._appMainTitle}`
                             );
                             return menu;
                         }),
                         setActiveItems({
-                            url: event.url,
-                            collapsed: this._collapsed$.getValue(),
-                            menuId: this.router.getCurrentNavigation().extras.state?.menuId,
-                            previousUrl: this.dotRouterService.previousUrl
-                        })
-                    );
-                }),
-                filter((menu) => !!menu)
-            )
-            .subscribe((menus: DotMenu[]) => {
-                this.setMenu(menus);
-            });
+                            url: data['url'],
+                            collapsed: data['collapsed'] || this._collapsed$.getValue(),
+                            menuId:
+                                data['menuId'] ||
+                                this.router.getCurrentNavigation().extras.state?.menuId,
+                            previousUrl: data['previousUrl'] || this.dotRouterService.previousUrl
+                        }),
+                        filter((menu) => !!menu)
+                    )
+                    .subscribe((menu) => {
+                        console.log('==== merge final menu', menu);
+                        this.setMenu(menu);
+                    });
+            }
+            //     ? this.dotMenuService
+            //           .loadMenu()
+            //           .pipe(
+            //               tap((menu: DotMenu[]) => {
+            //                   console.log('**** menu', menu);
+            //                   // debugger;
+            //                   const pageTitle = this.getPageCurrentTitle(event.url, menu);
+            //                   this.titleService.setTitle(
+            //                       `${pageTitle ? pageTitle + ' - ' : ''} ${
+            //                           this._appMainTitle
+            //                       }`
+            //                   );
+            //                   return menu;
+            //               }),
+            //               setActiveItems({
+            //                   url: activateMenu['url'] || event.url,
+            //                   collapsed:
+            //                       activateMenu['collapsed'] || this._collapsed$.getValue(),
+            //                   menuId:
+            //                       activateMenu['menuId'] ||
+            //                       this.router.getCurrentNavigation().extras.state?.menuId,
+            //                   previousUrl:
+            //                       activateMenu['previousUrl'] ||
+            //                       this.dotRouterService.previousUrl
+            //               }),
+            //               filter((menu) => !!menu)
+            //           )
+            //           .subscribe((menu) => {
+            //               // debugger;
+            //               this.setMenu(menu);
+            //           })
+            //     : null;
+        });
+        // combineLatest([this.onNavigationEnd(), this.setActiveMenu$])
+        //     .pipe(
+        //         map(([event, activateMenu]: [NavigationEnd, unknown]) => {
+        //             console.log('==== map', event, activateMenu);
+        //             debugger;
+        //             return event.url || activateMenu['url']
+        //                 ? this.dotMenuService
+        //                       .loadMenu()
+        //                       .pipe(
+        //                           tap((menu: DotMenu[]) => {
+        //                               console.log('**** menu', menu);
+        //                               // debugger;
+        //                               const pageTitle = this.getPageCurrentTitle(event.url, menu);
+        //                               this.titleService.setTitle(
+        //                                   `${pageTitle ? pageTitle + ' - ' : ''} ${
+        //                                       this._appMainTitle
+        //                                   }`
+        //                               );
+        //                               return menu;
+        //                           }),
+        //                           setActiveItems({
+        //                               url: activateMenu['url'] || event.url,
+        //                               collapsed:
+        //                                   activateMenu['collapsed'] || this._collapsed$.getValue(),
+        //                               menuId:
+        //                                   activateMenu['menuId'] ||
+        //                                   this.router.getCurrentNavigation().extras.state?.menuId,
+        //                               previousUrl:
+        //                                   activateMenu['previousUrl'] ||
+        //                                   this.dotRouterService.previousUrl
+        //                           }),
+        //                           filter((menu) => !!menu)
+        //                       )
+        //                       .subscribe((menu) => {
+        //                           // debugger;
+        //                           this.setMenu(menu);
+        //                       })
+        //                 : null;
+        //         })
+        //     )
+        //     .subscribe();
 
-        this.dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe(() => {
+        // this.setActiveMenu$.next('');
+
+        // this.onNavigationEnd()
+        //     .pipe(
+        //         switchMap((event: NavigationEnd) => {
+        //             return this.dotMenuService.loadMenu().pipe(
+        //                 tap((menu: DotMenu[]) => {
+        //                     const pageTitle = this.getPageCurrentTitle(event.url, menu);
+        //                     this.titleService.setTitle(
+        //                         `${pageTitle ? pageTitle + ' - ' : ''} ${this._appMainTitle}`
+        //                     );
+        //                     return menu;
+        //                 }),
+        //                 setActiveItems({
+        //                     url: event.url,
+        //                     collapsed: this._collapsed$.getValue(),
+        //                     menuId: this.router.getCurrentNavigation().extras.state?.menuId,
+        //                     previousUrl: this.dotRouterService.previousUrl
+        //                 })
+        //             );
+        //         }),
+        //         filter((menu) => !!menu)
+        //     )
+        //     .subscribe((menus: DotMenu[]) => {
+        //         this.setMenu(menus);
+        //     });
+
+        this.dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe((data) => {
+            console.log('===UPDATE_PORTLET_LAYOUTS', data);
             this.reloadNavigation()
                 .pipe(take(1))
                 .subscribe((menus: DotMenu[]) => {
@@ -210,6 +321,10 @@ export class DotNavigationService {
 
     get items$(): Observable<DotMenu[]> {
         return this._items$.asObservable();
+    }
+
+    onNavigationEnd(): Observable<Event> {
+        return this.router.events.pipe(filter((event: Event) => event instanceof NavigationEnd));
     }
 
     /**
@@ -329,10 +444,6 @@ export class DotNavigationService {
         this.setMenu(updatedMenu);
     }
 
-    onNavigationEnd(): Observable<Event> {
-        return this.router.events.pipe(filter((event: Event) => event instanceof NavigationEnd));
-    }
-
     private addMenuLinks(menu: DotMenu[]): DotMenu[] {
         return menu.map((menuGroup: DotMenu) => {
             menuGroup.menuItems.forEach((menuItem: DotMenuItem) => {
@@ -368,6 +479,7 @@ export class DotNavigationService {
     }
 
     private reloadNavigation(): Observable<DotMenu[]> {
+        console.log('=== reloadNavigation');
         return this.dotMenuService.reloadMenu().pipe(
             setActiveItems({
                 url: this.dotRouterService.currentPortlet.id,
@@ -381,6 +493,7 @@ export class DotNavigationService {
     }
 
     private setMenu(menu: DotMenu[]) {
+        // debugger;
         this._items$.next(this.addMenuLinks(menu));
     }
 
