@@ -134,7 +134,7 @@ export class BubbleLinkFormView {
         // Get Node Position
         const { view } = this.editor;
         const { state } = view;
-        const { selection } = state;
+        const { doc, selection } = state;
         const { ranges } = selection;
         const from = Math.min(...ranges.map((range) => range.$from.pos));
         const to = Math.max(...ranges.map((range) => range.$to.pos));
@@ -148,8 +148,12 @@ export class BubbleLinkFormView {
         // Check for an overflow in the content
         const isOverflow = editorClientRect.bottom < nodeClientRect.bottom;
 
+        // Check if the node is a dotImage
+        const node = doc?.nodeAt(from);
+        const isNodeImage = node.type.name === 'dotImage';
+
         // If there is an overflow, use bubble menu position as a reference.
-        return isOverflow ? bubbleMenuRect : nodeClientRect;
+        return isOverflow || isNodeImage ? bubbleMenuRect : nodeClientRect;
     }
 
     addLink(link: string) {
