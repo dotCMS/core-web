@@ -10,27 +10,17 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
 
         addProseMirrorPlugins() {
             let nodeToBeDragged = null;
-            const HANDLER_LEFT_OFFSET = 40;
-            const HANDLER_TOP_OFFSET = 16;
+            const HANDLER_LEFT_OFFSET = 25;
             const HANDLER_GAP = 50;
             const dragHandler =
                 viewContainerRef.createComponent(DragHandlerComponent).location.nativeElement;
 
-            function createRect(rect) {
-                if (rect == null) {
-                    return null;
-                }
-                const newRect = {
-                    left: rect.left + document.body.scrollLeft,
-                    top: rect.top + document.body.scrollTop,
-                    width: rect.width,
-                    height: rect.height,
-                    bottom: 0,
-                    right: 0
-                };
-                newRect.bottom = newRect.top + newRect.height;
-                newRect.right = newRect.left + newRect.width;
-                return newRect;
+            function getPositon(container, node) {
+                const top =
+                    node.getBoundingClientRect().top - container.getBoundingClientRect().top;
+                const left =
+                    node.getBoundingClientRect().left - container.getBoundingClientRect().left;
+                return { top, left };
             }
 
             function removeNode(node) {
@@ -99,16 +89,22 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
                 editorView.dom.parentElement.appendChild(dragHandler);
             }
 
+            function hanlderScroll() {
+                dragHandler.style.display = 'none';
+            }
+
             return [
                 new Plugin({
                     key: new PluginKey('dragHandler'),
                     view: (editorView) => {
                         // Called before the browser performs the next repaint
                         requestAnimationFrame(() => bindEventsToDragHandler(editorView));
-
+                        // We need to also react to page scrolling.
+                        document.body.addEventListener('scroll', hanlderScroll, true);
                         return {
                             destroy() {
                                 removeNode(dragHandler);
+                                document.body.removeEventListener('scroll', hanlderScroll, true);
                             }
                         };
                     },
@@ -138,16 +134,13 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
                                         nodeToBeDragged &&
                                         !nodeToBeDragged.classList?.contains('ProseMirror')
                                     ) {
-                                        const rect = createRect(
-                                            nodeToBeDragged.getBoundingClientRect()
+                                        const { top, left } = getPositon(
+                                            view.dom.parentElement,
+                                            nodeToBeDragged
                                         );
-                                        const win = nodeToBeDragged.ownerDocument.defaultView;
-                                        rect.top += win.pageYOffset;
-                                        rect.left += win.pageXOffset;
-                                        dragHandler.style.left =
-                                            rect.left - HANDLER_LEFT_OFFSET + 'px';
-                                        dragHandler.style.top =
-                                            rect.top - HANDLER_TOP_OFFSET + 'px';
+
+                                        dragHandler.style.left = left - HANDLER_LEFT_OFFSET + 'px';
+                                        dragHandler.style.top = top < 0 ? 0 : top + 'px';
                                         dragHandler.style.display = 'block';
                                     } else {
                                         dragHandler.style.display = 'none';

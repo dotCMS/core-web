@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -45,7 +45,7 @@ export class DotBlockEditorComponent implements OnInit {
                 // Marks Extensions
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph', 'listItem', 'dotImage'] }),
-                Highlight.configure({ HTMLAttributes: { class: 'highlighted' } }),
+                Highlight.configure({ HTMLAttributes: { style: 'background: #accef7;' } }),
                 Link.configure({ openOnClick: true })
             ]
         });
