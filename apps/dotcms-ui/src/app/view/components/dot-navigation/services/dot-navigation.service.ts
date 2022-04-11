@@ -74,53 +74,59 @@ const setActiveItems =
         console.log('======== setactive', url, collapsed, menuId, previousUrl);
         let urlId = getTheUrlId(url);
         return source.pipe(
-            map((m: DotMenu[]) => {
-                console.log('======== menu', m, url, menuId);
-                const menus: DotMenu[] = [...m];
-                let isActive = false;
+            url
+                ? map((m: DotMenu[]) => {
+                      console.log('======== menu', m, url, menuId);
+                      const menus: DotMenu[] = [...m];
+                      let isActive = false;
+                      console.log('##### llego0');
 
-                if (
-                    isEditPageFromSiteBrowser(menuId, previousUrl) ||
-                    (isDetailPage(urlId, url) && isMenuActive(menus))
-                ) {
-                    return null;
-                }
+                      if (
+                          isEditPageFromSiteBrowser(menuId, previousUrl) ||
+                          (isDetailPage(urlId, url) && isMenuActive(menus))
+                      ) {
+                          return null;
+                      }
+                      console.log('##### llego1');
 
-                // When user browse using the navigation (Angular Routing)
-                if (menuId && menuId !== 'edit-page') {
-                    return getActiveMenuFromMenuId({
-                        menus,
-                        menuId,
-                        collapsed,
-                        url: urlId,
-                        previousUrl
-                    });
-                }
+                      // TODO: make it more specific
+                      // When user browse using the navigation (Angular Routing)
+                      if (menuId && menuId !== 'edit-page') {
+                          return getActiveMenuFromMenuId({
+                              menus,
+                              menuId,
+                              collapsed,
+                              url: urlId,
+                              previousUrl
+                          });
+                      }
 
-                // When user browse using the browser url bar, direct links or reload page
-                urlId = replaceIdForNonMenuSection(urlId) || urlId;
+                      // When user browse using the browser url bar, direct links or reload page
+                      urlId = replaceIdForNonMenuSection(urlId) || urlId;
+                      console.log('##### llego2');
+                      for (let i = 0; i < menus.length; i++) {
+                          menus[i].active = false;
+                          menus[i].isOpen = false;
 
-                for (let i = 0; i < menus.length; i++) {
-                    menus[i].active = false;
-                    menus[i].isOpen = false;
+                          for (let k = 0; k < menus[i].menuItems.length; k++) {
+                              // Once we activate the first one all the others are close
+                              if (isActive) {
+                                  menus[i].menuItems[k].active = false;
+                              }
 
-                    for (let k = 0; k < menus[i].menuItems.length; k++) {
-                        // Once we activate the first one all the others are close
-                        if (isActive) {
-                            menus[i].menuItems[k].active = false;
-                        }
-
-                        if (!isActive && menus[i].menuItems[k].id === urlId) {
-                            isActive = true;
-                            menus[i].active = true;
-                            menus[i].isOpen = true;
-                            menus[i].menuItems[k].active = true;
-                        }
-                    }
-                }
-
-                return menus;
-            })
+                              if (!isActive && menus[i].menuItems[k].id === urlId) {
+                                  isActive = true;
+                                  menus[i].active = true;
+                                  menus[i].isOpen = true;
+                                  menus[i].menuItems[k].active = true;
+                              }
+                          }
+                      }
+                      debugger;
+                      console.log('##### llego3', menus);
+                      return menus;
+                  })
+                : tap((m) => m)
         );
     };
 
@@ -171,16 +177,16 @@ export class DotNavigationService {
                                 `${pageTitle ? pageTitle + ' - ' : ''} ${this._appMainTitle}`
                             );
                             return menu;
-                        }),
-                        setActiveItems({
-                            url: data['url'],
-                            collapsed: data['collapsed'] || this._collapsed$.getValue(),
-                            menuId:
-                                data['menuId'] ||
-                                this.router.getCurrentNavigation().extras.state?.menuId,
-                            previousUrl: data['previousUrl'] || this.dotRouterService.previousUrl
-                        }),
-                        filter((menu) => !!menu)
+                        })
+                        // setActiveItems({
+                        //     url: data['url'],
+                        //     collapsed: data['collapsed'] || this._collapsed$.getValue(),
+                        //     menuId:
+                        //         data['menuId'] ||
+                        //         this.router.getCurrentNavigation().extras.state?.menuId,
+                        //     previousUrl: data['previousUrl'] || this.dotRouterService.previousUrl
+                        // }),
+                        // filter((menu) => !!menu)
                     )
                     .subscribe((menu) => {
                         console.log('==== merge final menu', menu);
@@ -289,14 +295,29 @@ export class DotNavigationService {
         //         this.setMenu(menus);
         //     });
 
-        this.dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe((data) => {
-            console.log('===UPDATE_PORTLET_LAYOUTS', data);
-            this.reloadNavigation()
-                .pipe(take(1))
-                .subscribe((menus: DotMenu[]) => {
-                    this.setMenu(menus);
-                });
-        });
+        this.dotcmsEventsService
+            .subscribeTo('UPDATE_PORTLET_LAYOUTS')
+            .subscribe((data: string[]) => {
+                console.log('===UPDATE_PORTLET_LAYOUTS', data);
+                this.reloadNavigation()
+                    .pipe(
+                        take(1),
+                        setActiveItems({
+                            url: data.length ? data[1][data[1].length - 1] : '',
+                            collapsed: null,
+                            menuId: data.length ? data[0]['id'] : '',
+                            previousUrl: ''
+                        })
+                        // tap((menus: DotMenu[]) => {
+                        // console.log('@@@@@@@@ tap', menus);
+                        // this.setMenu(menus);
+                        // })
+                    )
+                    .subscribe((menus: DotMenu[]) => {
+                        console.log('@@@@@@@@ subsc', menus);
+                        this.setMenu(menus);
+                    });
+            });
 
         this.loginService.auth$
             .pipe(

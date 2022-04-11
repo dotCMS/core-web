@@ -112,13 +112,13 @@ export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
                         .subscribe((portletName: string) => {
                             if (portletName) {
                                 // this.dotNavigationService.goTo(`/c/${portletName}`);
-                                debugger;
-                                this.dotNavigationService.setActiveMenu$.next({
-                                    url: `c_${cleanPorletId}`,
-                                    collapsed: null,
-                                    menuId: this.form.get('menuOption').value,
-                                    previousUrl: ''
-                                });
+                                // debugger;
+                                // this.dotNavigationService.setActiveMenu$.next({
+                                //     url: `c_${cleanPorletId}`,
+                                //     collapsed: null,
+                                //     menuId: this.form.get('menuOption').value,
+                                //     previousUrl: ''
+                                // });
                                 // this.dotNavigationService
                                 //     .setActiveItems({
                                 //         url: `c_${cleanPorletId}`,
