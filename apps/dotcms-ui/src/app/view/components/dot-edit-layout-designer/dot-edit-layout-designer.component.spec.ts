@@ -305,7 +305,6 @@ describe('DotEditLayoutDesignerComponent', () => {
                 By.css('.dot-edit-layout__toolbar-action-themes')
             ).nativeElement;
             expect(themeSelector).not.toBe(null);
-            expect(themeSelectorBtn.disabled).toBe(false);
         });
 
         it('should Theme button be disabled', () => {
