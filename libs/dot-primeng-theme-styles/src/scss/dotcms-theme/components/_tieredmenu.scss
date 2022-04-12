@@ -1,0 +1,29 @@
+@use "variables" as *;
+
+.p-tieredmenu {
+    padding: 0.5rem 0;
+    background: #ffffff;
+    color: #3f3f46;
+    border: 0 none;
+    border-radius: $border-radius;
+    width: 100%;
+
+    .p-menuitem-link {
+        padding: $spacing-2;
+        color: #0a0725;
+        border-radius: 0;
+        transition: none;
+        user-select: none;
+
+        &:not(.p-disabled):hover {
+            background: rgba($brand-secondary_rgb, .12);
+        }
+    }
+
+    &.p-tieredmenu-overlay {
+        box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
+    }
+
+
+}
+
