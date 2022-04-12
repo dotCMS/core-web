@@ -301,9 +301,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             themeSelector = fixture.debugElement.query(
                 By.css('dot-theme-selector')
             ).componentInstance;
-            const themeSelectorBtn = fixture.debugElement.query(
-                By.css('.dot-edit-layout__toolbar-action-themes')
-            ).nativeElement;
+
             expect(themeSelector).not.toBe(null);
         });
 
