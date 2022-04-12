@@ -66,6 +66,7 @@ export class DotTemplateThumbnailFieldMockComponent implements ControlValueAcces
         }
     ]
 })
+
 export class DotThemeSelectorDropdownMockComponent implements ControlValueAccessor {
     propagateChange = (_: any) => {
         //
