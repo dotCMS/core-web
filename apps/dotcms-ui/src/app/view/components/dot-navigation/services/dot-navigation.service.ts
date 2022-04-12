@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
 
-import { Observable, BehaviorSubject, combineLatest, Subject, merge } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, tap, take } from 'rxjs/operators';
 
 import { Auth } from '@dotcms/dotcms-js';
@@ -22,6 +22,17 @@ export const replaceSectionsMap = {
 const replaceIdForNonMenuSection = (id) => {
     return replaceSectionsMap[id];
 };
+
+interface DotUpdatePortletLayoutPayload {
+    menuItems: string[];
+    toolgroup: {
+        description?: string;
+        id: string;
+        name: string;
+        portletIds?: string[];
+        tabOrder?: number;
+    };
+}
 
 interface DotActiveItemsProps {
     url: string;
@@ -91,7 +102,7 @@ const setActiveItems =
 
                       // TODO: make it more specific
                       // When user browse using the navigation (Angular Routing)
-                      if (menuId && menuId !== 'edit-page') {
+                      if (menuId && menuId !== 'edit-page' && previousUrl) {
                           return getActiveMenuFromMenuId({
                               menus,
                               menuId,
@@ -122,7 +133,6 @@ const setActiveItems =
                               }
                           }
                       }
-                      debugger;
                       console.log('##### llego3', menus);
                       return menus;
                   })
@@ -143,7 +153,7 @@ export class DotNavigationService {
     private _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
     private _appMainTitle: string;
 
-    setActiveMenu$: Subject<unknown> = new Subject();
+    // setActiveMenu$: Subject<unknown> = new Subject();
 
     constructor(
         private dotEventsService: DotEventsService,
@@ -164,6 +174,31 @@ export class DotNavigationService {
             this.setMenu(menus);
         });
 
+        this.onNavigationEnd()
+            .pipe(
+                switchMap((event: NavigationEnd) => {
+                    return this.dotMenuService.loadMenu().pipe(
+                        tap((menu: DotMenu[]) => {
+                            const pageTitle = this.getPageCurrentTitle(event.url, menu);
+                            this.titleService.setTitle(
+                                `${pageTitle ? pageTitle + ' - ' : ''} ${this._appMainTitle}`
+                            );
+                            return menu;
+                        }),
+                        setActiveItems({
+                            url: event.url,
+                            collapsed: this._collapsed$.getValue(),
+                            menuId: this.router.getCurrentNavigation().extras.state?.menuId,
+                            previousUrl: this.dotRouterService.previousUrl
+                        })
+                    );
+                }),
+                filter((menu) => !!menu)
+            )
+            .subscribe((menus: DotMenu[]) => {
+                this.setMenu(menus);
+            });
+        /*
         merge(this.onNavigationEnd(), this.setActiveMenu$.asObservable()).subscribe((data) => {
             console.log('==== map', data);
             // debugger;
@@ -193,6 +228,7 @@ export class DotNavigationService {
                         this.setMenu(menu);
                     });
             }
+            
             //     ? this.dotMenuService
             //           .loadMenu()
             //           .pipe(
@@ -226,6 +262,7 @@ export class DotNavigationService {
             //           })
             //     : null;
         });
+*/
         // combineLatest([this.onNavigationEnd(), this.setActiveMenu$])
         //     .pipe(
         //         map(([event, activateMenu]: [NavigationEnd, unknown]) => {
@@ -297,15 +334,17 @@ export class DotNavigationService {
 
         this.dotcmsEventsService
             .subscribeTo('UPDATE_PORTLET_LAYOUTS')
-            .subscribe((data: string[]) => {
-                console.log('===UPDATE_PORTLET_LAYOUTS', data);
+            .subscribe((payload: DotUpdatePortletLayoutPayload) => {
+                console.log('===UPDATE_PORTLET_LAYOUTS', payload);
                 this.reloadNavigation()
                     .pipe(
                         take(1),
                         setActiveItems({
-                            url: data.length ? data[1][data[1].length - 1] : '',
+                            url: payload.menuItems?.length
+                                ? payload.menuItems[payload.menuItems.length - 1]
+                                : '',
                             collapsed: null,
-                            menuId: data.length ? data[0]['id'] : '',
+                            menuId: payload.toolgroup?.id || '',
                             previousUrl: ''
                         })
                         // tap((menus: DotMenu[]) => {
