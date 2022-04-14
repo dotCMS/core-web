@@ -64,11 +64,10 @@ export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
 };
 
 export class DotBubbleMenuPluginView extends BubbleMenuView {
-    public component: ComponentRef<BubbleMenuComponentProps>;
-    public changeTo: ComponentRef<SuggestionsComponent>;
-    public changeToElement: HTMLElement;
-
-    public tippyChangeTo: Instance | undefined;
+    component: ComponentRef<BubbleMenuComponentProps>;
+    changeTo: ComponentRef<SuggestionsComponent>;
+    changeToElement: HTMLElement;
+    tippyChangeTo: Instance | undefined;
 
     private shouldShowProp = false;
 
@@ -96,10 +95,11 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
         // We need to also react to page scrolling.
         document.body.addEventListener('scroll', this.hanlderScroll.bind(this), true);
-        document.body.addEventListener('mouseup', this.handleMouseUp.bind(this), true);
+        document.body.addEventListener('mouseup', this.showMenu.bind(this), true);
+        document.body.addEventListener('keyup', this.showMenu.bind(this), true);
     }
 
-    handleMouseUp() {
+    showMenu() {
         if (this.shouldShowProp) {
             this.tippyChangeTo?.setProps({
                 getReferenceClientRect: () => this.tippy?.popper.getBoundingClientRect()
@@ -177,7 +177,8 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         this.changeTo.destroy();
 
         document.body.removeEventListener('scroll', this.hanlderScroll.bind(this), true);
-        document.body.removeEventListener('mouseup', this.handleMouseUp.bind(this), true);
+        document.body.removeEventListener('mouseup', this.showMenu.bind(this), true);
+        document.body.removeEventListener('keyup', this.showMenu.bind(this), true);
     }
 
     /* Update Component */
