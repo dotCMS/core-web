@@ -12,7 +12,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
-describe('DotHttpErrorManagerService', () => {
+fdescribe('DotHttpErrorManagerService', () => {
     let service: DotHttpErrorManagerService;
     let dotRouterService: DotRouterService;
     let dotDialogService: DotAlertConfirmService;
@@ -123,7 +123,7 @@ describe('DotHttpErrorManagerService', () => {
             error: 'error'
         });
         const mockViewResponse = mockResponseView(500, '', headers, {
-            message: '500 Message'
+            message: '500 Custom Message'
         });
 
         service.handle(mockViewResponse).subscribe((res) => {
@@ -135,7 +135,7 @@ describe('DotHttpErrorManagerService', () => {
             status: 500
         });
         expect(dotDialogService.alert).toHaveBeenCalledWith({
-            message: '500 Message',
+            message: '500 Custom Message',
             header: '500 Header'
         });
     });

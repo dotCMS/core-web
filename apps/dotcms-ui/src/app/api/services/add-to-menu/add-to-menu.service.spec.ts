@@ -22,7 +22,7 @@ const customToolData: DotCreateCustomTool = {
     portletName: 'test'
 };
 
-describe('DotAddToMenuService', () => {
+fdescribe('DotAddToMenuService', () => {
     let injector: TestBed;
     let dotAddToMenuService: DotAddToMenuService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;

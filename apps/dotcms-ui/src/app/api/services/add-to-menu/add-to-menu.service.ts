@@ -39,7 +39,7 @@ export class DotAddToMenuService {
     }
 
     /**
-     * Creates a Custom tool portlet
+     * Creates a Custom tool portlet and returns the name of the portlet created
      * @param {DotCreateCustomTool} params
      * @returns Observable<string>
      * @memberof DotAddToMenuService

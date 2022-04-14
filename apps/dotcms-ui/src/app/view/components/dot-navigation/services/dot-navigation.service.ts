@@ -87,7 +87,6 @@ const setActiveItems =
             url
                 ? map((m: DotMenu[]) => {
                       const menus: DotMenu[] = [...m];
-                      let isActive = false;
 
                       if (
                           isEditPageFromSiteBrowser(menuId, previousUrl) ||
@@ -110,21 +109,33 @@ const setActiveItems =
                       // When user browse using the browser url bar, direct links or reload page
                       urlId = replaceIdForNonMenuSection(urlId) || urlId;
 
+                      // Reset Active/IsOpen attributes
                       for (let i = 0; i < menus.length; i++) {
                           menus[i].active = false;
                           menus[i].isOpen = false;
 
                           for (let k = 0; k < menus[i].menuItems.length; k++) {
-                              // Once we activate the first one all the others are close
-                              if (isActive) {
-                                  menus[i].menuItems[k].active = false;
-                              }
+                              menus[i].menuItems[k].active = false;
+                          }
+                      }
 
-                              if (!isActive && menus[i].menuItems[k].id === urlId) {
-                                  isActive = true;
+                      menuLoop: for (let i = 0; i < menus.length; i++) {
+                          for (let k = 0; k < menus[i].menuItems.length; k++) {
+                              if (menuId) {
+                                  if (
+                                      menus[i].menuItems[k].id === urlId &&
+                                      menus[i].id === menuId
+                                  ) {
+                                      menus[i].active = true;
+                                      menus[i].isOpen = true;
+                                      menus[i].menuItems[k].active = true;
+                                      break menuLoop;
+                                  }
+                              } else if (menus[i].menuItems[k].id === urlId) {
                                   menus[i].active = true;
                                   menus[i].isOpen = true;
                                   menus[i].menuItems[k].active = true;
+                                  break menuLoop;
                               }
                           }
                       }

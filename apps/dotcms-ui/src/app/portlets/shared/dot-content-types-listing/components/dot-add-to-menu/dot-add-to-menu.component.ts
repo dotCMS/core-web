@@ -6,8 +6,6 @@ import {
     EventEmitter,
     OnInit,
     OnDestroy,
-    OnChanges,
-    SimpleChanges,
     ViewChild,
     ElementRef
 } from '@angular/core';
@@ -22,13 +20,12 @@ import {
     DotAddToMenuService,
     DotCreateCustomTool
 } from '@dotcms/app/api/services/add-to-menu/add-to-menu.service';
-import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 
 @Component({
     selector: 'dot-add-to-menu',
     templateUrl: 'dot-add-to-menu.component.html'
 })
-export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
+export class DotAddToMenuComponent implements OnInit, OnDestroy {
     form: FormGroup;
     menu$: Observable<DotMenu[]>;
     placeholder = '';
@@ -47,29 +44,22 @@ export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
         public fb: FormBuilder,
         private dotMessageService: DotMessageService,
         private dotMenuService: DotMenuService,
-        private dotAddToMenuService: DotAddToMenuService,
-        private dotNavigationService: DotNavigationService
+        private dotAddToMenuService: DotAddToMenuService
     ) {}
 
     ngOnInit() {
         this.initForm();
+        this.setDialogConfig(this.form);
+
         this.menu$ = this.dotMenuService.loadMenu().pipe(
             take(1),
-            tap(() => {
-                this.setDialogConfig(this.form);
+            tap((menu: DotMenu[]) => {
+                this.form.patchValue({
+                    menuOption: menu[0].id
+                });
+                this.titleName.nativeElement.focus();
             })
         );
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes?.contentType?.currentValue) {
-            this.form.patchValue({
-                title: this.contentType.name
-            });
-            setTimeout(() => {
-                this.titleName.nativeElement.focus();
-            }, 0);
-        }
     }
 
     ngOnDestroy(): void {
@@ -127,7 +117,7 @@ export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
         this.form = this.fb.group({
             defaultView: ['list', [Validators.required]],
             menuOption: ['', [Validators.required]],
-            title: ['', [Validators.required]]
+            title: [this.contentType.name, [Validators.required]]
         });
     }
 
