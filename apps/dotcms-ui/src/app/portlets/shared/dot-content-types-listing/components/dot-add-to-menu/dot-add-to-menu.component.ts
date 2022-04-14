@@ -100,35 +100,16 @@ export class DotAddToMenuComponent implements OnInit, OnChanges, OnDestroy {
                 contentTypes: this.contentType.variable,
                 dataViewMode: this.form.get('defaultView').value
             };
-            console.log('++ menuoption', this.form.get('menuOption').value);
+
             this.dotAddToMenuService
                 .createCustomTool(params)
                 .pipe(take(1), pluck('portlet'))
-                .subscribe((data) => {
-                    console.log('+++ dotAddToMenuService dataa', data, params);
+                .subscribe(() => {
                     this.dotAddToMenuService
                         .addToLayout(`c_${cleanPorletId}`, this.form.get('menuOption').value)
                         .pipe(take(1), pluck('portlet'))
-                        .subscribe((portletName: string) => {
-                            if (portletName) {
-                                // this.dotNavigationService.goTo(`/c/${portletName}`);
-                                // debugger;
-                                // this.dotNavigationService.setActiveMenu$.next({
-                                //     url: `c_${cleanPorletId}`,
-                                //     collapsed: null,
-                                //     menuId: this.form.get('menuOption').value,
-                                //     previousUrl: ''
-                                // });
-                                // this.dotNavigationService
-                                //     .setActiveItems({
-                                //         url: `c_${cleanPorletId}`,
-                                //         collapsed: null,
-                                //         menuId: this.form.get('menuOption').value,
-                                //         previousUrl: ''
-                                //     })
-                                //     .pipe(take(1));
-                                this.close();
-                            }
+                        .subscribe(() => {
+                            this.close();
                         });
                 });
         }

@@ -82,15 +82,12 @@ function isEditPageFromSiteBrowser(menuId: string, previousUrl: string): boolean
 const setActiveItems =
     ({ url, collapsed, menuId, previousUrl }: DotActiveItemsProps) =>
     (source: Observable<DotMenu[]>) => {
-        console.log('======== setactive', url, collapsed, menuId, previousUrl);
         let urlId = getTheUrlId(url);
         return source.pipe(
             url
                 ? map((m: DotMenu[]) => {
-                      console.log('======== menu', m, url, menuId);
                       const menus: DotMenu[] = [...m];
                       let isActive = false;
-                      console.log('##### llego0');
 
                       if (
                           isEditPageFromSiteBrowser(menuId, previousUrl) ||
@@ -98,9 +95,7 @@ const setActiveItems =
                       ) {
                           return null;
                       }
-                      console.log('##### llego1');
 
-                      // TODO: make it more specific
                       // When user browse using the navigation (Angular Routing)
                       if (menuId && menuId !== 'edit-page' && previousUrl) {
                           return getActiveMenuFromMenuId({
@@ -114,7 +109,7 @@ const setActiveItems =
 
                       // When user browse using the browser url bar, direct links or reload page
                       urlId = replaceIdForNonMenuSection(urlId) || urlId;
-                      console.log('##### llego2');
+
                       for (let i = 0; i < menus.length; i++) {
                           menus[i].active = false;
                           menus[i].isOpen = false;
@@ -133,7 +128,7 @@ const setActiveItems =
                               }
                           }
                       }
-                      console.log('##### llego3', menus);
+
                       return menus;
                   })
                 : tap((m) => m)
@@ -152,8 +147,6 @@ export class DotNavigationService {
     private _collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     private _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
     private _appMainTitle: string;
-
-    // setActiveMenu$: Subject<unknown> = new Subject();
 
     constructor(
         private dotEventsService: DotEventsService,
@@ -198,144 +191,10 @@ export class DotNavigationService {
             .subscribe((menus: DotMenu[]) => {
                 this.setMenu(menus);
             });
-        /*
-        merge(this.onNavigationEnd(), this.setActiveMenu$.asObservable()).subscribe((data) => {
-            console.log('==== map', data);
-            // debugger;
-            if (data['url']) {
-                this.dotMenuService
-                    .loadMenu()
-                    .pipe(
-                        tap((menu: DotMenu[]) => {
-                            const pageTitle = this.getPageCurrentTitle(data['url'], menu);
-                            this.titleService.setTitle(
-                                `${pageTitle ? pageTitle + ' - ' : ''} ${this._appMainTitle}`
-                            );
-                            return menu;
-                        })
-                        // setActiveItems({
-                        //     url: data['url'],
-                        //     collapsed: data['collapsed'] || this._collapsed$.getValue(),
-                        //     menuId:
-                        //         data['menuId'] ||
-                        //         this.router.getCurrentNavigation().extras.state?.menuId,
-                        //     previousUrl: data['previousUrl'] || this.dotRouterService.previousUrl
-                        // }),
-                        // filter((menu) => !!menu)
-                    )
-                    .subscribe((menu) => {
-                        console.log('==== merge final menu', menu);
-                        this.setMenu(menu);
-                    });
-            }
-            
-            //     ? this.dotMenuService
-            //           .loadMenu()
-            //           .pipe(
-            //               tap((menu: DotMenu[]) => {
-            //                   console.log('**** menu', menu);
-            //                   // debugger;
-            //                   const pageTitle = this.getPageCurrentTitle(event.url, menu);
-            //                   this.titleService.setTitle(
-            //                       `${pageTitle ? pageTitle + ' - ' : ''} ${
-            //                           this._appMainTitle
-            //                       }`
-            //                   );
-            //                   return menu;
-            //               }),
-            //               setActiveItems({
-            //                   url: activateMenu['url'] || event.url,
-            //                   collapsed:
-            //                       activateMenu['collapsed'] || this._collapsed$.getValue(),
-            //                   menuId:
-            //                       activateMenu['menuId'] ||
-            //                       this.router.getCurrentNavigation().extras.state?.menuId,
-            //                   previousUrl:
-            //                       activateMenu['previousUrl'] ||
-            //                       this.dotRouterService.previousUrl
-            //               }),
-            //               filter((menu) => !!menu)
-            //           )
-            //           .subscribe((menu) => {
-            //               // debugger;
-            //               this.setMenu(menu);
-            //           })
-            //     : null;
-        });
-*/
-        // combineLatest([this.onNavigationEnd(), this.setActiveMenu$])
-        //     .pipe(
-        //         map(([event, activateMenu]: [NavigationEnd, unknown]) => {
-        //             console.log('==== map', event, activateMenu);
-        //             debugger;
-        //             return event.url || activateMenu['url']
-        //                 ? this.dotMenuService
-        //                       .loadMenu()
-        //                       .pipe(
-        //                           tap((menu: DotMenu[]) => {
-        //                               console.log('**** menu', menu);
-        //                               // debugger;
-        //                               const pageTitle = this.getPageCurrentTitle(event.url, menu);
-        //                               this.titleService.setTitle(
-        //                                   `${pageTitle ? pageTitle + ' - ' : ''} ${
-        //                                       this._appMainTitle
-        //                                   }`
-        //                               );
-        //                               return menu;
-        //                           }),
-        //                           setActiveItems({
-        //                               url: activateMenu['url'] || event.url,
-        //                               collapsed:
-        //                                   activateMenu['collapsed'] || this._collapsed$.getValue(),
-        //                               menuId:
-        //                                   activateMenu['menuId'] ||
-        //                                   this.router.getCurrentNavigation().extras.state?.menuId,
-        //                               previousUrl:
-        //                                   activateMenu['previousUrl'] ||
-        //                                   this.dotRouterService.previousUrl
-        //                           }),
-        //                           filter((menu) => !!menu)
-        //                       )
-        //                       .subscribe((menu) => {
-        //                           // debugger;
-        //                           this.setMenu(menu);
-        //                       })
-        //                 : null;
-        //         })
-        //     )
-        //     .subscribe();
-
-        // this.setActiveMenu$.next('');
-
-        // this.onNavigationEnd()
-        //     .pipe(
-        //         switchMap((event: NavigationEnd) => {
-        //             return this.dotMenuService.loadMenu().pipe(
-        //                 tap((menu: DotMenu[]) => {
-        //                     const pageTitle = this.getPageCurrentTitle(event.url, menu);
-        //                     this.titleService.setTitle(
-        //                         `${pageTitle ? pageTitle + ' - ' : ''} ${this._appMainTitle}`
-        //                     );
-        //                     return menu;
-        //                 }),
-        //                 setActiveItems({
-        //                     url: event.url,
-        //                     collapsed: this._collapsed$.getValue(),
-        //                     menuId: this.router.getCurrentNavigation().extras.state?.menuId,
-        //                     previousUrl: this.dotRouterService.previousUrl
-        //                 })
-        //             );
-        //         }),
-        //         filter((menu) => !!menu)
-        //     )
-        //     .subscribe((menus: DotMenu[]) => {
-        //         this.setMenu(menus);
-        //     });
 
         this.dotcmsEventsService
             .subscribeTo('UPDATE_PORTLET_LAYOUTS')
             .subscribe((payload: DotUpdatePortletLayoutPayload) => {
-                console.log('===UPDATE_PORTLET_LAYOUTS', payload);
                 this.reloadNavigation()
                     .pipe(
                         take(1),
@@ -347,13 +206,8 @@ export class DotNavigationService {
                             menuId: payload.toolgroup?.id || '',
                             previousUrl: ''
                         })
-                        // tap((menus: DotMenu[]) => {
-                        // console.log('@@@@@@@@ tap', menus);
-                        // this.setMenu(menus);
-                        // })
                     )
                     .subscribe((menus: DotMenu[]) => {
-                        console.log('@@@@@@@@ subsc', menus);
                         this.setMenu(menus);
                     });
             });
@@ -539,7 +393,6 @@ export class DotNavigationService {
     }
 
     private reloadNavigation(): Observable<DotMenu[]> {
-        console.log('=== reloadNavigation');
         return this.dotMenuService.reloadMenu().pipe(
             setActiveItems({
                 url: this.dotRouterService.currentPortlet.id,
@@ -553,7 +406,6 @@ export class DotNavigationService {
     }
 
     private setMenu(menu: DotMenu[]) {
-        // debugger;
         this._items$.next(this.addMenuLinks(menu));
     }
 
