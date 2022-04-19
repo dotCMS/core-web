@@ -12,7 +12,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
-fdescribe('DotHttpErrorManagerService', () => {
+describe('DotHttpErrorManagerService', () => {
     let service: DotHttpErrorManagerService;
     let dotRouterService: DotRouterService;
     let dotDialogService: DotAlertConfirmService;

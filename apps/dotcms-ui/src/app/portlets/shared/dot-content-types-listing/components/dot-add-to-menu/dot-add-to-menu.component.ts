@@ -13,7 +13,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMenuService } from '@dotcms/app/api/services/dot-menu.service';
-import { pluck, take, takeUntil, tap } from 'rxjs/operators';
+import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { DotMenu } from '@dotcms/app/shared/models/navigation';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 import {
@@ -93,24 +93,18 @@ export class DotAddToMenuComponent implements OnInit, OnDestroy {
 
             this.dotAddToMenuService
                 .createCustomTool(params)
-                .pipe(take(1), pluck('portlet'))
+                .pipe(
+                    take(1),
+                    switchMap(() => {
+                        return this.dotAddToMenuService
+                            .addToLayout(`c_${cleanPorletId}`, this.form.get('menuOption').value)
+                            .pipe(take(1));
+                    })
+                )
                 .subscribe(() => {
-                    this.dotAddToMenuService
-                        .addToLayout(`c_${cleanPorletId}`, this.form.get('menuOption').value)
-                        .pipe(take(1), pluck('portlet'))
-                        .subscribe(() => {
-                            this.close();
-                        });
+                    this.close();
                 });
         }
-    }
-
-    /**
-     * It submits the form from submit button
-     * @memberof PushPublishContentTypesDialogComponent
-     */
-    submitForm(): void {
-        this.formEl.ngSubmit.emit();
     }
 
     private initForm(): void {
@@ -125,7 +119,7 @@ export class DotAddToMenuComponent implements OnInit, OnDestroy {
         this.dialogActions = {
             accept: {
                 action: () => {
-                    this.submitForm();
+                    this.submit();
                 },
                 label: this.dotMessageService.get('add'),
                 disabled: !form.valid

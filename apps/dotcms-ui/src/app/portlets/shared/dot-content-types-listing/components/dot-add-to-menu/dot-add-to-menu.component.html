@@ -14,13 +14,14 @@
         class="p-fluid"
     >
         <div class="field">
-            <label>{{ 'contenttypes.content.add_to_menu.name' | dm }} *</label>
+            <label data-testId="titleMenuLabel"
+                >{{ 'contenttypes.content.add_to_menu.name' | dm }} *</label
+            >
             <input
                 #titleName
                 id="title"
                 pInputText
                 formControlName="title"
-                dotAutofocus
                 data-testId="titleMenu"
             />
             <dot-field-validation-message
@@ -29,8 +30,11 @@
             ></dot-field-validation-message>
         </div>
         <div class="field">
-            <label>{{ 'contenttypes.content.add_to_menu.show_under' | dm }} *</label>
+            <label data-testId="menuOptionLabel"
+                >{{ 'contenttypes.content.add_to_menu.show_under' | dm }} *</label
+            >
             <p-dropdown
+                data-testId="menuOption"
                 appendTo="body"
                 [options]="menu$ | async"
                 formControlName="menuOption"
@@ -39,9 +43,12 @@
             ></p-dropdown>
         </div>
         <div class="field">
-            <label>{{ 'contenttypes.content.add_to_menu.default_view' | dm }} *</label>
+            <label data-testId="ViewModeLabel"
+                >{{ 'contenttypes.content.add_to_menu.default_view' | dm }} *</label
+            >
             <div class="field">
                 <p-radioButton
+                    data-testId="cardViewMode"
                     [label]="'custom.content.portlet.dataViewMode.card' | dm"
                     name="defaultView"
                     value="card"
@@ -51,6 +58,7 @@
             </div>
             <div class="field">
                 <p-radioButton
+                    data-testId="listViewMode"
                     [label]="'custom.content.portlet.dataViewMode.list' | dm"
                     name="defaultView"
                     value="list"
