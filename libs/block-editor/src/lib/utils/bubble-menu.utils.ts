@@ -24,7 +24,6 @@ export const shouldShowBubbleMenu = ({ editor, state, from, to }: ShouldShowProp
     const isEmptyTextBlock = !doc.textBetween(from, to).length && isTextSelection(state.selection);
 
     // If it's empty or the current node is type dotContent, it will not open.
-    // if (!editor.isActive('dotContent')) { // this might be the same as the condition below
     if (!editor.isFocused || empty || isEmptyTextBlock || node.type.name == 'dotContent') {
         return false;
     }
