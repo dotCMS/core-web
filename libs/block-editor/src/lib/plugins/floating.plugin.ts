@@ -153,6 +153,7 @@ export class FloatingActionsView {
             getReferenceClientRect: () => posToDOMRect(view, from, to)
         });
 
+        console.log('update -show - floating.plugin');
         this.show();
 
         if (next.open) {
@@ -172,6 +173,7 @@ export class FloatingActionsView {
 
     show() {
         this.tippy.show();
+        // this.editor.chain().insertContent('/').run();
     }
 
     hide() {
@@ -232,6 +234,7 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
              */
             handleKeyDown(view: EditorView, event: KeyboardEvent) {
                 const { open, range } = this.getState(view.state);
+                console.log('handleKeyDown - floating.plugin');
                 if (!open) {
                     return false;
                 }

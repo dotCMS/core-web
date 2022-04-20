@@ -2,17 +2,20 @@
     <h3>{{ title }}</h3>
 
     <dotcms-suggestion-list class="suggestion-list-container" #list>
-        <dotcms-suggestions-list-item
-            *ngFor="let item of items; let i = index"
-            (mousedown)="onMouseDown($event, item)"
-            (mouseenter)="onMouseEnter($event)"
-            [command]="item.command"
-            [index]="i"
-            [label]="item.label"
-            [url]="item.icon"
-            [data]="item.data"
-        >
-        </dotcms-suggestions-list-item>
+        <ng-container *ngFor="let item of items; let i = index">
+            {{ item.disabled }}
+            <dotcms-suggestions-list-item
+                *ngIf="item.visible"
+                (mousedown)="onMouseDown($event, item)"
+                (mouseenter)="onMouseEnter($event)"
+                [command]="item.command"
+                [index]="i"
+                [label]="item.label"
+                [url]="item.icon"
+                [data]="item.data"
+            >
+            </dotcms-suggestions-list-item>
+        </ng-container>
     </dotcms-suggestion-list>
 </div>
 

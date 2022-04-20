@@ -196,6 +196,19 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
         this.initContentletSelection();
     }
 
+    /**
+     * Set items visible based on filter
+     *
+     * @param {string} filter
+     * @memberof SuggestionsComponent
+     */
+    filterItems(filter: string = '') {
+        this.items.forEach((item) => {
+            item.visible = filter ? item.label.toLowerCase().includes(filter.toLowerCase()) : true;
+        });
+        console.log('filterItems', this.items);
+    }
+
     private initContentletSelection() {
         this.suggestionsService
             .getContentTypes()
