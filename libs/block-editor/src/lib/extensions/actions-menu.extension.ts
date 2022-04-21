@@ -181,8 +181,9 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
                 items: ({ query }) => {
                     if (suggestionsComponent) {
                         suggestionsComponent.instance.filterItems(query);
-                        console.log('query', query);
                     }
+                    // suggestions plugin need's to return something,
+                    // but we are using the angular suggestionsComponent
                     return [];
                 }
             }

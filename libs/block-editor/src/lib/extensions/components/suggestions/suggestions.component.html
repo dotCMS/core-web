@@ -3,7 +3,6 @@
 
     <dotcms-suggestion-list class="suggestion-list-container" #list>
         <ng-container *ngFor="let item of items; let i = index">
-            {{ item.disabled }}
             <dotcms-suggestions-list-item
                 *ngIf="item.visible"
                 (mousedown)="onMouseDown($event, item)"
