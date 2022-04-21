@@ -115,6 +115,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
     function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
         suggestionsComponent = getSuggestionComponent(viewContainerRef);
         suggestionsComponent.instance.onSelection = (item) => {
+            // @ts-expect-error: As this point suggestion$ will be valid in the state.
             range.to = range.to + editor.view.state.suggestion$.query.length;
             execCommand({ editor: editor, range: range, props: item });
         };

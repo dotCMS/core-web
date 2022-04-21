@@ -79,7 +79,8 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                     icon: 'receipt',
                     command: () => {
                         this.initContentletSelection();
-                    }
+                    },
+                    visible: true
                 },
                 ...this.items
             ];
@@ -208,6 +209,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                 ? item.label.toLowerCase().includes(filter.trim().toLowerCase())
                 : true;
         });
+        this.setFirstItemActive();
     }
 
     private initContentletSelection() {
