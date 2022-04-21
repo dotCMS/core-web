@@ -169,7 +169,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
             element: null,
             suggestion: {
                 char: '/',
-                allowSpaces: false,
+                allowSpaces: true,
                 startOfLine: true,
                 render: () => {
                     return {
@@ -182,7 +182,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
                     if (suggestionsComponent) {
                         suggestionsComponent.instance.filterItems(query);
                     }
-                    // suggestions plugin need's to return something,
+                    // suggestions plugin need to return something,
                     // but we are using the angular suggestionsComponent
                     return [];
                 }
