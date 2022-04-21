@@ -113,7 +113,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
      * @param {(SuggestionProps | FloatingActionsProps)} { editor, range, clientRect }
      */
     function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
-        console.log('onStart');
+        console.log('onStart - ActionsMenu');
         suggestionsComponent = getSuggestionComponent(viewContainerRef);
         suggestionsComponent.instance.onSelection = (item) => {
             execCommand({ editor: editor, range: range, props: item });
@@ -186,6 +186,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
                         suggestionsComponent.instance.filterItems(query);
                         console.log('query', query);
                     }
+                    return [];
                 }
             }
         },

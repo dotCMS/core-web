@@ -130,9 +130,11 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
                                 const position = view.posAtCoords(coords);
                                 if (position && nodeHasContent(view, position.inside)) {
                                     nodeToBeDragged = getDirectChild(view.nodeDOM(position.inside));
+                                    console.log('nodeToBeDragged', nodeToBeDragged.innerText);
                                     if (
                                         nodeToBeDragged &&
-                                        !nodeToBeDragged.classList?.contains('ProseMirror')
+                                        !nodeToBeDragged.classList?.contains('ProseMirror') &&
+                                        !nodeToBeDragged.innerText.startsWith('/')
                                     ) {
                                         const { top, left } = getPositon(
                                             view.dom.parentElement,

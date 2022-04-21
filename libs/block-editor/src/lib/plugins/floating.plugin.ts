@@ -92,11 +92,12 @@ export class FloatingActionsView {
      */
     mousedownHandler = (e: MouseEvent): void => {
         e.preventDefault();
-
-        const transaction = this.editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
-            open: true
-        });
-        this.editor.view.dispatch(transaction);
+        console.log('mousedownHandler - floating.plugin');
+        // const transaction = this.editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
+        //     open: true
+        // });
+        // this.editor.view.dispatch(transaction);
+        this.editor.chain().insertContent('/').run();
     };
 
     /**
@@ -173,7 +174,6 @@ export class FloatingActionsView {
 
     show() {
         this.tippy.show();
-        // this.editor.chain().insertContent('/').run();
     }
 
     hide() {
