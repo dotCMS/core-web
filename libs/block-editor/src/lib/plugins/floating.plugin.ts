@@ -92,11 +92,6 @@ export class FloatingActionsView {
      */
     mousedownHandler = (e: MouseEvent): void => {
         e.preventDefault();
-        console.log('mousedownHandler - floating.plugin');
-        // const transaction = this.editor.state.tr.setMeta(FLOATING_ACTIONS_MENU_KEYBOARD, {
-        //     open: true
-        // });
-        // this.editor.view.dispatch(transaction);
         this.editor.chain().insertContent('/').run();
     };
 
@@ -153,8 +148,6 @@ export class FloatingActionsView {
         this.tippy.setProps({
             getReferenceClientRect: () => posToDOMRect(view, from, to)
         });
-
-        console.log('update -show - floating.plugin');
         this.show();
 
         if (next.open) {
@@ -234,7 +227,6 @@ export const FloatingActionsPlugin = (options: FloatingActionsPluginProps) => {
              */
             handleKeyDown(view: EditorView, event: KeyboardEvent) {
                 const { open, range } = this.getState(view.state);
-                console.log('handleKeyDown - floating.plugin');
                 if (!open) {
                     return false;
                 }

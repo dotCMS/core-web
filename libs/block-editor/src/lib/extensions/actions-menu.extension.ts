@@ -113,7 +113,6 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
      * @param {(SuggestionProps | FloatingActionsProps)} { editor, range, clientRect }
      */
     function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
-        console.log('onStart - ActionsMenu');
         suggestionsComponent = getSuggestionComponent(viewContainerRef);
         suggestionsComponent.instance.onSelection = (item) => {
             execCommand({ editor: editor, range: range, props: item });
@@ -155,12 +154,10 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
             suggestionsComponent.instance.updateSelection(event);
             return true;
         }
-        console.log('onKeyDown', key);
         return false;
     }
 
     function onExit() {
-        console.log('onExit');
         myTippy?.destroy();
         suggestionsComponent.destroy();
     }

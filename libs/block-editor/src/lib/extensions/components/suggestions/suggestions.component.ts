@@ -206,7 +206,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
         this.items.forEach((item) => {
             item.visible = filter ? item.label.toLowerCase().includes(filter.toLowerCase()) : true;
         });
-        console.log('filterItems', this.items);
     }
 
     private initContentletSelection() {
