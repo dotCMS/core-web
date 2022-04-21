@@ -195,9 +195,8 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
             return {
                 addHeading:
                     ({ range, type }) =>
-                    (editor) => {
-                        return editor
-                            .chain()
+                    ({ chain }) => {
+                        return chain()
                             .focus()
                             .deleteRange(range)
                             .toggleHeading({ level: type.level })
