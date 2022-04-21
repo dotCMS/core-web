@@ -33,9 +33,7 @@ export class DotAddToMenuService {
      * @memberof DotAddToMenuService
      */
     cleanUpPorletId(name: string): string {
-        const cleanSpecialChars = name.replace(/[^0-9a-z-]/gi, '-');
-        const cleanPortlet = cleanSpecialChars.replace(/(?:\s*-\s*)+|\s{2,}/gm, '-');
-        return cleanPortlet;
+        return name.replace(/[^0-9a-z-]/gi, '-').replace(/(?:\s*-\s*)+|\s{2,}/gm, '-');
     }
 
     /**

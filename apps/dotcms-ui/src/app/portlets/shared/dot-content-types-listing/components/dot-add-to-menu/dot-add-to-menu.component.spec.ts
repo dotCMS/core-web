@@ -119,18 +119,20 @@ describe('DotAddToMenuComponent', () => {
     });
 
     it('should load labels and data when init', () => {
-        expect(dotdialog.query(By.css('.dialog__title')).nativeElement.innerHTML).toBe(
+        expect(dotdialog.componentInstance.header).toBe(
             messageServiceMock.get('contenttypes.content.add_to_menu.header')
         );
         expect(
-            dotdialog.query(By.css('[data-testId="titleMenuLabel"]')).nativeElement.innerHTML
-        ).toBe(`${messageServiceMock.get('contenttypes.content.add_to_menu.name')} *`);
+            dotdialog.query(By.css('[data-testId="titleMenuLabel"]')).nativeElement.innerHTML.trim()
+        ).toBe(messageServiceMock.get('contenttypes.content.add_to_menu.name'));
         expect(
-            dotdialog.query(By.css('[data-testId="menuOptionLabel"]')).nativeElement.innerHTML
-        ).toBe(`${messageServiceMock.get('contenttypes.content.add_to_menu.show_under')} *`);
+            dotdialog
+                .query(By.css('[data-testId="menuOptionLabel"]'))
+                .nativeElement.innerHTML.trim()
+        ).toBe(messageServiceMock.get('contenttypes.content.add_to_menu.show_under'));
         expect(
-            dotdialog.query(By.css('[data-testId="ViewModeLabel"]')).nativeElement.innerHTML
-        ).toBe(`${messageServiceMock.get('contenttypes.content.add_to_menu.default_view')} *`);
+            dotdialog.query(By.css('[data-testId="ViewModeLabel"]')).nativeElement.innerHTML.trim()
+        ).toBe(messageServiceMock.get('contenttypes.content.add_to_menu.default_view'));
         expect(
             dotdialog.query(By.css('[data-testId="cardViewMode"]')).componentInstance.label
         ).toBe(messageServiceMock.get('custom.content.portlet.dataViewMode.card'));

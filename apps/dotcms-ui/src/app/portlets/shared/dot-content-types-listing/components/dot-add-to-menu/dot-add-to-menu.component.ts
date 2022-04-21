@@ -35,7 +35,6 @@ export class DotAddToMenuComponent implements OnInit, OnDestroy {
     @Input() contentType: DotCMSContentType;
     @Output() cancel = new EventEmitter<boolean>();
 
-    @ViewChild('formEl', { static: true }) formEl: HTMLFormElement;
     @ViewChild('titleName', { static: true }) titleName: ElementRef;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -57,7 +56,6 @@ export class DotAddToMenuComponent implements OnInit, OnDestroy {
                 this.form.patchValue({
                     menuOption: menu[0].id
                 });
-                this.titleName.nativeElement.focus();
             })
         );
     }
