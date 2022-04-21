@@ -115,6 +115,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
     function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
         suggestionsComponent = getSuggestionComponent(viewContainerRef);
         suggestionsComponent.instance.onSelection = (item) => {
+            range.to = range.to + editor.view.state.suggestion$.query.length;
             execCommand({ editor: editor, range: range, props: item });
         };
 
@@ -193,8 +194,9 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
             return {
                 addHeading:
                     ({ range, type }) =>
-                    ({ chain }) => {
-                        return chain()
+                    (editor) => {
+                        return editor
+                            .chain()
                             .focus()
                             .deleteRange(range)
                             .toggleHeading({ level: type.level })
