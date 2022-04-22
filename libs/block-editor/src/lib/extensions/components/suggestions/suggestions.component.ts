@@ -45,6 +45,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @Input() title = 'Select a block';
     @Input() isOpen = false;
 
+    initialItems: DotMenuItem[];
     private mouseMove = true;
     private dotLang: Languages;
 
@@ -79,13 +80,12 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                     icon: 'receipt',
                     command: () => {
                         this.initContentletSelection();
-                    },
-                    visible: true
+                    }
                 },
                 ...this.items
             ];
         }
-
+        this.initialItems = this.items;
         this.dotLanguageService
             .getLanguages()
             .pipe(take(1))
@@ -204,11 +204,11 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     filterItems(filter: string = '') {
-        this.items.forEach((item) => {
-            item.visible = filter
-                ? item.label.toLowerCase().includes(filter.trim().toLowerCase())
-                : true;
-        });
+        this.items = [
+            ...this.initialItems.filter((item) =>
+                item.label.toLowerCase().includes(filter.trim().toLowerCase())
+            )
+        ];
         this.setFirstItemActive();
     }
 

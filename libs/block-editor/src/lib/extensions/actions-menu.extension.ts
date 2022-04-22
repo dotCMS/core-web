@@ -17,6 +17,7 @@ import {
     SuggestionsComponent
 } from './components/suggestions/suggestions.component';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
+import { PluginKey } from 'prosemirror-state';
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {
@@ -106,6 +107,7 @@ function execCommand({
 export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
     let myTippy;
     let suggestionsComponent: ComponentRef<SuggestionsComponent>;
+    const suggestionKey = new PluginKey('suggestionPlugin');
 
     /**
      * Get's called on button click or suggestion char
@@ -115,8 +117,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
     function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
         suggestionsComponent = getSuggestionComponent(viewContainerRef);
         suggestionsComponent.instance.onSelection = (item) => {
-            // @ts-expect-error: As this point suggestion$ will be valid in the state.
-            range.to = range.to + editor.view.state.suggestion$.query.length;
+            range.to = range.to + suggestionKey.getState(editor.view.state).query.length;
             execCommand({ editor: editor, range: range, props: item });
         };
 
@@ -171,6 +172,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
             element: null,
             suggestion: {
                 char: '/',
+                pluginKey: suggestionKey,
                 allowSpaces: true,
                 startOfLine: true,
                 render: () => {
@@ -186,6 +188,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
                     }
                     // suggestions plugin need to return something,
                     // but we are using the angular suggestionsComponent
+                    // https://tiptap.dev/api/utilities/suggestion
                     return [];
                 }
             }
