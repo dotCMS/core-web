@@ -124,7 +124,6 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         });
 
         if (!shouldShow) {
-            console.log('HEY');
             this.hide();
             this.tippyChangeTo?.hide();
             return;
