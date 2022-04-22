@@ -124,6 +124,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         });
 
         if (!shouldShow) {
+            console.log('HEY');
             this.hide();
             this.tippyChangeTo?.hide();
             return;
@@ -148,8 +149,8 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
             getReferenceClientRect: () => this.tippy?.popper.getBoundingClientRect()
         });
 
-        this.updateComponent();
         this.setMenuItems(doc, from);
+        this.updateComponent();
         this.show();
     }
 
