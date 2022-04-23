@@ -5,7 +5,9 @@ import {
     OnInit,
     ViewChild,
     HostListener,
-    AfterViewInit
+    AfterViewInit,
+    Output,
+    EventEmitter
 } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
@@ -31,6 +33,12 @@ export interface DotMenuItem extends Omit<MenuItem, 'icon'> {
     data?: Record<string, unknown>;
 }
 
+enum ItemsType {
+    BLOCK = 'block',
+    CONTENTTYPE = 'contentType',
+    CONTENT = 'content'
+}
+
 @Component({
     selector: 'dotcms-suggestions',
     templateUrl: './suggestions.component.html',
@@ -44,8 +52,10 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @Input() items: DotMenuItem[] = [];
     @Input() title = 'Select a block';
     @Input() isOpen = false;
+    @Output() clearFilter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     initialItems: DotMenuItem[];
+    private itemsLoaded: ItemsType;
     private mouseMove = true;
     private dotLang: Languages;
 
@@ -79,6 +89,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                     label: 'Contentlets',
                     icon: 'receipt',
                     command: () => {
+                        this.clearFilter.emit(true);
                         this.initContentletSelection();
                     }
                 },
@@ -86,6 +97,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             ];
         }
         this.initialItems = this.items;
+        this.itemsLoaded = ItemsType.BLOCK;
         this.dotLanguageService
             .getLanguages()
             .pipe(take(1))
@@ -204,11 +216,17 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     filterItems(filter: string = '') {
-        this.items = [
-            ...this.initialItems.filter((item) =>
-                item.label.toLowerCase().includes(filter.trim().toLowerCase())
-            )
-        ];
+        switch (this.itemsLoaded) {
+            case ItemsType.BLOCK:
+                this.items = this.initialItems.filter((item) =>
+                    item.label.toLowerCase().includes(filter.trim().toLowerCase())
+                );
+                break;
+            case ItemsType.CONTENTTYPE:
+                //TODO: need to define pagination approach.
+                break;
+        }
+
         this.setFirstItemActive();
     }
 
@@ -248,6 +266,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                                         });
 
                                         if (this.items.length) {
+                                            this.itemsLoaded = ItemsType.CONTENT;
                                             this.title = 'Select a contentlet';
                                             this.cd.detectChanges();
                                             this.resetKeyManager();
@@ -265,6 +284,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             .subscribe((items) => {
                 this.title = 'Select a content type';
                 this.items = items;
+                this.itemsLoaded = ItemsType.CONTENTTYPE;
                 this.cd.detectChanges();
                 this.resetKeyManager();
             });

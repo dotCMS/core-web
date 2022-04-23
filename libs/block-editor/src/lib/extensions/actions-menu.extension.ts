@@ -120,6 +120,13 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
             range.to = range.to + suggestionKey.getState(editor.view.state).query.length;
             execCommand({ editor: editor, range: range, props: item });
         };
+        suggestionsComponent.instance.clearFilter.subscribe(() => {
+            const queryRange = {
+                to: range.to + suggestionKey.getState(editor.view.state).query.length,
+                from: range.from + 1
+            };
+            editor.chain().deleteRange(queryRange).run();
+        });
 
         myTippy = getTippyInstance({
             element: editor.view.dom,
