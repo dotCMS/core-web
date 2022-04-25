@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import { DotMessageService } from '@services/dot-message/dot-messages.service';
 import { DotMenuService } from '@services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
@@ -8,6 +17,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { Observable } from 'rxjs';
+import { Inplace } from 'primeng/inplace';
 
 @Component({
     selector: 'dot-content-type-layout',
@@ -17,9 +27,14 @@ import { Observable } from 'rxjs';
 export class ContentTypesLayoutComponent implements OnChanges, OnInit {
     @Input() contentType: DotCMSContentType;
     @Output() openEditDialog: EventEmitter<unknown> = new EventEmitter();
+    @Output() changeContentTypeName: EventEmitter<string> = new EventEmitter();
+    @ViewChild('contentTypeNameInput') contentTypeNameInput: ElementRef;
+    @ViewChild('contentTypeInlineEdit') contentTypeInlineEdit: Inplace;
+
     permissionURL: string;
     pushHistoryURL: string;
     relationshipURL: string;
+    contentTypeNameInputSize: string;
     showPermissionsTab: Observable<boolean>;
 
     actions: MenuItem[];
@@ -52,8 +67,30 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
         }
     }
 
+    /**
+     * Emits add-row event to add new row
+     *
+     * @memberof ContentTypesLayoutComponent
+     */
+
     fireAddRowEvent(): void {
         this.dotEventsService.notify('add-row');
+    }
+
+    /**
+     * Emits new name to parent component and close Edit Inline mode
+     *
+     * @memberof ContentTypesLayoutComponent
+     */
+    fireChangeName(): void {
+        const contentTypeName = this.contentTypeNameInput.nativeElement.value.trim();
+        this.changeContentTypeName.emit(contentTypeName);
+        this.contentType.name = contentTypeName;
+        this.contentTypeInlineEdit.deactivate();
+    }
+
+    editInlineActivate(event): void {
+        this.contentTypeNameInputSize = event.target.offsetWidth;
     }
 
     private loadActions(): void {
