@@ -18,7 +18,6 @@ import { throwError } from 'rxjs';
 const customToolData: DotCreateCustomTool = {
     contentTypes: 'Blog',
     dataViewMode: 'card',
-    portletId: 'test',
     portletName: 'test'
 };
 
@@ -68,7 +67,7 @@ describe('DotAddToMenuService', () => {
 
         const req = httpMock.expectOne(url);
         expect(req.request.method).toBe('POST');
-        expect(req.request.body).toEqual(customToolData);
+        expect(req.request.body).toEqual({ ...customToolData, portletId: 'test' });
         req.flush({
             entity: 'ok'
         });
@@ -97,7 +96,7 @@ describe('DotAddToMenuService', () => {
     });
 
     it('should add to layout a custom tool portlet', () => {
-        const url = `v1/portlet/custom/${customToolData.portletName}/_addtolayout/123`;
+        const url = `v1/portlet/custom/c_${customToolData.portletName}/_addtolayout/123`;
 
         dotAddToMenuService
             .addToLayout(customToolData.portletName, '123')

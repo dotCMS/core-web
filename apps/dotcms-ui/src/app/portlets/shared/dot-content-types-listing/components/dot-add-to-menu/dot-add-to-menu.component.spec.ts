@@ -177,22 +177,19 @@ describe('DotAddToMenuComponent', () => {
             By.css('[data-testId="dotDialogAcceptAction"]')
         );
 
-        spyOn(dotAddToMenuService, 'cleanUpPorletId').and.returnValue('NuevoCleaned');
         spyOn(dotAddToMenuService, 'createCustomTool').and.returnValue(of(''));
         spyOn(dotAddToMenuService, 'addToLayout').and.returnValue(of(''));
         spyOn(component.cancel, 'emit');
 
         addButton.nativeElement.click();
 
-        expect(dotAddToMenuService.cleanUpPorletId).toHaveBeenCalledWith(contentTypeVar.name);
         expect(dotAddToMenuService.createCustomTool).toHaveBeenCalledWith({
-            portletId: 'NuevoCleaned',
             portletName: contentTypeVar.name,
             contentTypes: contentTypeVar.variable,
             dataViewMode: 'list'
         });
         expect(dotAddToMenuService.addToLayout).toHaveBeenCalledWith(
-            'c_NuevoCleaned',
+            'Nuevo',
             component.form.get('menuOption').value
         );
         expect(component.cancel.emit).toHaveBeenCalledTimes(1);
