@@ -146,9 +146,6 @@ describe('DotAddToMenuComponent', () => {
         expect(
             dotdialog.query(By.css('[data-testId="menuOption"]')).componentInstance.options.length
         ).toBe(2);
-        console.log(
-            dotdialog.query(By.css('[data-testId="dotDialogAcceptAction"]')).nativeElement.innerText
-        );
         expect(
             dotdialog.query(By.css('[data-testId="dotDialogAcceptAction"]')).nativeElement.innerText
         ).toBe(messageServiceMock.get('ADD'));

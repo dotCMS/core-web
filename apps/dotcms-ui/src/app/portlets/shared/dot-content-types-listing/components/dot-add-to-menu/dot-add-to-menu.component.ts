@@ -79,11 +79,7 @@ export class DotAddToMenuComponent implements OnInit, OnDestroy {
      */
     submit(): void {
         if (this.form.valid) {
-            const cleanPorletId = this.dotAddToMenuService.cleanUpPorletId(
-                this.form.get('title').value
-            );
             const params: DotCreateCustomTool = {
-                portletId: cleanPorletId,
                 portletName: this.form.get('title').value,
                 contentTypes: this.contentType.variable,
                 dataViewMode: this.form.get('defaultView').value
@@ -95,7 +91,7 @@ export class DotAddToMenuComponent implements OnInit, OnDestroy {
                     take(1),
                     switchMap(() => {
                         return this.dotAddToMenuService
-                            .addToLayout(`c_${cleanPorletId}`, this.form.get('menuOption').value)
+                            .addToLayout(params.portletName, this.form.get('menuOption').value)
                             .pipe(take(1));
                     })
                 )

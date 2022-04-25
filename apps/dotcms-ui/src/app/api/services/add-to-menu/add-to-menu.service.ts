@@ -10,7 +10,6 @@ const addToMenuUrl = `v1/portlet`;
 export interface DotCreateCustomTool {
     contentTypes: string;
     dataViewMode: string;
-    portletId: string;
     portletName: string;
 }
 
@@ -46,7 +45,8 @@ export class DotAddToMenuService {
         return this.coreWebService
             .requestView({
                 body: {
-                    ...params
+                    ...params,
+                    portletId: this.cleanUpPorletId(params.portletName)
                 },
                 method: 'POST',
                 url: `${addToMenuUrl}/custom`
@@ -74,10 +74,11 @@ export class DotAddToMenuService {
      * @memberof DotAddToMenuService
      */
     addToLayout(portletName: string, layoutId: string): Observable<string> {
+        const portletId = this.cleanUpPorletId(portletName);
         return this.coreWebService
             .requestView({
                 method: 'PUT',
-                url: `${addToMenuUrl}/custom/${portletName}/_addtolayout/${layoutId}`
+                url: `${addToMenuUrl}/custom/c_${portletId}/_addtolayout/${layoutId}`
             })
             .pipe(
                 pluck('entity'),

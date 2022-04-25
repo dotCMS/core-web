@@ -381,7 +381,6 @@ describe('DotContentTypesPortletComponent', () => {
         };
         expect(comp.addToMenuContentType).not.toBeDefined();
         expect(de.query(By.css('p-dialog'))).toBeNull();
-        console.log(comp.rowActions);
         comp.rowActions[ADD_TO_MENU_INDEX].menuItem.command(mockContentType);
         fixture.detectChanges();
 
@@ -471,7 +470,6 @@ describe('DotContentTypesPortletComponent', () => {
 
     it('should show Add to Menu option', () => {
         fixture.detectChanges();
-        console.log(comp.rowActions);
         expect(comp.rowActions[ADD_TO_MENU_INDEX].menuItem.label).toBe('Add to Menu');
     });
 

@@ -84,65 +84,63 @@ const setActiveItems =
     (source: Observable<DotMenu[]>) => {
         let urlId = getTheUrlId(url);
         return source.pipe(
-            url
-                ? map((m: DotMenu[]) => {
-                      const menus: DotMenu[] = [...m];
+            map((m: DotMenu[]) => {
+                if (!url) {
+                    return m; // nothing changes.
+                }
+                const menus: DotMenu[] = [...m];
 
-                      if (
-                          isEditPageFromSiteBrowser(menuId, previousUrl) ||
-                          (isDetailPage(urlId, url) && isMenuActive(menus))
-                      ) {
-                          return null;
-                      }
+                if (
+                    isEditPageFromSiteBrowser(menuId, previousUrl) ||
+                    (isDetailPage(urlId, url) && isMenuActive(menus))
+                ) {
+                    return null;
+                }
 
-                      // When user browse using the navigation (Angular Routing)
-                      if (menuId && menuId !== 'edit-page' && previousUrl) {
-                          return getActiveMenuFromMenuId({
-                              menus,
-                              menuId,
-                              collapsed,
-                              url: urlId,
-                              previousUrl
-                          });
-                      }
+                // When user browse using the navigation (Angular Routing)
+                if (menuId && menuId !== 'edit-page' && previousUrl) {
+                    return getActiveMenuFromMenuId({
+                        menus,
+                        menuId,
+                        collapsed,
+                        url: urlId,
+                        previousUrl
+                    });
+                }
 
-                      // When user browse using the browser url bar, direct links or reload page
-                      urlId = replaceIdForNonMenuSection(urlId) || urlId;
+                // When user browse using the browser url bar, direct links or reload page
+                urlId = replaceIdForNonMenuSection(urlId) || urlId;
 
-                      // Reset Active/IsOpen attributes
-                      for (let i = 0; i < menus.length; i++) {
-                          menus[i].active = false;
-                          menus[i].isOpen = false;
+                // Reset Active/IsOpen attributes
+                for (let i = 0; i < menus.length; i++) {
+                    menus[i].active = false;
+                    menus[i].isOpen = false;
 
-                          for (let k = 0; k < menus[i].menuItems.length; k++) {
-                              menus[i].menuItems[k].active = false;
-                          }
-                      }
+                    for (let k = 0; k < menus[i].menuItems.length; k++) {
+                        menus[i].menuItems[k].active = false;
+                    }
+                }
 
-                      menuLoop: for (let i = 0; i < menus.length; i++) {
-                          for (let k = 0; k < menus[i].menuItems.length; k++) {
-                              if (menuId) {
-                                  if (
-                                      menus[i].menuItems[k].id === urlId &&
-                                      menus[i].id === menuId
-                                  ) {
-                                      menus[i].active = true;
-                                      menus[i].isOpen = true;
-                                      menus[i].menuItems[k].active = true;
-                                      break menuLoop;
-                                  }
-                              } else if (menus[i].menuItems[k].id === urlId) {
-                                  menus[i].active = true;
-                                  menus[i].isOpen = true;
-                                  menus[i].menuItems[k].active = true;
-                                  break menuLoop;
-                              }
-                          }
-                      }
+                menuLoop: for (let i = 0; i < menus.length; i++) {
+                    for (let k = 0; k < menus[i].menuItems.length; k++) {
+                        if (menuId) {
+                            if (menus[i].menuItems[k].id === urlId && menus[i].id === menuId) {
+                                menus[i].active = true;
+                                menus[i].isOpen = true;
+                                menus[i].menuItems[k].active = true;
+                                break menuLoop;
+                            }
+                        } else if (menus[i].menuItems[k].id === urlId) {
+                            menus[i].active = true;
+                            menus[i].isOpen = true;
+                            menus[i].menuItems[k].active = true;
+                            break menuLoop;
+                        }
+                    }
+                }
 
-                      return menus;
-                  })
-                : tap((m) => m)
+                return menus;
+            })
         );
     };
 
