@@ -18,6 +18,8 @@ import {
 } from './components/suggestions/suggestions.component';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
 import { PluginKey } from 'prosemirror-state';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {
@@ -108,6 +110,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
     let myTippy;
     let suggestionsComponent: ComponentRef<SuggestionsComponent>;
     const suggestionKey = new PluginKey('suggestionPlugin');
+    const destroy$: Subject<boolean> = new Subject<boolean>();
 
     /**
      * Get's called on button click or suggestion char
@@ -117,13 +120,14 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
     function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
         suggestionsComponent = getSuggestionComponent(viewContainerRef);
         suggestionsComponent.instance.onSelection = (item) => {
-            range.to = range.to + suggestionKey.getState(editor.view.state).query.length;
+            const suggestionQuery = suggestionKey.getState(editor.view.state).query?.length || 0;
+            range.to = range.to + suggestionQuery;
             execCommand({ editor: editor, range: range, props: item });
         };
-        suggestionsComponent.instance.clearFilter.subscribe(() => {
+        suggestionsComponent.instance.clearFilter.pipe(takeUntil(destroy$)).subscribe((type) => {
             const queryRange = {
                 to: range.to + suggestionKey.getState(editor.view.state).query.length,
-                from: range.from + 1
+                from: type === 'contentlet' ? range.from + 1 : range.from
             };
             editor.chain().deleteRange(queryRange).run();
         });
@@ -170,6 +174,8 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
     function onExit() {
         myTippy?.destroy();
         suggestionsComponent.destroy();
+        destroy$.next(true);
+        destroy$.complete();
     }
 
     return Extension.create<FloatingMenuOptions>({

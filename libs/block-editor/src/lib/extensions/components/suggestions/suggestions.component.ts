@@ -52,7 +52,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @Input() items: DotMenuItem[] = [];
     @Input() title = 'Select a block';
     @Input() isOpen = false;
-    @Output() clearFilter: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() clearFilter: EventEmitter<string> = new EventEmitter<string>();
 
     initialItems: DotMenuItem[];
     private itemsLoaded: ItemsType;
@@ -76,6 +76,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             this.items = suggestionOptions;
             this.items.forEach((item) => {
                 item.command = () => {
+                    this.clearFilter.emit('');
                     item.id.includes('heading')
                         ? this.onSelection({
                               type: { name: 'heading', ...item.attributes }
@@ -89,7 +90,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                     label: 'Contentlets',
                     icon: 'receipt',
                     command: () => {
-                        this.clearFilter.emit(true);
+                        this.clearFilter.emit('contentlet');
                         this.initContentletSelection();
                     }
                 },
@@ -138,7 +139,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     setFirstItemActive() {
-        this.list.setFirstItemActive();
+        this.list?.setFirstItemActive();
     }
 
     /**
