@@ -44,6 +44,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @Input() items: DotMenuItem[] = [];
     @Input() title = 'Select a block';
     @Input() isOpen = false;
+    @Input() contentTypesFilter = '';
 
     private mouseMove = true;
     private dotLang: Languages;
@@ -60,6 +61,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
+        console.log('init');
         if (this.items?.length === 0) {
             // assign the default suggestions options.
             this.items = suggestionOptions;
