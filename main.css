@@ -2969,6 +2969,27 @@ p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
 .p-skeleton:after {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
 }
+.p-tieredmenu {
+  padding: 0.5rem 0;
+  background: #ffffff;
+  border: 0 none;
+  border-radius: 2px;
+  width: 100%;
+}
+.p-tieredmenu .p-menuitem-link {
+  padding: 0.75rem;
+  color: var(--color-background);
+  border-radius: 0;
+  transition: none;
+  -webkit-user-select: none;
+          user-select: none;
+}
+.p-tieredmenu .p-menuitem-link:not(.p-disabled):hover {
+  background: rgba(var(--color-sec_rgb), 0.12);
+}
+.p-tieredmenu.p-tieredmenu-overlay {
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.2);
+}
 .p-error,
 .p-invalid {
   color: #d0021b;
