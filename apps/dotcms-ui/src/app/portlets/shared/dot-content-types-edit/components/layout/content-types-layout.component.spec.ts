@@ -27,7 +27,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MenuItem } from 'primeng/api';
 import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot-portlet-box/dot-portlet-box.module';
-import { InplaceModule } from 'primeng/inplace';
+import { DotInlineEditModule } from '@components/_common/dot-inline-edit/dot-inline-edit.module';
 
 @Component({
     selector: 'dot-content-types-fields-list',
@@ -123,7 +123,7 @@ describe('ContentTypesLayoutComponent', () => {
                 DotCopyLinkModule,
                 DotPipesModule,
                 SplitButtonModule,
-                InplaceModule,
+                DotInlineEditModule,
                 HttpClientTestingModule,
                 DotPortletBoxModule
             ],
@@ -219,7 +219,7 @@ describe('ContentTypesLayoutComponent', () => {
             expect(
                 de.query(By.css('.main-toolbar-left header dot-icon')).componentInstance.name
             ).toBe(fakeContentType.icon);
-            expect(de.query(By.css('.main-toolbar-left header p-inplace'))).toBeDefined();
+            expect(de.query(By.css('.main-toolbar-left header dot-inline-edit'))).toBeDefined();
             expect(
                 de.query(By.css('.main-toolbar-left header p-inplace h4')).nativeElement.innerHTML
             ).toBe(fakeContentType.name);
@@ -232,7 +232,12 @@ describe('ContentTypesLayoutComponent', () => {
             de.query(By.css('.main-toolbar-left header p-inplace h4')).nativeElement.click();
             fixture.detectChanges();
 
+            const dotInlineEditComp = de.query(
+                By.css('.main-toolbar-left header dot-inline-edit')
+            ).componentInstance;
+
             spyOn(de.componentInstance.changeContentTypeName, 'emit');
+            spyOn(dotInlineEditComp, 'hideContent');
 
             expect(de.query(By.css('.main-toolbar-left header p-inplace input'))).toBeDefined();
             de.query(By.css('.main-toolbar-left header p-inplace input')).nativeElement.value =
@@ -246,6 +251,7 @@ describe('ContentTypesLayoutComponent', () => {
             expect(de.componentInstance.changeContentTypeName.emit).toHaveBeenCalledWith(
                 'changedName'
             );
+            expect(dotInlineEditComp.hideContent).toHaveBeenCalledTimes(1);
         });
 
         it('should have api link component', () => {

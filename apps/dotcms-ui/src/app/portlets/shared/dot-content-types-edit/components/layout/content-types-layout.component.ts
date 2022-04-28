@@ -17,7 +17,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 import { DotCurrentUserService } from '@services/dot-current-user/dot-current-user.service';
 import { Observable } from 'rxjs';
-import { Inplace } from 'primeng/inplace';
+import { DotInlineEditComponent } from '@components/_common/dot-inline-edit/dot-inline-edit.component';
 
 @Component({
     selector: 'dot-content-type-layout',
@@ -29,7 +29,7 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
     @Output() openEditDialog: EventEmitter<unknown> = new EventEmitter();
     @Output() changeContentTypeName: EventEmitter<string> = new EventEmitter();
     @ViewChild('contentTypeNameInput') contentTypeNameInput: ElementRef;
-    @ViewChild('contentTypeInlineEdit') contentTypeInlineEdit: Inplace;
+    @ViewChild('dotEditInline') dotEditInline: DotInlineEditComponent;
 
     permissionURL: string;
     pushHistoryURL: string;
@@ -72,7 +72,6 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
      *
      * @memberof ContentTypesLayoutComponent
      */
-
     fireAddRowEvent(): void {
         this.dotEventsService.notify('add-row');
     }
@@ -86,9 +85,14 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
         const contentTypeName = this.contentTypeNameInput.nativeElement.value.trim();
         this.changeContentTypeName.emit(contentTypeName);
         this.contentType.name = contentTypeName;
-        this.contentTypeInlineEdit.deactivate();
+        this.dotEditInline.hideContent();
     }
 
+    /**
+     * Sets the size of the H4 display to set it in the content textbox to eliminate UI jumps
+     *
+     * @memberof ContentTypesLayoutComponent
+     */
     editInlineActivate(event): void {
         this.contentTypeNameInputSize = event.target.offsetWidth;
     }

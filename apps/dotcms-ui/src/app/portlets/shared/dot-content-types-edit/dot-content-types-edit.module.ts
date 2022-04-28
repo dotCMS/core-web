@@ -69,10 +69,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TabViewModule } from 'primeng/tabview';
-import { InplaceModule } from 'primeng/inplace';
 import { DotRelationshipTreeModule } from '@components/dot-relationship-tree/dot-relationship-tree.module';
 import { DotPortletBoxModule } from '@components/dot-portlet-base/components/dot-portlet-box/dot-portlet-box.module';
 import { DotMdIconSelectorModule } from '@dotcms/app/view/components/_common/dot-md-icon-selector/dot-md-icon-selector.module';
+import { DotInlineEditModule } from '@components/_common/dot-inline-edit/dot-inline-edit.module';
 
 @NgModule({
     declarations: [
@@ -130,7 +130,7 @@ import { DotMdIconSelectorModule } from '@dotcms/app/view/components/_common/dot
         DropdownModule,
         FormsModule,
         IFrameModule,
-        InplaceModule,
+        DotInlineEditModule,
         InputTextModule,
         MultiSelectModule,
         OverlayPanelModule,
