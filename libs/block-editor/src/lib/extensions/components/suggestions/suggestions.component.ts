@@ -51,10 +51,12 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
 
     @Input() items: DotMenuItem[] = [];
     @Input() title = 'Select a block';
+    @Input() noResultsMessage = 'No Results';
     @Input() isOpen = false;
     @Output() clearFilter: EventEmitter<string> = new EventEmitter<string>();
 
     initialItems: DotMenuItem[];
+    isFilterActive = false;
     private itemsLoaded: ItemsType;
     private mouseMove = true;
     private dotLang: Languages;
@@ -227,7 +229,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                 //TODO: need to define pagination approach.
                 break;
         }
-
+        this.isFilterActive = !!filter.length;
         this.setFirstItemActive();
     }
 

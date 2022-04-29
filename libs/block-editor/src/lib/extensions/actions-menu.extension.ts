@@ -20,6 +20,7 @@ import { ActionButtonComponent } from './components/action-button/action-button.
 import { PluginKey } from 'prosemirror-state';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { SuggestionPopperModifiers } from '../utils/suggestion.utils';
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {
@@ -58,12 +59,16 @@ function getTippyInstance({
     return tippy(element, {
         appendTo: document.body,
         content: content,
-        placement: 'auto-start',
+        placement: 'bottom',
+        popperOptions: {
+            modifiers: SuggestionPopperModifiers
+        },
         getReferenceClientRect: rect,
         showOnCreate: true,
         interactive: true,
+        offset: [120, 10],
         trigger: 'manual',
-        offset: [30, 0],
+        maxWidth: 'none',
         onHide
     });
 }
