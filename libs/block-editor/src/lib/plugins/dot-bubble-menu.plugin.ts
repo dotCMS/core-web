@@ -1,27 +1,29 @@
 import { EditorView } from 'prosemirror-view';
 import { isNodeSelection, posToDOMRect } from '@tiptap/core';
-import { PluginKey, Plugin, EditorState } from 'prosemirror-state';
+import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { BubbleMenuView } from '@tiptap/extension-bubble-menu';
 import tippy, { Instance } from 'tippy.js';
 
 // Utils
-import { getNodePosition, suggestionOptions } from '@dotcms/block-editor';
+// Model
+import {
+    BubbleMenuComponentProps,
+    BubbleMenuItem,
+    DotBubbleMenuPluginProps,
+    DotBubbleMenuViewProps,
+    getNodePosition,
+    NodeTypes,
+    suggestionOptions
+} from '@dotcms/block-editor';
 import { ComponentRef } from '@angular/core';
 import { SuggestionsComponent } from '../extensions/components/suggestions/suggestions.component';
 import {
-    bubbleMenuItems,
     bubbleMenuImageItems,
+    bubbleMenuItems,
     isListNode,
     popperModifiers
 } from '../utils/bubble-menu.utils';
-
-// Model
-import {
-    BubbleMenuItem,
-    BubbleMenuComponentProps,
-    DotBubbleMenuPluginProps,
-    DotBubbleMenuViewProps
-} from '@dotcms/block-editor';
+import { findParentNode, getCountChildNodes, getNodeType } from '../utils/prosemirror.utils';
 
 export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
     const component = options.component.instance;
@@ -70,6 +72,9 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
     public tippyChangeTo: Instance | undefined;
 
+    private selection$FromPos;
+    private selectionNode;
+
     /* @Overrrider */
     constructor(props: DotBubbleMenuViewProps) {
         // Inherit the parent class
@@ -100,6 +105,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     update(view: EditorView, oldState?: EditorState) {
         const { state, composing } = view;
         const { doc, selection } = state;
+
         const isSame = oldState && oldState.doc.eq(doc) && oldState.selection.eq(selection);
 
         if (composing || isSame) {
@@ -111,6 +117,9 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
         // support for CellSelections
         const { ranges } = selection;
+
+        this.selection$FromPos = ranges[0].$from;
+
         const from = Math.min(...ranges.map((range) => range.$from.pos));
         const to = Math.max(...ranges.map((range) => range.$to.pos));
 
@@ -202,8 +211,9 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
     setMenuItems(doc, from) {
         const node = doc.nodeAt(from);
-        const isDotImage = node?.type.name == 'dotImage';
+        const isDotImage = getNodeType(node) === NodeTypes.DOT_IMAGE;
 
+        this.selectionNode = node;
         this.component.instance.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
     }
 
@@ -250,6 +260,9 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 break;
             case 'link':
                 this.editor.commands.toogleLinkForm();
+                break;
+            case 'deleteNode':
+                this.deleteSelectedNode();
                 break;
             case 'clearAll':
                 this.editor.commands.unsetAllMarks();
@@ -363,5 +376,62 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         if (this.tippyChangeTo?.state.isVisible) {
             this.tippyChangeTo?.hide();
         }
+    }
+
+    private deleteSelectedNode() {
+        const selectedNodeSize = this.selectionNode.nodeSize;
+        const selectionParentNode = findParentNode(this.selection$FromPos);
+        let from,
+            to,
+            findParentListItemNodeClosestToPos,
+            offsetSize = 1;
+
+        switch (getNodeType(selectionParentNode)) {
+            case NodeTypes.ORDERED_LIST:
+            case NodeTypes.BULLET_LIST:
+                findParentListItemNodeClosestToPos = findParentNode(
+                    this.selection$FromPos,
+                    NodeTypes.LIST_ITEM
+                );
+
+                if (getCountChildNodes(selectionParentNode) > 1) {
+                    offsetSize = Math.round(
+                        (findParentListItemNodeClosestToPos.nodeSize - selectedNodeSize) / 2
+                    );
+                    from =
+                        this.selection$FromPos.parentOffset === 0
+                            ? this.selection$FromPos.pos - offsetSize - 1
+                            : this.selection$FromPos.pos -
+                              (offsetSize + this.selection$FromPos.parentOffset);
+
+                    to = from + findParentListItemNodeClosestToPos.nodeSize;
+                } else {
+                    // need delete the parent too
+                    offsetSize = Math.round((selectionParentNode.nodeSize - selectedNodeSize) / 2);
+                    from =
+                        this.selection$FromPos.pos -
+                        (offsetSize + this.selection$FromPos.parentOffset);
+                    to = from + (selectedNodeSize + offsetSize);
+                }
+                break;
+            default:
+                if (getCountChildNodes(selectionParentNode) > 1) {
+                    // delete line by line
+                    from =
+                        this.selection$FromPos.pos -
+                        (offsetSize + this.selection$FromPos.parentOffset);
+                    to = from + (selectedNodeSize + offsetSize);
+                } else {
+                    // 1 child, need delete the parent too
+                    offsetSize = (selectionParentNode.nodeSize - selectedNodeSize) / 2;
+                    from =
+                        this.selection$FromPos.pos -
+                        (offsetSize + this.selection$FromPos.parentOffset);
+                    to = from + (selectedNodeSize + offsetSize);
+                }
+                break;
+        }
+
+        this.editor.commands.deleteRange({ from, to });
     }
 }
