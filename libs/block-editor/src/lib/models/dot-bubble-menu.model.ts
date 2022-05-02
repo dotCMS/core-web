@@ -5,6 +5,22 @@ import { BubbleMenuPluginProps, BubbleMenuViewProps } from '@tiptap/extension-bu
 import { ComponentRef, EventEmitter } from '@angular/core';
 import { SuggestionsComponent } from '../extensions/components/suggestions/suggestions.component';
 
+export enum NodeTypes {
+    DOT_IMAGE = 'dotImage',
+    LIST_ITEM = 'listItem',
+    BULLET_LIST = 'bulletList',
+    ORDERED_LIST = 'orderedList',
+    BLOCKQUOTE = 'blockquote',
+    CODE_BLOCK = 'codeBlock',
+    DOC = 'doc',
+    DOT_CONTENT = 'dotContent',
+    PARAGRAPH = 'paragraph',
+    HARD_BREAK = 'hardBreak',
+    HEADING = 'heading',
+    HORIZONTAL_RULE = 'horizontalRule',
+    TEXT = 'text'
+}
+
 export interface ShouldShowProps {
     editor: Editor;
     view: EditorView;
