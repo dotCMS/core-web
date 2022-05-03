@@ -26,19 +26,3 @@ export const findParentNode = (
 
     return parent;
 };
-
-/**
- * Get the number of childs of a node
- * @param node Prosemirror Node
- */
-export const getCountChildNodes = (node) => {
-    return node ? node.content.content.length : 0;
-};
-
-/**
- * Get the type of the node sent
- * @param node Prosemirror Node
- */
-export const getNodeType = (node) => {
-    return node ? node?.type.name : null;
-};

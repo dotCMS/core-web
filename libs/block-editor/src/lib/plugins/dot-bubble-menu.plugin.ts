@@ -23,7 +23,7 @@ import {
     isListNode,
     popperModifiers
 } from '../utils/bubble-menu.utils';
-import { findParentNode, getNodeType } from '../utils/prosemirror.utils';
+import { findParentNode } from '../utils/prosemirror.utils';
 
 export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
     const component = options.component.instance;
@@ -74,7 +74,6 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     private shouldShowProp = false;
 
     private selection$FromPos;
-    private selectionNode;
 
     /* @Overrrider */
     constructor(props: DotBubbleMenuViewProps) {
@@ -220,9 +219,8 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
     setMenuItems(doc, from) {
         const node = doc.nodeAt(from);
-        const isDotImage = getNodeType(node) === NodeTypes.DOT_IMAGE;
+        const isDotImage = node?.type.name == 'dotImage';
 
-        this.selectionNode = node;
         this.component.instance.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
     }
 
@@ -390,29 +388,26 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
 
     private deleteSelectedNode() {
         const selectionParentNode = findParentNode(this.selection$FromPos);
+        const nodeSelectionNodeType: NodeTypes = selectionParentNode.type.name;
 
-        switch (getNodeType(selectionParentNode)) {
+        switch (nodeSelectionNodeType) {
             case NodeTypes.ORDERED_LIST:
             case NodeTypes.BULLET_LIST:
-                const closestOrderedNode = findParentNode(this.selection$FromPos, [
+                const closestOrderedOrBulletNode = findParentNode(this.selection$FromPos, [
                     NodeTypes.ORDERED_LIST,
                     NodeTypes.BULLET_LIST
                 ]);
-                const { childCount } = closestOrderedNode;
-
+                const { childCount } = closestOrderedOrBulletNode;
                 if (childCount > 1) {
+                    //delete only the list item selected
                     this.editor.commands.deleteNode(NodeTypes.LIST_ITEM);
                 } else {
-                    this.editor.commands.deleteNode(NodeTypes.ORDERED_LIST);
-                    this.editor.commands.deleteNode(NodeTypes.BULLET_LIST);
+                    // delete the order/bullet node
+                    this.editor.commands.deleteNode(closestOrderedOrBulletNode.type);
                 }
-
-                break;
-            case NodeTypes.BLOCKQUOTE:
-                this.editor.commands.deleteNode(NodeTypes.PARAGRAPH);
                 break;
             default:
-                this.editor.commands.deleteNode(getNodeType(selectionParentNode));
+                this.editor.commands.deleteNode(selectionParentNode.type);
                 break;
         }
     }
