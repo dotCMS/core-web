@@ -4,16 +4,19 @@ import { NodeTypes } from '@dotcms/block-editor';
 /**
  * Get the parent node of the ResolvedPos sent
  * @param selectionStart ResolvedPos
- * @param nodeToFind NodeTypes
+ * @param NodesTypesToFind NodeTypes
  */
-export const findParentNode = (selectionStart: ResolvedPos, nodeToFind: NodeTypes = null) => {
+export const findParentNode = (
+    selectionStart: ResolvedPos,
+    NodesTypesToFind?: Array<NodeTypes>
+) => {
     let depth = selectionStart.depth;
     let parent;
     do {
         parent = selectionStart.node(depth);
         if (parent) {
-            if (nodeToFind != null) {
-                if (parent.type.name === nodeToFind) {
+            if (Array.isArray(NodesTypesToFind)) {
+                if (NodesTypesToFind.includes(parent.type.name)) {
                     break;
                 }
             }
