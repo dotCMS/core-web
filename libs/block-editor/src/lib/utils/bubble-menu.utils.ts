@@ -119,7 +119,7 @@ export const bubbleMenuItems: Array<BubbleMenuItem> = [
     }
 ];
 
-export const bubbleMenuImageItems = [
+export const bubbleMenuImageItems: Array<BubbleMenuItem> = [
     {
         icon: 'format_align_left',
         markAction: 'left',
@@ -139,7 +139,15 @@ export const bubbleMenuImageItems = [
     {
         icon: 'link',
         markAction: 'link',
-        active: false
+        active: false,
+        divider: true
+    },
+
+    {
+        icon: 'delete',
+        markAction: 'deleteNode',
+        active: false,
+        divider: false
     }
 ];
 

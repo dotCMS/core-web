@@ -21,6 +21,8 @@ export enum NodeTypes {
     TEXT = 'text'
 }
 
+export const CustomNodeTypes: Array<NodeTypes> = [NodeTypes.DOT_IMAGE, NodeTypes.DOT_CONTENT];
+
 export interface ShouldShowProps {
     editor: Editor;
     view: EditorView;

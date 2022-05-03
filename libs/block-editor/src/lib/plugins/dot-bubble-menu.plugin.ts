@@ -9,6 +9,7 @@ import tippy, { Instance } from 'tippy.js';
 import {
     BubbleMenuComponentProps,
     BubbleMenuItem,
+    CustomNodeTypes,
     DotBubbleMenuPluginProps,
     DotBubbleMenuViewProps,
     getNodePosition,
@@ -74,6 +75,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     private shouldShowProp = false;
 
     private selection$FromPos;
+    private selectionNode;
 
     /* @Overrrider */
     constructor(props: DotBubbleMenuViewProps) {
@@ -221,6 +223,8 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         const node = doc.nodeAt(from);
         const isDotImage = node?.type.name == 'dotImage';
 
+        this.selectionNode = node;
+
         this.component.instance.items = isDotImage ? bubbleMenuImageItems : bubbleMenuItems;
     }
 
@@ -269,7 +273,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 this.editor.commands.toogleLinkForm();
                 break;
             case 'deleteNode':
-                this.deleteSelectedNode();
+                this.deleteNode();
 
                 break;
             case 'clearAll':
@@ -386,7 +390,21 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
         }
     }
 
-    private deleteSelectedNode() {
+    private deleteNode() {
+        if (CustomNodeTypes.includes(this.selectionNode.type.name)) {
+            this.deleteSelectedCustomNodeType();
+        } else {
+            this.deleteSelectionNode();
+        }
+    }
+
+    private deleteSelectedCustomNodeType() {
+        const from = this.selection$FromPos.pos;
+        const to = from + 1;
+        this.editor.commands.deleteRange({ from, to });
+    }
+
+    private deleteSelectionNode() {
         const selectionParentNode = findParentNode(this.selection$FromPos);
         const nodeSelectionNodeType: NodeTypes = selectionParentNode.type.name;
 
