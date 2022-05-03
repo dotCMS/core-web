@@ -23,7 +23,7 @@ import {
     isListNode,
     popperModifiers
 } from '../utils/bubble-menu.utils';
-import { findParentNode, getCountChildNodes, getNodeType } from '../utils/prosemirror.utils';
+import { findParentNode, getNodeType } from '../utils/prosemirror.utils';
 
 export const DotBubbleMenuPlugin = (options: DotBubbleMenuPluginProps) => {
     const component = options.component.instance;
@@ -272,6 +272,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 break;
             case 'deleteNode':
                 this.deleteSelectedNode();
+
                 break;
             case 'clearAll':
                 this.editor.commands.unsetAllMarks();
@@ -388,59 +389,31 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     }
 
     private deleteSelectedNode() {
-        const selectedNodeSize = this.selectionNode.nodeSize;
         const selectionParentNode = findParentNode(this.selection$FromPos);
-        let from,
-            to,
-            findParentListItemNodeClosestToPos,
-            offsetSize = 1;
 
         switch (getNodeType(selectionParentNode)) {
             case NodeTypes.ORDERED_LIST:
             case NodeTypes.BULLET_LIST:
-                findParentListItemNodeClosestToPos = findParentNode(
-                    this.selection$FromPos,
-                    NodeTypes.LIST_ITEM
-                );
+                const closestOrderedNode = findParentNode(this.selection$FromPos, [
+                    NodeTypes.ORDERED_LIST,
+                    NodeTypes.BULLET_LIST
+                ]);
+                const { childCount } = closestOrderedNode;
 
-                if (getCountChildNodes(selectionParentNode) > 1) {
-                    offsetSize = Math.round(
-                        (findParentListItemNodeClosestToPos.nodeSize - selectedNodeSize) / 2
-                    );
-                    from =
-                        this.selection$FromPos.parentOffset === 0
-                            ? this.selection$FromPos.pos - offsetSize - 1
-                            : this.selection$FromPos.pos -
-                              (offsetSize + this.selection$FromPos.parentOffset);
-
-                    to = from + findParentListItemNodeClosestToPos.nodeSize;
+                if (childCount > 1) {
+                    this.editor.commands.deleteNode(NodeTypes.LIST_ITEM);
                 } else {
-                    // need delete the parent too
-                    offsetSize = Math.round((selectionParentNode.nodeSize - selectedNodeSize) / 2);
-                    from =
-                        this.selection$FromPos.pos -
-                        (offsetSize + this.selection$FromPos.parentOffset);
-                    to = from + (selectedNodeSize + offsetSize);
+                    this.editor.commands.deleteNode(NodeTypes.ORDERED_LIST);
+                    this.editor.commands.deleteNode(NodeTypes.BULLET_LIST);
                 }
+
+                break;
+            case NodeTypes.BLOCKQUOTE:
+                this.editor.commands.deleteNode(NodeTypes.PARAGRAPH);
                 break;
             default:
-                if (getCountChildNodes(selectionParentNode) > 1) {
-                    // delete line by line
-                    from =
-                        this.selection$FromPos.pos -
-                        (offsetSize + this.selection$FromPos.parentOffset);
-                    to = from + (selectedNodeSize + offsetSize);
-                } else {
-                    // 1 child, need delete the parent too
-                    offsetSize = (selectionParentNode.nodeSize - selectedNodeSize) / 2;
-                    from =
-                        this.selection$FromPos.pos -
-                        (offsetSize + this.selection$FromPos.parentOffset);
-                    to = from + (selectedNodeSize + offsetSize);
-                }
+                this.editor.commands.deleteNode(getNodeType(selectionParentNode));
                 break;
         }
-
-        this.editor.commands.deleteRange({ from, to });
     }
 }
