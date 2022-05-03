@@ -15,10 +15,8 @@ export const findParentNode = (
     do {
         parent = selectionStart.node(depth);
         if (parent) {
-            if (Array.isArray(NodesTypesToFind)) {
-                if (NodesTypesToFind.includes(parent.type.name)) {
-                    break;
-                }
+            if (Array.isArray(NodesTypesToFind) && NodesTypesToFind.includes(parent.type.name)) {
+                break;
             }
             depth--;
         }
