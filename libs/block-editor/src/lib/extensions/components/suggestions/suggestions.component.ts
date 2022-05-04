@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
-import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
 
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
@@ -93,7 +93,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                     icon: 'receipt',
                     command: () => {
                         this.clearFilter.emit('contentlet');
-                        this.initContentletSelection();
+                        this.loadContentTypes();
                     }
                 },
                 ...this.items
@@ -209,7 +209,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     handleBackButton(event: MouseEvent): void {
         event.preventDefault();
         event.stopPropagation();
-        this.initContentletSelection();
+        this.loadContentTypes();
     }
 
     /**
@@ -226,16 +226,16 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                 );
                 break;
             case ItemsType.CONTENTTYPE:
-                //TODO: need to define pagination approach.
+                this.loadContentTypes(filter);
                 break;
         }
         this.isFilterActive = !!filter.length;
         this.setFirstItemActive();
     }
 
-    private initContentletSelection() {
+    private loadContentTypes(filter = '') {
         this.suggestionsService
-            .getContentTypes()
+            .getContentTypes(filter)
             .pipe(
                 map((items) => {
                     return items.map((item) => {
