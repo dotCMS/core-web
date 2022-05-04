@@ -85,12 +85,12 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
             function bindEventsToDragHandler(editorView: EditorView) {
                 dragHandler.setAttribute('draggable', 'true');
                 dragHandler.addEventListener('dragstart', (e) => dragStart(e, editorView));
-                dragHandler.style.display = 'none';
+                dragHandler.classList.remove('visible');
                 editorView.dom.parentElement.appendChild(dragHandler);
             }
 
             function hanlderScroll() {
-                dragHandler.style.display = 'none';
+                dragHandler.classList.remove('visible');
             }
 
             return [
@@ -118,7 +118,7 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
                                     if (node) {
                                         node.classList.remove('ProseMirror-hideselection');
                                     }
-                                    dragHandler.style.display = 'none';
+                                    dragHandler.classList.remove('visible');
                                 });
                                 return false;
                             },
@@ -141,13 +141,13 @@ export const DragHandler = (viewContainerRef: ViewContainerRef) => {
 
                                         dragHandler.style.left = left - HANDLER_LEFT_OFFSET + 'px';
                                         dragHandler.style.top = top < 0 ? 0 : top + 'px';
-                                        dragHandler.style.display = 'block';
+                                        dragHandler.classList.add('visible');
                                     } else {
-                                        dragHandler.style.display = 'none';
+                                        dragHandler.classList.remove('visible');
                                     }
                                 } else {
                                     nodeToBeDragged = null;
-                                    dragHandler.style.display = 'none';
+                                    dragHandler.classList.remove('visible');
                                 }
                                 return false;
                             }
