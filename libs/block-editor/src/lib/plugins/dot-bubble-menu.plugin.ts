@@ -401,7 +401,7 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     private deleteSelectedCustomNodeType() {
         const from = this.selection$FromPos.pos;
         const to = from + 1;
-        this.editor.commands.deleteRange({ from, to });
+        this.editor.chain().deleteRange({ from, to }).blur().run();
     }
 
     private deleteSelectionNode() {
@@ -418,14 +418,14 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
                 const { childCount } = closestOrderedOrBulletNode;
                 if (childCount > 1) {
                     //delete only the list item selected
-                    this.editor.commands.deleteNode(NodeTypes.LIST_ITEM);
+                    this.editor.chain().deleteNode(NodeTypes.LIST_ITEM).blur().run();
                 } else {
                     // delete the order/bullet node
-                    this.editor.commands.deleteNode(closestOrderedOrBulletNode.type);
+                    this.editor.chain().deleteNode(closestOrderedOrBulletNode.type).blur().run();
                 }
                 break;
             default:
-                this.editor.commands.deleteNode(selectionParentNode.type);
+                this.editor.chain().deleteNode(selectionParentNode.type).blur().run();
                 break;
         }
     }
