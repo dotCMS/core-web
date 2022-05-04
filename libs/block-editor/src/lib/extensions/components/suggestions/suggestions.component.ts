@@ -159,7 +159,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
      * @memberof SuggestionsComponent
      */
     resetKeyManager() {
-        this.list.resetKeyManager();
+        this.list?.resetKeyManager();
     }
 
     /**
