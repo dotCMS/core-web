@@ -49,7 +49,7 @@ const messageServiceMock = new MockDotMessageService({
     'dot.common.message.saved': 'Saved'
 });
 
-describe('DotEditLayoutComponent', () => {
+fdescribe('DotEditLayoutComponent', () => {
     let component: DotEditLayoutComponent;
     let layoutDesignerDe: DebugElement;
     let layoutDesigner: MockDotEditLayoutDesignerComponent;
@@ -202,6 +202,25 @@ describe('DotEditLayoutComponent', () => {
                 '/banner/': processedContainers[1].container
             });
             expect(component.pageState).toEqual(new DotPageRender(mockDotRenderedPage()));
+        }));
+
+        fit('should not save the layout when observable is destroy', fakeAsync(() => {
+            const res: DotPageRender = new DotPageRender(mockDotRenderedPage());
+            spyOn(dotPageLayoutService, 'save').and.returnValue(of(res));
+
+            // Destroy should be true.
+            component.destroy$.subscribe((value) => expect(value).toBeTruthy());
+
+            // Trigger the observable
+            layoutDesignerDe.triggerEventHandler('updateTemplate', fakeLayout);
+
+            // Destroy the observable
+            component.destroy$.next(true);
+            component.destroy$.complete();
+            tick(10000);
+
+            // expect(dotPageLayoutService.save).toHaveBeenCalled();
+            expect(dotPageLayoutService.save).not.toHaveBeenCalled();
         }));
 
         it('should handle error when save fail', (done) => {

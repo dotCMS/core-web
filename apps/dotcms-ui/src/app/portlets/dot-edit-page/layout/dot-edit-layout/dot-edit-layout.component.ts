@@ -15,6 +15,7 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -92,7 +93,10 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
             .subscribe(
                 (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
                 (err: ResponseView) => this.handleErrorSaveTemplate(err),
-                () => this.canRouteBeDesativated(true)
+                () => {
+                    console.log('LLAMADO');
+                    this.canRouteBeDesativated(true);
+                }
             );
     }
 
@@ -122,25 +126,29 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
         // - https://blog.bitsrc.io/3-ways-to-debounce-http-requests-in-angular-c407eb165ada
         this.updateTemplate
             .pipe(
-                takeUntil(this.destroy$),
+                // debounceTime should be before takeUntil to avoid calling the observable after unsubscribe.
+                // More information: https://stackoverflow.com/questions/58974320/how-is-it-possible-to-stop-a-debounced-rxjs-observable
                 debounceTime(10000),
+                takeUntil(this.destroy$),
                 switchMap((layout: DotLayout) => {
                     this.dotGlobalMessageService.loading(
                         this.dotMessageService.get('dot.common.message.saving')
                     );
-
-                    return this.dotPageLayoutService.save(this.pageState.page.identifier, {
-                        ...layout,
-                        title: null
-                    });
+                    console.log('LL');
+                    return this.dotPageLayoutService
+                        .save(this.pageState.page.identifier, {
+                            ...layout,
+                            title: null
+                        })
+                        .pipe(finalize(() => this.canRouteBeDesativated(true)));
+                }),
+                tap({
+                    next: (updatedPage: DotPageRender) =>
+                        this.handleSuccessSaveTemplate(updatedPage),
+                    error: (err: ResponseView) => this.handleErrorSaveTemplate(err)
                 })
             )
-            .subscribe(
-                (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
-                (err: ResponseView) => this.handleErrorSaveTemplate(err),
-                // On Complete
-                () => this.canRouteBeDesativated(true)
-            );
+            .subscribe();
     }
 
     /**
