@@ -93,10 +93,7 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
             .subscribe(
                 (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
                 (err: ResponseView) => this.handleErrorSaveTemplate(err),
-                () => {
-                    console.log('LLAMADO');
-                    this.canRouteBeDesativated(true);
-                }
+                () => this.canRouteBeDesativated(true)
             );
     }
 
@@ -134,7 +131,6 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
                     this.dotGlobalMessageService.loading(
                         this.dotMessageService.get('dot.common.message.saving')
                     );
-                    console.log('LL');
                     return this.dotPageLayoutService
                         .save(this.pageState.page.identifier, {
                             ...layout,

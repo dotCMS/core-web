@@ -49,7 +49,7 @@ const messageServiceMock = new MockDotMessageService({
     'dot.common.message.saved': 'Saved'
 });
 
-fdescribe('DotEditLayoutComponent', () => {
+describe('DotEditLayoutComponent', () => {
     let component: DotEditLayoutComponent;
     let layoutDesignerDe: DebugElement;
     let layoutDesigner: MockDotEditLayoutDesignerComponent;
@@ -204,7 +204,7 @@ fdescribe('DotEditLayoutComponent', () => {
             expect(component.pageState).toEqual(new DotPageRender(mockDotRenderedPage()));
         }));
 
-        fit('should not save the layout when observable is destroy', fakeAsync(() => {
+        it('should not save the layout when observable is destroy', fakeAsync(() => {
             const res: DotPageRender = new DotPageRender(mockDotRenderedPage());
             spyOn(dotPageLayoutService, 'save').and.returnValue(of(res));
 
