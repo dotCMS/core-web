@@ -401,6 +401,8 @@ export class DotBubbleMenuPluginView extends BubbleMenuView {
     private deleteSelectedCustomNodeType() {
         const from = this.selection$FromPos.pos;
         const to = from + 1;
+
+        // TODO: Try to make the `deleteNode` command works with custom nodes.
         this.editor.chain().deleteRange({ from, to }).blur().run();
     }
 
