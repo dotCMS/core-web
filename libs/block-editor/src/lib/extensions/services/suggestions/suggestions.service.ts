@@ -5,23 +5,20 @@ import { pluck } from 'rxjs/operators';
 
 import { DotCMSContentlet, DotCMSContentType } from '@dotcms/dotcms-models';
 // eslint-disable-next-line max-len
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class SuggestionsService {
     constructor(private http: HttpClient) {}
 
-    get defaultHeaders() {
-        const headers = new HttpHeaders();
-        headers.set('Accept', '*/*').set('Content-Type', 'application/json');
-        return headers;
-    }
-
-    getContentTypes(filter = ''): Observable<DotCMSContentType[]> {
+    getContentTypes(filter = '', allowedTypes = ''): Observable<DotCMSContentType[]> {
         return this.http
-            .get(`/api/v1/contenttype?filter=${filter}&orderby=name&direction=ASC&per_page=40`, {
-                headers: this.defaultHeaders
-            })
+            .post(
+                `/api/v1/contenttype/allowedtypes?filter=${filter}&orderby=name&direction=ASC&per_page=40`,
+                {
+                    types: allowedTypes
+                }
+            )
             .pipe(pluck('entity'));
     }
 

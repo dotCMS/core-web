@@ -53,6 +53,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @Input() title = 'Select a block';
     @Input() noResultsMessage = 'No Results';
     @Input() isOpen = false;
+    @Input() allowedContentTypes = '';
     @Output() clearFilter: EventEmitter<string> = new EventEmitter<string>();
 
     initialItems: DotMenuItem[];
@@ -235,7 +236,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
 
     private loadContentTypes(filter = '') {
         this.suggestionsService
-            .getContentTypes(filter)
+            .getContentTypes(filter, this.allowedContentTypes)
             .pipe(
                 map((items) => {
                     return items.map((item) => {

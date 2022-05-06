@@ -92,7 +92,8 @@ export class EditorDirective implements OnInit, ControlValueAccessor, OnDestroy 
         // update the options for the editor
         this.editor.setOptions({ element: this.el.nativeElement });
         this.editor.storage.dotData = {
-            contentTypesFilter: 'form,blog'
+            allowedContentTypes:
+                this.el.nativeElement.parentElement.getAttribute('allowedcontenttypes')
         };
 
         // update content to the editor

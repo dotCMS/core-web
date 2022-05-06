@@ -41,9 +41,7 @@ export type FloatingMenuOptions = Omit<FloatingMenuPluginProps, 'editor' | 'elem
 
 function getSuggestionComponent(viewContainerRef: ViewContainerRef) {
     const component = viewContainerRef.createComponent(SuggestionsComponent);
-    console.log('antes');
     component.changeDetectorRef.detectChanges();
-    console.log('despues');
     return component;
 }
 
@@ -126,8 +124,8 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
      */
     function onStart({ editor, range, clientRect }: SuggestionProps | FloatingActionsProps): void {
         suggestionsComponent = getSuggestionComponent(viewContainerRef);
-        suggestionsComponent.instance.contentTypesFilter =
-            editor.storage.dotData.contentTypesFilter;
+        suggestionsComponent.instance.allowedContentTypes =
+            editor.storage.dotData.allowedContentTypes;
         suggestionsComponent.instance.onSelection = (item) => {
             const suggestionQuery = suggestionKey.getState(editor.view.state).query?.length || 0;
             range.to = range.to + suggestionQuery;
