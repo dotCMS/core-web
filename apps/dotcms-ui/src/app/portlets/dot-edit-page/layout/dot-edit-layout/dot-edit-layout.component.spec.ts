@@ -219,7 +219,6 @@ describe('DotEditLayoutComponent', () => {
             component.destroy$.complete();
             tick(10000);
 
-            // expect(dotPageLayoutService.save).toHaveBeenCalled();
             expect(dotPageLayoutService.save).not.toHaveBeenCalled();
         }));
 
