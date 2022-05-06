@@ -15,7 +15,7 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { DotEditLayoutService } from '@services/dot-edit-layout/dot-edit-layout.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -137,14 +137,12 @@ export class DotEditLayoutComponent implements OnInit, OnDestroy {
                             title: null
                         })
                         .pipe(finalize(() => this.canRouteBeDesativated(true)));
-                }),
-                tap({
-                    next: (updatedPage: DotPageRender) =>
-                        this.handleSuccessSaveTemplate(updatedPage),
-                    error: (err: ResponseView) => this.handleErrorSaveTemplate(err)
                 })
             )
-            .subscribe();
+            .subscribe(
+                (updatedPage: DotPageRender) => this.handleSuccessSaveTemplate(updatedPage),
+                (err: ResponseView) => this.handleErrorSaveTemplate(err)
+            );
     }
 
     /**
