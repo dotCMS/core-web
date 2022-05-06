@@ -132,7 +132,7 @@ export const ActionsMenu = (viewContainerRef: ViewContainerRef) => {
         suggestionsComponent.instance.clearFilter.pipe(takeUntil(destroy$)).subscribe((type) => {
             const queryRange = {
                 to: range.to + suggestionKey.getState(editor.view.state).query.length,
-                from: type === 'contentlet' ? range.from + 1 : range.from
+                from: type === 'content' ? range.from + 1 : range.from
             };
             editor.chain().deleteRange(queryRange).run();
         });
