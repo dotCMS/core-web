@@ -289,7 +289,6 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                         }
                     };
                 });
-                debugger;
                 if (this.items.length) {
                     this.title = 'Select a contentlet';
                     this.cd.detectChanges();
