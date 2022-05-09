@@ -33,7 +33,7 @@ export interface DotMenuItem extends Omit<MenuItem, 'icon'> {
     data?: Record<string, unknown>;
 }
 
-enum ItemsType {
+export enum ItemsType {
     BLOCK = 'block',
     CONTENTTYPE = 'contentType',
     CONTENT = 'content'
@@ -79,7 +79,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
             this.items = suggestionOptions;
             this.items.forEach((item) => {
                 item.command = () => {
-                    this.clearFilter.emit('');
+                    this.clearFilter.emit(ItemsType.BLOCK);
                     item.id.includes('heading')
                         ? this.onSelection({
                               type: { name: 'heading', ...item.attributes }
@@ -93,7 +93,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                     label: 'Contentlets',
                     icon: 'receipt',
                     command: () => {
-                        this.clearFilter.emit('content');
+                        this.clearFilter.emit(ItemsType.CONTENTTYPE);
                         this.loadContentTypes();
                     }
                 },
@@ -249,7 +249,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                                 this.selectedContentType = item;
                                 this.itemsLoaded = ItemsType.CONTENT;
                                 this.loadContentlets(item);
-                                this.clearFilter.emit('content');
+                                this.clearFilter.emit(ItemsType.CONTENT);
                             }
                         };
                     });
