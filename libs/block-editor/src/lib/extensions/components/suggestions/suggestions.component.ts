@@ -1,11 +1,11 @@
 import {
+    AfterViewInit,
     ChangeDetectorRef,
     Component,
+    HostListener,
     Input,
     OnInit,
-    ViewChild,
-    HostListener,
-    AfterViewInit
+    ViewChild
 } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
@@ -14,10 +14,10 @@ import { DotCMSContentlet } from '@dotcms/dotcms-models';
 import { map, take } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 
-import { Languages, DotLanguageService } from '../../services/dot-language/dot-language.service';
+import { DotLanguageService, Languages } from '../../services/dot-language/dot-language.service';
 import { SuggestionListComponent } from '../suggestion-list/suggestion-list.component';
 import { SuggestionsService } from '../../services/suggestions/suggestions.service';
-import { suggestionOptions } from '@dotcms/block-editor';
+import { DEFAULT_LANG_ID, suggestionOptions } from '@dotcms/block-editor';
 
 export interface SuggestionsCommandProps {
     payload?: DotCMSContentlet;
@@ -45,8 +45,11 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @Input() title = 'Select a block';
     @Input() isOpen = false;
 
+    isFilterActive = false;
+    currentLanguage = DEFAULT_LANG_ID;
+
     private mouseMove = true;
-    private dotLang: Languages;
+    private dotLangs: Languages;
 
     @HostListener('mousemove', ['$event'])
     onMousemove() {
@@ -88,7 +91,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
         this.dotLanguageService
             .getLanguages()
             .pipe(take(1))
-            .subscribe((dotLang) => (this.dotLang = dotLang));
+            .subscribe((dotLang) => (this.dotLangs = dotLang));
     }
 
     ngAfterViewInit() {
@@ -207,7 +210,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
                             icon: item.icon,
                             command: () => {
                                 this.suggestionsService
-                                    .getContentlets(item.variable)
+                                    .getContentlets(item.variable, this.currentLanguage)
                                     .pipe(take(1))
                                     .subscribe((contentlets) => {
                                         this.items = contentlets.map((contentlet) => {
@@ -255,7 +258,7 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     }
 
     private getContentletLanguage(languageId: number): string {
-        const { languageCode, countryCode } = this.dotLang[languageId];
+        const { languageCode, countryCode } = this.dotLangs[languageId];
 
         if (!languageCode || !countryCode) {
             return '';

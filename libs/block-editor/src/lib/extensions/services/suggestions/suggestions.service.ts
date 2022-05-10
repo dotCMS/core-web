@@ -25,10 +25,11 @@ export class SuggestionsService {
             .pipe(pluck('entity'));
     }
 
-    getContentlets(contentType = ''): Observable<DotCMSContentlet[]> {
+    // TODO: change the contentType param to use an Enum
+    getContentlets(contentType: string, lang: number): Observable<DotCMSContentlet[]> {
         return this.http
             .post('/api/content/_search', {
-                query: `+contentType:${contentType} +languageId:1 +deleted:false +working:true`,
+                query: `+contentType:${contentType} +languageId:${lang} +deleted:false +working:true`,
                 sort: 'modDate desc',
                 offset: 0
             })
