@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -33,7 +33,7 @@ function toTitleCase(str) {
 })
 export class DotBlockEditorComponent implements OnInit {
     editor: Editor;
-
+    @Input() allowedContentTypes = '';
     value = ''; // can be HTML or JSON, see https://www.tiptap.dev/api/editor#content
 
     constructor(private injector: Injector, public viewContainerRef: ViewContainerRef) {}
@@ -65,5 +65,10 @@ export class DotBlockEditorComponent implements OnInit {
                 })
             ]
         });
+        // Here we create the dotData name space
+        // to storage information in the editor.
+        this.editor.storage.dotData = {
+            allowedContentTypes: this.allowedContentTypes
+        };
     }
 }
