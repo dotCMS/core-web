@@ -1,0 +1,67 @@
+@use "libs/dot-primeng-theme-styles/src/scss/variables" as *;
+
+.form-container {
+    background: $white;
+    border-radius: $border-radius;
+    box-shadow: 0px 4px 10px rgba(10, 7, 37, 0.1);
+    padding: $spacing-1;
+    width: 350px;
+}
+
+form {
+    align-items: center;
+    display: flex;
+    // flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+
+    .input-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        gap: 10px;
+
+        .input-control {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            input {
+                background: #ffffff;
+                border-radius: $border-radius;
+                border: 1px solid #b3b1b8;
+                box-sizing: border-box;
+                padding: 0.5rem;
+                width: 100%;
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+}
+
+.mb-4 {
+    margin-bottom: 10px;
+}
+
+.btn {
+    align-items: center;
+    background: $white;
+    border-radius: $border-radius;
+    cursor: pointer;
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+    padding: 0.85rem $spacing-3;
+    width: 180px;
+}
+
+.btn-add {
+    width: 5.5rem;
+    background: #576be8;
+    border: 1px solid #576be8;
+    color: $white;
+}

@@ -21,6 +21,7 @@ import { PluginKey } from 'prosemirror-state';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SuggestionPopperModifiers } from '../utils/suggestion.utils';
+import { IMAGE_FORM_PLUGIN_KEY } from './image-form.extension';
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {
@@ -103,6 +104,15 @@ function execCommand({
         },
         horizontalLine: () => {
             editor.chain().deleteRange(range).setHorizontalRule().focus().run();
+        },
+        image: () => {
+            editor
+                .chain()
+                .command(({ tr }) => {
+                    tr.setMeta(IMAGE_FORM_PLUGIN_KEY, { show: true });
+                    return true;
+                })
+                .run();
         }
     };
 

@@ -42,6 +42,14 @@ export class DotImageService {
         data: File | File[],
         maxSize?: string
     ): Observable<DotCMSTempFile | DotCMSTempFile[]> {
-        return from(uploadBinaryFile(data, () => {}, maxSize));
+        return from(
+            uploadBinaryFile(
+                data,
+                () => {
+                    /**/
+                },
+                maxSize
+            )
+        );
     }
 }

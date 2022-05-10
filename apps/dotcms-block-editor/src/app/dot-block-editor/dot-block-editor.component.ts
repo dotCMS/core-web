@@ -10,8 +10,11 @@ import {
     DotBubbleMenuExtension,
     DragHandler,
     ImageBlock,
-    ImageUpload
+    ImageUpload,
+    ImageFormExtension
 } from '@dotcms/block-editor';
+
+import { Image } from '@tiptap/extension-image';
 
 // Marks Extensions
 import { Highlight } from '@tiptap/extension-highlight';
@@ -47,8 +50,10 @@ export class DotBlockEditorComponent implements OnInit {
                 ActionsMenu(this.viewContainerRef),
                 DragHandler(this.viewContainerRef),
                 ImageUpload(this.injector, this.viewContainerRef),
-                BubbleLinkFormExtension(this.injector, this.viewContainerRef),
+                BubbleLinkFormExtension(this.viewContainerRef),
                 DotBubbleMenuExtension(this.viewContainerRef),
+                ImageFormExtension(this.viewContainerRef),
+                Image,
                 // Marks Extensions
                 Underline,
                 TextAlign.configure({ types: ['heading', 'paragraph', 'listItem', 'dotImage'] }),

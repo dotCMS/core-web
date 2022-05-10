@@ -1,0 +1,44 @@
+<div class="form-container">
+    <form autoComplete="off" (submit)="onSubmit()">
+        <div>
+            <div class="input-group mb-4">
+                <div class="input-control">
+                    <label for="title">Title</label>
+                    <input
+                        [(ngModel)]="data.title"
+                        id="title"
+                        name="title"
+                        placeholder="Title (Optional)"
+                        type="text"
+                    />
+                </div>
+                <div class="input-control">
+                    <label for="alt">Alt</label>
+                    <input
+                        [(ngModel)]="data.alt"
+                        id="alt"
+                        name="alt"
+                        placeholder="Alt (Optional)"
+                        type="text"
+                    />
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-control w-100">
+                    <label for="url">Url</label>
+                    <input
+                        [(ngModel)]="data.src"
+                        id="url"
+                        name="url"
+                        placeholder="Type or Paste url"
+                        type="text"
+                        #input
+                    />
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-add">Add</button>
+        </div>
+    </form>
+</div>

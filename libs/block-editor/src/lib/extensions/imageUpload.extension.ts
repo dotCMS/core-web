@@ -23,6 +23,7 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                     //paste
                     files = (event as ClipboardEvent).clipboardData.files;
                 }
+                console.log(files);
                 if (files.length > 0) {
                     for (let i = 0; i < files.length; i++) {
                         if (!files[i].type.startsWith('image/')) {
@@ -53,6 +54,16 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                 });
 
                 view.dispatch(tr);
+            }
+
+            function externalImage(clipboardData: any) {
+                const html = clipboardData.getData('text/html') || '';
+                const parsed = new DOMParser().parseFromString(html, 'text/html');
+                const img = parsed.querySelector('img');
+                if (!img) {
+                    return false;
+                }
+                return true;
             }
 
             function uploadImages(view: EditorView, files: File[], position: number) {
@@ -111,7 +122,7 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                     props: {
                         handleDOMEvents: {
                             paste(view, event) {
-                                if (areImageFiles(event)) {
+                                if (areImageFiles(event) && !externalImage(event.clipboardData)) {
                                     if (event.clipboardData.files.length !== 1) {
                                         alert('Can paste just one image at a time');
                                         return false;

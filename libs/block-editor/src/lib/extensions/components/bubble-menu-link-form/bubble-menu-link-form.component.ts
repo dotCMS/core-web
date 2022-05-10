@@ -1,11 +1,4 @@
-import {
-    Component,
-    ViewChild,
-    ElementRef,
-    EventEmitter,
-    Output,
-    Input
-} from '@angular/core';
+import { Component, ViewChild, ElementRef, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
     selector: 'dotcms-bubble-menu-link-form',
@@ -13,9 +6,8 @@ import {
     styleUrls: ['./bubble-menu-link-form.component.scss']
 })
 export class BubbleMenuLinkFormComponent {
-
     @ViewChild('input') input: ElementRef;
-    
+
     @Output() hideForm: EventEmitter<boolean> = new EventEmitter(false);
     @Output() removeLink: EventEmitter<boolean> = new EventEmitter(false);
     @Output() setLink: EventEmitter<string> = new EventEmitter();
@@ -24,7 +16,7 @@ export class BubbleMenuLinkFormComponent {
     @Input() newLink = '';
 
     addLink() {
-        this.setLink.emit( this.newLink );
+        this.setLink.emit(this.newLink);
     }
 
     copyLink() {

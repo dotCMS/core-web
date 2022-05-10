@@ -58,6 +58,11 @@ const block = [
         label: 'Horizontal Line',
         icon: sanitizeUrl(lineIcon),
         id: 'horizontalLine'
+    },
+    {
+        label: 'Image',
+        icon: sanitizeUrl(quoteIcon),
+        id: 'image'
     }
 ];
 
