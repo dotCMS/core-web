@@ -14,12 +14,11 @@ export class SuggestionsService {
     getContentTypes(filter = '', allowedTypes = ''): Observable<DotCMSContentType[]> {
         return this.http
             .post(`/api/v1/contenttype/_filter`, {
-                types: allowedTypes,
                 filter: {
                     types: allowedTypes,
                     query: filter
                 },
-                orderby: 'name',
+                orderBy: 'name',
                 direction: 'ASC',
                 perPage: 40
             })
