@@ -1,12 +1,13 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { ComponentRef, Injector, ViewContainerRef } from '@angular/core';
-import { Extension, getNodeType } from '@tiptap/core';
+import { Extension } from '@tiptap/core';
 import { DotImageService } from './services/dot-image/dot-image.service';
 import { EditorView } from 'prosemirror-view';
 import { LoaderComponent, MessageType } from './components/loader/loader.component';
 import { PlaceholderPlugin } from '../plugins/placeholder.plugin';
 import { take } from 'rxjs/operators';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
+import { insertNodeAt } from '../utils/editor.utils';
 
 export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerRef) => {
     return Extension.create({
@@ -14,7 +15,7 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
 
         addProseMirrorPlugins() {
             const dotImageService = injector.get(DotImageService);
-
+            const editor = this.editor;
             function areImageFiles(event: ClipboardEvent | DragEvent): boolean {
                 let files: FileList;
                 if (event.type === 'drop') {
@@ -23,6 +24,7 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                     //paste
                     files = (event as ClipboardEvent).clipboardData.files;
                 }
+
                 if (files.length > 0) {
                     for (let i = 0; i < files.length; i++) {
                         if (!files[i].type.startsWith('image/')) {
@@ -55,38 +57,38 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                 view.dispatch(tr);
             }
 
-            function uploadImages(view: EditorView, files: File[], position: number) {
-                const { schema } = view.state;
-
-                setPlaceHolder(view, position, files[0].name);
+            function uploadImages(view: EditorView, data: File[], position: number) {
+                const placeHolderName = data[0].name;
+                setPlaceHolder(view, position, placeHolderName);
 
                 dotImageService
-                    .publishContent(files)
+                    .publishContent(data)
                     .pipe(take(1))
                     .subscribe(
                         (dotAssets: DotCMSContentlet[]) => {
-                            const tr = view.state.tr;
-                            const data = dotAssets[0][Object.keys(dotAssets[0])[0]];
-                            const imageNode = getNodeType('dotImage', schema).create({
-                                data: data
+                            const dotAsset = dotAssets[0][Object.keys(dotAssets[0])[0]];
+                            insertNodeAt({
+                                view,
+                                position,
+                                type: 'dotImage',
+                                meta: { data: dotAsset }
                             });
-                            view.dispatch(
-                                tr
-                                    .replaceRangeWith(position, position, imageNode)
-                                    .setMeta(PlaceholderPlugin, {
-                                        remove: { id: data.name }
-                                    })
-                            );
                         },
                         (error) => {
                             alert(error.message);
-                            view.dispatch(
-                                view.state.tr.setMeta(PlaceholderPlugin, {
-                                    remove: { id: files[0].name }
-                                })
-                            );
-                        }
+                        },
+                        () => removePlaceHolder(placeHolderName)
                     );
+            }
+
+            function removePlaceHolder(id: string) {
+                const { view } = editor;
+                const { state } = view;
+                view.dispatch(
+                    state.tr.setMeta(PlaceholderPlugin, {
+                        remove: { id }
+                    })
+                );
             }
 
             /**
@@ -111,13 +113,14 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                     props: {
                         handleDOMEvents: {
                             paste(view, event) {
+                                const { from } = getPositionFromCursor(view);
+
                                 if (areImageFiles(event)) {
+                                    const files = Array.from(event.clipboardData.files);
                                     if (event.clipboardData.files.length !== 1) {
                                         alert('Can paste just one image at a time');
                                         return false;
                                     }
-                                    const { from } = getPositionFromCursor(view);
-                                    const files = Array.from(event.clipboardData.files);
                                     uploadImages(view, files, from);
                                 }
 
