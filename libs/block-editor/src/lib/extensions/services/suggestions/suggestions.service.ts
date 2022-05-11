@@ -26,7 +26,6 @@ export class SuggestionsService {
             .pipe(pluck('entity'));
     }
 
-    // TODO: change the contentType param to use an Enum
     getContentlets({
         contentType,
         filter,
