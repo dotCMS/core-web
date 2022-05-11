@@ -23,7 +23,6 @@ export class ImageFormComponent {
     };
 
     onSubmit() {
-        console.log('LLAMADO?');
         this.imageMeta.emit(this.data);
     }
 }

@@ -72,11 +72,11 @@ export class ImageFormView {
     update(view: EditorView): void {
         const next = this.pluginKey.getState(view.state);
 
-        console.log(!next.show);
+        console.log('Show:', !next.show);
         if (!next.show) {
             return;
         }
-        console.log('LLAMADO?');
+
         const { state } = view;
         const { selection } = state;
 
@@ -119,9 +119,7 @@ export class ImageFormView {
             placement: 'bottom-start',
             hideOnClick: true,
             interactive: true,
-            onHidden: () => {
-                this.handlerHide();
-            }
+            onHidden: () => this.handlerHide()
         });
     }
 
@@ -147,6 +145,7 @@ export class ImageFormView {
             })
             .run();
         this.cleanForm();
+        console.log('LLAMADO?');
     }
 
     insertImage({ title, alt, src }) {
@@ -155,7 +154,6 @@ export class ImageFormView {
             alt,
             title
         });
-        this.cleanForm();
         this.hide();
     }
 

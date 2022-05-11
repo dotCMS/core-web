@@ -27,6 +27,7 @@ import { BubbleMenuButtonComponent } from './extensions/components/bubble-menu-b
 import { BubbleMenuLinkFormComponent } from './extensions/components/bubble-menu-link-form/bubble-menu-link-form.component';
 import { ContentletStatePipe } from './extensions/pipes/contentlet-state/contentlet-state.pipe';
 import { ImageFormComponent } from './extensions/components/image-form/image-form.component';
+import { ImageImporterComponent } from './extensions/components/image-importer/image-importer.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, CardModule, MenuModule],
@@ -47,7 +48,8 @@ import { ImageFormComponent } from './extensions/components/image-form/image-for
         BubbleMenuButtonComponent,
         BubbleMenuLinkFormComponent,
         ContentletStatePipe,
-        ImageFormComponent
+        ImageFormComponent,
+        ImageImporterComponent
     ],
     providers: [SuggestionsService, DotImageService, LoggerService, StringUtils],
     exports: [

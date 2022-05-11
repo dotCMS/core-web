@@ -23,7 +23,7 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                     //paste
                     files = (event as ClipboardEvent).clipboardData.files;
                 }
-                console.log(files);
+
                 if (files.length > 0) {
                     for (let i = 0; i < files.length; i++) {
                         if (!files[i].type.startsWith('image/')) {
@@ -56,7 +56,7 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                 view.dispatch(tr);
             }
 
-            function externalImage(clipboardData: any) {
+            function externalImage(clipboardData: DataTransfer) {
                 const html = clipboardData.getData('text/html') || '';
                 const parsed = new DOMParser().parseFromString(html, 'text/html');
                 const img = parsed.querySelector('img');

@@ -15,11 +15,15 @@ const TEMP_API_URL = '/api/v1/temp';
  * @param maxSize
  *
  */
-export function uploadFile(file: string | File, maxSize?: string): Promise<DotCMSTempFile> {
+export function uploadFile(
+    file: string | File | File[],
+    progressCallBack?,
+    maxSize?: string
+): Promise<DotCMSTempFile> {
     if (typeof file === 'string') {
         return uploadFileByURL(file);
     } else {
-        return uploadBinaryFile(file, maxSize) as Promise<DotCMSTempFile>;
+        return uploadBinaryFile(file, progressCallBack, maxSize) as Promise<DotCMSTempFile>;
     }
 }
 

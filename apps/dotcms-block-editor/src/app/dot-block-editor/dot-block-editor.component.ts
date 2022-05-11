@@ -11,7 +11,8 @@ import {
     DragHandler,
     ImageBlock,
     ImageUpload,
-    ImageFormExtension
+    ImageFormExtension,
+    ImageImporter
 } from '@dotcms/block-editor';
 
 import { Image } from '@tiptap/extension-image';
@@ -50,6 +51,7 @@ export class DotBlockEditorComponent implements OnInit {
                 ActionsMenu(this.viewContainerRef),
                 DragHandler(this.viewContainerRef),
                 ImageUpload(this.injector, this.viewContainerRef),
+                ImageImporter(this.injector, this.viewContainerRef),
                 BubbleLinkFormExtension(this.viewContainerRef),
                 DotBubbleMenuExtension(this.viewContainerRef),
                 ImageFormExtension(this.viewContainerRef),
