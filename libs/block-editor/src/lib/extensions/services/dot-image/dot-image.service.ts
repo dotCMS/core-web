@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class DotImageService {
     constructor(private http: HttpClient) {}
 
-    publishContent(data: File | File[] | string, maxSize?: string): Observable<DotCMSContentlet[]> {
+    publishContent(data: string | File | File[], maxSize?: string): Observable<DotCMSContentlet[]> {
         return this.setTempResource(data, maxSize).pipe(
             switchMap((response: DotCMSTempFile | DotCMSTempFile[]) => {
                 const files = Array.isArray(response) ? response : [response];
@@ -36,7 +36,6 @@ export class DotImageService {
                     .pipe(pluck('entity', 'results')) as Observable<DotCMSContentlet[]>;
             })
         );
-        // uploadFileByURL
     }
 
     private setTempResource(

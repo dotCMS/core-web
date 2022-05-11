@@ -57,26 +57,24 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                 view.dispatch(tr);
             }
 
-            function uploadImages(view: EditorView, data: File[], position: number) {
-                const placeHolderName = data[0].name;
+            function uploadImages(view: EditorView, files: File[], position: number) {
+                const placeHolderName = files[0].name;
                 setPlaceHolder(view, position, placeHolderName);
 
                 dotImageService
-                    .publishContent(data)
+                    .publishContent(files)
                     .pipe(take(1))
                     .subscribe(
                         (dotAssets: DotCMSContentlet[]) => {
-                            const dotAsset = dotAssets[0][Object.keys(dotAssets[0])[0]];
+                            const data = dotAssets[0][Object.keys(dotAssets[0])[0]];
                             insertNodeAt({
                                 view,
                                 position,
                                 type: 'dotImage',
-                                meta: { data: dotAsset }
+                                meta: { data }
                             });
                         },
-                        (error) => {
-                            alert(error.message);
-                        },
+                        (error) => alert(error.message),
                         () => removePlaceHolder(placeHolderName)
                     );
             }
@@ -113,14 +111,13 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
                     props: {
                         handleDOMEvents: {
                             paste(view, event) {
-                                const { from } = getPositionFromCursor(view);
-
                                 if (areImageFiles(event)) {
-                                    const files = Array.from(event.clipboardData.files);
                                     if (event.clipboardData.files.length !== 1) {
                                         alert('Can paste just one image at a time');
                                         return false;
                                     }
+                                    const { from } = getPositionFromCursor(view);
+                                    const files = Array.from(event.clipboardData.files);
                                     uploadImages(view, files, from);
                                 }
 
