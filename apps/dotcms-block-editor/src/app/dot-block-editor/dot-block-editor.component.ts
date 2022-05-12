@@ -32,8 +32,7 @@ function toTitleCase(str) {
     styleUrls: ['./dot-block-editor.component.scss']
 })
 export class DotBlockEditorComponent implements OnInit {
-    @Input()
-    lang: string;
+    @Input() lang = DEFAULT_LANG_ID;
 
     editor: Editor;
 
@@ -73,8 +72,6 @@ export class DotBlockEditorComponent implements OnInit {
     }
 
     private setEditorStorageData() {
-        this.editor.storage.dotData = {
-            lang: this.lang ? this.lang : DEFAULT_LANG_ID
-        };
+        this.editor.storage.dotConfig = { lang: this.lang };
     }
 }

@@ -48,21 +48,21 @@ export class SuggestionsComponent implements OnInit, AfterViewInit {
     @ViewChild('list', { static: false }) list: SuggestionListComponent;
 
     @Input() onSelection: (props: SuggestionsCommandProps) => void;
-
     @Input() items: DotMenuItem[] = [];
     @Input() title = 'Select a block';
     @Input() noResultsMessage = 'No Results';
     @Input() isOpen = false;
-    @Output() clearFilter: EventEmitter<string> = new EventEmitter<string>();
+    @Input() currentLanguage = DEFAULT_LANG_ID;
 
-    initialItems: DotMenuItem[];
-    isFilterActive = false;
-    currentLanguage = DEFAULT_LANG_ID;
+    @Output() clearFilter: EventEmitter<string> = new EventEmitter<string>();
 
     private itemsLoaded: ItemsType;
     private selectedContentType: DotCMSContentType;
     private mouseMove = true;
     private dotLangs: Languages;
+    private initialItems: DotMenuItem[];
+
+    isFilterActive = false;
 
     @HostListener('mousemove', ['$event'])
     onMousemove() {
