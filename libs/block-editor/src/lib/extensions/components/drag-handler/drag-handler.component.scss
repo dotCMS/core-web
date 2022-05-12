@@ -2,32 +2,11 @@
     position: absolute;
     cursor: grab;
     z-index: 1;
-    -webkit-animation: fadeIn 500ms;
-    animation: fadeIn 500ms;
     opacity: 0;
-    display: none;
     color: var(--color-background);
+    transition: opacity 250ms, top 150ms;
 
     &.visible {
-        opacity: 1;
-        display: block;
-    }
-}
-
-@-webkit-keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
         opacity: 1;
     }
 }
