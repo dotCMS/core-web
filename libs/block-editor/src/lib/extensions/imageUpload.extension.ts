@@ -7,7 +7,6 @@ import { LoaderComponent, MessageType } from './components/loader/loader.compone
 import { PlaceholderPlugin } from '../plugins/placeholder.plugin';
 import { take } from 'rxjs/operators';
 import { DotCMSContentlet } from '@dotcms/dotcms-models';
-import { insertNodeAt } from '../utils/editor.utils';
 
 export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerRef) => {
     return Extension.create({
@@ -60,19 +59,19 @@ export const ImageUpload = (injector: Injector, viewContainerRef: ViewContainerR
             function uploadImages(view: EditorView, files: File[], position: number) {
                 const placeHolderName = files[0].name;
                 setPlaceHolder(view, position, placeHolderName);
-
                 dotImageService
                     .publishContent(files)
                     .pipe(take(1))
                     .subscribe(
                         (dotAssets: DotCMSContentlet[]) => {
                             const data = dotAssets[0][Object.keys(dotAssets[0])[0]];
-                            insertNodeAt({
-                                view,
-                                position,
-                                type: 'dotImage',
-                                meta: { data }
-                            });
+                            const node = {
+                                attrs: {
+                                    data
+                                },
+                                type: 'dotImage'
+                            };
+                            editor.commands.insertContentAt(position, node);
                         },
                         (error) => alert(error.message),
                         () => removePlaceHolder(placeHolderName)

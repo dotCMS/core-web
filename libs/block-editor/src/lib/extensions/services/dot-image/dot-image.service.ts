@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { uploadFile } from '@dotcms/utils';
-import { from, Observable } from 'rxjs';
-import { pluck, switchMap } from 'rxjs/operators';
+import { from, Observable, throwError } from 'rxjs';
+import { catchError, pluck, switchMap } from 'rxjs/operators';
 import { DotCMSContentlet, DotCMSTempFile } from '@dotcms/dotcms-models';
 import { HttpClient } from '@angular/common/http';
 
@@ -34,22 +34,23 @@ export class DotImageService {
                         }
                     )
                     .pipe(pluck('entity', 'results')) as Observable<DotCMSContentlet[]>;
-            })
+            }),
+            catchError((error) => throwError(error))
         );
     }
 
     private setTempResource(
-        data: string | File | File[],
+        file: string | File | File[],
         maxSize?: string
     ): Observable<DotCMSTempFile | DotCMSTempFile[]> {
         return from(
-            uploadFile(
-                data,
-                () => {
+            uploadFile({
+                file,
+                progressCallBack: () => {
                     /**/
                 },
                 maxSize
-            )
+            })
         );
     }
 }
