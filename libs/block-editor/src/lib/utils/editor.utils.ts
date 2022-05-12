@@ -11,6 +11,6 @@ interface insertNodeAtProps<T = Record<string, string>> {
 export const insertNodeAt = ({ view, position, type, meta }: insertNodeAtProps) => {
     const { state } = view;
     const { schema, tr } = state;
-    const imageNode = getNodeType(type, schema).create(meta);
-    view.dispatch(tr.replaceRangeWith(position, position, imageNode));
+    const node = getNodeType(type, schema).create(meta);
+    view.dispatch(tr.replaceRangeWith(position, position, node));
 };
