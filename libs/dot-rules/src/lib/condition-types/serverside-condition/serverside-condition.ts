@@ -10,6 +10,7 @@ import { CwRestDropdownInputModel } from '../../services/util/CwInputModel';
 import { Verify } from '../../services/validation/Verify';
 import { ConditionModel, ParameterModel } from '../../services/Rule';
 import { LoggerService } from '@dotcms/dotcms-js';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -360,7 +361,7 @@ export class ServersideCondition {
 
         if (needsCustomAttribute) {
             opts.push({
-                label: ObservableHack.of(currentValue),
+                label: of(currentValue),
                 value: currentValue
             });
         }
