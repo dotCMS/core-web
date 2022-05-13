@@ -5,7 +5,6 @@ import { CwDropdownInputModel } from '../../services/util/CwInputModel';
 import { CwComponent } from '../../services/util/CwComponent';
 import { ServerSideFieldModel } from '../../services/ServerSideFieldModel';
 import { I18nService } from '../../services/system/locale/I18n';
-import { ObservableHack } from '../../services/util/ObservableHack';
 import { CwRestDropdownInputModel } from '../../services/util/CwInputModel';
 import { Verify } from '../../services/validation/Verify';
 import { ConditionModel, ParameterModel } from '../../services/Rule';
