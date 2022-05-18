@@ -35,7 +35,7 @@
     loadingIcon="fa fa-circle-o-notch fa-spin"
 >
     <ng-template let-columns pTemplate="header">
-        <tr *ngIf="items?.length">
+        <tr *ngIf="items?.length" data-testClass="testHeadTableRow">
             <th *ngIf="checkbox" style="width: 5%">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
@@ -49,11 +49,11 @@
     <ng-template let-columns="columns" let-rowData pTemplate="body">
         <tr
             (click)="handleRowClick(rowData)"
-            [ngClass]="{ 'disabled-row': rowData.owner === 'system' }"
+            [ngClass]="{ 'disabled-row': rowData?.owner === 'system' }"
             (keyup.enter)="handleRowClick(rowData)"
-            [pContextMenuRowDisabled]="rowData.disableInteraction === true"
+            [pContextMenuRowDisabled]="rowData.disableInteraction"
             [pSelectableRowDisabled]="rowData.disableInteraction"
-            [attr.test-id]="rowData.identifier"
+            [attr.data-testId]="rowData.identifier"
             [pContextMenuRow]="rowData"
             [pSelectableRow]="rowData"
             data-testClass="testTableRow"
@@ -63,6 +63,7 @@
                     (click)="$event.stopPropagation()"
                     *ngIf="!rowData.disableInteraction"
                     [value]="rowData"
+                    [attr.test-id]="rowData.friendlyName"
                 ></p-tableCheckbox>
             </td>
             <ng-container
