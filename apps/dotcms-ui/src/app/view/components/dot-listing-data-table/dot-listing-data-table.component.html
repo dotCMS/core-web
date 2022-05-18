@@ -49,8 +49,11 @@
     <ng-template let-columns="columns" let-rowData pTemplate="body">
         <tr
             (click)="handleRowClick(rowData)"
+            [ngClass]="{ 'disabled-row': rowData.owner === 'system' }"
             (keyup.enter)="handleRowClick(rowData)"
             [pContextMenuRowDisabled]="rowData.disableInteraction === true"
+            [pSelectableRowDisabled]="rowData.disableInteraction"
+            [attr.test-id]="rowData.identifier"
             [pContextMenuRow]="rowData"
             [pSelectableRow]="rowData"
             data-testClass="testTableRow"
@@ -58,7 +61,7 @@
             <td *ngIf="checkbox">
                 <p-tableCheckbox
                     (click)="$event.stopPropagation()"
-                    *ngIf="rowData.disableInteraction === undefined || rowData.disableInteraction === false"
+                    *ngIf="!rowData.disableInteraction"
                     [value]="rowData"
                 ></p-tableCheckbox>
             </td>
@@ -111,9 +114,9 @@
             [routerLink]="rowData.variable === 'Host' ? '/c/sites' : '/c/content'"
         >
             {{
-            col.textContent
-                ? (col.textContent | dotStringFormat: [rowData[col.fieldName]])
-                : rowData[col.fieldName]
+                col.textContent
+                    ? (col.textContent | dotStringFormat: [rowData[col.fieldName]])
+                    : rowData[col.fieldName]
             }}
         </a>
     </td>
@@ -126,4 +129,3 @@
         </dot-action-menu-button>
     </td>
 </ng-template>
-
