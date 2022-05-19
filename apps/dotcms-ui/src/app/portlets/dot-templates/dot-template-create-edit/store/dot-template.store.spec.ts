@@ -696,4 +696,26 @@ describe('DotTemplateStore', () => {
             });
         });
     });
+
+    fdescribe('redirect', () => {
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                providers: [
+                    ...BASIC_PROVIDERS,
+                    {
+                        provide: ActivatedRoute,
+                        useValue: {
+                            snapshot: { params: { id: 'SYSTEM_TEMPLATE' } }
+                        }
+                    }
+                ]
+            });
+            service = TestBed.inject(DotTemplateStore);
+            dotRouterService = TestBed.inject(DotRouterService);
+        });
+
+        it('Should redirect to templates listing when trying to edit a SYSTEM_TEMPALTE', () => {
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('templates');
+        });
+    });
 });
