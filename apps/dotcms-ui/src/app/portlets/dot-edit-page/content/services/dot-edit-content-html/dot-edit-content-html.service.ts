@@ -664,7 +664,7 @@ export class DotEditContentHtmlService {
                     // because: https://github.com/dotCMS/core/issues/21818
                     setTimeout(() => {
                         this.renderEditedContentlet(this.currentContentlet);
-                    }, 3000);
+                    }, 1800);
                 }
             },
             inlineEdit: (contentlet: DotInlineEditContent) => {
