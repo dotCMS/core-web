@@ -655,7 +655,6 @@ export class DotEditContentHtmlService {
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
             save: (contentlet: DotPageContent) => {
-                console.log('handlerContentletEvents');
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentlet);
                 } else {
