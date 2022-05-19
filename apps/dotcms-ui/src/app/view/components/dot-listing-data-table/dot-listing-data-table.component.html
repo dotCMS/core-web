@@ -49,11 +49,11 @@
     <ng-template let-columns="columns" let-rowData pTemplate="body">
         <tr
             (click)="handleRowClick(rowData)"
-            [ngClass]="{ 'disabled-row': rowData?.owner === 'system' }"
             (keyup.enter)="handleRowClick(rowData)"
+            [ngClass]="{ 'disabled-row': rowData?.owner === 'system' }"
+            [pSelectableRowDisabled]="rowData?.owner === 'system'"
             [pContextMenuRowDisabled]="rowData.disableInteraction"
-            [pSelectableRowDisabled]="rowData.disableInteraction"
-            [attr.data-testId]="rowData.identifier"
+            [attr.data-testRowId]="rowData.identifier"
             [pContextMenuRow]="rowData"
             [pSelectableRow]="rowData"
             data-testClass="testTableRow"

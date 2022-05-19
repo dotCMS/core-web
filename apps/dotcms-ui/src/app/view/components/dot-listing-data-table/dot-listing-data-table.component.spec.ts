@@ -494,7 +494,7 @@ describe('DotListingDataTableComponent', () => {
         tick(1);
         hostFixture.detectChanges();
 
-        const systemFile: DebugElement = de.query(By.css('tr[data-testId="SYSTEM_TEMPLATE"]'));
+        const systemFile: DebugElement = de.query(By.css('tr[data-testRowId="SYSTEM_TEMPLATE"]'));
         systemFile.triggerEventHandler('click', null);
         systemFile.triggerEventHandler('keyup.enter', null);
 
@@ -509,7 +509,7 @@ describe('DotListingDataTableComponent', () => {
         tick(1);
         hostFixture.detectChanges();
         const enabledRow = document.querySelectorAll('[data-testclass="testTableRow"]')[0];
-        const disabledRow = document.querySelector('[data-testId="SYSTEM_TEMPLATE"]');
+        const disabledRow = document.querySelector('[data-testRowId="SYSTEM_TEMPLATE"]');
         expect(enabledRow.getAttribute('ng-reflect-p-context-menu-row-disabled')).toEqual('false');
         expect(disabledRow.getAttribute('ng-reflect-p-context-menu-row-disabled')).toEqual('true');
     }));
