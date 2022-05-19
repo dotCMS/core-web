@@ -158,6 +158,7 @@ describe('DotTemplateStore', () => {
                             data: of({
                                 template: undefined
                             }),
+                            snapshot: { params: { id: '222-3000-333---30303-394' } },
                             params: of({
                                 type: 'design'
                             })
@@ -697,7 +698,7 @@ describe('DotTemplateStore', () => {
         });
     });
 
-    fdescribe('redirect', () => {
+    describe('redirect', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({
                 providers: [
@@ -705,7 +706,14 @@ describe('DotTemplateStore', () => {
                     {
                         provide: ActivatedRoute,
                         useValue: {
-                            snapshot: { params: { id: 'SYSTEM_TEMPLATE' } }
+                            data: of({
+                                template: undefined
+                            }),
+                            snapshot: { params: { id: 'SYSTEM_TEMPLATE' } },
+                            params: of({
+                                id: 'SYSTEM_TEMPLATE',
+                                type: 'design'
+                            })
                         }
                     }
                 ]
