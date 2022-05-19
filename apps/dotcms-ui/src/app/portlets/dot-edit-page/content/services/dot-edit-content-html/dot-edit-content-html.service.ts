@@ -655,13 +655,17 @@ export class DotEditContentHtmlService {
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
             save: (contentlet: DotPageContent) => {
+                console.log('handlerContentletEvents');
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentlet);
                 } else {
                     if (this.updateContentletInode) {
                         this.currentContentlet.inode = contentlet.inode;
                     }
-                    this.renderEditedContentlet(this.currentContentlet);
+                    // because: https://github.com/dotCMS/core/issues/21818
+                    setTimeout(() => {
+                        this.renderEditedContentlet(this.currentContentlet);
+                    }, 3000);
                 }
             },
             inlineEdit: (contentlet: DotInlineEditContent) => {
