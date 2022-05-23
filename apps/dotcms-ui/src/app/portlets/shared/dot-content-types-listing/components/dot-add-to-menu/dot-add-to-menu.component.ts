@@ -49,8 +49,7 @@ export class DotAddToMenuComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.initForm();
         this.setDialogConfig(this.form);
-
-        this.menu$ = this.dotMenuService.loadMenu().pipe(
+        this.menu$ = this.dotMenuService.loadMenu(true).pipe(
             take(1),
             tap((menu: DotMenu[]) => {
                 this.form.patchValue({
