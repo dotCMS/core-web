@@ -194,6 +194,7 @@ describe('DotAddToMenuComponent', () => {
         });
         expect(dotAddToMenuService.addToLayout).toHaveBeenCalledWith(
             'Nuevo',
+            'list',
             component.form.get('menuOption').value
         );
         expect(component.cancel.emit).toHaveBeenCalledTimes(1);

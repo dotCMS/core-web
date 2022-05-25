@@ -90,7 +90,11 @@ export class DotAddToMenuComponent implements OnInit, OnDestroy {
                     take(1),
                     switchMap(() => {
                         return this.dotAddToMenuService
-                            .addToLayout(params.portletName, this.form.get('menuOption').value)
+                            .addToLayout(
+                                params.portletName,
+                                this.form.get('defaultView').value,
+                                this.form.get('menuOption').value
+                            )
                             .pipe(take(1));
                     })
                 )

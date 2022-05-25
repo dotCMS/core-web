@@ -46,7 +46,7 @@ export class DotAddToMenuService {
             .requestView({
                 body: {
                     ...params,
-                    portletId: this.cleanUpPorletId(params.portletName)
+                    portletId: `${this.cleanUpPorletId(params.portletName)}_${params.dataViewMode}`
                 },
                 method: 'POST',
                 url: `${addToMenuUrl}/custom`
@@ -68,13 +68,14 @@ export class DotAddToMenuService {
 
     /**
      * Assigns a Custom tool portlet to a layout Id (menu)
+     * @param {string} dataViewMode
      * @param {string} layoutId
      * @param {string} portletName
      * @returns Observable<string>
      * @memberof DotAddToMenuService
      */
-    addToLayout(portletName: string, layoutId: string): Observable<string> {
-        const portletId = this.cleanUpPorletId(portletName);
+    addToLayout(portletName: string, dataViewMode: string, layoutId: string): Observable<string> {
+        const portletId = `${this.cleanUpPorletId(portletName)}_${dataViewMode}`;
         return this.coreWebService
             .requestView({
                 method: 'PUT',
