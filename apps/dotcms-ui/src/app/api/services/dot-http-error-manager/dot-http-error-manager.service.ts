@@ -56,7 +56,7 @@ export class DotHttpErrorManagerService {
         if (
             err['error'] &&
             !Array.isArray(err['error']) &&
-            this.contentletIsForbidden(err['error'].message)
+            this.contentletIsForbidden(this.getErrorMessage(err))
         ) {
             result.status = HttpCode.FORBIDDEN;
         }
@@ -75,8 +75,8 @@ export class DotHttpErrorManagerService {
 
     private contentletIsForbidden(error: string): boolean {
         return (
-            error.indexOf('does not have permissions READ') > -1 ||
-            error.indexOf('User cannot edit') > -1
+            error?.indexOf('does not have permissions READ') > -1 ||
+            error?.indexOf('User cannot edit') > -1
         );
     }
 
@@ -114,7 +114,7 @@ export class DotHttpErrorManagerService {
     private handleServerError(response: HttpErrorResponse): boolean {
         this.dotDialogService.alert({
             message:
-                response.error?.message ||
+                this.getErrorMessage(response) ||
                 this.dotMessageService.get('dot.common.http.error.500.message'),
             header: this.dotMessageService.get('dot.common.http.error.500.header')
         });
@@ -122,11 +122,10 @@ export class DotHttpErrorManagerService {
     }
 
     private handleBadRequestError(response: HttpErrorResponse): boolean {
-        const msg =
-            this.getErrorMessage(response) ||
-            this.dotMessageService.get('dot.common.http.error.400.message');
         this.dotDialogService.alert({
-            message: msg,
+            message:
+                this.getErrorMessage(response) ||
+                this.dotMessageService.get('dot.common.http.error.400.message'),
             header: this.dotMessageService.get('dot.common.http.error.400.header')
         });
         return false;
@@ -152,8 +151,8 @@ export class DotHttpErrorManagerService {
 
     private getErrorMessage(response: HttpErrorResponse): string {
         let msg: string;
-        if (Array.isArray(response['error'])) {
-            msg = response.error[0].message;
+        if (Array.isArray(response['error']) || Array.isArray(response.error?.errors)) {
+            msg = response.error[0]?.message || response.error?.errors[0]?.message;
         } else {
             msg = response['error'] ? response['error']['message'] : null;
         }
