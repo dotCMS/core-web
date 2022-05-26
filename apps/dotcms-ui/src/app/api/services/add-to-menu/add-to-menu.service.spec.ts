@@ -102,7 +102,11 @@ describe('DotAddToMenuService', () => {
         const url = `v1/portlet/custom/c_${customToolData.portletName}_${customToolData.dataViewMode}/_addtolayout/123`;
 
         dotAddToMenuService
-            .addToLayout(customToolData.portletName, customToolData.dataViewMode, '123')
+            .addToLayout({
+                portletName: customToolData.portletName,
+                dataViewMode: customToolData.dataViewMode,
+                layoutId: '123'
+            })
             .subscribe((response: string) => {
                 expect(response).toEqual('ok');
             });
@@ -120,7 +124,11 @@ describe('DotAddToMenuService', () => {
         spyOn(coreWebService, 'requestView').and.returnValue(throwError(error404));
 
         dotAddToMenuService
-            .addToLayout(customToolData.portletName, customToolData.dataViewMode, '123')
+            .addToLayout({
+                portletName: customToolData.portletName,
+                dataViewMode: customToolData.dataViewMode,
+                layoutId: '123'
+            })
             .subscribe((response: string) => {
                 expect(response).toEqual(null);
             });

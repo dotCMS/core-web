@@ -192,11 +192,11 @@ describe('DotAddToMenuComponent', () => {
             contentTypes: contentTypeVar.variable,
             dataViewMode: 'list'
         });
-        expect(dotAddToMenuService.addToLayout).toHaveBeenCalledWith(
-            'Nuevo',
-            'list',
-            component.form.get('menuOption').value
-        );
+        expect(dotAddToMenuService.addToLayout).toHaveBeenCalledWith({
+            portletName: 'Nuevo',
+            dataViewMode: 'list',
+            layoutId: component.form.get('menuOption').value
+        });
         expect(component.cancel.emit).toHaveBeenCalledTimes(1);
     });
 

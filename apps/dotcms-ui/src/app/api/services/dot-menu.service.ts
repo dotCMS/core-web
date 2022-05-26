@@ -59,7 +59,7 @@ export class DotMenuService {
      * @returns Observable<DotMenu[]>
      * @memberof DotMenuService
      */
-    loadMenu(force?: boolean): Observable<DotMenu[]> {
+    loadMenu(force = false): Observable<DotMenu[]> {
         if (!this.menu$ || force) {
             this.menu$ = this.coreWebService
                 .requestView({
