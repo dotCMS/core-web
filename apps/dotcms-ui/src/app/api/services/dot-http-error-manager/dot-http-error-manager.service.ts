@@ -3,7 +3,7 @@ import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotMessageService } from '../dot-message/dot-messages.service';
 import { Injectable } from '@angular/core';
 
-import { LoginService, HttpCode } from '@dotcms/dotcms-js';
+import { HttpCode, LoginService } from '@dotcms/dotcms-js';
 
 import { DotAlertConfirmService } from '../dot-alert-confirm';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -53,13 +53,12 @@ export class DotHttpErrorManagerService {
             status: err.status
         };
 
-        if (
-            err['error'] &&
-            !Array.isArray(err['error']) &&
-            this.contentletIsForbidden(this.getErrorMessage(err))
-        ) {
+        const error = err.error?.errors ? err.error.errors[0] : err.error;
+
+        if (error && this.contentletIsForbidden(this.getErrorMessage(err))) {
             result.status = HttpCode.FORBIDDEN;
         }
+
         return of(result);
     }
 
