@@ -40,7 +40,7 @@ export class PushPublishService {
         return this.currentUser.getCurrentUser().pipe(
             mergeMap((user: DotCurrentUser) => {
                 return this.coreWebService.requestView({
-                    url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
+                    url: `${this.pushEnvironementsUrl}/${user.roleId}`
                 });
             }),
             pluck('bodyJsonObject'),
