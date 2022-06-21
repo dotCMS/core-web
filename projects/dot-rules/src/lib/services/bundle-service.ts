@@ -99,7 +99,7 @@ export class BundleService {
     return this.getLoggedUser().pipe(mergeMap((user: IUser) => {
       return this.coreWebService.request({
         method: RequestMethod.Get,
-        url: `${this._pushEnvironementsUrl}/${user.roleId}/?name=0`,
+        url: `${this._pushEnvironementsUrl}/${user.roleId}/`,
       }).pipe(map(BundleService.fromServerEnvironmentTransformFn));
     }));
   }

@@ -94,7 +94,7 @@ describe('PushPublishService', () => {
 
             tick();
             expect(lastConnection.request.url).toContain(
-                'environment/loadenvironments/roleId/1234/name=0'
+                'environment/loadenvironments/roleId/1234'
             );
             expect(result).toEqual(response.splice(1));
         })

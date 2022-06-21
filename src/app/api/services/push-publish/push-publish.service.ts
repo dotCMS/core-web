@@ -42,7 +42,7 @@ export class PushPublishService {
             mergeMap((user: DotCurrentUser) => {
                 return this.coreWebService.requestView({
                     method: RequestMethod.Get,
-                    url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
+                    url: `${this.pushEnvironementsUrl}/${user.roleId}`
                 });
             }),
             pluck('bodyJsonObject'),
