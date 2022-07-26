@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+imimport { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { DotRelationshipCardinality } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/model/dot-relationship-cardinality.model';
 import { DotRelationshipService } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-relationship.service';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
  * @export
  * @class DotCardinalitySelectorComponent
  * @implements {OnInit}
+ * @implements {OnChanges}
  */
 @Component({
     providers: [],
@@ -24,7 +25,7 @@ export class DotCardinalitySelectorComponent implements OnInit {
     disabled: boolean;
 
     @Output()
-    change: EventEmitter<number> = new EventEmitter();
+    switch: EventEmitter<number> = new EventEmitter();
 
     options: Observable<DotRelationshipCardinality[]>;
 
