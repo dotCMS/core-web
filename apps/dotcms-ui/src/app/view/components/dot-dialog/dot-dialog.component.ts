@@ -38,6 +38,9 @@ export class DotDialogComponent implements OnChanges {
     };
 
     @Input()
+    isSaving = false;
+
+    @Input()
     headerStyle: {
         [key: string]: string;
     };
