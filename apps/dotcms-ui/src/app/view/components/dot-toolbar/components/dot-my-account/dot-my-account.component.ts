@@ -30,7 +30,7 @@ interface AccountUserForm extends DotAccountUser {
 export class DotMyAccountComponent implements OnInit, OnDestroy {
     @ViewChild('myAccountForm', { static: true }) form: NgForm;
 
-    @Output() close = new EventEmitter<any>();
+    @Output() shutdown = new EventEmitter<void>();
 
     @Input() visible: boolean;
 
