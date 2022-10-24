@@ -7,7 +7,6 @@
             <dot-template-advanced
                 [didTemplateChanged]="didTemplateChanged"
                 [body]="item.body"
-                (saveAndPublish)="saveAndPublish.emit($event)"
                 (updateTemplate)="updateTemplate.emit($event)"
                 (save)="save.emit($event)"
                 (cancel)="cancel.emit()"
@@ -18,6 +17,7 @@
                 [theme]="item.theme"
                 [disablePublish]="item.live"
                 [layout]="item.layout"
+                (saveAndPublish)="saveAndPublish.emit($event)"
                 (updateTemplate)="updateTemplate.emit($event)"
                 (save)="save.emit($event)"
             ></dot-edit-layout-designer>
