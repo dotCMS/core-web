@@ -34,11 +34,15 @@ class DotEditLayoutDesignerMockComponent {
 
     @Input() layout;
 
+    @Input() disablePublish: boolean;
+
     @Output() cancel: EventEmitter<MouseEvent> = new EventEmitter();
 
     @Output() save: EventEmitter<Event> = new EventEmitter();
 
     @Output() updateTemplate: EventEmitter<Event> = new EventEmitter();
+
+    @Output() saveAndPublish: EventEmitter<Event> = new EventEmitter();
 }
 
 @Component({
@@ -147,7 +151,8 @@ describe('DotTemplateBuilderComponent', () => {
         beforeEach(() => {
             component.item = {
                 ...EMPTY_TEMPLATE_DESIGN,
-                theme: '123'
+                theme: '123',
+                live: true
             };
             fixture.detectChanges();
         });
@@ -160,6 +165,7 @@ describe('DotTemplateBuilderComponent', () => {
         it('should show dot-edit-layout-designer and pass attr', () => {
             const builder = de.query(By.css('dot-edit-layout-designer')).componentInstance;
             expect(builder.theme).toBe('123');
+            expect(builder.disablePublish).toBe(true);
             expect(builder.layout).toEqual({
                 header: true,
                 footer: true,
@@ -177,7 +183,7 @@ describe('DotTemplateBuilderComponent', () => {
             expect(advanced).toBeNull();
         });
 
-        it('should emit events from dot-edit-layout-designer', () => {
+        it('should emit save events from dot-edit-layout-designer', () => {
             const builder = de.query(By.css('dot-edit-layout-designer'));
 
             builder.triggerEventHandler('save', EMPTY_TEMPLATE_DESIGN);
@@ -185,6 +191,13 @@ describe('DotTemplateBuilderComponent', () => {
 
             expect(component.save.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
             expect(component.updateTemplate.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
+        });
+
+        it('should emit save and publish event from dot-edit-layout-designer', () => {
+            spyOn(component.saveAndPublish, 'emit');
+            const builder = de.query(By.css('dot-edit-layout-designer'));
+            builder.triggerEventHandler('saveAndPublish', EMPTY_TEMPLATE_DESIGN);
+            expect(component.saveAndPublish.emit).toHaveBeenCalledWith(EMPTY_TEMPLATE_DESIGN);
         });
     });
 

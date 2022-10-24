@@ -66,8 +66,14 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
     @Input()
     url: string;
 
+    @Input()
+    disablePublish = true;
+
     @Output()
     save: EventEmitter<DotTemplate> = new EventEmitter();
+
+    @Output()
+    saveAndPublish: EventEmitter<Event> = new EventEmitter();
 
     @Output()
     updateTemplate: EventEmitter<DotTemplate> = new EventEmitter();
@@ -129,6 +135,17 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
      */
     onSave(): void {
         this.save.emit(this.form.value);
+    }
+
+    /**
+     * Emit publish event
+     *
+     * @memberof DotEditLayoutDesignerComponent
+     */
+
+    onSaveAndPublish(): void {
+        this.disablePublish = true;
+        this.saveAndPublish.emit(this.form.value);
     }
 
     /**
@@ -223,6 +240,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy, OnChan
             })
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.disablePublish = false;
             if (!_.isEqual(this.form.value, this.initialFormValue)) {
                 this.updateTemplate.emit(this.form.value);
             }
