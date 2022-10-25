@@ -53,11 +53,9 @@ export class DotHttpErrorManagerService {
             status: err.status
         };
 
-        if (
-            err['error'] &&
-            !Array.isArray(err['error']) &&
-            this.contentletIsForbidden(err['error'].message)
-        ) {
+        const error = err.error?.errors ? err.error.errors[0] : err.error;
+
+        if (error && this.contentletIsForbidden(this.getErrorMessage(err))) {
             result.status = HttpCode.FORBIDDEN;
         }
         return of(result);
