@@ -28,7 +28,7 @@ export class DotContentTypeService {
      * @returns {Observable<DotCMSContentType[]>}
      * @memberof DotContentTypeService
      */
-    getContentTypes(filter = '', page = 40): Observable<DotCMSContentType[]> {
+    getContentTypes(filter = '', page = 100): Observable<DotCMSContentType[]> {
         return this.coreWebService
             .requestView({
                 url: `/api/v1/contenttype?filter=${filter}&orderby=modDate&direction=DESC&per_page=${page}`
