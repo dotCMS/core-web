@@ -88,5 +88,6 @@ export interface DotCMSContentTypeFieldVariable {
 /** @private */
 interface Relationships {
     cardinality: number;
+    isParentField: boolean;
     velocityVar: string;
 }
