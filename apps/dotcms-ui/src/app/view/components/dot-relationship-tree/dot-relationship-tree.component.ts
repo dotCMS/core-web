@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { DotCMSContentType } from '@dotcms/dotcms-models';
 
 @Component({
@@ -6,34 +6,27 @@ import { DotCMSContentType } from '@dotcms/dotcms-models';
     templateUrl: './dot-relationship-tree.component.html',
     styleUrls: ['./dot-relationship-tree.component.scss']
 })
-export class DotRelationshipTreeComponent implements OnInit {
+export class DotRelationshipTreeComponent implements OnChanges {
     @Input() velocityVar: string;
     @Input() contentType: DotCMSContentType;
+    @Input() isParentField: boolean;
 
-    isRelationshipChild: boolean = false;
-    relatedContentType: string;
-    fieldName: string;
     child: string;
     parent: string;
 
-    constructor() {}
-
-    ngOnInit(): void {
-        this.setInitialValues();
+    ngOnChanges(): void {
+        this.setValues();
     }
     /**
      * Sets initial values of the relationship tree component
      *
      * @memberof DotRelationshipTreeComponent
      */
-    setInitialValues(): void {
-        // If velocityVar has a dot it means it's the child of the relationship
-        this.isRelationshipChild = this.velocityVar?.indexOf('.') !== -1;
-
+    setValues(): void {
         const [relatedContentType] = this.velocityVar?.split('.');
         const contentTypeName = this.contentType?.name;
 
-        this.parent = this.isRelationshipChild ? relatedContentType : contentTypeName;
-        this.child = this.isRelationshipChild ? contentTypeName : relatedContentType;
+        this.child = this.isParentField ? relatedContentType : contentTypeName;
+        this.parent = this.isParentField ? contentTypeName : relatedContentType;
     }
 }
