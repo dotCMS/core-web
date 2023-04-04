@@ -28,7 +28,8 @@ import { DotPipesModule } from '@pipes/dot-pipes.module';
 const mockDFormFieldData = {
     ...dotcmsContentTypeFieldBasicMock,
     clazz: 'field.class',
-    name: 'fieldName'
+    name: 'fieldName',
+    id: '123'
 };
 
 @Component({
@@ -162,7 +163,8 @@ xdescribe('ContentTypeFieldsPropertiesFormComponent', () => {
             spyOn(mockFieldPropertyService, 'getProperties').and.returnValue([
                 'property1',
                 'property2',
-                'property3'
+                'property3',
+                'id'
             ]);
         });
 
@@ -172,6 +174,7 @@ xdescribe('ContentTypeFieldsPropertiesFormComponent', () => {
             expect(mockFieldPropertyService.getProperties).toHaveBeenCalledWith('field.class');
             expect(comp.form.get('clazz').value).toBe('field.class');
 
+            expect(comp.form.get('id').value).toBe('123');
             expect(comp.form.get('property1').value).toBe('');
             expect(comp.form.get('property2').value).toBe(true);
             expect(comp.form.get('property3')).toBeNull();

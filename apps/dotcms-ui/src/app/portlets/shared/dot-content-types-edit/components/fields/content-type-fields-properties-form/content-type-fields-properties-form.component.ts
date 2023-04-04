@@ -118,6 +118,7 @@ export class ContentTypeFieldsPropertiesFormComponent implements OnChanges, OnIn
                 });
 
             formFields['clazz'] = this.formFieldData.clazz;
+            formFields['id'] = this.formFieldData.id;
         }
 
         this.form = this.fb.group(formFields);
