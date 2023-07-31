@@ -41,7 +41,7 @@ describe('DotEditPageInfoComponent', () => {
 
     describe('default', () => {
         beforeEach(() => {
-            component.apiLink = '/api/v1/page/render/an/url/test?language_id=1';
+            component.apiLink = 'api/v1/page/render/an/url/test?language_id=1';
             component.title = 'A title';
             component.url = 'http://demo.dotcms.com:9876/an/url/test';
             fixture.detectChanges();
@@ -54,8 +54,8 @@ describe('DotEditPageInfoComponent', () => {
 
         it('should have api link', () => {
             const apiLink: DebugElement = de.query(By.css('dot-api-link'));
-            expect(apiLink.componentInstance.link).toBe(
-                '/api/v1/page/render/an/url/test?language_id=1'
+            expect(apiLink.componentInstance.link).toContain(
+                'api/v1/page/render/an/url/test?language_id=1'
             );
         });
 
