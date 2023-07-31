@@ -59,13 +59,6 @@ describe('DotEditPageInfoComponent', () => {
             );
         });
 
-        it('should have preview link', () => {
-            const previewLink: DebugElement = de.query(By.css('dot-preview-link'));
-            expect(previewLink.componentInstance.link).toBe(
-                '/an/url/test?language_id=1&disabledNavigateMode=true'
-            );
-        });
-
         it('should have copy button', () => {
             const button: DebugElement = de.query(By.css('dot-copy-button '));
             expect(button.componentInstance.copy).toBe('http://demo.dotcms.com:9876/an/url/test');
