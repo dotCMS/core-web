@@ -60,8 +60,8 @@ describe('DotEditPageInfoComponent', () => {
         });
 
         it('should have preview link', () => {
-            const previewLink: HTMLElement = de.query(By.css('a[title="Preview"]')).nativeElement;
-            expect(previewLink.attributes['href'].value).toBe(
+            const previewLink: DebugElement = de.query(By.css('dot-preview-link'));
+            expect(previewLink.componentInstance.link).toBe(
                 '/an/url/test?language_id=1&disabledNavigateMode=true'
             );
         });
