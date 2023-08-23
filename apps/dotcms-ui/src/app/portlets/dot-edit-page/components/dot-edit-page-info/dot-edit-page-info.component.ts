@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, Input } from '@angular/core';
 
 /**
  * Basic page information for edit mode
@@ -15,6 +16,13 @@ import { Component, Input } from '@angular/core';
 export class DotEditPageInfoComponent {
     @Input() title: string;
     @Input() url: string;
+    baseUrl: string;
+
+    constructor(@Inject(DOCUMENT) private document: Document) {
+        this.baseUrl = document.defaultView.location.href.includes('edit-page')
+            ? document.defaultView.location.origin
+            : '';
+    }
     @Input() apiLink: string;
     previewURl() {
         const frontEndUrl = `${this.apiLink.replace('api/v1/page/render', '')}`;
