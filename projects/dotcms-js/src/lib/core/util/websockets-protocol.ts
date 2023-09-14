@@ -59,7 +59,7 @@ export class WebSocketProtocol extends Protocol {
     }
 
     close(): void {
-        if (this.socket && this.socket.readyState !== 3) {
+        if (this.socket && this.socket.readyState !== 0) {
             this.socket.close();
         }
     }
