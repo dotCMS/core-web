@@ -261,7 +261,13 @@ export class LoginService {
 
                     this.loggerService.debug('Navigating to Public Login');
 
-                    this.router.navigate(['/public/login']);
+                    const newLogoutPage = _response.header('url');
+                    if (newLogoutPage) {
+                        window.location.href = newLogoutPage;
+                    } else {
+                        this.router.navigate(['/public/login']);                      
+                    }
+                    
                 })
             );
     }
