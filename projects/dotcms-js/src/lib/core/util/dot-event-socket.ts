@@ -128,8 +128,12 @@ export class DotEventsSocket {
             this._open.next(true);
         });
 
-        this.protocolImpl.error$().subscribe(() => {
-            if (this.shouldTryWithLongPooling()) {
+        this.protocolImpl.error$().subscribe((e) => {
+            if (e && e.status && e.status == 401) {
+                this.loggerService.info(
+                    'There is no a logged user, ending event listening'
+                );
+            } else if (this.shouldTryWithLongPooling()) {
                 this.loggerService.info(
                     'Error connecting with Websockets, trying again with long polling'
                 );
