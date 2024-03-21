@@ -1,3 +1,6 @@
+> [!IMPORTANT]  
+> Active development has moved to [dotcms/core](https://github.com/dotcms/core). 
+
 [![Publish to NPM](https://github.com/dotCMS/core-web/actions/workflows/publish.yml/badge.svg)](https://github.com/dotCMS/core-web/actions/workflows/publish.yml)
 [![DotCMS/core-web Tests](https://github.com/dotCMS/core-web/actions/workflows/main.yml/badge.svg)](https://github.com/dotCMS/core-web/actions/workflows/main.yml)
 
