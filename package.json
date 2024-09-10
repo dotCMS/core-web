@@ -39,7 +39,7 @@
         "angular2-tinymce": "^2.1.2",
         "core-js": "^2.5.4",
         "font-awesome": "^4.7.0",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.21",
         "md5": "^2.2.1",
         "moment": "^2.19.4",
         "ng2-ace-editor": "^0.3.8",
