@@ -113,7 +113,7 @@
         "@angular/compiler-cli": "13.2.3",
         "@angular/language-service": "13.2.3",
         "@babel/core": "^7.12.9",
-        "@compodoc/compodoc": "^1.1.11",
+        "@compodoc/compodoc": "^1.1.19",
         "@nrwl/cli": "13.8.3",
         "@nrwl/cypress": "13.8.3",
         "@nrwl/eslint-plugin-nx": "13.8.3",
