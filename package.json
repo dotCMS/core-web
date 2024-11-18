@@ -41,7 +41,7 @@
         "font-awesome": "^4.7.0",
         "lodash": "^4.17.21",
         "md5": "^2.2.1",
-        "moment": "^2.19.4",
+        "moment": "^2.30.1",
         "ng2-ace-editor": "^0.3.8",
         "ng2-dragula": "^2.1.0",
         "npm": "^6.9.0",

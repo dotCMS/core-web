@@ -1,3 +1,20 @@
+### Summary to generate new core-web for this repo
+
+
+change package.json
+npm install -> this will auto-generate/update the package-lock.json
+npm run ng build dotcms-js
+npm run ng build dot-layout-grid
+npm run ng build dot-rules
+npm run build:prod
+Copy package.json to /dist
+npm run createpackagejson
+Check that the package.json under /dist have been updated with a Timestamp
+cd /dist
+npm publish -> This requires auth so check  with Freddy M.
+
+
+
 # DotCMS UI
 This project was created using [angular-cli](https://cli.angular.io/) it means you can use `ng` with all the commands and params.
 
